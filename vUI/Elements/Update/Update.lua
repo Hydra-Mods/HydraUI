@@ -50,9 +50,9 @@ function Update:PLAYER_ENTERING_WORLD(event)
 		SendAddonMessage("vUI-Version", AddOnVersion, "PARTY")
 	end
 	
-	--[[if UnitInBattleground("player") then -- Battlegrounds are NYI
+	if UnitInBattleground("player") then
 		SendAddonMessage("vUI-Version", AddOnVersion, "BATTLEGROUND")
-	end]]
+	end
 	
 	--self:UnregisterEvent(event)
 end
