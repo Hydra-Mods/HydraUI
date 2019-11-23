@@ -233,20 +233,10 @@ local OnTooltipSetUnit = function(self)
 			Flag = "|cFFF44336" .. CHAT_FLAG_DND .. "|r "
 		end
 		
-		if Guild then
-			if (Guild == MyGuild) then
-				Guild = format("|cFF5DADE2<%s>|r", Guild)
-			else
-				Guild = format("|cFF66BB6A<%s>|r", Guild)
-			end
-		else
-			Guild = ""
-		end
-		
 		if Realm then
-			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s %s-%s|r", Flag, Color, (Title or Name), Realm, Guild))
+			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s %s|r", Flag, Color, (Title or Name), Realm))
 		else
-			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s %s|r", Flag, Color, (Title or Name), Guild))
+			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s|r", Flag, Color, (Title or Name)))
 		end
 		
 		for i = 2, self:NumLines() do
@@ -268,6 +258,14 @@ local OnTooltipSetUnit = function(self)
 				end
 			elseif (Line and find(Line:GetText(), PVP)) then
 				Line:SetText(format("|cFFEE4D4D%s|r", PVP))
+			elseif Line and Guild and find(Line:GetText(), Guild) then
+				if (Guild == MyGuild) then
+					Guild = format("|cFF5DADE2<%s>|r", Guild)
+				else
+					Guild = format("|cFF66BB6A<%s>|r", Guild)
+				end
+				
+				Line:SetText(Guild)
 			end
 		end
 		
