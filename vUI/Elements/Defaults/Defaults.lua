@@ -286,8 +286,6 @@ Defaults["unitframes-target-cc-health"] = false
 Defaults["unitframes-class-color"] = true -- temporary
 Defaults["unitframes-only-player-debuffs"] = false
 Defaults["unitframes-show-player-buffs"] = true
-Defaults["unitframes-show-mana-timer"] = false
-Defaults["unitframes-show-energy-timer"] = true
 
 Defaults["party-show-debuffs"] = true
 

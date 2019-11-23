@@ -2084,8 +2084,6 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["Settings"])
 	Left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
 	Left:CreateSwitch("unitframes-only-player-debuffs", Settings["unitframes-only-player-debuffs"], Language["Only Display Player Debuffs"], Language["If enabled, only your own debuffs will|nbe displayed on the target"], UpdateOnlyPlayerDebuffs)
-	Left:CreateSwitch("unitframes-show-mana-timer", Settings["unitframes-show-mana-timer"], Language["Enable Mana Regen Timer"], Language["Display the time until your full mana|nregeneration is active"], ReloadUI):RequiresReload(true)
-	Left:CreateSwitch("unitframes-show-energy-timer", Settings["unitframes-show-energy-timer"], Language["Enable Energy Timer"], Language["Display the time until your next energy|ntick on the power bar"], ReloadUI):RequiresReload(true)
 	
 	Right:CreateHeader(Language["Colors"])
 	Right:CreateSwitch("unitframes-class-color", Settings["unitframes-class-color"], Language["Use Class/Reaction Colors"], Language["Color unit frame health by class or reaction"], ReloadUI):RequiresReload(true)
