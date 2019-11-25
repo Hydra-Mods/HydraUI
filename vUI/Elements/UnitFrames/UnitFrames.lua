@@ -488,6 +488,14 @@ local BuffsSetPosition = function(element, from, to)
 	end
 end
 
+local PostCastStart = function(self, unit, name)
+	if self.notInterruptible then
+		self:SetStatusBarColorHex("FF6666")
+	else
+		self:SetStatusBarColorHex(Settings["color-casting-start"])
+	end
+end
+
 local NamePlateCallback = function(self)
 	if (not self) then
 		return
@@ -662,6 +670,7 @@ local StyleNamePlate = function(self, unit)
     Castbar.Icon = Icon
     Castbar.showTradeSkills = true
     Castbar.timeToHold = 0.3
+	Castbar.PostCastStart = PostCastStart
 	
 	--[[ Elite icon
 	local EliteIndicator = Health:CreateTexture(nil, "OVERLAY")
@@ -1251,6 +1260,7 @@ local StyleTarget = function(self, unit)
     Castbar.Icon = Icon
     Castbar.showTradeSkills = true
     Castbar.timeToHold = 0.3
+	Castbar.PostCastStart = PostCastStart
 	
 	-- Tags
 	self:Tag(HealthRight, "[HealthColor][perhp]")
