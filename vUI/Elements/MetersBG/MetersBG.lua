@@ -2,6 +2,7 @@ local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
 local Testing = {
 	["Zeraphine:Mal'Ganis"] = 1,
+	["Neonsol:Mal'Ganis"] = 1,
 }
 
 if (not Testing[vUI.UserProfileKey]) then
