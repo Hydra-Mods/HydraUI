@@ -320,9 +320,9 @@ Defaults["tooltips-show-id"] = false
 Defaults["tooltips-font"] = "Roboto"
 Defaults["tooltips-font-size"] = 12
 Defaults["tooltips-font-flags"] = ""
-Defaults["tooltips-hide-on-unit"] = "COMBAT"
-Defaults["tooltips-hide-on-item"] = "COMBAT"
-Defaults["tooltips-hide-on-action"] = "COMBAT"
+Defaults["tooltips-hide-on-unit"] = "NEVER"
+Defaults["tooltips-hide-on-item"] = "NEVER"
+Defaults["tooltips-hide-on-action"] = "NEVER"
 
 -- Bags
 Defaults["bags-loot-from-left"] = false
