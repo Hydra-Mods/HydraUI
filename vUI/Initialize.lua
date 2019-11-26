@@ -163,7 +163,7 @@ end
 
 --[[
 	
-	vUI:AddOptions("Action Bars", function(self)
+	vUI:AddOptions("Action Bars", function(self, left, right)
 		
 	end)
 	

@@ -241,7 +241,7 @@ local OnTooltipSetUnit = function(self)
 		end
 		
 		if Realm then
-			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s %s|r", Flag, Color, (Title or Name), Realm))
+			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s - %s|r", Flag, Color, (Title or Name), Realm))
 		else
 			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s|r", Flag, Color, (Title or Name)))
 		end
