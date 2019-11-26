@@ -490,7 +490,7 @@ end
 
 local PostCastStart = function(self, unit, name)
 	if self.notInterruptible then
-		self:SetStatusBarColorHex("FF6666")
+		self:SetStatusBarColorHex("FF4444")
 	else
 		self:SetStatusBarColorHex(Settings["color-casting-start"])
 	end
