@@ -2214,7 +2214,7 @@ GUI:AddOptions(function(self)
 	Left:CreateSlider("nameplates-height", Settings["nameplates-height"], 4, 50, 1, "Set Height", "Set the height of name plates", UpdateNamePlatesHeight)
 	
 	Left:CreateHeader(Language["Debuffs"])
-	Left:CreateSwitch("nameplates-display-debuffs", Settings["nameplates-display-debuffs"], Language["Enable Name Plates Debuffs"], "Display your debuffs above enemy name plates", UpdateNamePlatesEnableDebuffs)
+	Left:CreateSwitch("nameplates-display-debuffs", Settings["nameplates-display-debuffs"], Language["Enable Debuffs"], "Display your debuffs above enemy name plates", UpdateNamePlatesEnableDebuffs)
 	Left:CreateSwitch("nameplates-only-player-debuffs", Settings["nameplates-only-player-debuffs"], Language["Only Display Player Debuffs"], "If enabled, only your own debuffs will be displayed", UpdateNamePlatesShowPlayerDebuffs)
 	
 	Right:CreateHeader(Language["Health Colors"])
