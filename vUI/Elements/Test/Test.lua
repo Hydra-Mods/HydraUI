@@ -599,6 +599,8 @@ function Vehicle:Exit()
     else
         VehicleExit()
     end
+	
+	self.FadeOut:Play()
 end
 
 function Vehicle:Load()
