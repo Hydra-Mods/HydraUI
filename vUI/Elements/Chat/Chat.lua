@@ -950,7 +950,7 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["General"])
 	Left:CreateSlider("chat-frame-width", Settings["chat-frame-width"], 300, 500, 1, "Chat Width", "Set the width of the chat frame", UpdateChatFrameSize)
 	Left:CreateSlider("chat-frame-height", Settings["chat-frame-height"], 40, 200, 1, "Chat Height", "Set the height of the chat frame", UpdateChatFrameSize)
-	Left:CreateSlider("chat-bg-opacity", Settings["chat-bg-opacity"], 0, 100, 10, "Background Opacity", "Set the opacity of the chat background", UpdateOpacity, nil, "%")
+	Left:CreateSlider("chat-bg-opacity", Settings["chat-bg-opacity"], 0, 100, 5, "Background Opacity", "Set the opacity of the chat background", UpdateOpacity, nil, "%")
 	Left:CreateSlider("chat-fade-time", Settings["chat-enable-fading"], 0, 60, 5, "Set Fade Time", "Set the duration to display text before fading out", UpdateFadeTime, nil, "s")
 	Left:CreateSwitch("chat-enable-fading", Settings["chat-enable-fading"], "Enable Text Fading", "Set the text to fade after the set amount of time", UpdateEnableFading)
 	
