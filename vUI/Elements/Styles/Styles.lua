@@ -44,6 +44,7 @@ Media:SetStyle("vUI", {
 	["color-casting-start"] = "4C9900",
 	["color-casting-stopped"] = "F39C12",
 	["color-casting-interrupted"] = "D35400",
+	["color-casting-uninterruptible"] = "FF4444",
 	
 	["action-bars-font"] = "Roboto",
 	["action-bars-font-size"] = 12,
@@ -102,6 +103,7 @@ Media:SetStyle("vUI 2", {
 	["color-casting-start"] = "4C9900",
 	["color-casting-stopped"] = "F39C12",
 	["color-casting-interrupted"] = "D35400",
+	["color-casting-uninterruptible"] = "FF4444",
 	
 	["action-bars-font"] = "PT Sans",
 	["action-bars-font-size"] = 12,
@@ -160,6 +162,7 @@ Media:SetStyle("Conjured Muffin", {
 	["color-casting-start"] = "27AE60",
 	["color-casting-stopped"] = "FF8C00",
 	["color-casting-interrupted"] = "DA3B01",
+	["color-casting-uninterruptible"] = "FF4444",
 	
 	["action-bars-font"] = "Roboto",
 	["action-bars-font-size"] = 12,
@@ -218,6 +221,7 @@ Media:SetStyle("Zen", {
 	["color-casting-start"] = "4C9900",
 	["color-casting-stopped"] = "F39C12",
 	["color-casting-interrupted"] = "D35400",
+	["color-casting-uninterruptible"] = "FF4444",
 	
 	["action-bars-font"] = "Prototype",
 	["action-bars-font-size"] = 12,
@@ -276,6 +280,7 @@ Media:SetStyle("Slate", {
 	["color-casting-start"] = "4C9900",
 	["color-casting-stopped"] = "F39C12",
 	["color-casting-interrupted"] = "D35400",
+	["color-casting-uninterruptible"] = "FF4444",
 	
 	["action-bars-font"] = "Prototype",
 	["action-bars-font-size"] = 12,
@@ -334,6 +339,7 @@ Media:SetStyle("Smelly", {
 	["color-casting-start"] = "4C9900",
 	["color-casting-stopped"] = "F39C12",
 	["color-casting-interrupted"] = "D35400",
+	["color-casting-uninterruptible"] = "FF4444",
 	
 	["action-bars-font"] = "Fira Code",
 	["action-bars-font-size"] = 10,

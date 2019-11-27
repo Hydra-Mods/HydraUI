@@ -490,7 +490,7 @@ end
 
 local PostCastStart = function(self, unit, name)
 	if self.notInterruptible then
-		self:SetStatusBarColorHex("FF4444")
+		self:SetStatusBarColorHex(Settings["color-casting-uninterruptible"])
 	else
 		self:SetStatusBarColorHex(Settings["color-casting-start"])
 	end
@@ -671,6 +671,7 @@ local StyleNamePlate = function(self, unit)
     Castbar.showTradeSkills = true
     Castbar.timeToHold = 0.3
 	Castbar.PostCastStart = PostCastStart
+	Castbar.PostChannelStart = PostCastStart
 	
 	--[[ Elite icon
 	local EliteIndicator = Health:CreateTexture(nil, "OVERLAY")
@@ -1261,6 +1262,7 @@ local StyleTarget = function(self, unit)
     Castbar.showTradeSkills = true
     Castbar.timeToHold = 0.3
 	Castbar.PostCastStart = PostCastStart
+	Castbar.PostChannelStart = PostCastStart
 	
 	-- Tags
 	self:Tag(HealthRight, "[HealthColor][perhp]")

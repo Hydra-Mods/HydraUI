@@ -2,10 +2,10 @@ local vUI, GUI, Language, Media, Settings, Defaults = select(2, ...):get()
 
 local Announcements = vUI:NewModule("Announcements")
 local EventType, SourceGUID, DestName, CastID, CastName, SpellID, SpellName
-local InterruptMessage = ACTION_SPELL_INTERRUPT .. " %s's %s"
-local DispelledMessage = ACTION_SPELL_DISPEL .. " %s's %s"
-local StolenMessage = ACTION_SPELL_STOLEN .. " %s's %s"
-local CastMessage = Language["casts %s on %s."]
+local InterruptMessage = ACTION_SPELL_INTERRUPT .. " %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r."
+local DispelledMessage = ACTION_SPELL_DISPEL .. " %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r."
+local StolenMessage = ACTION_SPELL_STOLEN .. " %s's \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r."
+local CastMessage = "casts \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r on %s."
 local CastingMessage = Language["casting %s on %s."]
 local UNKNOWN = UNKNOWN
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
@@ -34,7 +34,11 @@ function Announcements:GetChannelToSend()
 		if UnitInRaid("player") then
 			return "RAID"
 		elseif UnitInParty("player") then
-			return "PARTY"
+			if IsInInstance() then
+				return "INSTANCE_CHAT"
+			else
+				return "PARTY"
+			end
 		end
 	elseif (Settings["announcements-channel"] == "SAY") then
 		return "SAY"
@@ -48,15 +52,15 @@ Announcements.Events = {
 		Channel = Announcements:GetChannelToSend()
 		
 		if Channel then
-			SendChatMessage(format(InterruptMessage, target, spell), Channel)
+			SendChatMessage(format(InterruptMessage, target, id, spell), Channel)
 		else
-			print(format(InterruptMessage, target, spell))
+			print(format(InterruptMessage, target, id, spell))
 		end
 	end,
 	
 	--[[["SPELL_DISPEL"] = function(target, id, spell)
 		if (not UnitIsFriend("player", target)) then
-			SendChatMessage(format(DispelledMessage, target, spell), "EMOTE")
+			SendChatMessage(format(DispelledMessage, target, id, spell), "EMOTE")
 		end
 	end,]]
 	
@@ -64,9 +68,9 @@ Announcements.Events = {
 		Channel = Announcements:GetChannelToSend()
 		
 		if Channel then
-			SendChatMessage(format(StolenMessage, target, spell), Channel)
+			SendChatMessage(format(StolenMessage, target, id, spell), Channel)
 		else
-			print(format(StolenMessage, target, spell))
+			print(format(StolenMessage, target, id, spell))
 		end
 	end,
 }

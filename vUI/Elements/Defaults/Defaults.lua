@@ -132,6 +132,7 @@ Defaults["color-combo-5"] = "66FF66"
 Defaults["color-casting-start"] = "4C9900"
 Defaults["color-casting-stopped"] = "F39C12"
 Defaults["color-casting-interrupted"] = "D35400"
+Defaults["color-casting-uninterruptible"] = "FF4444"
 Defaults["color-casting-success"] = "4C9900" -- TBI
 
 -- Mirror Timers

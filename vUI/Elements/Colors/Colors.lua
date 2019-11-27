@@ -190,7 +190,7 @@ GUI:AddOptions(function(self)
 	Left:CreateColorSelection("color-casting-start", Settings["color-casting-start"], Language["Casting"], "")
 	Left:CreateColorSelection("color-casting-stopped", Settings["color-casting-stopped"], Language["Stopped"], "")
 	Left:CreateColorSelection("color-casting-interrupted", Settings["color-casting-interrupted"], Language["Interrupted"], "")
-	
+	Left:CreateColorSelection("color-casting-uninterruptible", Settings["color-casting-uninterruptible"], Language["Uninterruptible"], "")
 	vUI:UpdateClassColors()
 	vUI:UpdateReactionColors()
 	vUI:UpdateZoneColors()
