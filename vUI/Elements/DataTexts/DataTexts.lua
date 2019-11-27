@@ -44,7 +44,7 @@ function DT:NewAnchor(name, parent)
 	Anchor.ShouldFlash = ShouldFlash
 	Anchor.SaveValue = SaveValue
 	
-	Anchor.Highlight = Anchor:CreateTexture(nil, "OVERLAY")
+	Anchor.Highlight = Anchor:CreateTexture(nil, "ARTWORK")
 	Anchor.Highlight:SetScaledPoint("BOTTOMLEFT", Anchor, 20, 0)
 	Anchor.Highlight:SetScaledPoint("BOTTOMRIGHT", Anchor, -20, 0)
 	Anchor.Highlight:SetScaledHeight(14)

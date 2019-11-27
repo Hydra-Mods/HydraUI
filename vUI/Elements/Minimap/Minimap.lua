@@ -140,7 +140,8 @@ local CreateMinimap = function()
 	vUI:GetModule("Move"):Add(Frame)
 	
 	TimeFrame:SetScript("OnEnter", TimeOnEnter)
-	TimeFrame:SetScript("Onleave", TimeOnLeave)
+	TimeFrame:SetScript("OnLeave", TimeOnLeave)
+	TimeFrame:SetScript("OnMouseUp", ToggleCalendar)
 	
 	ZoneUpdate(ZoneFrame)
 end
@@ -231,7 +232,6 @@ local OnEvent = function(self, event)
 	
 	MiniMapMailIcon:SetScaledSize(32, 32)
 	MiniMapMailIcon:SetTexture(Media:GetTexture("Mail 2"))
-	--MiniMapMailIcon:SetVertexColorHex(Settings["ui-widget-bright-color"])
 	MiniMapMailIcon:SetVertexColorHex("EEEEEE")
 	
 	MinimapNorthTag:SetTexture(nil)
