@@ -458,11 +458,11 @@ local PostCreateIcon = function(unit, button)
 end
 
 local BuffsSetPosition = function(element, from, to)
-	local SizeX = (element.size or 16) + (element['spacing-x'] or element.spacing or 0)
-	local SizeY = (element.size or 16) + (element['spacing-y'] or element.spacing or 0)
-	local Anchor = element.initialAnchor or 'BOTTOMLEFT'
-	local GrowthX = (element['growth-x'] == 'LEFT' and -1) or 1
-	local GrowthY = (element['growth-y'] == 'DOWN' and -1) or 1
+	local SizeX = element.size + (element['spacing-x'] or element.spacing)
+	local SizeY = element.size + (element['spacing-y'] or element.spacing)
+	local Anchor = element.initialAnchor or "BOTTOMLEFT"
+	local GrowthX = (element['growth-x'] == "LEFT" and -1) or 1
+	local GrowthY = (element['growth-y'] == "DOWN" and -1) or 1
 	local Columns = floor(element:GetWidth() / SizeX + 0.5)
 	local Rows = floor(to / Columns)
 	local Button
@@ -470,7 +470,7 @@ local BuffsSetPosition = function(element, from, to)
 	for i = from, to do
 		Button = element[i]
 		
-		if (not Button) then
+		if (not Button or not Button:IsShown()) then
 			break
 		end
 		
@@ -1032,7 +1032,7 @@ local StylePlayer = function(self, unit)
 	Buffs["growth-y"] = "UP"
 	Buffs.PostCreateIcon = PostCreateIcon
 	Buffs.PostUpdateIcon = PostUpdateIcon
-	Buffs.SetPosition = BuffsSetPosition
+	--Buffs.SetPosition = BuffsSetPosition
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetScaledSize(238, 28)
@@ -1896,33 +1896,10 @@ local UpdateShowPlayerBuffs = function(value)
 	if vUI.UnitFrames["player"] then
 		if value then
 			vUI.UnitFrames["player"]:EnableElement("Auras")
+			vUI.UnitFrames["player"]:UpdateAllElements("ForceUpdate")
 		else
 			vUI.UnitFrames["player"]:DisableElement("Auras")
 		end
-	end
-end
-
-local UpdateShowManaTimer = function(value)
-	if (not vUI.UnitFrames["player"]) then
-		return
-	end
-
-	if value then
-		vUI.UnitFrames["player"]:EnableElement("ManaRegen")
-	else
-		vUI.UnitFrames["player"]:DisableElement("ManaRegen")
-	end
-end
-
-local UpdateShowEnergyTimer = function(value)
-	if (not vUI.UnitFrames["player"]) then
-		return
-	end
-	
-	if value then
-		vUI.UnitFrames["player"]:EnableElement("EnergyTick")
-	else
-		vUI.UnitFrames["player"]:DisableElement("EnergyTick")
 	end
 end
 
@@ -1943,6 +1920,7 @@ local UF = vUI:NewModule("Unit Frames")
 oUF:RegisterStyle("vUI", Style)
 
 UF:RegisterEvent("PLAYER_LOGIN")
+UF:RegisterEvent("PLAYER_ENTERING_WORLD")
 UF:SetScript("OnEvent", function(self, event)
 	if (event == "PLAYER_LOGIN") then
 		if (not Settings["unitframes-enable"]) then
@@ -2053,6 +2031,8 @@ UF:SetScript("OnEvent", function(self, event)
 			end
 		end
 		
+		UpdateShowPlayerBuffs(Settings["unitframes-show-player-buffs"])
+		
 		Move:Add(Player)
 		Move:Add(Target)
 		Move:Add(TargetTarget)
@@ -2063,8 +2043,6 @@ UF:SetScript("OnEvent", function(self, event)
 		Move:Add(self.RaidAnchor)
 	else
 		UpdateShowPlayerBuffs(Settings["unitframes-show-player-buffs"])
-		--UpdateShowManaTimer(Settings["unitframes-show-mana-timer"])
-		--UpdateShowEnergyTimer(Settings["unitframes-show-energy-timer"])
 	end
 end)
 
