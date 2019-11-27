@@ -21,6 +21,10 @@ local GetItemInfo = GetItemInfo
 local PickupMerchantItem = PickupMerchantItem
 local GetFramerate = GetFramerate
 
+local FadeOnFinished = function(self)
+	self.Parent:Hide()
+end
+
 --[[ This is currently just a test page to see how GUI controls work, and debug them.
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow("Test")
@@ -554,71 +558,96 @@ local UpdateBagLooting = function(value)
 	SetInsertItemsLeftToRight(value)
 end
 
-local Taxi = vUI:NewModule("Taxi")
+local Vehicle = vUI:NewModule("Vehicle")
 
-local TaxiOnEvent = function(self)
-    if UnitOnTaxi("player") then
-        self:Show()
-    else
-		self:Hide()
-    end
-end
-
-local RequestLanding = function(self)
-    if UnitOnTaxi("player") then
-        TaxiRequestEarlyLanding()
-		self:Hide()
-    end
-end
-
-local OnEnter = function()
+function Vehicle:OnEnter()
 	local R, G, B = vUI:HexToRGB(Settings["ui-widget-font-color"])
 	
-	GameTooltip:SetOwner(Taxi.Frame, "ANCHOR_PRESERVE")
+	GameTooltip:SetOwner(self, "ANCHOR_PRESERVE")
 	GameTooltip:AddLine(TAXI_CANCEL_DESCRIPTION, R, G, B)
 	GameTooltip:Show()
 end
 
-local OnLeave = function()
+function Vehicle:OnLeave()
 	GameTooltip:Hide()
 end
 
-Taxi:RegisterEvent("PLAYER_ENTERING_WORLD")
-Taxi:SetScript("OnEvent", function(self, event)
-	local TaxiFrame = CreateFrame("Frame", "vUI Taxi", UIParent)
-	TaxiFrame:SetScaledSize(Settings["minimap-size"] + 8, 22)
-	TaxiFrame:SetScaledPoint("TOP", _G["vUI Minimap"], "BOTTOM", 0, -2)
-	TaxiFrame:SetBackdrop(vUI.BackdropAndBorder)
-	TaxiFrame:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
-	TaxiFrame:SetBackdropBorderColor(0, 0, 0)
-	TaxiFrame:SetFrameStrata("HIGH")
-	TaxiFrame:SetFrameLevel(10)
-	TaxiFrame:SetScript("OnMouseUp", RequestLanding)
-	TaxiFrame:SetScript("OnEnter", OnEnter)
-	TaxiFrame:SetScript("OnLeave", OnLeave)
-	TaxiFrame:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
-	TaxiFrame:SetScript("OnEvent", TaxiOnEvent)
-	
-    if UnitOnTaxi("player") then
-        TaxiFrame:Show()
+function Vehicle:OnEvent(event)
+    if CanExitVehicle() then
+        if UnitOnTaxi("player") then
+            self.Text:SetText(TAXI_CANCEL_DESCRIPTION)
+			
+			self:SetScript("OnEnter", self.OnEnter)
+			self:SetScript("OnLeave", self.OnLeave)
+        else
+            self.Text:SetText(LEAVE_VEHICLE)
+			
+			self:SetScript("OnEnter", nil)
+			self:SetScript("OnLeave", nil)
+        end
+		
+        self:Show()
+		self.FadeIn:Play()
     else
-		TaxiFrame:Hide()
+		self.FadeOut:Play()
     end
+end
+
+function Vehicle:Exit()
+    if UnitOnTaxi("player") then
+        TaxiRequestEarlyLanding()
+    else
+        VehicleExit()
+    end
+end
+
+function Vehicle:Load()
+	self.Button = CreateFrame("Button", "vUI Vehicle", UIParent)
+	self.Button:SetScaledSize(Settings["minimap-size"] + 8, 22)
+	self.Button:SetScaledPoint("TOP", _G["vUI Minimap"], "BOTTOM", 0, -2)
+	self.Button:SetFrameStrata("HIGH")
+	self.Button:SetFrameLevel(10)
+	self.Button:SetBackdrop(vUI.BackdropAndBorder)
+	self.Button:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
+	self.Button:SetBackdropBorderColor(0, 0, 0)
+	self.Button:SetScript("OnMouseUp", self.Exit)
+	self.Button:RegisterEvent("PLAYER_ENTERING_WORLD")
+	self.Button:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
+	self.Button:RegisterEvent("UPDATE_MULTI_CAST_ACTIONBAR")
+	self.Button:RegisterEvent("UNIT_ENTERED_VEHICLE")
+	self.Button:RegisterEvent("UNIT_EXITED_VEHICLE")
+	self.Button:RegisterEvent("VEHICLE_UPDATE")
+	self.Button:SetScript("OnEvent", self.OnEvent)
 	
-	TaxiFrame.Tex = TaxiFrame:CreateTexture(nil, "ARTWORK")
-	TaxiFrame.Tex:SetPoint("TOPLEFT", TaxiFrame, 1, -1)
-	TaxiFrame.Tex:SetPoint("BOTTOMRIGHT", TaxiFrame, -1, 1)
-	TaxiFrame.Tex:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
-	TaxiFrame.Tex:SetVertexColorHex(Settings["ui-header-texture-color"])
+	self.Button.Texture = self.Button:CreateTexture(nil, "ARTWORK")
+	self.Button.Texture:SetScaledPoint("TOPLEFT", self.Button, 1, -1)
+	self.Button.Texture:SetScaledPoint("BOTTOMRIGHT", self.Button, -1, 1)
+	self.Button.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	self.Button.Texture:SetVertexColorHex(Settings["ui-header-texture-color"])
 	
-	TaxiFrame.Text = TaxiFrame:CreateFontString(nil, "OVERLAY", 7)
-	TaxiFrame.Text:SetScaledPoint("CENTER", TaxiFrame, 0, -1)
-	TaxiFrame.Text:SetFontInfo(Settings["ui-header-font"], Settings["ui-font-size"])
-	TaxiFrame.Text:SetScaledSize(TaxiFrame:GetWidth() - 12, 20)
-	TaxiFrame.Text:SetText(Language["Land Early"])
+	self.Button.Text = self.Button:CreateFontString(nil, "OVERLAY", 7)
+	self.Button.Text:SetScaledPoint("CENTER", self.Button, 0, -1)
+	self.Button.Text:SetFontInfo(Settings["ui-header-font"], Settings["ui-font-size"])
+	self.Button.Text:SetScaledSize(self.Button:GetWidth() - 12, 20)
 	
-	self.Frame = TaxiFrame
-end)
+	self.Button.Fade = CreateAnimationGroup(self.Button)
+	
+	self.Button.FadeIn = self.Button.Fade:CreateAnimation("Fade")
+	self.Button.FadeIn:SetEasing("in")
+	self.Button.FadeIn:SetDuration(0.15)
+	self.Button.FadeIn:SetChange(1)
+	
+	self.Button.FadeOut = self.Button.Fade:CreateAnimation("Fade")
+	self.Button.FadeOut:SetEasing("out")
+	self.Button.FadeOut:SetDuration(0.15)
+	self.Button.FadeOut:SetChange(0)
+	self.Button.FadeOut:SetScript("OnFinished", FadeOnFinished)
+	
+	if (not CanExitVehicle()) then
+		self.Button:SetAlpha(0)
+		self.Button:Hide()
+	end
+end
 
 local BagSearch = vUI:NewModule("Bag Search")
 
