@@ -1,5 +1,7 @@
 local vUI, GUI, Language, Media, Settings, Defaults = select(2, ...):get()
 local LSM = LibStub:GetLibrary("LibSharedMedia-3.0")
+local Textures = LSM:HashTable("statusbar")
+local Fonts = LSM:HashTable("font")
 
 Media.Fonts = {}
 Media.Textures = {}
@@ -215,6 +217,10 @@ Media:SetFont("Visitor", "Interface\\Addons\\vUI\\Media\\Fonts\\Visitor.ttf", ni
 Media:SetFont("Pixel Arial", "Interface\\Addons\\vUI\\Media\\Fonts\\PixelArial.ttf", nil, true)
 Media:SetFont("Fira Code", "Interface\\Addons\\vUI\\Media\\Fonts\\FiraCode.ttf")
 
+for Name, Path in pairs(Fonts) do
+	Media:SetFont(Name, Path)
+end
+
 -- Textures
 Media:SetTexture("Blank", "Interface\\AddOns\\vUI\\Media\\Textures\\Blank.tga")
 Media:SetTexture("vUI 1", "Interface\\AddOns\\vUI\\Media\\Textures\\vUI1.tga")
@@ -250,6 +256,10 @@ Media:SetTexture("Arrow Right", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIArr
 Media:SetTexture("Arrow Right Large", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIArrowRightLarge.tga", true)
 Media:SetTexture("Skull", "Interface\\AddOns\\vUI\\Media\\Textures\\vUISkull.tga", true)
 Media:SetTexture("Small Star", "Interface\\AddOns\\vUI\\Media\\Textures\\vUISmallStar.tga", true)
+
+for Name, Path in pairs(Textures) do
+	Media:SetTexture(Name, Path)
+end
 
 -- Highlights
 Media:SetHighlight("Blank", "Interface\\AddOns\\vUI\\Media\\Textures\\Blank.tga")
