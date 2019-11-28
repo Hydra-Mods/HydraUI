@@ -44,8 +44,8 @@ GUI.Widgets = {}
 --]]
 
 -- Constants
-local GUI_WIDTH = 710
-local GUI_HEIGHT = 406
+local GUI_WIDTH = 726
+local GUI_HEIGHT = 340
 local SPACING = 3
 
 local HEADER_WIDTH = GUI_WIDTH - (SPACING * 2)
@@ -70,6 +70,8 @@ local LABEL_SPACING = 3
 local SELECTED_HIGHLIGHT_ALPHA = 0.3
 local MOUSEOVER_HIGHLIGHT_ALPHA = 0.1
 local LAST_ACTIVE_DROPDOWN
+
+local MAX_WIDGETS_SHOWN = 14
 
 GUI.Ignore = {
 	["ui-profile"] = true,
@@ -3063,7 +3065,7 @@ local Scroll = function(self)
 		if self.LeftWidgets[i] then
 			self.LeftWidgets[i]:ClearAllPoints()
 			
-			if (i >= Offset) and (i <= Offset + self:GetParent().WindowCount - 1) then
+			if (i >= Offset) and (i <= Offset + MAX_WIDGETS_SHOWN - 1) then
 				if (not FirstLeft) then
 					self.LeftWidgets[i]:SetScaledPoint("TOPLEFT", self.LeftWidgetsBG, SPACING, -SPACING)
 					FirstLeft = i
@@ -3084,7 +3086,7 @@ local Scroll = function(self)
 		if self.RightWidgets[i] then
 			self.RightWidgets[i]:ClearAllPoints()
 			
-			if (i >= Offset) and (i <= Offset + self:GetParent().WindowCount - 1) then
+			if (i >= Offset) and (i <= Offset + MAX_WIDGETS_SHOWN - 1) then
 				if (not FirstRight) then
 					self.RightWidgets[i]:SetScaledPoint("TOPRIGHT", self.RightWidgetsBG, -SPACING, -SPACING)
 					FirstRight = i
@@ -3110,7 +3112,7 @@ local SetOffsetByDelta = function(self, delta)
 	else -- Down
 		self.Offset = self.Offset + 1
 		
-		if (self.Offset > (self.WidgetCount - (self:GetParent().WindowCount - 1))) then
+		if (self.Offset > (self.WidgetCount - (MAX_WIDGETS_SHOWN - 1))) then
 			self.Offset = self.Offset - 1
 		end
 	end
@@ -3122,12 +3124,12 @@ local WindowOnMouseWheel = function(self, delta)
 	self.ScrollBar:SetValue(self.Offset)
 end
 
-local SetOffset = function(self, offset)
+local SetWindowOffset = function(self, offset)
 	self.Offset = offset
 	
 	if (self.Offset <= 1) then
 		self.Offset = 1
-	elseif (self.Offset > (self.WidgetCount - self:GetParent().WindowCount - 1)) then
+	elseif (self.Offset > (self.WidgetCount - MAX_WIDGETS_SHOWN - 1)) then
 		self.Offset = self.Offset - 1
 	end
 	
@@ -3148,9 +3150,9 @@ end
 
 local NoScroll = function() end -- Just to prevent zooming while we're working in the GUI
 
-local AddScrollBar = function(self)
-	local LeftMaxValue = (#self.LeftWidgets - (self:GetParent().WindowCount - 1))
-	local RightMaxValue = (#self.RightWidgets - (self:GetParent().WindowCount - 1))
+local AddWindowScrollBar = function(self)
+	local LeftMaxValue = (#self.LeftWidgets - (MAX_WIDGETS_SHOWN - 1))
+	local RightMaxValue = (#self.RightWidgets - (MAX_WIDGETS_SHOWN - 1))
 	
 	self.MaxScroll = max(LeftMaxValue, RightMaxValue, 1)
 	self.WidgetCount = max(#self.LeftWidgets, #self.RightWidgets)
@@ -3206,11 +3208,11 @@ local AddScrollBar = function(self)
 	self:EnableMouseWheel(true)
 	
 	self.Scroll = Scroll
-	self.SetOffset = SetOffset
+	self.SetWindowOffset = SetWindowOffset
 	self.SetOffsetByDelta = SetOffsetByDelta
 	self.ScrollBar = ScrollBar
 	
-	self:SetOffset(1)
+	self:SetWindowOffset(1)
 	
 	ScrollBar:Show()
 	
@@ -3253,7 +3255,7 @@ local SortWindow = function(self)
 		end
 	end
 	
-	AddScrollBar(self)
+	AddWindowScrollBar(self)
 end
 
 function GUI:ShowWindow(name)
@@ -3374,8 +3376,8 @@ function GUI:CreateWindow(name, default)
 	
 	Window.LeftWidgetsBG = CreateFrame("Frame", nil, Window)
 	Window.LeftWidgetsBG:SetScaledWidth(GROUP_WIDTH + (SPACING * 2))
-	Window.LeftWidgetsBG:SetScaledPoint("TOPLEFT", Window, 0, 0)
-	Window.LeftWidgetsBG:SetScaledPoint("BOTTOMLEFT", Window, 0, 0)
+	Window.LeftWidgetsBG:SetScaledPoint("TOPLEFT", Window, 16, 0)
+	Window.LeftWidgetsBG:SetScaledPoint("BOTTOMLEFT", Window, 16, 0)
 	
 	Window.LeftWidgetsBG.Backdrop = CreateFrame("Frame", nil, Window)
 	Window.LeftWidgetsBG.Backdrop:SetScaledWidth(GROUP_WIDTH + (SPACING * 2))
@@ -3416,7 +3418,7 @@ function GUI:CreateWindow(name, default)
 	
 	self.Windows[name] = Window
 	
-	self:SortButtons()
+	--self:SortButtons()
 	
 	self.WindowCount = self.WindowCount + 1
 	
@@ -3467,6 +3469,74 @@ end
 
 function GUI:UpdateWidget(id, ...)
 	-- Get the widget, add :Update() methods, and pass the vararg through it with the relevant information.
+end
+
+-- Selection scrolling
+local ScrollSelections = function(self)
+	local First
+	
+	for i = 1, self.WindowCount do
+		if self.Buttons[i] then
+			self.Buttons[i]:ClearAllPoints()
+			
+			if (i >= self.Offset) and (i <= self.Offset + MAX_WIDGETS_SHOWN - 1) then
+				if (not First) then
+					self.Buttons[i]:SetScaledPoint("TOPLEFT", self.SelectionParent, SPACING, -SPACING)
+					First = i
+				else
+					self.Buttons[i]:SetScaledPoint("TOP", self.Buttons[i-1], "BOTTOM", 0, -2)
+				end
+				
+				self.Buttons[i]:Show()
+			else
+				self.Buttons[i]:Hide()
+			end
+		end
+	end
+end
+
+local SetSelectionOffsetByDelta = function(self, delta)
+	if (delta == 1) then -- Up
+		self.Offset = self.Offset - 1
+		
+		if (self.Offset <= 1) then
+			self.Offset = 1
+		end
+	else -- Down
+		self.Offset = self.Offset + 1
+		
+		if (self.Offset > (self.WindowCount - (MAX_WIDGETS_SHOWN - 1))) then
+			self.Offset = self.Offset - 1
+		end
+	end
+end
+
+local SelectionOnMouseWheel = function(self, delta)
+	self:SetSelectionOffsetByDelta(delta)
+	self:ScrollSelections()
+	self.ScrollBar:SetValue(self.Offset)
+end
+
+local SetSelectionOffset = function(self, offset)
+	self.Offset = offset
+	
+	if (self.Offset <= 1) then
+		self.Offset = 1
+	elseif (self.Offset > (self.WindowCount - MAX_WIDGETS_SHOWN - 1)) then
+		self.Offset = self.Offset - 1
+	end
+	
+	self:ScrollSelections()
+end
+
+local SelectionScrollBarOnValueChanged = function(self)
+	GUI.Offset = Round(self:GetValue())
+	
+	GUI:ScrollSelections()
+end
+
+local SelectionScrollBarOnMouseWheel = function(self, delta)
+	SelectionOnMouseWheel(self:GetParent(), delta)
 end
 
 -- Frame
@@ -3529,16 +3599,59 @@ function GUI:Create()
 	self.Header.Text:SetJustifyH("CENTER")
 	self.Header.Text:SetTextColorHex(Settings["ui-header-font-color"])
 	self.Header.Text:SetText(format(Language["- vUI version %s -"], vUI.UIVersion))
-	--self.Header.Text:SetText("|cFF"..Settings["ui-header-font-color"]..format(Language["- |cff%svUI|r version %s -"], Settings["ui-widget-color"], vUI.UIVersion).."|r")
 	
 	-- Selection parent
 	self.SelectionParent = CreateFrame("Frame", nil, self)
-	self.SelectionParent:SetScaledWidth(BUTTON_LIST_WIDTH)
+	self.SelectionParent:SetScaledWidth(BUTTON_LIST_WIDTH + 16)
 	self.SelectionParent:SetScaledPoint("BOTTOMLEFT", self, SPACING, SPACING)
 	self.SelectionParent:SetScaledPoint("TOPLEFT", self.Header, "BOTTOMLEFT", 0, -2)
 	self.SelectionParent:SetBackdrop(vUI.BackdropAndBorder)
 	self.SelectionParent:SetBackdropColorHex(Settings["ui-window-main-color"])
 	self.SelectionParent:SetBackdropBorderColor(0, 0, 0)
+	self.SelectionParent:SetScript("OnMouseWheel", SelectionScrollBarOnMouseWheel)
+	
+	-- Selection scrollbar
+	local ScrollBar = CreateFrame("Slider", nil, self.SelectionParent)
+	ScrollBar:SetScaledWidth(14)
+	ScrollBar:SetScaledPoint("TOPRIGHT", self.SelectionParent, -3, -3)
+	ScrollBar:SetScaledPoint("BOTTOMRIGHT", self.SelectionParent, -3, 3)
+	ScrollBar:SetThumbTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	ScrollBar:SetOrientation("VERTICAL")
+	ScrollBar:SetValueStep(1)
+	ScrollBar:SetBackdrop(vUI.BackdropAndBorder)
+	ScrollBar:SetBackdropColorHex(Settings["ui-window-main-color"])
+	ScrollBar:SetBackdropBorderColor(0, 0, 0)
+	ScrollBar:EnableMouseWheel(true)
+	ScrollBar:SetScript("OnMouseWheel", SelectionScrollBarOnMouseWheel)
+	ScrollBar:SetScript("OnValueChanged", SelectionScrollBarOnValueChanged)
+	
+	self.ScrollSelections = ScrollSelections
+	self.SetSelectionOffset = SetSelectionOffset
+	self.SetSelectionOffsetByDelta = SetSelectionOffsetByDelta
+	self.ScrollBar = ScrollBar
+	
+	local Thumb = ScrollBar:GetThumbTexture() 
+	Thumb:SetScaledSize(ScrollBar:GetWidth(), WIDGET_HEIGHT)
+	Thumb:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	Thumb:SetVertexColor(0, 0, 0)
+	
+	ScrollBar.NewTexture = ScrollBar:CreateTexture(nil, "BORDER")
+	ScrollBar.NewTexture:SetScaledPoint("TOPLEFT", Thumb, 0, 0)
+	ScrollBar.NewTexture:SetScaledPoint("BOTTOMRIGHT", Thumb, 0, 0)
+	ScrollBar.NewTexture:SetTexture(Media:GetTexture("Blank"))
+	ScrollBar.NewTexture:SetVertexColor(0, 0, 0)
+	
+	ScrollBar.NewTexture2 = ScrollBar:CreateTexture(nil, "OVERLAY")
+	ScrollBar.NewTexture2:SetScaledPoint("TOPLEFT", ScrollBar.NewTexture, 1, -1)
+	ScrollBar.NewTexture2:SetScaledPoint("BOTTOMRIGHT", ScrollBar.NewTexture, -1, 1)
+	ScrollBar.NewTexture2:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	ScrollBar.NewTexture2:SetVertexColorHex(Settings["ui-widget-bright-color"])
+	
+	ScrollBar.Progress = ScrollBar:CreateTexture(nil, "ARTWORK")
+	ScrollBar.Progress:SetScaledPoint("TOPLEFT", ScrollBar, 1, -1)
+	ScrollBar.Progress:SetScaledPoint("BOTTOMRIGHT", ScrollBar.NewTexture, "TOPRIGHT", -1, 0)
+	ScrollBar.Progress:SetTexture(Media:GetTexture("Blank"))
+	ScrollBar.Progress:SetVertexColorHex(Settings["ui-header-texture-color"])
 	
 	-- Close button
 	self.CloseButton = CreateFrame("Frame", nil, self)
@@ -3598,12 +3711,6 @@ function GUI:AddFooters()
 	end
 end
 
-function GUI:UpdateHeight()
-	local Height = HEADER_HEIGHT + (self.WindowCount * (WIDGET_HEIGHT + SPACING)) - 2
-	
-	self:SetScaledHeight(Height)
-end
-
 function GUI:RunQueue()
 	if (#self.Queue > 0) then
 		local Func
@@ -3616,7 +3723,6 @@ function GUI:RunQueue()
 	end
 	
 	self:AddFooters()
-	self:UpdateHeight()
 end
 
 function GUI:PLAYER_REGEN_DISABLED()
@@ -3697,6 +3803,15 @@ function GUI:Toggle()
 			self:RegisterEvent("PLAYER_STARTED_MOVING")
 			self:RegisterEvent("PLAYER_STOPPED_MOVING")
 		end
+		
+		tsort(self.Buttons, function(a, b)
+			return a.Name < b.Name
+		end)
+		
+		self.ScrollBar:SetMinMaxValues(1, (self.WindowCount - MAX_WIDGETS_SHOWN) + 1)
+		self.ScrollBar:SetValue(1)
+		self:SetSelectionOffset(1)
+		self.ScrollBar:Show()
 		
 		self:RegisterEvent("MODIFIER_STATE_CHANGED")
 		self:SetAlpha(0)

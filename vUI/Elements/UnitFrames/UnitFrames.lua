@@ -905,18 +905,6 @@ local StylePlayer = function(self, unit)
 			ComboPoints[i]:SetStatusBarColor(Color[1], Color[2], Color[3])
 			ComboPoints[i]:SetAlpha(0.2)
 			
-			ComboPoints[i].Fade = CreateAnimationGroup(ComboPoints[i])
-			
-			ComboPoints[i].FadeIn = ComboPoints[i].Fade:CreateAnimation("Fade")
-			ComboPoints[i].FadeIn:SetEasing("in")
-			ComboPoints[i].FadeIn:SetDuration(0.15)
-			ComboPoints[i].FadeIn:SetChange(1)
-			
-			ComboPoints[i].FadeOut = ComboPoints[i].Fade:CreateAnimation("Fade")
-			ComboPoints[i].FadeOut:SetEasing("out")
-			ComboPoints[i].FadeOut:SetDuration(0.15)
-			ComboPoints[i].FadeOut:SetChange(0.2)
-			
 			if (i == 1) then
 				ComboPoints[i]:SetScaledPoint("LEFT", ComboPoints, 1, 0)
 			else

@@ -21,12 +21,12 @@ local Update = function(self, event, unit, power)
 	
 	for i = 1, 5 do
 		if (i > Points) then
-			if (element[i]:GetAlpha() > 0.2 and not element[i].FadeOut:IsPlaying()) then
-				element[i].FadeOut:Play()
+			if (element[i]:GetAlpha() > 0.2) then
+				element[i]:SetAlpha(0.2)
 			end
 		else
-			if (element[i]:GetAlpha() < 1 and not element[i].FadeIn:IsPlaying()) then
-				element[i].FadeIn:Play()
+			if (element[i]:GetAlpha() < 1) then
+				element[i]:SetAlpha(1)
 			end
 		end
 	end
