@@ -26,7 +26,7 @@ local GetMouseFocus = GetMouseFocus
 local GetItemInfo = GetItemInfo
 local InCombatLockdown = InCombatLockdown
 
-local HealthBar = GameTooltipStatusBar
+local GameTooltipStatusBar = GameTooltipStatusBar
 
 Tooltips.Handled = {
 	GameTooltip,
@@ -121,12 +121,10 @@ end
 
 local SetTooltipStyle = function(self)
 	if self.Styled then
-	--	self.Backdrop:SetVertexColorHex(Settings["ui-window-main-color"])
-		
 		if (self.GetUnit and self:GetUnit()) then
-			self.OuterBG:SetScaledPoint("BOTTOMRIGHT", self, 3, -22)
+			self.OuterBG:SetScaledPoint("TOPLEFT", GameTooltipStatusBar, -4, 4)
 		else
-			self.OuterBG:SetScaledPoint("BOTTOMRIGHT", self, 3, -3)
+			self.OuterBG:SetScaledPoint("TOPLEFT", self, -3, 3)
 		end
 		
 		Tooltips:UpdateFonts(self)
@@ -134,7 +132,7 @@ local SetTooltipStyle = function(self)
 		return
 	end
 	
-	self:SetBackdrop(nil) -- To stop blue selfs
+	self:SetBackdrop(nil) -- To stop blue tooltips
 	self:SetFrameLevel(10)
 	self.SetFrameLevel = function() end
 	
@@ -298,7 +296,7 @@ local OnTooltipSetUnit = function(self)
 		--GameTooltipStatusBar.BG:SetVertexColorHex(Color)
 		
 		if self.OuterBG then
-			self.OuterBG:SetScaledPoint("BOTTOMRIGHT", self, 3, -22)
+			self.OuterBG:SetScaledPoint("TOPLEFT", GameTooltipStatusBar, -4, 4)
 		end
 	end
 end
@@ -491,48 +489,48 @@ local OnValueChanged = function(self)
 end
 
 function Tooltips:UpdateStatusBarFonts()
-	HealthBar.HealthValue:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
-	HealthBar.HealthPercent:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+	GameTooltipStatusBar.HealthValue:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+	GameTooltipStatusBar.HealthPercent:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 end
 
 function Tooltips:StyleStatusBar()
-	HealthBar:ClearAllPoints()
-	HealthBar:SetScaledHeight(15)
-	HealthBar:SetScaledPoint("TOPLEFT", HealthBar:GetParent(), "BOTTOMLEFT", 1, -3)
-	HealthBar:SetScaledPoint("TOPRIGHT", HealthBar:GetParent(), "BOTTOMRIGHT", -1, -3)
-	HealthBar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
-	HealthBar:SetStatusBarColorHex(Settings["ui-header-texture-color"])
+	GameTooltipStatusBar:ClearAllPoints()
+	GameTooltipStatusBar:SetScaledHeight(15)
+	GameTooltipStatusBar:SetScaledPoint("TOPLEFT", GameTooltipStatusBar:GetParent(), "BOTTOMLEFT", 1, -3)
+	GameTooltipStatusBar:SetScaledPoint("TOPRIGHT", GameTooltipStatusBar:GetParent(), "BOTTOMRIGHT", -1, -3)
+	GameTooltipStatusBar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	GameTooltipStatusBar:SetStatusBarColorHex(Settings["ui-header-texture-color"])
 	
-	HealthBar.BG = HealthBar:CreateTexture(nil, "ARTWORK")
-	HealthBar.BG:SetScaledPoint("TOPLEFT", HealthBar, 0, 0)
-	HealthBar.BG:SetScaledPoint("BOTTOMRIGHT", HealthBar, 0, 0)
-	HealthBar.BG:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
-	HealthBar.BG:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
-	HealthBar.BG:SetAlpha(0.2)
+	GameTooltipStatusBar.BG = GameTooltipStatusBar:CreateTexture(nil, "ARTWORK")
+	GameTooltipStatusBar.BG:SetScaledPoint("TOPLEFT", GameTooltipStatusBar, 0, 0)
+	GameTooltipStatusBar.BG:SetScaledPoint("BOTTOMRIGHT", GameTooltipStatusBar, 0, 0)
+	GameTooltipStatusBar.BG:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	GameTooltipStatusBar.BG:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
+	GameTooltipStatusBar.BG:SetAlpha(0.2)
 	
-	HealthBar.Backdrop = CreateFrame("Frame", nil, HealthBar)
-	HealthBar.Backdrop:SetScaledPoint("TOPLEFT", HealthBar, -1, 1)
-	HealthBar.Backdrop:SetScaledPoint("BOTTOMRIGHT", HealthBar, 1, -1)
-	HealthBar.Backdrop:SetBackdrop(vUI.BackdropAndBorder)
-	HealthBar.Backdrop:SetBackdropColor(0, 0, 0)
-	HealthBar.Backdrop:SetBackdropBorderColor(0, 0, 0)
-	HealthBar.Backdrop:SetFrameLevel(HealthBar:GetFrameLevel() - 1)
+	GameTooltipStatusBar.Backdrop = CreateFrame("Frame", nil, GameTooltipStatusBar)
+	GameTooltipStatusBar.Backdrop:SetScaledPoint("TOPLEFT", GameTooltipStatusBar, -1, 1)
+	GameTooltipStatusBar.Backdrop:SetScaledPoint("BOTTOMRIGHT", GameTooltipStatusBar, 1, -1)
+	GameTooltipStatusBar.Backdrop:SetBackdrop(vUI.BackdropAndBorder)
+	GameTooltipStatusBar.Backdrop:SetBackdropColor(0, 0, 0)
+	GameTooltipStatusBar.Backdrop:SetBackdropBorderColor(0, 0, 0)
+	GameTooltipStatusBar.Backdrop:SetFrameLevel(GameTooltipStatusBar:GetFrameLevel() - 1)
 	
-	HealthBar.HealthValue = HealthBar:CreateFontString(nil, "OVERLAY")
-	HealthBar.HealthValue:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
-	HealthBar.HealthValue:SetScaledPoint("LEFT", HealthBar, 3, 0)
-	HealthBar.HealthValue:SetJustifyH("LEFT")
+	GameTooltipStatusBar.HealthValue = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
+	GameTooltipStatusBar.HealthValue:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+	GameTooltipStatusBar.HealthValue:SetScaledPoint("LEFT", GameTooltipStatusBar, 3, 0)
+	GameTooltipStatusBar.HealthValue:SetJustifyH("LEFT")
 	
-	HealthBar.HealthPercent = HealthBar:CreateFontString(nil, "OVERLAY")
-	HealthBar.HealthPercent:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
-	HealthBar.HealthPercent:SetScaledPoint("RIGHT", HealthBar, -3, 0)
-	HealthBar.HealthPercent:SetJustifyH("RIGHT")
+	GameTooltipStatusBar.HealthPercent = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
+	GameTooltipStatusBar.HealthPercent:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+	GameTooltipStatusBar.HealthPercent:SetScaledPoint("RIGHT", GameTooltipStatusBar, -3, 0)
+	GameTooltipStatusBar.HealthPercent:SetJustifyH("RIGHT")
 	
-	HealthBar:HookScript("OnValueChanged", OnValueChanged)
-	HealthBar:HookScript("OnShow", OnValueChanged)
+	GameTooltipStatusBar:HookScript("OnValueChanged", OnValueChanged)
+	GameTooltipStatusBar:HookScript("OnShow", OnValueChanged)
 	
-	HealthBar.OldSetStatusBarColor = HealthBar.SetStatusBarColor
-	HealthBar.SetStatusBarColor = function() end
+	GameTooltipStatusBar.OldSetStatusBarColor = GameTooltipStatusBar.SetStatusBarColor
+	GameTooltipStatusBar.SetStatusBarColor = function() end
 end
 
 local ItemRefCloseOnEnter = function(self)
