@@ -39,6 +39,7 @@ Elements\Chat\Chat.lua
 Elements\Chat\Bubbles.lua
 Elements\Experience\Experience.lua
 Elements\Reputation\Reputation.lua
+Elements\Azerite\Azerite.lua
 Elements\ActionBars\ActionBars.lua
 Elements\ActionBars\KeyBinding.lua
 Elements\UnitFrames\UnitFrames.lua

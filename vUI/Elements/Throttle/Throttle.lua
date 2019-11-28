@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings, Defaults, Profiles = select(2, ...):get()
+local vUI = select(2, ...):get()
 
 local Throttle = vUI:NewModule("Throttle")
 Throttle.Inactive = {}
