@@ -57,6 +57,10 @@ Media:SetStyle("vUI", {
 	["nameplates-font"] = "Roboto",
 	["nameplates-font-size"] = 12,
 	["nameplates-font-flags"] = "",
+	
+	["data-text-font"] = "Roboto",
+	["data-text-font-size"] = 12,
+	["data-text-font-flags"] = "",
 })
 
 -- vUI 2
@@ -116,6 +120,10 @@ Media:SetStyle("vUI 2", {
 	["nameplates-font"] = "PT Sans",
 	["nameplates-font-size"] = 12,
 	["nameplates-font-flags"] = "",
+	
+	["data-text-font"] = "PT Sans",
+	["data-text-font-size"] = 12,
+	["data-text-font-flags"] = "",
 })
 
 -- Conjured Muffin -- Casting: 2ECC71 - Interrupted: F39C12 - Failed: D35400
@@ -175,6 +183,10 @@ Media:SetStyle("Conjured Muffin", {
 	["nameplates-font"] = "Roboto",
 	["nameplates-font-size"] = 12,
 	["nameplates-font-flags"] = "",
+	
+	["data-text-font"] = "Roboto",
+	["data-text-font-size"] = 12,
+	["data-text-font-flags"] = "",
 })
 
 --[[ Zen
@@ -234,6 +246,10 @@ Media:SetStyle("Zen", {
 	["nameplates-font"] = "Prototype",
 	["nameplates-font-size"] = 12,
 	["nameplates-font-flags"] = "",
+	
+	["data-text-font"] = "Prototype",
+	["data-text-font-size"] = 12,
+	["data-text-font-flags"] = "",
 })]]
 
 --[[ Slate
@@ -293,6 +309,10 @@ Media:SetStyle("Slate", {
 	["nameplates-font"] = "Prototype",
 	["nameplates-font-size"] = 12,
 	["nameplates-font-flags"] = "",
+	
+	["data-text-font"] = "Prototype",
+	["data-text-font-size"] = 12,
+	["data-text-font-flags"] = "",
 })]]
 
 -- Smelly
@@ -352,4 +372,8 @@ Media:SetStyle("Smelly", {
 	["nameplates-font"] = "Fira Code",
 	["nameplates-font-size"] = 10,
 	["nameplates-font-flags"] = "",
+	
+	["data-text-font"] = "Fira Code",
+	["data-text-font-size"] = 10,
+	["data-text-font-flags"] = "",
 })

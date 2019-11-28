@@ -3517,8 +3517,12 @@ local SelectionScrollBarOnValueChanged = function(self)
 	GUI:ScrollSelections()
 end
 
-local SelectionScrollBarOnMouseWheel = function(self, delta)
+local SelectionParentOnMouseWheel = function(self, delta)
 	SelectionOnMouseWheel(self:GetParent(), delta)
+end
+
+local SelectionScrollBarOnMouseWheel = function(self, delta)
+	SelectionOnMouseWheel(self:GetParent():GetParent(), delta)
 end
 
 -- Frame
@@ -3590,7 +3594,7 @@ function GUI:Create()
 	self.SelectionParent:SetBackdrop(vUI.BackdropAndBorder)
 	self.SelectionParent:SetBackdropColorHex(Settings["ui-window-main-color"])
 	self.SelectionParent:SetBackdropBorderColor(0, 0, 0)
-	self.SelectionParent:SetScript("OnMouseWheel", SelectionScrollBarOnMouseWheel)
+	self.SelectionParent:SetScript("OnMouseWheel", SelectionParentOnMouseWheel)
 	
 	-- Selection scrollbar
 	local ScrollBar = CreateFrame("Slider", nil, self.SelectionParent)

@@ -66,7 +66,7 @@ function DT:NewAnchor(name, parent)
 	Anchor.FadeOut:SetChange(0)
 	
 	Anchor.Text = Anchor:CreateFontString(nil, "ARTWORK")
-	Anchor.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+	Anchor.Text:SetFontInfo(Settings["data-text-font"], Settings["data-text-font-size"], Settings["data-text-font-flags"])
 	Anchor.Text:SetScaledPoint("CENTER", Anchor, "CENTER", 0, 0)
 	Anchor.Text:SetJustifyH("CENTER")
 	
@@ -136,11 +136,22 @@ local UpdateRightText = function(value)
 	DT:SetDataText("Chat-Right", value)
 end
 
+local UpdateFont = function()
+	for Name, Anchor in pairs(DT.Anchors) do
+		Anchor.Text:SetFontInfo(Settings["data-text-font"], Settings["data-text-font-size"], Settings["data-text-font-flags"])
+	end
+end
+
 GUI:AddOptions(function(self)
-	local Left, Right = self:GetWindow(Language["General"])
+	local Left, Right = self:CreateWindow(Language["Data Texts"])
 	
-	Left:CreateHeader(Language["Data Texts"])
+	Left:CreateHeader(Language["Chat Frame Texts"])
 	Left:CreateDropdown("data-text-chat-left", Settings["data-text-chat-left"], DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the|nleft data text anchor"], UpdateLeftText)
 	Left:CreateDropdown("data-text-chat-middle", Settings["data-text-chat-middle"], DT.List, Language["Set Middle Text"], Language["Set the information to be displayed in the|nmiddle data text anchor"], UpdateMiddleText)
 	Left:CreateDropdown("data-text-chat-right", Settings["data-text-chat-right"], DT.List, Language["Set Right Text"], Language["Set the information to be displayed in the|nright data text anchor"], UpdateRightText)
+	
+	Right:CreateHeader(Language["Font"])
+	Right:CreateDropdown("data-text-font", Settings["data-text-font"], Media:GetFontList(), Language["Font"], "Set the font of the data texts", UpdateFont, "Font")
+	Right:CreateSlider("data-text-font-size", Settings["data-text-font-size"], 8, 18, 1, "Font Size", "Set the font size of the data texts", UpdateFont)
+	Right:CreateDropdown("data-text-font-flags", Settings["data-text-font-flags"], Media:GetFlagsList(), Language["Font Flags"], "Set the font flags of the data texts", UpdateFont)
 end)

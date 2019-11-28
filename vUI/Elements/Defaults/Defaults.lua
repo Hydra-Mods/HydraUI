@@ -278,17 +278,31 @@ Defaults["announcements-channel"] = "GROUP"
 
 -- Unitframes -- Add option to color health backdrops by reaction/class color, or use health color, or set a color
 Defaults["unitframes-enable"] = true
-Defaults["unitframes-enable-raid"] = true
-Defaults["unitframes-enable-party"] = true
-Defaults["unitframes-enable-party-pets"] = true
-Defaults["unitframes-player-show-name"] = false
-Defaults["unitframes-player-cc-health"] = false
-Defaults["unitframes-target-cc-health"] = false
 Defaults["unitframes-class-color"] = true -- temporary
 Defaults["unitframes-only-player-debuffs"] = false
 Defaults["unitframes-show-player-buffs"] = true
 
+Defaults["unitframes-player-width"] = 238
+Defaults["unitframes-player-health-height"] = 28
+Defaults["unitframes-player-power-height"] = 15
+
+Defaults["unitframes-target-width"] = 238
+Defaults["unitframes-target-health-height"] = 28
+Defaults["unitframes-target-power-height"] = 15
+
+Defaults["unitframes-targettarget-width"] = 110
+Defaults["unitframes-targettarget-health-height"] = 26
+--Defaults["unitframes-targettarget-power-height"] = 15
+
+Defaults["unitframes-pet-width"] = 110
+Defaults["unitframes-pet-health-height"] = 26
+--Defaults["unitframes-pet-power-height"] = 15
+
+Defaults["party-enable"] = true
+Defaults["party-pets-enable"] = true
 Defaults["party-show-debuffs"] = true
+
+Defaults["raid-enable"] = true
 
 -- Name Plates
 Defaults["nameplates-enable"] = true
@@ -334,6 +348,9 @@ Defaults["quest-watch-font-size"] = 12
 Defaults["quest-watch-font-flags"] = ""
 
 -- Data Texts
+Defaults["data-text-font"] = "Roboto"
+Defaults["data-text-font-size"] = 12
+Defaults["data-text-font-flags"] = ""
 Defaults["data-text-chat-left"] = "Gold"
 Defaults["data-text-chat-middle"] = "Crit"
 Defaults["data-text-chat-right"] = "Durability"
