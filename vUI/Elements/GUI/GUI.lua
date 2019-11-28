@@ -3036,22 +3036,6 @@ local ButtonOnLeave = function(self)
 	self.Text:SetTextColor(1, 1, 1)
 end
 
-function GUI:SortButtons()
-	tsort(self.Buttons, function(a, b)
-		return a.Name < b.Name
-	end)
-	
-	for i = 1, #self.Buttons do
-		self.Buttons[i]:ClearAllPoints()
-		
-		if (i == 1) then
-			self.Buttons[i]:SetScaledPoint("TOPLEFT", self.SelectionParent, SPACING, -SPACING)
-		else
-			self.Buttons[i]:SetScaledPoint("TOP", self.Buttons[i-1], "BOTTOM", 0, -2)
-		end
-	end
-end
-
 local DisableScrolling = function(self)
 	self.ScrollingDisabled = true
 end
@@ -3417,8 +3401,6 @@ function GUI:CreateWindow(name, default)
 	end
 	
 	self.Windows[name] = Window
-	
-	--self:SortButtons()
 	
 	self.WindowCount = self.WindowCount + 1
 	
