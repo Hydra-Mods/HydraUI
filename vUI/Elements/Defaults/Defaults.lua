@@ -354,3 +354,4 @@ Defaults["data-text-font-flags"] = ""
 Defaults["data-text-chat-left"] = "Gold"
 Defaults["data-text-chat-middle"] = "Crit"
 Defaults["data-text-chat-right"] = "Durability"
+Defaults["data-text-enable-tooltips"] = true

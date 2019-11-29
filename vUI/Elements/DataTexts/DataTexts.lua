@@ -103,6 +103,14 @@ function DT:SetType(name, enable, disable, update)
 	self.List[name] = name
 end
 
+function DT:SetTooltipsEnabled(value)
+	for Name, Anchor in pairs(self.Anchors) do
+		if (Anchor:HasScript("OnEnter")) then
+			Anchor:EnableMouse(value)
+		end
+	end
+end
+
 function DT:Load()
 	local Width = vUIChatFrameBottom:GetWidth() / 3
 	local Height = vUIChatFrameBottom:GetWidth()
@@ -122,6 +130,8 @@ function DT:Load()
 	self:SetDataText("Chat-Left", Settings["data-text-chat-left"])
 	self:SetDataText("Chat-Middle", Settings["data-text-chat-middle"])
 	self:SetDataText("Chat-Right", Settings["data-text-chat-right"])
+	
+	self:SetTooltipsEnabled(Settings["data-text-enable-tooltips"])
 end
 
 local UpdateLeftText = function(value)
@@ -142,6 +152,10 @@ local UpdateFont = function()
 	end
 end
 
+local UpdateEnableTooltips = function(value)
+	DT:SetTooltipsEnabled(value)
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Data Texts"])
 	
@@ -154,4 +168,7 @@ GUI:AddOptions(function(self)
 	Right:CreateDropdown("data-text-font", Settings["data-text-font"], Media:GetFontList(), Language["Font"], "Set the font of the data texts", UpdateFont, "Font")
 	Right:CreateSlider("data-text-font-size", Settings["data-text-font-size"], 8, 18, 1, "Font Size", "Set the font size of the data texts", UpdateFont)
 	Right:CreateDropdown("data-text-font-flags", Settings["data-text-font-flags"], Media:GetFlagsList(), Language["Font Flags"], "Set the font flags of the data texts", UpdateFont)
+	
+	Right:CreateHeader(Language["Tooltips"])
+	Right:CreateSwitch("data-text-enable-tooltips", Settings["data-text-enable-tooltips"], "Enable Tooltips", "Display tooltip information when hovering over data texts", UpdateEnableTooltips)
 end)
