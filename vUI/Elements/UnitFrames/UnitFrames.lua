@@ -1435,7 +1435,7 @@ local StyleParty = function(self, unit)
 	local Health = CreateFrame("StatusBar", nil, self)
 	Health:SetScaledPoint("TOPLEFT", self, 1, -1)
 	Health:SetScaledPoint("TOPRIGHT", self, -1, -1)
-	Health:SetScaledHeight(29)
+	Health:SetScaledHeight(Settings["party-health-height"])
 	Health:SetFrameLevel(5)
 	Health:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 	
@@ -1508,7 +1508,7 @@ local StyleParty = function(self, unit)
 	local Power = CreateFrame("StatusBar", nil, self)
 	Power:SetScaledPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetScaledPoint("BOTTOMRIGHT", self, -1, 1)
-	Power:SetScaledHeight(6)
+	Power:SetScaledHeight(Settings["party-power-height"])
 	Power:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 	
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
@@ -1644,7 +1644,8 @@ local StylePartyPet = function(self, unit)
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
 	Health:SetScaledPoint("TOPLEFT", self, 1, -1)
-	Health:SetScaledPoint("BOTTOMRIGHT", self, -1, 1)
+	Health:SetScaledPoint("TOPRIGHT", self, -1, -1)
+	Health:SetScaledHeight(Settings["party-pets-health-height"])
 	Health:SetFrameLevel(5)
 	Health:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 	
@@ -1940,8 +1941,8 @@ UF:SetScript("OnEvent", function(self, event)
 		
 		if Settings["party-enable"] then
 			local Party = oUF:SpawnHeader("vUI Party", nil, "party,solo",
-				"initial-width", 76,
-				"initial-height", 38,
+				"initial-width", Settings["party-width"],
+				"initial-height", (Settings["party-health-height"] + Settings["party-power-height"] + 3),
 				"showSolo", true,
 				"showPlayer", true,
 				"showParty", true,
@@ -1960,8 +1961,8 @@ UF:SetScript("OnEvent", function(self, event)
 			
 			if Settings["party-pets-enable"] then
 				local PartyPet = oUF:SpawnHeader("vUI Party Pets", "SecureGroupPetHeaderTemplate", "party,solo",
-					"initial-width", 76,
-					"initial-height", 22,
+					"initial-width", Settings["party-pets-width"],
+					"initial-height", (Settings["party-pets-health-height"] + Settings["party-pets-power-height"] + 3),
 					"showSolo", false,
 					"showPlayer", true,
 					"showParty", true,
@@ -2088,6 +2089,16 @@ GUI:AddOptions(function(self)
 	
 	Right:CreateHeader(Language["Debuffs"])
 	Right:CreateSwitch("party-show-debuffs", Settings["party-show-debuffs"], Language["Enable Debuffs"], "Enable to display debuffs on party members", ReloadUI):RequiresReload(true)
+	
+	Left:CreateHeader(Language["Party Size"])
+	Left:CreateSlider("party-width", Settings["party-width"], 40, 200, 1, "Width", "Set the width of the pet unit frame", ReloadUI, nil):RequiresReload(true)
+	Left:CreateSlider("party-health-height", Settings["party-health-height"], 12, 60, 1, "Health Height", "Set the height of party health bars", ReloadUI, nil):RequiresReload(true)
+	Left:CreateSlider("party-power-height", Settings["party-power-height"], 2, 30, 1, "Power Height", "Set the height of party power bars", ReloadUI, nil):RequiresReload(true)
+	
+	Right:CreateHeader(Language["Party Pets Size"])
+	Right:CreateSlider("party-pets-width", Settings["party-pets-width"], 40, 200, 1, "Width", "Set the width of party pet unit frames", ReloadUI, nil):RequiresReload(true)
+	--Defaults["party-pets-health-height"] = 0 -- NYI
+	--Defaults["party-pets-power-height"] = 22
 end)
 
 GUI:AddOptions(function(self)
