@@ -300,7 +300,7 @@ Defaults["unitframes-pet-health-height"] = 26
 
 Defaults["party-enable"] = true
 Defaults["party-width"] = 76
-Defaults["party-health-height"] = 29
+Defaults["party-health-height"] = 28
 Defaults["party-power-height"] = 6
 Defaults["party-show-debuffs"] = true
 Defaults["party-pets-enable"] = true
@@ -309,6 +309,9 @@ Defaults["party-pets-health-height"] = 0 -- NYI
 Defaults["party-pets-power-height"] = 22
 
 Defaults["raid-enable"] = true
+Defaults["raid-width"] = 90
+Defaults["raid-health-height"] = 23
+Defaults["raid-power-height"] = 2
 
 -- Name Plates
 Defaults["nameplates-enable"] = true
