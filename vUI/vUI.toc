@@ -74,7 +74,6 @@ Elements\DataTexts\Quests.lua
 Elements\DataTexts\Coordinates.lua
 Elements\DataTexts\Level.lua
 Elements\DataTexts\Location.lua
-Elements\DataTexts\Ammo.lua
 Elements\DataTexts\System.lua
 Elements\Loot\Loot.lua
 Elements\Test\Test.lua
