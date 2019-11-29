@@ -305,8 +305,8 @@ Defaults["party-power-height"] = 6
 Defaults["party-show-debuffs"] = true
 Defaults["party-pets-enable"] = true
 Defaults["party-pets-width"] = 76
-Defaults["party-pets-health-height"] = 0 -- NYI
-Defaults["party-pets-power-height"] = 22
+Defaults["party-pets-health-height"] = 22
+Defaults["party-pets-power-height"] = 0 -- NYI
 
 Defaults["raid-enable"] = true
 Defaults["raid-width"] = 90
