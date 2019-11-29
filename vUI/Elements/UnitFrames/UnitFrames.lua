@@ -1867,11 +1867,11 @@ local Style = function(self, unit)
 		StyleTargetTarget(self, unit)
 	elseif (unit == "pet") then
 		StylePet(self, unit)
-	elseif (find(unit, "raid") and Settings["unitframes-enable-raid"]) then
+	elseif (find(unit, "raid") and Settings["raid-enable"]) then
 		StyleRaid(self, unit)
-	elseif (find(unit, "partypet") and Settings["unitframes-enable-party"] and Settings["unitframes-enable-party-pets"]) then
+	elseif (find(unit, "partypet") and Settings["party-enable"] and Settings["party-pets-enable"]) then
 		StylePartyPet(self, unit)
-	elseif (find(unit, "party") and not find(unit, "pet") and Settings["unitframes-enable-party"]) then
+	elseif (find(unit, "party") and not find(unit, "pet") and Settings["party-enable"]) then
 		StyleParty(self, unit)
 	elseif (match(unit, "nameplate") and Settings["nameplates-enable"]) then
 		StyleNamePlate(self, unit)
