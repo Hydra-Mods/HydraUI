@@ -21,7 +21,7 @@ function Reputation:UpdateBarPosition(value)
 		self:SetScaledSize(Settings["reputation-width"], Settings["reputation-height"])
 		self.Bar.Spark:SetScaledHeight(Settings["reputation-height"])
 		
-		if (Settings["experience-enable"] and Settings["experience-position"] == "TOP") then
+		if (Settings["experience-enable"] and Settings["experience-position"] == "TOP" and UnitLevel("player") ~= MAX_PLAYER_LEVEL) then
 			self:SetScaledPoint("TOP", vUIExperienceBar, "BOTTOM", 0, -8)
 		else
 			self:SetScaledPoint("TOP", UIParent, 0, -13)
@@ -85,12 +85,6 @@ function Reputation:UpdateBarPosition(value)
 end
 
 function Reputation:CreateBar()
-	if (not Settings["reputation-enable"]) then
-		self:UnregisterAllEvents()
-		
-		return
-	end
-	
 	self:SetScaledSize(Settings["reputation-width"], Settings["reputation-height"])
 	self:SetFrameStrata("HIGH")
 	

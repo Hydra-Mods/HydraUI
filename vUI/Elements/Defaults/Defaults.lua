@@ -225,6 +225,14 @@ Defaults["reputation-display-progress"] = true
 Defaults["reputation-display-percent"] = true
 Defaults["reputation-position"] = "TOP"
 
+-- Azerite
+Defaults["azerite-enable"] = true
+Defaults["azerite-width"] = 310
+Defaults["azerite-height"] = 18
+Defaults["azerite-display-progress"] = true
+Defaults["azerite-display-percent"] = true
+Defaults["azerite-position"] = "TOP"
+
 -- Auras
 Defaults["auras-enable"] = true
 Defaults["auras-size"] = 30

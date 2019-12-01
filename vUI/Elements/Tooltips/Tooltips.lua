@@ -238,7 +238,7 @@ local OnTooltipSetUnit = function(self)
 			Flag = "|cFFF44336" .. CHAT_FLAG_DND .. "|r "
 		end
 		
-		if Realm then
+		if (Realm and Realm ~= "") then
 			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s - %s|r", Flag, Color, (Title or Name), Realm))
 		else
 			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s|r", Flag, Color, (Title or Name)))

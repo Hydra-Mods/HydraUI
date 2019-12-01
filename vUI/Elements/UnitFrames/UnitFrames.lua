@@ -313,7 +313,7 @@ Methods["Name30"] = function(unit)
 	end
 end
 
-Events["NameColor"] = "UNIT_NAME_UPDATE PLAYER_ENTERING_WORLD"
+Events["NameColor"] = "UNIT_NAME_UPDATE PLAYER_ENTERING_WORLD UNIT_CLASSIFICATION_CHANGED"
 Methods["NameColor"] = function(unit)
 	if UnitIsPlayer(unit) then
 		local _, Class = UnitClass(unit)
@@ -2050,6 +2050,107 @@ local UpdateOnlyPlayerDebuffs = function(value)
 	end
 end
 
+local UpdatePlayerWidth = function(value)
+	if vUI.UnitFrames["player"] then
+		local Frame = vUI.UnitFrames["player"]
+		
+		Frame:SetScaledWidth(value)
+		
+		-- Auras
+		Frame.Buffs:SetScaledWidth(value)
+		Frame.Debuffs:SetScaledWidth(value)
+		
+		-- Combo points
+		Frame.ComboPoints:SetScaledWidth(value)
+	
+		local Width = (value / 5)
+		
+		for i = 1, 5 do
+			Frame.ComboPoints[i]:SetScaledWidth(Width)
+			
+			if (i ~= 1) then
+				Frame.ComboPoints[i]:SetScaledWidth(Width - 2)
+			end
+		end
+	end
+end
+
+local UpdatePlayerHealthHeight = function(value)
+	if vUI.UnitFrames["player"] then
+		local Frame = vUI.UnitFrames["player"]
+		
+		Frame.Health:SetScaledHeight(value)
+		
+		Frame:SetScaledHeight(value + Settings["unitframes-player-power-height"] + 3)
+	end
+end
+
+local UpdatePlayerPowerHeight = function(value)
+	if vUI.UnitFrames["player"] then
+		local Frame = vUI.UnitFrames["player"]
+		
+		Frame.Power:SetScaledHeight(value)
+		
+		Frame:SetScaledHeight(Settings["unitframes-player-health-height"] + value + 3)
+	end
+end
+
+local UpdateTargetWidth = function(value)
+	if vUI.UnitFrames["target"] then
+		local Frame = vUI.UnitFrames["target"]
+		
+		Frame:SetScaledWidth(value)
+		
+		-- Auras
+		Frame.Buffs:SetScaledWidth(value)
+		Frame.Debuffs:SetScaledWidth(value)
+	end
+end
+
+local UpdateTargetHealthHeight = function(value)
+	if vUI.UnitFrames["target"] then
+		local Frame = vUI.UnitFrames["target"]
+		
+		Frame.Health:SetScaledHeight(value)
+		
+		Frame:SetScaledHeight(value + Settings["unitframes-target-power-height"] + 3)
+	end
+end
+
+local UpdateTargetPowerHeight = function(value)
+	if vUI.UnitFrames["target"] then
+		local Frame = vUI.UnitFrames["target"]
+		
+		Frame.Power:SetScaledHeight(value)
+		
+		Frame:SetScaledHeight(Settings["unitframes-target-health-height"] + value + 3)
+	end
+end
+
+local UpdateTargetTargetWidth = function(value)
+	if vUI.UnitFrames["target"] then
+		vUI.UnitFrames["targettarget"]:SetScaledWidth(value)
+	end
+end
+
+local UpdateTargetTargetHealthHeight = function(value)
+	if vUI.UnitFrames["targettarget"] then
+		vUI.UnitFrames["targettarget"]:SetScaledHeight(value)
+	end
+end
+
+local UpdatePetWidth = function(value)
+	if vUI.UnitFrames["pet"] then
+		vUI.UnitFrames["pet"]:SetScaledWidth(value)
+	end
+end
+
+local UpdatePetHealthHeight = function(value)
+	if vUI.UnitFrames["pet"] then
+		vUI.UnitFrames["pet"]:SetScaledHeight(value)
+	end
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Unit Frames"])
 	
@@ -2060,24 +2161,24 @@ GUI:AddOptions(function(self)
 	Right:CreateSwitch("unitframes-class-color", Settings["unitframes-class-color"], Language["Use Class/Reaction Colors"], Language["Color unit frame health by class or reaction"], ReloadUI):RequiresReload(true)
 	
 	Left:CreateHeader(Language["Player"])
-	Left:CreateSlider("unitframes-player-width", Settings["unitframes-player-width"], 120, 320, 1, "Width", "Set the width of the player unit frame", ReloadUI, nil):RequiresReload(true)
-	Left:CreateSlider("unitframes-player-health-height", Settings["unitframes-player-health-height"], 10, 60, 1, "Health Bar Height", "Set the height of the player health bar", ReloadUI, nil):RequiresReload(true)
-	Left:CreateSlider("unitframes-player-power-height", Settings["unitframes-player-power-height"], 10, 30, 1, "Power Bar Height", "Set the height of the player power bar", ReloadUI, nil):RequiresReload(true)
+	Left:CreateSlider("unitframes-player-width", Settings["unitframes-player-width"], 120, 320, 1, "Width", "Set the width of the player unit frame", UpdatePlayerWidth)
+	Left:CreateSlider("unitframes-player-health-height", Settings["unitframes-player-health-height"], 10, 60, 1, "Health Bar Height", "Set the height of the player health bar", UpdatePlayerHealthHeight)
+	Left:CreateSlider("unitframes-player-power-height", Settings["unitframes-player-power-height"], 10, 30, 1, "Power Bar Height", "Set the height of the player power bar", UpdatePlayerPowerHeight)
 	Left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
 	Left:CreateSwitch("unitframes-only-player-debuffs", Settings["unitframes-only-player-debuffs"], Language["Only Display Player Debuffs"], Language["If enabled, only your own debuffs will|nbe displayed on the target"], UpdateOnlyPlayerDebuffs)
 	
 	Right:CreateHeader(Language["Target"])
-	Right:CreateSlider("unitframes-target-width", Settings["unitframes-target-width"], 120, 320, 1, "Width", "Set the width of the target unit frame", ReloadUI, nil):RequiresReload(true)
-	Right:CreateSlider("unitframes-target-health-height", Settings["unitframes-target-health-height"], 10, 60, 1, "Health Bar Height", "Set the height of the target health bar", ReloadUI, nil):RequiresReload(true)
-	Right:CreateSlider("unitframes-target-power-height", Settings["unitframes-target-power-height"], 10, 30, 1, "Power Bar Height", "Set the height of the target power bar", ReloadUI, nil):RequiresReload(true)
+	Right:CreateSlider("unitframes-target-width", Settings["unitframes-target-width"], 120, 320, 1, "Width", "Set the width of the target unit frame", UpdateTargetWidth)
+	Right:CreateSlider("unitframes-target-health-height", Settings["unitframes-target-health-height"], 10, 60, 1, "Health Bar Height", "Set the height of the target health bar", UpdateTargetHealthHeight)
+	Right:CreateSlider("unitframes-target-power-height", Settings["unitframes-target-power-height"], 10, 30, 1, "Power Bar Height", "Set the height of the target power bar", UpdateTargetPowerHeight)
 	
 	Left:CreateHeader(Language["Target Target"])
-	Left:CreateSlider("unitframes-targettarget-width", Settings["unitframes-targettarget-width"], 60, 200, 1, "Width", "Set the width of the target's target unit frame", ReloadUI, nil):RequiresReload(true)
-	Left:CreateSlider("unitframes-targettarget-health-height", Settings["unitframes-targettarget-health-height"], 10, 60, 1, "Health Bar Height", "Set the height of the player health bar", ReloadUI, nil):RequiresReload(true)
+	Left:CreateSlider("unitframes-targettarget-width", Settings["unitframes-targettarget-width"], 60, 320, 1, "Width", "Set the width of the target's target unit frame", UpdateTargetTargetWidth)
+	Left:CreateSlider("unitframes-targettarget-health-height", Settings["unitframes-targettarget-health-height"], 10, 60, 1, "Health Bar Height", "Set the height of the player health bar", UpdateTargetTargetHealthHeight)
 	
 	Right:CreateHeader(Language["Pet"])
-	Right:CreateSlider("unitframes-pet-width", Settings["unitframes-pet-width"], 60, 200, 1, "Width", "Set the width of the pet unit frame", ReloadUI, nil):RequiresReload(true)
-	Right:CreateSlider("unitframes-pet-health-height", Settings["unitframes-pet-health-height"], 10, 60, 1, "Health Bar Height", "Set the height of the pet health bar", ReloadUI, nil):RequiresReload(true)
+	Right:CreateSlider("unitframes-pet-width", Settings["unitframes-pet-width"], 60, 320, 1, "Width", "Set the width of the pet unit frame", UpdatePetWidth)
+	Right:CreateSlider("unitframes-pet-health-height", Settings["unitframes-pet-health-height"], 10, 60, 1, "Health Bar Height", "Set the height of the pet health bar", UpdatePetHealthHeight)
 end)
 
 GUI:AddOptions(function(self)

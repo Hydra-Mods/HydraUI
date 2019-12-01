@@ -96,6 +96,10 @@ local OnUpdate = function(self, elapsed)
 end
 
 function Bubbles:Load()
+	if (not Settings["chat-bubbles-enable"]) then
+		return
+	end
+	
 	self.Elapsed = 0
 	self:SetScript("OnUpdate", OnUpdate)
 end
