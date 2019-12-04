@@ -5,6 +5,7 @@ local Testing = {
 	["Neonsol:Mal'Ganis"] = 1,
 	["Venio:Mal'Ganis"] = 1,
 	["Nitrite:Mal'Ganis"] = 1,
+	["Revival:Mal'Ganis"] = 1,
 }
 
 if (not Testing[vUI.UserProfileKey]) then

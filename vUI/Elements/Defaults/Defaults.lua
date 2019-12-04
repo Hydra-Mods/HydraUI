@@ -299,12 +299,14 @@ Defaults["unitframes-target-health-height"] = 28
 Defaults["unitframes-target-power-height"] = 15
 
 Defaults["unitframes-targettarget-width"] = 110
-Defaults["unitframes-targettarget-health-height"] = 26
---Defaults["unitframes-targettarget-power-height"] = 15
+Defaults["unitframes-targettarget-health-height"] = 26 
+Defaults["unitframes-targettarget-enable-power"] = true
+Defaults["unitframes-targettarget-power-height"] = 3
 
 Defaults["unitframes-pet-width"] = 110
 Defaults["unitframes-pet-health-height"] = 26
---Defaults["unitframes-pet-power-height"] = 15
+Defaults["unitframes-pet-enable-power"] = true
+Defaults["unitframes-pet-power-height"] = 3
 
 Defaults["party-enable"] = true
 Defaults["party-width"] = 76
@@ -355,6 +357,7 @@ Defaults["tooltips-font-flags"] = ""
 Defaults["tooltips-hide-on-unit"] = "NEVER"
 Defaults["tooltips-hide-on-item"] = "NEVER"
 Defaults["tooltips-hide-on-action"] = "NEVER"
+Defaults["tooltips-health-bar-color"] = "CUSTOM" -- CLASS/REACTION/CUSTOM
 
 -- Bags
 Defaults["bags-loot-from-left"] = false

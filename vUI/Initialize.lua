@@ -195,7 +195,7 @@ function vUI:UpdateScreenHeight()
 		self.IsFullScreen = 0
 	end
 	
-	ScreenHeight = tonumber(string.match(self.ScreenResolution, "%d+x(%d+)"))
+	ScreenHeight = tonumber(match(self.ScreenResolution, "%d+x(%d+)"))
 end
 
 vUI:UpdateScreenHeight()
@@ -229,9 +229,9 @@ function vUI:GetSuggestedScale()
 end
 
 function vUI:ShortValue(num)
-	if (num > 999999) then
+	if (num >= 1000000) then
 		return format("%.2fm", num / 1000000)
-	elseif (num > 99999) then
+	elseif (num >= 1000) then
 		return format("%dk", num / 1000)
 	else
 		return num

@@ -182,6 +182,14 @@ end
 
 function Azerite:OnEvent()
 	local AzeriteLocation = FindActiveAzeriteItem()
+	
+	if (not AzeriteLocation) then
+		self:UnregisterAllEvents()
+		self:Hide()
+		
+		return
+	end
+	
 	local XP, TotalXP = GetAzeriteItemXPInfo(AzeriteLocation)
 	local Level = GetPowerLevel(AzeriteLocation)
 	

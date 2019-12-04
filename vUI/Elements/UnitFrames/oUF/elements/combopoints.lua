@@ -21,8 +21,8 @@ local Update = function(self, event, unit, power)
 	
 	for i = 1, 5 do
 		if (i > Points) then
-			if (element[i]:GetAlpha() > 0.2) then
-				element[i]:SetAlpha(0.2)
+			if (element[i]:GetAlpha() > 0.3) then
+				element[i]:SetAlpha(0.3)
 			end
 		else
 			if (element[i]:GetAlpha() < 1) then
@@ -78,7 +78,7 @@ local Enable = function(self)
 				element[i]:SetTexture("Interface\\TargetingFrame\\UI-StatusBar")
 			end
 			
-			element[i]:SetAlpha(0.2)
+			element[i]:SetAlpha(0.3)
 		end
 		
 		return true

@@ -23,9 +23,7 @@ function Gold:GetTable()
 end
 
 function Gold:GetColoredName(name)
-	local Color = vUI.ClassColors[vUI.UserClass]
-	local Hex = vUI:RGBToHex(Color[1], Color[2], Color[3])
-	local Name = format("|cFF%s%s|r", Hex, vUI.UserName)
+	local Name = format("|cFF%s%s|r", vUI.ClassColors[vUI.UserClass].Hex, vUI.UserName)
 	
 	return Name
 end
