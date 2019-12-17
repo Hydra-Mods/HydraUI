@@ -264,6 +264,7 @@ end
 -- Highlights
 Media:SetHighlight("Blank", "Interface\\AddOns\\vUI\\Media\\Textures\\Blank.tga")
 Media:SetHighlight("RenHorizonUp", "Interface\\AddOns\\vUI\\Media\\Textures\\RenHorizonUp.tga")
+Media:SetHighlight("RenHorizonDown", "Interface\\AddOns\\vUI\\Media\\Textures\\RenHorizonDown.tga")
 Media:SetHighlight("RenaitreTunnel", "Interface\\AddOns\\vUI\\Media\\Textures\\RenaitreTunnel.tga")
 Media:SetHighlight("Ferous 14", "Interface\\AddOns\\vUI\\Media\\Textures\\fer14.tga")
 

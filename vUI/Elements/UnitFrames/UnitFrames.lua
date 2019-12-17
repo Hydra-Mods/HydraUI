@@ -10,10 +10,10 @@ local sub = string.sub
 local find = string.find
 local UnitName = UnitName
 local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local UnitPowerType = UnitPowerType
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
-local UnitCanAttack = UnitCanAttack
-local UnitIsFriend = UnitIsFriend
 local UnitIsConnected = UnitIsConnected
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsGhost = UnitIsGhost
@@ -238,7 +238,13 @@ end
 
 Events["PowerColor"] = "UNIT_POWER_FREQUENT PLAYER_ENTERING_WORLD"
 Methods["PowerColor"] = function(unit)
+	local PowerType, PowerToken = UnitPowerType(unit)
 	
+	if vUI.PowerColors[PowerToken] then
+		return format("|cFF%s", vUI.PowerColors[PowerToken].Hex)
+	else
+		return "|cFFFFFF"
+	end
 end
 
 Events["Name4"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
@@ -534,8 +540,10 @@ local NamePlateCallback = function(self)
 	self:SetScaledSize(Settings["nameplates-width"], Settings["nameplates-height"])
 	self.Castbar:SetScaledHeight(Settings["nameplates-castbar-height"])
 	
+	self.Top:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	self.TopLeft:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	self.TopRight:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
+	self.Bottom:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	self.BottomRight:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	self.BottomLeft:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	self.Castbar.Time:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
@@ -572,10 +580,10 @@ local StyleNamePlate = function(self, unit)
 	RaidTargetIndicator:SetSize(16, 16)
 	RaidTargetIndicator:SetPoint("LEFT", Health, "RIGHT", 5, 0)
 	
-	--[[local Top = Health:CreateFontString(nil, "OVERLAY")
+	local Top = Health:CreateFontString(nil, "OVERLAY")
 	Top:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	Top:SetScaledPoint("CENTER", Health, "TOP", 0, 3)
-	Top:SetJustifyH("CENTER")]]
+	Top:SetJustifyH("CENTER")
 	
 	local TopLeft = Health:CreateFontString(nil, "OVERLAY")
 	TopLeft:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
@@ -586,6 +594,11 @@ local StyleNamePlate = function(self, unit)
 	TopRight:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	TopRight:SetScaledPoint("RIGHT", Health, "TOPRIGHT", -4, 3)
 	TopRight:SetJustifyH("RIGHT")
+	
+	local Bottom = Health:CreateFontString(nil, "OVERLAY")
+	Bottom:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
+	Bottom:SetScaledPoint("CENTER", Health, "BOTTOM", 0, -3)
+	Bottom:SetJustifyH("CENTER")
 	
 	local BottomRight = Health:CreateFontString(nil, "OVERLAY")
 	BottomRight:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
@@ -669,7 +682,7 @@ local StyleNamePlate = function(self, unit)
     Castbar.Text = Text
     Castbar.Icon = Icon
     Castbar.showTradeSkills = true
-    Castbar.timeToHold = 0.3
+    Castbar.timeToHold = 0.7
 	Castbar.PostCastStart = PostCastStart
 	Castbar.PostChannelStart = PostCastStart
 	
@@ -704,15 +717,18 @@ local StyleNamePlate = function(self, unit)
 		TargetIndicator.Right:SetTexture(Media:GetTexture("Arrow Right Large"))
 	end
 	
+	self:Tag(Top, Settings["nameplates-top-text"])
 	self:Tag(TopLeft, Settings["nameplates-topleft-text"])
 	self:Tag(TopRight, Settings["nameplates-topright-text"])
+	self:Tag(Bottom, Settings["nameplates-bottom-text"])
 	self:Tag(BottomRight, Settings["nameplates-bottomright-text"])
 	self:Tag(BottomLeft, Settings["nameplates-bottomleft-text"])
 	
 	self.Health = Health
-	--self.Top = Top
+	self.Top = Top
 	self.TopLeft = TopLeft
 	self.TopRight = TopRight
+	self.Bottom = Bottom
 	self.BottomRight = BottomRight
 	self.BottomLeft = BottomLeft
 	self.Health.bg = HealthBG
@@ -723,11 +739,55 @@ local StyleNamePlate = function(self, unit)
 	self.RaidTargetIndicator = RaidTargetIndicator
 end
 
+local vUI_UnitFrame_OnEnter = function(self)
+	UnitFrame_OnEnter(self)
+	
+	if self.Hover then
+		self.AnimIn:Play()
+	end
+end
+
+local vUI_UnitFrame_OnLeave = function(self)
+	UnitFrame_OnLeave(self)
+	
+	if self.Hover then
+		self.AnimOut:Play()
+	end
+end
+
+local CreateMouseover = function(self)
+	self.Hover = CreateFrame("Frame", nil, self.Health)
+	self.Hover:SetAllPoints()
+	self.Hover:SetFrameLevel(self:GetFrameLevel() + 10)
+	self.Hover:SetAlpha(0)
+	
+	self.HoverTop = self.Hover:CreateTexture(nil, "OVERLAY")
+	self.HoverTop:SetScaledPoint("TOPLEFT", self.Hover, 10, -1)
+	self.HoverTop:SetScaledPoint("TOPRIGHT", self.Hover, -10, -1)
+	self.HoverTop:SetScaledHeight(12)
+	self.HoverTop:SetTexture(Media:GetHighlight("RenHorizonDown"))
+	self.HoverTop:SetVertexColor(1, 1, 1)
+	
+	self.Anim = CreateAnimationGroup(self.Hover)
+	
+	self.AnimIn = self.Anim:CreateAnimation("Fade")
+	self.AnimIn:SetEasing("in")
+	self.AnimIn:SetDuration(0.1)
+	self.AnimIn:SetChange(0.08)
+	
+	self.AnimOut = self.Anim:CreateAnimation("Fade")
+	self.AnimOut:SetEasing("out")
+	self.AnimOut:SetDuration(0.15)
+	self.AnimOut:SetChange(0)
+end
+
 local StylePlayer = function(self, unit)
 	-- General
 	self:RegisterForClicks("AnyUp")
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
+	--self:SetScript("OnEnter", vUI_UnitFrame_OnEnter)
+	--self:SetScript("OnLeave", vUI_UnitFrame_OnLeave)
 	
 	self:SetBackdrop(vUI.BackdropAndBorder)
 	self:SetBackdropColor(0, 0, 0)
@@ -742,6 +802,7 @@ local StylePlayer = function(self, unit)
 	Health:SetScaledHeight(Settings["unitframes-player-health-height"])
 	Health:SetFrameLevel(5)
 	Health:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetReverseFill(Settings["unitframes-player-health-reverse"])
 	
 	local HealBar = CreateFrame("StatusBar", nil, self)
 	HealBar:SetAllPoints(Health)
@@ -799,6 +860,7 @@ local StylePlayer = function(self, unit)
 	Power:SetScaledPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetScaledHeight(Settings["unitframes-player-power-height"])
 	Power:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	Power:SetReverseFill(Settings["unitframes-player-power-reverse"])
 	
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetScaledPoint("TOPLEFT", Power, 0, 0)
@@ -882,7 +944,7 @@ local StylePlayer = function(self, unit)
     Castbar.Icon = Icon
     Castbar.SafeZone = SafeZone
     Castbar.showTradeSkills = true
-    Castbar.timeToHold = 0.3
+    Castbar.timeToHold = 0.7
 	
 	if (vUI.UserClass == "ROGUE" or vUI.UserClass == "DRUID") then
 		local ComboPoints = CreateFrame("Frame", self:GetName() .. "ComboPoints", self)
@@ -891,7 +953,6 @@ local StylePlayer = function(self, unit)
 		ComboPoints:SetBackdrop(vUI.Backdrop)
 		ComboPoints:SetBackdropColor(0, 0, 0)
 		ComboPoints:SetBackdropBorderColor(0, 0, 0)
-		ComboPoints.UpdateShapeshiftForm = ComboPointsUpdateShapeshiftForm
 		
 		local Width = (Settings["unitframes-player-width"] / 5)
 		
@@ -900,7 +961,12 @@ local StylePlayer = function(self, unit)
 			ComboPoints[i]:SetScaledSize(Width, 8)
 			ComboPoints[i]:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 			ComboPoints[i]:SetStatusBarColor(vUI.ComboPoints[i][1], vUI.ComboPoints[i][2], vUI.ComboPoints[i][3])
-			ComboPoints[i]:SetAlpha(0.3)
+			
+			ComboPoints[i].bg = ComboPoints:CreateTexture(nil, "BORDER")
+			ComboPoints[i].bg:SetAllPoints(ComboPoints[i])
+			ComboPoints[i].bg:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+			ComboPoints[i].bg:SetVertexColor(vUI.ComboPoints[i][1], vUI.ComboPoints[i][2], vUI.ComboPoints[i][3])
+			ComboPoints[i].bg:SetAlpha(0.3)
 			
 			if (i == 1) then
 				ComboPoints[i]:SetScaledPoint("LEFT", ComboPoints, 1, 0)
@@ -910,7 +976,7 @@ local StylePlayer = function(self, unit)
 			end
 		end
 		
-		self.ComboPoints = ComboPoints
+		self.ClassPower = ComboPoints
 		self.AuraParent = ComboPoints
 	elseif (vUI.UserClass == "WARLOCK") then
 		local SoulShards = CreateFrame("Frame", self:GetName() .. "SoulShards", self)
@@ -924,28 +990,58 @@ local StylePlayer = function(self, unit)
 		
 		for i = 1, 5 do
 			SoulShards[i] = CreateFrame("StatusBar", self:GetName() .. "SoulShard" .. i, SoulShards)
-			SoulShards[i]:SetScaledSize(Width - 1, 8)
+			SoulShards[i]:SetScaledSize(Width, 8)
 			SoulShards[i]:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
-			SoulShards[i]:SetStatusBarColorHex("D35832")
-			SoulShards[i]:SetMinMaxValues(0, 1)
-			SoulShards[i]:SetValue(0)
+			SoulShards[i]:SetStatusBarColorHex(Settings["color-soul-shards"])
 			
-			SoulShards[i].bg = SoulShards[i]:CreateTexture(nil, "BORDER")
+			SoulShards[i].bg = SoulShards:CreateTexture(nil, "BORDER")
 			SoulShards[i].bg:SetAllPoints(SoulShards[i])
 			SoulShards[i].bg:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
-			SoulShards[i].bg:SetVertexColorHex("D35832")
-			SoulShards[i].bg:SetAlpha(0.2)
+			SoulShards[i].bg:SetVertexColorHex(Settings["color-soul-shards"])
+			SoulShards[i].bg:SetAlpha(0.3)
 			
 			if (i == 1) then
 				SoulShards[i]:SetScaledPoint("LEFT", SoulShards, 1, 0)
-				SoulShards[i]:SetScaledWidth(Width - 2)
 			else
 				SoulShards[i]:SetScaledPoint("TOPLEFT", SoulShards[i-1], "TOPRIGHT", 1, 0)
+				SoulShards[i]:SetScaledWidth(Width - 2)
 			end
 		end
 		
-		self.SoulShards = SoulShards
+		self.ClassPower = SoulShards
 		self.AuraParent = SoulShards
+	elseif (vUI.UserClass == "MONK") then
+		local Chi = CreateFrame("Frame", self:GetName() .. "Chi", self)
+		Chi:SetScaledPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+		Chi:SetScaledSize(Settings["unitframes-player-width"], 10)
+		Chi:SetBackdrop(vUI.Backdrop)
+		Chi:SetBackdropColor(0, 0, 0)
+		Chi:SetBackdropBorderColor(0, 0, 0)
+		
+		local Width = (Settings["unitframes-player-width"] / 5)
+		
+		for i = 1, 5 do
+			Chi[i] = CreateFrame("StatusBar", self:GetName() .. "Chi" .. i, Chi)
+			Chi[i]:SetScaledSize(Width, 8)
+			Chi[i]:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+			Chi[i]:SetStatusBarColorHex(Settings["color-chi"])
+			
+			Chi[i].bg = Chi:CreateTexture(nil, "BORDER")
+			Chi[i].bg:SetAllPoints(Chi[i])
+			Chi[i].bg:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+			Chi[i].bg:SetVertexColorHex(Settings["color-chi"])
+			Chi[i].bg:SetAlpha(0.3)
+			
+			if (i == 1) then
+				Chi[i]:SetScaledPoint("LEFT", Chi, 1, 0)
+			else
+				Chi[i]:SetScaledPoint("TOPLEFT", Chi[i-1], "TOPRIGHT", 1, 0)
+				Chi[i]:SetScaledWidth(Width - 2)
+			end
+		end
+		
+		self.ClassPower = Chi
+		self.AuraParent = Chi
 	elseif (vUI.UserClass == "DEATHKNIGHT") then
 		local Runes = CreateFrame("Frame", self:GetName() .. "Runes", self)
 		Runes:SetScaledPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
@@ -1003,6 +1099,38 @@ local StylePlayer = function(self, unit)
 		
 		self.Runes = Runes
 		self.AuraParent = Runes
+	elseif (vUI.UserClass == "PALADIN") then
+		local HolyPower = CreateFrame("Frame", self:GetName() .. "HolyPower", self)
+		HolyPower:SetScaledPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+		HolyPower:SetScaledSize(Settings["unitframes-player-width"], 10)
+		HolyPower:SetBackdrop(vUI.Backdrop)
+		HolyPower:SetBackdropColor(0, 0, 0)
+		HolyPower:SetBackdropBorderColor(0, 0, 0)
+		
+		local Width = (Settings["unitframes-player-width"] / 5)
+		
+		for i = 1, 5 do
+			HolyPower[i] = CreateFrame("StatusBar", self:GetName() .. "HolyPower" .. i, HolyPower)
+			HolyPower[i]:SetScaledSize(Width, 8)
+			HolyPower[i]:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+			HolyPower[i]:SetStatusBarColorHex(Settings["color-holy-power"])
+			
+			HolyPower[i].bg = HolyPower:CreateTexture(nil, "BORDER")
+			HolyPower[i].bg:SetAllPoints(HolyPower[i])
+			HolyPower[i].bg:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+			HolyPower[i].bg:SetVertexColorHex(Settings["color-holy-power"])
+			HolyPower[i].bg:SetAlpha(0.3)
+			
+			if (i == 1) then
+				HolyPower[i]:SetScaledPoint("LEFT", HolyPower, 1, 0)
+			else
+				HolyPower[i]:SetScaledPoint("TOPLEFT", HolyPower[i-1], "TOPRIGHT", 1, 0)
+				HolyPower[i]:SetScaledWidth(Width - 2)
+			end
+		end
+		
+		self.ClassPower = HolyPower
+		self.AuraParent = HolyPower
 	end
 	
 	-- Auras
@@ -1064,6 +1192,8 @@ local StylePlayer = function(self, unit)
 	--self.RaidTargetIndicator = RaidTarget
 	self.ResurrectIndicator = Resurrect
 	self.LeaderIndicator = Leader
+	
+	--CreateMouseover(self)
 end
 
 local StyleTarget = function(self, unit)
@@ -1085,6 +1215,7 @@ local StyleTarget = function(self, unit)
 	Health:SetMinMaxValues(0, 1)
 	Health:SetValue(1)
 	Health:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetReverseFill(Settings["unitframes-target-health-reverse"])
 	
 	local HealBar = CreateFrame("StatusBar", nil, self)
 	HealBar:SetAllPoints(Health)
@@ -1138,6 +1269,7 @@ local StyleTarget = function(self, unit)
 	Power:SetScaledPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetScaledHeight(Settings["unitframes-target-power-height"])
 	Power:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	Power:SetReverseFill(Settings["unitframes-target-power-reverse"])
 	
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetScaledPoint("TOPLEFT", Power, 0, 0)
@@ -1288,6 +1420,7 @@ local StyleTargetTarget = function(self, unit)
 	Health:SetScaledHeight(Settings["unitframes-targettarget-health-height"])
 	Health:SetFrameLevel(5)
 	Health:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetReverseFill(Settings["unitframes-targettarget-health-reverse"])
 	
 	local HealBar = CreateFrame("StatusBar", nil, self)
 	HealBar:SetAllPoints(Health)
@@ -1343,6 +1476,7 @@ local StyleTargetTarget = function(self, unit)
 	Power:SetScaledPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetScaledHeight(Settings["unitframes-targettarget-power-height"])
 	Power:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	Power:SetReverseFill(Settings["unitframes-targettarget-power-reverse"])
 	
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetScaledPoint("TOPLEFT", Power, 0, 0)
@@ -1396,6 +1530,7 @@ local StylePet = function(self, unit)
 	Health:SetScaledHeight(Settings["unitframes-pet-health-height"])
 	Health:SetFrameLevel(5)
 	Health:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetReverseFill(Settings["unitframes-pet-health-reverse"])
 	
 	local HealBar = CreateFrame("StatusBar", nil, self)
 	HealBar:SetAllPoints(Health)
@@ -1430,8 +1565,12 @@ local StylePet = function(self, unit)
 	
 	if Settings["unitframes-class-color"] then
 		Health.colorReaction = true
+		
+		self:Tag(HealthLeft, "[Name10]")
 	else
 		Health.colorHealth = true
+		
+		self:Tag(HealthLeft, "[NameColor][Name10]")
 	end
 	
 	-- Power Bar
@@ -1440,6 +1579,7 @@ local StylePet = function(self, unit)
 	Power:SetScaledPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetScaledHeight(Settings["unitframes-pet-power-height"])
 	Power:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	Power:SetReverseFill(Settings["unitframes-pet-power-reverse"])
 	
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetScaledPoint("TOPLEFT", Power, 0, 0)
@@ -1458,7 +1598,6 @@ local StylePet = function(self, unit)
 		Power.colorClass = true
 	end
 	
-	self:Tag(HealthLeft, "[Name10]")
 	self:Tag(HealthRight, "[HealthColor][perhp]")
 	
 	self.Range = {
@@ -1472,6 +1611,75 @@ local StylePet = function(self, unit)
 	self.HealthLeft = HealthLeft
 	self.Power = Power
 	self.Power.bg = PowerBG
+end
+
+local Offsets = {
+	TOPLEFT = {6, 0},
+	TOPRIGHT = {-6, 0},
+	BOTTOMLEFT = {6, 0},
+	BOTTOMRIGHT = {-6, 0},
+	LEFT = {6, 0},
+	RIGHT = {-6, 0},
+	TOP = {0, 0},
+	BOTTOM = {0, 0},
+}
+
+local BuffIDs = {
+	["DRUID"] = {
+		{774, "TOPLEFT", {0.8, 0.4, 0.8}},      -- Rejuvenation
+		{155777, "LEFT", {0.8, 0.4, 0.8}},      -- Germination
+		{8936, "TOPRIGHT", {0.2, 0.8, 0.2}},    -- Regrowth
+		{33763, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- Lifebloom
+		{48438, "BOTTOMRIGHT", {0.8, 0.4, 0}},  -- Wild Growth
+		{102342, "RIGHT", {0.8, 0.2, 0.2}},     -- Ironbark
+	},
+	
+	["MONK"] = {
+		{119611, "TOPLEFT", {0.32, 0.89, 0.74}},	 -- Renewing Mist
+		{116849, "TOPRIGHT", {0.2, 0.8, 0.2}},	 -- Life Cocoon
+		{124682, "BOTTOMLEFT", {0.9, 0.8, 0.48}}, -- Enveloping Mist
+		{124081, "BOTTOMRIGHT", {0.7, 0.4, 0}},  -- Zen Sphere
+		{115175, "LEFT", {0.24, 0.87, 0.49}},  -- Soothing Mist
+	},
+	
+	["PALADIN"] = {
+		{53563, "TOPRIGHT", {0.7, 0.3, 0.7}},	        -- Beacon of Light
+		{156910, "TOPRIGHT", {0.7, 0.3, 0.7}},	        -- Beacon of Faith
+		{200025, "TOPRIGHT", {0.7, 0.3, 0.7}},	        -- Beacon of Virtue
+		{1022, "BOTTOMRIGHT", {0.29, 0.45, 0.73}, true},-- Blessing of Protection
+		{1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true},	-- Blessing of Freedom
+		--{1038, "BOTTOMRIGHT", {0.93, 0.75, 0}, true},	-- Blessing of Salvation
+		{6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},	-- Blessing of Sacrifice
+		--{223306, "TOPLEFT", {0.81, 0.85, 0.1}},	        -- Bestow Faith
+	},
+	
+	["PRIEST"] = {
+		{41635, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},  -- Prayer of Mending
+		{139, "BOTTOMLEFT", {0.4, 0.7, 0.2}},     -- Renew
+		{17, "TOPLEFT", {0.81, 0.85, 0.1}, true}, -- Power Word: Shield
+		{194384, "TOPRIGHT", {1, 0, 0}},          -- Atonement
+		
+		{33206, "BOTTOMLEFT", {237/255, 233/255, 221/255}},        -- Pain Suppression
+		{121536, "BOTTOMRIGHT", {251/255, 193/255, 8/255}},        -- Angelic Feather
+	},
+	
+	["SHAMAN"] = {
+		{61295, "TOPLEFT", {0.7, 0.3, 0.7}},       -- Riptide
+	},
+}
+
+local PostCreateAuraWatchIcon = function(auras, icon)
+	icon.icon:SetScaledPoint("TOPLEFT", 1, -1)
+	icon.icon:SetScaledPoint("BOTTOMRIGHT", -1, 1)
+	icon.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	icon.icon:SetDrawLayer("ARTWORK")
+	
+	icon.bg = icon:CreateTexture(nil, "BORDER")
+	icon.bg:SetScaledPoint("TOPLEFT", icon, -1, 1)
+	icon.bg:SetScaledPoint("BOTTOMRIGHT", icon, 1, -1)
+	icon.bg:SetTexture(0, 0, 0)
+	
+	icon.overlay:SetTexture()
 end
 
 local StyleParty = function(self, unit)
@@ -1490,6 +1698,8 @@ local StyleParty = function(self, unit)
 	Health:SetScaledHeight(Settings["party-health-height"])
 	Health:SetFrameLevel(5)
 	Health:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetReverseFill(Settings["party-health-reverse"])
+	Health:SetOrientation(Settings["party-health-orientation"])
 	
 	local HealthBG = self:CreateTexture(nil, "BORDER")
 	HealthBG:SetScaledPoint("TOPLEFT", Health, 0, 0)
@@ -1499,7 +1709,7 @@ local StyleParty = function(self, unit)
 	
 	local AbsorbsBar = CreateFrame("StatusBar", nil, self)
 	AbsorbsBar:SetAllPoints(Health)
-	AbsorbsBar:SetStatusBarTexture(vUI.GlobalTexture)
+	AbsorbsBar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 	AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 	AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
 	
@@ -1582,13 +1792,12 @@ local StyleParty = function(self, unit)
 	-- Debuffs
 	if Settings["party-show-debuffs"] then
 		local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
-		Debuffs:SetScaledSize(19, 76)
-		Debuffs:SetScaledPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 0)
+		Debuffs:SetScaledSize(76, 19)
+		Debuffs:SetScaledPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
 		Debuffs.size = 19
 		Debuffs.num = 4
-		Debuffs.spacing = -1
+		Debuffs.spacing = 2
 		Debuffs.initialAnchor = "TOPLEFT"
-		Debuffs["growth-y"] = "UP"
 		Debuffs["growth-x"] = "RIGHT"
 		Debuffs.PostCreateIcon = PostCreateIcon
 		Debuffs.PostUpdateIcon = PostUpdateIcon
@@ -1596,6 +1805,66 @@ local StyleParty = function(self, unit)
 		
 		self.Debuffs = Debuffs
 	end
+	
+	-- if aura watch
+	--if (not BuffIDs[Class]) then
+	--	return
+	--end
+	
+	-- START
+	if BuffIDs[vUI.UserClass] then
+		local Auras = CreateFrame("Frame", nil, Health)
+		Auras:SetScaledPoint("TOPLEFT", Health, 2, -2)
+		Auras:SetScaledPoint("BOTTOMRIGHT", Health, -2, 2)
+		Auras:SetFrameLevel(10)
+		Auras:SetFrameStrata("HIGH")
+		Auras.presentAlpha = 1
+		Auras.missingAlpha = 0
+		Auras.strictMatching = true
+		Auras.icons = {}
+		Auras.PostCreateIcon = PostCreateAuraWatchIcon
+		
+		local Buffs = {}
+		
+		for key, value in pairs(BuffIDs[vUI.UserClass]) do
+			tinsert(Buffs, value)
+		end
+		
+		for key, spell in pairs(Buffs) do
+			local Icon = CreateFrame("Frame", nil, Auras)
+			Icon.spellID = spell[1]
+			Icon.anyUnit = spell[4]
+			Icon.strictMatching = true
+			Icon:SetScaledSize(8, 8)
+			Icon:SetPoint(spell[2], 0, 0)
+			
+			local Texture = Icon:CreateTexture(nil, "OVERLAY")
+			Texture:SetAllPoints(Icon)
+			Texture:SetTexture(Media:GetTexture("Blank"))
+			
+			local BG = Icon:CreateTexture(nil, "BORDER")
+			BG:SetScaledPoint("TOPLEFT", Icon, -1, 1)
+			BG:SetScaledPoint("BOTTOMRIGHT", Icon, 1, -1)
+			BG:SetTexture(Media:GetTexture("Blank"))
+			BG:SetVertexColor(0, 0, 0)
+			
+			if (spell[3]) then
+				Texture:SetVertexColor(unpack(spell[3]))
+			else
+				Texture:SetVertexColor(0.8, 0.8, 0.8)
+			end
+			
+			local Count = Icon:CreateFontString(nil, "OVERLAY")
+			Count:SetFontInfo(Settings["ui-widget-font"], 10)
+			Count:SetScaledPoint("CENTER", unpack(Offsets[spell[2]]))
+			Icon.count = Count
+			
+			Auras.icons[spell[1]] = Icon
+		end
+		
+		self.AuraWatch = Auras
+	end
+	-- END!
 	
 	-- Leader
     local Leader = Health:CreateTexture(nil, "OVERLAY")
@@ -1700,6 +1969,8 @@ local StylePartyPet = function(self, unit)
 	Health:SetScaledHeight(Settings["party-pets-health-height"])
 	Health:SetFrameLevel(5)
 	Health:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetReverseFill(Settings["party-pets-health-reverse"])
+	Health:SetOrientation(Settings["party-pets-health-orientation"])
 	
 	local HealBar = CreateFrame("StatusBar", nil, self)
 	HealBar:SetAllPoints(Health)
@@ -1753,7 +2024,7 @@ local StylePartyPet = function(self, unit)
 	end]]
 	
 	--self:Tag(HealthRight, "[HealthColor][perhp]")
-	self:Tag(HealthMiddle, "[Name10]")
+	self:Tag(HealthMiddle, "[NameColor][Name10]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -1910,6 +2181,211 @@ local StyleRaid = function(self, unit)
 	self.ResurrectIndicator = ResurrectIndicator
 end
 
+local StyleBoss = function(self, unit)
+	-- General
+	self:RegisterForClicks("AnyUp")
+	self:SetScript("OnEnter", UnitFrame_OnEnter)
+	self:SetScript("OnLeave", UnitFrame_OnLeave)
+	
+	self:SetBackdrop(vUI.BackdropAndBorder)
+	self:SetBackdropColor(0, 0, 0)
+	self:SetBackdropBorderColor(0, 0, 0)
+	
+	-- Health Bar
+	local Health = CreateFrame("StatusBar", nil, self)
+	Health:SetScaledPoint("TOPLEFT", self, 1, -1)
+	Health:SetScaledPoint("TOPRIGHT", self, -1, -1)
+	Health:SetScaledHeight(22)
+	Health:SetFrameLevel(5)
+	Health:SetMinMaxValues(0, 1)
+	Health:SetValue(1)
+	Health:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	
+	local HealBar = CreateFrame("StatusBar", nil, self)
+	HealBar:SetAllPoints(Health)
+	HealBar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarColor(0, 0.48, 0)
+	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
+	
+	local HealthBG = self:CreateTexture(nil, "BORDER")
+	HealthBG:SetScaledPoint("TOPLEFT", Health, 0, 0)
+	HealthBG:SetScaledPoint("BOTTOMRIGHT", Health, 0, 0)
+	HealthBG:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	HealthBG:SetAlpha(0.2)
+	
+	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
+	HealthLeft:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+	HealthLeft:SetScaledPoint("LEFT", Health, 3, 0)
+	HealthLeft:SetJustifyH("LEFT")
+	
+	local HealthRight = Health:CreateFontString(nil, "OVERLAY")
+	HealthRight:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+	HealthRight:SetScaledPoint("RIGHT", Health, -3, 0)
+	HealthRight:SetJustifyH("RIGHT")
+	
+	-- Target Icon
+	local RaidTarget = Health:CreateTexture(nil, 'OVERLAY')
+	RaidTarget:SetScaledSize(16, 16)
+	RaidTarget:SetPoint("CENTER", Health, "TOP")
+	
+	local R, G, B = vUI:HexToRGB(Settings["ui-header-texture-color"])
+	
+	-- Attributes
+	Health.frequentUpdates = true
+	Health.Smooth = true
+	Health.colorTapping = true
+	Health.colorDisconnected = true
+	self.colors.health = {R, G, B}
+	
+	if Settings["unitframes-class-color"] then
+		Health.colorReaction = true
+		Health.colorClass = true
+		
+		self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [Name30]")
+	else
+		Health.colorHealth = true
+		
+		self:Tag(HealthLeft, "[LevelColor][Level][Plus] [NameColor][Name30]")
+	end
+	
+	local Power = CreateFrame("StatusBar", nil, self)
+	Power:SetScaledPoint("BOTTOMLEFT", self, 1, 1)
+	Power:SetScaledPoint("BOTTOMRIGHT", self, -1, 1)
+	Power:SetScaledHeight(Settings["unitframes-target-power-height"])
+	Power:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	
+	local PowerBG = Power:CreateTexture(nil, "BORDER")
+	PowerBG:SetScaledPoint("TOPLEFT", Power, 0, 0)
+	PowerBG:SetScaledPoint("BOTTOMRIGHT", Power, 0, 0)
+	PowerBG:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	PowerBG:SetAlpha(0.2)
+	
+	local PowerLeft = Power:CreateFontString(nil, "OVERLAY")
+	PowerLeft:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+	PowerLeft:SetScaledPoint("LEFT", Power, 3, 0)
+	PowerLeft:SetJustifyH("LEFT")
+	
+	local PowerRight = Power:CreateFontString(nil, "OVERLAY")
+	PowerRight:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+	PowerRight:SetScaledPoint("RIGHT", Power, -3, 0)
+	PowerRight:SetJustifyH("RIGHT")
+	
+	-- Attributes
+	Power.frequentUpdates = true
+	Power.colorReaction = true
+	Power.Smooth = true
+	
+	if Settings["unitframes-class-color"] then
+		Power.colorPower = true
+	else
+		Power.colorClass = true
+	end
+	
+	-- Auras
+	local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
+	Buffs:SetScaledSize(Settings["unitframes-player-width"], 28)
+	Buffs:SetScaledPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
+	Buffs.size = 28
+	Buffs.spacing = 2
+	Buffs.num = 8
+	Buffs.initialAnchor = "TOPLEFT"
+	Buffs["growth-x"] = "RIGHT"
+	Buffs["growth-y"] = "UP"
+	Buffs.PostCreateIcon = PostCreateIcon
+	Buffs.PostUpdateIcon = PostUpdateIcon
+	
+	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
+	Debuffs:SetScaledSize(Settings["unitframes-player-width"], 28)
+	Debuffs:SetScaledWidth(Settings["unitframes-player-width"])
+	--Debuffs:SetScaledPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 31)
+	Debuffs:SetScaledPoint("BOTTOM", Buffs, "TOP", 0, 2)
+	Debuffs.size = 28
+	Debuffs.spacing = 2
+	Debuffs.num = 8
+	Debuffs.initialAnchor = "TOPRIGHT"
+	Debuffs["growth-x"] = "LEFT"
+	Debuffs["growth-y"] = "UP"
+	Debuffs.PostCreateIcon = PostCreateIcon
+	Debuffs.PostUpdateIcon = PostUpdateIcon
+	Debuffs.onlyShowPlayer = Settings["unitframes-only-player-debuffs"]
+	
+    -- Castbar
+    local Castbar = CreateFrame("StatusBar", self:GetName() .. " Casting Bar", self)
+    Castbar:SetScaledSize(250, 22)
+    Castbar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	
+	local CastbarBG = Castbar:CreateTexture(nil, "ARTWORK")
+	CastbarBG:SetScaledPoint("TOPLEFT", Castbar, 0, 0)
+	CastbarBG:SetScaledPoint("BOTTOMRIGHT", Castbar, 0, 0)
+    CastbarBG:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	CastbarBG:SetAlpha(0.2)
+	
+    -- Add a background
+    local Background = Castbar:CreateTexture(nil, "BACKGROUND")
+    Background:SetScaledPoint("TOPLEFT", Castbar, -1, 1)
+    Background:SetScaledPoint("BOTTOMRIGHT", Castbar, 1, -1)
+    Background:SetTexture(Media:GetTexture("Blank"))
+    Background:SetVertexColor(0, 0, 0)
+	
+    -- Add a timer
+    local Time = Castbar:CreateFontString(nil, "OVERLAY")
+	Time:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+	Time:SetScaledPoint("RIGHT", Castbar, -3, 0)
+	Time:SetJustifyH("RIGHT")
+	
+    -- Add spell text
+    local Text = Castbar:CreateFontString(nil, "OVERLAY")
+	Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+	Text:SetScaledPoint("LEFT", Castbar, 3, 0)
+	Text:SetScaledSize(250 * 0.7, Settings["ui-font-size"])
+	Text:SetJustifyH("LEFT")
+	
+    -- Add spell icon
+    local Icon = Castbar:CreateTexture(nil, "OVERLAY")
+    Icon:SetScaledSize(22, 22)
+    Icon:SetScaledPoint("TOPRIGHT", Castbar, "TOPLEFT", -4, 0)
+    Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	
+    local IconBG = Castbar:CreateTexture(nil, "BACKGROUND")
+    IconBG:SetScaledPoint("TOPLEFT", Icon, -1, 1)
+    IconBG:SetScaledPoint("BOTTOMRIGHT", Icon, 1, -1)
+    IconBG:SetTexture(Media:GetTexture("Blank"))
+    IconBG:SetVertexColor(0, 0, 0)
+	
+    Castbar.bg = CastbarBG
+    Castbar.Time = Time
+    Castbar.Text = Text
+    Castbar.Icon = Icon
+    Castbar.showTradeSkills = true
+    Castbar.timeToHold = 0.3
+	Castbar.PostCastStart = PostCastStart
+	Castbar.PostChannelStart = PostCastStart
+	
+	-- Tags
+	self:Tag(HealthRight, "[HealthColor][perhp]")
+	self:Tag(PowerLeft, "[HealthValues]")
+	self:Tag(PowerRight, "[PowerValues]")
+	
+	self.Range = {
+		insideAlpha = 1,
+		outsideAlpha = 0.5,
+	}
+	
+	self.Health = Health
+	self.Health.bg = HealthBG
+	self.HealBar = HealBar
+	self.HealthLeft = HealthLeft
+	self.HealthRight = HealthRight
+	self.Power = Power
+	self.Power.bg = PowerBG
+	self.PowerLeft = PowerLeft
+	self.PowerRight = PowerRight
+	self.Buffs = Buffs
+	self.Debuffs = Debuffs
+	self.Castbar = Castbar
+	self.RaidTargetIndicator = RaidTarget
+end
+
 local Style = function(self, unit)
 	if (unit == "player") then
 		StylePlayer(self, unit)
@@ -1925,8 +2401,10 @@ local Style = function(self, unit)
 		StylePartyPet(self, unit)
 	elseif (find(unit, "party") and not find(unit, "pet") and Settings["party-enable"]) then
 		StyleParty(self, unit)
-	elseif (match(unit, "nameplate") and Settings["nameplates-enable"]) then
+	elseif (find(unit, "nameplate") and Settings["nameplates-enable"]) then
 		StyleNamePlate(self, unit)
+	elseif find(unit, "boss%d") then
+		StyleBoss(self, unit)
 	end
 end
 
@@ -1972,11 +2450,11 @@ UF:SetScript("OnEvent", function(self, event)
 			
 			local TargetTarget = oUF:Spawn("targettarget", "vUI Target Target")
 			TargetTarget:SetScaledSize(Settings["unitframes-targettarget-width"], Settings["unitframes-targettarget-health-height"] + Settings["unitframes-targettarget-power-height"] + 3)
-			TargetTarget:SetScaledPoint("TOPRIGHT", Target, "BOTTOMRIGHT", 0, -3)
+			TargetTarget:SetScaledPoint("TOPRIGHT", Target, "BOTTOMRIGHT", 0, -2)
 			
 			local Pet = oUF:Spawn("pet", "vUI Pet")
 			Pet:SetScaledSize(Settings["unitframes-pet-width"], Settings["unitframes-pet-health-height"] + Settings["unitframes-pet-power-height"] + 3)
-			Pet:SetScaledPoint("TOPLEFT", Player, "BOTTOMLEFT", 0, -3)
+			Pet:SetScaledPoint("TOPLEFT", Player, "BOTTOMLEFT", 0, -2)
 			
 			vUI.UnitFrames["player"] = Player
 			vUI.UnitFrames["target"] = Target
@@ -1995,12 +2473,13 @@ UF:SetScript("OnEvent", function(self, event)
 			local Party = oUF:SpawnHeader("vUI Party", nil, "party,solo",
 				"initial-width", Settings["party-width"],
 				"initial-height", (Settings["party-health-height"] + Settings["party-power-height"] + 3),
-				"showSolo", false,
+				"showSolo", true,
 				"showPlayer", true,
 				"showParty", true,
 				"showRaid", false,
 				"xoffset", 2,
-				"yOffset", -2,
+				"yOffset", 0,
+				"point", "LEFT",
 				"oUF-initialConfigFunction", [[
 					local Header = self:GetParent()
 					
@@ -2010,10 +2489,13 @@ UF:SetScript("OnEvent", function(self, event)
 			)
 			
 			self.PartyAnchor = CreateFrame("Frame", "vUI Party Anchor", UIParent)
-			self.PartyAnchor:SetScaledSize((4 * (Settings["party-health-height"] + Settings["party-power-height"] + 3) + 4 * 2), ((Settings["party-health-height"] + Settings["party-power-height"]) * 10) + (2 * (10 - 1)))
-			self.PartyAnchor:SetScaledPoint("LEFT", UIParent, 10, 0)
+			self.PartyAnchor:SetScaledSize((5 * Settings["party-width"] + (4 * 2)), (Settings["party-health-height"] + Settings["party-power-height"]) + 3)
+			--self.PartyAnchor:SetScaledPoint("LEFT", UIParent, 10, 0)
+			self.PartyAnchor:SetScaledPoint("BOTTOMLEFT", vUIChatFrameTop, "TOPLEFT", -3, 5)
 			
-			Party:SetScaledPoint("LEFT", self.PartyAnchor, 0, 0)
+			Party:SetScaledPoint("BOTTOMLEFT", self.PartyAnchor, 0, 0)
+			
+			vUI.UnitFrames["party"] = Party
 			
 			Move:Add(self.PartyAnchor)
 			
@@ -2035,7 +2517,7 @@ UF:SetScript("OnEvent", function(self, event)
 					]]
 				)
 				
-				PartyPet:SetScaledPoint("TOPLEFT", Party, "BOTTOMLEFT", 0, -2)
+				PartyPet:SetScaledPoint("BOTTOMLEFT", Party, "TOPLEFT", 0, 2)
 			end
 		end
 		
@@ -2081,7 +2563,25 @@ UF:SetScript("OnEvent", function(self, event)
 			
 			Raid:SetScaledPoint("TOPLEFT", self.RaidAnchor, 0, 0)
 			
+			vUI.UnitFrames["raid"] = Raid
+			
 			Move:Add(self.RaidAnchor)
+		end
+		
+		-- if enable boss blah blah
+		for i = 1, 5 do
+			local Boss = oUF:Spawn("boss" .. i, "vUI Boss " .. i)
+			Boss:SetScaledSize(Settings["unitframes-target-width"], Settings["unitframes-target-health-height"] + Settings["unitframes-target-power-height"] + 3)
+			
+			if (i == 1) then
+				Boss:SetScaledPoint("LEFT", UIParent, 300, 200)
+			else
+				Boss:SetScaledPoint("TOP", vUI.UnitFrames["boss" .. (i-1)], "BOTTOM", 0, -(Settings["unitframes-target-health-height"] + Settings["unitframes-target-power-height"] + 5))
+			end
+			
+			Move:Add(Boss)
+			
+			vUI.UnitFrames["boss" .. i] = Boss
 		end
 		
 		if Settings["nameplates-enable"] then
@@ -2091,16 +2591,6 @@ UF:SetScript("OnEvent", function(self, event)
 		UpdateShowPlayerBuffs(Settings["unitframes-show-player-buffs"])
 	end
 end)
-
-local TogglePlayerName = function(value)
-	if value then
-		oUF_vUIPlayer:Tag(oUF_vUIPlayer.Name, "[Name15]")
-		oUF_vUIPlayer:UpdateTags()
-	else
-		oUF_vUIPlayer:Tag(oUF_vUIPlayer.Name, "")
-		oUF_vUIPlayer:UpdateTags()
-	end
-end
 
 local UpdateOnlyPlayerDebuffs = function(value)
 	if vUI.UnitFrames["target"] then
@@ -2119,15 +2609,17 @@ local UpdatePlayerWidth = function(value)
 		Frame.Debuffs:SetScaledWidth(value)
 		
 		-- Combo points
-		Frame.ComboPoints:SetScaledWidth(value)
-	
-		local Width = (value / 5)
-		
-		for i = 1, 5 do
-			Frame.ComboPoints[i]:SetScaledWidth(Width)
+		if Frame.ComboPoints then
+			Frame.ComboPoints:SetScaledWidth(value)
 			
-			if (i ~= 1) then
-				Frame.ComboPoints[i]:SetScaledWidth(Width - 2)
+			local Width = (value / 5)
+			
+			for i = 1, 5 do
+				Frame.ComboPoints[i]:SetScaledWidth(Width)
+				
+				if (i ~= 1) then
+					Frame.ComboPoints[i]:SetScaledWidth(Width - 2)
+				end
 			end
 		end
 	end
@@ -2231,6 +2723,230 @@ local UpdatePetPowerHeight = function(value)
 	end
 end
 
+local UpdatePlayerHealthFill = function(value)
+	if vUI.UnitFrames["player"] then
+		vUI.UnitFrames["player"].Health:SetReverseFill(value)
+	end
+end
+
+local UpdatePlayerPowerFill = function(value)
+	if vUI.UnitFrames["player"] then
+		vUI.UnitFrames["player"].Power:SetReverseFill(value)
+	end
+end
+
+local UpdateTargetHealthFill = function(value)
+	if vUI.UnitFrames["target"] then
+		vUI.UnitFrames["target"].Health:SetReverseFill(value)
+	end
+end
+
+local UpdateTargetPowerFill = function(value)
+	if vUI.UnitFrames["target"] then
+		vUI.UnitFrames["target"].Power:SetReverseFill(value)
+	end
+end
+
+local UpdateTargetTargetHealthFill = function(value)
+	if vUI.UnitFrames["targettarget"] then
+		vUI.UnitFrames["targettarget"].Health:SetReverseFill(value)
+	end
+end
+
+local UpdateTargetTargetPowerFill = function(value)
+	if vUI.UnitFrames["targettarget"] then
+		vUI.UnitFrames["targettarget"].Power:SetReverseFill(value)
+	end
+end
+
+local UpdatePetHealthFill = function(value)
+	if vUI.UnitFrames["pet"] then
+		vUI.UnitFrames["pet"].Health:SetReverseFill(value)
+	end
+end
+
+local UpdatePetPowerFill = function(value)
+	if vUI.UnitFrames["pet"] then
+		vUI.UnitFrames["pet"].Power:SetReverseFill(value)
+	end
+end
+
+local UpdatePlayerHealthColor = function(value)
+	if vUI.UnitFrames["player"] then
+		local Health = vUI.UnitFrames["player"].Health
+		
+		if (value == "CLASS") then
+			Health.colorClass = true
+			Health.colorReaction = true
+			Health.colorHealth = false
+		elseif (value == "REACTION") then
+			Health.colorClass = false
+			Health.colorReaction = true
+			Health.colorHealth = false
+		elseif (value == "CUSTOM") then
+			Health.colorClass = false
+			Health.colorReaction = false
+			Health.colorHealth = true
+		end
+		
+		Health:ForceUpdate()
+	end
+end
+
+local UpdatePlayerPowerColor = function(value)
+	if vUI.UnitFrames["player"] then
+		local Power = vUI.UnitFrames["player"].Power
+		
+		if (value == "POWER_TYPE") then
+			Power.colorPower = true
+			Power.colorClass = false
+			Power.colorReaction = false
+		elseif (value == "REACTION") then
+			Power.colorPower = false
+			Power.colorClass = false
+			Power.colorReaction = true
+		elseif (value == "CLASS") then
+			Power.colorPower = false
+			Power.colorClass = true
+			Power.colorReaction = true
+		end
+		
+		Power:ForceUpdate()
+	end
+end
+
+local UpdateTargetHealthColor = function(value)
+	if vUI.UnitFrames["target"] then
+		local Health = vUI.UnitFrames["target"].Health
+		
+		if (value == "CLASS") then
+			Health.colorClass = true
+			Health.colorReaction = true
+			Health.colorHealth = false
+		elseif (value == "REACTION") then
+			Health.colorClass = false
+			Health.colorReaction = true
+			Health.colorHealth = false
+		elseif (value == "CUSTOM") then
+			Health.colorClass = false
+			Health.colorReaction = false
+			Health.colorHealth = true
+		end
+		
+		Health:ForceUpdate()
+	end
+end
+
+local UpdateTargetPowerColor = function(value)
+	if vUI.UnitFrames["target"] then
+		local Power = vUI.UnitFrames["target"].Power
+		
+		if (value == "POWER_TYPE") then
+			Power.colorPower = true
+			Power.colorClass = false
+			Power.colorReaction = false
+		elseif (value == "REACTION") then
+			Power.colorPower = false
+			Power.colorClass = false
+			Power.colorReaction = true
+		elseif (value == "CLASS") then
+			Power.colorPower = false
+			Power.colorClass = true
+			Power.colorReaction = true
+		end
+		
+		Power:ForceUpdate()
+	end
+end
+
+local UpdateTargetTargetHealthColor = function(value)
+	if vUI.UnitFrames["targettarget"] then
+		local Health = vUI.UnitFrames["targettarget"].Health
+		
+		if (value == "CLASS") then
+			Health.colorClass = true
+			Health.colorReaction = true
+			Health.colorHealth = false
+		elseif (value == "REACTION") then
+			Health.colorClass = false
+			Health.colorReaction = true
+			Health.colorHealth = false
+		elseif (value == "CUSTOM") then
+			Health.colorClass = false
+			Health.colorReaction = false
+			Health.colorHealth = true
+		end
+		
+		Health:ForceUpdate()
+	end
+end
+
+local UpdateTargetTargetPowerColor = function(value)
+	if vUI.UnitFrames["targettarget"] then
+		local Power = vUI.UnitFrames["targettarget"].Power
+		
+		if (value == "POWER_TYPE") then
+			Power.colorPower = true
+			Power.colorClass = false
+			Power.colorReaction = false
+		elseif (value == "REACTION") then
+			Power.colorPower = false
+			Power.colorClass = false
+			Power.colorReaction = true
+		elseif (value == "CLASS") then
+			Power.colorPower = false
+			Power.colorClass = true
+			Power.colorReaction = true
+		end
+		
+		Power:ForceUpdate()
+	end
+end
+
+local UpdatePetHealthColor = function(value)
+	if vUI.UnitFrames["pet"] then
+		local Health = vUI.UnitFrames["pet"].Health
+		
+		if (value == "CLASS") then
+			Health.colorClass = true
+			Health.colorReaction = true
+			Health.colorHealth = false
+		elseif (value == "REACTION") then
+			Health.colorClass = false
+			Health.colorReaction = true
+			Health.colorHealth = false
+		elseif (value == "CUSTOM") then
+			Health.colorClass = false
+			Health.colorReaction = false
+			Health.colorHealth = true
+		end
+		
+		Health:ForceUpdate()
+	end
+end
+
+local UpdatePetPowerColor = function(value)
+	if vUI.UnitFrames["pet"] then
+		local Power = vUI.UnitFrames["pet"].Power
+		
+		if (value == "POWER_TYPE") then
+			Power.colorPower = true
+			Power.colorClass = false
+			Power.colorReaction = false
+		elseif (value == "REACTION") then
+			Power.colorPower = false
+			Power.colorClass = false
+			Power.colorReaction = true
+		elseif (value == "CLASS") then
+			Power.colorPower = false
+			Power.colorClass = true
+			Power.colorReaction = true
+		end
+		
+		Power:ForceUpdate()
+	end
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Unit Frames"])
 	
@@ -2246,22 +2962,115 @@ GUI:AddOptions(function(self)
 	Left:CreateSlider("unitframes-player-power-height", Settings["unitframes-player-power-height"], 2, 30, 1, "Power Bar Height", "Set the height of the player power bar", UpdatePlayerPowerHeight)
 	Left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
 	Left:CreateSwitch("unitframes-only-player-debuffs", Settings["unitframes-only-player-debuffs"], Language["Only Display Player Debuffs"], Language["If enabled, only your own debuffs will|nbe displayed on the target"], UpdateOnlyPlayerDebuffs)
+	Left:CreateSwitch("unitframes-player-health-reverse", Settings["unitframes-player-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePlayerHealthFill)
+	Left:CreateSwitch("unitframes-player-power-reverse", Settings["unitframes-player-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePlayerPowerFill)
+	Left:CreateDropdown("unitframes-player-health-color", Settings["unitframes-player-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdatePlayerHealthColor)
+	Left:CreateDropdown("unitframes-player-power-color", Settings["unitframes-player-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER_TYPE"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePlayerPowerColor)
 	
 	Right:CreateHeader(Language["Target"])
 	Right:CreateSlider("unitframes-target-width", Settings["unitframes-target-width"], 120, 320, 1, "Width", "Set the width of the target unit frame", UpdateTargetWidth)
 	Right:CreateSlider("unitframes-target-health-height", Settings["unitframes-target-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the target health bar", UpdateTargetHealthHeight)
 	Right:CreateSlider("unitframes-target-power-height", Settings["unitframes-target-power-height"], 2, 30, 1, "Power Bar Height", "Set the height of the target power bar", UpdateTargetPowerHeight)
+	Right:CreateSwitch("unitframes-target-health-reverse", Settings["unitframes-target-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateTargetHealthFill)
+	Right:CreateSwitch("unitframes-target-power-reverse", Settings["unitframes-target-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateTargetPowerFill)
+	Right:CreateDropdown("unitframes-target-health-color", Settings["unitframes-target-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Color"], Language["Set the color of the health bar"], UpdateTargetHealthColor)
+	Right:CreateDropdown("unitframes-target-power-color", Settings["unitframes-target-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER_TYPE"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateTargetPowerColor)
 	
-	Left:CreateHeader(Language["Target Target"])
+	Left:CreateHeader(Language["Target of Target"])
 	Left:CreateSlider("unitframes-targettarget-width", Settings["unitframes-targettarget-width"], 60, 320, 1, "Width", "Set the width of the target's target unit frame", UpdateTargetTargetWidth)
-	Left:CreateSlider("unitframes-targettarget-health-height", Settings["unitframes-targettarget-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the player health bar", UpdateTargetTargetHealthHeight)
-	Left:CreateSlider("unitframes-targettarget-power-height", Settings["unitframes-targettarget-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the player power bar", UpdateTargetTargetPowerHeight)
+	Left:CreateSlider("unitframes-targettarget-health-height", Settings["unitframes-targettarget-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the target of target health bar", UpdateTargetTargetHealthHeight)
+	Left:CreateSlider("unitframes-targettarget-power-height", Settings["unitframes-targettarget-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the target of target power bar", UpdateTargetTargetPowerHeight)
+	Left:CreateSwitch("unitframes-targettarget-health-reverse", Settings["unitframes-targettarget-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateTargetTargetHealthFill)
+	Left:CreateSwitch("unitframes-targettarget-power-reverse", Settings["unitframes-targettarget-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateTargetTargetPowerFill)
+	Left:CreateDropdown("unitframes-targettarget-health-color", Settings["unitframes-targettarget-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdateTargetTargetHealthColor)
+	Left:CreateDropdown("unitframes-targettarget-power-color", Settings["unitframes-targettarget-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER_TYPE"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateTargetTargetPowerColor)
 	
 	Right:CreateHeader(Language["Pet"])
 	Right:CreateSlider("unitframes-pet-width", Settings["unitframes-pet-width"], 60, 320, 1, "Width", "Set the width of the pet unit frame", UpdatePetWidth)
 	Right:CreateSlider("unitframes-pet-health-height", Settings["unitframes-pet-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the pet health bar", UpdatePetHealthHeight)
 	Right:CreateSlider("unitframes-pet-power-height", Settings["unitframes-pet-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the pet power bar", UpdatePetPowerHeight)
+	Right:CreateSwitch("unitframes-pet-health-reverse", Settings["unitframes-pet-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePetHealthFill)
+	Right:CreateSwitch("unitframes-pet-power-reverse", Settings["unitframes-pet-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePetPowerFill)
+	Right:CreateDropdown("unitframes-pet-health-color", Settings["unitframes-pet-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdatePetHealthColor)
+	Right:CreateDropdown("unitframes-pet-power-color", Settings["unitframes-pet-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER_TYPE"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePetPowerColor)
 end)
+
+local UpdatePartyWidth = function(value)
+	if vUI.UnitFrames["party"] then
+		local PartyHeader = vUI.UnitFrames["party"]
+		local Unit
+		
+		for i = 1, PartyHeader:GetNumChildren() do
+			Unit = select(i, PartyHeader:GetChildren())
+			
+			if Unit then
+				Unit:SetScaledWidth(value)
+			end
+		end
+	end
+end
+
+local UpdatePartyHealthHeight = function(value)
+	if vUI.UnitFrames["party"] then
+		local PartyHeader = vUI.UnitFrames["party"]
+		local Unit
+		
+		for i = 1, PartyHeader:GetNumChildren() do
+			Unit = select(i, PartyHeader:GetChildren())
+			
+			if Unit then
+				Unit:SetScaledHeight(value + Settings["party-power-height"] + 3)
+				Unit.Health:SetScaledHeight(value)
+			end
+		end
+	end
+end
+
+local UpdatePartyPowerHeight = function(value)
+	if vUI.UnitFrames["party"] then
+		local PartyHeader = vUI.UnitFrames["party"]
+		local Unit
+		
+		for i = 1, PartyHeader:GetNumChildren() do
+			Unit = select(i, PartyHeader:GetChildren())
+			
+			if Unit then
+				Unit:SetScaledHeight(value + Settings["party-health-height"] + 3)
+				Unit.Power:SetScaledHeight(value)
+			end
+		end
+	end
+end
+
+local UpdatePartyHealthReverseFill = function(value)
+	if vUI.UnitFrames["party"] then
+		local PartyHeader = vUI.UnitFrames["party"]
+		local Unit
+		
+		for i = 1, PartyHeader:GetNumChildren() do
+			Unit = select(i, PartyHeader:GetChildren())
+			
+			if Unit then
+				Unit.Health:SetReverseFill(value)
+			end
+		end
+	end
+end
+
+local UpdatePartyHealthOrientation = function(value)
+	if vUI.UnitFrames["party"] then
+		local PartyHeader = vUI.UnitFrames["party"]
+		local Unit
+		
+		for i = 1, PartyHeader:GetNumChildren() do
+			Unit = select(i, PartyHeader:GetChildren())
+			
+			if Unit then
+				Unit.Health:SetOrientation(value)
+			end
+		end
+	end
+end
 
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Party"])
@@ -2274,9 +3083,13 @@ GUI:AddOptions(function(self)
 	Right:CreateSwitch("party-show-debuffs", Settings["party-show-debuffs"], Language["Enable Debuffs"], "Enable to display debuffs on party members", ReloadUI):RequiresReload(true)
 	
 	Left:CreateHeader(Language["Party Size"])
-	Left:CreateSlider("party-width", Settings["party-width"], 40, 200, 1, "Width", "Set the width of the pet unit frame", ReloadUI, nil):RequiresReload(true)
-	Left:CreateSlider("party-health-height", Settings["party-health-height"], 12, 60, 1, "Health Height", "Set the height of party health bars", ReloadUI, nil):RequiresReload(true)
-	Left:CreateSlider("party-power-height", Settings["party-power-height"], 2, 30, 1, "Power Height", "Set the height of party power bars", ReloadUI, nil):RequiresReload(true)
+	Left:CreateSlider("party-width", Settings["party-width"], 40, 200, 1, "Width", "Set the width of the party unit frame", UpdatePartyWidth)
+	Left:CreateSlider("party-health-height", Settings["party-health-height"], 12, 60, 1, "Health Height", "Set the height of party health bars", UpdatePartyHealthHeight)
+	Left:CreateSlider("party-power-height", Settings["party-power-height"], 2, 30, 1, "Power Height", "Set the height of party power bars", UpdatePartyPowerHeight)
+	
+	Left:CreateHeader(Language["Health"])
+	Left:CreateSwitch("party-health-reverse", Settings["party-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePartyHealthReverseFill)
+	Left:CreateDropdown("party-health-orientation", Settings["party-health-orientation"], {[Language["Horizontal"]] = "HORIZONTAL", [Language["Vertical"]] = "VERTICAL"}, Language["Fill Orientation"], Language["Set the fill orientation of the health bar"], UpdatePartyHealthOrientation)
 	
 	Right:CreateHeader(Language["Party Pets Size"])
 	Right:CreateSlider("party-pets-width", Settings["party-pets-width"], 40, 200, 1, "Width", "Set the width of party pet unit frames", ReloadUI, nil):RequiresReload(true)
@@ -2357,8 +3170,10 @@ local UpdateNamePlatesTargetHighlight = function(value)
 end
 
 local NamePlateSetFont = function(self)
+	self.Top:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	self.TopLeft:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	self.TopRight:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
+	self.Bottom:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	self.BottomRight:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	self.BottomLeft:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	self.Castbar.Time:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
@@ -2428,8 +3243,10 @@ GUI:AddOptions(function(self)
 	Right:CreateSwitch("nameplates-color-by-reaction", Settings["nameplates-color-by-reaction"], Language["Use Reaction Colors"], "Color name plate health by unit reaction", UpdateNamePlateColors)
 	
 	Right:CreateHeader(Language["Information"])
+	Right:CreateInput("nameplates-top-text", Settings["nameplates-top-text"], Language["Top Text"], "")
 	Right:CreateInput("nameplates-topleft-text", Settings["nameplates-topleft-text"], Language["Top Left Text"], "")
 	Right:CreateInput("nameplates-topright-text", Settings["nameplates-topright-text"], Language["Top Right Text"], "")
+	Right:CreateInput("nameplates-bottom-text", Settings["nameplates-bottom-text"], Language["Bottom Text"], "")
 	Right:CreateInput("nameplates-bottomleft-text", Settings["nameplates-bottomleft-text"], Language["Bottom Left Text"], "")
 	Right:CreateInput("nameplates-bottomright-text", Settings["nameplates-bottomright-text"], Language["Bottom Right Text"], "")
 	

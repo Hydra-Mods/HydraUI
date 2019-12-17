@@ -137,7 +137,7 @@ local GetQuests = function()
 end
 
 GUI:AddOptions(function(self)
-	local Left, Right = self:CreateWindow(Language["Debug"])
+	local Left, Right = self:CreateWindow(Language["Debug"], nil, "zzzDebug")
 	
 	Left:CreateHeader(Language["UI Information"])
 	Left:CreateDoubleLine(Language["UI Version"], vUI.UIVersion)
@@ -183,6 +183,24 @@ UpdateDebugInfo:SetScript("OnEvent", function(self, event)
 		GUI:GetWidgetByWindow(Language["Debug"], "zone").Right:SetText(GetZoneText())
 		GUI:GetWidgetByWindow(Language["Debug"], "sub-zone").Right:SetText(GetMinimapZoneText())
 	end
+end)
+
+GUI:AddOptions(function(self)
+	self:CreateSpacer("ZZZ")
+	
+	local Left, Right = self:CreateWindow(Language["Credits"], nil, "zzzCredits")
+	
+	Left:CreateHeader(Language["Special Thanks"])
+	Left:CreateDoubleLine("Tukz", "Scripting")
+	Left:CreateDoubleLine("nightcracker", "Scripting")
+	Left:CreateDoubleLine("Elv", "Scripting")
+	Left:CreateDoubleLine("Simpy", "Scripting")
+	Left:CreateDoubleLine("Smelly", "Scripting")
+	Left:CreateDoubleLine("Azilroka", "Scripting")
+	Left:CreateDoubleLine("Haste", "oUF")
+	Left:CreateDoubleLine("lightspark", "oUF")
+	Left:CreateDoubleLine("p3lim", "oUF")
+	Left:CreateDoubleLine("Rainrider", "oUF")
 end)
 
 local Fonts = vUI:NewModule("Fonts")

@@ -53,7 +53,7 @@ local UpdateSpec = function()
 end
 
 local Update = function(self, event, unit)
-	if (unit ~= self.unit) then
+	if ((unit ~= self.unit) or not Valid) then
 		return
 	end
 	
@@ -72,7 +72,6 @@ local Update = function(self, event, unit)
 		end
 		
 		if (not Filter[Name]) then
-			
 			if (DispelType and Valid[DispelType] and DebuffTypeColor[DispelType]) then
 				local CurrPrio = Priorities[DispelType]
 				

@@ -597,7 +597,7 @@ local CreateBarPanels = function()
 		SidePanel:SetAlpha(0)
 	end
 	
-	if (Settings["experience-enable"] and Settings["experience-position"] == "CLASSIC") then
+	if (Settings["experience-enable"] and Settings["experience-position"] == "CLASSIC" and UnitLevel("player") ~= MAX_PLAYER_LEVEL) then
 		BottomPanel:SetScaledPoint("BOTTOM", vUIExperienceBar, "TOP", 0, 5)
 	elseif (Settings["reputation-enable"] and Settings["reputation-position"] == "CLASSIC") then
 		BottomPanel:SetScaledPoint("BOTTOM", vUI:GetModule("Reputation"), "TOP", 0, 5)
@@ -979,6 +979,13 @@ ActionBars:SetScript("OnEvent", function(self, event)
 		vUI:GetModule("Move"):Add(vUI.UnitFrames["target"].Castbar, 2)
 	end
 	
+	ExtraActionButton1:SetParent(UIParent)
+	ExtraActionButton1:ClearAllPoints()
+	ExtraActionButton1:SetScaledPoint("TOP", UIParent, "CENTER", 0, -200)
+	ExtraActionButton1.style:SetAlpha(0)
+	
+	SkinButton(ExtraActionButton1)
+	
 	self:UnregisterEvent(event)
 end)
 
@@ -1015,6 +1022,8 @@ local UpdateShowHotKey = function(value)
 			vUIActionBar4[i].HotKey:SetAlpha(1)
 			vUIActionBar5[i].HotKey:SetAlpha(1)
 		end
+		
+		ExtraActionButton1.HotKey:SetAlpha(1)
 	else
 		for i = 1, Num do
 			vUIActionBar1[i].HotKey:SetAlpha(0)
@@ -1023,6 +1032,8 @@ local UpdateShowHotKey = function(value)
 			vUIActionBar4[i].HotKey:SetAlpha(0)
 			vUIActionBar5[i].HotKey:SetAlpha(0)
 		end
+		
+		ExtraActionButton1.HotKey:SetAlpha(0)
 	end
 end
 

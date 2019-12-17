@@ -114,6 +114,7 @@ local function Update(self, event, unit, powerType)
 		end
 
 		local numActive = cur + 0.9
+		
 		for i = 1, max do
 			if(i > numActive) then
 				element[i]:Hide()
@@ -187,15 +188,15 @@ local function Visibility(self, event, unit)
 	local isEnabled = element.isEnabled
 	local powerType = unit == 'vehicle' and 'COMBO_POINTS' or ClassPowerType
 
-	if(shouldEnable) then
+	--if(shouldEnable) then
 		--[[ Override: ClassPower:UpdateColor(powerType)
 		Used to completely override the internal function for updating the widgets' colors.
 
 		* self      - the ClassPower element
 		* powerType - the active power type (string)
 		--]]
-		(element.UpdateColor or UpdateColor) (element, powerType)
-	end
+	--	(element.UpdateColor or UpdateColor) (element, powerType)
+	--end
 
 	if(shouldEnable and not isEnabled) then
 		ClassPowerEnable(self)

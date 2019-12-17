@@ -156,6 +156,14 @@ local UpdateEnableTooltips = function(value)
 	DT:SetTooltipsEnabled(value)
 end
 
+local ResetOnAccept = function()
+	vUI:GetModule("Gold"):Reset()
+end
+
+local ResetGold = function()
+	vUI:DisplayPopup(Language["Attention"], Language["Are you sure you would like to reset all stored gold information?"], Language["Accept"], ResetOnAccept, Language["Cancel"])
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Data Texts"])
 	
@@ -171,4 +179,7 @@ GUI:AddOptions(function(self)
 	
 	Right:CreateHeader(Language["Tooltips"])
 	Right:CreateSwitch("data-text-enable-tooltips", Settings["data-text-enable-tooltips"], "Enable Tooltips", "Display tooltip information when hovering over data texts", UpdateEnableTooltips)
+	
+	Left:CreateHeader(Language["Gold"])
+	Left:CreateButton(Language["Reset"], Language["Reset Gold"], "", ResetGold)
 end)

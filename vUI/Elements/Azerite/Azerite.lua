@@ -13,13 +13,8 @@ function Azerite:UpdateBarPosition(value)
 	if (value == "TOP") then
 		self.BGAll:Show()
 		self:SetScaledSize(Settings["azerite-width"], Settings["azerite-height"])
+		self:SetScaledPoint("TOP", Reputation, "BOTTOM", 0, -8)
 		self.Bar.Spark:SetScaledHeight(Settings["reputation-height"])
-		
-		if (Settings["reputation-enable"] and Settings["reputation-position"] == "TOP") then
-			self:SetScaledPoint("TOP", Reputation, "BOTTOM", 0, -8)
-		else
-			self:SetScaledPoint("TOP", UIParent, 0, -13)
-		end
 		
 		vUIChatFrameBottom:Show()
 		

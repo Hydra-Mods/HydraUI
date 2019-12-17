@@ -2,7 +2,7 @@
 ## Author: Hydra
 ## Version: 1.00
 ## Title: |cFFFFC44DvUI|r
-## Notes: An interface replacement for World of Warcraft: Classic
+## Notes: An interface replacement for World of Warcraft: Battle for Azeroth
 ## SavedVariables: vUIProfileData, vUIProfiles, vUIData, vUIMove, vUIGold
 
 Initialize.lua

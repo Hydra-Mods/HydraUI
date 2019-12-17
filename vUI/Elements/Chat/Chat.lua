@@ -442,6 +442,14 @@ local JumpButtonOnFinished = function(self)
 	self.Parent:Hide()
 end
 
+local TabOnEnter = function(self)
+	self.TabText:_SetTextColor(vUI:HexToRGB(Settings["chat-tab-font-color-mouseover"]))
+end
+
+local TabOnLeave = function(self)
+	self.TabText:_SetTextColor(vUI:HexToRGB(Settings["chat-tab-font-color"]))
+end
+
 local StyleChatFrame = function(frame)
 	if frame.Styled then
 		return
@@ -472,6 +480,10 @@ local StyleChatFrame = function(frame)
 	Tab.noMouseAlpha = 1
 	Tab:SetAlpha(1)
 	Tab.SetAlpha = UIFrameFadeRemoveFrame
+	Tab.TabText = TabText
+	
+	Tab:HookScript("OnEnter", TabOnEnter)
+	Tab:HookScript("OnLeave", TabOnLeave)
 	
 	TabText:SetFontInfo(Settings["chat-tab-font"], Settings["chat-tab-font-size"], Settings["chat-tab-font-flags"])
 	--TabText.SetFont = function() end
@@ -973,4 +985,5 @@ GUI:AddOptions(function(self)
 	Right:CreateSlider("chat-tab-font-size", Settings["chat-tab-font-size"], 8, 18, 1, "Font Size", "Set the font size of the chat frame tabs", UpdateChatTabFont)
 	Right:CreateDropdown("chat-tab-font-flags", Settings["chat-tab-font-flags"], Media:GetFlagsList(), Language["Font Flags"], "Set the font flags of the chat frame tabs", UpdateChatTabFont)
 	Right:CreateColorSelection("chat-tab-font-color", Settings["chat-tab-font-color"], Language["Font Color"], "Set the color of the chat frame tabs", UpdateChatTabFont)
+	Right:CreateColorSelection("chat-tab-font-color-mouseover", Settings["chat-tab-font-color-mouseover"], Language["Font Color Mouseover"], "Set the color of the chat frame tab while mousing over it")
 end)

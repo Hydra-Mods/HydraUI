@@ -22,12 +22,6 @@ function Gold:GetTable()
 	return Table
 end
 
-function Gold:GetColoredName(name)
-	local Name = format("|cFF%s%s|r", vUI.ClassColors[vUI.UserClass].Hex, vUI.UserName)
-	
-	return Name
-end
-
 function Gold:GetSessionStats()
 	return self.SessionChange, GetMoney()
 end
@@ -76,6 +70,12 @@ function Gold:OnEvent(event)
 	end
 end
 
+function Gold:Reset()
+	vUIGold = nil
+	
+	self:Load()
+end
+
 function Gold:Load()
 	if (not vUIGold) then
 		vUIGold = {}
@@ -85,7 +85,7 @@ function Gold:Load()
 		vUIGold[vUI.UserRealm] = {}
 	end
 	
-	self.CurrentUser = self:GetColoredName(vUI.UserName)
+	self.CurrentUser = string.format("|c%s%s|r", RAID_CLASS_COLORS[vUI.UserClass].colorStr, vUI.UserName)
 	
 	vUIGold[vUI.UserRealm][self.CurrentUser] = GetMoney()
 	

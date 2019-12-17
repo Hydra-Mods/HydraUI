@@ -11,8 +11,8 @@ local UNKNOWN = UNKNOWN
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local SendChatMessage = SendChatMessage
 local UnitIsFriend = UnitIsFriend
-local UnitInRaid = UnitInRaid
-local UnitInParty = UnitInParty
+local IsInRaid = IsInRaid
+local IsInGroup = IsInGroup
 local UnitExists = UnitExists
 local UnitName = UnitName
 local GetNumGroupMembers = GetNumGroupMembers
@@ -31,14 +31,12 @@ function Announcements:GetChannelToSend()
 	if (Settings["announcements-channel"] == "SELF") then
 		return
 	elseif (Settings["announcements-channel"] == "GROUP") then
-		if UnitInRaid("player") then
+		if IsInRaid() then
 			return "RAID"
-		elseif UnitInParty("player") then
-			if IsInInstance() then
-				return "INSTANCE_CHAT"
-			else
-				return "PARTY"
-			end
+		elseif IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
+			return "INSTANCE_CHAT"
+		elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
+			return "PARTY"
 		end
 	elseif (Settings["announcements-channel"] == "SAY") then
 		return "SAY"
@@ -49,6 +47,10 @@ end
 
 Announcements.Events = {
 	["SPELL_INTERRUPT"] = function(target, id, spell)
+		if UnitIsFriend("player", target) then -- Quaking filter
+			return
+		end
+		
 		Channel = Announcements:GetChannelToSend()
 		
 		if Channel then

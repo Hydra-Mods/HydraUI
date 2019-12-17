@@ -35,7 +35,8 @@ Media:SetStyle("vUI", {
 	["chat-tab-font"] = "Roboto",
 	["chat-tab-font-size"] = 12,
 	["chat-tab-font-flags"] = "",
-	["chat-tab-font-color"] = "FFC44D",
+	["chat-tab-font-color"] = "FFFFFF",
+	["chat-tab-font-color-mouseover"] = "FFC44D",
 	
 	["chat-bubbles-font"] = "PT Sans",
 	["chat-bubbles-font-size"] = 14,
@@ -69,9 +70,9 @@ Media:SetStyle("vUI 2", {
 	["ui-header-font"] = "PT Sans",
 	["ui-button-font"] = "PT Sans",
 	
-	["ui-widget-texture"] = "Ferous 27",
-	["ui-header-texture"] = "Ferous 27",
-	["ui-button-texture"] = "Ferous 27",
+	["ui-widget-texture"] = "Ferous",
+	["ui-header-texture"] = "Ferous",
+	["ui-button-texture"] = "Ferous",
 	
 	["ui-header-font-color"] = "FFE6C0",
 	["ui-header-texture-color"] = "424242",
@@ -98,7 +99,8 @@ Media:SetStyle("vUI 2", {
 	["chat-tab-font"] = "PT Sans",
 	["chat-tab-font-size"] = 12,
 	["chat-tab-font-flags"] = "",
-	["chat-tab-font-color"] = "FFB74D",
+	["chat-tab-font-color"] = "FFFFFF",
+	["chat-tab-font-color-mouseover"] = "FFB74D",
 	
 	["chat-bubbles-font"] = "PT Sans",
 	["chat-bubbles-font-size"] = 14,
@@ -161,7 +163,8 @@ Media:SetStyle("Conjured Muffin", {
 	["chat-tab-font"] = "Roboto",
 	["chat-tab-font-size"] = 12,
 	["chat-tab-font-flags"] = "",
-	["chat-tab-font-color"] = "ECEFF1",
+	["chat-tab-font-color"] = "FFFFFF",
+	["chat-tab-font-color-mouseover"] = "3EC5E9",
 	
 	["chat-bubbles-font"] = "Roboto",
 	["chat-bubbles-font-size"] = 14,
@@ -224,7 +227,8 @@ Media:SetStyle("Zen", {
 	["chat-tab-font"] = "Prototype",
 	["chat-tab-font-size"] = 12,
 	["chat-tab-font-flags"] = "",
-	["chat-tab-font-color"] = "00FF99",
+	["chat-tab-font-color"] = "FFFFFF",
+	["chat-tab-font-color-mouseover"] = "00FF99",
 	
 	["chat-bubbles-font"] = "Prototype",
 	["chat-bubbles-font-size"] = 14,
@@ -287,7 +291,8 @@ Media:SetStyle("Slate", {
 	["chat-tab-font"] = "PT Sans",
 	["chat-tab-font-size"] = 12,
 	["chat-tab-font-flags"] = "",
-	["chat-tab-font-color"] = "BBDEFB",
+	["chat-tab-font-color"] = "FFFFFF",
+	["chat-tab-font-color-mouseover"] = "BBDEFB",
 	
 	["chat-bubbles-font"] = "PT Sans",
 	["chat-bubbles-font-size"] = 14,
@@ -350,7 +355,8 @@ Media:SetStyle("Smelly", {
 	["chat-tab-font"] = "Fira Code",
 	["chat-tab-font-size"] = 10,
 	["chat-tab-font-flags"] = "",
-	["chat-tab-font-color"] = "FC533E",
+	["chat-tab-font-color"] = "FFFFFF",
+	["chat-tab-font-color-mouseover"] = "FC533E",
 	
 	["chat-bubbles-font"] = "Fira Code",
 	["chat-bubbles-font-size"] = 12,

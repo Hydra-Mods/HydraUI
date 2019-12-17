@@ -3288,7 +3288,33 @@ local GetNonDefault = function(self)
 
 end
 
-function GUI:CreateWindow(name, default)
+function GUI:CreateSpacer(name)
+	-- Button
+	local Button = CreateFrame("Frame", nil, self)
+	Button:SetScaledSize(MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT)
+	Button:SetFrameLevel(self:GetFrameLevel() + 2)
+	Button.SortName = override or name
+	Button.Name = name
+	Button.Parent = self
+	
+	Button.LineBG = CreateFrame("Frame", nil, Button)
+	Button.LineBG:SetScaledHeight(4)
+	Button.LineBG:SetScaledPoint("LEFT", Button, 0, 0)
+	Button.LineBG:SetScaledPoint("RIGHT", Button, 0, 0)
+	Button.LineBG:SetBackdrop(vUI.BackdropAndBorder)
+	Button.LineBG:SetBackdropColorHex("000000")
+	Button.LineBG:SetBackdropBorderColorHex("000000")
+	
+	Button.LineBG.Line = Button.LineBG:CreateTexture(nil, "OVERLAY")
+	Button.LineBG.Line:SetScaledPoint("TOPLEFT", Button.LineBG, 1, -1)
+	Button.LineBG.Line:SetScaledPoint("BOTTOMRIGHT", Button.LineBG, -1, 1)
+	Button.LineBG.Line:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	Button.LineBG.Line:SetVertexColorHex(Settings["ui-button-texture-color"])
+	
+	tinsert(self.Buttons, Button)
+end
+
+function GUI:CreateWindow(name, default, override)
 	if self.Windows[name] then
 		return self:GetWindow(name)
 	end
@@ -3302,6 +3328,7 @@ function GUI:CreateWindow(name, default)
 	Button:SetBackdropColor(0, 0, 0)
 	Button:SetBackdropBorderColor(0, 0, 0)
 	Button:SetFrameLevel(self:GetFrameLevel() + 2)
+	Button.SortName = override or name
 	Button.Name = name
 	Button.Parent = self
 	Button:SetScript("OnEnter", WindowButtonOnEnter)
@@ -3334,7 +3361,7 @@ function GUI:CreateWindow(name, default)
 	Button.Text:SetScaledSize(MENU_BUTTON_WIDTH - 6, MENU_BUTTON_HEIGHT)
 	Button.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-header-font-size"])
 	Button.Text:SetJustifyH("CENTER")
-	Button.Text:SetText("|cFF"..Settings["ui-button-font-color"]..name.."|r")
+	Button.Text:SetText("|cFF" .. Settings["ui-button-font-color"] .. name .. "|r")
 	
 	Button.Fade = CreateAnimationGroup(Button.Selected)
 	
@@ -3419,6 +3446,42 @@ function GUI:GetWindow(name)
 	end
 end
 
+GUI.SearchResults = {}
+
+function GUI:ClearSearch()
+	for i = 1, #self.SearchResults do
+		tremove(self.SearchResults, 1)
+	end
+end
+
+function GUI:AddSearchResult(result)
+	self.SearchResults[#self.SearchResults + 1] = result
+end
+
+function GUI:GetNumSearchResults()
+	return #self.SearchResults
+end
+
+function GUI:Search(query)
+	for key, value in pairs(self.Windows) do
+		for i = 1, #value.LeftWidgets do
+			if (value.LeftWidgets[i].ID == id) then
+				self:AddSearchResult(value.LeftWidgets[i].ID)
+			end
+		end
+		
+		for i = 1, #value.RightWidgets do
+			if (value.RightWidgets[i].ID == id) then
+				self:AddSearchResult(value.RightWidgets[i].ID)
+			end
+		end
+	end
+	
+	if (self:GetNumSearchResults() > 0) then
+		print('?')
+	end
+end
+
 function GUI:GetWidgetByWindow(name, id)
 	if self.Windows[name] then
 		local Window = self.Windows[name]
@@ -3457,7 +3520,7 @@ end
 local ScrollSelections = function(self)
 	local First
 	
-	for i = 1, self.WindowCount do
+	for i = 1, #self.Buttons do
 		if self.Buttons[i] then
 			self.Buttons[i]:ClearAllPoints()
 			
@@ -3487,7 +3550,7 @@ local SetSelectionOffsetByDelta = function(self, delta)
 	else -- Down
 		self.Offset = self.Offset + 1
 		
-		if (self.Offset > (self.WindowCount - (MAX_WIDGETS_SHOWN - 1))) then
+		if (self.Offset > (#self.Buttons - (MAX_WIDGETS_SHOWN - 1))) then
 			self.Offset = self.Offset - 1
 		end
 	end
@@ -3504,7 +3567,7 @@ local SetSelectionOffset = function(self, offset)
 	
 	if (self.Offset <= 1) then
 		self.Offset = 1
-	elseif (self.Offset > (self.WindowCount - MAX_WIDGETS_SHOWN - 1)) then
+	elseif (self.Offset > (#self.Buttons - MAX_WIDGETS_SHOWN - 1)) then
 		self.Offset = self.Offset - 1
 	end
 	
@@ -3791,10 +3854,10 @@ function GUI:Toggle()
 		end
 		
 		tsort(self.Buttons, function(a, b)
-			return a.Name < b.Name
+			return a.SortName < b.SortName
 		end)
 		
-		self.ScrollBar:SetMinMaxValues(1, (self.WindowCount - MAX_WIDGETS_SHOWN) + 1)
+		self.ScrollBar:SetMinMaxValues(1, (#self.Buttons - MAX_WIDGETS_SHOWN) + 1)
 		self.ScrollBar:SetValue(1)
 		self:SetSelectionOffset(1)
 		self.ScrollBar:Show()

@@ -21,7 +21,6 @@ local UnitIsDND = UnitIsDND
 local UnitIsGhost = UnitIsGhost
 local UnitIsDead = UnitIsDead
 local UnitClassification = UnitClassification
-local GetPetHappiness = GetPetHappiness
 local GetMouseFocus = GetMouseFocus
 local GetItemInfo = GetItemInfo
 local InCombatLockdown = InCombatLockdown
@@ -278,18 +277,6 @@ local OnTooltipSetUnit = function(self)
 			local TargetColor = GetUnitColor(UnitID .. "target")
 			
 			self:AddLine(Language["Targeting: |cFF"] .. TargetColor .. UnitName(UnitID .. "target") .. "|r", 1, 1, 1)
-		end
-		
-		if (vUI.UserClass == "HUNTER" and UnitID == "pet") then
-			local Happiness = GetPetHappiness()
-			
-			if Happiness then
-				local Color = vUI.HappinessColors[Happiness]
-				
-				if Color then
-					self:AddDoubleLine(Language["Happiness:"], format("|cFF%s%s|r", vUI:RGBToHex(Color[1], Color[2], Color[3]), Tooltips.HappinessLevels[Happiness]))
-				end
-			end
 		end
 		
 		--GameTooltipStatusBar:OldSetStatusBarColor(vUI:HexToRGB(Color))
