@@ -114,9 +114,14 @@ if (vUI.UserLocale == "enGB") then
 	vUI.UserLocale = "enUS"
 end
 
+-- NYI, Concept list for my preferred CVars, and those important to the UI
+function vUI:SetCVars()
+	C_CVar.SetCVar("countdownForCooldowns", 1)
+end
+
 function vUI:VARIABLES_LOADED(event)
 	if (not GetCVar("useUIScale")) then
-		SetCVar("useUIScale", 1)
+		C_CVar.SetCVar("useUIScale", 1)
 	end
 	
 	Core[6]["ui-scale"] = self:GetSuggestedScale()
@@ -210,7 +215,7 @@ function vUI:SetScale(x)
 	x = max(0.4, x)
 	x = min(1.2, x)
 	
-	SetCVar("uiScale", x)
+	C_CVar.SetCVar("uiScale", x)
 	
 	self:UpdateScreenHeight()
 	

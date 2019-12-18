@@ -423,7 +423,7 @@ local OnValueChanged = function(self)
 			self.HealthValue:SetText(format("|cFF%s%s|r / |cFF2DCC70%s|r", Color, vUI:ShortValue(Current), vUI:ShortValue(Max)))
 		end
 		
-		self.HealthPercent:SetText(format("|cFF%s%s|r", Color, floor(Current / Max * 100 + 0.5)))
+		self.HealthPercent:SetText(format("|cFF%s%s%%|r", Color, floor((Current / Max * 100 + 0.05) * 10) / 10))
 	end
 end
 

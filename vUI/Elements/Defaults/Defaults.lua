@@ -287,7 +287,6 @@ Defaults["announcements-channel"] = "GROUP"
 
 -- Unitframes -- Add option to color health backdrops by reaction/class color, or use health color, or set a color
 Defaults["unitframes-enable"] = true
-Defaults["unitframes-class-color"] = true -- temporary
 Defaults["unitframes-only-player-debuffs"] = false
 Defaults["unitframes-show-player-buffs"] = true
 
@@ -357,7 +356,7 @@ Defaults["nameplates-topleft-text"] = "[LevelColor][Level][Plus] [NameColor][Nam
 Defaults["nameplates-topright-text"] = "" -- [LevelColor][Level][Plus]
 Defaults["nameplates-bottom-text"] = ""
 Defaults["nameplates-bottomleft-text"] = "" -- [Classification]
-Defaults["nameplates-bottomright-text"] = "[HealthColor][perhp]"
+Defaults["nameplates-bottomright-text"] = "[HealthColor][HealthPercent]"
 Defaults["nameplates-display-debuffs"] = true
 Defaults["nameplates-only-player-debuffs"] = true
 Defaults["nameplates-color-by-class"] = true
@@ -398,3 +397,4 @@ Defaults["data-text-chat-left"] = "Gold"
 Defaults["data-text-chat-middle"] = "Crit"
 Defaults["data-text-chat-right"] = "Durability"
 Defaults["data-text-enable-tooltips"] = true
+Defaults["data-text-max-lines"] = true

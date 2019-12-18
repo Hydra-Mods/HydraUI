@@ -31,12 +31,14 @@ function Announcements:GetChannelToSend()
 	if (Settings["announcements-channel"] == "SELF") then
 		return
 	elseif (Settings["announcements-channel"] == "GROUP") then
-		if IsInRaid() then
-			return "RAID"
-		elseif IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
+		if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
 			return "INSTANCE_CHAT"
 		elseif IsInGroup(LE_PARTY_CATEGORY_HOME) then
-			return "PARTY"
+			if IsInRaid() then
+				return "RAID"
+			else
+				return "PARTY"
+			end
 		end
 	elseif (Settings["announcements-channel"] == "SAY") then
 		return "SAY"

@@ -215,7 +215,6 @@ Media:SetFont("FranKlein", "Interface\\Addons\\vUI\\Media\\Fonts\\FranKleinBoldR
 Media:SetFont("Noto Sans", "Interface\\Addons\\vUI\\Media\\Fonts\\NotoSansCondensedSemiBold.ttf")
 Media:SetFont("Visitor", "Interface\\Addons\\vUI\\Media\\Fonts\\Visitor.ttf", nil, true)
 Media:SetFont("Pixel Arial", "Interface\\Addons\\vUI\\Media\\Fonts\\PixelArial.ttf", nil, true)
-Media:SetFont("Fira Code", "Interface\\Addons\\vUI\\Media\\Fonts\\FiraCode.ttf")
 
 for Name, Path in pairs(Fonts) do
 	Media:SetFont(Name, Path)

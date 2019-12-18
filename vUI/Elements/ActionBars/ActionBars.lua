@@ -979,9 +979,9 @@ ActionBars:SetScript("OnEvent", function(self, event)
 		vUI:GetModule("Move"):Add(vUI.UnitFrames["target"].Castbar, 2)
 	end
 	
-	ExtraActionButton1:SetParent(UIParent)
-	ExtraActionButton1:ClearAllPoints()
-	ExtraActionButton1:SetScaledPoint("TOP", UIParent, "CENTER", 0, -200)
+	ExtraActionBarFrame:SetParent(UIParent)
+	ExtraActionBarFrame:ClearAllPoints()
+	ExtraActionBarFrame:SetScaledPoint("TOP", UIParent, "CENTER", 0, -200)
 	ExtraActionButton1.style:SetAlpha(0)
 	
 	SkinButton(ExtraActionButton1)

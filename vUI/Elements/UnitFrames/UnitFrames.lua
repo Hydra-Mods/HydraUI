@@ -148,23 +148,6 @@ Methods["HealthPercent"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
 	
-	return floor((Current / Max * 100 + 0.05) * 10) / 10 .. "%"
-end
-
-Events["HealthPercent"] = "UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD"
-Methods["HealthPercent"] = function(unit)
-	local Current = UnitHealth(unit)
-	local Max = UnitHealthMax(unit)
-	
-	if (Max == 0) then
-		return 0
-	else
-		return floor(Current / Max * 100 + 0.5)
-	end
-end
-
-Events["HealthValues"] = "UNIT_HEALTH_FREQUENT UNIT_CONNECTION PLAYER_ENTERING_WORLD"
-Methods["HealthValues"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFD64545" .. Language["Dead"] .. "|r"
 	elseif UnitIsGhost(unit) then
@@ -173,6 +156,16 @@ Methods["HealthValues"] = function(unit)
 		return "|cFFEEEEEE" .. Language["Offline"] .. "|r"
 	end
 	
+	if (Max == 0) then
+		return 0
+	else
+		--return floor(Current / Max * 100 + 0.5)
+		return floor((Current / Max * 100 + 0.05) * 10) / 10 .. "%"
+	end
+end
+
+Events["HealthValues"] = "UNIT_HEALTH_FREQUENT UNIT_CONNECTION PLAYER_ENTERING_WORLD"
+Methods["HealthValues"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
 	
@@ -1171,7 +1164,7 @@ local StylePlayer = function(self, unit)
 		self:Tag(HealthLeft, "[Name15]")
 	end
 	
-	self:Tag(HealthRight, "[HealthColor][perhp]")
+	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	self:Tag(PowerLeft, "[HealthValues]")
 	self:Tag(PowerRight, "[PowerValues]")
 	
@@ -1379,7 +1372,7 @@ local StyleTarget = function(self, unit)
 	Castbar.PostChannelStart = PostCastStart
 	
 	-- Tags
-	self:Tag(HealthRight, "[HealthColor][perhp]")
+	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	self:Tag(PowerLeft, "[HealthValues]")
 	self:Tag(PowerRight, "[PowerValues]")
 	
@@ -1496,7 +1489,7 @@ local StyleTargetTarget = function(self, unit)
 		Power.colorClass = true
 	end
 	
-	self:Tag(HealthRight, "[HealthColor][perhp]")
+	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -1598,7 +1591,7 @@ local StylePet = function(self, unit)
 		Power.colorClass = true
 	end
 	
-	self:Tag(HealthRight, "[HealthColor][perhp]")
+	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -2023,7 +2016,7 @@ local StylePartyPet = function(self, unit)
 		self:Tag(HealthLeft, "[LevelColor][Level] [Reaction][Name10]")
 	end]]
 	
-	--self:Tag(HealthRight, "[HealthColor][perhp]")
+	--self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	self:Tag(HealthMiddle, "[NameColor][Name10]")
 	
 	self.Range = {
@@ -2162,7 +2155,7 @@ local StyleRaid = function(self, unit)
 		self:Tag(HealthLeft, "[NameColor][Name5]")
 	end
 	
-	--self:Tag(HealthRight, "[HealthColor][perhp]")
+	--self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	self:Tag(HealthRight, "[GroupStatus]")
 	
 	self.Range = {
@@ -2251,7 +2244,7 @@ local StyleBoss = function(self, unit)
 	local Power = CreateFrame("StatusBar", nil, self)
 	Power:SetScaledPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetScaledPoint("BOTTOMRIGHT", self, -1, 1)
-	Power:SetScaledHeight(Settings["unitframes-target-power-height"])
+	Power:SetScaledHeight(6)
 	Power:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 	
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
@@ -2362,7 +2355,7 @@ local StyleBoss = function(self, unit)
 	Castbar.PostChannelStart = PostCastStart
 	
 	-- Tags
-	self:Tag(HealthRight, "[HealthColor][perhp]")
+	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	self:Tag(PowerLeft, "[HealthValues]")
 	self:Tag(PowerRight, "[PowerValues]")
 	
@@ -2571,7 +2564,7 @@ UF:SetScript("OnEvent", function(self, event)
 		-- if enable boss blah blah
 		for i = 1, 5 do
 			local Boss = oUF:Spawn("boss" .. i, "vUI Boss " .. i)
-			Boss:SetScaledSize(Settings["unitframes-target-width"], Settings["unitframes-target-health-height"] + Settings["unitframes-target-power-height"] + 3)
+			Boss:SetScaledSize(200, 22 + 6 + 3)
 			
 			if (i == 1) then
 				Boss:SetScaledPoint("LEFT", UIParent, 300, 200)
@@ -2953,46 +2946,43 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["Enable"])
 	Left:CreateSwitch("unitframes-enable", Settings["unitframes-enable"], Language["Enable Unit Frames Module"], Language["Enable the unit frames module"], ReloadUI):RequiresReload(true)
 	
-	Right:CreateHeader(Language["Colors"])
-	Right:CreateSwitch("unitframes-class-color", Settings["unitframes-class-color"], Language["Use Class/Reaction Colors"], Language["Color unit frame health by class or reaction"], ReloadUI):RequiresReload(true)
-	
 	Left:CreateHeader(Language["Player"])
 	Left:CreateSlider("unitframes-player-width", Settings["unitframes-player-width"], 120, 320, 1, "Width", "Set the width of the player unit frame", UpdatePlayerWidth)
 	Left:CreateSlider("unitframes-player-health-height", Settings["unitframes-player-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the player health bar", UpdatePlayerHealthHeight)
 	Left:CreateSlider("unitframes-player-power-height", Settings["unitframes-player-power-height"], 2, 30, 1, "Power Bar Height", "Set the height of the player power bar", UpdatePlayerPowerHeight)
+	Left:CreateDropdown("unitframes-player-health-color", Settings["unitframes-player-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdatePlayerHealthColor)
+	Left:CreateDropdown("unitframes-player-power-color", Settings["unitframes-player-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER_TYPE"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePlayerPowerColor)
 	Left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
 	Left:CreateSwitch("unitframes-only-player-debuffs", Settings["unitframes-only-player-debuffs"], Language["Only Display Player Debuffs"], Language["If enabled, only your own debuffs will|nbe displayed on the target"], UpdateOnlyPlayerDebuffs)
 	Left:CreateSwitch("unitframes-player-health-reverse", Settings["unitframes-player-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePlayerHealthFill)
 	Left:CreateSwitch("unitframes-player-power-reverse", Settings["unitframes-player-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePlayerPowerFill)
-	Left:CreateDropdown("unitframes-player-health-color", Settings["unitframes-player-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdatePlayerHealthColor)
-	Left:CreateDropdown("unitframes-player-power-color", Settings["unitframes-player-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER_TYPE"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePlayerPowerColor)
 	
 	Right:CreateHeader(Language["Target"])
 	Right:CreateSlider("unitframes-target-width", Settings["unitframes-target-width"], 120, 320, 1, "Width", "Set the width of the target unit frame", UpdateTargetWidth)
 	Right:CreateSlider("unitframes-target-health-height", Settings["unitframes-target-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the target health bar", UpdateTargetHealthHeight)
 	Right:CreateSlider("unitframes-target-power-height", Settings["unitframes-target-power-height"], 2, 30, 1, "Power Bar Height", "Set the height of the target power bar", UpdateTargetPowerHeight)
-	Right:CreateSwitch("unitframes-target-health-reverse", Settings["unitframes-target-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateTargetHealthFill)
-	Right:CreateSwitch("unitframes-target-power-reverse", Settings["unitframes-target-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateTargetPowerFill)
 	Right:CreateDropdown("unitframes-target-health-color", Settings["unitframes-target-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Color"], Language["Set the color of the health bar"], UpdateTargetHealthColor)
 	Right:CreateDropdown("unitframes-target-power-color", Settings["unitframes-target-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER_TYPE"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateTargetPowerColor)
+	Right:CreateSwitch("unitframes-target-health-reverse", Settings["unitframes-target-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateTargetHealthFill)
+	Right:CreateSwitch("unitframes-target-power-reverse", Settings["unitframes-target-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateTargetPowerFill)
 	
 	Left:CreateHeader(Language["Target of Target"])
 	Left:CreateSlider("unitframes-targettarget-width", Settings["unitframes-targettarget-width"], 60, 320, 1, "Width", "Set the width of the target's target unit frame", UpdateTargetTargetWidth)
 	Left:CreateSlider("unitframes-targettarget-health-height", Settings["unitframes-targettarget-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the target of target health bar", UpdateTargetTargetHealthHeight)
 	Left:CreateSlider("unitframes-targettarget-power-height", Settings["unitframes-targettarget-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the target of target power bar", UpdateTargetTargetPowerHeight)
-	Left:CreateSwitch("unitframes-targettarget-health-reverse", Settings["unitframes-targettarget-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateTargetTargetHealthFill)
-	Left:CreateSwitch("unitframes-targettarget-power-reverse", Settings["unitframes-targettarget-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateTargetTargetPowerFill)
 	Left:CreateDropdown("unitframes-targettarget-health-color", Settings["unitframes-targettarget-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdateTargetTargetHealthColor)
 	Left:CreateDropdown("unitframes-targettarget-power-color", Settings["unitframes-targettarget-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER_TYPE"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateTargetTargetPowerColor)
+	Left:CreateSwitch("unitframes-targettarget-health-reverse", Settings["unitframes-targettarget-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateTargetTargetHealthFill)
+	Left:CreateSwitch("unitframes-targettarget-power-reverse", Settings["unitframes-targettarget-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateTargetTargetPowerFill)
 	
 	Right:CreateHeader(Language["Pet"])
 	Right:CreateSlider("unitframes-pet-width", Settings["unitframes-pet-width"], 60, 320, 1, "Width", "Set the width of the pet unit frame", UpdatePetWidth)
 	Right:CreateSlider("unitframes-pet-health-height", Settings["unitframes-pet-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the pet health bar", UpdatePetHealthHeight)
 	Right:CreateSlider("unitframes-pet-power-height", Settings["unitframes-pet-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the pet power bar", UpdatePetPowerHeight)
-	Right:CreateSwitch("unitframes-pet-health-reverse", Settings["unitframes-pet-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePetHealthFill)
-	Right:CreateSwitch("unitframes-pet-power-reverse", Settings["unitframes-pet-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePetPowerFill)
 	Right:CreateDropdown("unitframes-pet-health-color", Settings["unitframes-pet-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdatePetHealthColor)
 	Right:CreateDropdown("unitframes-pet-power-color", Settings["unitframes-pet-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER_TYPE"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePetPowerColor)
+	Right:CreateSwitch("unitframes-pet-health-reverse", Settings["unitframes-pet-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePetHealthFill)
+	Right:CreateSwitch("unitframes-pet-power-reverse", Settings["unitframes-pet-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePetPowerFill)
 end)
 
 local UpdatePartyWidth = function(value)
