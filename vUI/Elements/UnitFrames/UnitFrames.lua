@@ -766,7 +766,7 @@ local StyleNamePlate = function(self, unit)
 	self.RaidTargetIndicator = RaidTargetIndicator
 end
 
-local vUI_UnitFrame_OnEnter = function(self)
+local UnitFrameOnEnter = function(self)
 	UnitFrame_OnEnter(self)
 	
 	if self.Hover then
@@ -774,7 +774,7 @@ local vUI_UnitFrame_OnEnter = function(self)
 	end
 end
 
-local vUI_UnitFrame_OnLeave = function(self)
+local UnitFrameOnLeave = function(self)
 	UnitFrame_OnLeave(self)
 	
 	if self.Hover then
@@ -813,8 +813,6 @@ local StylePlayer = function(self, unit)
 	self:RegisterForClicks("AnyUp")
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
-	--self:SetScript("OnEnter", vUI_UnitFrame_OnEnter)
-	--self:SetScript("OnLeave", vUI_UnitFrame_OnLeave)
 	
 	self:SetBackdrop(vUI.BackdropAndBorder)
 	self:SetBackdropColor(0, 0, 0)
@@ -1166,7 +1164,6 @@ local StylePlayer = function(self, unit)
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetScaledSize(Settings["unitframes-player-width"], 28)
-	--Debuffs:SetScaledPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 31)
 	Debuffs:SetScaledPoint("BOTTOM", Buffs, "TOP", 0, 2)
 	Debuffs.size = 28
 	Debuffs.spacing = 2
@@ -1209,8 +1206,6 @@ local StylePlayer = function(self, unit)
 	--self.RaidTargetIndicator = RaidTarget
 	self.ResurrectIndicator = Resurrect
 	self.LeaderIndicator = Leader
-	
-	--CreateMouseover(self)
 end
 
 local StyleTarget = function(self, unit)
@@ -1741,18 +1736,14 @@ local StyleParty = function(self, unit)
 	Health.colorDisconnected = true
 	Health.Smooth = true
 	
-	if Settings["unitframes-class-color"] then
-		Health.colorReaction = true
-		Health.colorClass = true
-	else
-		Health.colorHealth = true
-	end
+	SetHealthAttributes(Health, Settings["party-health-color"])
 	
 	local Power = CreateFrame("StatusBar", nil, self)
 	Power:SetScaledPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetScaledPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetScaledHeight(Settings["party-power-height"])
 	Power:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	Power:SetReverseFill(Settings["party-power-reverse"])
 	
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetScaledPoint("TOPLEFT", Power, 0, 0)
@@ -1763,12 +1754,7 @@ local StyleParty = function(self, unit)
 	-- Attributes
 	Power.frequentUpdates = true
 	
-	if Settings["unitframes-class-color"] then
-		Power.colorPower = true
-		Power.colorReaction = true
-	else
-		Power.colorClass = true
-	end
+	SetPowerAttributes(Power, Settings["party-power-color"])
 	
 	-- Debuffs
 	if Settings["party-show-debuffs"] then
@@ -1893,17 +1879,8 @@ local StyleParty = function(self, unit)
 	Dispel.bg:SetScaledPoint("BOTTOMRIGHT", Dispel, 1, -1)
 	Dispel.bg:SetTexture(Media:GetTexture("Blank"))
 	Dispel.bg:SetVertexColor(0, 0, 0)
-	
-	-- Tags
-	--[[if Settings["unitframes-class-color"] then
-		self:Tag(HealthLeft, "[LevelColor][Level]|r [Name10]")
-	else
-		self:Tag(HealthLeft, "[LevelColor][Level] [NameColor][Name10]")
-	end]]
-	
+
 	self:Tag(HealthMiddle, "[NameColor][Name10]")
-	
-	--self:Tag(HealthRight, "[GroupStatus]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -1978,12 +1955,7 @@ local StylePartyPet = function(self, unit)
 	Health.colorDisconnected = true
 	Health.Smooth = true
 	
-	if Settings["unitframes-class-color"] then
-		Health.colorClass = true
-		Health.colorReaction = true
-	else
-		Health.colorHealth = true
-	end
+	SetHealthAttributes(Health, Settings["party-pets-health-color"])
 	
 	-- Target Icon
 	local RaidTarget = Health:CreateTexture(nil, 'OVERLAY')
@@ -1991,13 +1963,6 @@ local StylePartyPet = function(self, unit)
 	RaidTarget:SetPoint("CENTER", Health, "TOP")
 	
 	-- Tags
-	--[[if Settings["unitframes-class-color"] then
-		self:Tag(HealthLeft, "[LevelColor][Level]|r [Name10]")
-	else
-		self:Tag(HealthLeft, "[LevelColor][Level] [Reaction][Name10]")
-	end]]
-	
-	--self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	self:Tag(HealthMiddle, "[NameColor][Name10]")
 	
 	self.Range = {
@@ -2062,12 +2027,7 @@ local StyleRaid = function(self, unit)
 	Health.Smooth = true
 	self.colors.health = {R, G, B}
 	
-	if Settings["unitframes-class-color"] then
-		Health.colorClass = true
-		Health.colorReaction = true
-	else
-		Health.colorHealth = true
-	end
+	SetHealthAttributes(Health, Settings["raid-health-color"])
 	
 	local Power = CreateFrame("StatusBar", nil, self)
 	Power:SetScaledPoint("BOTTOMLEFT", self, 1, 1)
@@ -2084,12 +2044,7 @@ local StyleRaid = function(self, unit)
 	-- Attributes
 	Power.frequentUpdates = true
 	
-	if Settings["unitframes-class-color"] then
-		Power.colorPower = true
-		Power.colorReaction = true
-	else
-		Power.colorClass = true
-	end
+	SetHealthAttributes(Power, Settings["raid-power-color"])
 	
 	-- Resurrect
 	local ResurrectIndicator = Health:CreateTexture(nil, "OVERLAY")
@@ -2872,11 +2827,10 @@ end)
 
 local UpdatePartyWidth = function(value)
 	if vUI.UnitFrames["party"] then
-		local PartyHeader = vUI.UnitFrames["party"]
 		local Unit
 		
-		for i = 1, PartyHeader:GetNumChildren() do
-			Unit = select(i, PartyHeader:GetChildren())
+		for i = 1, vUI.UnitFrames["party"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["party"]:GetChildren())
 			
 			if Unit then
 				Unit:SetScaledWidth(value)
@@ -2887,11 +2841,10 @@ end
 
 local UpdatePartyHealthHeight = function(value)
 	if vUI.UnitFrames["party"] then
-		local PartyHeader = vUI.UnitFrames["party"]
 		local Unit
 		
-		for i = 1, PartyHeader:GetNumChildren() do
-			Unit = select(i, PartyHeader:GetChildren())
+		for i = 1, vUI.UnitFrames["party"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["party"]:GetChildren())
 			
 			if Unit then
 				Unit:SetScaledHeight(value + Settings["party-power-height"] + 3)
@@ -2903,11 +2856,10 @@ end
 
 local UpdatePartyPowerHeight = function(value)
 	if vUI.UnitFrames["party"] then
-		local PartyHeader = vUI.UnitFrames["party"]
 		local Unit
 		
-		for i = 1, PartyHeader:GetNumChildren() do
-			Unit = select(i, PartyHeader:GetChildren())
+		for i = 1, vUI.UnitFrames["party"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["party"]:GetChildren())
 			
 			if Unit then
 				Unit:SetScaledHeight(value + Settings["party-health-height"] + 3)
@@ -2917,13 +2869,26 @@ local UpdatePartyPowerHeight = function(value)
 	end
 end
 
-local UpdatePartyHealthReverseFill = function(value)
+local UpdatePartyHealthOrientation = function(value)
 	if vUI.UnitFrames["party"] then
-		local PartyHeader = vUI.UnitFrames["party"]
 		local Unit
 		
-		for i = 1, PartyHeader:GetNumChildren() do
-			Unit = select(i, PartyHeader:GetChildren())
+		for i = 1, vUI.UnitFrames["party"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["party"]:GetChildren())
+			
+			if Unit then
+				Unit.Health:SetOrientation(value)
+			end
+		end
+	end
+end
+
+local UpdatePartyHealthReverseFill = function(value)
+	if vUI.UnitFrames["party"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["party"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["party"]:GetChildren())
 			
 			if Unit then
 				Unit.Health:SetReverseFill(value)
@@ -2932,16 +2897,47 @@ local UpdatePartyHealthReverseFill = function(value)
 	end
 end
 
-local UpdatePartyHealthOrientation = function(value)
+local UpdatePartyPowerReverseFill = function(value)
 	if vUI.UnitFrames["party"] then
-		local PartyHeader = vUI.UnitFrames["party"]
 		local Unit
 		
-		for i = 1, PartyHeader:GetNumChildren() do
-			Unit = select(i, PartyHeader:GetChildren())
+		for i = 1, vUI.UnitFrames["party"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["party"]:GetChildren())
 			
 			if Unit then
-				Unit.Health:SetOrientation(value)
+				Unit.Power:SetReverseFill(value)
+			end
+		end
+	end
+end
+
+local UpdatePartyHealthColor = function(value)
+	if vUI.UnitFrames["party"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["party"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["party"]:GetChildren())
+			
+			if Unit then
+				SetHealthAttributes(Unit.Health, value)
+				
+				Unit.Health:ForceUpdate()
+			end
+		end
+	end
+end
+
+local UpdatePartyPowerColor = function(value)
+	if vUI.UnitFrames["party"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["party"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["party"]:GetChildren())
+			
+			if Unit then
+				SetPowerAttributes(Unit.Power, value)
+				
+				Unit.Power:ForceUpdate()
 			end
 		end
 	end
@@ -2955,19 +2951,24 @@ GUI:AddOptions(function(self)
 	Left:CreateSwitch("party-pets-enable", Settings["party-pets-enable"], Language["Enable Party Pet Frames"], Language["Enable the party pet frames module"], ReloadUI):RequiresReload(true)
 	
 	Right:CreateHeader(Language["Debuffs"])
-	Right:CreateSwitch("party-show-debuffs", Settings["party-show-debuffs"], Language["Enable Debuffs"], "Enable to display debuffs on party members", ReloadUI):RequiresReload(true)
+	Right:CreateSwitch("party-show-debuffs", Settings["party-show-debuffs"], Language["Enable Debuffs"], Language["Enable to display debuffs on party members"], ReloadUI):RequiresReload(true)
 	
 	Left:CreateHeader(Language["Party Size"])
-	Left:CreateSlider("party-width", Settings["party-width"], 40, 200, 1, "Width", "Set the width of the party unit frame", UpdatePartyWidth)
-	Left:CreateSlider("party-health-height", Settings["party-health-height"], 12, 60, 1, "Health Height", "Set the height of party health bars", UpdatePartyHealthHeight)
-	Left:CreateSlider("party-power-height", Settings["party-power-height"], 2, 30, 1, "Power Height", "Set the height of party power bars", UpdatePartyPowerHeight)
+	Left:CreateSlider("party-width", Settings["party-width"], 40, 200, 1, Language["Width"], Language["Set the width of the party unit frame"], UpdatePartyWidth)
+	Left:CreateSlider("party-health-height", Settings["party-health-height"], 12, 60, 1, Language["Health Height"], Language["Set the height of party health bars"], UpdatePartyHealthHeight)
+	Left:CreateSlider("party-power-height", Settings["party-power-height"], 2, 30, 1, Language["Power Height"], Language["Set the height of party power bars"], UpdatePartyPowerHeight)
 	
 	Left:CreateHeader(Language["Health"])
-	Left:CreateSwitch("party-health-reverse", Settings["party-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePartyHealthReverseFill)
+	Left:CreateDropdown("party-health-color", Settings["party-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdatePartyHealthColor)
 	Left:CreateDropdown("party-health-orientation", Settings["party-health-orientation"], {[Language["Horizontal"]] = "HORIZONTAL", [Language["Vertical"]] = "VERTICAL"}, Language["Fill Orientation"], Language["Set the fill orientation of the health bar"], UpdatePartyHealthOrientation)
+	Left:CreateSwitch("party-health-reverse", Settings["party-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePartyHealthReverseFill)
+	
+	Left:CreateHeader(Language["Power"])
+	Left:CreateDropdown("party-power-color", Settings["party-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePartyPowerColor)
+	Left:CreateSwitch("party-power-reverse", Settings["party-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePartyPowerReverseFill)
 	
 	Right:CreateHeader(Language["Party Pets Size"])
-	Right:CreateSlider("party-pets-width", Settings["party-pets-width"], 40, 200, 1, "Width", "Set the width of party pet unit frames", ReloadUI, nil):RequiresReload(true)
+	Right:CreateSlider("party-pets-width", Settings["party-pets-width"], 40, 200, 1, Language["Width"], Language["Set the width of party pet unit frames"], ReloadUI, nil):RequiresReload(true)
 	--Defaults["party-pets-health-height"] = 0 -- NYI
 	--Defaults["party-pets-power-height"] = 22
 end)

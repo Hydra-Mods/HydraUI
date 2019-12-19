@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings, Defaults = select(2, ...):get()
+local Defaults = select(2, ...):get(6)
 
 -- These are just default values. Use the GUI to change settings.
 
@@ -10,10 +10,6 @@ Defaults["ui-display-dev-tools"] = false
 Defaults["ui-display-whats-new"] = true
 
 -- Media
-Defaults["ui-picker-palette"] = "Default"
-Defaults["ui-picker-format"] = "Hex"
-Defaults["ui-picker-show-texture"] = true
-
 Defaults["ui-style"] = "vUI"
 
 Defaults["ui-header-font"] = "Roboto"
@@ -45,11 +41,15 @@ Defaults["ui-title-font-size"] = 16
 Defaults["ui-highlight-texture"] = "Blank" -- TBI
 Defaults["ui-highlight-color"] = "FFFFFF" -- TBI
 
+Defaults["ui-picker-palette"] = "Default"
+Defaults["ui-picker-format"] = "Hex"
+Defaults["ui-picker-show-texture"] = true
+
 Defaults["gui-enable-fade"] = false
 Defaults["gui-faded-alpha"] = 20
 Defaults["gui-hide-in-combat"] = true
 
--- Classes (populating retail colors as well) -- The commented colors are 10% darker, I like it better on some textures
+-- Class Colors; The commented colors are 10% darker, I like it better on lighter textures
 Defaults["color-death-knight"] = "C41F3B" -- 7F222D
 Defaults["color-demon-hunter"] = "A330C9" -- 922BB4
 Defaults["color-druid"] = "FF7D0A" -- E56F08
@@ -272,15 +272,6 @@ Defaults["auto-repair-report"] = true
 Defaults["auto-vendor-enable"] = true
 Defaults["auto-vendor-report"] = true
 
--- Delete cheapest
-Defaults["delete-filter-consumable"] = false
-Defaults["delete-filter-container"] = false
-Defaults["delete-filter-weapon"] = true
-Defaults["delete-filter-armor"] = true
-Defaults["delete-filter-reagent"] = false
-Defaults["delete-filter-tradeskill"] = false
-Defaults["delete-filter-quest"] = true
-
 -- Announcements
 Defaults["announcements-enable"] = true
 Defaults["announcements-channel"] = "GROUP"
@@ -328,16 +319,25 @@ Defaults["unitframes-pet-power-color"] = "POWER"
 Defaults["unitframes-boss-enable"] = true
 Defaults["unitframes-boss-width"] = 238
 Defaults["unitframes-boss-health-height"] = 28
+Defaults["unitframes-boss-health-reverse"] = false
+Defaults["unitframes-boss-health-color"] = "CLASS"
 Defaults["unitframes-boss-power-height"] = 2
+Defaults["unitframes-boss-power-reverse"] = false
+Defaults["unitframes-boss-power-color"] = "POWER"
 
 -- Party
 Defaults["party-enable"] = true
 Defaults["party-width"] = 78
+Defaults["party-show-debuffs"] = true
 Defaults["party-health-height"] = 40
 Defaults["party-health-reverse"] = false
+Defaults["party-health-color"] = "CLASS"
 Defaults["party-health-orientation"] = "HORIZONTAL"
+
 Defaults["party-power-height"] = 6
-Defaults["party-show-debuffs"] = true
+Defaults["party-power-reverse"] = false
+Defaults["party-power-color"] = "POWER"
+
 Defaults["party-pets-enable"] = true
 Defaults["party-pets-width"] = 78
 Defaults["party-pets-health-height"] = 22
