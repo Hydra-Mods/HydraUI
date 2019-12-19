@@ -197,11 +197,19 @@ end
 
 Events["HealthDeficit"] = "UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD"
 Methods["HealthDeficit"] = function(unit)
+	if UnitIsDead(unit) then
+		return "|cFFEE4D4D" .. Language["Dead"] .. "|r"
+	elseif UnitIsGhost(unit) then
+		return "|cFFEEEEEE" .. Language["Ghost"] .. "|r"
+	elseif (not UnitIsConnected(unit)) then
+		return "|cFFEEEEEE" .. Language["Offline"] .. "|r"
+	end
+	
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
 	local Deficit = Max - Current
 	
-	if (Current ~= Max) then
+	if ((Deficit ~= 0) or (Current ~= Max)) then
 		return "-" .. vUI:ShortValue(Deficit)
 	end
 end
@@ -1187,10 +1195,6 @@ local StylePlayer = function(self, unit)
 	Resurrect:SetScaledPoint("CENTER", Health, 0, 0)
 	
 	-- Tags
-	if Settings["unitframes-player-show-name"] then
-		self:Tag(HealthLeft, "[Name15]")
-	end
-	
 	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	self:Tag(PowerLeft, "[HealthValues]")
 	self:Tag(PowerRight, "[PowerValues]")
@@ -1391,7 +1395,7 @@ local StyleTarget = function(self, unit)
 	Castbar.PostChannelStart = PostCastStart
 	
 	-- Tags
-	self:Tag(HealthLeft, "[LevelColor][Level][Plus] [NameColor][Name30]")
+	self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [Name30]")
 	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	self:Tag(PowerLeft, "[HealthValues]")
 	self:Tag(PowerRight, "[PowerValues]")
@@ -1502,7 +1506,7 @@ local StyleTargetTarget = function(self, unit)
 	
 	SetPowerAttributes(Power, Settings["unitframes-targettarget-power-color"])
 	
-	self:Tag(HealthLeft, "[NameColor][Name10]")
+	self:Tag(HealthLeft, "[Name10]")
 	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	
 	self.Range = {
@@ -1600,7 +1604,7 @@ local StylePet = function(self, unit)
 	
 	SetPowerAttributes(Power, Settings["unitframes-pet-power-color"])
 	
-	self:Tag(HealthLeft, "[NameColor][Name10]")
+	self:Tag(HealthLeft, "[Name10]")
 	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	
 	self.Range = {
@@ -1908,7 +1912,7 @@ local StyleParty = function(self, unit)
 	Dispel.bg:SetTexture(Media:GetTexture("Blank"))
 	Dispel.bg:SetVertexColor(0, 0, 0)
 
-	self:Tag(HealthMiddle, "[NameColor][Name10]")
+	self:Tag(HealthMiddle, "[Name10]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -1991,7 +1995,7 @@ local StylePartyPet = function(self, unit)
 	RaidTarget:SetPoint("CENTER", Health, "TOP")
 	
 	-- Tags
-	self:Tag(HealthMiddle, "[NameColor][Name10]")
+	self:Tag(HealthMiddle, "[Name10]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -2113,13 +2117,8 @@ local StyleRaid = function(self, unit)
 	Dispel.bg:SetVertexColor(0, 0, 0)
 	
 	-- Tags
-	if Settings["unitframes-class-color"] then
-		self:Tag(HealthLeft, "[Name5]")
-	else
-		self:Tag(HealthLeft, "[NameColor][Name5]")
-	end
-	
-	self:Tag(HealthRight, "[Status][HealthColor][HealthDeficit]")
+	self:Tag(HealthLeft, "[Name5]")
+	self:Tag(HealthRight, "[HealthColor][HealthDeficit]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -2193,17 +2192,6 @@ local StyleBoss = function(self, unit)
 	Health.colorDisconnected = true
 	self.colors.health = {R, G, B}
 	
-	if Settings["unitframes-class-color"] then
-		Health.colorReaction = true
-		Health.colorClass = true
-		
-		self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [Name30]")
-	else
-		Health.colorHealth = true
-		
-		self:Tag(HealthLeft, "[LevelColor][Level][Plus] [NameColor][Name30]")
-	end
-	
 	local Power = CreateFrame("StatusBar", nil, self)
 	Power:SetScaledPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetScaledPoint("BOTTOMRIGHT", self, -1, 1)
@@ -2230,12 +2218,6 @@ local StyleBoss = function(self, unit)
 	Power.frequentUpdates = true
 	Power.colorReaction = true
 	Power.Smooth = true
-	
-	if Settings["unitframes-class-color"] then
-		Power.colorPower = true
-	else
-		Power.colorClass = true
-	end
 	
 	-- Auras
 	local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
@@ -2318,6 +2300,7 @@ local StyleBoss = function(self, unit)
 	Castbar.PostChannelStart = PostCastStart
 	
 	-- Tags
+	self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [Name30]")
 	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	self:Tag(PowerLeft, "[HealthValues]")
 	self:Tag(PowerRight, "[PowerValues]")

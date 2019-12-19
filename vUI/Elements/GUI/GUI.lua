@@ -161,48 +161,37 @@ GUI.Widgets.CreateLine = function(self, text)
 	return Anchor.Text
 end
 
-local CheckStringLength = UIParent:CreateFontString(nil, "OVERLAY")
-CheckStringLength:SetScaledWidth(GROUP_WIDTH - 6)
-CheckStringLength:SetJustifyH("LEFT")
-CheckStringLength:SetWordWrap(true)
-CheckStringLength:SetIndentedWordWrap(false)
-
---[[local CheckLineHeight = function(msg)
-	WrapCheck:SetText(msg)
-	
-	local LineHeight = ceil(WrapCheck:GetStringWidth() / 383) * 12
-	
-	return LineHeight
-end]]
+local CheckString = UIParent:CreateFontString(nil, "OVERLAY")
+CheckString:SetScaledWidth(GROUP_WIDTH - 6)
+CheckString:SetJustifyH("LEFT")
+CheckString:SetWordWrap(true)
 
 GUI.Widgets.CreateMessage = function(self, text) -- Create as many lines as needed for the message
-	if (not CheckStringLength.FontSet) then
-		CheckStringLength:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
-		CheckStringLength.FontSet = true
+	if (not CheckString.FontSet) then
+		CheckString:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+		CheckString.FontSet = true
 	end
 	
-	CheckStringLength:SetText(text)
+	CheckString:SetText(text)
 	
-	local NumLines = ceil(CheckStringLength:GetStringHeight() / Settings["ui-font-size"])
-	local Message = text
+	local StringWidth = CheckString:GetStringWidth()
+	local StringLen = strlen(text)
+	local MaxWidth = GROUP_WIDTH - 6
+	local NumLines = ceil(StringWidth / MaxWidth)
 	
-	--[[for i = 1, NumLines do
-		print()
-	end]]
-	
-	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
-	Anchor.ID = CreateID(text)
-	
-	--[[local Text = Anchor:CreateFontString(nil, "OVERLAY")
-	Text:SetScaledPoint("LEFT", Anchor, HEADER_SPACING, 0)
-	Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
-	Text:SetJustifyH("LEFT")
-	Text:SetText("|cFF" .. Settings["ui-widget-font-color"] .. text .. "|r")
-	
-	tinsert(self.Widgets, Anchor)]]
-	
-	return Text
+	if (NumLines > 1) then
+		local Message = text
+		
+		for i = 1, NumLines do
+			local Line = sub(Message, 1, ceil(StringLen / NumLines))
+			
+			self:CreateLine(Line)
+			
+			Message = gsub(Message, Line, "")
+		end
+	else
+		self:CreateLine(text)
+	end
 end
 
 GUI.Widgets.CreateDoubleLine = function(self, left, right)
