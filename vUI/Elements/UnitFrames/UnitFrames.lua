@@ -2168,7 +2168,7 @@ local StyleBoss = function(self, unit)
 	local Health = CreateFrame("StatusBar", nil, self)
 	Health:SetScaledPoint("TOPLEFT", self, 1, -1)
 	Health:SetScaledPoint("TOPRIGHT", self, -1, -1)
-	Health:SetScaledHeight(22)
+	Health:SetScaledHeight(Settings["unitframes-boss-health-height"])
 	Health:SetFrameLevel(5)
 	Health:SetMinMaxValues(0, 1)
 	Health:SetValue(1)
@@ -2224,7 +2224,7 @@ local StyleBoss = function(self, unit)
 	local Power = CreateFrame("StatusBar", nil, self)
 	Power:SetScaledPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetScaledPoint("BOTTOMRIGHT", self, -1, 1)
-	Power:SetScaledHeight(6)
+	Power:SetScaledHeight(Settings["unitframes-boss-power-height"])
 	Power:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 	
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
@@ -2442,6 +2442,23 @@ UF:SetScript("OnEvent", function(self, event)
 			Move:Add(Pet)
 		end
 		
+		if Settings["unitframes-boss-enable"] then
+			for i = 1, 5 do
+				local Boss = oUF:Spawn("boss" .. i, "vUI Boss " .. i)
+				Boss:SetScaledSize(Settings["unitframes-boss-width"], Settings["unitframes-boss-health-height"] + Settings["unitframes-boss-power-height"] + 3)
+				
+				if (i == 1) then
+					Boss:SetScaledPoint("LEFT", UIParent, 300, 200)
+				else
+					Boss:SetScaledPoint("TOP", vUI.UnitFrames["boss" .. (i-1)], "BOTTOM", 0, -(Settings["unitframes-boss-health-height"] + Settings["unitframes-boss-power-height"] + 5))
+				end
+				
+				Move:Add(Boss)
+				
+				vUI.UnitFrames["boss" .. i] = Boss
+			end
+		end
+		
 		if Settings["party-enable"] then
 			local Party = oUF:SpawnHeader("vUI Party", nil, "party,solo",
 				"initial-width", Settings["party-width"],
@@ -2463,7 +2480,6 @@ UF:SetScript("OnEvent", function(self, event)
 			
 			self.PartyAnchor = CreateFrame("Frame", "vUI Party Anchor", UIParent)
 			self.PartyAnchor:SetScaledSize((5 * Settings["party-width"] + (4 * 2)), (Settings["party-health-height"] + Settings["party-power-height"]) + 3)
-			--self.PartyAnchor:SetScaledPoint("LEFT", UIParent, 10, 0)
 			self.PartyAnchor:SetScaledPoint("BOTTOMLEFT", vUIChatFrameTop, "TOPLEFT", -3, 5)
 			
 			Party:SetScaledPoint("BOTTOMLEFT", self.PartyAnchor, 0, 0)
@@ -2477,11 +2493,12 @@ UF:SetScript("OnEvent", function(self, event)
 					"initial-width", Settings["party-pets-width"],
 					"initial-height", (Settings["party-pets-health-height"] + Settings["party-pets-power-height"] + 3),
 					"showSolo", false,
-					"showPlayer", true,
+					"showPlayer", false,
 					"showParty", true,
 					"showRaid", false,
-					"xoffset", 3,
-					"yOffset", -3,
+					"xoffset", 2,
+					"yOffset", 0,
+					"point", "LEFT",
 					"oUF-initialConfigFunction", [[
 						local Header = self:GetParent()
 						
@@ -2539,22 +2556,6 @@ UF:SetScript("OnEvent", function(self, event)
 			vUI.UnitFrames["raid"] = Raid
 			
 			Move:Add(self.RaidAnchor)
-		end
-		
-		-- if enable boss blah blah
-		for i = 1, 5 do
-			local Boss = oUF:Spawn("boss" .. i, "vUI Boss " .. i)
-			Boss:SetScaledSize(200, 22 + 6 + 3)
-			
-			if (i == 1) then
-				Boss:SetScaledPoint("LEFT", UIParent, 300, 200)
-			else
-				Boss:SetScaledPoint("TOP", vUI.UnitFrames["boss" .. (i-1)], "BOTTOM", 0, -(Settings["unitframes-target-health-height"] + Settings["unitframes-target-power-height"] + 5))
-			end
-			
-			Move:Add(Boss)
-			
-			vUI.UnitFrames["boss" .. i] = Boss
 		end
 		
 		if Settings["nameplates-enable"] then

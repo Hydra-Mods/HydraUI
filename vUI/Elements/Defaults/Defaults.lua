@@ -285,7 +285,7 @@ Defaults["delete-filter-quest"] = true
 Defaults["announcements-enable"] = true
 Defaults["announcements-channel"] = "GROUP"
 
--- Unitframes -- Add option to color health backdrops by reaction/class color, or use health color, or set a color
+-- Unitframes
 Defaults["unitframes-enable"] = true
 Defaults["unitframes-only-player-debuffs"] = false
 Defaults["unitframes-show-player-buffs"] = true
@@ -293,37 +293,44 @@ Defaults["unitframes-show-player-buffs"] = true
 Defaults["unitframes-player-width"] = 238
 Defaults["unitframes-player-health-height"] = 28
 Defaults["unitframes-player-health-reverse"] = false
-Defaults["unitframes-player-health-color"] = "CLASS" -- CUSTOM/CLASS/REACTION/GRADIENT
+Defaults["unitframes-player-health-color"] = "CLASS"
 Defaults["unitframes-player-power-height"] = 15
 Defaults["unitframes-player-power-reverse"] = false
-Defaults["unitframes-player-power-color"] = "POWER" -- POWER/CLASS/REACTION/CUSTOM
+Defaults["unitframes-player-power-color"] = "POWER"
 
 Defaults["unitframes-target-width"] = 238
 Defaults["unitframes-target-health-height"] = 28
 Defaults["unitframes-target-health-reverse"] = false
-Defaults["unitframes-target-health-color"] = "CLASS" -- CUSTOM/CLASS/REACTION/GRADIENT
+Defaults["unitframes-target-health-color"] = "CLASS"
 Defaults["unitframes-target-power-height"] = 15
 Defaults["unitframes-target-power-reverse"] = false
-Defaults["unitframes-target-power-color"] = "POWER" -- POWER/CLASS/REACTION/CUSTOM
+Defaults["unitframes-target-power-color"] = "POWER"
 
 Defaults["unitframes-targettarget-width"] = 110
 Defaults["unitframes-targettarget-health-height"] = 26 
 Defaults["unitframes-targettarget-health-reverse"] = false
-Defaults["unitframes-targettarget-health-color"] = "CLASS" -- CUSTOM/CLASS/REACTION/GRADIENT
+Defaults["unitframes-targettarget-health-color"] = "CLASS"
 Defaults["unitframes-targettarget-enable-power"] = true
 Defaults["unitframes-targettarget-power-height"] = 3
 Defaults["unitframes-targettarget-power-reverse"] = false
-Defaults["unitframes-targettarget-power-color"] = "POWER" -- POWER/CLASS/REACTION/CUSTOM
+Defaults["unitframes-targettarget-power-color"] = "POWER"
 
 Defaults["unitframes-pet-width"] = 110
 Defaults["unitframes-pet-health-height"] = 26
 Defaults["unitframes-pet-health-reverse"] = false
-Defaults["unitframes-pet-health-color"] = "CLASS" -- CUSTOM/CLASS/REACTION/GRADIENT
+Defaults["unitframes-pet-health-color"] = "CLASS"
 Defaults["unitframes-pet-enable-power"] = true
 Defaults["unitframes-pet-power-height"] = 3
 Defaults["unitframes-pet-power-reverse"] = false
-Defaults["unitframes-pet-power-color"] = "POWER" -- POWER/CLASS/REACTION/CUSTOM
+Defaults["unitframes-pet-power-color"] = "POWER"
 
+-- Bosses
+Defaults["unitframes-boss-enable"] = true
+Defaults["unitframes-boss-width"] = 238
+Defaults["unitframes-boss-health-height"] = 28
+Defaults["unitframes-boss-power-height"] = 2
+
+-- Party
 Defaults["party-enable"] = true
 Defaults["party-width"] = 78
 Defaults["party-health-height"] = 40
@@ -338,6 +345,7 @@ Defaults["party-pets-health-reverse"] = false
 Defaults["party-pets-health-orientation"] = "HORIZONTAL"
 Defaults["party-pets-power-height"] = 0 -- NYI
 
+-- Raid
 Defaults["raid-enable"] = true
 Defaults["raid-width"] = 90
 Defaults["raid-health-height"] = 23
@@ -353,9 +361,9 @@ Defaults["nameplates-font-flags"] = ""
 Defaults["nameplates-cc-health"] = false
 Defaults["nameplates-top-text"] = ""
 Defaults["nameplates-topleft-text"] = "[LevelColor][Level][Plus] [NameColor][Name20]"
-Defaults["nameplates-topright-text"] = "" -- [LevelColor][Level][Plus]
+Defaults["nameplates-topright-text"] = ""
 Defaults["nameplates-bottom-text"] = ""
-Defaults["nameplates-bottomleft-text"] = "" -- [Classification]
+Defaults["nameplates-bottomleft-text"] = ""
 Defaults["nameplates-bottomright-text"] = "[HealthColor][HealthPercent]"
 Defaults["nameplates-display-debuffs"] = true
 Defaults["nameplates-only-player-debuffs"] = true
@@ -379,7 +387,7 @@ Defaults["tooltips-font-flags"] = ""
 Defaults["tooltips-hide-on-unit"] = "NEVER"
 Defaults["tooltips-hide-on-item"] = "NEVER"
 Defaults["tooltips-hide-on-action"] = "NEVER"
-Defaults["tooltips-health-bar-color"] = "CUSTOM" -- CLASS/REACTION/CUSTOM
+Defaults["tooltips-health-bar-color"] = "CUSTOM"
 
 -- Bags
 Defaults["bags-loot-from-left"] = false
