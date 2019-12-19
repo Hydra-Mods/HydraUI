@@ -296,7 +296,7 @@ Defaults["unitframes-player-health-reverse"] = false
 Defaults["unitframes-player-health-color"] = "CLASS" -- CUSTOM/CLASS/REACTION/GRADIENT
 Defaults["unitframes-player-power-height"] = 15
 Defaults["unitframes-player-power-reverse"] = false
-Defaults["unitframes-player-power-color"] = "POWER_TYPE" -- POWER_TYPE/CLASS/REACTION/CUSTOM
+Defaults["unitframes-player-power-color"] = "POWER" -- POWER/CLASS/REACTION/CUSTOM
 
 Defaults["unitframes-target-width"] = 238
 Defaults["unitframes-target-health-height"] = 28
@@ -304,7 +304,7 @@ Defaults["unitframes-target-health-reverse"] = false
 Defaults["unitframes-target-health-color"] = "CLASS" -- CUSTOM/CLASS/REACTION/GRADIENT
 Defaults["unitframes-target-power-height"] = 15
 Defaults["unitframes-target-power-reverse"] = false
-Defaults["unitframes-target-power-color"] = "POWER_TYPE" -- POWER_TYPE/CLASS/REACTION/CUSTOM
+Defaults["unitframes-target-power-color"] = "POWER" -- POWER/CLASS/REACTION/CUSTOM
 
 Defaults["unitframes-targettarget-width"] = 110
 Defaults["unitframes-targettarget-health-height"] = 26 
@@ -313,7 +313,7 @@ Defaults["unitframes-targettarget-health-color"] = "CLASS" -- CUSTOM/CLASS/REACT
 Defaults["unitframes-targettarget-enable-power"] = true
 Defaults["unitframes-targettarget-power-height"] = 3
 Defaults["unitframes-targettarget-power-reverse"] = false
-Defaults["unitframes-targettarget-power-color"] = "POWER_TYPE" -- POWER_TYPE/CLASS/REACTION/CUSTOM
+Defaults["unitframes-targettarget-power-color"] = "POWER" -- POWER/CLASS/REACTION/CUSTOM
 
 Defaults["unitframes-pet-width"] = 110
 Defaults["unitframes-pet-health-height"] = 26
@@ -322,7 +322,7 @@ Defaults["unitframes-pet-health-color"] = "CLASS" -- CUSTOM/CLASS/REACTION/GRADI
 Defaults["unitframes-pet-enable-power"] = true
 Defaults["unitframes-pet-power-height"] = 3
 Defaults["unitframes-pet-power-reverse"] = false
-Defaults["unitframes-pet-power-color"] = "POWER_TYPE" -- POWER_TYPE/CLASS/REACTION/CUSTOM
+Defaults["unitframes-pet-power-color"] = "POWER" -- POWER/CLASS/REACTION/CUSTOM
 
 Defaults["party-enable"] = true
 Defaults["party-width"] = 78

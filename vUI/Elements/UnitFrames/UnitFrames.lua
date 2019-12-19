@@ -63,15 +63,47 @@ local GetColor = function(p, r1, g1, b1, r2, g2, b2)
 	return r1 + (r2 - r1) * p, g1 + (g2 - g1) * p, b1 + (b2 - b1) * p
 end
 
+local SetHealthAttributes = function(health, value)
+	if (value == "CLASS") then
+		health.colorClass = true
+		health.colorReaction = true
+		health.colorHealth = false
+	elseif (value == "REACTION") then
+		health.colorClass = false
+		health.colorReaction = true
+		health.colorHealth = false
+	elseif (value == "CUSTOM") then
+		health.colorClass = false
+		health.colorReaction = false
+		health.colorHealth = true
+	end
+end
+
+local SetPowerAttributes = function(power, value)
+	if (value == "POWER") then
+		power.colorPower = true
+		power.colorClass = false
+		power.colorReaction = false
+	elseif (value == "REACTION") then
+		power.colorPower = false
+		power.colorClass = false
+		power.colorReaction = true
+	elseif (value == "CLASS") then
+		power.colorPower = false
+		power.colorClass = true
+		power.colorReaction = true
+	end
+end
+
 -- Tags
 Events["Status"] = "UNIT_HEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD"
 Methods["Status"] = function(unit)
 	if UnitIsDead(unit) then
-		return Language["Dead"]
+		return "|cFFEE4D4D" .. Language["Dead"] .. "|r"
 	elseif UnitIsGhost(unit) then
-		return Language["Ghost"]
+		return "|cFFEEEEEE" .. Language["Ghost"] .. "|r"
 	elseif (not UnitIsConnected(unit)) then
-		return Language["Offline"]
+		return "|cFFEEEEEE" .. Language["Offline"] .. "|r"
 	end
 end
 
@@ -148,18 +180,9 @@ Methods["HealthPercent"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
 	
-	if UnitIsDead(unit) then
-		return "|cFFD64545" .. Language["Dead"] .. "|r"
-	elseif UnitIsGhost(unit) then
-		return "|cFFEEEEEE" .. Language["Ghost"] .. "|r"
-	elseif (not UnitIsConnected(unit)) then
-		return "|cFFEEEEEE" .. Language["Offline"] .. "|r"
-	end
-	
 	if (Max == 0) then
 		return 0
 	else
-		--return floor(Current / Max * 100 + 0.5)
 		return floor((Current / Max * 100 + 0.05) * 10) / 10 .. "%"
 	end
 end
@@ -170,6 +193,17 @@ Methods["HealthValues"] = function(unit)
 	local Max = UnitHealthMax(unit)
 	
 	return vUI:ShortValue(Current) .. " / " .. vUI:ShortValue(Max)
+end
+
+Events["HealthDeficit"] = "UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD"
+Methods["HealthDeficit"] = function(unit)
+	local Current = UnitHealth(unit)
+	local Max = UnitHealthMax(unit)
+	local Deficit = Max - Current
+	
+	if (Current ~= Max) then
+		return "-" .. vUI:ShortValue(Deficit)
+	end
 end
 
 Events["GroupStatus"] = "UNIT_HEALTH_FREQUENT UNIT_CONNECTION UNIT_FLAGS PLAYER_ENTERING_WORLD"
@@ -841,12 +875,7 @@ local StylePlayer = function(self, unit)
 	Health.Smooth = true
 	self.colors.health = {R, G, B}
 	
-	if Settings["unitframes-class-color"] then
-		Health.colorReaction = true
-		Health.colorClass = true
-	else
-		Health.colorHealth = true
-	end
+	SetHealthAttributes(Health, Settings["unitframes-player-health-color"])
 	
 	local Power = CreateFrame("StatusBar", nil, self)
 	Power:SetScaledPoint("BOTTOMLEFT", self, 1, 1)
@@ -875,12 +904,7 @@ local StylePlayer = function(self, unit)
 	Power.frequentUpdates = true
 	Power.Smooth = true
 	
-	if Settings["unitframes-class-color"] then
-		Power.colorPower = true
-		Power.colorReaction = true
-	else
-		Power.colorClass = true
-	end
+	SetPowerAttributes(Power, Settings["unitframes-player-power-color"])
 	
     -- Castbar
     local Castbar = CreateFrame("StatusBar", "vUI Casting Bar", self)
@@ -1246,16 +1270,7 @@ local StyleTarget = function(self, unit)
 	Health.colorDisconnected = true
 	self.colors.health = {R, G, B}
 	
-	if Settings["unitframes-class-color"] then
-		Health.colorReaction = true
-		Health.colorClass = true
-		
-		self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [Name30]")
-	else
-		Health.colorHealth = true
-		
-		self:Tag(HealthLeft, "[LevelColor][Level][Plus] [NameColor][Name30]")
-	end
+	SetHealthAttributes(Health, Settings["unitframes-target-health-color"])
 	
 	local Power = CreateFrame("StatusBar", nil, self)
 	Power:SetScaledPoint("BOTTOMLEFT", self, 1, 1)
@@ -1285,11 +1300,7 @@ local StyleTarget = function(self, unit)
 	Power.colorReaction = true
 	Power.Smooth = true
 	
-	if Settings["unitframes-class-color"] then
-		Power.colorPower = true
-	else
-		Power.colorClass = true
-	end
+	SetPowerAttributes(Power, Settings["unitframes-target-power-color"])
 	
 	-- Auras
 	local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
@@ -1372,6 +1383,7 @@ local StyleTarget = function(self, unit)
 	Castbar.PostChannelStart = PostCastStart
 	
 	-- Tags
+	self:Tag(HealthLeft, "[LevelColor][Level][Plus] [NameColor][Name30]")
 	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	self:Tag(PowerLeft, "[HealthValues]")
 	self:Tag(PowerRight, "[PowerValues]")
@@ -1451,17 +1463,7 @@ local StyleTargetTarget = function(self, unit)
 	Health.Smooth = true
 	self.colors.health = {R, G, B}
 	
-	if Settings["unitframes-class-color"] then
-		Health.colorReaction = true
-		Health.colorClass = true
-		Health.colorClassPet = true
-		
-		self:Tag(HealthLeft, "[Name10]")
-	else
-		Health.colorHealth = true
-		
-		self:Tag(HealthLeft, "[NameColor][Name10]")
-	end
+	SetHealthAttributes(Health, Settings["unitframes-targettarget-health-color"])
 	
 	-- Power Bar
 	local Power = CreateFrame("StatusBar", nil, self)
@@ -1483,12 +1485,9 @@ local StyleTargetTarget = function(self, unit)
 	Power.colorReaction = true
 	Power.Smooth = true
 	
-	if Settings["unitframes-class-color"] then
-		Power.colorPower = true
-	else
-		Power.colorClass = true
-	end
+	SetPowerAttributes(Power, Settings["unitframes-targettarget-power-color"])
 	
+	self:Tag(HealthLeft, "[NameColor][Name10]")
 	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	
 	self.Range = {
@@ -1556,15 +1555,7 @@ local StylePet = function(self, unit)
 	Health.Smooth = true
 	self.colors.health = {R, G, B}
 	
-	if Settings["unitframes-class-color"] then
-		Health.colorReaction = true
-		
-		self:Tag(HealthLeft, "[Name10]")
-	else
-		Health.colorHealth = true
-		
-		self:Tag(HealthLeft, "[NameColor][Name10]")
-	end
+	SetHealthAttributes(Health, Settings["unitframes-pet-health-color"])
 	
 	-- Power Bar
 	local Power = CreateFrame("StatusBar", nil, self)
@@ -1585,12 +1576,9 @@ local StylePet = function(self, unit)
 	Power.colorReaction = true
 	Power.Smooth = true
 	
-	if Settings["unitframes-class-color"] then
-		Power.colorPower = true
-	else
-		Power.colorClass = true
-	end
+	SetPowerAttributes(Power, Settings["unitframes-pet-power-color"])
 	
+	self:Tag(HealthLeft, "[NameColor][Name10]")
 	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	
 	self.Range = {
@@ -2155,8 +2143,7 @@ local StyleRaid = function(self, unit)
 		self:Tag(HealthLeft, "[NameColor][Name5]")
 	end
 	
-	--self:Tag(HealthRight, "[HealthColor][HealthPercent]")
-	self:Tag(HealthRight, "[GroupStatus]")
+	self:Tag(HealthRight, "[Status][HealthColor][HealthDeficit]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -2768,19 +2755,7 @@ local UpdatePlayerHealthColor = function(value)
 	if vUI.UnitFrames["player"] then
 		local Health = vUI.UnitFrames["player"].Health
 		
-		if (value == "CLASS") then
-			Health.colorClass = true
-			Health.colorReaction = true
-			Health.colorHealth = false
-		elseif (value == "REACTION") then
-			Health.colorClass = false
-			Health.colorReaction = true
-			Health.colorHealth = false
-		elseif (value == "CUSTOM") then
-			Health.colorClass = false
-			Health.colorReaction = false
-			Health.colorHealth = true
-		end
+		SetHealthAttributes(Health, value)
 		
 		Health:ForceUpdate()
 	end
@@ -2790,19 +2765,7 @@ local UpdatePlayerPowerColor = function(value)
 	if vUI.UnitFrames["player"] then
 		local Power = vUI.UnitFrames["player"].Power
 		
-		if (value == "POWER_TYPE") then
-			Power.colorPower = true
-			Power.colorClass = false
-			Power.colorReaction = false
-		elseif (value == "REACTION") then
-			Power.colorPower = false
-			Power.colorClass = false
-			Power.colorReaction = true
-		elseif (value == "CLASS") then
-			Power.colorPower = false
-			Power.colorClass = true
-			Power.colorReaction = true
-		end
+		SetPowerAttributes(Power, value)
 		
 		Power:ForceUpdate()
 	end
@@ -2812,19 +2775,7 @@ local UpdateTargetHealthColor = function(value)
 	if vUI.UnitFrames["target"] then
 		local Health = vUI.UnitFrames["target"].Health
 		
-		if (value == "CLASS") then
-			Health.colorClass = true
-			Health.colorReaction = true
-			Health.colorHealth = false
-		elseif (value == "REACTION") then
-			Health.colorClass = false
-			Health.colorReaction = true
-			Health.colorHealth = false
-		elseif (value == "CUSTOM") then
-			Health.colorClass = false
-			Health.colorReaction = false
-			Health.colorHealth = true
-		end
+		SetHealthAttributes(Health, value)
 		
 		Health:ForceUpdate()
 	end
@@ -2834,19 +2785,7 @@ local UpdateTargetPowerColor = function(value)
 	if vUI.UnitFrames["target"] then
 		local Power = vUI.UnitFrames["target"].Power
 		
-		if (value == "POWER_TYPE") then
-			Power.colorPower = true
-			Power.colorClass = false
-			Power.colorReaction = false
-		elseif (value == "REACTION") then
-			Power.colorPower = false
-			Power.colorClass = false
-			Power.colorReaction = true
-		elseif (value == "CLASS") then
-			Power.colorPower = false
-			Power.colorClass = true
-			Power.colorReaction = true
-		end
+		SetPowerAttributes(Power, value)
 		
 		Power:ForceUpdate()
 	end
@@ -2856,19 +2795,7 @@ local UpdateTargetTargetHealthColor = function(value)
 	if vUI.UnitFrames["targettarget"] then
 		local Health = vUI.UnitFrames["targettarget"].Health
 		
-		if (value == "CLASS") then
-			Health.colorClass = true
-			Health.colorReaction = true
-			Health.colorHealth = false
-		elseif (value == "REACTION") then
-			Health.colorClass = false
-			Health.colorReaction = true
-			Health.colorHealth = false
-		elseif (value == "CUSTOM") then
-			Health.colorClass = false
-			Health.colorReaction = false
-			Health.colorHealth = true
-		end
+		SetHealthAttributes(Health, value)
 		
 		Health:ForceUpdate()
 	end
@@ -2878,19 +2805,7 @@ local UpdateTargetTargetPowerColor = function(value)
 	if vUI.UnitFrames["targettarget"] then
 		local Power = vUI.UnitFrames["targettarget"].Power
 		
-		if (value == "POWER_TYPE") then
-			Power.colorPower = true
-			Power.colorClass = false
-			Power.colorReaction = false
-		elseif (value == "REACTION") then
-			Power.colorPower = false
-			Power.colorClass = false
-			Power.colorReaction = true
-		elseif (value == "CLASS") then
-			Power.colorPower = false
-			Power.colorClass = true
-			Power.colorReaction = true
-		end
+		SetPowerAttributes(Power, value)
 		
 		Power:ForceUpdate()
 	end
@@ -2900,19 +2815,7 @@ local UpdatePetHealthColor = function(value)
 	if vUI.UnitFrames["pet"] then
 		local Health = vUI.UnitFrames["pet"].Health
 		
-		if (value == "CLASS") then
-			Health.colorClass = true
-			Health.colorReaction = true
-			Health.colorHealth = false
-		elseif (value == "REACTION") then
-			Health.colorClass = false
-			Health.colorReaction = true
-			Health.colorHealth = false
-		elseif (value == "CUSTOM") then
-			Health.colorClass = false
-			Health.colorReaction = false
-			Health.colorHealth = true
-		end
+		SetHealthAttributes(Health, value)
 		
 		Health:ForceUpdate()
 	end
@@ -2922,19 +2825,7 @@ local UpdatePetPowerColor = function(value)
 	if vUI.UnitFrames["pet"] then
 		local Power = vUI.UnitFrames["pet"].Power
 		
-		if (value == "POWER_TYPE") then
-			Power.colorPower = true
-			Power.colorClass = false
-			Power.colorReaction = false
-		elseif (value == "REACTION") then
-			Power.colorPower = false
-			Power.colorClass = false
-			Power.colorReaction = true
-		elseif (value == "CLASS") then
-			Power.colorPower = false
-			Power.colorClass = true
-			Power.colorReaction = true
-		end
+		SetPowerAttributes(Power, value)
 		
 		Power:ForceUpdate()
 	end
