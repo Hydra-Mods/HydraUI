@@ -935,7 +935,7 @@ local StylePlayer = function(self, unit)
 	
     -- Castbar
     local Castbar = CreateFrame("StatusBar", "vUI Casting Bar", self)
-    Castbar:SetScaledSize(250, 22)
+    Castbar:SetScaledSize(250, 24)
     Castbar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 	
 	local CastbarBG = Castbar:CreateTexture(nil, "ARTWORK")
@@ -966,7 +966,7 @@ local StylePlayer = function(self, unit)
 	
     -- Add spell icon
     local Icon = Castbar:CreateTexture(nil, "OVERLAY")
-    Icon:SetScaledSize(22, 22)
+    Icon:SetScaledSize(24, 24)
     Icon:SetScaledPoint("TOPRIGHT", Castbar, "TOPLEFT", -4, 0)
     Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	
@@ -2443,7 +2443,7 @@ UF:SetScript("OnEvent", function(self, event)
 				if (i == 1) then
 					Boss:SetScaledPoint("LEFT", UIParent, 300, 200)
 				else
-					Boss:SetScaledPoint("TOP", vUI.UnitFrames["boss" .. (i-1)], "BOTTOM", 0, -(Settings["unitframes-boss-health-height"] + Settings["unitframes-boss-power-height"] + 5))
+					Boss:SetScaledPoint("TOP", vUI.UnitFrames["boss" .. (i-1)], "BOTTOM", 0, -2)
 				end
 				
 				Move:Add(Boss)
