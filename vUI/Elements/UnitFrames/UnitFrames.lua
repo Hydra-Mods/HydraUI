@@ -659,11 +659,11 @@ local StyleNamePlate = function(self, unit)
 	BottomLeft:SetJustifyH("LEFT")
 	
 	Health.Smooth = true
-	Health.colorTapping = Settings["nameplates-color-by-tapped"]
+	Health.colorTapping = true
 	Health.colorDisconnected = true
-	Health.colorClass = Settings["nameplates-color-by-class"]
-	Health.colorReaction = Settings["nameplates-color-by-reaction"]
 	Health.colorHealth = true
+	
+	SetHealthAttributes(Health, Settings["nameplates-health-color"])
 	
 	-- Debuffs
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
@@ -3062,12 +3062,10 @@ local UpdateNamePlatesHeight = function()
 end
 
 local NamePlateSetHealthColor = function(self)
-	self.Health.colorTapping = Settings["nameplates-color-by-tapped"]
-	self.Health.colorClass = Settings["nameplates-color-by-class"]
-	self.Health.colorReaction = Settings["nameplates-color-by-reaction"]
+	SetHealthAttributes(self.Health, Settings["nameplates-health-color"])
 end
 
-local UpdateNamePlateColors = function()
+local UpdateNamePlatesHealthColor = function()
 	oUF:RunForAllNamePlates(NamePlateSetHealthColor)
 end
 
@@ -3143,18 +3141,14 @@ GUI:AddOptions(function(self)
 	Left:CreateSlider("nameplates-font-size", Settings["nameplates-font-size"], 8, 18, 1, "Font Size", "Set the font size of the name plates", UpdateNamePlatesFont)
 	Left:CreateDropdown("nameplates-font-flags", Settings["nameplates-font-flags"], Media:GetFlagsList(), Language["Font Flags"], "Set the font flags of the name plates", UpdateNamePlatesFont)
 	
-	Left:CreateHeader(Language["Sizes"])
+	Left:CreateHeader(Language["Health"])
 	Left:CreateSlider("nameplates-width", Settings["nameplates-width"], 60, 220, 1, "Set Width", "Set the width of name plates", UpdateNamePlatesWidth)
 	Left:CreateSlider("nameplates-height", Settings["nameplates-height"], 4, 50, 1, "Set Height", "Set the height of name plates", UpdateNamePlatesHeight)
+	Right:CreateDropdown("nameplates-health-color", Settings["nameplates-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdateNamePlatesHealthColor)
 	
 	Left:CreateHeader(Language["Debuffs"])
 	Left:CreateSwitch("nameplates-display-debuffs", Settings["nameplates-display-debuffs"], Language["Enable Debuffs"], "Display your debuffs above enemy name plates", UpdateNamePlatesEnableDebuffs)
 	Left:CreateSwitch("nameplates-only-player-debuffs", Settings["nameplates-only-player-debuffs"], Language["Only Display Player Debuffs"], "If enabled, only your own debuffs will be displayed", UpdateNamePlatesShowPlayerDebuffs)
-	
-	Right:CreateHeader(Language["Health Colors"])
-	Right:CreateSwitch("nameplates-color-by-tapped", Settings["nameplates-color-by-tapped"], Language["Use Tapped Colors"], "Color name plate health if the unit is tapped by another player", UpdateNamePlateColors)
-	Right:CreateSwitch("nameplates-color-by-class", Settings["nameplates-color-by-class"], Language["Use Class Colors"], "Color name plate health by class", UpdateNamePlateColors)
-	Right:CreateSwitch("nameplates-color-by-reaction", Settings["nameplates-color-by-reaction"], Language["Use Reaction Colors"], "Color name plate health by unit reaction", UpdateNamePlateColors)
 	
 	Right:CreateHeader(Language["Information"])
 	Right:CreateInput("nameplates-top-text", Settings["nameplates-top-text"], Language["Top Text"], "")
