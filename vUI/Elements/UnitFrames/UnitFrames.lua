@@ -241,7 +241,7 @@ Methods["HealthColor"] = function(unit)
 	local Max = UnitHealthMax(unit)
 	
 	if (Current and Max > 0) then
-		return "|cFF" .. vUI:RGBToHex(GetColor(Current / Max, 0.905, 0.298, 0.235, 0.18, 0.8, 0.443))
+		return "|cFF" .. vUI:RGBToHex(GetColor(Current / Max, 0.905, 0.298, 0.235, 0.17, 0.77, 0.4))
 	else
 		return "|cFF" .. vUI:RGBToHex(0.18, 0.8, 0.443)
 	end
@@ -601,8 +601,21 @@ local StyleNamePlate = function(self, unit)
 	local Health = CreateFrame("StatusBar", nil, self)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
 	Health:SetPoint("BOTTOMRIGHT", self, -1, 1)
+	Health:SetFrameLevel(5)
 	Health:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 	Health:EnableMouse(false)
+	
+	local AbsorbsBar = CreateFrame("StatusBar", nil, self)
+	AbsorbsBar:SetAllPoints(Health)
+	AbsorbsBar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
+	AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
+	
+	local HealBar = CreateFrame("StatusBar", nil, self)
+	HealBar:SetAllPoints(Health)
+	HealBar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarColor(0, 0.48, 0)
+	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 	
 	local HealthBG = Health:CreateTexture(nil, "BACKGROUND")
 	HealthBG:SetScaledPoint("TOPLEFT", Health, 0, 0)
@@ -760,6 +773,8 @@ local StyleNamePlate = function(self, unit)
 	self:Tag(BottomLeft, Settings["nameplates-bottomleft-text"])
 	
 	self.Health = Health
+	self.AbsorbsBar = AbsorbsBar
+	self.HealBar = HealBar
 	self.Top = Top
 	self.TopLeft = TopLeft
 	self.TopRight = TopRight
@@ -1395,7 +1410,7 @@ local StyleTarget = function(self, unit)
 	Castbar.PostChannelStart = PostCastStart
 	
 	-- Tags
-	self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [Name30]")
+	self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [NameColor][Name30]")
 	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	self:Tag(PowerLeft, "[HealthValues]")
 	self:Tag(PowerRight, "[PowerValues]")
@@ -1506,7 +1521,7 @@ local StyleTargetTarget = function(self, unit)
 	
 	SetPowerAttributes(Power, Settings["unitframes-targettarget-power-color"])
 	
-	self:Tag(HealthLeft, "[Name10]")
+	self:Tag(HealthLeft, "[NameColor][Name10]")
 	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	
 	self.Range = {
@@ -1604,7 +1619,7 @@ local StylePet = function(self, unit)
 	
 	SetPowerAttributes(Power, Settings["unitframes-pet-power-color"])
 	
-	self:Tag(HealthLeft, "[Name10]")
+	self:Tag(HealthLeft, "[NameColor][Name10]")
 	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	
 	self.Range = {
@@ -1866,6 +1881,14 @@ local StyleParty = function(self, unit)
     Leader:SetVertexColorHex("FFEB3B")
     Leader:Hide()
 	
+	-- Assist
+    local Assist = Health:CreateTexture(nil, "OVERLAY")
+    Assist:SetSize(16, 16)
+    Assist:SetScaledPoint("LEFT", Health, "TOPLEFT", 3, 0)
+    Assist:SetTexture(Media:GetTexture("Assist"))
+    Assist:SetVertexColorHex("FFEB3B")
+    Assist:Hide()
+	
 	-- Ready Check
     local ReadyCheck = Health:CreateTexture(nil, 'OVERLAY')
     ReadyCheck:SetScaledSize(16, 16)
@@ -1912,7 +1935,7 @@ local StyleParty = function(self, unit)
 	Dispel.bg:SetTexture(Media:GetTexture("Blank"))
 	Dispel.bg:SetVertexColor(0, 0, 0)
 
-	self:Tag(HealthMiddle, "[Name10]")
+	self:Tag(HealthMiddle, "[NameColor][Name8]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -1931,6 +1954,7 @@ local StyleParty = function(self, unit)
 	self.ReadyCheck = ReadyCheck
 	self.Dispel = Dispel
 	self.LeaderIndicator = Leader
+	self.AssistantIndicator = Assist
 	self.ReadyCheckIndicator = ReadyCheck
 	self.ResurrectIndicator = Resurrect
 	self.RaidTargetIndicator = RaidTarget
@@ -1995,7 +2019,7 @@ local StylePartyPet = function(self, unit)
 	RaidTarget:SetPoint("CENTER", Health, "TOP")
 	
 	-- Tags
-	self:Tag(HealthMiddle, "[Name10]")
+	self:Tag(HealthMiddle, "[NameColor][Name10]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -2117,7 +2141,7 @@ local StyleRaid = function(self, unit)
 	Dispel.bg:SetVertexColor(0, 0, 0)
 	
 	-- Tags
-	self:Tag(HealthLeft, "[Name5]")
+	self:Tag(HealthLeft, "[NameColor][Name5]")
 	self:Tag(HealthRight, "[HealthColor][HealthDeficit]")
 	
 	self.Range = {
@@ -2192,6 +2216,8 @@ local StyleBoss = function(self, unit)
 	Health.colorDisconnected = true
 	self.colors.health = {R, G, B}
 	
+	SetHealthAttributes(Health, Settings["unitframes-boss-health-color"])
+	
 	local Power = CreateFrame("StatusBar", nil, self)
 	Power:SetScaledPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetScaledPoint("BOTTOMRIGHT", self, -1, 1)
@@ -2219,6 +2245,8 @@ local StyleBoss = function(self, unit)
 	Power.colorReaction = true
 	Power.Smooth = true
 	
+	SetPowerAttributes(Power, Settings["unitframes-boss-power-color"])
+	
 	-- Auras
 	local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
 	Buffs:SetScaledSize(Settings["unitframes-player-width"], 28)
@@ -2235,7 +2263,6 @@ local StyleBoss = function(self, unit)
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetScaledSize(Settings["unitframes-player-width"], 28)
 	Debuffs:SetScaledWidth(Settings["unitframes-player-width"])
-	--Debuffs:SetScaledPoint("BOTTOMRIGHT", self, "TOPRIGHT", 0, 31)
 	Debuffs:SetScaledPoint("BOTTOM", Buffs, "TOP", 0, 2)
 	Debuffs.size = 28
 	Debuffs.spacing = 2
@@ -2300,7 +2327,7 @@ local StyleBoss = function(self, unit)
 	Castbar.PostChannelStart = PostCastStart
 	
 	-- Tags
-	self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [Name30]")
+	self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [NameColor][Name30]")
 	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
 	self:Tag(PowerLeft, "[HealthValues]")
 	self:Tag(PowerRight, "[PowerValues]")

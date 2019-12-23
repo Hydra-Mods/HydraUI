@@ -49,7 +49,7 @@ Defaults["gui-enable-fade"] = false
 Defaults["gui-faded-alpha"] = 20
 Defaults["gui-hide-in-combat"] = true
 
--- Class Colors; The commented colors are 10% darker, I like it better on lighter textures
+-- CUSTOM Colors; The commented colors are 10% darker, I like it better on lighter textures
 Defaults["color-death-knight"] = "C41F3B" -- 7F222D
 Defaults["color-demon-hunter"] = "A330C9" -- 922BB4
 Defaults["color-druid"] = "FF7D0A" -- E56F08
@@ -284,46 +284,46 @@ Defaults["unitframes-show-player-buffs"] = true
 Defaults["unitframes-player-width"] = 238
 Defaults["unitframes-player-health-height"] = 28
 Defaults["unitframes-player-health-reverse"] = false
-Defaults["unitframes-player-health-color"] = "CLASS"
+Defaults["unitframes-player-health-color"] = "CUSTOM"
 Defaults["unitframes-player-power-height"] = 15
 Defaults["unitframes-player-power-reverse"] = false
-Defaults["unitframes-player-power-color"] = "POWER"
+Defaults["unitframes-player-power-color"] = "CLASS"
 
 Defaults["unitframes-target-width"] = 238
 Defaults["unitframes-target-health-height"] = 28
 Defaults["unitframes-target-health-reverse"] = false
-Defaults["unitframes-target-health-color"] = "CLASS"
+Defaults["unitframes-target-health-color"] = "CUSTOM"
 Defaults["unitframes-target-power-height"] = 15
 Defaults["unitframes-target-power-reverse"] = false
-Defaults["unitframes-target-power-color"] = "POWER"
+Defaults["unitframes-target-power-color"] = "CLASS"
 
 Defaults["unitframes-targettarget-width"] = 110
 Defaults["unitframes-targettarget-health-height"] = 26 
 Defaults["unitframes-targettarget-health-reverse"] = false
-Defaults["unitframes-targettarget-health-color"] = "CLASS"
+Defaults["unitframes-targettarget-health-color"] = "CUSTOM"
 Defaults["unitframes-targettarget-enable-power"] = true
 Defaults["unitframes-targettarget-power-height"] = 3
 Defaults["unitframes-targettarget-power-reverse"] = false
-Defaults["unitframes-targettarget-power-color"] = "POWER"
+Defaults["unitframes-targettarget-power-color"] = "CLASS"
 
 Defaults["unitframes-pet-width"] = 110
 Defaults["unitframes-pet-health-height"] = 26
 Defaults["unitframes-pet-health-reverse"] = false
-Defaults["unitframes-pet-health-color"] = "CLASS"
+Defaults["unitframes-pet-health-color"] = "CUSTOM"
 Defaults["unitframes-pet-enable-power"] = true
 Defaults["unitframes-pet-power-height"] = 3
 Defaults["unitframes-pet-power-reverse"] = false
-Defaults["unitframes-pet-power-color"] = "POWER"
+Defaults["unitframes-pet-power-color"] = "CLASS"
 
 -- Bosses
 Defaults["unitframes-boss-enable"] = true
 Defaults["unitframes-boss-width"] = 238
 Defaults["unitframes-boss-health-height"] = 28
 Defaults["unitframes-boss-health-reverse"] = false
-Defaults["unitframes-boss-health-color"] = "CLASS"
-Defaults["unitframes-boss-power-height"] = 2
+Defaults["unitframes-boss-health-color"] = "CUSTOM"
+Defaults["unitframes-boss-power-height"] = 16
 Defaults["unitframes-boss-power-reverse"] = false
-Defaults["unitframes-boss-power-color"] = "POWER"
+Defaults["unitframes-boss-power-color"] = "CLASS"
 
 -- Party
 Defaults["party-enable"] = true
@@ -331,17 +331,17 @@ Defaults["party-width"] = 78
 Defaults["party-show-debuffs"] = true
 Defaults["party-health-height"] = 40
 Defaults["party-health-reverse"] = false
-Defaults["party-health-color"] = "CLASS"
+Defaults["party-health-color"] = "CUSTOM"
 Defaults["party-health-orientation"] = "HORIZONTAL"
-
 Defaults["party-power-height"] = 6
 Defaults["party-power-reverse"] = false
-Defaults["party-power-color"] = "POWER"
+Defaults["party-power-color"] = "CLASS"
 
 Defaults["party-pets-enable"] = true
 Defaults["party-pets-width"] = 78
 Defaults["party-pets-health-height"] = 22
 Defaults["party-pets-health-reverse"] = false
+Defaults["party-pets-health-color"] = "CUSTOM"
 Defaults["party-pets-health-orientation"] = "HORIZONTAL"
 Defaults["party-pets-power-height"] = 0 -- NYI
 
@@ -351,7 +351,7 @@ Defaults["raid-width"] = 90
 Defaults["raid-health-height"] = 23
 Defaults["raid-health-color"] = "CUSTOM"
 Defaults["raid-power-height"] = 2
-Defaults["raid-power-color"] = "CLASS"
+Defaults["raid-power-color"] = "CUSTOM"
 
 -- Name Plates
 Defaults["nameplates-enable"] = true
@@ -369,7 +369,7 @@ Defaults["nameplates-bottomleft-text"] = ""
 Defaults["nameplates-bottomright-text"] = "[HealthColor][HealthPercent]"
 Defaults["nameplates-display-debuffs"] = true
 Defaults["nameplates-only-player-debuffs"] = true
-Defaults["nameplates-color-by-class"] = true
+Defaults["nameplates-color-by-CUSTOM"] = true
 Defaults["nameplates-color-by-reaction"] = true
 Defaults["nameplates-color-by-tapped"] = true
 Defaults["nameplates-enable-elite-indicator"] = true
@@ -383,6 +383,8 @@ Defaults["nameplates-castbar-enable-icon"] = true
 Defaults["tooltips-enable"] = true
 Defaults["tooltips-on-cursor"] = false
 Defaults["tooltips-show-id"] = false
+Defaults["tooltips-display-realm"] = true
+Defaults["tooltips-display-title"] = true
 Defaults["tooltips-font"] = "Roboto"
 Defaults["tooltips-font-size"] = 12
 Defaults["tooltips-font-flags"] = ""

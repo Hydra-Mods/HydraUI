@@ -89,7 +89,6 @@ end)
 
 local PlayAnimation = function()
 	Frame.AnimIn:Play()
-	
 	Frame.Sleep:Play()
 end
 

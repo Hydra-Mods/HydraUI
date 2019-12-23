@@ -237,10 +237,10 @@ local OnTooltipSetUnit = function(self)
 			Flag = "|cFFF44336" .. CHAT_FLAG_DND .. "|r "
 		end
 		
-		if (Realm and Realm ~= "") then
-			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s - %s|r", Flag, Color, (Title or Name), Realm))
+		if (Realm and Realm ~= "" and Settings["tooltips-display-realm"]) then
+			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s - %s|r", Flag, Color, (Settings["tooltips-display-title"] and Title or Name), Realm))
 		else
-			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s|r", Flag, Color, (Title or Name)))
+			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s|r", Flag, Color, (Settings["tooltips-display-title"] and Title or Name)))
 		end
 		
 		for i = 2, self:NumLines() do
@@ -412,7 +412,7 @@ local OnValueChanged = function(self)
 			self.HealthPercent:SetText(" ")
 		end
 	else
-		local R, G, B = GetColor(Current / Max, 0.905, 0.298, 0.235, 0.18, 0.8, 0.443)
+		local R, G, B = GetColor(Current / Max, 0.905, 0.298, 0.235, 0.17, 0.77, 0.4)
 		local Color = vUI:RGBToHex(R, G, B)
 		
 		if UnitIsDead(Unit) then
@@ -550,6 +550,10 @@ GUI:AddOptions(function(self)
 	Left:CreateDropdown("tooltips-font", Settings["tooltips-font"], Media:GetFontList(), Language["Font"], Language["Set the font of the tooltip text"], nil, "Font")
 	Left:CreateSlider("tooltips-font-size", Settings["tooltips-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the tooltip text"])
 	Left:CreateDropdown("tooltips-font-flags", Settings["tooltips-font-flags"], Media:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the tooltip text"])
+	
+	Right:CreateHeader(Language["Information"])
+	Right:CreateSwitch("tooltips-display-realm", Settings["tooltips-display-realm"], Language["Display Realm"], "Display character realms")
+	Right:CreateSwitch("tooltips-display-title", Settings["tooltips-display-title"], Language["Display Title"], "Display character titles")
 	
 	Right:CreateHeader(Language["Hide Tooltips"])
 	Right:CreateDropdown("tooltips-hide-on-unit", Settings["tooltips-hide-on-unit"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Combat"]] = "NO_COMBAT"}, Language["On Units"], Language["Set when the tooltip should hide units"])

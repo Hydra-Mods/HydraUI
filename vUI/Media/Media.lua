@@ -246,6 +246,7 @@ Media:SetTexture("Close", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIClose.tga
 Media:SetTexture("pHishTex28", "Interface\\AddOns\\vUI\\Media\\Textures\\pHishTex28.tga", true)
 Media:SetTexture("Warning", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIWarning.tga", true)
 Media:SetTexture("Leader", "Interface\\AddOns\\vUI\\Media\\Textures\\vUILeader.tga", true)
+Media:SetTexture("Assist", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIAssist.tga", true)
 Media:SetTexture("Heart", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIHeart.tga", true)
 Media:SetTexture("Arrow Down", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIArrowDown.tga", true)
 Media:SetTexture("Arrow Up", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIArrowUp.tga", true)

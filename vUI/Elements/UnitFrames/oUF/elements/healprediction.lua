@@ -63,6 +63,8 @@ local Enable = function(self)
 			self.AbsorbsBar.__owner = self
 			self.AbsorbsBar.ForceUpdate = ForceUpdate
 			
+			self.AbsorbsBar:SetMinMaxValues(0, 1)
+			self.AbsorbsBar:SetValue(0)
 			self.AbsorbsBar:Show()
 		end
 		
