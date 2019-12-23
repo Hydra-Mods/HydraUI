@@ -665,6 +665,25 @@ local StyleNamePlate = function(self, unit)
 	
 	SetHealthAttributes(Health, Settings["nameplates-health-color"])
 	
+	local Threat = CreateFrame("Frame", nil, Health)
+	Threat:SetAllPoints(Health)
+	Threat:SetFrameLevel(Health:GetFrameLevel() - 1)
+	Threat.feedbackUnit = "player"
+	
+	Threat.Top = Threat:CreateTexture(nil, "BORDER")
+	Threat.Top:SetScaledHeight(6)
+	Threat.Top:SetScaledPoint("BOTTOMLEFT", Threat, "TOPLEFT", 8, 1)
+	Threat.Top:SetScaledPoint("BOTTOMRIGHT", Threat, "TOPRIGHT", -8, 1)
+	Threat.Top:SetTexture(Media:GetHighlight("RenHorizonUp"))
+	Threat.Top:SetAlpha(0.8)
+	
+	Threat.Bottom = Threat:CreateTexture(nil, "BORDER")
+	Threat.Bottom:SetScaledHeight(6)
+	Threat.Bottom:SetScaledPoint("TOPLEFT", Threat, "BOTTOMLEFT", 8, -1)
+	Threat.Bottom:SetScaledPoint("TOPRIGHT", Threat, "BOTTOMRIGHT", -8, -1)
+	Threat.Bottom:SetTexture(Media:GetHighlight("RenHorizonDown"))
+	Threat.Bottom:SetAlpha(0.8)
+	
 	-- Debuffs
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetScaledSize(Settings["nameplates-width"], 26)
@@ -786,6 +805,7 @@ local StyleNamePlate = function(self, unit)
 	self.Castbar = Castbar
 	--self.EliteIndicator = EliteIndicator
 	self.TargetIndicator = TargetIndicator
+	self.ThreatIndicator = Threat
 	self.RaidTargetIndicator = RaidTargetIndicator
 end
 

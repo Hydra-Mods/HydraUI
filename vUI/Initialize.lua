@@ -18,6 +18,7 @@ local vUI = CreateFrame("Frame", nil, UIParent)
 local GUI = CreateFrame("Frame", nil, UIParent)
 
 vUI.Modules = {}
+vUI.Plugins = {}
 
 local Core = {
 	[1] = vUI, -- Functions/Constants
@@ -97,6 +98,50 @@ function vUI:LoadModules()
 	end
 end
 
+function vUI:NewPlugin(name)
+	if self.Plugins[name] then
+		return self.Plugins[name]
+	end
+	
+	local Plugin = CreateFrame("Frame", name, UIParent)
+	
+	Plugin.Name = name
+	Plugin.Loaded = false
+	Plugin.Hook = Hook
+	
+	self.Plugins[name] = Plugin
+	self.Plugins[#self.Plugins + 1] = Plugin
+	
+	return Plugin
+end
+
+function vUI:GetPlugin(name)
+	if self.Plugins[name] then
+		return self.Plugins[name]
+	end
+end
+
+function vUI:LoadPlugin(name)
+	if (not self.Plugins[name]) then
+		return
+	end
+	
+	local Plugin = self.Plugins[name]
+	
+	if (not Plugin.Loaded) and Plugin.Load then
+		Plugin:Load()
+		Plugin.Loaded = true
+	end
+end
+
+function vUI:LoadPlugins()
+	for i = 1, #self.Plugins do
+		if self.Plugins[i].Load then
+			self.Plugins[i]:Load()
+		end
+	end
+end
+
 -- Some Data
 vUI.UIVersion = GetAddOnMetadata("vUI", "Version")
 vUI.GameVersion = GetBuildInfo()
@@ -147,6 +192,7 @@ end
 
 function vUI:PLAYER_ENTERING_WORLD(event)
 	self:LoadModules()
+	self:LoadPlugins()
 	self:UnregisterEvent(event)
 end
 
@@ -625,4 +671,4 @@ vUI:RegisterEvent("VARIABLES_LOADED")
 vUI:RegisterEvent("PLAYER_ENTERING_WORLD")
 vUI:SetScript("OnEvent", vUI.OnEvent)
 
-_G["vUI"] = Namespace
+_G["vUIGlobal"] = Namespace
