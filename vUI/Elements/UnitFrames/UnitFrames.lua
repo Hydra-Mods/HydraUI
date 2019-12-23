@@ -658,7 +658,7 @@ local StyleNamePlate = function(self, unit)
 	BottomLeft:SetScaledPoint("LEFT", Health, "BOTTOMLEFT", 4, -3)
 	BottomLeft:SetJustifyH("LEFT")
 	
-	Health.Smooth = true
+	Health.Smooth = Settings["nameplates-health-smooth"]
 	Health.colorTapping = true
 	Health.colorDisconnected = true
 	Health.colorHealth = true
@@ -668,7 +668,7 @@ local StyleNamePlate = function(self, unit)
 	-- Debuffs
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetScaledSize(Settings["nameplates-width"], 26)
-	Debuffs:SetScaledPoint("BOTTOM", Health, "TOP", 0, 18)
+	Debuffs:SetScaledPoint("BOTTOM", Health, "TOP", 0, 14)
 	Debuffs.size = 26
 	Debuffs.spacing = 2
 	Debuffs.num = 5
@@ -3134,21 +3134,22 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Name Plates"])
 	
 	Left:CreateHeader(Language["Enable"])
-	Left:CreateSwitch("nameplates-enable", Settings["nameplates-enable"], Language["Enable Name Plates"], "Enable the vUI name plates module", ReloadUI):RequiresReload(true)
+	Left:CreateSwitch("nameplates-enable", Settings["nameplates-enable"], Language["Enable Name Plates"], Language["Enable the vUI name plates module"], ReloadUI):RequiresReload(true)
 	
 	Left:CreateHeader(Language["Name Plates Font"])
-	Left:CreateDropdown("nameplates-font", Settings["nameplates-font"], Media:GetFontList(), Language["Font"], "Set the font of the name plates", UpdateNamePlatesFont, "Font")
-	Left:CreateSlider("nameplates-font-size", Settings["nameplates-font-size"], 8, 18, 1, "Font Size", "Set the font size of the name plates", UpdateNamePlatesFont)
-	Left:CreateDropdown("nameplates-font-flags", Settings["nameplates-font-flags"], Media:GetFlagsList(), Language["Font Flags"], "Set the font flags of the name plates", UpdateNamePlatesFont)
+	Left:CreateDropdown("nameplates-font", Settings["nameplates-font"], Media:GetFontList(), Language["Font"], Language["Set the font of the name plates"], UpdateNamePlatesFont, "Font")
+	Left:CreateSlider("nameplates-font-size", Settings["nameplates-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the name plates"], UpdateNamePlatesFont)
+	Left:CreateDropdown("nameplates-font-flags", Settings["nameplates-font-flags"], Media:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the name plates"], UpdateNamePlatesFont)
 	
 	Left:CreateHeader(Language["Health"])
 	Left:CreateSlider("nameplates-width", Settings["nameplates-width"], 60, 220, 1, "Set Width", "Set the width of name plates", UpdateNamePlatesWidth)
 	Left:CreateSlider("nameplates-height", Settings["nameplates-height"], 4, 50, 1, "Set Height", "Set the height of name plates", UpdateNamePlatesHeight)
-	Right:CreateDropdown("nameplates-health-color", Settings["nameplates-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdateNamePlatesHealthColor)
+	Left:CreateDropdown("nameplates-health-color", Settings["nameplates-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdateNamePlatesHealthColor)
+	Left:CreateSwitch("nameplates-health-smooth", Settings["nameplates-health-smooth"], Language["Enable Smooth Progress"], Language["Set the health bar to animate changes smoothly"], ReloadUI):RequiresReload(true)
 	
 	Left:CreateHeader(Language["Debuffs"])
-	Left:CreateSwitch("nameplates-display-debuffs", Settings["nameplates-display-debuffs"], Language["Enable Debuffs"], "Display your debuffs above enemy name plates", UpdateNamePlatesEnableDebuffs)
-	Left:CreateSwitch("nameplates-only-player-debuffs", Settings["nameplates-only-player-debuffs"], Language["Only Display Player Debuffs"], "If enabled, only your own debuffs will be displayed", UpdateNamePlatesShowPlayerDebuffs)
+	Left:CreateSwitch("nameplates-display-debuffs", Settings["nameplates-display-debuffs"], Language["Enable Debuffs"], Language["Display your debuffs above enemy name plates"], UpdateNamePlatesEnableDebuffs)
+	Left:CreateSwitch("nameplates-only-player-debuffs", Settings["nameplates-only-player-debuffs"], Language["Only Display Player Debuffs"], Language["If enabled, only your own debuffs will be displayed"], UpdateNamePlatesShowPlayerDebuffs)
 	
 	Right:CreateHeader(Language["Information"])
 	Right:CreateInput("nameplates-top-text", Settings["nameplates-top-text"], Language["Top Text"], "")
@@ -3159,16 +3160,12 @@ GUI:AddOptions(function(self)
 	Right:CreateInput("nameplates-bottomright-text", Settings["nameplates-bottomright-text"], Language["Bottom Right Text"], "")
 	
 	Right:CreateHeader(Language["Casting Bar"])
-	Right:CreateSwitch("nameplates-enable-castbar", Settings["nameplates-enable-castbar"], Language["Enable Casting Bar"], "Enable the casting bar the name plates", UpdateNamePlatesEnableCastBars)
-	Right:CreateSlider("nameplates-castbar-height", Settings["nameplates-castbar-height"], 3, 28, 1, "Set Height", "Set the height of name plate casting bars", UpdateNamePlatesCastBarsHeight)
+	Right:CreateSwitch("nameplates-enable-castbar", Settings["nameplates-enable-castbar"], Language["Enable Casting Bar"], Language["Enable the casting bar the name plates"], UpdateNamePlatesEnableCastBars)
+	Right:CreateSlider("nameplates-castbar-height", Settings["nameplates-castbar-height"], 3, 28, 1, Language["Set Height"], Language["Set the height of name plate casting bars"], UpdateNamePlatesCastBarsHeight)
 	
 	Right:CreateHeader(Language["Target Indicator"])
-	Right:CreateSwitch("nameplates-enable-target-indicator", Settings["nameplates-enable-target-indicator"], Language["Enable Target Indicator"], "Display an indication on the targetted unit name plate", UpdateNamePlatesTargetHighlight)
-	Right:CreateDropdown("nameplates-target-indicator-size", Settings["nameplates-target-indicator-size"], {["Small"] = "SMALL", ["Large"] = "LARGE"}, "Indicator Size", "Select the size of the target indicator", UpdateNamePlatesTargetIndicatorSize)
-	
-	--[[if (not Settings["nameplates-display-debuffs"]) then
-		GUI:GetWidgetByWindow(Language["Name Plates"], "nameplates-only-player-debuffs"):Disable() -- Temporary
-	end]]
+	Right:CreateSwitch("nameplates-enable-target-indicator", Settings["nameplates-enable-target-indicator"], Language["Enable Target Indicator"], Language["Display an indication on the targetted unit name plate"], UpdateNamePlatesTargetHighlight)
+	Right:CreateDropdown("nameplates-target-indicator-size", Settings["nameplates-target-indicator-size"], {["Small"] = "SMALL", ["Large"] = "LARGE"}, Language["Indicator Size"], Language["Select the size of the target indicator"], UpdateNamePlatesTargetIndicatorSize)
 end)
 
 --[[ /run FakeGroup()
