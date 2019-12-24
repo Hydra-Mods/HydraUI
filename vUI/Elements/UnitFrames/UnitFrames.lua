@@ -583,10 +583,6 @@ local NamePlateCallback = function(self)
 	self.BottomLeft:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	self.Castbar.Time:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	self.Castbar.Text:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
-	
-	self.Health.colorTapping = Settings["nameplates-color-by-tapped"]
-	self.Health.colorClass = Settings["nameplates-color-by-class"]
-	self.Health.colorReaction = Settings["nameplates-color-by-reaction"]
 end
 
 local StyleNamePlate = function(self, unit)
@@ -661,7 +657,6 @@ local StyleNamePlate = function(self, unit)
 	Health.Smooth = Settings["nameplates-health-smooth"]
 	Health.colorTapping = true
 	Health.colorDisconnected = true
-	Health.colorHealth = true
 	
 	SetHealthAttributes(Health, Settings["nameplates-health-color"])
 	
@@ -1230,7 +1225,7 @@ local StylePlayer = function(self, unit)
 	Resurrect:SetScaledPoint("CENTER", Health, 0, 0)
 	
 	-- Tags
-	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
+	self:Tag(HealthRight, "[HealthPercent]")
 	self:Tag(PowerLeft, "[HealthValues]")
 	self:Tag(PowerRight, "[PowerValues]")
 	
@@ -1430,8 +1425,8 @@ local StyleTarget = function(self, unit)
 	Castbar.PostChannelStart = PostCastStart
 	
 	-- Tags
-	self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [NameColor][Name30]")
-	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
+	self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [Name30]")
+	self:Tag(HealthRight, "[HealthPercent]")
 	self:Tag(PowerLeft, "[HealthValues]")
 	self:Tag(PowerRight, "[PowerValues]")
 	
@@ -1541,8 +1536,8 @@ local StyleTargetTarget = function(self, unit)
 	
 	SetPowerAttributes(Power, Settings["unitframes-targettarget-power-color"])
 	
-	self:Tag(HealthLeft, "[NameColor][Name10]")
-	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
+	self:Tag(HealthLeft, "[Name10]")
+	self:Tag(HealthRight, "[HealthPercent]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -1639,8 +1634,8 @@ local StylePet = function(self, unit)
 	
 	SetPowerAttributes(Power, Settings["unitframes-pet-power-color"])
 	
-	self:Tag(HealthLeft, "[NameColor][Name10]")
-	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
+	self:Tag(HealthLeft, "[Name10]")
+	self:Tag(HealthRight, "[HealthPercent]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -1955,7 +1950,7 @@ local StyleParty = function(self, unit)
 	Dispel.bg:SetTexture(Media:GetTexture("Blank"))
 	Dispel.bg:SetVertexColor(0, 0, 0)
 
-	self:Tag(HealthMiddle, "[NameColor][Name8]")
+	self:Tag(HealthMiddle, "[Name8]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -2039,7 +2034,7 @@ local StylePartyPet = function(self, unit)
 	RaidTarget:SetPoint("CENTER", Health, "TOP")
 	
 	-- Tags
-	self:Tag(HealthMiddle, "[NameColor][Name10]")
+	self:Tag(HealthMiddle, "[Name10]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -2161,8 +2156,8 @@ local StyleRaid = function(self, unit)
 	Dispel.bg:SetVertexColor(0, 0, 0)
 	
 	-- Tags
-	self:Tag(HealthLeft, "[NameColor][Name5]")
-	self:Tag(HealthRight, "[HealthColor][HealthDeficit]")
+	self:Tag(HealthLeft, "[Name5]")
+	self:Tag(HealthRight, "[HealthDeficit]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -2347,8 +2342,8 @@ local StyleBoss = function(self, unit)
 	Castbar.PostChannelStart = PostCastStart
 	
 	-- Tags
-	self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [NameColor][Name30]")
-	self:Tag(HealthRight, "[HealthColor][HealthPercent]")
+	self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [Name30]")
+	self:Tag(HealthRight, "[HealthPercent]")
 	self:Tag(PowerLeft, "[HealthValues]")
 	self:Tag(PowerRight, "[PowerValues]")
 	
