@@ -68,6 +68,7 @@ button.isPlayer - indicates if the aura caster is the player or their vehicle (b
 
 local _, ns = ...
 local oUF = ns.oUF
+local vUI = vUIGlobal:get()
 
 local VISIBLE = 1
 local HIDDEN = 0
@@ -103,12 +104,6 @@ local function createAuraIcon(element, index)
 
 	local count = countFrame:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
 	count:SetPoint('BOTTOMRIGHT', countFrame, 'BOTTOMRIGHT', -1, 0)
-
-	local overlay = button:CreateTexture(nil, 'OVERLAY')
-	overlay:SetTexture([[Interface\Buttons\UI-Debuff-Overlays]])
-	overlay:SetAllPoints()
-	overlay:SetTexCoord(.296875, .5703125, 0, .515625)
-	button.overlay = overlay
 
 	local stealable = button:CreateTexture(nil, 'OVERLAY')
 	stealable:SetTexture([[Interface\TargetingFrame\UI-TargetingFrame-Stealable]])
@@ -201,15 +196,10 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 				end
 			end
 
-			if(button.overlay) then
-				if((isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType) then
-					local color = element.__owner.colors.debuff[debuffType] or element.__owner.colors.debuff.none
-
-					button.overlay:SetVertexColor(color[1], color[2], color[3])
-					button.overlay:Show()
-				else
-					button.overlay:Hide()
-				end
+			if((isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType) then
+				local color = element.__owner.colors.debuff[debuffType] or element.__owner.colors.debuff.none
+				
+				button:SetBackdropBorderColor(color[1], color[2], color[3])
 			end
 
 			if(button.stealable) then
@@ -336,7 +326,6 @@ local function UpdateAuras(self, event, unit)
 			-- Prevent the button from displaying anything.
 			if(button.cd) then button.cd:Hide() end
 			if(button.icon) then button.icon:SetTexture() end
-			if(button.overlay) then button.overlay:Hide() end
 			if(button.stealable) then button.stealable:Hide() end
 			if(button.count) then button.count:SetText() end
 

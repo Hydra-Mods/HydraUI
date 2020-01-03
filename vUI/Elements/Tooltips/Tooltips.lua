@@ -14,6 +14,8 @@ local UnitExists = UnitExists
 local UnitClass = UnitClass
 local GetGuildInfo = GetGuildInfo
 local UnitCreatureType = UnitCreatureType
+local UnitLevel = UnitLevel
+local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitRace = UnitRace
 local UnitName = UnitName
 local UnitIsAFK = UnitIsAFK
@@ -44,12 +46,6 @@ Tooltips.Classifications = {
 	["elite"] = Language["|cFFFDD835Elite|r"],
 	["rareelite"] = Language["|cFFBDBDBDRare Elite|r"],
 	["worldboss"] = Language["Boss"],
-}
-
-Tooltips.HappinessLevels = {
-	[1] = Language["Unhappy"],
-	[2] = Language["Content"],
-	[3] = Language["Happy"]
 }
 
 function Tooltips:UpdateFonts(tooltip)
@@ -196,6 +192,17 @@ local GetUnitColor = function(unit)
 	end
 end
 
+local GetLevel = function(unit)
+	local Level = UnitLevel(unit)
+	local EffectiveLevel = UnitEffectiveLevel(unit)
+	
+	if (Level ~= EffectiveLevel) then
+		Level = format("%s (%s)", EffectiveLevel, Level)
+	else
+		
+	end
+end
+
 local OnTooltipSetUnit = function(self)
 	if (Settings["tooltips-hide-on-unit"] == "NO_COMBAT" and InCombatLockdown()) or Settings["tooltips-hide-on-unit"] == "ALWAYS" then
 		self:Hide()
@@ -215,6 +222,7 @@ local OnTooltipSetUnit = function(self)
 		local Name, Realm = UnitName(UnitID)
 		local Race = UnitRace(UnitID)
 		local Level = UnitLevel(UnitID)
+		local EffectiveLevel = UnitEffectiveLevel(UnitID)
 		local Title = UnitPVPName(UnitID)
 		local Guild, Rank = GetGuildInfo(UnitID)
 		local Color = GetUnitColor(UnitID)
@@ -227,8 +235,30 @@ local OnTooltipSetUnit = function(self)
 			Class = ""
 		end
 		
-		if (Level == -1) then
-			Level = "??"
+		GameTooltipStatusBar:SetStatusBarColorHex(Color)
+		GameTooltipStatusBar.BG:SetVertexColorHex(Color)
+		
+		if (EffectiveLevel ~= Level) then
+			local EffectiveColor = GetQuestDifficultyColor(EffectiveLevel)
+			local EffectiveHex = vUI:RGBToHex(EffectiveColor.r, EffectiveColor.g, EffectiveColor.b)
+			
+			local Color = GetQuestDifficultyColor(Level)
+			local ColorHex = vUI:RGBToHex(Color.r, Color.g, Color.b)
+			
+			if (Level == -1) then
+				Level = "??"
+			end
+			
+			Level = format("|cFF%s%s|r (|cFF%s%s|r)", EffectiveHex, EffectiveLevel, ColorHex, Level)
+		else
+			local Color = GetQuestDifficultyColor(Level)
+			local Hex = vUI:RGBToHex(Color.r, Color.g, Color.b)
+			
+			if (Level == -1) then
+				Level = "??"
+			end
+			
+			Level = format("|cFF%s%s|r", Hex, Level)
 		end
 		
 		if UnitIsAFK(UnitID) then
@@ -247,18 +277,16 @@ local OnTooltipSetUnit = function(self)
 			Line = _G["GameTooltipTextLeft" .. i]
 			
 			if (Line and Line.GetText and find(Line:GetText(), "^" .. LEVEL)) then
-				local LevelColor = vUI:UnitDifficultyColor(UnitID)
-				
 				if Race then
-					Line:SetText(format("%s %s%s|r %s %s", LEVEL, LevelColor, Level, Race, Class))
+					Line:SetText(format("%s %s|r %s %s", LEVEL, Level, Race, Class))
 				elseif CreatureType then
 					if Classification then
-						Line:SetText(format("%s %s%s|r %s %s", LEVEL, LevelColor, Level, Classification, CreatureType))
+						Line:SetText(format("%s %s|r %s %s", LEVEL, Level, Classification, CreatureType))
 					else
-						Line:SetText(format("%s %s%s|r %s", LEVEL, LevelColor, Level, CreatureType))
+						Line:SetText(format("%s %s|r %s", LEVEL, Level, CreatureType))
 					end
 				else
-					Line:SetText(format("%s %s%s|r %s", LEVEL, LevelColor, Level, Class))
+					Line:SetText(format("%s %s|r %s", LEVEL, Level, Class))
 				end
 			elseif (Line and find(Line:GetText(), PVP)) then
 				Line:SetText(format("|cFFEE4D4D%s|r", PVP))
@@ -401,6 +429,7 @@ local OnValueChanged = function(self)
 	
 	local Current = self:GetValue()
 	local Max = select(2, self:GetMinMaxValues())
+	local Color = GetUnitColor(Unit)
 	
 	if (Max == 0) then
 		if UnitIsDead(Unit) then
@@ -412,19 +441,19 @@ local OnValueChanged = function(self)
 			self.HealthPercent:SetText(" ")
 		end
 	else
-		local R, G, B = GetColor(Current / Max, 0.905, 0.298, 0.235, 0.17, 0.77, 0.4)
-		local Color = vUI:RGBToHex(R, G, B)
-		
 		if UnitIsDead(Unit) then
 			self.HealthValue:SetText("|cFFD64545" .. Language["Dead"] .. "|r")
 		elseif UnitIsGhost(Unit) then
 			self.HealthValue:SetText("|cFFEEEEEE" .. Language["Ghost"] .. "|r")
 		else
-			self.HealthValue:SetText(format("|cFF%s%s|r / |cFF2DCC70%s|r", Color, vUI:ShortValue(Current), vUI:ShortValue(Max)))
+			self.HealthValue:SetText(format("%s / %s", vUI:ShortValue(Current), vUI:ShortValue(Max)))
 		end
 		
-		self.HealthPercent:SetText(format("|cFF%s%s%%|r", Color, floor((Current / Max * 100 + 0.05) * 10) / 10))
+		self.HealthPercent:SetText(format("%s%%", floor((Current / Max * 100 + 0.05) * 10) / 10))
 	end
+	
+	self:SetStatusBarColorHex(Color)
+	self.BG:SetVertexColorHex(Color)
 end
 
 function Tooltips:UpdateStatusBarFonts()
@@ -438,13 +467,11 @@ function Tooltips:StyleStatusBar()
 	GameTooltipStatusBar:SetScaledPoint("BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", 1, 3)
 	GameTooltipStatusBar:SetScaledPoint("BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -1, 3)
 	GameTooltipStatusBar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
-	GameTooltipStatusBar:SetStatusBarColorHex(Settings["ui-header-texture-color"])
 	
 	GameTooltipStatusBar.BG = GameTooltipStatusBar:CreateTexture(nil, "ARTWORK")
 	GameTooltipStatusBar.BG:SetScaledPoint("TOPLEFT", GameTooltipStatusBar, 0, 0)
 	GameTooltipStatusBar.BG:SetScaledPoint("BOTTOMRIGHT", GameTooltipStatusBar, 0, 0)
 	GameTooltipStatusBar.BG:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
-	GameTooltipStatusBar.BG:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	GameTooltipStatusBar.BG:SetAlpha(0.2)
 	
 	GameTooltipStatusBar.Backdrop = CreateFrame("Frame", nil, GameTooltipStatusBar)
@@ -467,9 +494,6 @@ function Tooltips:StyleStatusBar()
 	
 	GameTooltipStatusBar:HookScript("OnValueChanged", OnValueChanged)
 	GameTooltipStatusBar:HookScript("OnShow", OnValueChanged)
-	
-	GameTooltipStatusBar.OldSetStatusBarColor = GameTooltipStatusBar.SetStatusBarColor
-	GameTooltipStatusBar.SetStatusBarColor = function() end
 end
 
 local ItemRefCloseOnEnter = function(self)

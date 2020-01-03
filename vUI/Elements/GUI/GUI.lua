@@ -115,11 +115,13 @@ local TrimHex = function(s)
 end
 
 local CreateID = function(text)
-	text = gsub(text, "%s", "-")
-	text = gsub(text, ":", "")
-	text = lower(text)
-	
-	return text
+	if text then
+		text = gsub(text, "%s", "-")
+		text = gsub(text, ":", "")
+		text = lower(text)
+		
+		return text
+	end
 end
 
 local AnchorOnEnter = function(self)
@@ -3402,9 +3404,9 @@ function GUI:CreateWindow(name, default, override)
 	
 	Window.Parent = self
 	Window.Button = Button
+	Window.SortWindow = SortWindow
 	Window.LeftWidgets = {}
 	Window.RightWidgets = {}
-	Window.SortWindow = SortWindow
 	
 	Window.LeftWidgetsBG.Widgets = Window.LeftWidgets
 	Window.LeftWidgetsBG.DisableScrolling = DisableScrolling

@@ -20,6 +20,8 @@ local GUI = CreateFrame("Frame", nil, UIParent)
 vUI.Modules = {}
 vUI.Plugins = {}
 
+GUI.Queue = {}
+
 local Core = {
 	[1] = vUI, -- Functions/Constants
 	[2] = GUI, -- Settings GUI
@@ -28,6 +30,28 @@ local Core = {
 	[5] = {}, -- Settings
 	[6] = {}, -- Defaults
 }
+
+--[[function GUI:CreateWindow(name, func)
+	-- add to a table by name where the function is run when the window is selected. After this and AddToWindow are run, flag for a sort
+end]]
+
+function GUI:AddToWindow(name, func)
+	
+end
+
+function GUI:AddOptions(func)
+	if (type(func) == "function") then
+		tinsert(self.Queue, func)
+	end
+end
+
+--[[
+	
+	vUI:AddOptions("Action Bars", function(self, left, right)
+		
+	end)
+	
+--]]
 
 local Hook = function(self, global, hook)
 	if _G[global] then
@@ -84,7 +108,7 @@ function vUI:LoadModule(name)
 	
 	local Module = self.Modules[name]
 	
-	if (not Module.Loaded) and Module.Load then
+	if ((not Module.Loaded) and Module.Load) then
 		Module:Load()
 		Module.Loaded = true
 	end
@@ -104,8 +128,15 @@ function vUI:NewPlugin(name)
 	end
 	
 	local Plugin = CreateFrame("Frame", name, UIParent)
+	local Name, Title, Notes = GetAddOnInfo(name)
+	local Author = GetAddOnMetadata(name, "Author")
+	local Version = GetAddOnMetadata(name, "Version")
 	
-	Plugin.Name = name
+	Plugin.Name = Name
+	Plugin.Title = Title
+	Plugin.Notes = Notes
+	Plugin.Author = Author
+	Plugin.Version = Version
 	Plugin.Loaded = false
 	Plugin.Hook = Hook
 	
@@ -128,7 +159,7 @@ function vUI:LoadPlugin(name)
 	
 	local Plugin = self.Plugins[name]
 	
-	if (not Plugin.Loaded) and Plugin.Load then
+	if ((not Plugin.Loaded) and Plugin.Load) then
 		Plugin:Load()
 		Plugin.Loaded = true
 	end
@@ -193,32 +224,9 @@ end
 function vUI:PLAYER_ENTERING_WORLD(event)
 	self:LoadModules()
 	self:LoadPlugins()
+	
 	self:UnregisterEvent(event)
 end
-
-GUI.Queue = {}
-
-function GUI:CreateWindow(name, func)
-	-- add to a table by name where the function is run when the window is selected. After this and AddToWindow are run, flag for a sort
-end
-
-function GUI:AddToWindow(name, func)
-	
-end
-
-function GUI:AddOptions(func)
-	if (type(func) == "function") then
-		tinsert(self.Queue, func)
-	end
-end
-
---[[
-	
-	vUI:AddOptions("Action Bars", function(self, left, right)
-		
-	end)
-	
---]]
 
 function vUI:AddOptions(name, func)
 	

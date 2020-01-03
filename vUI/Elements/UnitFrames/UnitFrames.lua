@@ -20,11 +20,11 @@ local UnitIsGhost = UnitIsGhost
 local UnitIsDead = UnitIsDead
 local UnitClass = UnitClass
 local UnitLevel = UnitLevel
+local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitReaction = UnitReaction
 local IsResting = IsResting
 local UnitAura = UnitAura
 local GetTime = GetTime
-local Huge = math.huge
 
 local oUF = ns.oUF or oUF
 local Events = oUF.Tags.Events
@@ -109,7 +109,7 @@ end
 
 Events["Level"] = "UNIT_LEVEL PLAYER_LEVEL_UP PLAYER_ENTERING_WORLD"
 Methods["Level"] = function(unit)
-	local Level = UnitLevel(unit)
+	local Level = UnitEffectiveLevel(unit)
 	
 	if (Level == -1) then
 		return "??"
@@ -415,7 +415,6 @@ local AuraOnUpdate = function(self, ela)
 	if (self.ela > 0.1) then
 		local Now = (self.Expiration - GetTime())
 		
-		--if (Now > 0 and Now ~= Huge) then
 		if (Now > 0) then
 			self.Time:SetText(vUI:FormatTime(Now))
 		else
@@ -462,8 +461,8 @@ local PostUpdateIcon = function(self, unit, button, index, position, duration, e
 end
 
 local PostCreateIcon = function(unit, button)
-	button:SetBackdrop(vUI.Backdrop)
-	button:SetBackdropColor(0, 0, 0)
+	button:SetBackdrop(vUI.BackdropAndBorder)
+	button:SetBackdropColor(0, 0, 0, 0)
 	button:SetFrameLevel(6)
 	
 	button.cd.noOCC = true
@@ -491,7 +490,6 @@ local PostCreateIcon = function(unit, button)
 	button.Time:SetScaledPoint("TOPLEFT", 2, -2)
 	button.Time:SetJustifyH("LEFT")
 	
-	button.overlay:SetParent(button.overlayFrame)
 	button.count:SetParent(button.overlayFrame)
 	button.Time:SetParent(button.overlayFrame)
 	
@@ -593,6 +591,8 @@ local StyleNamePlate = function(self, unit)
 	self:SetBackdropColor(0, 0, 0)
 	self:SetBackdropBorderColor(0, 0, 0)
 	
+	self.colors.debuff = vUI.DebuffColors
+	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
@@ -654,6 +654,11 @@ local StyleNamePlate = function(self, unit)
 	BottomLeft:SetScaledPoint("LEFT", Health, "BOTTOMLEFT", 4, -3)
 	BottomLeft:SetJustifyH("LEFT")
 	
+	--[[local InsideCenter = Health:CreateFontString(nil, "OVERLAY")
+	InsideCenter:SetFontInfo(Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
+	InsideCenter:SetScaledPoint("CENTER", Health, 0, 0)
+	InsideCenter:SetJustifyH("CENTER")]]
+	
 	Health.Smooth = Settings["nameplates-health-smooth"]
 	Health.colorTapping = true
 	Health.colorDisconnected = true
@@ -679,6 +684,20 @@ local StyleNamePlate = function(self, unit)
 	Threat.Bottom:SetTexture(Media:GetHighlight("RenHorizonDown"))
 	Threat.Bottom:SetAlpha(0.8)
 	
+	-- Buffs
+	local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
+	Buffs:SetScaledSize(30, 30)
+	Buffs:SetScaledPoint("BOTTOM", self, "TOP", 0, 36)
+	Buffs.size = 30
+	Buffs.spacing = 0
+	Buffs.num = 1
+	Buffs.initialAnchor = "TOPLEFT"
+	Buffs["growth-x"] = "RIGHT"
+	Buffs["growth-y"] = "UP"
+	Buffs.PostCreateIcon = PostCreateIcon
+	Buffs.PostUpdateIcon = PostUpdateIcon
+	Buffs.showType = true
+	
 	-- Debuffs
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetScaledSize(Settings["nameplates-width"], 26)
@@ -693,6 +712,7 @@ local StyleNamePlate = function(self, unit)
 	Debuffs.PostCreateIcon = PostCreateIcon
 	Debuffs.PostUpdateIcon = PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["nameplates-only-player-debuffs"]
+	Debuffs.showType = true
 	Debuffs.disableMouse = true
 	
     -- Castbar
@@ -796,6 +816,7 @@ local StyleNamePlate = function(self, unit)
 	self.BottomRight = BottomRight
 	self.BottomLeft = BottomLeft
 	self.Health.bg = HealthBG
+	self.Buffs = Buffs
 	self.Debuffs = Debuffs
 	self.Castbar = Castbar
 	--self.EliteIndicator = EliteIndicator
@@ -941,6 +962,19 @@ local StylePlayer = function(self, unit)
 	PowerLeft:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	PowerLeft:SetScaledPoint("LEFT", Power, 3, 0)
 	PowerLeft:SetJustifyH("LEFT")
+	
+	-- Position and size
+    local mainBar = CreateFrame("StatusBar", nil, Power)
+    mainBar:SetReverseFill(true)
+    mainBar:SetPoint("TOP")
+    mainBar:SetPoint("BOTTOM")
+    mainBar:SetPoint("RIGHT", Power:GetStatusBarTexture(), "RIGHT")
+    mainBar:SetScaledWidth(200)
+	
+    -- Register with oUF
+    self.PowerPrediction = {
+        mainBar = mainBar,
+    }
 	
 	-- Attributes
 	Power.frequentUpdates = true
@@ -1205,6 +1239,7 @@ local StylePlayer = function(self, unit)
 	Buffs.PostCreateIcon = PostCreateIcon
 	Buffs.PostUpdateIcon = PostUpdateIcon
 	--Buffs.SetPosition = BuffsSetPosition
+	Buffs.showType = true
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetScaledSize(Settings["unitframes-player-width"], 28)
@@ -1218,6 +1253,7 @@ local StylePlayer = function(self, unit)
 	Debuffs.PostCreateIcon = PostCreateIcon
 	Debuffs.PostUpdateIcon = PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["unitframes-only-player-debuffs"]
+	Debuffs.showType = true
 	
 	-- Resurrect
 	local Resurrect = Health:CreateTexture(nil, "OVERLAY")
@@ -1254,10 +1290,11 @@ local StyleTarget = function(self, unit)
 	self:RegisterForClicks("AnyUp")
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
-	
 	self:SetBackdrop(vUI.BackdropAndBorder)
 	self:SetBackdropColor(0, 0, 0)
 	self:SetBackdropBorderColor(0, 0, 0)
+	
+	self.colors.debuff = vUI.DebuffColors
 	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
@@ -1356,6 +1393,7 @@ local StyleTarget = function(self, unit)
 	Buffs["growth-y"] = "UP"
 	Buffs.PostCreateIcon = PostCreateIcon
 	Buffs.PostUpdateIcon = PostUpdateIcon
+	Buffs.showType = true
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetScaledSize(Settings["unitframes-player-width"], 28)
@@ -1371,6 +1409,7 @@ local StyleTarget = function(self, unit)
 	Debuffs.PostCreateIcon = PostCreateIcon
 	Debuffs.PostUpdateIcon = PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["unitframes-only-player-debuffs"]
+	Debuffs.showType = true
 	
     -- Castbar
     local Castbar = CreateFrame("StatusBar", "vUI Target Casting Bar", self)
@@ -1831,6 +1870,7 @@ local StyleParty = function(self, unit)
 		Debuffs.PostCreateIcon = PostCreateIcon
 		Debuffs.PostUpdateIcon = PostUpdateIcon
 		Debuffs.CustomFilter = CustomFilter
+		Debuffs.showType = true
 		
 		self.Debuffs = Debuffs
 	end
@@ -2115,7 +2155,7 @@ local StyleRaid = function(self, unit)
 	-- Attributes
 	Power.frequentUpdates = true
 	
-	SetHealthAttributes(Power, Settings["raid-power-color"])
+	SetPowerAttributes(Power, Settings["raid-power-color"])
 	
 	-- Resurrect
 	local ResurrectIndicator = Health:CreateTexture(nil, "OVERLAY")
@@ -2274,6 +2314,7 @@ local StyleBoss = function(self, unit)
 	Buffs["growth-y"] = "UP"
 	Buffs.PostCreateIcon = PostCreateIcon
 	Buffs.PostUpdateIcon = PostUpdateIcon
+	Buffs.showType = true
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetScaledSize(Settings["unitframes-player-width"], 28)
@@ -2288,6 +2329,7 @@ local StyleBoss = function(self, unit)
 	Debuffs.PostCreateIcon = PostCreateIcon
 	Debuffs.PostUpdateIcon = PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["unitframes-only-player-debuffs"]
+	Debuffs.showType = true
 	
     -- Castbar
     local Castbar = CreateFrame("StatusBar", self:GetName() .. " Casting Bar", self)
@@ -2556,7 +2598,7 @@ UF:SetScript("OnEvent", function(self, event)
 				CompactRaidFrameContainer:SetParent(Hider)
 				
 				--CompactRaidFrameManager:UnregisterAllEvents()
-				--CompactRaidFrameManager:SetParent(Hider)
+				CompactRaidFrameManager:SetParent(Hider)
 			end
 			
 			Raid:SetScaledPoint("TOPLEFT", self.RaidAnchor, 0, 0)
@@ -3151,7 +3193,7 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["Enable"])
 	Left:CreateSwitch("nameplates-enable", Settings["nameplates-enable"], Language["Enable Name Plates"], Language["Enable the vUI name plates module"], ReloadUI):RequiresReload(true)
 	
-	Left:CreateHeader(Language["Name Plates Font"])
+	Left:CreateHeader(Language["Font"])
 	Left:CreateDropdown("nameplates-font", Settings["nameplates-font"], Media:GetFontList(), Language["Font"], Language["Set the font of the name plates"], UpdateNamePlatesFont, "Font")
 	Left:CreateSlider("nameplates-font-size", Settings["nameplates-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the name plates"], UpdateNamePlatesFont)
 	Left:CreateDropdown("nameplates-font-flags", Settings["nameplates-font-flags"], Media:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the name plates"], UpdateNamePlatesFont)

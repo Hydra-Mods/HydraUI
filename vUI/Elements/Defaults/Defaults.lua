@@ -79,7 +79,7 @@ Defaults["color-maelstrom"] = "007FFF"
 Defaults["color-lunar-power"] = "4C84E5"
 Defaults["color-arcane-charges"] = "1919F9"
 Defaults["color-ammo-slot"] = "CC9900"
-Defaults["color-soul-shards"] = "7F518C"
+Defaults["color-soul-shards"] = "D35832" -- 7F518C for the default soul shards color
 Defaults["color-runes"] = "9905CC" -- 7F7F7F for the default rune color
 Defaults["color-combo-points"] = "FFF468"
 
@@ -365,7 +365,7 @@ Defaults["raid-health-height"] = 23
 Defaults["raid-health-color"] = "CLASS"
 Defaults["raid-health-smooth"] = true
 Defaults["raid-power-height"] = 2
-Defaults["raid-power-color"] = "CLASS"
+Defaults["raid-power-color"] = "POWER"
 Defaults["raid-power-smooth"] = true
 
 -- Name Plates
@@ -377,7 +377,7 @@ Defaults["nameplates-font-size"] = 12
 Defaults["nameplates-font-flags"] = ""
 Defaults["nameplates-cc-health"] = false
 Defaults["nameplates-top-text"] = ""
-Defaults["nameplates-topleft-text"] = "[LevelColor][Level][Plus] [Name20]"
+Defaults["nameplates-topleft-text"] = "[LevelColor][Level][Plus]|r [Name20]"
 Defaults["nameplates-topright-text"] = ""
 Defaults["nameplates-bottom-text"] = ""
 Defaults["nameplates-bottomleft-text"] = ""
