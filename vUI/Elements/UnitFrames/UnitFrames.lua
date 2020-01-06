@@ -969,6 +969,8 @@ local StylePlayer = function(self, unit)
     mainBar:SetPoint("TOP")
     mainBar:SetPoint("BOTTOM")
     mainBar:SetPoint("RIGHT", Power:GetStatusBarTexture(), "RIGHT")
+    mainBar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+    mainBar:SetStatusBarColor(0.8, 0.1, 0.1)
     mainBar:SetScaledWidth(200)
 	
     -- Register with oUF

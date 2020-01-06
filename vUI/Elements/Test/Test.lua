@@ -122,6 +122,10 @@ end)
 
 local Fonts = vUI:NewModule("Fonts")
 
+_G.STANDARD_TEXT_FONT = Media:GetFont("PT Sans")
+_G.UNIT_NAME_FONT = Media:GetFont("PT Sans")
+_G.DAMAGE_TEXT_FONT = Media:GetFont("PT Sans")
+
 function Fonts:Load()
 	local Font = Media:GetFont(Settings["ui-widget-font"])
 	

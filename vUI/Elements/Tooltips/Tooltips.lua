@@ -238,7 +238,7 @@ local OnTooltipSetUnit = function(self)
 		GameTooltipStatusBar:SetStatusBarColorHex(Color)
 		GameTooltipStatusBar.BG:SetVertexColorHex(Color)
 		
-		if (EffectiveLevel ~= Level) then
+		if (EffectiveLevel > 0 and EffectiveLevel ~= Level) then
 			local EffectiveColor = GetQuestDifficultyColor(EffectiveLevel)
 			local EffectiveHex = vUI:RGBToHex(EffectiveColor.r, EffectiveColor.g, EffectiveColor.b)
 			
