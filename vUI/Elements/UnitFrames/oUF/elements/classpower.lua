@@ -229,6 +229,8 @@ do
 
 		self.ClassPower.isEnabled = true
 
+		self.ClassPower:Show()
+
 		if(UnitHasVehicleUI('player')) then
 			Path(self, 'ClassPowerEnable', 'vehicle', 'COMBO_POINTS')
 		else
@@ -241,11 +243,14 @@ do
 		self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 		local element = self.ClassPower
+		
 		for i = 1, #element do
 			element[i]:Hide()
 		end
+		
+		element:Hide()
 
-		self.ClassPower.isEnabled = false
+		element.isEnabled = false
 		Path(self, 'ClassPowerDisable', 'player', ClassPowerType)
 	end
 
