@@ -469,10 +469,8 @@ function vUI:RenameProfile(from, to)
 end
 
 function vUI:SetProfileMetadata(name, meta, value) -- /run vUI:get(7):SetProfileMetadata("ProfileName", "profile-created-by", "Hydra")
-	if vUIProfiles[name] then
-		if self.ProfileMetadata[meta] then
-			vUIProfiles[name][meta] = value
-		end
+	if (vUIProfiles[name] and self.ProfileMetadata[meta]) then
+		vUIProfiles[name][meta] = value
 	end
 end
 
@@ -621,9 +619,9 @@ GUI:AddOptions(function(self)
 	Left:CreateButton("Import", "Import A Profile", "", ShowImportWindow)
 	Left:CreateButton("Export", "Export Current Profile", "", ShowExportWindow)]]
 	
-	Right:CreateHeader("What is a profile?")
-	Right:CreateLine("Profiles store your settings so that you can quickly")
-	Right:CreateLine("and easily change between configurations.")
+	Right:CreateHeader(Language["What is a profile?"])
+	Right:CreateLine(Language["Profiles store your settings so that you can quickly"])
+	Right:CreateLine(Language["and easily change between configurations."])
 	
 	local Name = vUI:GetActiveProfileName()
 	local Profile = vUI:GetProfile(Name)
@@ -642,16 +640,16 @@ GUI:AddOptions(function(self)
 	end
 	
 	Right:CreateHeader(Language["Info"])
-	Right:CreateDoubleLine("Current Profile:", Name)
-	Right:CreateDoubleLine("Created By:", Profile["profile-created-by"])
-	Right:CreateDoubleLine("Created On:", IsToday(Profile["profile-created"]))
-	Right:CreateDoubleLine("Last Modified:", IsToday(Profile["profile-last-modified"]))
-	Right:CreateDoubleLine("Modifications:", vUI:CountChangedValues(Name))
-	Right:CreateDoubleLine("Serving Characters:", NumServed)
+	Right:CreateDoubleLine(Language["Current Profile:"], Name)
+	Right:CreateDoubleLine(Language["Created By:"], Profile["profile-created-by"])
+	Right:CreateDoubleLine(Language["Created On:"], IsToday(Profile["profile-created"]))
+	Right:CreateDoubleLine(Language["Last Modified:"], IsToday(Profile["profile-last-modified"]))
+	Right:CreateDoubleLine(Language["Modifications:"], vUI:CountChangedValues(Name))
+	Right:CreateDoubleLine(Language["Serving Characters:"], NumServed)
 	
 	Right:CreateHeader(Language["General"])
-	Right:CreateDoubleLine("Popular Profile:", format("%s (%d)", MostUsed, MostUsedServed))
-	Right:CreateDoubleLine("Stored Profiles:", vUI:GetProfileCount())
-	Right:CreateDoubleLine("Empty Profiles:", NumEmpty)
-	Right:CreateDoubleLine("Unused Profiles:", NumUnused)
+	Right:CreateDoubleLine(Language["Popular Profile:"], format("%s (%d)", MostUsed, MostUsedServed))
+	Right:CreateDoubleLine(Language["Stored Profiles:"], vUI:GetProfileCount())
+	Right:CreateDoubleLine(Language["Empty Profiles:"], NumEmpty)
+	Right:CreateDoubleLine(Language["Unused Profiles:"], NumUnused)
 end)

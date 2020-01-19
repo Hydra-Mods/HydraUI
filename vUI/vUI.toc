@@ -13,7 +13,7 @@ Elements\Libraries\LibSharedMedia-3.0.lua
 Elements\Libraries\AceSerializer-3.0.lua
 Elements\Libraries\LibCompress.lua
 Elements\Libraries\LibAnim.lua
-Elements\UnitFrames\oUF\oUF.xml
+Elements\Libraries\oUF\oUF.xml
 Media\Media.lua
 Languages\Languages.lua
 Languages\deDE.lua

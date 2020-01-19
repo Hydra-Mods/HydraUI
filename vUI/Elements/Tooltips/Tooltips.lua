@@ -123,49 +123,47 @@ local SetTooltipStyle = function(self)
 		end
 		
 		Tooltips:UpdateFonts(self)
+	else
+		self:SetBackdrop(nil) -- To stop blue tooltips
+		self:SetFrameLevel(10)
+		self.SetFrameLevel = function() end
 		
-		return
-	end
-	
-	self:SetBackdrop(nil) -- To stop blue tooltips
-	self:SetFrameLevel(10)
-	self.SetFrameLevel = function() end
-	
-	self.Backdrop = CreateFrame("Frame", nil, self)
-	self.Backdrop:SetAllPoints(self)
-	self.Backdrop:SetBackdrop(vUI.BackdropAndBorder)
-	self.Backdrop:SetBackdropBorderColor(0, 0, 0)
-	self.Backdrop:SetBackdropColorHex(Settings["ui-window-main-color"])
-	self.Backdrop:SetFrameStrata("TOOLTIP")
-	self.Backdrop:SetFrameLevel(2)
-	
-	self.OuterBG = CreateFrame("Frame", nil, self)
-	self.OuterBG:SetScaledPoint("TOPLEFT", self, -3, 3)
-	self.OuterBG:SetScaledPoint("BOTTOMRIGHT", self, 3, -3)
-	self.OuterBG:SetBackdrop(vUI.BackdropAndBorder)
-	self.OuterBG:SetBackdropBorderColor(0, 0, 0)
-	self.OuterBG:SetFrameStrata("TOOLTIP")
-	self.OuterBG:SetFrameLevel(1)
-	self.OuterBG:SetBackdropColorHex(Settings["ui-window-bg-color"])
-	
-	if (self == AutoCompleteBox) then
-		for i = 1, AUTOCOMPLETE_MAX_BUTTONS do
-			local Text = _G["AutoCompleteButton" .. i .. "Text"]
+		self.Backdrop = CreateFrame("Frame", nil, self)
+		self.Backdrop:SetAllPoints(self)
+		self.Backdrop:SetBackdrop(vUI.BackdropAndBorder)
+		self.Backdrop:SetBackdropBorderColor(0, 0, 0)
+		self.Backdrop:SetBackdropColorHex(Settings["ui-window-main-color"])
+		self.Backdrop:SetFrameStrata("TOOLTIP")
+		self.Backdrop:SetFrameLevel(2)
+		
+		self.OuterBG = CreateFrame("Frame", nil, self)
+		self.OuterBG:SetScaledPoint("TOPLEFT", self, -3, 3)
+		self.OuterBG:SetScaledPoint("BOTTOMRIGHT", self, 3, -3)
+		self.OuterBG:SetBackdrop(vUI.BackdropAndBorder)
+		self.OuterBG:SetBackdropBorderColor(0, 0, 0)
+		self.OuterBG:SetFrameStrata("TOOLTIP")
+		self.OuterBG:SetFrameLevel(1)
+		self.OuterBG:SetBackdropColorHex(Settings["ui-window-bg-color"])
+		
+		if (self == AutoCompleteBox) then
+			for i = 1, AUTOCOMPLETE_MAX_BUTTONS do
+				local Text = _G["AutoCompleteButton" .. i .. "Text"]
+				
+				Text:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+			end
 			
-			Text:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+			AutoCompleteInstructions:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+			
+			AutoCompleteBox.Backdrop:SetFrameStrata("DIALOG")
+			AutoCompleteBox.OuterBG:SetFrameStrata("DIALOG")
 		end
 		
-		AutoCompleteInstructions:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+		Tooltips:UpdateFonts(self)
 		
-		AutoCompleteBox.Backdrop:SetFrameStrata("DIALOG")
-		AutoCompleteBox.OuterBG:SetFrameStrata("DIALOG")
+		self.SetBackdrop = function() end
+		
+		self.Styled = true
 	end
-	
-	Tooltips:UpdateFonts(self)
-	
-	self.SetBackdrop = function() end
-	
-	self.Styled = true
 end
 
 local GetUnitColor = function(unit)
