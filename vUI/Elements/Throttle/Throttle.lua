@@ -7,7 +7,7 @@ Throttle.Active = {}
 local tinsert = table.insert
 local tremove = table.remove
 
-function Throttle:OnUpdate = function(ela)
+function Throttle:OnUpdate(ela)
 	for i = 1, #self.Active do
 		self.Active[i].Time = self.Active[i].Time - ela
 		
