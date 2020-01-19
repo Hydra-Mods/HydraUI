@@ -140,12 +140,6 @@ Defaults["color-mirror-feign-death"] = "FFB200"
 Defaults["color-tapped"] = "A6A6A6"
 Defaults["color-disconnected"] = "A6A6A6"
 
--- Totems
-Defaults["color-totem-fire"] = "C0392B"
-Defaults["color-totem-earth"] = "B7950B" -- B7950B (Darker)
-Defaults["color-totem-water"] = "2E86C1"
-Defaults["color-totem-air"] = "80DEEA"
-
 -- Action Bars
 Defaults["action-bars-enable"] = true
 Defaults["action-bars-layout"] = "DEFAULT"
