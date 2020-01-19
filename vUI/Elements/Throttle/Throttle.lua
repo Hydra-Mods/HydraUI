@@ -7,7 +7,7 @@ Throttle.Active = {}
 local tinsert = table.insert
 local tremove = table.remove
 
-local OnUpdate = function(self, ela)
+function Throttle:OnUpdate = function(ela)
 	for i = 1, #self.Active do
 		self.Active[i].Time = self.Active[i].Time - ela
 		
@@ -74,7 +74,7 @@ function Throttle:Start(name)
 			tinsert(self.Active, Throttle)
 			
 			if (not self:GetScript("OnUpdate")) then
-				self:SetScript("OnUpdate", OnUpdate)
+				self:SetScript("OnUpdate", self.OnUpdate)
 			end
 			
 			break
