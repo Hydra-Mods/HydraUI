@@ -30,4 +30,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Time", OnEnable, OnDisable, Update)
+DT:SetType("Time - Local", OnEnable, OnDisable, Update)

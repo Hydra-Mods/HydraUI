@@ -14,6 +14,8 @@ local GetQuestDifficultyColor = GetQuestDifficultyColor
 local pairs = pairs
 local Label = Language["Friends"]
 
+local PresenceID, AccountName, BattleTag, IsBattleTagPresence, CharacterName, BNetIDGameAccount, Client, IsOnline, LastOnline, IsAFK, IsDND
+
 local ClientToName = {
 	["App"] = Language["B.Net"],
 	["BSAp"] = Language["B.Net"],
@@ -40,8 +42,6 @@ local GetClass = function(class)
 		end
 	end
 end
-
-local PresenceID, AccountName, BattleTag, IsBattleTagPresence, CharacterName, BNetIDGameAccount, Client, IsOnline, LastOnline, IsAFK, IsDND
 
 local ClientInfo = {}
 
@@ -200,7 +200,6 @@ local OnEnter = function(self)
 	
 	local NumFriends = GetNumFriends()
 	local NumBNFriends, NumBNOnline = BNGetNumFriends()
-	local FriendInfo
 	local Name
 	
 	-- B.Net friends
@@ -220,7 +219,7 @@ local OnEnter = function(self)
 	
 	--[[ Regular friends
 	for i = 1, NumFriends do
-		FriendInfo = GetFriendInfoByIndex(i)
+		local FriendInfo = GetFriendInfoByIndex(i)
 		
 		if FriendInfo.connected then
 			GameTooltip:AddDoubleLine(FriendInfo.name, FriendInfo.level)

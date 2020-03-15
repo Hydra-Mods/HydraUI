@@ -207,7 +207,7 @@ local GetAlertFrame = function()
 	return AlertFrame
 end
 
-local SendAlert = function(header, line1, line2, func, nofade)
+function vUI:SendAlert(header, line1, line2, func, nofade)
 	local AlertFrame = GetAlertFrame()
 	
 	if nofade then
@@ -228,8 +228,4 @@ local SendAlert = function(header, line1, line2, func, nofade)
 	AlertFrame.Line1.Text:SetText(line1)
 	AlertFrame.Line2.Text:SetText(line2)
 	AlertFrame.FadeIn:Play()
-end
-
-function vUI:SendAlert(header, line1, line2, func, nofade)
-	SendAlert(header, line1, line2, func, nofade)
 end

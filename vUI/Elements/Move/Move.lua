@@ -74,7 +74,7 @@ function Move:ResetAll()
 	end
 end
 
-function Move:IsMoved(frame)
+--[[function Move:IsMoved(frame)
 	local Name = frame:GetName()
 
 	if (not Name) then
@@ -82,7 +82,7 @@ function Move:IsMoved(frame)
 	elseif self.Defaults[Name] then
 		return true
 	end
-end
+end]]
 
 local OnSizeChanged = function(self)
 	self.Mover:SetScaledSize(self:GetSize())

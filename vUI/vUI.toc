@@ -56,7 +56,8 @@ Elements\Announcements\Announcements.lua
 Elements\Bags\Bags.lua
 Elements\DataTexts\DataTexts.lua
 Elements\DataTexts\Gold.lua
-Elements\DataTexts\Time.lua
+Elements\DataTexts\TimeLocal.lua
+Elements\DataTexts\TimeRealm.lua
 Elements\DataTexts\Armor.lua
 Elements\DataTexts\HitRating.lua
 Elements\DataTexts\CritRating.lua

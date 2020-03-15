@@ -7,7 +7,7 @@ Defaults["ui-scale"] = 0.71111111111111
 Defaults["ui-language"] = GetLocale()
 Defaults["ui-display-welcome"] = true
 Defaults["ui-display-dev-tools"] = false
-Defaults["ui-display-whats-new"] = true
+Defaults["ui-display-whats-new"] = true -- NYI
 
 -- Media
 Defaults["ui-style"] = "vUI"
@@ -49,7 +49,7 @@ Defaults["gui-enable-fade"] = false
 Defaults["gui-faded-alpha"] = 20
 Defaults["gui-hide-in-combat"] = true
 
--- CUSTOM Colors; The commented colors are 10% darker, I like it better on lighter textures
+-- Custom colors; The commented colors are 10% darker, I like it better on lighter textures
 Defaults["color-death-knight"] = "C41F3B" -- 7F222D
 Defaults["color-demon-hunter"] = "A330C9" -- 922BB4
 Defaults["color-druid"] = "FF7D0A" -- E56F08
@@ -80,7 +80,7 @@ Defaults["color-lunar-power"] = "4C84E5"
 Defaults["color-arcane-charges"] = "1919F9"
 Defaults["color-ammo-slot"] = "CC9900"
 Defaults["color-soul-shards"] = "D35832" -- 7F518C for the default soul shards color
-Defaults["color-runes"] = "9905CC" -- 7F7F7F for the default rune color
+Defaults["color-runes"] = "9905CC" -- 7F7F7F ^
 Defaults["color-combo-points"] = "FFF468"
 
 -- Reactions
@@ -128,7 +128,7 @@ Defaults["color-casting-start"] = "4C9900"
 Defaults["color-casting-stopped"] = "F39C12"
 Defaults["color-casting-interrupted"] = "D35400"
 Defaults["color-casting-uninterruptible"] = "FF4444"
-Defaults["color-casting-success"] = "4C9900" -- TBI
+Defaults["color-casting-success"] = "4C9900" -- NYI
 
 -- Mirror Timers
 Defaults["color-mirror-exhaustion"] = "FFE500"
@@ -270,6 +270,7 @@ Defaults["unitframes-enable"] = true
 Defaults["unitframes-only-player-debuffs"] = false
 Defaults["unitframes-show-player-buffs"] = true
 
+-- Unitframes: Player
 Defaults["unitframes-player-width"] = 238
 Defaults["unitframes-player-health-height"] = 28
 Defaults["unitframes-player-health-reverse"] = false
@@ -280,6 +281,7 @@ Defaults["unitframes-player-power-reverse"] = false
 Defaults["unitframes-player-power-color"] = "POWER"
 Defaults["unitframes-player-power-smooth"] = true
 
+-- Unitframes: Target
 Defaults["unitframes-target-width"] = 238
 Defaults["unitframes-target-health-height"] = 28
 Defaults["unitframes-target-health-reverse"] = false
@@ -290,6 +292,7 @@ Defaults["unitframes-target-power-reverse"] = false
 Defaults["unitframes-target-power-color"] = "POWER"
 Defaults["unitframes-target-power-smooth"] = true
 
+-- Unitframes: Target of Target
 Defaults["unitframes-targettarget-width"] = 110
 Defaults["unitframes-targettarget-health-height"] = 26 
 Defaults["unitframes-targettarget-health-reverse"] = false
@@ -301,6 +304,7 @@ Defaults["unitframes-targettarget-power-reverse"] = false
 Defaults["unitframes-targettarget-power-color"] = "POWER"
 Defaults["unitframes-targettarget-power-smooth"] = true
 
+-- Unitframes: Pet
 Defaults["unitframes-pet-width"] = 110
 Defaults["unitframes-pet-health-height"] = 26
 Defaults["unitframes-pet-health-reverse"] = false
@@ -312,7 +316,7 @@ Defaults["unitframes-pet-power-reverse"] = false
 Defaults["unitframes-pet-power-color"] = "POWER"
 Defaults["unitframes-pet-power-smooth"] = true
 
--- Bosses
+-- Unitframes: Bosses
 Defaults["unitframes-boss-enable"] = true
 Defaults["unitframes-boss-width"] = 238
 Defaults["unitframes-boss-health-height"] = 28
@@ -324,7 +328,7 @@ Defaults["unitframes-boss-power-reverse"] = false
 Defaults["unitframes-boss-power-color"] = "POWER"
 Defaults["unitframes-boss-power-smooth"] = true
 
--- Party
+-- Unitframes: Party
 Defaults["party-enable"] = true
 Defaults["party-width"] = 78
 Defaults["party-show-debuffs"] = true
@@ -338,6 +342,7 @@ Defaults["party-power-reverse"] = false
 Defaults["party-power-color"] = "POWER"
 Defaults["party-power-smooth"] = true
 
+-- Unitframes: Party Pets
 Defaults["party-pets-enable"] = true
 Defaults["party-pets-width"] = 78
 Defaults["party-pets-health-height"] = 22
@@ -347,7 +352,7 @@ Defaults["party-pets-health-orientation"] = "HORIZONTAL"
 Defaults["party-pets-health-smooth"] = true
 Defaults["party-pets-power-height"] = 0 -- NYI
 
--- Raid
+-- Unitframes: Raid
 Defaults["raid-enable"] = true
 Defaults["raid-width"] = 90
 Defaults["raid-health-height"] = 23

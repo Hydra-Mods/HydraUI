@@ -37,14 +37,14 @@ local Classes = {
 	["rare"] = Language["Rare"],
 	["elite"] = Language["Elite"],
 	["rareelite"] = Language["Rare Elite"],
-	["worldboss"] = Language["Boss"],
+	--["worldboss"] = Language["Boss"],
 }
 
 local ShortClasses = {
 	["rare"] = Language[" R"],
 	["elite"] = Language["+"],
 	["rareelite"] = Language[" R+"],
-	["worldboss"] = Language[" B"],
+	--["worldboss"] = Language[" B"],
 }
 
 local Ignore = {
@@ -112,7 +112,11 @@ Methods["Level"] = function(unit)
 	local Level = UnitEffectiveLevel(unit)
 	
 	if (Level == -1) then
-		return "??"
+		if UnitIsPlayer(unit) then
+			return "??"
+		else
+			return Language["Boss"]
+		end
 	else
 		return Level
 	end
@@ -392,9 +396,15 @@ Methods["Reaction"] = function(unit)
 	end
 end
 
+local GetQuestDifficultyColor = GetQuestDifficultyColor
+
 Events["LevelColor"] = "UNIT_LEVEL PLAYER_LEVEL_UP PLAYER_ENTERING_WORLD"
 Methods["LevelColor"] = function(unit)
-	return vUI:UnitDifficultyColor(unit)
+	local Level = UnitLevel(unit)
+	local Color = GetQuestDifficultyColor(Level)
+	
+	return "|cFF" .. vUI:RGBToHex(Color.r, Color.g, Color.b)
+	--return vUI:UnitDifficultyColor(unit)
 end
 
 local ComboPointsUpdateShapeshiftForm = function(self, form)

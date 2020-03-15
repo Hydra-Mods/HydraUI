@@ -1,7 +1,7 @@
 local vUI, GUI, Language, Media, Settings, Defaults = select(2, ...):get()
-local LSM = LibStub:GetLibrary("LibSharedMedia-3.0")
-local Textures = LSM:HashTable("statusbar")
-local Fonts = LSM:HashTable("font")
+local SharedMedia = LibStub:GetLibrary("LibSharedMedia-3.0")
+local Textures = SharedMedia:HashTable("statusbar")
+local Fonts = SharedMedia:HashTable("font")
 
 Media.Fonts = {}
 Media.Textures = {}
@@ -47,7 +47,7 @@ function Media:SetFont(name, path, silent, ispixel)
 	if (not silent) then
 		self.FontList[name] = path
 		
-		LSM:Register("font", name, path)
+		SharedMedia:Register("font", name, path)
 	end
 end
 
@@ -61,7 +61,6 @@ end
 
 function Media:GetFontList()
 	return self.FontList
-	--return LSM:HashTable("font")
 end
 
 -- Textures
@@ -75,7 +74,7 @@ function Media:SetTexture(name, path, silent)
 	if (not silent) then
 		self.TextureList[name] = path
 		
-		LSM:Register("statusbar", name, path)
+		SharedMedia:Register("statusbar", name, path)
 	end
 end
 
@@ -89,7 +88,6 @@ end
 
 function Media:GetTextureList()
 	return self.TextureList
-	--return LSM:HashTable("statusbar")
 end
 
 -- Highlights
@@ -169,24 +167,16 @@ function Media:ApplyStyle(name)
 	end
 end
 
-function Media:HandleStyle(option)
-	if (self.Styles[name] and self.Styles[name][option]) then
-		return self.Styles[name][option]
-	elseif Settings[option] then
-		return Settings[option]
-	end
-end
-
 -- Palettes
-function Media:SetPalette(name, t, silent)
+function Media:SetPalette(name, info, silent)
 	if self.Palettes[name] then
 		return
 	end
 	
-	self.Palettes[name] = t
+	self.Palettes[name] = info
 	
 	if (not silent) then
-		self.PaletteList[name] = t
+		self.PaletteList[name] = info
 	end
 end
 

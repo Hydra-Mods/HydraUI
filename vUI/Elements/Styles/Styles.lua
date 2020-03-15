@@ -1,4 +1,4 @@
-local Media = select(2, ...):get(4)
+local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
 -- vUI Default
 Media:SetStyle("vUI", {
@@ -256,29 +256,29 @@ Media:SetStyle("Zen", {
 	["data-text-font-flags"] = "",
 })]]
 
---[[ Slate
-Media:SetStyle("Slate", {
-	["ui-widget-font"] = "PT Sans",
-	["ui-header-font"] = "PT Sans",
-	["ui-button-font"] = "PT Sans",
+-- Sci-Fi
+Media:SetStyle("Sci-Fi", {
+	["ui-widget-font"] = "Prototype",
+	["ui-header-font"] = "Prototype",
+	["ui-button-font"] = "Prototype",
 	
-	["ui-widget-texture"] = "Kola",
-	["ui-header-texture"] = "Kola",
-	["ui-button-texture"] = "Kola",
+	["ui-widget-texture"] = "Ferous",
+	["ui-header-texture"] = "Ferous",
+	["ui-button-texture"] = "Ferous",
 	
-	["ui-header-font-color"] = "FAFAFA",
-	["ui-header-texture-color"] = "78909C",
+	["ui-header-font-color"] = "FFB74D",
+	["ui-header-texture-color"] = "212121",
 	
 	["ui-window-bg-color"] = "37474F",
-	["ui-window-main-color"] = "263238",
+	["ui-window-main-color"] = "212121",
 	
-	["ui-widget-color"] = "BBDEFB",
-	["ui-widget-bright-color"] = "BDBDBD",
-	["ui-widget-bg-color"] = "37474F",
-	["ui-widget-font-color"] = "FFFFFF",
+	["ui-widget-color"] = "4FC3F7",
+	["ui-widget-bright-color"] = "8E8E8E",
+	["ui-widget-bg-color"] = "263238",
+	["ui-widget-font-color"] = "FAFAFA",
 	
-	["ui-button-font-color"] = "FAFAFA",
-	["ui-button-texture-color"] = "78909C",
+	["ui-button-font-color"] = "FFB74D",
+	["ui-button-texture-color"] = "212121",
 	
 	["ui-font-size"] = 12,
 	["ui-header-font-size"] = 14,
@@ -291,8 +291,8 @@ Media:SetStyle("Slate", {
 	["chat-tab-font"] = "PT Sans",
 	["chat-tab-font-size"] = 12,
 	["chat-tab-font-flags"] = "",
-	["chat-tab-font-color"] = "FFFFFF",
-	["chat-tab-font-color-mouseover"] = "BBDEFB",
+	["chat-tab-font-color"] = "FFB74D",
+	["chat-tab-font-color-mouseover"] = "FAFAFA",
 	
 	["chat-bubbles-font"] = "PT Sans",
 	["chat-bubbles-font-size"] = 14,
@@ -318,4 +318,48 @@ Media:SetStyle("Slate", {
 	["data-text-font"] = "Prototype",
 	["data-text-font-size"] = 12,
 	["data-text-font-flags"] = "",
-})]]
+})
+
+GUI:AddOptions(function(self)
+	local Left, Right = self:CreateWindow(Language["Styles"])
+	
+	Left:CreateHeader(Language["Styles"])
+	Left:CreateDropdown("ui-style", Settings["ui-style"], Media:GetStyleList(), Language["Select Style"], "", function(v) Media:ApplyStyle(v); ReloadUI(); end):RequiresReload(true)
+	
+	Left:CreateHeader(Language["Headers"])
+	Left:CreateColorSelection("ui-header-font-color", Settings["ui-header-font-color"], Language["Text Color"], "")
+	Left:CreateColorSelection("ui-header-texture-color", Settings["ui-header-texture-color"], Language["Texture Color"], "")
+	Left:CreateDropdown("ui-header-texture", Settings["ui-header-texture"], Media:GetTextureList(), Language["Texture"], "", nil, "Texture")
+	Left:CreateDropdown("ui-header-font", Settings["ui-header-font"], Media:GetFontList(), Language["Header Font"], "", nil, "Font")
+	
+	Left:CreateHeader(Language["Widgets"])
+	Left:CreateColorSelection("ui-widget-color", Settings["ui-widget-color"], Language["Color"], "")
+	Left:CreateColorSelection("ui-widget-bright-color", Settings["ui-widget-bright-color"], Language["Bright Color"], "")
+	Left:CreateColorSelection("ui-widget-bg-color", Settings["ui-widget-bg-color"], Language["Background Color"], "")
+	Left:CreateColorSelection("ui-widget-font-color", Settings["ui-widget-font-color"], Language["Label Color"], "")
+	Left:CreateDropdown("ui-widget-texture", Settings["ui-widget-texture"], Media:GetTextureList(), Language["Texture"], "", nil, "Texture")
+	Left:CreateDropdown("ui-widget-font", Settings["ui-widget-font"], Media:GetFontList(), Language["Font"], "", nil, "Font")
+	
+	Right:CreateHeader(Language["What is a style?"])
+	Right:CreateLine(Language["Styles store media settings such as fonts,"])
+	Right:CreateLine(Language["textures, and colors to create an overall theme."])
+	
+	Right:CreateHeader(Language["Console"])
+	Right:CreateButton(Language["Reload"], Language["Reload UI"], "", ReloadUI)
+	Right:CreateButton(Language["Delete"], Language["Delete Saved Variables"], "", function() vUIProfileData = nil; vUIProfiles = nil; ReloadUI(); end):RequiresReload(true)
+	
+	Right:CreateHeader(Language["Windows"])
+	Right:CreateColorSelection("ui-window-bg-color", Settings["ui-window-bg-color"], Language["Background Color"], "")
+	Right:CreateColorSelection("ui-window-main-color", Settings["ui-window-main-color"], Language["Main Color"], "")
+	
+	Right:CreateHeader(Language["Buttons"])
+	Right:CreateColorSelection("ui-button-texture-color", Settings["ui-button-texture-color"], Language["Texture Color"], "")
+	Right:CreateColorSelection("ui-button-font-color", Settings["ui-button-font-color"], Language["Font Color"], "")
+	Right:CreateDropdown("ui-button-texture", Settings["ui-button-texture"], Media:GetTextureList(), Language["Texture"], "", nil, "Texture")
+	Right:CreateDropdown("ui-button-font", Settings["ui-button-font"], Media:GetFontList(), Language["Font"], "", nil, "Font")
+	
+	Left:CreateHeader(Language["Font Sizes"])
+	Left:CreateSlider("ui-font-size", Settings["ui-font-size"], 8, 18, 1, Language["General Font Size"], Language["Set the general font size of the UI"])
+	Left:CreateSlider("ui-header-font-size", Settings["ui-header-font-size"], 8, 18, 1, Language["Header Font Size"], Language["Set the font size of header elements in the UI"])
+	Left:CreateSlider("ui-title-font-size", Settings["ui-title-font-size"], 8, 18, 1, Language["Title Font Size"], Language["Set the font size of title elements in the UI"])
+end)

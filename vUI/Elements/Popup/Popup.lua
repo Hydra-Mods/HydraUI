@@ -6,7 +6,7 @@ local POPUP_WIDTH = 320
 local POPUP_HEIGHT = 100
 local BUTTON_WIDTH = ((POPUP_WIDTH - 6) / 2) - 1
 
--- IsSevere flag, where you need to hold accept for 1 sec to apply the click. place a statusbar in the button.
+-- IsSevere flag, where you need to hold accept for 1 sec to apply the click. place a statusbar in the button. For things like deleting profiles/saved data
 
 local Button1OnMouseUp = function(self)
 	self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))

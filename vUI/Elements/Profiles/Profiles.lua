@@ -102,7 +102,7 @@ function vUI:GetDefaultProfileKey()
 	return format(DefaultKey, self.UserName, self.UserRealm)
 end
 
-function vUI:GetActiveProfileName() -- Will this ever be called in a case where it needs a fallback?
+function vUI:GetActiveProfileName()
 	if (vUIProfileData and vUIProfileData[self.UserProfileKey]) then
 		return vUIProfileData[self.UserProfileKey]
 	end
@@ -124,7 +124,7 @@ function vUI:CountChangedValues(name)
 	local Profile = self:GetProfile(name)
 	local Count = 0
 	
-	for ID, Value in pairs(Profile) do
+	for ID in pairs(Profile) do
 		if (not self.ProfileMetadata[ID]) then
 			Count = Count + 1
 		end
@@ -187,7 +187,7 @@ function vUI:CreateProfile(name)
 	
 	vUIProfiles[name] = {}
 	
-	-- Some metadata just for some additional information
+	-- Some metadata just for additional information
 	vUIProfiles[name]["profile-name"] = name
 	vUIProfiles[name]["profile-created"] = self:GetCurrentDate()
 	vUIProfiles[name]["profile-created-by"] = self:GetDefaultProfileKey()
@@ -205,7 +205,7 @@ function vUI:RestoreToDefault(name)
 		return
 	end
 	
-	for ID, Value in pairs(vUIProfiles[name]) do
+	for ID in pairs(vUIProfiles[name]) do
 		if (not self.ProfileMetadata[ID]) then
 			vUIProfiles[name][ID] = nil
 		end
@@ -296,7 +296,7 @@ function vUI:DeleteProfile(name)
 	if (self:GetProfileCount() == 0) then
 		self:CreateProfile(Language["Default"]) -- If we just deleted our last profile, make a new default.
 		
-		for Key, Value in pairs(vUIProfileData) do
+		for Key in pairs(vUIProfileData) do
 			vUIProfileData[Key] = Language["Default"]
 		end
 	end

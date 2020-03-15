@@ -2,7 +2,7 @@ local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
 local DT = vUI:GetModule("DataText")
 
-local Update = function(self)
+local Update = function()
 
 end
 
@@ -10,7 +10,7 @@ local OnEnable = function(self)
 	self.Text:SetText("")
 end
 
-local OnDisable = function(self)
+local OnDisable = function()
 
 end
 
