@@ -942,10 +942,10 @@ ActionBars:SetScript("OnEvent", function(self, event)
 	
 	SetActionBarLayout(Settings["action-bars-layout"])
 	
-	SHOW_MULTI_ACTIONBAR_1 = 1
+	--[[SHOW_MULTI_ACTIONBAR_1 = 1
 	SHOW_MULTI_ACTIONBAR_2 = 1
 	SHOW_MULTI_ACTIONBAR_3 = 1
-	SHOW_MULTI_ACTIONBAR_4 = 1
+	SHOW_MULTI_ACTIONBAR_4 = 1]]
 	
 	SetActionBarToggles(1, 1, 1, 1, 1)
 	

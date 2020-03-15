@@ -272,7 +272,7 @@ Media:SetStyle("Sci-Fi", {
 	["ui-window-bg-color"] = "37474F",
 	["ui-window-main-color"] = "212121",
 	
-	["ui-widget-color"] = "4FC3F7",
+	["ui-widget-color"] = "5DADE2", -- 4FC3F7
 	["ui-widget-bright-color"] = "8E8E8E",
 	["ui-widget-bg-color"] = "263238",
 	["ui-widget-font-color"] = "FAFAFA",

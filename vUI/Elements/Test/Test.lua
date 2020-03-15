@@ -656,15 +656,6 @@ GUI:AddOptions(function(self)
 	Left:CreateSwitch("auto-vendor-enable", Settings["auto-vendor-enable"], Language["Auto Vendor Greys"], "Automatically sell all |cFF9D9D9D[Poor]|r quality items", UpdateAutoVendor)
 	Left:CreateSwitch("auto-vendor-report", Settings["auto-vendor-report"], Language["Auto Vendor Report"], "Report the profit of automatic vendoring into the chat")
 	
-	-- Janky times ahead
-	if IsInGuild() then
-		GuildControlSetRank(select(3, GetGuildInfo("player")))
-		
-		local DailyMax = GetGuildBankWithdrawGoldLimit() or 0
-		print(DailyMax)
-		local Bar = Left:CreateStatusBar(0, 0, DailyMax, Language["Guild Repair"], Language["The amount of gold you have remaining for your daily guild repairs"])
-	end
-	
 	Right:CreateHeader(Language["Interrupt Announcements"])
 	Right:CreateSwitch("announcements-enable", Settings["announcements-enable"], Language["Enable Announcements"], "Announce to the selected channel when you|n successfully perform an interrupt spell", ReloadUI):RequiresReload(true)
 	Right:CreateDropdown("announcements-channel", Settings["announcements-channel"], {[Language["Self"]] = "SELF", [Language["Say"]] = "SAY", [Language["Group"]] = "GROUP", [Language["Emote"]] = "EMOTE"}, Language["Set Channel"], "Set the channel to announce to")
