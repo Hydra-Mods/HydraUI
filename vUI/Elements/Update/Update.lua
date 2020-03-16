@@ -115,14 +115,16 @@ function Update:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
 	end
 end
 
+function Update:OnEvent(event, ...)
+	if self[event] then
+		self[event](self, event, ...)
+	end
+end
+
 Update:RegisterEvent("VARIABLES_LOADED")
 Update:RegisterEvent("PLAYER_ENTERING_WORLD")
 Update:RegisterEvent("GUILD_ROSTER_UPDATE")
 Update:RegisterEvent("CHAT_MSG_ADDON")
-Update:SetScript("OnEvent", function(self, event, ...)
-	if self[event] then
-		self[event](self, event, ...)
-	end
-end)
+Update:SetScript("OnEvent", Update.OnEvent)
 
 C_ChatInfo.RegisterAddonMessagePrefix("vUI-Version")
