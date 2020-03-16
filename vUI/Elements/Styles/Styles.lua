@@ -288,7 +288,7 @@ Media:SetStyle("Sci-Fi", {
 	["chat-font-size"] = 12,
 	["chat-font-flags"] = "",
 	
-	["chat-tab-font"] = "PT Sans",
+	["chat-tab-font"] = "Prototype",
 	["chat-tab-font-size"] = 12,
 	["chat-tab-font-flags"] = "",
 	["chat-tab-font-color"] = "FFB74D",
