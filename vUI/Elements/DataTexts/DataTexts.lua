@@ -111,6 +111,12 @@ function DT:SetTooltipsEnabled(value)
 	end
 end
 
+function DT:UpdateAllAnchors()
+	for Name, Anchor in pairs(self.Anchors) do
+		Anchor:Update(999)
+	end
+end
+
 function DT:Load()
 	local Width = vUIChatFrameBottom:GetWidth() / 3
 	local Height = vUIChatFrameBottom:GetWidth()
@@ -176,6 +182,10 @@ GUI:AddOptions(function(self)
 	Right:CreateDropdown("data-text-font", Settings["data-text-font"], Media:GetFontList(), Language["Font"], Language["Set the font of the data texts"], UpdateFont, "Font")
 	Right:CreateSlider("data-text-font-size", Settings["data-text-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the data texts"], UpdateFont)
 	Right:CreateDropdown("data-text-font-flags", Settings["data-text-font-flags"], Media:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the data texts"], UpdateFont)
+	
+	Right:CreateHeader(Language["Colors"])
+	Right:CreateColorSelection("data-text-label-color", Settings["data-text-label-color"], "Label Color", "Set the text color of data text labels", function() DT:UpdateAllAnchors() end)
+	Right:CreateColorSelection("data-text-value-color", Settings["data-text-value-color"], "Value Color", "Set the text color of data text values", function() DT:UpdateAllAnchors() end)
 	
 	Right:CreateHeader(Language["Tooltips"])
 	Right:CreateSwitch("data-text-enable-tooltips", Settings["data-text-enable-tooltips"], Language["Enable Tooltips"], Language["Display tooltip information when hovering over data texts"], UpdateEnableTooltips)
