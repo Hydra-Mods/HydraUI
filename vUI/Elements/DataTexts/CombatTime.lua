@@ -14,7 +14,7 @@ local OnUpdate = function(self, elapsed)
 	self.Throttle = self.Throttle + elapsed
 	
 	if (self.Throttle > 1) then
-		self.Text:SetText(SecondsToTime(self.Elapsed))
+		self.Text:SetText(format("|cff%s%s|r", Settings["data-text-value-color"], SecondsToTime(self.Elapsed)))
 		
 		self.Throttle = 0
 	end

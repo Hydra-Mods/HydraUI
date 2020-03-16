@@ -12,7 +12,7 @@ local Update = function(self, elapsed)
 	self.Elapsed = self.Elapsed + elapsed
 	
 	if (self.Elapsed > 1) then
-		self.Text:SetFormattedText("%s: %s %s: %s", FPSLabel, floor(GetFramerate()), MSLabel, select(4, GetNetStats()))
+		self.Text:SetFormattedText("|cff%s%s:|r |cff%s%s|r |cff%s%s:|r |cff%s%s|r", Settings["data-text-label-color"], FPSLabel, Settings["data-text-value-color"], floor(GetFramerate()), Settings["data-text-label-color"], MSLabel, Settings["data-text-value-color"], select(4, GetNetStats()))
 		
 		self.Elapsed = 0
 	end

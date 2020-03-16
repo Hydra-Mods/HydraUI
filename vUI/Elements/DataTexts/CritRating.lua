@@ -38,7 +38,7 @@ local Update = function(self, event, unit)
 		Crit = Melee
 	end
 	
-	self.Text:SetFormattedText("%s: %.2f%%", Label, Crit)
+	self.Text:SetFormattedText("|cff%s%s:|r |cff%s%.2f%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Crit)
 end
 
 local OnEnable = function(self)

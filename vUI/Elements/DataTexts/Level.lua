@@ -12,7 +12,7 @@ end
 local Update = function(self)
 	local Level = UnitLevel("player")
 	
-	self.Text:SetFormattedText("%s: %s", Label, Level)
+	self.Text:SetFormattedText("|cff%s%s:|r |cff%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Level)
 end
 
 local OnEnable = function(self)

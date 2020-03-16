@@ -36,7 +36,7 @@ local Update = function(self, event, unit)
 		end
 	end
 	
-	self.Text:SetFormattedText("%s: %s", ValidStat[Highest], HighestStat)
+	self.Text:SetFormattedText("|cff%s%s:|r |cff%s%s|r", Settings["data-text-label-color"], ValidStat[Highest], Settings["data-text-value-color"], HighestStat)
 end
 
 local OnEnable = function(self)

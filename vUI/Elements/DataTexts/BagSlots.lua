@@ -55,7 +55,7 @@ local Update = function(self)
 		end
 	end
 	
-	self.Text:SetFormattedText("%s: %s/%s", Label, TotalSlots-FreeSlots, TotalSlots)
+	self.Text:SetFormattedText("|cff%s%s:|r |cff%s%s/%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], TotalSlots-FreeSlots, TotalSlots)
 end
 
 local OnEnable = function(self)

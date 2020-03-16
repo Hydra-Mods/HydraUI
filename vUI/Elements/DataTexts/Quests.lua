@@ -15,7 +15,7 @@ local Update = function(self)
 	local NumQuests = select(2, GetNumQuestLogEntries())
 	local MaxQuests = GetMaxNumQuestsCanAccept()
 	
-	self.Text:SetFormattedText("%s: %s/%s", Label, NumQuests, MaxQuests)
+	self.Text:SetFormattedText("|cff%s%s:|r |cff%s%s/%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], NumQuests, MaxQuests)
 end
 
 local OnEnable = function(self)

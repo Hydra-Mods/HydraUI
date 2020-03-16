@@ -3,6 +3,7 @@ local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 local DT = vUI:GetModule("DataText")
 local Gold = vUI:GetModule("Gold")
 
+local format = format
 local GetMoney = GetMoney
 local GetCoinTextureString = GetCoinTextureString
 
@@ -48,7 +49,7 @@ local OnLeave = function()
 end
 
 local Update = function(self)
-	self.Text:SetText(GetCoinTextureString(GetMoney()))
+	self.Text:SetText(format("|cff%s%s|r", Settings["data-text-value-color"], GetCoinTextureString(GetMoney())))
 end
 
 local OnEnable = function(self)

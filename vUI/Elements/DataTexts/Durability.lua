@@ -61,7 +61,7 @@ local Update = function(self)
 		end
 	end
 	
-	self.Text:SetFormattedText("%s: %s%%", Label, floor(Total / Count * 100))
+	self.Text:SetFormattedText("|cff%s%s:|r |cff%s%s%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], floor(Total / Count * 100))
 end
 
 local OnEnable = function(self)
