@@ -470,7 +470,7 @@ local SkinPetButton = function(button)
 	Icon:SetDrawLayer("BACKGROUND", 7)
 	
 	button:SetNormalTexture("")
-	button.SetNormalTexture = function() end
+	--button.SetNormalTexture = function() end -- Taint error
 	
 	_G[Name.."Flash"]:SetTexture("")
 	
