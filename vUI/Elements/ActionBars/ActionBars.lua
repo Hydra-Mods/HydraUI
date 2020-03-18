@@ -468,9 +468,65 @@ local SkinPetButton = function(button)
 	
 	Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	Icon:SetDrawLayer("BACKGROUND", 7)
+	Icon:SetScaledPoint("TOPLEFT", button, 1, -1)
+	Icon:SetScaledPoint("BOTTOMRIGHT", button, -1, 1)
 	
 	button:SetNormalTexture("")
 	--button.SetNormalTexture = function() end -- Taint error
+	
+	if button.HotKey then
+		button.HotKey:ClearAllPoints()
+		button.HotKey:SetScaledPoint("TOPLEFT", button, 2, -2)
+		button.HotKey:SetFontInfo(Settings["action-bars-font"], Settings["action-bars-font-size"], Settings["action-bars-font-flags"])
+		button.HotKey:SetJustifyH("LEFT")
+		button.HotKey:SetDrawLayer("OVERLAY")
+		button.HotKey:SetTextColor(1, 1, 1)
+		button.HotKey.SetTextColor = function() end
+		
+		local HotKeyText = button.HotKey:GetText()
+		
+		if HotKeyText then
+			button.HotKey:SetText("|cffFFFFFF" .. HotKeyText .. "|r")
+		end
+		
+		button.HotKey.OST = button.HotKey.SetText
+		button.HotKey.SetText = function(self, text)
+			self:OST("|cFFFFFFFF" .. text .. "|r")
+		end
+		
+		if (not Settings["action-bars-show-hotkeys"]) then
+			button.HotKey:SetAlpha(0)
+		end
+	end
+	
+	if button.Name then
+		button.Name:ClearAllPoints()
+		button.Name:SetScaledPoint("BOTTOMLEFT", button, 2, 2)
+		button.Name:SetScaledWidth(button:GetWidth() - 4)
+		button.Name:SetFontInfo(Settings["action-bars-font"], Settings["action-bars-font-size"], Settings["action-bars-font-flags"])
+		button.Name:SetJustifyH("LEFT")
+		button.Name:SetDrawLayer("OVERLAY")
+		button.Name:SetTextColor(1, 1, 1)
+		button.Name.SetTextColor = function() end
+		
+		if (not Settings["action-bars-show-macro-names"]) then
+			button.Name:SetAlpha(0)
+		end
+	end
+	
+	if button.Count then
+		button.Count:ClearAllPoints()
+		button.Count:SetScaledPoint("TOPRIGHT", button, -2, -2)
+		button.Count:SetFontInfo(Settings["action-bars-font"], Settings["action-bars-font-size"], Settings["action-bars-font-flags"])
+		button.Count:SetJustifyH("RIGHT")
+		button.Count:SetDrawLayer("OVERLAY")
+		button.Count:SetTextColor(1, 1, 1)
+		button.Count.SetTextColor = function() end
+		
+		if (not Settings["action-bars-show-count"]) then
+			button.Count:SetAlpha(0)
+		end
+	end
 	
 	_G[Name.."Flash"]:SetTexture("")
 	
@@ -478,7 +534,55 @@ local SkinPetButton = function(button)
 		Normal2:ClearAllPoints()
 		Normal2:SetPoint("TOPLEFT")
 		Normal2:SetPoint("BOTTOMRIGHT")
+		Normal2:SetTexture("")
 	end
+	
+	if (button.SetHighlightTexture and not button.Highlight) then
+		local Highlight = button:CreateTexture(nil, "ARTWORK", button)
+		Highlight:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
+		Highlight:SetVertexColor(1, 1, 1, 0.2)
+		Highlight:SetScaledPoint("TOPLEFT", button, 1, -1)
+		Highlight:SetScaledPoint("BOTTOMRIGHT", button, -1, 1)
+		
+		button.Highlight = Highlight
+		button:SetHighlightTexture(Highlight)
+	end
+	
+	if (button.SetPushedTexture and not button.Pushed) then
+		local Pushed = button:CreateTexture(nil, "ARTWORK", button)
+		Pushed:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
+		Pushed:SetVertexColor(0.9, 0.8, 0.1, 0.3)
+		Pushed:SetScaledPoint("TOPLEFT", button, 1, -1)
+		Pushed:SetScaledPoint("BOTTOMRIGHT", button, -1, 1)
+		
+		button.Pushed = Pushed
+		button:SetPushedTexture(Pushed)
+	end
+	
+	if (button.SetCheckedTexture and not button.Checked) then
+		local Checked = button:CreateTexture(nil, "ARTWORK", button)
+		Checked:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
+		Checked:SetVertexColor(0.1, 0.9, 0.1, 0.2)
+		Checked.SetAlpha = function() end
+		Checked:SetScaledPoint("TOPLEFT", button, 1, -1)
+		Checked:SetScaledPoint("BOTTOMRIGHT", button, -1, 1)
+		
+		button.Checked = Checked
+		button:SetCheckedTexture(Checked)
+	end
+	
+	button.Backdrop = CreateFrame("Frame", nil, button)
+	button.Backdrop:SetScaledPoint("TOPLEFT", button, -1, 1)
+	button.Backdrop:SetScaledPoint("BOTTOMRIGHT", button, 1, -1)
+	button.Backdrop:SetBackdrop(vUI.Backdrop)
+	button.Backdrop:SetBackdropColor(0, 0, 0)
+	button.Backdrop:SetFrameLevel(button:GetFrameLevel() - 1)
+	
+	button.Backdrop.Texture = button.Backdrop:CreateTexture(nil, "BACKDROP")
+	button.Backdrop.Texture:SetScaledPoint("TOPLEFT", button.Backdrop, 1, -1)
+	button.Backdrop.Texture:SetScaledPoint("BOTTOMRIGHT", button.Backdrop, -1, 1)
+	button.Backdrop.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	button.Backdrop.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	button.Styled = true
 end
