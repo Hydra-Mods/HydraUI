@@ -166,7 +166,7 @@ local DiscardChanges = function()
 	vUI:DisplayPopup(Language["Attention"], Language["Are you sure you would like to discard these key binding changes?"], Language["Accept"], ReloadUI, Language["Cancel"])
 end
 
---[[GUI:AddOptions(function(self)
+GUI:AddOptions(function(self)
 	local Left, Right = self:GetWindow(Language["Action Bars"])
 	
 	Right:CreateHeader(Language["Key Binding"])
@@ -176,4 +176,4 @@ end
 	
 	self:GetWidgetByWindow(Language["Action Bars"], "save"):Disable()
 	self:GetWidgetByWindow(Language["Action Bars"], "discard"):Disable()
-end)]]
+end)

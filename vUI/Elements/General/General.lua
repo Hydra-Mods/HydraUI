@@ -62,12 +62,12 @@ GUI:AddOptions(function(self)
 	--Left:CreateSwitch("ui-display-whats-new", Settings["ui-display-whats-new"], Language[ [[Display "What's New" Pop-ups]] ], "")
 	Left:CreateSwitch("ui-display-dev-tools", Settings["ui-display-dev-tools"], Language["Display Developer Chat Tools"], "", UpdateDisplayDevTools)
 	
+	--[[Left:CreateHeader(Language["Language"])
+	Left:CreateDropdown("ui-language", vUI.UserLocale, Languages, Language["UI Language"], "", ReloadUI):RequiresReload(true)
+	Left:CreateButton(Language["Contribute"], Language["Help Localize"], Language["Contribute"], function() vUI:print("") end)]]
+	
 	Left:CreateHeader("Discord")
 	Left:CreateButton("Get Link", "Join Discord", "Get a link to join the vUI Discord community", GetDiscordLink)
-	
-	--[[Right:CreateHeader(Language["Language"])
-	Right:CreateDropdown("ui-language", vUI.UserLocale, Languages, Language["UI Language"], "", ReloadUI):RequiresReload(true)
-	Right:CreateButton(Language["Contribute"], Language["Help Localize"], Language["Contribute"], function() vUI:print("") end)]]
 	
 	Left:CreateHeader(Language["Move UI"])
 	Left:CreateButton(Language["Toggle"], Language["Move UI"], "While toggled, you can drag some|nelements of vUI around the screen", ToggleMove)

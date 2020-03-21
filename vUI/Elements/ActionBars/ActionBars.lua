@@ -601,11 +601,13 @@ local CreatePetBar = function()
 	
 	for i = 1, Max do
 		local Button = _G["PetActionButton"..i]
-		Button:SetScaledSize(BUTTON_SIZE, BUTTON_SIZE)
-		Button:SetParent(vUIPetActionBarsPanel)
 		Button:ClearAllPoints()
+		Button:SetParent(vUIPetActionBarsPanel)
+		Button:SetScaledSize(BUTTON_SIZE, BUTTON_SIZE)
 		
 		SkinPetButton(Button)
+		
+		--Button:Show()
 		
 		if (i == 1) then
 			Button:SetScaledPoint("TOP", PetActionBar, 0, 0)
@@ -1046,10 +1048,10 @@ ActionBars:SetScript("OnEvent", function(self, event)
 	
 	SetActionBarLayout(Settings["action-bars-layout"])
 	
-	--[[SHOW_MULTI_ACTIONBAR_1 = 1
+	SHOW_MULTI_ACTIONBAR_1 = 1
 	SHOW_MULTI_ACTIONBAR_2 = 1
 	SHOW_MULTI_ACTIONBAR_3 = 1
-	SHOW_MULTI_ACTIONBAR_4 = 1]]
+	SHOW_MULTI_ACTIONBAR_4 = 1
 	
 	SetActionBarToggles(1, 1, 1, 1, 1)
 	

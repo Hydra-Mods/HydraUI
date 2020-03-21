@@ -664,7 +664,7 @@ GUI:AddOptions(function(self)
 	Right:CreateSwitch("cooldowns-enable", Settings["cooldowns-enable"], Language["Enable Cooldown Flash"], "When an ability comes off cooldown|n the icon will flash as an alert", UpdateEnableCooldownFlash)
 	
 	Right:CreateHeader(Language["Scale"])
-	--Right:CreateLine("|cFFE81123Do not use this to resize UI elements|r")
+	Right:CreateLine("|cFFE81123Do not use this to resize UI elements|r")
 	Right:CreateInput("ui-scale", Settings["ui-scale"], Language["Set UI Scale"], "Set the scale for the UI", UpdateUIScale)
 	Right:CreateButton(Language["Apply"], Language["Set Suggested Scale"], Language["Apply the scale recommended based on your resolution"], SetSuggestedScale)
 	
