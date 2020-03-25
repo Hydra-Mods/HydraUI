@@ -240,10 +240,9 @@ end
 local Update = function(self)
 	local NumOnline = GetNumOnlineFriends()
 	local NumBNFriends, NumBNOnline = BNGetNumFriends()
-	
 	local Online = NumOnline + NumBNOnline
 	
-	self.Text:SetFormattedText("%s: %s", Label, Online)
+	self.Text:SetFormattedText("|cff%s%s:|r |cff%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Online)
 	
 	--self:PlayFlash()
 end

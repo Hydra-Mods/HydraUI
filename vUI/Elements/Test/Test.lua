@@ -80,21 +80,69 @@ GUI:AddOptions(function(self)
 end)
 
 local UpdateDebugInfo = CreateFrame("Frame")
+
+function UpdateDebugInfo:DISPLAY_SIZE_CHANGED()
+	vUI:UpdateScreenHeight()
+	
+	GUI:GetWidgetByWindow(Language["Debug"], "suggested-scale").Right:SetText(vUI:GetSuggestedScale())
+	GUI:GetWidgetByWindow(Language["Debug"], "resolution").Right:SetText(vUI.ScreenResolution)
+	GUI:GetWidgetByWindow(Language["Debug"], "fullscreen").Right:SetText(vUI.IsFullScreen)
+end
+
+function UpdateDebugInfo:UI_SCALE_CHANGED()
+	vUI:UpdateScreenHeight()
+	
+	GUI:GetWidgetByWindow(Language["Debug"], "suggested-scale").Right:SetText(vUI:GetSuggestedScale())
+end
+
+function UpdateDebugInfo:ZONE_CHANGED()
+	GUI:GetWidgetByWindow(Language["Debug"], "zone").Right:SetText(GetZoneText())
+	GUI:GetWidgetByWindow(Language["Debug"], "sub-zone").Right:SetText(GetMinimapZoneText())
+end
+
+function UpdateDebugInfo:ZONE_CHANGED_INDOORS()
+	GUI:GetWidgetByWindow(Language["Debug"], "zone").Right:SetText(GetZoneText())
+	GUI:GetWidgetByWindow(Language["Debug"], "sub-zone").Right:SetText(GetMinimapZoneText())
+end
+
+function UpdateDebugInfo:ZONE_CHANGED_NEW_AREA()
+	GUI:GetWidgetByWindow(Language["Debug"], "zone").Right:SetText(GetZoneText())
+	GUI:GetWidgetByWindow(Language["Debug"], "sub-zone").Right:SetText(GetMinimapZoneText())
+end
+
+function UpdateDebugInfo:PLAYER_LEVEL_UP()
+	GUI:GetWidgetByWindow(Language["Debug"], "level").Right:SetText(UnitLevel("player"))
+end
+
+function UpdateDebugInfo:QUEST_LOG_UPDATE()
+	GUI:GetWidgetByWindow(Language["Debug"], "quests").Right:SetText(GetQuests())
+end
+
+function UpdateDebugInfo:ADDON_LOADED()
+	GUI:GetWidgetByWindow(Language["Debug"], "loaded").Right:SetText(GetLoadedAddOns())
+end
+
+function UpdateDebugInfo:PLAYER_ENTERING_WORLD()
+	self:RegisterEvent("DISPLAY_SIZE_CHANGED")
+	self:RegisterEvent("UI_SCALE_CHANGED")
+	self:RegisterEvent("QUEST_LOG_UPDATE")
+	
+	if (UnitLevel("player") < MAX_PLAYER_LEVEL_TABLE[GetAccountExpansionLevel()]) then
+		self:RegisterEvent("PLAYER_LEVEL_UP")
+	end
+end
+
+function UpdateDebugInfo:OnEvent(event)
+	if self[event] then
+		self[event](self)
+	end
+end
+
 UpdateDebugInfo:RegisterEvent("ZONE_CHANGED")
 UpdateDebugInfo:RegisterEvent("ZONE_CHANGED_INDOORS")
 UpdateDebugInfo:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 UpdateDebugInfo:RegisterEvent("PLAYER_ENTERING_WORLD")
-UpdateDebugInfo:RegisterEvent("QUEST_LOG_UPDATE")
-UpdateDebugInfo:SetScript("OnEvent", function(self, event)
-	if (event == "ADDON_LOADED") then
-		GUI:GetWidgetByWindow(Language["Debug"], "loaded").Right:SetText(GetLoadedAddOns())
-	elseif (event == "QUEST_LOG_UPDATE") then
-		GUI:GetWidgetByWindow(Language["Debug"], "quests").Right:SetText(GetQuests())
-	else
-		GUI:GetWidgetByWindow(Language["Debug"], "zone").Right:SetText(GetZoneText())
-		GUI:GetWidgetByWindow(Language["Debug"], "sub-zone").Right:SetText(GetMinimapZoneText())
-	end
-end)
+UpdateDebugInfo:SetScript("OnEvent", UpdateDebugInfo.OnEvent)
 
 GUI:AddOptions(function(self)
 	self:CreateSpacer("ZZZ")
@@ -664,7 +712,7 @@ GUI:AddOptions(function(self)
 	Right:CreateSwitch("cooldowns-enable", Settings["cooldowns-enable"], Language["Enable Cooldown Flash"], "When an ability comes off cooldown|n the icon will flash as an alert", UpdateEnableCooldownFlash)
 	
 	Right:CreateHeader(Language["Scale"])
-	Right:CreateLine("|cFFE81123Do not use this to resize UI elements|r")
+	--Right:CreateLine("|cFFE81123Do not use this to resize UI elements|r")
 	Right:CreateInput("ui-scale", Settings["ui-scale"], Language["Set UI Scale"], "Set the scale for the UI", UpdateUIScale)
 	Right:CreateButton(Language["Apply"], Language["Set Suggested Scale"], Language["Apply the scale recommended based on your resolution"], SetSuggestedScale)
 	

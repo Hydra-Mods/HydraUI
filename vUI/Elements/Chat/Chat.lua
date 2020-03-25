@@ -116,7 +116,7 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", FindLinks)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", FindLinks)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", FindLinks)
 
--- Scooping the GMOTD to see if there's any yummy links.
+--[[ Scooping the GMOTD to see if there's any yummy links.
 ChatFrame_DisplayGMOTD = function(frame, message)
 	if (message and (message ~= "")) then
 		local Info = ChatTypeInfo["GUILD"]
@@ -126,7 +126,7 @@ ChatFrame_DisplayGMOTD = function(frame, message)
 		
 		frame:AddMessage(message, Info.r, Info.g, Info.b, Info.id)
 	end
-end
+end]]
 
 local SetEditBoxToLink = function(box, text)
 	box:SetText("")

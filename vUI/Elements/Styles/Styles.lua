@@ -266,18 +266,18 @@ Media:SetStyle("Sci-Fi", {
 	["ui-header-texture"] = "Ferous",
 	["ui-button-texture"] = "Ferous",
 	
-	["ui-header-font-color"] = "FFB74D",
+	["ui-header-font-color"] = "FFB54F",
 	["ui-header-texture-color"] = "212121",
 	
 	["ui-window-bg-color"] = "37474F",
 	["ui-window-main-color"] = "212121",
 	
-	["ui-widget-color"] = "5DADE2", -- 4FC3F7
+	["ui-widget-color"] = "4FBBFF",
 	["ui-widget-bright-color"] = "8E8E8E",
 	["ui-widget-bg-color"] = "263238",
 	["ui-widget-font-color"] = "FAFAFA",
 	
-	["ui-button-font-color"] = "FFB74D",
+	["ui-button-font-color"] = "FFB54F",
 	["ui-button-texture-color"] = "212121",
 	
 	["ui-font-size"] = 12,
@@ -291,7 +291,7 @@ Media:SetStyle("Sci-Fi", {
 	["chat-tab-font"] = "Prototype",
 	["chat-tab-font-size"] = 12,
 	["chat-tab-font-flags"] = "",
-	["chat-tab-font-color"] = "FFB74D",
+	["chat-tab-font-color"] = "FFB54F",
 	["chat-tab-font-color-mouseover"] = "FAFAFA",
 	
 	["chat-bubbles-font"] = "PT Sans",
