@@ -15,6 +15,11 @@ local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 
 local ExperienceBar = CreateFrame("StatusBar", "vUIExperienceBar", UIParent)
 
+ExperienceBar.Elapsed = 0
+
+local Gained = 0
+local Seconds = 0
+
 local UpdateXP = function(self, first)
 	if (UnitLevel("player") == MAX_PLAYER_LEVEL) then
 		self:UnregisterAllEvents()
@@ -81,6 +86,12 @@ local UpdateXP = function(self, first)
 		end
 	else
 		self.Bar:SetValue(XP)
+	end
+	
+	Gained = (XP - self.LastXP) + Gained
+	
+	if (Seconds == 0 and Gained > 0) then -- Start the XP timer
+		ExperienceBar:SetScript("OnUpdate", ExperienceBar.OnUpdate)
 	end
 	
 	if self.TooltipShown then
@@ -235,19 +246,30 @@ function ExperienceBar:OnEnter()
 		
 		GameTooltip:AddLine(LEVEL .. " " .. UnitLevel("player"))
 		GameTooltip:AddLine(" ")
-		GameTooltip:AddLine(Language["Current experience"])
+		GameTooltip:AddLine(Language["Current Experience"])
 		GameTooltip:AddDoubleLine(format("%s / %s", vUI:Comma(XP), vUI:Comma(Max)), format("%s%%", Percent), 1, 1, 1, 1, 1, 1)
 		
 		GameTooltip:AddLine(" ")
-		GameTooltip:AddLine(Language["Remaining experience"])
+		GameTooltip:AddLine(Language["Remaining Experience"])
 		GameTooltip:AddDoubleLine(format("%s", vUI:Comma(Remaining)), format("%s%%", RemainingPercent), 1, 1, 1, 1, 1, 1)
 		
 		if Rested then
 			local RestedPercent = floor((Rested / Max * 100 + 0.05) * 10) / 10
 			
 			GameTooltip:AddLine(" ")
-			GameTooltip:AddLine(Language["Rested experience"])
+			GameTooltip:AddLine(Language["Rested Experience"])
 			GameTooltip:AddDoubleLine(vUI:Comma(Rested), format("%s%%", RestedPercent), 1, 1, 1, 1, 1, 1)
+		end
+		
+		-- Advanced information
+		if (Gained > 0) then
+			local PerHour = (((Gained / Seconds) * 60) * 60)
+			
+			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine(Language["Session Stats"])
+			GameTooltip:AddDoubleLine(Language["Experience gained"], vUI:Comma(Gained), 1, 1, 1, 1, 1, 1)
+			GameTooltip:AddDoubleLine(Language["Per hour"], vUI:Comma(PerHour), 1, 1, 1, 1, 1, 1)
+			GameTooltip:AddDoubleLine(Language["Duration"], vUI:FormatTime(Seconds), 1, 1, 1, 1, 1, 1)
 		end
 		
 		self.TooltipShown = true
@@ -310,7 +332,7 @@ ExperienceBar["PLAYER_ENTERING_WORLD"] = function(self)
 	self:SetScript("OnEnter", self.OnEnter)
 	self:SetScript("OnLeave", self.OnLeave)
 	
-	self.LastXP = 0
+	self.LastXP = UnitXP("player")
 	
 	self.HeaderBG = CreateFrame("Frame", nil, self)
 	self.HeaderBG:SetScaledHeight(Settings["experience-height"])
@@ -432,6 +454,15 @@ ExperienceBar["PLAYER_ENTERING_WORLD"] = function(self)
 	UpdateXP(self, true)
 	
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+end
+
+function ExperienceBar:OnUpdate(elapsed)
+	self.Elapsed = self.Elapsed + elapsed
+	
+	if (self.Elapsed > 1) then
+		Seconds = Seconds + 1
+		self.Elapsed = 0
+	end
 end
 
 ExperienceBar:RegisterEvent("PLAYER_LEVEL_UP")

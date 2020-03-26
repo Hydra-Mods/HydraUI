@@ -166,6 +166,8 @@ function Move:Add(frame, padding)
 	Mover.Label:SetScaledPoint("CENTER", Mover, 0, 0)
 	Mover.Label:SetText(Label)
 	
+	local OldA1, OldParent, OldA2, OldX, OldY = frame:GetPoint()
+	
 	frame:ClearAllPoints()
 	frame:SetScaledPoint("CENTER", Mover, 0, 0)
 	frame.Mover = Mover
@@ -178,10 +180,10 @@ function Move:Add(frame, padding)
 		local ParentObject = _G[Parent]		
 		
 		Mover:SetScaledPoint(A1, ParentObject, A2, X, Y)
-	--[[else
-		Mover:SetScaledPoint(A1, ParentObject, A2, X, Y)
+	else
+		Mover:SetScaledPoint(OldA1, OldParent, OldA2, OldX, OldY)
 		
-		vUIMove[Name] = {A1, ParentName, A2, X, Y}]]
+		vUIMove[Name] = {OldA1, OldParent, OldA2, OldX, OldY}
 	end
 	
 	table.insert(self.Frames, Mover)
