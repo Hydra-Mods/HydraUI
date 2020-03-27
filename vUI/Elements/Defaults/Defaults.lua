@@ -201,7 +201,6 @@ Defaults["experience-show-tooltip"] = true
 Defaults["experience-animate"] = true
 Defaults["experience-width"] = 310
 Defaults["experience-height"] = 18
-Defaults["experience-position"] = "TOP"
 Defaults["experience-progress-visibility"] = "ALWAYS"
 Defaults["experience-percent-visibility"] = "ALWAYS"
 Defaults["experience-bar-color"] = "4C9900" -- 1AE045

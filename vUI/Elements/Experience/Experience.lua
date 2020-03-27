@@ -135,89 +135,13 @@ local UpdateDisplayPercent = function(value)
 end
 
 local UpdateBarWidth = function(value)
-	if (Settings["experience-position"] ~= "CHATFRAME") then
-		vUIExperienceBar:SetScaledWidth(value)
-	end
+	vUIExperienceBar:SetScaledWidth(value)
 end
 
 local UpdateBarHeight = function(value)
-	if (Settings["experience-position"] ~= "CHATFRAME") then
-		vUIExperienceBar:SetScaledHeight(value)
-		vUIExperienceBar.HeaderBG:SetScaledHeight(value)
-		vUIExperienceBar.Bar.Spark:SetScaledHeight(value)
-	end
-end
-
-local UpdateBarPosition = function(value)
-	local WidthWidget = GUI:GetWidgetByWindow(Language["Experience"], "experience-width")
-	local HeightWidget = GUI:GetWidgetByWindow(Language["Experience"], "experience-height")
-	
-	ExperienceBar:ClearAllPoints()
-	
-	if (value == "TOP") then
-		ExperienceBar.BGAll:Show()
-		ExperienceBar:SetScaledSize(Settings["experience-width"], Settings["experience-height"])
-		ExperienceBar:SetScaledPoint("TOP", UIParent, 0, -13)
-		ExperienceBar.HeaderBG:SetScaledHeight(Settings["experience-height"])
-		ExperienceBar.Bar.Spark:SetScaledHeight(Settings["experience-height"])
-		
-		vUIChatFrameBottom:Show()
-		
-		if vUIBottomActionBarsPanel then
-			vUIBottomActionBarsPanel:ClearAllPoints()
-			
-			if (Settings["reputation-enable"] and GetWatchedFactionInfo() and Settings["reputation-position"] ~= "CLASSIC") then
-				vUIBottomActionBarsPanel:SetScaledPoint("BOTTOM", UIParent, 0, 10)
-			else
-				vUIBottomActionBarsPanel:SetScaledPoint("BOTTOM", vUI:GetModule("Reputation"), "TOP", 0, 5)
-			end
-		end
-		
-		WidthWidget:Enable()
-		HeightWidget:Enable()
-	elseif (value == "CHATFRAME") then
-		vUIChatFrameBottom:Hide()
-		
-		local Height = vUIChatFrameBottom:GetHeight()
-		
-		ExperienceBar.BGAll:Hide()
-		ExperienceBar:SetScaledSize(vUIChatFrameBottom:GetWidth(), Height)
-		ExperienceBar:SetScaledPoint("CENTER", vUIChatFrameBottom, 0, 0)
-		
-		ExperienceBar.HeaderBG:SetScaledHeight(Height)
-		ExperienceBar.Bar.Spark:SetScaledHeight(Height)
-		
-		if vUIBottomActionBarsPanel then
-			vUIBottomActionBarsPanel:ClearAllPoints()
-			
-			if (Settings["reputation-enable"] and GetWatchedFactionInfo() and Settings["reputation-position"] ~= "CLASSIC") then
-				vUIBottomActionBarsPanel:SetScaledPoint("BOTTOM", UIParent, 0, 10)
-			else
-				vUIBottomActionBarsPanel:SetScaledPoint("BOTTOM", vUI:GetModule("Reputation"), "TOP", 0, 5)
-			end
-		end
-		
-		WidthWidget:Disable()
-		HeightWidget:Disable()
-	elseif (value == "CLASSIC") then
-		vUIChatFrameBottom:Show()
-		
-		ExperienceBar.BGAll:Show()
-		ExperienceBar:SetScaledHeight(Settings["experience-height"])
-		ExperienceBar:SetScaledPoint("BOTTOM", UIParent, 0, 13)
-		ExperienceBar.HeaderBG:SetScaledHeight(Settings["experience-height"])
-		ExperienceBar.Bar.Spark:SetScaledHeight(Settings["experience-height"])
-		
-		if vUIBottomActionBarsPanel then
-			vUIBottomActionBarsPanel:ClearAllPoints()
-			vUIBottomActionBarsPanel:SetScaledPoint("BOTTOM", ExperienceBar, "TOP", 0, 5)
-			
-			ExperienceBar:SetScaledWidth(vUIBottomActionBarsPanel:GetWidth() - 6)
-		end
-		
-		WidthWidget:Disable()
-		HeightWidget:Enable()
-	end
+	vUIExperienceBar:SetScaledHeight(value)
+	vUIExperienceBar.HeaderBG:SetScaledHeight(value)
+	vUIExperienceBar.Bar.Spark:SetScaledHeight(value)
 end
 
 function ExperienceBar:OnEnter()
@@ -448,10 +372,11 @@ ExperienceBar["PLAYER_ENTERING_WORLD"] = function(self)
 	UpdateDisplayLevel(Settings["experience-display-level"])
 	UpdateDisplayProgress(Settings["experience-display-progress"])
 	UpdateDisplayPercent(Settings["experience-display-percent"])
-	UpdateBarPosition(Settings["experience-position"])
 	UpdateProgressVisibility(Settings["experience-progress-visibility"])
 	UpdatePercentVisibility(Settings["experience-percent-visibility"])
 	UpdateXP(self, true)
+	
+	vUI:GetModule("Move"):Add(self, 6)
 	
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 end
@@ -507,14 +432,11 @@ GUI:AddOptions(function(self)
 	Right:CreateSlider("experience-width", Settings["experience-width"], 240, 400, 10, Language["Bar Width"], "Set the width of the experience bar", UpdateBarWidth)
 	Right:CreateSlider("experience-height", Settings["experience-height"], 6, 30, 1, Language["Bar Height"], "Set the height of the experience bar", UpdateBarHeight)
 	
-	Right:CreateHeader(Language["Positioning"])
-	Right:CreateDropdown("experience-position", Settings["experience-position"], {[Language["Top"]] = "TOP", [Language["Chat Frame"]] = "CHATFRAME", [Language["Classic"]] = "CLASSIC"}, Language["Set Position"], "Set the position of the experience bar", UpdateBarPosition)
+	Right:CreateHeader(Language["Colors"])
+	Right:CreateColorSelection("experience-bar-color", Settings["experience-bar-color"], "Experience Color", "Set the color of the experience bar", UpdateBarColor)
+	Right:CreateColorSelection("experience-rested-color", Settings["experience-rested-color"], "Rested Color", "Set the color of the rested bar", UpdateRestedColor)
 	
 	Right:CreateHeader(Language["Visibility"])
 	Right:CreateDropdown("experience-progress-visibility", Settings["experience-progress-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Progress Text"], "Set when to display the progress information", UpdateProgressVisibility)
 	Right:CreateDropdown("experience-percent-visibility", Settings["experience-percent-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Percent Text"], "Set when to display the percent information", UpdatePercentVisibility)
-	
-	Left:CreateHeader(Language["Colors"])
-	Left:CreateColorSelection("experience-bar-color", Settings["experience-bar-color"], "Experience Color", "Set the color of the experience bar", UpdateBarColor)
-	Left:CreateColorSelection("experience-rested-color", Settings["experience-rested-color"], "Rested Color", "Set the color of the rested bar", UpdateRestedColor)
 end)

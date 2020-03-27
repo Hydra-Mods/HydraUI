@@ -674,6 +674,7 @@ end
 local CreateBarPanels = function()
 	local BottomPanel = CreateFrame("Frame", "vUIBottomActionBarsPanel", UIParent)
 	BottomPanel:SetScaledSize(((BUTTON_SIZE * 12) + (SPACING * 14)), ((BUTTON_SIZE * 2) + (SPACING * 4)))
+	BottomPanel:SetScaledPoint("BOTTOM", UIParent, 0, 10)
 	BottomPanel:SetBackdrop(vUI.BackdropAndBorder)
 	BottomPanel:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	BottomPanel:SetBackdropBorderColor(0, 0, 0)
@@ -701,14 +702,6 @@ local CreateBarPanels = function()
 	
 	if (not Settings["action-bars-show-side-bg"]) then
 		SidePanel:SetAlpha(0)
-	end
-	
-	if (Settings["experience-enable"] and Settings["experience-position"] == "CLASSIC" and UnitLevel("player") ~= MAX_PLAYER_LEVEL) then
-		BottomPanel:SetScaledPoint("BOTTOM", vUIExperienceBar, "TOP", 0, 5)
-	elseif (Settings["reputation-enable"] and Settings["reputation-position"] == "CLASSIC") then
-		BottomPanel:SetScaledPoint("BOTTOM", vUI:GetModule("Reputation"), "TOP", 0, 5)
-	else
-		BottomPanel:SetScaledPoint("BOTTOM", UIParent, 0, 10)
 	end
 end
 
@@ -1048,10 +1041,10 @@ ActionBars:SetScript("OnEvent", function(self, event)
 	
 	SetActionBarLayout(Settings["action-bars-layout"])
 	
-	SHOW_MULTI_ACTIONBAR_1 = 1
+	--[[SHOW_MULTI_ACTIONBAR_1 = 1
 	SHOW_MULTI_ACTIONBAR_2 = 1
 	SHOW_MULTI_ACTIONBAR_3 = 1
-	SHOW_MULTI_ACTIONBAR_4 = 1
+	SHOW_MULTI_ACTIONBAR_4 = 1]]
 	
 	SetActionBarToggles(1, 1, 1, 1, 1)
 	

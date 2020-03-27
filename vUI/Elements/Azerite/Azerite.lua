@@ -7,69 +7,10 @@ local FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
 local GetPowerLevel = C_AzeriteItem.GetPowerLevel
 
-function Azerite:UpdateBarPosition(value)
-	self:ClearAllPoints()
-	
-	if (value == "TOP") then
-		self.BGAll:Show()
-		self:SetScaledSize(Settings["azerite-width"], Settings["azerite-height"])
-		self:SetScaledPoint("TOP", Reputation, "BOTTOM", 0, -8)
-		self.Bar.Spark:SetScaledHeight(Settings["reputation-height"])
-		
-		vUIChatFrameBottom:Show()
-		
-		if vUIBottomActionBarsPanel then
-			vUIBottomActionBarsPanel:ClearAllPoints()
-			
-			if (Settings["reputation-enable"] and Settings["reputation-position"] ~= "CLASSIC") then
-				vUIBottomActionBarsPanel:SetScaledPoint("BOTTOM", UIParent, 0, 10)
-			else
-				vUIBottomActionBarsPanel:SetScaledPoint("BOTTOM", Reputation, "TOP", 0, 5)
-			end
-		end
-	elseif (value == "CHATFRAME") then
-		vUIChatFrameBottom:Hide()
-		
-		local Height = vUIChatFrameBottom:GetHeight()
-		
-		self.BGAll:Hide()
-		self:SetScaledSize(vUIChatFrameBottom:GetWidth(), Height)
-		self:SetScaledPoint("CENTER", vUIChatFrameBottom, 0, 0)
-		
-		self.Bar.Spark:SetScaledHeight(Height)
-		
-		if vUIBottomActionBarsPanel then
-			vUIBottomActionBarsPanel:ClearAllPoints()
-			
-			if (Settings["reputation-enable"] and Settings["reputation-position"] ~= "CLASSIC") then
-				vUIBottomActionBarsPanel:SetScaledPoint("BOTTOM", UIParent, 0, 10)
-			else
-				vUIBottomActionBarsPanel:SetScaledPoint("BOTTOM", Reputation, "TOP", 0, 5)
-			end
-		end
-	elseif (value == "CLASSIC") then
-		vUIChatFrameBottom:Show()
-		
-		self.BGAll:Show()
-		self:SetScaledHeight(Settings["azerite-height"])
-		self:SetScaledPoint("BOTTOM", UIParent, 0, 13)
-		self.Bar.Spark:SetScaledHeight(Settings["azerite-height"])
-		
-		if vUIBottomActionBarsPanel then
-			vUIBottomActionBarsPanel:ClearAllPoints()
-			vUIBottomActionBarsPanel:SetScaledPoint("BOTTOM", self, "TOP", 0, 5)
-			
-			self:SetScaledWidth(vUIBottomActionBarsPanel:GetWidth() - 6)
-		end
-	end
-end
-
 function Azerite:CreateBar()
 	self:SetScaledSize(Settings["azerite-width"], Settings["azerite-height"])
 	self:SetScaledPoint("TOP", UIParent, 0, -13)
 	self:SetFrameStrata("HIGH")
-	--self:SetScript("OnEnter", self.OnEnter)
-	--self:SetScript("OnLeave", self.OnLeave)
 	
 	self.HeaderBG = CreateFrame("Frame", nil, self)
 	self.HeaderBG:SetScaledHeight(Settings["azerite-height"])
@@ -171,8 +112,6 @@ function Azerite:CreateBar()
 	if (not Settings["azerite-display-percent"]) then
 		self.Percentage:Hide()
 	end
-	
-	self:UpdateBarPosition(Settings["azerite-position"])
 end
 
 function Azerite:OnEvent()
@@ -198,29 +137,6 @@ function Azerite:OnEvent()
 	
 	self.HeaderBG.Text:SetText(format("|cFF%s%s:|r %s", Settings["ui-header-font-color"], Language["Level"], Level))
 	self.HeaderBG:SetScaledWidth(self.HeaderBG.Text:GetWidth() + 14)
-	
-	--[[local Name, StandingID, Min, Max, Value, FactionID = GetWatchedFactionInfo()
-	
-	if Name then
-		Max = Max - Min
-		Value = Value - Min
-		
-		self.Bar:SetMinMaxValues(0, Max)
-		self.Bar:SetStatusBarColorHex(Settings["color-reaction-" .. StandingID])
-		
-		self.Progress:SetText(format("%s: %s / %s", Name, vUI:Comma(Value), vUI:Comma(Max)))
-		self.Percentage:SetText(floor((Value / Max * 100 + 0.05) * 10) / 10 .. "%")
-		
-		self.Change:SetChange(Value)
-		self.Change:Play()
-		
-		if (not self:IsShown()) then
-			self:Show()
-			self.FadeIn:Play()
-		end
-	elseif self:IsShown() then
-		self.FadeOut:Play()
-	end]]
 end
 
 function Azerite:Load()
