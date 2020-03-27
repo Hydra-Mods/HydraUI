@@ -900,15 +900,15 @@ if (vUI.UserClass == "DRUID") then
 		self.Bar.BG:SetVertexColorHex(Settings["color-mana"])
 		self.Bar.BG:SetAlpha(0.2)
 		
-		self.Progress = self.Bar:CreateFontString(nil, "OVERLAY")
-		self.Progress:SetScaledPoint("LEFT", self.Bar, 3, 0)
-		self.Progress:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
-		self.Progress:SetJustifyH("LEFT")
-		
 		self.Percentage = self.Bar:CreateFontString(nil, "OVERLAY")
-		self.Percentage:SetScaledPoint("RIGHT", self.Bar, -3, 0)
+		self.Percentage:SetScaledPoint("LEFT", self.Bar, 3, 0)
 		self.Percentage:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
-		self.Percentage:SetJustifyH("RIGHT")
+		self.Percentage:SetJustifyH("LEFT")
+		
+		self.Progress = self.Bar:CreateFontString(nil, "OVERLAY")
+		self.Progress:SetScaledPoint("RIGHT", self.Bar, -3, 0)
+		self.Progress:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+		self.Progress:SetJustifyH("RIGHT")
 		
 		vUI:GetModule("Move"):Add(self)
 		
