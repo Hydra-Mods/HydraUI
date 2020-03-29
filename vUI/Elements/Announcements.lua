@@ -128,3 +128,11 @@ function Announcements:Load()
 	self:RegisterEvent("GROUP_ROSTER_UPDATE")
 	self:SetScript("OnEvent", self.OnEvent)
 end
+
+GUI:AddOptions(function(self)
+	local Left, Right = self:GetWindow(Language["General"])
+	
+	Left:CreateHeader(Language["Interrupt Announcements"])
+	Left:CreateSwitch("announcements-enable", Settings["announcements-enable"], Language["Enable Announcements"], "Announce to the selected channel when you|n successfully perform an interrupt spell", ReloadUI):RequiresReload(true)
+	Left:CreateDropdown("announcements-channel", Settings["announcements-channel"], {[Language["Self"]] = "SELF", [Language["Say"]] = "SAY", [Language["Group"]] = "GROUP", [Language["Emote"]] = "EMOTE"}, Language["Set Channel"], "Set the channel to announce to")
+end)

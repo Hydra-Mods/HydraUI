@@ -54,6 +54,17 @@ local ResetMovers = function()
 	vUI:GetModule("Move"):ResetAll()
 end
 
+local UpdateGUIEnableFade = function(value)
+	if value then
+		GUI:RegisterEvent("PLAYER_STARTED_MOVING")
+		GUI:RegisterEvent("PLAYER_STOPPED_MOVING")
+	else
+		GUI:UnregisterEvent("PLAYER_STARTED_MOVING")
+		GUI:UnregisterEvent("PLAYER_STOPPED_MOVING")
+		GUI:SetAlpha(1)
+	end
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["General"], true)
 	
@@ -72,6 +83,11 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["Move UI"])
 	Left:CreateButton(Language["Toggle"], Language["Move UI"], "While toggled, you can drag some|nelements of vUI around the screen", ToggleMove)
 	Left:CreateButton(Language["Restore"], Language["Restore To Defaults"], "Restore all vUI movable frames|nto their default locations", ResetMovers)
+	
+	Right:CreateHeader(Language["Settings Window"])
+	Right:CreateSwitch("gui-hide-in-combat", Settings["gui-hide-in-combat"], Language["Hide In Combat"], "Hide the settings window when engaging in combat")
+	Right:CreateSwitch("gui-enable-fade", Settings["gui-enable-fade"], Language["Fade While Moving"], "Fade out The settings window while moving", UpdateGUIEnableFade)
+	Right:CreateSlider("gui-faded-alpha", Settings["gui-faded-alpha"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the settings window|n while faded"], nil, nil, "%")
 	
 	if Settings["ui-display-welcome"] then
 		local Color1 = Settings["ui-widget-color"]

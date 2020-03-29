@@ -50,9 +50,7 @@ Elements\MetersBG.lua
 Elements\Minimap\Minimap.lua
 Elements\ZoneText.lua
 Elements\Update.lua
-Elements\Cooldowns.lua
 Elements\Auras.lua
-Elements\Announcements.lua
 Elements\Bags.lua
 Elements\DataTexts\DataTexts.lua
 Elements\DataTexts\Gold.lua
@@ -79,5 +77,12 @@ Elements\DataTexts\System.lua
 Elements\Loot.lua
 Elements\DruidMana.lua
 Elements\MirrorTimers.lua
+Elements\Vehicle.lua
+Elements\BagSlots.lua
+Elements\MicroMenu.lua
+Elements\Merchant.lua
+Elements\Announcements.lua
+Elements\Cooldowns.lua
+Elements\Scale.lua
 Elements\Commands.lua
 Elements\Test.lua

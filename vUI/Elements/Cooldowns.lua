@@ -204,8 +204,6 @@ local UseContainerItem = function(bag, slot)
 	end
 end
 
-local Move = vUI:GetModule("Move")
-
 function Cooldowns:Load()
 	if (not Settings["cooldowns-enable"]) then
 		return
@@ -230,3 +228,20 @@ function Cooldowns:Load()
 	hooksecurefunc("UseInventoryItem", UseInventoryItem)
 	hooksecurefunc("UseContainerItem", UseContainerItem)
 end
+
+local UpdateEnableCooldownFlash = function(value)
+	if value then
+		Cooldowns:RegisterEvent("SPELL_UPDATE_COOLDOWN")
+		Cooldowns:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
+	else
+		Cooldowns:UnregisterEvent("SPELL_UPDATE_COOLDOWN")
+		Cooldowns:UnregisterEvent("UNIT_SPELLCAST_SUCCEEDED")
+	end
+end
+
+GUI:AddOptions(function(self)
+	local Left, Right = self:GetWindow(Language["General"])
+	
+	Right:CreateHeader(Language["Cooldown Flash"])
+	Right:CreateSwitch("cooldowns-enable", Settings["cooldowns-enable"], Language["Enable Cooldown Flash"], "When an ability comes off cooldown|n the icon will flash as an alert", UpdateEnableCooldownFlash)
+end)
