@@ -26,6 +26,7 @@ local ClientToName = {
 	["S1"] = Language["StarCraft: Remastered"],
 	["S2"] = Language["StarCraft 2"],
 	["VIPR"] = Language["Call of Duty: Black Ops 4"],
+	["ODIN"] = Language["Call of Duty: Modern Warfare"],
 	["WoW"] = Language["World of Warcraft"],
 	["WTCG"] = Language["Hearthstone"],
 }
@@ -142,6 +143,18 @@ ClientInfo["S2"] = function(name, info)
 end
 
 ClientInfo["VIPR"] = function(name, info)
+	if info.gameAccountInfo.isGameAFK then
+		name = format("|cFF9E9E9E%s|r", name)
+	elseif info.gameAccountInfo.isGameBusy then
+		name = format("|cFFF44336%s|r", name)
+	else
+		name = format("|cFF00FFF6%s|r", name)
+	end
+	
+	return name, ClientToName[info.gameAccountInfo.clientProgram]
+end
+
+ClientInfo["ODIN"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
 		name = format("|cFF9E9E9E%s|r", name)
 	elseif info.gameAccountInfo.isGameBusy then
