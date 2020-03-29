@@ -6,7 +6,6 @@ end
 
 local floor = floor
 local format = format
-
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType

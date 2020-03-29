@@ -2,6 +2,16 @@ local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
 local AutoVendor = vUI:NewModule("Auto Vendor") -- Automatically sell useless items
 
+local select = select
+local GetContainerNumSlots = GetContainerNumSlots
+local GetContainerItemLink = GetContainerItemLink
+local GetContainerItemInfo = GetContainerItemInfo
+local GetContainerItemID = GetContainerItemID
+local GetItemInfo = GetItemInfo
+local UseContainerItem = UseContainerItem
+local PickupMerchantItem = PickupMerchantItem
+local GetCoinTextureString = GetCoinTextureString
+
 AutoVendor.Filter = {
 	[6196] = true,
 }
