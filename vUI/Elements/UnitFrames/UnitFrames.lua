@@ -1844,6 +1844,11 @@ local StyleParty = function(self, unit)
 	HealthMiddle:SetScaledPoint("CENTER", Health, 0, -1)
 	HealthMiddle:SetJustifyH("CENTER")
 	
+	local HealthBottom = Health:CreateFontString(nil, "OVERLAY")
+	HealthBottom:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+	HealthBottom:SetScaledPoint("BOTTOM", Health, 0, 1)
+	HealthBottom:SetJustifyH("CENTER")
+	
 	-- Attributes
 	Health.frequentUpdates = true
 	Health.colorDisconnected = true
@@ -2001,8 +2006,9 @@ local StyleParty = function(self, unit)
 	Dispel.bg:SetScaledPoint("BOTTOMRIGHT", Dispel, 1, -1)
 	Dispel.bg:SetTexture(Media:GetTexture("Blank"))
 	Dispel.bg:SetVertexColor(0, 0, 0)
-
+	
 	self:Tag(HealthMiddle, "[Name8]")
+	self:Tag(HealthBottom, "[HealthDeficit]")
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -2018,6 +2024,7 @@ local StyleParty = function(self, unit)
 	self.HealthLeft = HealthLeft
 	self.HealthRight = HealthRight
 	self.HealthMiddle = HealthMiddle
+	self.HealthBottom = HealthBottom
 	self.ReadyCheck = ReadyCheck
 	self.Dispel = Dispel
 	self.LeaderIndicator = Leader
