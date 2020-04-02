@@ -53,7 +53,7 @@ GUI:AddOptions(function(self)
 	Left:CreateDoubleLine(Language["UI Scale"], Settings["ui-scale"])
 	Left:CreateDoubleLine(Language["Suggested Scale"], vUI:GetSuggestedScale())
 	Left:CreateDoubleLine(Language["Resolution"], vUI.ScreenResolution)
-	Left:CreateDoubleLine(Language["Fullscreen"], vUI.IsFullScreen == 1 and Language["Enabled"] or Language["Disabled"])
+	Left:CreateDoubleLine(Language["Fullscreen"], "")
 	Left:CreateDoubleLine(Language["Profile"], vUI:GetActiveProfileName())
 	Left:CreateDoubleLine(Language["UI Style"], Settings["ui-style"])
 	Left:CreateDoubleLine(Language["Locale"], vUI.UserLocale)
@@ -82,7 +82,7 @@ function UpdateDebugInfo:DISPLAY_SIZE_CHANGED()
 	
 	GUI:GetWidgetByWindow(Language["Debug"], "suggested-scale").Right:SetText(vUI:GetSuggestedScale())
 	GUI:GetWidgetByWindow(Language["Debug"], "resolution").Right:SetText(vUI.ScreenResolution)
-	GUI:GetWidgetByWindow(Language["Debug"], "fullscreen").Right:SetText(vUI.IsFullScreen == 1 and Language["Enabled"] or Language["Disabled"])
+	GUI:GetWidgetByWindow(Language["Debug"], "fullscreen").Right:SetText(C_CVar.GetCVar("gxMaximize") == "1" and Language["Enabled"] or Language["Disabled"])
 end
 
 function UpdateDebugInfo:UI_SCALE_CHANGED()
@@ -133,7 +133,9 @@ function UpdateDebugInfo:PLAYER_ENTERING_WORLD()
 	self:RegisterEvent("QUEST_LOG_UPDATE")
 	self:RegisterEvent("CVAR_UPDATE")
 	
-	self:CVAR_UPDATE("scriptErrors") -- Unavailable until PEW
+	-- Unavailable until PEW
+	GUI:GetWidgetByWindow(Language["Debug"], "display-errors").Right:SetText(C_CVar.GetCVar("scriptErrors") == "1" and Language["Enabled"] or Language["Disabled"])
+	GUI:GetWidgetByWindow(Language["Debug"], "fullscreen").Right:SetText(C_CVar.GetCVar("gxMaximize") == "1" and Language["Enabled"] or Language["Disabled"])
 	
 	if (UnitLevel("player") < MAX_PLAYER_LEVEL_TABLE[GetAccountExpansionLevel()]) then
 		self:RegisterEvent("PLAYER_LEVEL_UP")
