@@ -1,7 +1,6 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
 local Azerite = vUI:NewModule("Azerite")
-local Reputation = vUI:GetModule("Reputation")
 
 local FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
@@ -112,6 +111,8 @@ function Azerite:CreateBar()
 	if (not Settings["azerite-display-percent"]) then
 		self.Percentage:Hide()
 	end
+	
+	vUI:GetModule("Move"):Add(self, 6)
 end
 
 function Azerite:OnEvent()
