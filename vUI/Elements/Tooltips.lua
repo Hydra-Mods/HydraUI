@@ -397,7 +397,7 @@ Tooltips.GameTooltip_SetDefaultAnchor = function(self, parent)
 	if vUIMetersFrame then
 		self:SetScaledPoint("BOTTOMLEFT", vUIMetersFrame, "TOPLEFT", 3, 5)
 	else
-		self:SetScaledPoint("BOTTOMRIGHT", UIParent, -13, 101)
+		self:SetScaledPoint("BOTTOMRIGHT", Tooltips, -3, 3)
 	end
 end
 
@@ -549,9 +549,14 @@ function Tooltips:Load()
 		return
 	end
 	
+	self:SetScaledSize(200, 26)
+	self:SetScaledPoint("BOTTOMRIGHT", UIParent, -13, 101)
+	
 	self:AddHooks()
 	self:StyleStatusBar()
 	self:SkinItemRef()
+	
+	vUI:GetModule("Move"):Add(self)
 	
 	if IsInGuild() then
 		MyGuild = GetGuildInfo("player")

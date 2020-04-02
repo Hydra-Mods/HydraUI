@@ -36,7 +36,8 @@ end
 
 function DruidMana:PLAYER_ENTERING_WORLD()
 	self:SetScaledSize(Settings["unitframes-player-width"], Settings["unitframes-player-power-height"] + 2)
-	self:SetScaledPoint("CENTER", UIParent, 0, -100)
+	self:SetScaledPoint("CENTER", UIParent, 0, -180)
+	--self:SetScaledPoint("TOP", vUI.UnitFrames["player"], "BOTTOM", 0, 1)
 	
 	self.Fade = CreateAnimationGroup(self)
 	
