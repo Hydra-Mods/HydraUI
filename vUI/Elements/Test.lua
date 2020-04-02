@@ -53,12 +53,12 @@ GUI:AddOptions(function(self)
 	Left:CreateDoubleLine(Language["UI Scale"], Settings["ui-scale"])
 	Left:CreateDoubleLine(Language["Suggested Scale"], vUI:GetSuggestedScale())
 	Left:CreateDoubleLine(Language["Resolution"], vUI.ScreenResolution)
-	Left:CreateDoubleLine(Language["Fullscreen"], vUI.IsFullScreen)
+	Left:CreateDoubleLine(Language["Fullscreen"], vUI.IsFullScreen == 1 and Language["Enabled"] or Language["Disabled"])
 	Left:CreateDoubleLine(Language["Profile"], vUI:GetActiveProfileName())
 	Left:CreateDoubleLine(Language["UI Style"], Settings["ui-style"])
 	Left:CreateDoubleLine(Language["Locale"], vUI.UserLocale)
 	--Left:CreateDoubleLine(Language["Language"], Settings["ui-language"])
-	Left:CreateDoubleLine(Language["Display Errors"], GetCVar("scriptErrors"))
+	Left:CreateDoubleLine(Language["Display Errors"], "")
 	
 	Right:CreateHeader(Language["User Information"])
 	Right:CreateDoubleLine(Language["Name"], vUI.UserName)
@@ -82,7 +82,7 @@ function UpdateDebugInfo:DISPLAY_SIZE_CHANGED()
 	
 	GUI:GetWidgetByWindow(Language["Debug"], "suggested-scale").Right:SetText(vUI:GetSuggestedScale())
 	GUI:GetWidgetByWindow(Language["Debug"], "resolution").Right:SetText(vUI.ScreenResolution)
-	GUI:GetWidgetByWindow(Language["Debug"], "fullscreen").Right:SetText(vUI.IsFullScreen)
+	GUI:GetWidgetByWindow(Language["Debug"], "fullscreen").Right:SetText(vUI.IsFullScreen == 1 and Language["Enabled"] or Language["Disabled"])
 end
 
 function UpdateDebugInfo:UI_SCALE_CHANGED()
@@ -118,10 +118,22 @@ function UpdateDebugInfo:ADDON_LOADED()
 	GUI:GetWidgetByWindow(Language["Debug"], "loaded").Right:SetText(GetLoadedAddOns())
 end
 
+function UpdateDebugInfo:CVAR_UPDATE(cvar)
+	if (cvar == "scriptErrors") then
+		GUI:GetWidgetByWindow(Language["Debug"], "display-errors").Right:SetText(C_CVar.GetCVar("scriptErrors") == "1" and Language["Enabled"] or Language["Disabled"])
+	end
+end
+
 function UpdateDebugInfo:PLAYER_ENTERING_WORLD()
+	self:RegisterEvent("ZONE_CHANGED")
+	self:RegisterEvent("ZONE_CHANGED_INDOORS")
+	self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	self:RegisterEvent("DISPLAY_SIZE_CHANGED")
 	self:RegisterEvent("UI_SCALE_CHANGED")
 	self:RegisterEvent("QUEST_LOG_UPDATE")
+	self:RegisterEvent("CVAR_UPDATE")
+	
+	self:CVAR_UPDATE("scriptErrors") -- Unavailable until PEW
 	
 	if (UnitLevel("player") < MAX_PLAYER_LEVEL_TABLE[GetAccountExpansionLevel()]) then
 		self:RegisterEvent("PLAYER_LEVEL_UP")
@@ -134,9 +146,6 @@ function UpdateDebugInfo:OnEvent(event)
 	end
 end
 
-UpdateDebugInfo:RegisterEvent("ZONE_CHANGED")
-UpdateDebugInfo:RegisterEvent("ZONE_CHANGED_INDOORS")
-UpdateDebugInfo:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 UpdateDebugInfo:RegisterEvent("PLAYER_ENTERING_WORLD")
 UpdateDebugInfo:SetScript("OnEvent", UpdateDebugInfo.OnEvent)
 
