@@ -343,6 +343,7 @@ GUI:AddOptions(function(self)
 	Right:CreateHeader(Language["What is a style?"])
 	Right:CreateLine(Language["Styles store media settings such as fonts,"])
 	Right:CreateLine(Language["textures, and colors to create an overall theme."])
+	--Right:CreateMessage(Language["Styles store media settings such as fonts, textures, and colors to create an overall theme."])
 	
 	Right:CreateHeader(Language["Console"])
 	Right:CreateButton(Language["Reload"], Language["Reload UI"], "", ReloadUI)

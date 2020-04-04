@@ -1,18 +1,11 @@
 local vUI, GUI, Language, Media, Settings, Defaults = select(2, ...):get()
 
-local floor = floor
 local format = format
-local match = string.match
-local tostring = tostring
 local select = select
-local GetContainerNumSlots = GetContainerNumSlots
-local GetContainerItemLink = GetContainerItemLink
-local GetContainerItemID = GetContainerItemID
-local GetContainerItemInfo = GetContainerItemInfo
-local UseContainerItem = UseContainerItem
-local GetItemInfo = GetItemInfo
-local PickupMerchantItem = PickupMerchantItem
-local GetFramerate = GetFramerate
+local GetZoneText = GetZoneText
+local GetMinimapZoneText = GetMinimapZoneText
+local GetNumQuestLogEntries = GetNumQuestLogEntries
+local GetMaxNumQuestsCanAccept = C_QuestLog.GetMaxNumQuestsCanAccept
 
 local GetNumLoadedAddOns = function()
 	local NumLoaded = 0
@@ -38,7 +31,7 @@ end
 
 local GetQuests = function()
 	local NumQuests = select(2, GetNumQuestLogEntries())
-	local MaxQuests = C_QuestLog.GetMaxNumQuestsCanAccept()
+	local MaxQuests = GetMaxNumQuestsCanAccept()
 	
 	return format("%s / %s", NumQuests, MaxQuests)
 end
@@ -176,6 +169,18 @@ GUI:AddOptions(function(self)
 	
 	Right:CreateHeader(Language["vUI"])
 	Right:CreateLine("Hydra")
+end)
+
+GUI:AddOptions(function(self)
+	local Left, Right = self:CreateWindow(Language["Supporters"], nil, "zzzSupporters")
+	
+	Left:CreateHeader(Language["Acknowledgements"])
+	Left:CreateLine("A very special thank you to the following people")
+	Left:CreateLine("for their support of this project!")
+	--Left:CreateMessage("Thank you to the following people who have supported the development of this project. It has taken immense time and effort, and the support of these people has made it possible!")
+	
+	Right:CreateSupportHeader(Language["Supporters"])
+	Right:CreateLine("Innie")
 end)
 
 local Fonts = vUI:NewModule("Fonts")

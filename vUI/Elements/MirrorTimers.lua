@@ -12,7 +12,7 @@ MirrorTimers.Colors = {
 	["FEIGNDEATH"] = "FFB200",
 }
 
-function MirrorTimers:OnUpdate(self)
+function MirrorTimers:OnUpdate()
 	if self.Paused then
 		return
 	end

@@ -196,7 +196,7 @@ function vUI:SetCVars()
 end
 
 function vUI:VARIABLES_LOADED(event)
-	if (not GetCVar("useUIScale")) then
+	if (not C_CVar.GetCVar("useUIScale")) then
 		C_CVar.SetCVar("useUIScale", 1)
 	end
 	
@@ -247,9 +247,9 @@ function vUI:UpdateScreenHeight()
 	Resolution = GetCurrentResolution()
 	
 	if (Resolution > 0) then -- A fullscreen resolution
-		self.ScreenResolution = GetCVar("gxFullscreenResolution")
+		self.ScreenResolution = C_CVar.GetCVar("gxFullscreenResolution")
 	else -- Windowed
-		self.ScreenResolution = GetCVar("gxWindowedResolution")
+		self.ScreenResolution = C_CVar.GetCVar("gxWindowedResolution")
 	end
 	
 	ScreenHeight = tonumber(match(self.ScreenResolution, "%d+x(%d+)"))

@@ -622,6 +622,7 @@ GUI:AddOptions(function(self)
 	Right:CreateHeader(Language["What is a profile?"])
 	Right:CreateLine(Language["Profiles store your settings so that you can quickly"])
 	Right:CreateLine(Language["and easily change between configurations."])
+	--Right:CreateMessage(Language["Profiles store your settings so that you can quickly and easily change between configurations."])
 	
 	local Name = vUI:GetActiveProfileName()
 	local Profile = vUI:GetProfile(Name)
