@@ -324,7 +324,7 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Styles"])
 	
 	Left:CreateHeader(Language["Styles"])
-	Left:CreateDropdown("ui-style", Settings["ui-style"], Media:GetStyleList(), Language["Select Style"], "", function(v) Media:ApplyStyle(v); ReloadUI(); end):RequiresReload(true)
+	Left:CreateDropdown("ui-style", Settings["ui-style"], Media:GetStyleList(), Language["Select Style"], Language["Select a style to load"], function(v) Media:ApplyStyle(v); ReloadUI(); end):RequiresReload(true)
 	
 	Left:CreateHeader(Language["Headers"])
 	Left:CreateColorSelection("ui-header-font-color", Settings["ui-header-font-color"], Language["Text Color"], "")

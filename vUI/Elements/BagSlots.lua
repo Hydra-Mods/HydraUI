@@ -151,9 +151,9 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:GetWindow(Language["General"])
 	
 	Right:CreateHeader(Language["Bags Frame"])
-	Right:CreateDropdown("bags-frame-visiblity", Settings["bags-frame-visiblity"], {[Language["Hide"]] = "HIDE", [Language["Mouseover"]] = "MOUSEOVER", [Language["Show"]] = "SHOW"}, Language["Set Visibility"], "Set the visibility of the bag frame", UpdateBagVisibility)
+	Right:CreateDropdown("bags-frame-visiblity", Settings["bags-frame-visiblity"], {[Language["Hide"]] = "HIDE", [Language["Mouseover"]] = "MOUSEOVER", [Language["Show"]] = "SHOW"}, Language["Set Visibility"], Language["Set the visibility of the bag frame"], UpdateBagVisibility)
 	Right:CreateSlider("bags-frame-opacity", Settings["bags-frame-opacity"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the bags frame when|nvisiblity is set to Mouseover"], UpdateBagVisibility, nil, "%")
-	Right:CreateSwitch("bags-loot-from-left", Settings["bags-loot-from-left"], Language["Loot Left To Right"], "When looting, new items will be|nplaced into the leftmost bag", SetInsertItemsLeftToRight)
+	Right:CreateSwitch("bags-loot-from-left", Settings["bags-loot-from-left"], Language["Loot Left To Right"], Language["When looting, new items will be|nplaced into the leftmost bag"], SetInsertItemsLeftToRight)
 	
 	SetInsertItemsLeftToRight(Settings["bags-loot-from-left"])
 end)

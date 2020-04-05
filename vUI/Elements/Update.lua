@@ -30,7 +30,7 @@ end
 
 -- To be implemented. Add something here like a link or whatever to update.
 local UpdateOnMouseUp = function()
-	vUI:print("You can get an updated version of vUI here at https://www.curseforge.com/wow/addons/vui or by using the Twitch desktop app")
+	vUI:print(Language["You can get an updated version of vUI here at https://www.curseforge.com/wow/addons/vui or by using the Twitch desktop app"])
 end
 
 function Update:PLAYER_ENTERING_WORLD(event)
@@ -96,8 +96,8 @@ function Update:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
 	if (channel == "WHISPER") then
 		if (message > AddOnVersion) then
 			--vUI:SendAlert("New Version", format("Update to version |cFF%s%s|r!", Settings["ui-header-font-color"], Version), nil, UpdateOnMouseUp, true)
-			vUI:print(format("Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui", Settings["ui-header-font-color"], message))
-			print("Join the Discord community for support and feedback https://discord.gg/BKzWPhT")
+			vUI:print(format(Language["Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui"], Settings["ui-header-font-color"], message))
+			print(Language["Join the Discord community for support and feedback https://discord.gg/wfCVkJe"])
 			
 			self:UnregisterEvent(event)
 		end
@@ -105,8 +105,8 @@ function Update:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
 		if (AddOnVersion > message) then -- We have a higher version, share it
 			SendAddonMessage("vUI-Version", AddOnVersion, "WHISPER", sender)
 		elseif (message > AddOnVersion) then -- We're behind!
-			vUI:print(format("Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui", Settings["ui-header-font-color"], message))
-			print("Join the Discord community for support and feedback https://discord.gg/BKzWPhT")
+			vUI:print(format(Language["Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui"], Settings["ui-header-font-color"], message))
+			print(Language["Join the Discord community for support and feedback https://discord.gg/wfCVkJe"])
 			
 			-- Store this higher version and tell anyone else who asks?
 			

@@ -567,11 +567,11 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Tooltips"])
 	
 	Left:CreateHeader(Language["Enable"])
-	Left:CreateSwitch("tooltips-enable", Settings["tooltips-enable"], Language["Enable Tooltips Module"], ""):RequiresReload(true)
+	Left:CreateSwitch("tooltips-enable", Settings["tooltips-enable"], Language["Enable Tooltips Module"], Language["Enable the vUI tooltips module"]):RequiresReload(true)
 	
 	Left:CreateHeader(Language["Styling"])
-	Left:CreateSwitch("tooltips-on-cursor", Settings["tooltips-on-cursor"], Language["Tooltip On Cursor"], "Anchor the tooltip to the mouse cursor")
-	Left:CreateSwitch("tooltips-show-id", Settings["tooltips-show-id"], Language["Display ID's"], "Dislay item and spell ID's in the tooltip")
+	Left:CreateSwitch("tooltips-on-cursor", Settings["tooltips-on-cursor"], Language["Tooltip On Cursor"], Language["Anchor the tooltip to the mouse cursor"])
+	Left:CreateSwitch("tooltips-show-id", Settings["tooltips-show-id"], Language["Display ID's"], Language["Dislay item and spell ID's in the tooltip"])
 	
 	Left:CreateHeader(Language["Font"])
 	Left:CreateDropdown("tooltips-font", Settings["tooltips-font"], Media:GetFontList(), Language["Font"], Language["Set the font of the tooltip text"], nil, "Font")
@@ -579,8 +579,8 @@ GUI:AddOptions(function(self)
 	Left:CreateDropdown("tooltips-font-flags", Settings["tooltips-font-flags"], Media:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the tooltip text"])
 	
 	Right:CreateHeader(Language["Information"])
-	Right:CreateSwitch("tooltips-display-realm", Settings["tooltips-display-realm"], Language["Display Realm"], "Display character realms")
-	Right:CreateSwitch("tooltips-display-title", Settings["tooltips-display-title"], Language["Display Title"], "Display character titles")
+	Right:CreateSwitch("tooltips-display-realm", Settings["tooltips-display-realm"], Language["Display Realm"], Language["Display character realms"])
+	Right:CreateSwitch("tooltips-display-title", Settings["tooltips-display-title"], Language["Display Title"], Language["Display character titles"])
 	
 	Right:CreateHeader(Language["Hide Tooltips"])
 	Right:CreateDropdown("tooltips-hide-on-unit", Settings["tooltips-hide-on-unit"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Combat"]] = "NO_COMBAT"}, Language["On Units"], Language["Set when the tooltip should hide units"])

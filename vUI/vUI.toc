@@ -15,7 +15,6 @@ Elements\Libraries\LibCompress.lua
 Elements\Libraries\LibAnim.lua
 Elements\Libraries\oUF\oUF.xml
 Media\Media.lua
-Languages\Languages.lua
 Languages\deDE.lua
 Languages\esES.lua
 Languages\esMX.lua

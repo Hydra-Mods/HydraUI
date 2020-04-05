@@ -16,6 +16,13 @@ local UnitLevel = UnitLevel
 local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
 local vUI = CreateFrame("Frame", nil, UIParent)
 local GUI = CreateFrame("Frame", nil, UIParent)
+local Language = {}
+
+local Index = function(self, key)
+	return key
+end
+
+setmetatable(Language, {__index = Index})
 
 -- Some Data
 vUI.UIVersion = GetAddOnMetadata("vUI", "Version")
@@ -42,7 +49,7 @@ GUI.Queue = {}
 local Core = {
 	[1] = vUI, -- Functions/Constants
 	[2] = GUI, -- Settings GUI
-	[3] = {}, -- Language
+	[3] = Language, -- Language
 	[4] = {}, -- Media
 	[5] = {}, -- Settings
 	[6] = {}, -- Defaults

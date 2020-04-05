@@ -16,20 +16,6 @@ local UpdateDisplayDevTools = function()
 	end
 end
 
-local Languages = {
-	["English"] = "enUS",
-	["German"] = "deDE",
-	["Spanish (Spain)"] = "esES",
-	["Spanish (Mexico)"] = "esMX",
-	["French"] = "frFR",
-	["Italian"] = "itIT",
-	["Korean"] = "koKR",
-	["Portuguese (Brazil)"] = "ptBR",
-	["Russian"] = "ruRU",
-	["Chinese (Simplified)"] = "zhCN",
-	["Chinese (Traditional)"] = "zhTW",
-}
-
 local UpdateUIScale = function(value)
 	vUI:SetScale(tonumber(value))
 end
@@ -40,7 +26,7 @@ local GetDiscordLink = function()
 	end
 	
 	if (not Throttle:IsThrottled("discord-request")) then
-		vUI:print("Join the Discord community for support and feedback https://discord.gg/wfCVkJe")
+		vUI:print(Language["Join the Discord community for support and feedback https://discord.gg/wfCVkJe"])
 		
 		Throttle:Start("discord-request")
 	end
@@ -69,24 +55,20 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["General"], true)
 	
 	Left:CreateHeader(Language["Welcome"])
-	Left:CreateSwitch("ui-display-welcome", Settings["ui-display-welcome"], Language["Display Welcome Message"], "Display a welcome message on|n login with UI information")
+	Left:CreateSwitch("ui-display-welcome", Settings["ui-display-welcome"], Language["Display Welcome Message"], Language["Display a welcome message on|n login with UI information"])
 	--Left:CreateSwitch("ui-display-whats-new", Settings["ui-display-whats-new"], Language[ [[Display "What's New" Pop-ups]] ], "")
 	Left:CreateSwitch("ui-display-dev-tools", Settings["ui-display-dev-tools"], Language["Display Developer Chat Tools"], "", UpdateDisplayDevTools)
 	
-	--[[Left:CreateHeader(Language["Language"])
-	Left:CreateDropdown("ui-language", vUI.UserLocale, Languages, Language["UI Language"], "", ReloadUI):RequiresReload(true)
-	Left:CreateButton(Language["Contribute"], Language["Help Localize"], Language["Contribute"], function() vUI:print("") end)]]
-	
-	Left:CreateHeader("Discord")
-	Left:CreateButton("Get Link", "Join Discord", "Get a link to join the vUI Discord community", GetDiscordLink)
+	Left:CreateHeader(Language["Discord"])
+	Left:CreateButton(Language["Get Link"], Language["Join Discord"], Language["Get a link to join the vUI Discord community"], GetDiscordLink)
 	
 	Left:CreateHeader(Language["Move UI"])
-	Left:CreateButton(Language["Toggle"], Language["Move UI"], "While toggled, you can drag some|nelements of vUI around the screen", ToggleMove)
-	Left:CreateButton(Language["Restore"], Language["Restore To Defaults"], "Restore all vUI movable frames|nto their default locations", ResetMovers)
+	Left:CreateButton(Language["Toggle"], Language["Move UI"], Language["While toggled, you can drag some|nelements of vUI around the screen"], ToggleMove)
+	Left:CreateButton(Language["Restore"], Language["Restore To Defaults"], Language["Restore all vUI movable frames|nto their default locations"], ResetMovers)
 	
 	Right:CreateHeader(Language["Settings Window"])
-	Right:CreateSwitch("gui-hide-in-combat", Settings["gui-hide-in-combat"], Language["Hide In Combat"], "Hide the settings window when engaging in combat")
-	Right:CreateSwitch("gui-enable-fade", Settings["gui-enable-fade"], Language["Fade While Moving"], "Fade out The settings window while moving", UpdateGUIEnableFade)
+	Right:CreateSwitch("gui-hide-in-combat", Settings["gui-hide-in-combat"], Language["Hide In Combat"], Language["Hide the settings window when engaging in combat"])
+	Right:CreateSwitch("gui-enable-fade", Settings["gui-enable-fade"], Language["Fade While Moving"], Language["Fade out The settings window while moving"], UpdateGUIEnableFade)
 	Right:CreateSlider("gui-faded-alpha", Settings["gui-faded-alpha"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the settings window|n while faded"], nil, nil, "%")
 	
 	if Settings["ui-display-welcome"] then
