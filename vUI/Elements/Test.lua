@@ -179,6 +179,7 @@ GUI:AddOptions(function(self)
 	Left:CreateLine("for their support of this project!")
 	--Left:CreateMessage("Thank you to the following people who have supported the development of this project. It has taken immense time and effort, and the support of these people has made it possible!")
 	
+	--Right:CreateHeader(Language["|TInterface\\AddOns\\vUI\\Media\\Textures\\vUISmallStar:16|t Supporters |TInterface\\AddOns\\vUI\\Media\\Textures\\vUISmallStar:16|t"])
 	Right:CreateSupportHeader(Language["Supporters"])
 	Right:CreateLine("Innie")
 end)

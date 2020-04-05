@@ -373,7 +373,7 @@ GUI.Widgets.CreateSupportHeader = function(self, text)
 	HeaderLeft.Heart:SetScaledPoint("LEFT", HeaderLeft.NewTexture, "RIGHT", 1, -1)
 	HeaderLeft.Heart:SetScaledSize(16, 16)
 	HeaderLeft.Heart:SetTexture(Media:GetTexture("Small Star"))
-	HeaderLeft.Heart:SetVertexColorHex("FFEB3B")
+	HeaderLeft.Heart:SetVertexColorHex("FFB900")
 	
 	-- Header Right Line
 	local HeaderRight = CreateFrame("Frame", nil, Anchor)
@@ -394,7 +394,7 @@ GUI.Widgets.CreateSupportHeader = function(self, text)
 	HeaderRight.Heart:SetScaledPoint("RIGHT", HeaderRight.NewTexture, "LEFT", -1, -1)
 	HeaderRight.Heart:SetScaledSize(16, 16)
 	HeaderRight.Heart:SetTexture(Media:GetTexture("Small Star"))
-	HeaderRight.Heart:SetVertexColorHex("FFEB3B")
+	HeaderRight.Heart:SetVertexColorHex("FFB900")
 	
 	tinsert(self.Widgets, Anchor)
 	

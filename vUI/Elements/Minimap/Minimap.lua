@@ -75,6 +75,14 @@ local TimeOnLeave = function()
 	GameTooltip:Hide()
 end
 
+local TimeOnMouseUp = function(self, button)
+	if (button == "LeftButton") then
+		TimeManager_Toggle()
+	else
+		ToggleCalendar()
+	end
+end
+
 local CreateMinimap = function()
 	Frame:SetScaledPoint("TOPRIGHT", UIParent, -12, -12)
 	Frame:SetBackdrop(vUI.BackdropAndBorder)
@@ -141,7 +149,7 @@ local CreateMinimap = function()
 	
 	TimeFrame:SetScript("OnEnter", TimeOnEnter)
 	TimeFrame:SetScript("OnLeave", TimeOnLeave)
-	TimeFrame:SetScript("OnMouseUp", ToggleCalendar)
+	TimeFrame:SetScript("OnMouseUp", TimeOnMouseUp)
 	
 	ZoneUpdate(ZoneFrame)
 end
