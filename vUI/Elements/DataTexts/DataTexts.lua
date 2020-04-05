@@ -191,7 +191,7 @@ GUI:AddOptions(function(self)
 	Right:CreateSwitch("data-text-enable-tooltips", Settings["data-text-enable-tooltips"], Language["Enable Tooltips"], Language["Display tooltip information when hovering over data texts"], UpdateEnableTooltips)
 	
 	Left:CreateHeader(Language["Gold"])
-	Left:CreateButton(Language["Reset"], Language["Reset Gold"], "", ResetGold)
+	Left:CreateButton(Language["Reset"], Language["Reset Gold"], Language["Reset stored information for each characters gold"], ResetGold)
 	
 	--Left:CreateHeader(Language["Misc."])
 	--Left:CreateSlider("data-text-max-lines", Settings["data-text-max-lines"], 5, 50, 1, "Max Lines", "Set the maximum number of players shown in the guild or friends data text tooltips")
