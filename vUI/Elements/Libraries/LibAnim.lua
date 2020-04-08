@@ -58,24 +58,24 @@ local Get = {
 }
 
 -- Linear
-local Linear = function(t, b, c, d)
+Easing["linear"] = function(t, b, c, d)
 	return c * t / d + b
 end
 
 -- Quadratic
-local InQuadratic = function(t, b, c, d)
+Easing["in-quadratic"] = function(t, b, c, d)
 	t = t / d
 	
 	return c * (t ^ 2) + b
 end
 
-local OutQuadratic = function(t, b, c, d)
+Easing["out-quadratic"] = function(t, b, c, d)
 	t = t / d
 	
 	return -c * t * (t - 2) + b
 end
 
-local InOutQuadratic = function(t, b, c, d)
+Easing["inout-quadratic"] = function(t, b, c, d)
 	t = t / d * 2
 	
 	if (t < 1) then
@@ -86,19 +86,19 @@ local InOutQuadratic = function(t, b, c, d)
 end
 
 -- Cubic
-local InCubic = function(t, b, c, d)
+Easing["in-cubic"] = function(t, b, c, d)
 	t = t / d
 	
 	return c * (t ^ 3) + b
 end
 
-local OutCubic = function(t, b, c, d)
+Easing["out-cubic"] = function(t, b, c, d)
 	t = t / d - 1
 	
 	return c * (t ^ 3 + 1) + b
 end
 
-local InOutCubic = function(t, b, c, d)
+Easing["inout-cubic"] = function(t, b, c, d)
 	t = t / d * 2
 	
 	if (t < 1) then
@@ -111,19 +111,19 @@ local InOutCubic = function(t, b, c, d)
 end
 
 -- Quartic
-local InQuartic = function(t, b, c, d)
+Easing["in-quartic"] = function(t, b, c, d)
 	t = t / d
 	
 	return c * (t ^ 4) + b
 end
 
-local OutQuartic = function(t, b, c, d)
+Easing["out-quartic"] = function(t, b, c, d)
 	t = t / d - 1
 	
 	return -c * (t ^ 4 - 1) + b
 end
 
-local InOutQuartic = function(t, b, c, d)
+Easing["inout-quartic"] = function(t, b, c, d)
 	t = t / d * 2
 	
 	if (t < 1) then
@@ -136,19 +136,19 @@ local InOutQuartic = function(t, b, c, d)
 end
 
 -- Quintic
-local InQuintic = function(t, b, c, d)
+Easing["in-quintic"] = function(t, b, c, d)
 	t = t / d
 	
 	return c * (t ^ 5) + b
 end
 
-local OutQuintic = function(t, b, c, d)
+Easing["out-quintic"] = function(t, b, c, d)
 	t = t / d - 1
 	
 	return c * (t ^ 5 + 1) + b
 end
 
-local InOutQuintic = function(t, b, c, d)
+Easing["inout-quintic"] = function(t, b, c, d)
 	t = t / d * 2
 	
 	if (t < 1) then
@@ -161,20 +161,20 @@ local InOutQuintic = function(t, b, c, d)
 end
 
 -- Sinusoidal
-local InSinusoidal = function(t, b, c, d)
+Easing["in-sinusoidal"] = function(t, b, c, d)
 	return -c * cos(t / d * (pi / 2)) + c + b
 end
 
-local OutSinusoidal = function(t, b, c, d)
+Easing["out-sinusoidal"] = function(t, b, c, d)
 	return c * sin(t / d * (pi / 2)) + b
 end
 
-local InOutSinusoidal = function(t, b, c, d)
+Easing["inout-sinusoidal"] = function(t, b, c, d)
 	return -c / 2 * (cos(pi * t / d) - 1) + b
 end
 
 -- Exponential
-local InExponential = function(t, b, c, d)
+Easing["in-exponential"] = function(t, b, c, d)
 	if (t == 0) then
 		return b
 	else
@@ -182,7 +182,7 @@ local InExponential = function(t, b, c, d)
 	end
 end
 
-local OutExponential = function(t, b, c, d)
+Easing["out-exponential"] = function(t, b, c, d)
 	if (t == d) then
 		return b + c
 	else
@@ -190,7 +190,7 @@ local OutExponential = function(t, b, c, d)
 	end
 end
 
-local InOutExponential = function(t, b, c, d)
+Easing["inout-exponential"] = function(t, b, c, d)
 	if (t == 0) then
 		return b
 	end
@@ -211,19 +211,19 @@ local InOutExponential = function(t, b, c, d)
 end
 
 -- Circular
-local InCircular = function(t, b, c, d)
+Easing["in-circular"] = function(t, b, c, d)
 	t = t / d
 	
 	return (-c * (sqrt(1 - t * t) - 1) + b)
 end
 
-local OutCircular = function(t, b, c, d)
+Easing["out-circular"] = function(t, b, c, d)
 	t = t / d - 1
 	
 	return (c * sqrt(1 - t * t) + b)
 end
 
-local InOutCircular = function(t, b, c, d)
+Easing["inout-circular"] = function(t, b, c, d)
 	t = t / d * 2
 	
 	if (t < 1) then
@@ -236,7 +236,7 @@ local InOutCircular = function(t, b, c, d)
 end
 
 -- Bounce
-local OutBounce = function(t, b, c, d)
+Easing["out-bounce"] = function(t, b, c, d)
 	t = t / d
 	
 	if (t < (1 / 2.75)) then
@@ -256,20 +256,20 @@ local OutBounce = function(t, b, c, d)
 	end
 end
 
-local InBounce = function(t, b, c, d)
-	return c - OutBounce(d - t, 0, c, d) + b
+Easing["in-bounce"] = function(t, b, c, d)
+	return c - Easing["out-bounce"](d - t, 0, c, d) + b
 end
 
-local InOutBounce = function(t, b, c, d)
+Easing["inout-bounce"] = function(t, b, c, d)
 	if (t < d / 2) then
-		return InBounce(t * 2, 0, c, d) * 0.5 + b
+		return Easing["in-bounce"](t * 2, 0, c, d) * 0.5 + b
 	else
-		return OutBounce(t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b
+		return Easing["out-bounce"](t * 2 - d, 0, c, d) * 0.5 + c * 0.5 + b
 	end
 end
 
 -- Elastic
-local InElastic = function(t, b, c, d)
+Easing["in-elastic"] = function(t, b, c, d)
 	if (t == 0) then
 		return b
 	end
@@ -289,7 +289,7 @@ local InElastic = function(t, b, c, d)
 	return -(a * 2 ^ (10 * t) * sin((t * d - s) * (2 * pi) / p)) + b
 end
 
-local OutElastic = function(t, b, c, d)
+Easing["out-elastic"] = function(t, b, c, d)
 	if (t == 0) then
 		return b
 	end
@@ -307,7 +307,7 @@ local OutElastic = function(t, b, c, d)
 	return a * 2 ^ (-10 * t) * sin((t * d - s) * (2 * pi) / p) + c + b
 end
 
-local InOutElastic = function(t, b, c, d)
+Easing["inout-elastic"] = function(t, b, c, d)
 	if (t == 0) then
 		return b
 	end
@@ -332,35 +332,6 @@ local InOutElastic = function(t, b, c, d)
 		return a * 2 ^ (-10 * t) * sin((t * d - s) * (2 * pi) / p ) * 0.5 + c + b
 	end
 end
-
-Easing["linear"] = Linear
-Easing["in-quadratic"] = InQuadratic
-Easing["out-quadratic"] = OutQuadratic
-Easing["inout-quadratic"] = InOutQuadratic
-Easing["in-cubic"] = InCubic
-Easing["out-cubic"] = OutCubic
-Easing["inout-cubic"] = InOutCubic
-Easing["in-quartic"] = InQuartic
-Easing["out-quartic"] = OutQuartic
-Easing["inout-quartic"] = InOutQuartic
-Easing["in-quintic"] = InQuintic
-Easing["out-quintic"] = OutQuintic
-Easing["inout-quintic"] = InOutQuintic
-Easing["in-sinusoidal"] = InSinusoidal
-Easing["out-sinusoidal"] = OutSinusoidal
-Easing["inout-sinusoidal"] = InOutSinusoidal
-Easing["in-exponential"] = InExponential
-Easing["out-exponential"] = OutExponential
-Easing["inout-exponential"] = InOutExponential
-Easing["in-circular"] = InCircular
-Easing["out-circular"] = OutCircular
-Easing["inout-circular"] = InOutCircular
-Easing["in-bounce"] = InBounce
-Easing["out-bounce"] = OutBounce
-Easing["inout-bounce"] = InOutBounce
-Easing["in-elastic"] = InElastic
-Easing["out-elastic"] = OutElastic
-Easing["inout-elastic"] = InOutElastic
 
 -- Some fallbacks / lazy options
 Easing["in"] = Easing["in-quadratic"]
