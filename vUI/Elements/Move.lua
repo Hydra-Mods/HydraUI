@@ -74,16 +74,6 @@ function Move:ResetAll()
 	end
 end
 
---[[function Move:IsMoved(frame)
-	local Name = frame:GetName()
-
-	if (not Name) then
-		return false
-	elseif self.Defaults[Name] then
-		return true
-	end
-end]]
-
 local OnSizeChanged = function(self)
 	self.Mover:SetScaledSize(self:GetSize())
 end
@@ -104,10 +94,29 @@ end
 
 local MoverOnEnter = function(self)
 	self:SetBackdropColorHex("FF4444")
+	
+	local A1, Parent, A2, X, Y = self:GetPoint()
+	
+	if Parent.GetName then
+		Parent = Parent:GetName()
+	end
+	
+	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	
+	GameTooltip:AddLine(self.Name)
+	GameTooltip:AddLine(" ")
+	GameTooltip:AddDoubleLine(Language["Anchor 1:"], A1, 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine(Language["Parent:"], Parent, 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine(Language["Anchor 2:"], A2, 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine(Language["X offset:"], floor(X), 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine(Language["Y offset:"], floor(Y), 1, 1, 1, 1, 1, 1)
+	GameTooltip:Show()
 end
 
 local MoverOnLeave = function(self)
 	self:SetBackdropColorHex(Settings["ui-window-bg-color"])
+	
+	GameTooltip:Hide()
 end
 
 function Move:Add(frame, padding)
