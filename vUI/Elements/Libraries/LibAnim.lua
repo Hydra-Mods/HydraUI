@@ -1,5 +1,5 @@
 -- LibAnim by Hydra
-local Version = 2.04
+local Version = 2.05
 
 if (_LibAnim and _LibAnim >= Version) then
 	return
