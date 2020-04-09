@@ -16,26 +16,26 @@ local OnEnter = function(self)
 	GameTooltip_SetDefaultAnchor(GameTooltip, self)
 	
 	local TotalCost = 0
-	local Current, Max--, HasItem, HasCooldown, RepairCost
+	local Current, Max, HasItem, HasCooldown, RepairCost
 	
 	for i = 1, #Slots do
 		Current, Max = GetInventoryItemDurability(Slots[i])
-		--[[
-		HasItem, HasCooldown, RepairCost = ScanTooltip:SetInventoryItem("player", Slots[i])
 		
-		if (HasItem and RepairCost) then
-			TotalCost = TotalCost + RepairCost
-		end
-		]]
 		if Current then
 			GameTooltip:AddDoubleLine(GetInventoryItemLink("player", Slots[i]), format("%s%%", floor(Current / Max * 100)))
+			
+			HasItem, HasCooldown, RepairCost = ScanTooltip:SetInventoryItem("player", Slots[i], true)
+			
+			if (HasItem and RepairCost) then
+				TotalCost = TotalCost + RepairCost
+			end
 		end
 	end
 	
-	--[[if (TotalCost > 0) then
+	if (TotalCost > 0) then
 		GameTooltip:AddLine(" ")
-		GameTooltip:AddDoubleLine(Language["Repair cost"], GetCoinTextureString(TotalCost), 1, 1, 1, 1, 1, 1)
-	end]]
+		GameTooltip:AddDoubleLine(REPAIR_COST, GetCoinTextureString(TotalCost), 1, 1, 1, 1, 1, 1)
+	end
 	
 	GameTooltip:Show()
 end
