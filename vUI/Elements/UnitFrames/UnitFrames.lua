@@ -2532,7 +2532,7 @@ UF:SetScript("OnEvent", function(self, event)
 			local Party = oUF:SpawnHeader("vUI Party", nil, "party,solo",
 				"initial-width", Settings["party-width"],
 				"initial-height", (Settings["party-health-height"] + Settings["party-power-height"] + 3),
-				"showSolo", true,
+				"showSolo", false,
 				"showPlayer", true,
 				"showParty", true,
 				"showRaid", false,
