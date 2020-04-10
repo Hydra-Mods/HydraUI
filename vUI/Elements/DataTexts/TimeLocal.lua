@@ -2,6 +2,8 @@ local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
 local DT = vUI:GetModule("DataText")
 
+local gsub = gsub
+local format = format
 local GameTime_GetLocalTime = GameTime_GetLocalTime
 
 local OnMouseUp = function(self, button)
@@ -40,7 +42,11 @@ local Update = function(self, elapsed)
 	self.Elapsed = self.Elapsed + elapsed
 	
 	if (self.Elapsed > 10) then
-		self.Text:SetText(GameTime_GetLocalTime(true))
+		local Time = GameTime_GetLocalTime(true)
+		
+		Time = gsub(Time, "%a+", format("|cff%s%s|r", Settings["data-text-value-color"], "%1"))
+		
+		self.Text:SetText(Time)
 		
 		self.Elapsed = 0
 	end
