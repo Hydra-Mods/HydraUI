@@ -251,9 +251,7 @@ local ScreenHeight
 local Scale = 1
 
 function vUI:UpdateScreenHeight()
-	Resolution = GetCurrentResolution()
-	
-	if (Resolution > 0) then -- A fullscreen resolution
+	if (C_CVar.GetCVar("gxMaximize") == "1") then -- A fullscreen resolution
 		self.ScreenResolution = C_CVar.GetCVar("gxFullscreenResolution")
 	else -- Windowed
 		self.ScreenResolution = C_CVar.GetCVar("gxWindowedResolution")
