@@ -425,29 +425,32 @@ local OnValueChanged = function(self)
 		return
 	end
 	
-	local Current = self:GetValue()
-	local Max = select(2, self:GetMinMaxValues())
 	local Color = GetUnitColor(Unit)
 	
-	if (Max == 0) then
-		if UnitIsDead(Unit) then
-			self.HealthValue:SetText("|cFFD64545" .. Language["Dead"] .. "|r")
-		elseif UnitIsGhost(Unit) then
-			self.HealthValue:SetText("|cFFEEEEEE" .. Language["Ghost"] .. "|r")
-		else
-			self.HealthValue:SetText(" ")
-			self.HealthPercent:SetText(" ")
-		end
-	else
-		if UnitIsDead(Unit) then
-			self.HealthValue:SetText("|cFFD64545" .. Language["Dead"] .. "|r")
-		elseif UnitIsGhost(Unit) then
-			self.HealthValue:SetText("|cFFEEEEEE" .. Language["Ghost"] .. "|r")
-		else
-			self.HealthValue:SetText(format("%s / %s", vUI:ShortValue(Current), vUI:ShortValue(Max)))
-		end
+	if Settings["tooltips-show-health-text"] then
+		local Current = self:GetValue()
+		local Max = select(2, self:GetMinMaxValues())
 		
-		self.HealthPercent:SetText(format("%s%%", floor((Current / Max * 100 + 0.05) * 10) / 10))
+		if (Max == 0) then
+			if UnitIsDead(Unit) then
+				self.HealthValue:SetText("|cFFD64545" .. Language["Dead"] .. "|r")
+			elseif UnitIsGhost(Unit) then
+				self.HealthValue:SetText("|cFFEEEEEE" .. Language["Ghost"] .. "|r")
+			else
+				self.HealthValue:SetText(" ")
+				self.HealthPercent:SetText(" ")
+			end
+		else
+			if UnitIsDead(Unit) then
+				self.HealthValue:SetText("|cFFD64545" .. Language["Dead"] .. "|r")
+			elseif UnitIsGhost(Unit) then
+				self.HealthValue:SetText("|cFFEEEEEE" .. Language["Ghost"] .. "|r")
+			else
+				self.HealthValue:SetText(format("%s / %s", vUI:ShortValue(Current), vUI:ShortValue(Max)))
+			end
+			
+			self.HealthPercent:SetText(format("%s%%", floor((Current / Max * 100 + 0.05) * 10) / 10))
+		end
 	end
 	
 	self:SetStatusBarColorHex(Color)
@@ -461,7 +464,7 @@ end
 
 function Tooltips:StyleStatusBar()
 	GameTooltipStatusBar:ClearAllPoints()
-	GameTooltipStatusBar:SetScaledHeight(15)
+	GameTooltipStatusBar:SetScaledHeight(Settings["tooltips-health-bar-height"])
 	GameTooltipStatusBar:SetScaledPoint("BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", 1, 3)
 	GameTooltipStatusBar:SetScaledPoint("BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -1, 3)
 	GameTooltipStatusBar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
@@ -563,6 +566,17 @@ function Tooltips:Load()
 	end
 end
 
+local UpdateHealthBarHeight = function(value)
+	GameTooltipStatusBar:SetScaledHeight(value)
+end
+
+local UpdateShowHealthText = function(value)
+	if (value ~= true) then
+		GameTooltipStatusBar.HealthValue:SetText(" ")
+		GameTooltipStatusBar.HealthPercent:SetText(" ")
+	end
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Tooltips"])
 	
@@ -570,6 +584,8 @@ GUI:AddOptions(function(self)
 	Left:CreateSwitch("tooltips-enable", Settings["tooltips-enable"], Language["Enable Tooltips Module"], Language["Enable the vUI tooltips module"]):RequiresReload(true)
 	
 	Left:CreateHeader(Language["Styling"])
+	Left:CreateSlider("tooltips-health-bar-height", Settings["tooltips-health-bar-height"], 2, 30, 1, Language["Health Bar Height"], Language["Set the height of the tooltip health bar"], UpdateHealthBarHeight)
+	Left:CreateSwitch("tooltips-show-health-text", Settings["tooltips-show-health-text"], Language["Display Health Text"], Language["Dislay health information on the tooltip health bar"], UpdateShowHealthText)
 	Left:CreateSwitch("tooltips-on-cursor", Settings["tooltips-on-cursor"], Language["Tooltip On Cursor"], Language["Anchor the tooltip to the mouse cursor"])
 	Left:CreateSwitch("tooltips-show-id", Settings["tooltips-show-id"], Language["Display ID's"], Language["Dislay item and spell ID's in the tooltip"])
 	
