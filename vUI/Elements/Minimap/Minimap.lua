@@ -149,7 +149,7 @@ local CreateMinimap = function()
 	
 	--TimeFrame:SetScript("OnEnter", TimeOnEnter)
 	--TimeFrame:SetScript("OnLeave", TimeOnLeave)
-	TimeFrame:SetScript("OnMouseUp", TimeOnMouseUp)
+	--TimeFrame:SetScript("OnMouseUp", TimeOnMouseUp)
 	
 	--ZoneUpdate(ZoneFrame)
 end

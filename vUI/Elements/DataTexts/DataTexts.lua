@@ -144,8 +144,8 @@ function DT:Load()
 	self:SetDataText("Chat-Left", Settings["data-text-chat-left"])
 	self:SetDataText("Chat-Middle", Settings["data-text-chat-middle"])
 	self:SetDataText("Chat-Right", Settings["data-text-chat-right"])
-	self:SetDataText("Minimap-Top", "Location")
-	self:SetDataText("Minimap-Bottom", "Time - Local")
+	self:SetDataText("Minimap-Top", Settings["data-text-minimap-top"])
+	self:SetDataText("Minimap-Bottom", Settings["data-text-minimap-bottom"])
 	
 	self:SetTooltipsEnabled(Settings["data-text-enable-tooltips"])
 end
