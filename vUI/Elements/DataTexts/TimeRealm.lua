@@ -32,6 +32,10 @@ local OnEnter = function(self)
 	GameTooltip:Show()
 end
 
+local OnLeave = function()
+	GameTooltip:Hide()
+end
+
 local Update = function(self, elapsed)
 	self.Elapsed = self.Elapsed + elapsed
 	
