@@ -175,9 +175,7 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Supporters"], nil, "zzzSupporters")
 	
 	Left:CreateHeader(Language["Acknowledgements"])
-	Left:CreateLine("A very special thank you to the following people")
-	Left:CreateLine("for their support of this project!")
-	--Left:CreateMessage("Thank you to the following people who have supported the development of this project. It has taken immense time and effort, and the support of these people has made it possible!")
+	Left:CreateMessage("Thank you to the following people who have supported the development of this project! It has taken immense time and effort, and the support of these people help make it possible.")
 	
 	--Right:CreateHeader(Language["|TInterface\\AddOns\\vUI\\Media\\Textures\\vUISmallStar:16|t Supporters |TInterface\\AddOns\\vUI\\Media\\Textures\\vUISmallStar:16|t"])
 	Right:CreateSupportHeader(Language["Supporters"])

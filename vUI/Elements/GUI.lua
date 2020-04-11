@@ -163,82 +163,6 @@ GUI.Widgets.CreateLine = function(self, text)
 	return Anchor.Text
 end
 
-local CheckString = UIParent:CreateFontString(nil, "OVERLAY")
-CheckString:SetScaledWidth(GROUP_WIDTH - 6)
-CheckString:SetJustifyH("LEFT")
-CheckString:SetWordWrap(true)
-
-GUI.Widgets.CreateMessage = function(self, text) -- Create as many lines as needed for the message
-	if (not CheckString.FontSet) then
-		CheckString:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
-		CheckString.FontSet = true
-	end
-	
-	CheckString:SetText(text)
-	
-	local StringWidth = CheckString:GetStringWidth()
-	local StringLen = strlen(text)
-	local MaxWidth = GROUP_WIDTH - 6
-	local NumLines = ceil(StringWidth / MaxWidth)
-	
-	if (NumLines > 1) then
-		local Message = text
-		
-		for i = 1, NumLines do
-			local Line = sub(Message, 1, ceil(StringLen / NumLines))
-			
-			self:CreateLine(Line)
-			
-			Message = gsub(Message, Line, "")
-		end
-	else
-		self:CreateLine(text)
-	end
-end
-
---[[
-GUI.Widgets.CreateMessage = function(self, text)
-	if (not GUI.CheckString) then
-		GUI.CheckString = UIParent:CreateFontString(nil, "OVERLAY")
-		GUI.CheckString:SetScaledWidth(GROUP_WIDTH - (HEADER_SPACING * 2))
-		GUI.CheckString:SetFontInfo(Media:GetFont(Settings["ui-widget-font"]), Settings["ui-font-size"])
-		GUI.CheckString:SetJustifyH("LEFT")
-		GUI.CheckString:SetWordWrap(true)
-		--GUI.CheckString:SetNonSpaceWrap(true)
-	end
-	
-	GUI.CheckString:SetText("")
-	GUI.CheckString:SetText(text)
-	
-	local StringLen = strlen(GUI.CheckString:GetText())
-	local MaxWidth = GROUP_WIDTH - (HEADER_SPACING * 2)
-	local NumLines = GUI.CheckString:GetNumLines()
-	print(NumLines)
-	if (NumLines > 1) then
-		local Message = text
-		
-		for i = 1, NumLines do
-			local Line = sub(Message, 1, ceil(StringLen / MaxWidth))
-			local Position = ceil(StringLen / MaxWidth)
-			--print(Position)
-			if string.find(Line, "%a+$") then -- %a+$
-				local Trim = strlen(sub(Message, string.find(Line, "(%a+)$")))
-				
-				Line = sub(Message, 1, Position - Trim)
-			else
-				Line = sub(Message, 1, Position)
-			end
-			
-			self:CreateLine(Line)
-			
-			Message = gsub(Message, Line, "")
-		end
-	else
-		self:CreateLine(text)
-	end
-end
-]]
-
 -- Double Line
 GUI.Widgets.CreateDoubleLine = function(self, left, right)
 	local Anchor = CreateFrame("Frame", nil, self)
@@ -265,6 +189,55 @@ GUI.Widgets.CreateDoubleLine = function(self, left, right)
 	tinsert(self.Widgets, Anchor)
 	
 	return Anchor.Left
+end
+
+-- Message
+local CheckString = UIParent:CreateFontString(nil, "OVERLAY")
+CheckString:SetScaledWidth(GROUP_WIDTH - 6)
+CheckString:SetJustifyH("LEFT")
+CheckString:SetWordWrap(true)
+
+GUI.Widgets.CreateMessage = function(self, text) -- Create as many lines as needed for the message
+	if (not CheckString.FontSet) then
+		CheckString:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+		CheckString.FontSet = true
+	end
+	
+	CheckString:SetText(text)
+	
+	local StringWidth = CheckString:GetStringWidth()
+	local StringLen = strlen(text)
+	local NumLines = ceil(StringWidth / (GROUP_WIDTH - 6))
+	local MaxPerLine = ceil(StringLen / NumLines) + 4
+	
+	if (NumLines > 1) then
+		local Line = ""
+		local NewLine = ""
+		local Indent = 0
+		
+		for word in string.gmatch(text, "(%S+)") do
+			NewLine = Line .. (Indent == 0 and "" or " ") .. word
+			
+			if (strlen(NewLine) >= MaxPerLine) then
+				if string.find(Line, "%S+$") then -- A word needs to be wrapped
+					self:CreateLine(Line)
+					Line = word -- Start a new line with the wrapped word
+					Indent = 1
+				else
+					self:CreateLine(NewLine)
+					Line = "" -- Start a new line
+					Indent = 0
+				end
+			else
+				Line = NewLine
+				Indent = 1
+			end
+		end
+		
+		self:CreateLine(Line)
+	else
+		self:CreateLine(text)
+	end
 end
 
 -- Header
