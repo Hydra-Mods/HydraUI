@@ -68,7 +68,7 @@ GUI:AddOptions(function(self)
 	
 	Right:CreateHeader(Language["Settings Window"])
 	Right:CreateSwitch("gui-hide-in-combat", Settings["gui-hide-in-combat"], Language["Hide In Combat"], Language["Hide the settings window when engaging in combat"])
-	Right:CreateSwitch("gui-enable-fade", Settings["gui-enable-fade"], Language["Fade While Moving"], Language["Fade out The settings window while moving"], UpdateGUIEnableFade)
+	Right:CreateSwitch("gui-enable-fade", Settings["gui-enable-fade"], Language["Fade While Moving"], Language["Fade out the settings window while moving"], UpdateGUIEnableFade)
 	Right:CreateSlider("gui-faded-alpha", Settings["gui-faded-alpha"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the settings window|n while faded"], nil, nil, "%")
 	
 	if Settings["ui-display-welcome"] then

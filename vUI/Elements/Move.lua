@@ -97,7 +97,7 @@ local MoverOnEnter = function(self)
 	
 	local A1, Parent, A2, X, Y = self:GetPoint()
 	
-	if Parent.GetName then
+	if (Parent and Parent.GetName) then
 		Parent = Parent:GetName()
 	end
 	

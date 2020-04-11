@@ -212,9 +212,12 @@ local UpdateShowMinimapTime = function(value)
 	end
 end
 
-local OnEvent = function(self, event)
+local M = vUI:NewModule("Minimap")
+
+--local OnEvent = function(self, event)
+function M:Load()
 	if (not Settings["minimap-enable"]) then
-		self:UnregisterEvent(event)
+		--self:UnregisterEvent(event)
 		
 		return
 	end
@@ -222,7 +225,7 @@ local OnEvent = function(self, event)
 	CreateMinimap()
 	Minimap:SetMaskTexture(Media:GetTexture("Blank"))
 	
-	Minimap:SetParent(self)
+	Minimap:SetParent(Frame)
 	Minimap:ClearAllPoints()
 	Minimap:SetScaledPoint("TOP", vUIZoneFrame, "BOTTOM", 0, -3)
 	Minimap:SetScaledSize(Settings["minimap-size"], Settings["minimap-size"])
@@ -271,11 +274,11 @@ local OnEvent = function(self, event)
 	Kill(GameTimeFrame)
 	Kill(TimeManagerClockButton)
 	
-	self:UnregisterEvent(event)
+	--self:UnregisterEvent(event)
 end
 
-Frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-Frame:SetScript("OnEvent", OnEvent)
+--Frame:RegisterEvent("PLAYER_ENTERING_WORLD")
+--Frame:SetScript("OnEvent", OnEvent)
 
 GUI:AddOptions(function(self)
 	local Left = self:CreateWindow(Language["Minimap"])
