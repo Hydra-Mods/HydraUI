@@ -106,7 +106,7 @@ function vUI:NewModule(name)
 		return self.Modules[name]
 	end
 	
-	local Module = CreateFrame("Frame", name, UIParent)
+	local Module = CreateFrame("Frame", "vUI " .. name, UIParent)
 	
 	Module.Name = name
 	Module.Loaded = false

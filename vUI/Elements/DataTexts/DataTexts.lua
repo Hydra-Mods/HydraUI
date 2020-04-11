@@ -118,34 +118,39 @@ function DT:UpdateAllAnchors()
 end
 
 function DT:Load()
-	local Width = vUIChatFrameBottom:GetWidth() / 3
-	local Height = vUIChatFrameBottom:GetHeight()
+	if Settings["chat-enable"] then
+		local Width = vUIChatFrameBottom:GetWidth() / 3
+		local Height = vUIChatFrameBottom:GetHeight()
+		
+		local ChatLeft = self:NewAnchor("Chat-Left", vUIChatFrameBottom)
+		ChatLeft:SetScaledSize(Width, Height)
+		ChatLeft:SetScaledPoint("LEFT", vUIChatFrameBottom, 0, 0)
+		
+		local ChatMiddle = self:NewAnchor("Chat-Middle", vUIChatFrameBottom)
+		ChatMiddle:SetScaledSize(Width, Height)
+		ChatMiddle:SetScaledPoint("LEFT", ChatLeft, "RIGHT", 0, 0)
+		
+		local ChatRight = self:NewAnchor("Chat-Right", vUIChatFrameBottom)
+		ChatRight:SetScaledSize(Width, Height)
+		ChatRight:SetScaledPoint("LEFT", ChatMiddle, "RIGHT", 0, 0)
+		
+		self:SetDataText("Chat-Left", Settings["data-text-chat-left"])
+		self:SetDataText("Chat-Middle", Settings["data-text-chat-middle"])
+		self:SetDataText("Chat-Right", Settings["data-text-chat-right"])
+	end
 	
-	local ChatLeft = self:NewAnchor("Chat-Left", vUIChatFrameBottom)
-	ChatLeft:SetScaledSize(Width, Height)
-	ChatLeft:SetScaledPoint("LEFT", vUIChatFrameBottom, 0, 0)
-	
-	local ChatMiddle = self:NewAnchor("Chat-Middle", vUIChatFrameBottom)
-	ChatMiddle:SetScaledSize(Width, Height)
-	ChatMiddle:SetScaledPoint("LEFT", ChatLeft, "RIGHT", 0, 0)
-	
-	local ChatRight = self:NewAnchor("Chat-Right", vUIChatFrameBottom)
-	ChatRight:SetScaledSize(Width, Height)
-	ChatRight:SetScaledPoint("LEFT", ChatMiddle, "RIGHT", 0, 0)
-	
-	local MinimapTop = self:NewAnchor("Minimap-Top", vUIZoneFrame)
-	MinimapTop:SetScaledSize(vUIZoneFrame:GetSize())
-	MinimapTop:SetScaledPoint("CENTER", vUIZoneFrame, 0, 0)
-	
-	local MinimapBottom = self:NewAnchor("Minimap-Bottom", vUITimeFrame)
-	MinimapBottom:SetScaledSize(vUITimeFrame:GetSize())
-	MinimapBottom:SetScaledPoint("CENTER", vUITimeFrame, 0, 0)
-	
-	self:SetDataText("Chat-Left", Settings["data-text-chat-left"])
-	self:SetDataText("Chat-Middle", Settings["data-text-chat-middle"])
-	self:SetDataText("Chat-Right", Settings["data-text-chat-right"])
-	self:SetDataText("Minimap-Top", Settings["data-text-minimap-top"])
-	self:SetDataText("Minimap-Bottom", Settings["data-text-minimap-bottom"])
+	if Settings["minimap-enable"] then
+		local MinimapTop = self:NewAnchor("Minimap-Top", vUIMinimapTop)
+		MinimapTop:SetScaledSize(vUIMinimapTop:GetSize())
+		MinimapTop:SetScaledPoint("CENTER", vUIMinimapTop, 0, 0)
+		
+		local MinimapBottom = self:NewAnchor("Minimap-Bottom", vUIMinimapBottom)
+		MinimapBottom:SetScaledSize(vUIMinimapBottom:GetSize())
+		MinimapBottom:SetScaledPoint("CENTER", vUIMinimapBottom, 0, 0)
+		
+		self:SetDataText("Minimap-Top", Settings["data-text-minimap-top"])
+		self:SetDataText("Minimap-Bottom", Settings["data-text-minimap-bottom"])
+	end
 	
 	self:SetTooltipsEnabled(Settings["data-text-enable-tooltips"])
 end
@@ -163,11 +168,15 @@ local UpdateRightText = function(value)
 end
 
 local UpdateMinimapTopText = function(value)
-	DT:SetDataText("Minimap-Top", value)
+	if Settings["minimap-enable"] then
+		DT:SetDataText("Minimap-Top", value)
+	end
 end
 
 local UpdateMinimapBottomText = function(value)
-	DT:SetDataText("Minimap-Bottom", value)
+	if Settings["minimap-enable"] then
+		DT:SetDataText("Minimap-Bottom", value)
+	end
 end
 
 local UpdateFont = function()
