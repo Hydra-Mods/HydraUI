@@ -240,6 +240,7 @@ local OnEnter = function(self)
 	end]]
 	
 	GameTooltip:Show()
+	GameTooltip:Show()
 end
 
 local OnLeave = function()
