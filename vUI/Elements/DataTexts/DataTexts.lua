@@ -153,6 +153,8 @@ function DT:Load()
 	end
 	
 	self:SetTooltipsEnabled(Settings["data-text-enable-tooltips"])
+	
+	SetCVar("timeMgrUseMilitaryTime", Settings["data-text-24-hour"])
 end
 
 local UpdateLeftText = function(value)
@@ -197,6 +199,11 @@ local ResetGold = function()
 	vUI:DisplayPopup(Language["Attention"], Language["Are you sure you would like to reset all stored gold information?"], Language["Accept"], ResetOnAccept, Language["Cancel"])
 end
 
+local UpdateTimeFormat = function(value)
+	SetCVar("timeMgrUseMilitaryTime", value)
+	DT:UpdateAllAnchors()
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Data Texts"])
 	
@@ -218,8 +225,9 @@ GUI:AddOptions(function(self)
 	Right:CreateColorSelection("data-text-label-color", Settings["data-text-label-color"], "Label Color", "Set the text color of data text labels", function() DT:UpdateAllAnchors() end)
 	Right:CreateColorSelection("data-text-value-color", Settings["data-text-value-color"], "Value Color", "Set the text color of data text values", function() DT:UpdateAllAnchors() end)
 	
-	Right:CreateHeader(Language["Tooltips"])
+	Right:CreateHeader(Language["Styling"])
 	Right:CreateSwitch("data-text-enable-tooltips", Settings["data-text-enable-tooltips"], Language["Enable Tooltips"], Language["Display tooltip information when hovering over data texts"], UpdateEnableTooltips)
+	Right:CreateSwitch("data-text-24-hour", Settings["data-text-24-hour"], Language["Enable 24 Hour Time"], Language["Display time in a 24 hour format"], UpdateTimeFormat)
 	
 	Left:CreateHeader(Language["Gold"])
 	Left:CreateButton(Language["Reset"], Language["Reset Gold"], Language["Reset stored information for each characters gold"], ResetGold)

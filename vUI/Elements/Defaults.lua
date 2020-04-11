@@ -420,4 +420,4 @@ Defaults["data-text-chat-right"] = "Durability"
 Defaults["data-text-minimap-top"] = "Location"
 Defaults["data-text-minimap-bottom"] = "Time - Local"
 Defaults["data-text-enable-tooltips"] = true
-Defaults["data-text-max-lines"] = true
+Defaults["data-text-24-hour"] = false
