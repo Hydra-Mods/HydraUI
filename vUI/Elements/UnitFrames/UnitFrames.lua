@@ -2510,11 +2510,8 @@ UF:SetScript("OnEvent", function(self, event)
 			Move:Add(TargetTarget)
 			Move:Add(Pet)
 			
-			--Player.Castbar:SetScaledPoint("BOTTOM", vUIBottomActionBarsPanel, "TOP", 0, 2)
-			--Target.Castbar:SetScaledPoint("BOTTOM", Player.Castbar, "TOP", 0, 4)
-			
-			Player.Castbar:SetScaledPoint("BOTTOM", UIParent, 0, 108)
-			Target.Castbar:SetScaledPoint("BOTTOM", Player.Castbar, "TOP", 0, 4)
+			Player.Castbar:SetScaledPoint("BOTTOM", UIParent, 0, 118)
+			Target.Castbar:SetScaledPoint("BOTTOM", UIParent, 0, 146)
 			
 			vUI:GetModule("Move"):Add(Player.Castbar, 2)
 			vUI:GetModule("Move"):Add(Target.Castbar, 2)
