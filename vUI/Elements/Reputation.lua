@@ -100,6 +100,20 @@ function Reputation:CreateBar()
 	self.Change:SetEasing("inout")
 	self.Change:SetDuration(0.3)
 	
+	self.Flash = CreateAnimationGroup(self.Shine)
+	
+	self.Flash.In = self.Flash:CreateAnimation("Fade")
+	self.Flash.In:SetOrder(1)
+	self.Flash.In:SetEasing("in")
+	self.Flash.In:SetDuration(0.3)
+	self.Flash.In:SetChange(0.3)
+	
+	self.Flash.Out = self.Flash:CreateAnimation("Fade")
+	self.Flash.Out:SetOrder(2)
+	self.Flash.Out:SetEasing("out")
+	self.Flash.Out:SetDuration(0.5)
+	self.Flash.Out:SetChange(0)
+	
 	self.Progress = self.Bar:CreateFontString(nil, "OVERLAY")
 	self.Progress:SetScaledPoint("LEFT", self.Bar, 5, 0)
 	self.Progress:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
@@ -137,8 +151,16 @@ function Reputation:OnEvent()
 		self.Progress:SetText(format("%s: %s / %s", Name, vUI:Comma(Value), vUI:Comma(Max)))
 		self.Percentage:SetText(floor((Value / Max * 100 + 0.05) * 10) / 10 .. "%")
 		
-		self.Change:SetChange(Value)
-		self.Change:Play()
+		if Settings["reputation-animate"] then
+			self.Change:SetChange(Value)
+			self.Change:Play()
+			
+			if (not self.Flash:IsPlaying()) then
+				self.Flash:Play()
+			end
+		else
+			self.Bar:SetValue(Value)
+		end
 		
 		if (not self:IsShown()) then
 			self:Show()
@@ -273,6 +295,7 @@ GUI:AddOptions(function(self)
 	Left:CreateSwitch("reputation-display-progress", Settings["reputation-display-progress"], Language["Display Progress Value"], Language["Display your current progress|ninformation in the reputation bar"], UpdateDisplayProgress)
 	Left:CreateSwitch("reputation-display-percent", Settings["reputation-display-percent"], Language["Display Percent Value"], Language["Display your current percent|ninformation in the reputation bar"], UpdateDisplayPercent)
 	Left:CreateSwitch("reputation-show-tooltip", Settings["reputation-show-tooltip"], Language["Enable Tooltip"], Language["Display a tooltip when mousing over the reputation bar"])
+	Left:CreateSwitch("reputation-animate", Settings["reputation-animate"], Language["Animate Reputation Changes"], Language["Smoothly animate changes to the reputation bar"])
 	
 	Right:CreateHeader(Language["Size"])
 	Right:CreateSlider("reputation-width", Settings["reputation-width"], 240, 400, 10, Language["Bar Width"], Language["Set the width of the reputation bar"], UpdateBarWidth)

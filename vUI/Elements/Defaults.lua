@@ -213,6 +213,7 @@ Defaults["reputation-height"] = 18
 Defaults["reputation-display-progress"] = true
 Defaults["reputation-display-percent"] = true
 Defaults["reputation-show-tooltip"] = true
+Defaults["reputation-animate"] = true
 Defaults["reputation-progress-visibility"] = "ALWAYS"
 Defaults["reputation-percent-visibility"] = "ALWAYS"
 
