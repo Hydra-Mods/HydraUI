@@ -638,7 +638,7 @@ local CreateStanceBar = function()
 		StancePanel:SetAlpha(0)
 	end
 	
-	vUI:GetModule("Move"):Add(StancePanel)
+	vUI:CreateMover(StancePanel)
 	
 	local Button
 	

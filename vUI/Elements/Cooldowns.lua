@@ -216,7 +216,7 @@ function Cooldowns:Load()
 	Frame:SetScaledSize(60, 60)
 	Frame:SetScaledPoint("CENTER", Anchor, "CENTER", 0, 0)
 	
-	vUI:GetModule("Move"):Add(Anchor)
+	vUI:CreateMover(Anchor)
 	
 	self:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")

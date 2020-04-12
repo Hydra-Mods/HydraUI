@@ -376,7 +376,7 @@ ExperienceBar["PLAYER_ENTERING_WORLD"] = function(self)
 	UpdatePercentVisibility(Settings["experience-percent-visibility"])
 	UpdateXP(self, true)
 	
-	vUI:GetModule("Move"):Add(self, 6)
+	vUI:CreateMover(self, 6)
 	
 	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 end

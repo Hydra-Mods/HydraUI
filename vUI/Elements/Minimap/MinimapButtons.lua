@@ -234,7 +234,7 @@ function MinimapButtons:Load()
   
   OnChange()
 
-  Move:Add(self.Panel)
+  vUI:CreateMover(self.Panel)
 end
 
 local DirectionOptions = { 

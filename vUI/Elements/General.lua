@@ -33,11 +33,11 @@ local GetDiscordLink = function()
 end
 
 local ToggleMove = function()
-	vUI:GetModule("Move"):Toggle()
+	vUI:ToggleMovers()
 end
 
 local ResetMovers = function()
-	vUI:GetModule("Move"):ResetAll()
+	vUI:ResetAllMovers()
 end
 
 local UpdateGUIEnableFade = function(value)

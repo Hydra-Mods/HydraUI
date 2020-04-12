@@ -1,7 +1,6 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
 local BagsFrame = vUI:NewModule("Bags Frame")
-local Move = vUI:GetModule("Move")
 
 BagsFrame.Objects = {
 	CharacterBag3Slot,
@@ -62,7 +61,8 @@ function BagsFrame:Load()
 	Panel:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	Panel:SetBackdropBorderColor(0, 0, 0)
 	Panel:SetFrameStrata("LOW")
-	Move:Add(Panel)
+	
+	vUI:CreateMover(Panel)
 	
 	self.Panel = Panel
 	

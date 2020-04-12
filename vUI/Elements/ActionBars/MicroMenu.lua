@@ -61,7 +61,7 @@ function MicroButtons:Load()
 	Panel:SetBackdropBorderColor(0, 0, 0)
 	Panel:SetFrameStrata("LOW")
 	
-	vUI:GetModule("Move"):Add(Panel)
+	vUI:CreateMover(Panel)
 	
 	self.Panel = Panel
 	

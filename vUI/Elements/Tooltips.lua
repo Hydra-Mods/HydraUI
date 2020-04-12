@@ -559,7 +559,7 @@ function Tooltips:Load()
 	self:StyleStatusBar()
 	self:SkinItemRef()
 	
-	vUI:GetModule("Move"):Add(self)
+	vUI:CreateMover(self)
 	
 	if IsInGuild() then
 		MyGuild = GetGuildInfo("player")

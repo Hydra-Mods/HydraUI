@@ -241,8 +241,8 @@ function Auras:Load()
 	self.Debuffs:SetScaledSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * DebuffRows) + Settings["auras-row-spacing"]))
 	self.Debuffs:SetScaledPoint("TOPRIGHT", self.Buffs, "BOTTOMRIGHT", 0, -2)
 	
-	vUI:GetModule("Move"):Add(self.Buffs)
-	vUI:GetModule("Move"):Add(self.Debuffs)
+	vUI:CreateMover(self.Buffs)
+	vUI:CreateMover(self.Debuffs)
 	
 	SkinTempEnchants()
 	

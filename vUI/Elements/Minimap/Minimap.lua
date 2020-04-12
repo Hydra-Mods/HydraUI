@@ -112,7 +112,7 @@ function MM:Style()
 	Kill(GameTimeFrame)
 	Kill(TimeManagerClockButton)
 	
-	vUI:GetModule("Move"):Add(self)
+	vUI:CreateMover(self)
 end
 
 function MM:Load()

@@ -2472,7 +2472,6 @@ local NamePlateCVars = {
     nameplateSelfScale = 1,
 }
 
-local Move = vUI:GetModule("Move")
 local UF = vUI:NewModule("Unit Frames")
 
 oUF:RegisterStyle("vUI", Style)
@@ -2505,16 +2504,16 @@ UF:SetScript("OnEvent", function(self, event)
 			
 			UpdateShowPlayerBuffs(Settings["unitframes-show-player-buffs"])
 			
-			Move:Add(Player)
-			Move:Add(Target)
-			Move:Add(TargetTarget)
-			Move:Add(Pet)
+			vUI:CreateMover(Player)
+			vUI:CreateMover(Target)
+			vUI:CreateMover(TargetTarget)
+			vUI:CreateMover(Pet)
 			
 			Player.Castbar:SetScaledPoint("BOTTOM", UIParent, 0, 118)
 			Target.Castbar:SetScaledPoint("BOTTOM", UIParent, 0, 146)
 			
-			vUI:GetModule("Move"):Add(Player.Castbar, 2)
-			vUI:GetModule("Move"):Add(Target.Castbar, 2)
+			vUI:CreateMover(Player.Castbar, 2)
+			vUI:CreateMover(Target.Castbar, 2)
 		end
 		
 		if Settings["unitframes-boss-enable"] then
@@ -2528,7 +2527,7 @@ UF:SetScript("OnEvent", function(self, event)
 					Boss:SetScaledPoint("TOP", vUI.UnitFrames["boss" .. (i-1)], "BOTTOM", 0, -2)
 				end
 				
-				Move:Add(Boss)
+				vUI:CreateMover(Boss)
 				
 				vUI.UnitFrames["boss" .. i] = Boss
 			end
@@ -2561,7 +2560,7 @@ UF:SetScript("OnEvent", function(self, event)
 			
 			vUI.UnitFrames["party"] = Party
 			
-			Move:Add(self.PartyAnchor)
+			vUI:CreateMover(self.PartyAnchor)
 			
 			if Settings["party-pets-enable"] then
 				local PartyPet = oUF:SpawnHeader("vUI Party Pets", "SecureGroupPetHeaderTemplate", "party,solo",
@@ -2630,7 +2629,7 @@ UF:SetScript("OnEvent", function(self, event)
 			
 			vUI.UnitFrames["raid"] = Raid
 			
-			Move:Add(self.RaidAnchor)
+			vUI:CreateMover(self.RaidAnchor)
 		end
 		
 		if Settings["nameplates-enable"] then

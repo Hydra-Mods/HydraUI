@@ -1,14 +1,12 @@
 local vUI, GUI, Language, Media, Settings, Defaults, Profiles = select(2, ...):get()
 
-local Move = vUI:NewModule("Move")
-
 local unpack = unpack
 local find = string.find
 local gsub = string.gsub
 
-Move.Frames = {}
-Move.Defaults = {}
-Move.Active = false
+vUI.MovingFrames = {}
+vUI.FrameDefaults = {}
+vUI.MovingActive = false
 
 local OnDragStart = function(self)
 	self:StartMoving()
@@ -27,49 +25,57 @@ local OnDragStop = function(self)
 	vUIMove[self.Name] = {A1, Parent:GetName(), A2, X, Y}
 end
 
-function Move:Toggle()
+function vUI:ToggleMovers()
 	if InCombatLockdown() then
 		vUI:print(ERR_NOT_IN_COMBAT)
 		
 		return
 	end
 	
-	if self.Active then
-		for i = 1, #self.Frames do
-			self.Frames[i]:EnableMouse(false)
-			self.Frames[i]:StopMovingOrSizing()
-			self.Frames[i]:SetScript("OnDragStart", nil)
-			self.Frames[i]:SetScript("OnDragStop", nil)
-			self.Frames[i]:Hide()
+	if self.MovingActive then
+		for i = 1, #self.MovingFrames do
+			self.MovingFrames[i]:EnableMouse(false)
+			self.MovingFrames[i]:StopMovingOrSizing()
+			self.MovingFrames[i]:SetScript("OnDragStart", nil)
+			self.MovingFrames[i]:SetScript("OnDragStop", nil)
+			self.MovingFrames[i]:Hide()
 		end
 		
-		self.Active = false
+		self.MovingActive = false
 	else
-		for i = 1, #self.Frames do
-			self.Frames[i]:EnableMouse(true)
-			self.Frames[i]:RegisterForDrag("LeftButton")
-			self.Frames[i]:SetScript("OnDragStart", OnDragStart)
-			self.Frames[i]:SetScript("OnDragStop", OnDragStop)
-			self.Frames[i]:Show()
+		for i = 1, #self.MovingFrames do
+			self.MovingFrames[i]:EnableMouse(true)
+			self.MovingFrames[i]:RegisterForDrag("LeftButton")
+			self.MovingFrames[i]:SetScript("OnDragStart", OnDragStart)
+			self.MovingFrames[i]:SetScript("OnDragStop", OnDragStop)
+			self.MovingFrames[i]:Show()
 		end
 	
-		self.Active = true
+		self.MovingActive = true
 	end
 end
 
-function Move:ResetAll()
+function vUI:ResetAllMovers()
 	if (not vUIMove) then
 		vUIMove = {}
 	end
 	
-	for i = 1, #self.Frames do
-		if self.Defaults[self.Frames[i].Name] then
-			local A1, Parent, A2, X, Y = unpack(self.Defaults[self.Frames[i].Name])
+	for i = 1, #self.MovingFrames do
+		if self.FrameDefaults[self.MovingFrames[i].Name] then
+			local A1, Parent, A2, X, Y = unpack(self.FrameDefaults[self.MovingFrames[i].Name])
 			
-			self.Frames[i]:ClearAllPoints()
-			self.Frames[i]:SetScaledPoint(A1, _G[Parent], A2, X, Y)
+			self.MovingFrames[i]:ClearAllPoints()
+			self.MovingFrames[i]:SetScaledPoint(A1, _G[Parent], A2, X, Y)
 			
-			vUIMove[self.Frames[i].Name] = {A1, Parent, A2, X, Y}
+			vUIMove[self.MovingFrames[i].Name] = {A1, Parent, A2, X, Y}
+		end
+	end
+end
+
+function vUI:IsMoved(frame)
+	if (frame and frame.GetName) then
+		if vUIMove[frame:GetName()] then
+			return true
 		end
 	end
 end
@@ -80,8 +86,8 @@ end
 
 local MoverOnMouseUp = function(self, button)
 	if (button == "RightButton") then
-		if Move.Defaults[self.Name] then
-			local A1, Parent, A2, X, Y = unpack(Move.Defaults[self.Name])
+		if vUI.FrameDefaults[self.Name] then
+			local A1, Parent, A2, X, Y = unpack(vUI.FrameDefaults[self.Name])
 			local ParentObject = _G[Parent]
 			
 			self:ClearAllPoints()
@@ -119,7 +125,7 @@ local MoverOnLeave = function(self)
 	GameTooltip:Hide()
 end
 
-function Move:Add(frame, padding)
+function vUI:CreateMover(frame, padding)
 	if (not vUIMove) then
 		vUIMove = {}
 	end
@@ -182,7 +188,7 @@ function Move:Add(frame, padding)
 	frame.Mover = Mover
 	frame:HookScript("OnSizeChanged", OnSizeChanged)
 	
-	self.Defaults[Name] = {A1, ParentName, A2, X, Y}
+	self.FrameDefaults[Name] = {A1, ParentName, A2, X, Y}
 	
 	if vUIMove[Name] then
 		local A1, Parent, A2, X, Y = unpack(vUIMove[Name])
@@ -195,15 +201,7 @@ function Move:Add(frame, padding)
 		vUIMove[Name] = {OldA1, OldParent, OldA2, OldX, OldY}
 	end
 	
-	table.insert(self.Frames, Mover)
+	table.insert(self.MovingFrames, Mover)
 	
 	return Mover
-end
-
-function Move:IsMoved(frame)
-	if (frame and frame.GetName) then
-		if vUIMove[frame:GetName()] then
-			return true
-		end
-	end
 end

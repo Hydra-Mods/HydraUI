@@ -133,7 +133,7 @@ function Reputation:CreateBar()
 		self.Percentage:Hide()
 	end
 	
-	vUI:GetModule("Move"):Add(self, 6)
+	vUI:CreateMover(self, 6)
 end
 
 function Reputation:OnEvent()

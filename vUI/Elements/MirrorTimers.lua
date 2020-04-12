@@ -97,7 +97,7 @@ function MirrorTimers:Load()
 	self.Hider = CreateFrame("Frame", nil, UIParent)
 	self.Hider:Hide()
 	
-	vUI:GetModule("Move"):Add(self.Bar, 6)
+	vUI:CreateMover(self.Bar, 6)
 	
 	for i = 1, MIRRORTIMER_NUMTIMERS do
 		_G["MirrorTimer" .. i]:SetParent(self.Hider)

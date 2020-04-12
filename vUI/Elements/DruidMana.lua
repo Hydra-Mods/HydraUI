@@ -84,7 +84,7 @@ function DruidMana:PLAYER_ENTERING_WORLD()
 	self.Progress:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Progress:SetJustifyH("RIGHT")
 	
-	vUI:GetModule("Move"):Add(self)
+	vUI:CreateMover(self)
 	
 	self:UNIT_POWER_UPDATE()
 	--self:UPDATE_SHAPESHIFT_FORM()
