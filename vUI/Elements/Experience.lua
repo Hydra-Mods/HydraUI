@@ -157,49 +157,51 @@ function ExperienceBar:OnEnter()
 		end
 	end
 	
-	if Settings["experience-show-tooltip"] then
-		GameTooltip:SetOwner(self, "ANCHOR_BOTTOM", 0, -8)
-		
-		Rested = GetXPExhaustion()
-		XP = UnitXP("player")
-		Max = UnitXPMax("player")
-		
-		local Percent = floor((XP / Max * 100 + 0.05) * 10) / 10
-		local Remaining = Max - XP
-		local RemainingPercent = floor((Remaining / Max * 100 + 0.05) * 10) / 10
-		
-		GameTooltip:AddLine(LEVEL .. " " .. UnitLevel("player"))
-		GameTooltip:AddLine(" ")
-		GameTooltip:AddLine(Language["Current Experience"])
-		GameTooltip:AddDoubleLine(format("%s / %s", vUI:Comma(XP), vUI:Comma(Max)), format("%s%%", Percent), 1, 1, 1, 1, 1, 1)
-		
-		GameTooltip:AddLine(" ")
-		GameTooltip:AddLine(Language["Remaining Experience"])
-		GameTooltip:AddDoubleLine(format("%s", vUI:Comma(Remaining)), format("%s%%", RemainingPercent), 1, 1, 1, 1, 1, 1)
-		
-		if Rested then
-			local RestedPercent = floor((Rested / Max * 100 + 0.05) * 10) / 10
-			
-			GameTooltip:AddLine(" ")
-			GameTooltip:AddLine(Language["Rested Experience"])
-			GameTooltip:AddDoubleLine(vUI:Comma(Rested), format("%s%%", RestedPercent), 1, 1, 1, 1, 1, 1)
-		end
-		
-		-- Advanced information
-		if (Gained > 0) then
-			local PerHour = (((Gained / Seconds) * 60) * 60)
-			
-			GameTooltip:AddLine(" ")
-			GameTooltip:AddLine(Language["Session Stats"])
-			GameTooltip:AddDoubleLine(Language["Experience gained"], vUI:Comma(Gained), 1, 1, 1, 1, 1, 1)
-			GameTooltip:AddDoubleLine(Language["Per hour"], vUI:Comma(PerHour), 1, 1, 1, 1, 1, 1)
-			GameTooltip:AddDoubleLine(Language["Duration"], vUI:FormatTime(Seconds), 1, 1, 1, 1, 1, 1)
-		end
-		
-		self.TooltipShown = true
-		
-		GameTooltip:Show()
+	if (not Settings["experience-show-tooltip"]) then
+		return
 	end
+	
+	GameTooltip:SetOwner(self, "ANCHOR_BOTTOM", 0, -8)
+	
+	Rested = GetXPExhaustion()
+	XP = UnitXP("player")
+	Max = UnitXPMax("player")
+	
+	local Percent = floor((XP / Max * 100 + 0.05) * 10) / 10
+	local Remaining = Max - XP
+	local RemainingPercent = floor((Remaining / Max * 100 + 0.05) * 10) / 10
+	
+	GameTooltip:AddLine(LEVEL .. " " .. UnitLevel("player"))
+	GameTooltip:AddLine(" ")
+	GameTooltip:AddLine(Language["Current Experience"])
+	GameTooltip:AddDoubleLine(format("%s / %s", vUI:Comma(XP), vUI:Comma(Max)), format("%s%%", Percent), 1, 1, 1, 1, 1, 1)
+	
+	GameTooltip:AddLine(" ")
+	GameTooltip:AddLine(Language["Remaining Experience"])
+	GameTooltip:AddDoubleLine(format("%s", vUI:Comma(Remaining)), format("%s%%", RemainingPercent), 1, 1, 1, 1, 1, 1)
+	
+	if Rested then
+		local RestedPercent = floor((Rested / Max * 100 + 0.05) * 10) / 10
+		
+		GameTooltip:AddLine(" ")
+		GameTooltip:AddLine(Language["Rested Experience"])
+		GameTooltip:AddDoubleLine(vUI:Comma(Rested), format("%s%%", RestedPercent), 1, 1, 1, 1, 1, 1)
+	end
+	
+	-- Advanced information
+	if (Gained > 0) then
+		local PerHour = (((Gained / Seconds) * 60) * 60)
+		
+		GameTooltip:AddLine(" ")
+		GameTooltip:AddLine(Language["Session Stats"])
+		GameTooltip:AddDoubleLine(Language["Experience gained"], vUI:Comma(Gained), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["Per hour"], vUI:Comma(PerHour), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["Duration"], vUI:FormatTime(Seconds), 1, 1, 1, 1, 1, 1)
+	end
+	
+	self.TooltipShown = true
+	
+	GameTooltip:Show()
 end
 
 function ExperienceBar:OnLeave()
@@ -425,7 +427,7 @@ GUI:AddOptions(function(self)
 	Left:CreateSwitch("experience-display-progress", Settings["experience-display-progress"], Language["Display Progress Value"], Language["Display your current progress|ninformation in the experience bar"], UpdateDisplayProgress)
 	Left:CreateSwitch("experience-display-percent", Settings["experience-display-percent"], Language["Display Percent Value"], Language["Display your current percent|ninformation in the experience bar"], UpdateDisplayPercent)
 	Left:CreateSwitch("experience-display-rested-value", Settings["experience-display-rested-value"], Language["Display Rested Value"], Language["Display your current rested|nvalue on the experience bar"], UpdateShowRestedValue)
-	Left:CreateSwitch("experience-show-tooltip", Settings["experience-show-tooltip"], Language["Enable Tooltip"], Language["Display a tooltip when mousing over the experience bar"])
+	Left:CreateSwitch("experience-show-tooltip", Settings["experience-show-tooltip"], Language["Enable Tooltip"], Language["Display a tooltip when mousing over the experience bar"])	Left:CreateSwitch("experience-show-tooltip", Settings["experience-show-tooltip"], Language["Enable Tooltip"], Language["Display a tooltip when mousing over the experience bar"])
 	Left:CreateSwitch("experience-animate", Settings["experience-animate"], Language["Animate Experience Changes"], Language["Smoothly animate changes to the experience bar"])
 	
 	Right:CreateHeader(Language["Size"])

@@ -85,7 +85,7 @@ function Bubbles:ScanForBubbles()
 	end
 end
 
-local OnUpdate = function(self, elapsed)
+function Bubbles:OnUpdate(elapsed)
 	self.Elapsed = self.Elapsed + elapsed
 	
 	if (self.Elapsed > 0.15) then
@@ -101,7 +101,7 @@ function Bubbles:Load()
 	end
 	
 	self.Elapsed = 0
-	self:SetScript("OnUpdate", OnUpdate)
+	self:SetScript("OnUpdate", self.OnUpdate)
 end
 
 local SetToRefresh = function()

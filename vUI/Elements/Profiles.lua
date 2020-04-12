@@ -615,9 +615,9 @@ GUI:AddOptions(function(self)
 	Left:CreateButton(Language["Delete"], Language["Delete Empty Profiles"], "", DeleteEmpty):RequiresReload(true)
 	Left:CreateButton(Language["Delete"], Language["Delete Unused Profiles"], "", DeleteUnused):RequiresReload(true)
 	
-	--[[Left:CreateHeader("Sharing is caring")
-	Left:CreateButton("Import", "Import A Profile", "", ShowImportWindow)
-	Left:CreateButton("Export", "Export Current Profile", "", ShowExportWindow)]]
+	--[[Left:CreateHeader(Language["Sharing is caring"])
+	Left:CreateButton(Language["Import"], Language["Import A Profile"], "", ShowImportWindow)
+	Left:CreateButton(Language["Export"], Language["Export Current Profile"], "", ShowExportWindow)]]
 	
 	Right:CreateHeader(Language["What is a profile?"])
 	Right:CreateMessage(Language["Profiles store your settings so that you can quickly and easily change between configurations."])

@@ -10,6 +10,22 @@ local FadeOnFinished = function(self)
 	self.Parent:Hide()
 end
 
+local UpdateProgressVisibility = function(value)
+	if (value == "MOUSEOVER") then
+		Reputation.Progress:Hide()
+	elseif (value == "ALWAYS" and Settings["experience-display-progress"]) then
+		Reputation.Progress:Show()
+	end
+end
+
+local UpdatePercentVisibility = function(value)
+	if (value == "MOUSEOVER") then
+		Reputation.Percentage:Hide()
+	elseif (value == "ALWAYS" and Settings["experience-display-percent"]) then
+		Reputation.Percentage:Show()
+	end
+end
+
 function Reputation:CreateBar()
 	self:SetScaledSize(Settings["reputation-width"], Settings["reputation-height"])
 	self:SetFrameStrata("HIGH")
@@ -98,6 +114,9 @@ function Reputation:CreateBar()
 	self.Percentage:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Percentage:SetJustifyH("RIGHT")
 	
+	UpdateProgressVisibility(Settings["reputation-progress-visibility"])
+	UpdatePercentVisibility(Settings["reputation-percent-visibility"])
+	
 	if (not Settings["reputation-display-percent"]) then
 		self.Percentage:Hide()
 	end
@@ -135,6 +154,22 @@ function Reputation:OnMouseUp()
 end
 
 function Reputation:OnEnter()
+	if (Settings["reputation-display-progress"] and Settings["reputation-progress-visibility"] == "MOUSEOVER") then
+		if (not self.Progress:IsShown()) then
+			self.Progress:Show()
+		end
+	end
+	
+	if (Settings["reputation-display-percent"] and Settings["reputation-percent-visibility"] == "MOUSEOVER") then
+		if (not self.Percentage:IsShown()) then
+			self.Percentage:Show()
+		end
+	end
+	
+	if (not Settings["reputation-show-tooltip"]) then
+		return
+	end
+	
 	GameTooltip:SetOwner(self, "ANCHOR_BOTTOM", 0, -8)
 	
 	local Name, StandingID, Min, Max, Value, FactionID = GetWatchedFactionInfo()
@@ -169,9 +204,23 @@ function Reputation:OnEnter()
 end
 
 function Reputation:OnLeave()
-	GameTooltip:Hide()
+	if Settings["reputation-show-tooltip"] then
+		GameTooltip:Hide()
+		
+		self.TooltipShown = false
+	end
 	
-	self.TooltipShown = false
+	if (Settings["reputation-display-progress"] and Settings["reputation-progress-visibility"] == "MOUSEOVER") then
+		if self.Progress:IsShown() then
+			self.Progress:Hide()
+		end
+	end
+	
+	if (Settings["reputation-display-percent"] and Settings["reputation-percent-visibility"] == "MOUSEOVER") then
+		if self.Percentage:IsShown() then
+			self.Percentage:Hide()
+		end
+	end
 end
 
 function Reputation:Load()
@@ -223,12 +272,13 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["Styling"])
 	Left:CreateSwitch("reputation-display-progress", Settings["reputation-display-progress"], Language["Display Progress Value"], Language["Display your current progress|ninformation in the reputation bar"], UpdateDisplayProgress)
 	Left:CreateSwitch("reputation-display-percent", Settings["reputation-display-percent"], Language["Display Percent Value"], Language["Display your current percent|ninformation in the reputation bar"], UpdateDisplayPercent)
+	Left:CreateSwitch("reputation-show-tooltip", Settings["reputation-show-tooltip"], Language["Enable Tooltip"], Language["Display a tooltip when mousing over the reputation bar"])
 	
 	Right:CreateHeader(Language["Size"])
 	Right:CreateSlider("reputation-width", Settings["reputation-width"], 240, 400, 10, Language["Bar Width"], Language["Set the width of the reputation bar"], UpdateBarWidth)
 	Right:CreateSlider("reputation-height", Settings["reputation-height"], 6, 30, 1, Language["Bar Height"], Language["Set the height of the reputation bar"], UpdateBarHeight)
 	
-	--Right:CreateHeader(Language["Visibility"])
-	--Right:CreateDropdown("reputation-progress-visibility", Settings["reputation-progress-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Progress Text"], Language["Set when to display the progress information"], UpdateProgressVisibility)
-	--Right:CreateDropdown("reputation-percent-visibility", Settings["reputation-percent-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Percent Text"], Language["Set when to display the percent information"], UpdatePercentVisibility)
+	Right:CreateHeader(Language["Visibility"])
+	Right:CreateDropdown("reputation-progress-visibility", Settings["reputation-progress-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Progress Text"], Language["Set when to display the progress information"], UpdateProgressVisibility)
+	Right:CreateDropdown("reputation-percent-visibility", Settings["reputation-percent-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Percent Text"], Language["Set when to display the percent information"], UpdatePercentVisibility)
 end)

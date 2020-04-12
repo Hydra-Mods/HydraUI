@@ -193,14 +193,14 @@ Defaults["chat-bubbles-font-flags"] = ""
 
 -- Experience
 Defaults["experience-enable"] = true
+Defaults["experience-width"] = 310
+Defaults["experience-height"] = 18
 Defaults["experience-display-level"] = false
 Defaults["experience-display-progress"] = true
 Defaults["experience-display-percent"] = true
 Defaults["experience-display-rested-value"] = true
 Defaults["experience-show-tooltip"] = true
 Defaults["experience-animate"] = true
-Defaults["experience-width"] = 310
-Defaults["experience-height"] = 18
 Defaults["experience-progress-visibility"] = "ALWAYS"
 Defaults["experience-percent-visibility"] = "ALWAYS"
 Defaults["experience-bar-color"] = "4C9900" -- 1AE045
@@ -212,7 +212,9 @@ Defaults["reputation-width"] = 310
 Defaults["reputation-height"] = 18
 Defaults["reputation-display-progress"] = true
 Defaults["reputation-display-percent"] = true
-Defaults["reputation-position"] = "TOP"
+Defaults["reputation-show-tooltip"] = true
+Defaults["reputation-progress-visibility"] = "ALWAYS"
+Defaults["reputation-percent-visibility"] = "ALWAYS"
 
 -- Azerite
 Defaults["azerite-enable"] = true
