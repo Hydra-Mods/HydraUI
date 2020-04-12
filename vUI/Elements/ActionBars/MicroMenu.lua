@@ -49,8 +49,12 @@ function MicroButtons:UpdateVisibility()
 end
 
 function MicroButtons:Load()
+	if (not Settings["action-bars-enable"]) then
+		return
+	end
+	
 	local Panel = CreateFrame("Frame", "vUI Micro Buttons", UIParent)
-	Panel:SetScaledSize(232, 38)
+	Panel:SetScaledSize(308, 38)
 	Panel:SetScaledPoint("BOTTOMRIGHT", BagsFrame.Panel, "BOTTOMLEFT", -2, 0)
 	Panel:SetBackdrop(vUI.BackdropAndBorder)
 	Panel:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
@@ -72,7 +76,7 @@ function MicroButtons:Load()
 		Button:HookScript("OnLeave", MicroButtonsButtonOnLeave)
 		
 		if (i == 1) then
-			Button:SetScaledPoint("TOPLEFT", Panel, 0, 20)
+			Button:SetScaledPoint("TOPLEFT", Panel, 0, 0)
 		else
 			Button:SetScaledPoint("LEFT", self.Buttons[i-1], "RIGHT", 0, 0)
 		end
@@ -90,7 +94,7 @@ local UpdateMicroVisibility = function(value)
 end
 
 GUI:AddOptions(function(self)
-	local Left, Right = self:GetWindow(Language["General"])
+	local Left, Right = self:GetWindow(Language["Action Bars"])
 	
 	Right:CreateHeader(Language["Micro Menu Buttons"])
 	Right:CreateDropdown("micro-buttons-visiblity", Settings["micro-buttons-visiblity"], {[Language["Hide"]] = "HIDE", [Language["Mouseover"]] = "MOUSEOVER", [Language["Show"]] = "SHOW"}, Language["Set Visibility"], Language["Set the visibility of the micro menu buttons"], UpdateMicroVisibility)

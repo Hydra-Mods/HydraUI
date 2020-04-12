@@ -51,6 +51,10 @@ function BagsFrame:UpdateVisibility()
 end
 
 function BagsFrame:Load()
+	if (not Settings["action-bars-enable"]) then
+		return
+	end
+	
 	local Panel = CreateFrame("Frame", "vUI Bags Window", UIParent)
 	Panel:SetScaledSize(184, 40)
 	Panel:SetScaledPoint("BOTTOMRIGHT", -10, 10)
@@ -143,17 +147,13 @@ local UpdateBagVisibility = function()
 	BagsFrame:UpdateVisibility()
 end
 
---[[local UpdateBagLooting = function(value)
-	SetInsertItemsLeftToRight(value)
-end]]
-
 GUI:AddOptions(function(self)
-	local Left, Right = self:GetWindow(Language["General"])
+	local Left, Right = self:GetWindow(Language["Action Bars"])
 	
-	Right:CreateHeader(Language["Bags Frame"])
-	Right:CreateDropdown("bags-frame-visiblity", Settings["bags-frame-visiblity"], {[Language["Hide"]] = "HIDE", [Language["Mouseover"]] = "MOUSEOVER", [Language["Show"]] = "SHOW"}, Language["Set Visibility"], Language["Set the visibility of the bag frame"], UpdateBagVisibility)
-	Right:CreateSlider("bags-frame-opacity", Settings["bags-frame-opacity"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the bags frame when|nvisiblity is set to Mouseover"], UpdateBagVisibility, nil, "%")
-	Right:CreateSwitch("bags-loot-from-left", Settings["bags-loot-from-left"], Language["Loot Left To Right"], Language["When looting, new items will be|nplaced into the leftmost bag"], SetInsertItemsLeftToRight)
+	Left:CreateHeader(Language["Bags Frame"])
+	Left:CreateDropdown("bags-frame-visiblity", Settings["bags-frame-visiblity"], {[Language["Hide"]] = "HIDE", [Language["Mouseover"]] = "MOUSEOVER", [Language["Show"]] = "SHOW"}, Language["Set Visibility"], Language["Set the visibility of the bag frame"], UpdateBagVisibility)
+	Left:CreateSlider("bags-frame-opacity", Settings["bags-frame-opacity"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the bags frame when|nvisiblity is set to Mouseover"], UpdateBagVisibility, nil, "%")
+	Left:CreateSwitch("bags-loot-from-left", Settings["bags-loot-from-left"], Language["Loot Left To Right"], Language["When looting, new items will be|nplaced into the leftmost bag"], SetInsertItemsLeftToRight)
 	
 	SetInsertItemsLeftToRight(Settings["bags-loot-from-left"])
 end)

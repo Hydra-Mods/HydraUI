@@ -96,14 +96,12 @@ function Reputation:CreateBar()
 	self.Shine:SetDrawLayer("ARTWORK", 7)
 	
 	self.Change = CreateAnimationGroup(self.Bar):CreateAnimation("Progress")
-	self.Change:SetOrder(1)
 	self.Change:SetEasing("inout")
 	self.Change:SetDuration(0.3)
 	
 	self.Flash = CreateAnimationGroup(self.Shine)
 	
 	self.Flash.In = self.Flash:CreateAnimation("Fade")
-	self.Flash.In:SetOrder(1)
 	self.Flash.In:SetEasing("in")
 	self.Flash.In:SetDuration(0.3)
 	self.Flash.In:SetChange(0.3)

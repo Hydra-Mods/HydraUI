@@ -43,6 +43,8 @@ Elements\Reputation.lua
 Elements\Azerite.lua
 Elements\ActionBars\ActionBars.lua
 Elements\ActionBars\KeyBinding.lua
+Elements\ActionBars\BagSlots.lua
+Elements\ActionBars\MicroMenu.lua
 Elements\UnitFrames\UnitFrames.lua
 Elements\Tooltips.lua
 Elements\MetersBG.lua
@@ -77,8 +79,6 @@ Elements\Loot.lua
 Elements\DruidMana.lua
 Elements\MirrorTimers.lua
 Elements\Vehicle.lua
-Elements\BagSlots.lua
-Elements\MicroMenu.lua
 Elements\Merchant.lua
 Elements\Announcements.lua
 Elements\Cooldowns.lua
