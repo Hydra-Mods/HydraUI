@@ -2016,8 +2016,8 @@ local StyleParty = function(self, unit)
 	self:Tag(HealthBottom, "[HealthDeficit]")
 	
 	self.Range = {
-		insideAlpha = 1,
-		outsideAlpha = 0.5,
+		insideAlpha = Settings["party-in-range"] / 100,
+		outsideAlpha = Settings["party-out-of-range"] / 100,
 	}
 	
 	self.Health = Health
@@ -3114,6 +3114,10 @@ GUI:AddOptions(function(self)
 	Right:CreateHeader(Language["Styling"])
 	Right:CreateSwitch("party-show-debuffs", Settings["party-show-debuffs"], Language["Enable Debuffs"], Language["Display debuffs on party members"], UpdatePartyShowDebuffs)
 	Right:CreateSwitch("party-show-role", Settings["party-show-role"], Language["Enable Role Icons"], Language["Display role icons on party members"], UpdatePartyShowRole)
+	
+	Right:CreateHeader(Language["Range Opacity"])
+	Right:CreateSlider("party-in-range", Settings["party-in-range"], 0, 100, 5, Language["In Range"], Language["Set the opacity of party members within range of you"])
+	Right:CreateSlider("party-out-of-range", Settings["party-out-of-range"], 0, 100, 5, Language["Out of Range"], Language["Set the opacity of party members out of your range"])
 	
 	Left:CreateHeader(Language["Party Size"])
 	Left:CreateSlider("party-width", Settings["party-width"], 40, 200, 1, Language["Width"], Language["Set the width of the party unit frame"], UpdatePartyWidth)
