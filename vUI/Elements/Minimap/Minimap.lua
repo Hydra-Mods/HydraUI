@@ -85,6 +85,9 @@ function MM:Style()
 	
 	MinimapNorthTag:SetTexture(nil)
 	
+	QueueStatusMinimapButton:ClearAllPoints()
+	QueueStatusMinimapButton:SetScaledPoint("BOTTOMLEFT", Minimap, 1, 1)
+	
 	if MiniMapTrackingFrame then
 		MiniMapTrackingFrame:ClearAllPoints()
 		MiniMapTrackingFrame:SetScaledSize(24, 24)
