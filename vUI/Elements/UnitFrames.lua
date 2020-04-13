@@ -2187,11 +2187,6 @@ local StyleRaid = function(self, unit)
 	ResurrectIndicator:SetScaledSize(16, 16)
 	ResurrectIndicator:SetScaledPoint("CENTER", Health, 0, 0)
 	
-	-- Role
-	local RoleIndicator = Health:CreateTexture(nil, "OVERLAY")
-	RoleIndicator:SetScaledSize(16, 16)
-	RoleIndicator:SetScaledPoint("TOP", self, 0, -2)
-	
 	-- Dispels
 	local Dispel = CreateFrame("Frame", nil, self)
 	Dispel:SetScaledSize(20)
@@ -2243,7 +2238,6 @@ local StyleRaid = function(self, unit)
 	self.Power.bg = PowerBG
 	self.Dispel = Dispel
 	self.ResurrectIndicator = ResurrectIndicator
-	self.GroupRoleIndicator = RoleIndicator
 end
 
 local StyleBoss = function(self, unit)
@@ -3074,6 +3068,42 @@ local UpdatePartyPowerColor = function(value)
 	end
 end
 
+local UpdatePartyShowDebuffs = function(value)
+	if vUI.UnitFrames["party"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["party"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["party"]:GetChildren())
+			
+			if Unit then
+				if value then
+					Unit:EnableElement("Debuffs")
+				else
+					Unit:DisableElement("Debuffs")
+				end
+			end
+		end
+	end
+end
+
+local UpdatePartyShowRole = function(value)
+	if vUI.UnitFrames["party"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["party"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["party"]:GetChildren())
+			
+			if Unit then
+				if value then
+					Unit:EnableElement("GroupRoleIndicator")
+				else
+					Unit:DisableElement("GroupRoleIndicator")
+				end
+			end
+		end
+	end
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Party"])
 	
@@ -3081,8 +3111,9 @@ GUI:AddOptions(function(self)
 	Left:CreateSwitch("party-enable", Settings["party-enable"], Language["Enable Party Module"], Language["Enable the party frames module"], ReloadUI):RequiresReload(true)
 	Left:CreateSwitch("party-pets-enable", Settings["party-pets-enable"], Language["Enable Party Pet Frames"], Language["Enable the party pet frames module"], ReloadUI):RequiresReload(true)
 	
-	Right:CreateHeader(Language["Debuffs"])
-	Right:CreateSwitch("party-show-debuffs", Settings["party-show-debuffs"], Language["Enable Debuffs"], Language["Enable to display debuffs on party members"], ReloadUI):RequiresReload(true)
+	Right:CreateHeader(Language["Styling"])
+	Right:CreateSwitch("party-show-debuffs", Settings["party-show-debuffs"], Language["Enable Debuffs"], Language["Display debuffs on party members"], UpdatePartyShowDebuffs)
+	Right:CreateSwitch("party-show-role", Settings["party-show-role"], Language["Enable Role Icons"], Language["Display role icons on party members"], UpdatePartyShowRole)
 	
 	Left:CreateHeader(Language["Party Size"])
 	Left:CreateSlider("party-width", Settings["party-width"], 40, 200, 1, Language["Width"], Language["Set the width of the party unit frame"], UpdatePartyWidth)

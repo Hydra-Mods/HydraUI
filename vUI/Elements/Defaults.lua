@@ -333,6 +333,7 @@ Defaults["unitframes-boss-power-smooth"] = true
 Defaults["party-enable"] = true
 Defaults["party-width"] = 78
 Defaults["party-show-debuffs"] = true
+Defaults["party-show-role"] = true
 Defaults["party-health-height"] = 40
 Defaults["party-health-reverse"] = false
 Defaults["party-health-color"] = "CLASS"
