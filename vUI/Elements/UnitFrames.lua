@@ -1976,6 +1976,11 @@ local StyleParty = function(self, unit)
 	Resurrect:SetScaledSize(16, 16)
 	Resurrect:SetScaledPoint("CENTER", Health, 0, 0)
 	
+	-- Role
+	local RoleIndicator = self:CreateTexture(nil, "OVERLAY")
+	RoleIndicator:SetScaledSize(16, 16)
+	RoleIndicator:SetScaledPoint("TOP", self, 0, -2)
+	
 	-- Dispels
 	local Dispel = CreateFrame("Frame", nil, Health)
 	Dispel:SetScaledSize(20)
@@ -2032,6 +2037,7 @@ local StyleParty = function(self, unit)
 	self.ReadyCheckIndicator = ReadyCheck
 	self.ResurrectIndicator = Resurrect
 	self.RaidTargetIndicator = RaidTarget
+	self.GroupRoleIndicator = RoleIndicator
 end
 
 local StylePartyPet = function(self, unit)
@@ -2181,6 +2187,11 @@ local StyleRaid = function(self, unit)
 	ResurrectIndicator:SetScaledSize(16, 16)
 	ResurrectIndicator:SetScaledPoint("CENTER", Health, 0, 0)
 	
+	-- Role
+	local RoleIndicator = self:CreateTexture(nil, "OVERLAY")
+	RoleIndicator:SetScaledSize(16, 16)
+	RoleIndicator:SetScaledPoint("TOP", self, 0, -2)
+	
 	-- Dispels
 	local Dispel = CreateFrame("Frame", nil, self)
 	Dispel:SetScaledSize(20)
@@ -2232,6 +2243,7 @@ local StyleRaid = function(self, unit)
 	self.Power.bg = PowerBG
 	self.Dispel = Dispel
 	self.ResurrectIndicator = ResurrectIndicator
+	self.GroupRoleIndicator = RoleIndicator
 end
 
 local StyleBoss = function(self, unit)
@@ -2537,7 +2549,7 @@ UF:SetScript("OnEvent", function(self, event)
 			local Party = oUF:SpawnHeader("vUI Party", nil, "party,solo",
 				"initial-width", Settings["party-width"],
 				"initial-height", (Settings["party-health-height"] + Settings["party-power-height"] + 3),
-				"showSolo", false,
+				"showSolo", true,
 				"showPlayer", true,
 				"showParty", true,
 				"showRaid", false,

@@ -45,7 +45,7 @@ Elements\ActionBars\ActionBars.lua
 Elements\ActionBars\KeyBinding.lua
 Elements\ActionBars\BagSlots.lua
 Elements\ActionBars\MicroMenu.lua
-Elements\UnitFrames\UnitFrames.lua
+Elements\UnitFrames.lua
 Elements\Tooltips.lua
 Elements\MetersBG.lua
 Elements\Minimap\Minimap.lua
