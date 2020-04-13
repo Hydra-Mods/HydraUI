@@ -270,6 +270,7 @@ Defaults["announcements-channel"] = "GROUP"
 Defaults["unitframes-enable"] = true
 Defaults["unitframes-only-player-debuffs"] = false
 Defaults["unitframes-show-player-buffs"] = true
+Defaults["unitframes-show-druid-mana"] = true
 
 -- Unitframes: Player
 Defaults["unitframes-player-width"] = 238

@@ -1875,22 +1875,18 @@ local StyleParty = function(self, unit)
 	SetPowerAttributes(Power, Settings["party-power-color"])
 	
 	-- Debuffs
-	if Settings["party-show-debuffs"] then
-		local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
-		Debuffs:SetScaledSize(76, 19)
-		Debuffs:SetScaledPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
-		Debuffs.size = 19
-		Debuffs.num = 4
-		Debuffs.spacing = 2
-		Debuffs.initialAnchor = "TOPLEFT"
-		Debuffs["growth-x"] = "RIGHT"
-		Debuffs.PostCreateIcon = PostCreateIcon
-		Debuffs.PostUpdateIcon = PostUpdateIcon
-		Debuffs.CustomFilter = CustomFilter
-		Debuffs.showType = true
-		
-		self.Debuffs = Debuffs
-	end
+	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
+	Debuffs:SetScaledSize(76, 19)
+	Debuffs:SetScaledPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
+	Debuffs.size = 19
+	Debuffs.num = 4
+	Debuffs.spacing = 2
+	Debuffs.initialAnchor = "TOPLEFT"
+	Debuffs["growth-x"] = "RIGHT"
+	Debuffs.PostCreateIcon = PostCreateIcon
+	Debuffs.PostUpdateIcon = PostUpdateIcon
+	Debuffs.CustomFilter = CustomFilter
+	Debuffs.showType = true
 	
 	if BuffIDs[vUI.UserClass] then
 		local Auras = CreateFrame("Frame", nil, Health)
@@ -2031,6 +2027,7 @@ local StyleParty = function(self, unit)
 	self.HealthMiddle = HealthMiddle
 	self.HealthBottom = HealthBottom
 	self.ReadyCheck = ReadyCheck
+	self.Debuffs = Debuffs
 	self.Dispel = Dispel
 	self.LeaderIndicator = Leader
 	self.AssistantIndicator = Assist

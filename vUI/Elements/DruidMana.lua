@@ -34,10 +34,17 @@ function DruidMana:UNIT_POWER_FREQUENT()
 	self.Percentage:SetText(floor((Mana / MaxMana * 100 + 0.05) * 10) / 10 .. "%")
 end
 
-function DruidMana:PLAYER_ENTERING_WORLD()
+function DruidMana:UPDATE_SHAPESHIFT_FORM()
+	if (GetShapeshiftForm() == 0) then
+		self:Hide()
+	else
+		self:Show()
+	end
+end
+
+function DruidMana:CreateBar()
 	self:SetScaledSize(Settings["unitframes-player-width"], Settings["unitframes-player-power-height"] + 2)
 	self:SetScaledPoint("CENTER", UIParent, 0, -180)
-	--self:SetScaledPoint("TOP", vUI.UnitFrames["player"], "BOTTOM", 0, 1)
 	
 	self.Fade = CreateAnimationGroup(self)
 	
@@ -85,19 +92,22 @@ function DruidMana:PLAYER_ENTERING_WORLD()
 	self.Progress:SetJustifyH("RIGHT")
 	
 	vUI:CreateMover(self)
-	
-	self:UNIT_POWER_UPDATE()
-	--self:UPDATE_SHAPESHIFT_FORM()
-	
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
 end
 
-function DruidMana:UPDATE_SHAPESHIFT_FORM()
-	if (GetShapeshiftForm() == 0) then
-		self:Hide()
-	else
-		self:Show()
-	end
+function DruidMana:Enable()
+	self:RegisterEvent("UNIT_POWER_UPDATE")
+	self:RegisterEvent("UNIT_POWER_FREQUENT")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	self:SetScript("OnEvent", self.OnEvent)
+	
+	self:UNIT_POWER_UPDATE()
+	self:Show()
+end
+
+function DruidMana:Disable()
+	self:UnregisterAllEvents("UNIT_POWER_UPDATE")
+	self:SetScript("OnEvent", nil)
+	self:Hide()
 end
 
 function DruidMana:OnEvent(event)
@@ -106,8 +116,28 @@ function DruidMana:OnEvent(event)
 	end
 end
 
-DruidMana:RegisterEvent("UNIT_POWER_UPDATE")
-DruidMana:RegisterEvent("UNIT_POWER_FREQUENT")
-DruidMana:RegisterEvent("PLAYER_ENTERING_WORLD")
---DruidMana:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
-DruidMana:SetScript("OnEvent", DruidMana.OnEvent)
+function DruidMana:Load()
+	if Settings["unitframes-show-druid-mana"] then
+		self:CreateBar()
+		self:Enable()
+	end
+end
+
+local UpdateEnableDruidMana = function(value)
+	if value then
+		if (not DruidMana.Bar) then
+			DruidMana:CreateBar()
+		end
+	
+		DruidMana:Enable()
+	else
+		DruidMana:Disable()
+	end
+end
+
+GUI:AddOptions(function(self)
+	local Left, Right = self:GetWindow("Unit Frames")
+	
+	Right:CreateHeader(Language["Druid Mana"])
+	Right:CreateSwitch("unitframes-show-druid-mana", Settings["unitframes-show-druid-mana"], Language["Enable Druid Mana"], Language["Enable a bar displaying your mana while in other forms"], UpdateEnableDruidMana)
+end)
