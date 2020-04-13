@@ -359,6 +359,8 @@ Defaults["party-pets-power-height"] = 0 -- NYI
 -- Unitframes: Raid
 Defaults["raid-enable"] = true
 Defaults["raid-width"] = 90
+Defaults["raid-in-range"] = 100
+Defaults["raid-out-of-range"] = 50
 Defaults["raid-health-height"] = 23
 Defaults["raid-health-color"] = "CLASS"
 Defaults["raid-health-smooth"] = true

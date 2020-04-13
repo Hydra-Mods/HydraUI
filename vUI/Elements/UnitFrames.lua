@@ -2102,8 +2102,8 @@ local StylePartyPet = function(self, unit)
 	self:Tag(HealthMiddle, "[Name10]")
 	
 	self.Range = {
-		insideAlpha = 1,
-		outsideAlpha = 0.5,
+		insideAlpha = Settings["party-in-range"] / 100,
+		outsideAlpha = Settings["party-out-of-range"] / 100,
 	}
 	
 	self.Health = Health
@@ -2225,8 +2225,8 @@ local StyleRaid = function(self, unit)
 	self:Tag(HealthRight, "[HealthDeficit]")
 	
 	self.Range = {
-		insideAlpha = 1,
-		outsideAlpha = 0.5,
+		insideAlpha = Settings["raid-in-range"] / 100,
+		outsideAlpha = Settings["raid-out-of-range"] / 100,
 	}
 	
 	self.Health = Health
@@ -3111,14 +3111,6 @@ GUI:AddOptions(function(self)
 	Left:CreateSwitch("party-enable", Settings["party-enable"], Language["Enable Party Module"], Language["Enable the party frames module"], ReloadUI):RequiresReload(true)
 	Left:CreateSwitch("party-pets-enable", Settings["party-pets-enable"], Language["Enable Party Pet Frames"], Language["Enable the party pet frames module"], ReloadUI):RequiresReload(true)
 	
-	Right:CreateHeader(Language["Styling"])
-	Right:CreateSwitch("party-show-debuffs", Settings["party-show-debuffs"], Language["Enable Debuffs"], Language["Display debuffs on party members"], UpdatePartyShowDebuffs)
-	Right:CreateSwitch("party-show-role", Settings["party-show-role"], Language["Enable Role Icons"], Language["Display role icons on party members"], UpdatePartyShowRole)
-	
-	Right:CreateHeader(Language["Range Opacity"])
-	Right:CreateSlider("party-in-range", Settings["party-in-range"], 0, 100, 5, Language["In Range"], Language["Set the opacity of party members within range of you"])
-	Right:CreateSlider("party-out-of-range", Settings["party-out-of-range"], 0, 100, 5, Language["Out of Range"], Language["Set the opacity of party members out of your range"])
-	
 	Left:CreateHeader(Language["Party Size"])
 	Left:CreateSlider("party-width", Settings["party-width"], 40, 200, 1, Language["Width"], Language["Set the width of the party unit frame"], UpdatePartyWidth)
 	Left:CreateSlider("party-health-height", Settings["party-health-height"], 12, 60, 1, Language["Health Height"], Language["Set the height of party health bars"], UpdatePartyHealthHeight)
@@ -3132,6 +3124,14 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["Power"])
 	Left:CreateDropdown("party-power-color", Settings["party-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePartyPowerColor)
 	Left:CreateSwitch("party-power-reverse", Settings["party-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePartyPowerReverseFill)
+	
+	Right:CreateHeader(Language["Styling"])
+	Right:CreateSwitch("party-show-debuffs", Settings["party-show-debuffs"], Language["Enable Debuffs"], Language["Display debuffs on party members"], UpdatePartyShowDebuffs)
+	Right:CreateSwitch("party-show-role", Settings["party-show-role"], Language["Enable Role Icons"], Language["Display role icons on party members"], UpdatePartyShowRole)
+	
+	Right:CreateHeader(Language["Range Opacity"])
+	Right:CreateSlider("party-in-range", Settings["party-in-range"], 0, 100, 5, Language["In Range"], Language["Set the opacity of party members within range of you"])
+	Right:CreateSlider("party-out-of-range", Settings["party-out-of-range"], 0, 100, 5, Language["Out of Range"], Language["Set the opacity of party members out of your range"])
 	
 	Right:CreateHeader(Language["Party Pets Size"])
 	Right:CreateSlider("party-pets-width", Settings["party-pets-width"], 40, 200, 1, Language["Width"], Language["Set the width of party pet unit frames"], ReloadUI, nil):RequiresReload(true)
@@ -3149,6 +3149,10 @@ GUI:AddOptions(function(self)
 	Left:CreateSlider("raid-width", Settings["raid-width"], 40, 200, 1, "Width", "Set the width of the raid frames", ReloadUI, nil):RequiresReload(true)
 	Left:CreateSlider("raid-health-height", Settings["raid-health-height"], 10, 60, 1, "Health Height", "Set the height of raid health bars", ReloadUI, nil):RequiresReload(true)
 	Left:CreateSlider("raid-power-height", Settings["raid-power-height"], 2, 30, 1, "Power Height", "Set the height of raid power bars", ReloadUI, nil):RequiresReload(true)
+	
+	Right:CreateHeader(Language["Range Opacity"])
+	Right:CreateSlider("raid-in-range", Settings["raid-in-range"], 0, 100, 5, Language["In Range"], Language["Set the opacity of raid members within range of you"])
+	Right:CreateSlider("raid-out-of-range", Settings["raid-out-of-range"], 0, 100, 5, Language["Out of Range"], Language["Set the opacity of raid members out of your range"])
 end)
 
 local NamePlatesUpdateEnableDebuffs = function(self, value)
