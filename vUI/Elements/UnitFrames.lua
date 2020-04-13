@@ -1977,7 +1977,7 @@ local StyleParty = function(self, unit)
 	Resurrect:SetScaledPoint("CENTER", Health, 0, 0)
 	
 	-- Role
-	local RoleIndicator = self:CreateTexture(nil, "OVERLAY")
+	local RoleIndicator = Health:CreateTexture(nil, "OVERLAY")
 	RoleIndicator:SetScaledSize(16, 16)
 	RoleIndicator:SetScaledPoint("TOP", self, 0, -2)
 	
@@ -2188,7 +2188,7 @@ local StyleRaid = function(self, unit)
 	ResurrectIndicator:SetScaledPoint("CENTER", Health, 0, 0)
 	
 	-- Role
-	local RoleIndicator = self:CreateTexture(nil, "OVERLAY")
+	local RoleIndicator = Health:CreateTexture(nil, "OVERLAY")
 	RoleIndicator:SetScaledSize(16, 16)
 	RoleIndicator:SetScaledPoint("TOP", self, 0, -2)
 	
