@@ -55,7 +55,7 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["General"], true)
 	
 	Left:CreateHeader(Language["Welcome"])
-	Left:CreateSwitch("ui-display-welcome", Settings["ui-display-welcome"], Language["Display Welcome Message"], Language["Display a welcome message on|n login with UI information"])
+	Left:CreateSwitch("ui-display-welcome", Settings["ui-display-welcome"], Language["Display Welcome Message"], Language["Display a welcome message on login with UI information"])
 	--Left:CreateSwitch("ui-display-whats-new", Settings["ui-display-whats-new"], Language[ [[Display "What's New" Pop-ups]] ], "")
 	Left:CreateSwitch("ui-display-dev-tools", Settings["ui-display-dev-tools"], Language["Display Developer Chat Tools"], "", UpdateDisplayDevTools)
 	
@@ -63,13 +63,13 @@ GUI:AddOptions(function(self)
 	Left:CreateButton(Language["Get Link"], Language["Join Discord"], Language["Get a link to join the vUI Discord community"], GetDiscordLink)
 	
 	Left:CreateHeader(Language["Move UI"])
-	Left:CreateButton(Language["Toggle"], Language["Move UI"], Language["While toggled, you can drag some|nelements of vUI around the screen"], ToggleMove)
-	Left:CreateButton(Language["Restore"], Language["Restore To Defaults"], Language["Restore all vUI movable frames|nto their default locations"], ResetMovers)
+	Left:CreateButton(Language["Toggle"], Language["Move UI"], Language["While toggled, you can drag someelements of vUI around the screen"], ToggleMove)
+	Left:CreateButton(Language["Restore"], Language["Restore To Defaults"], Language["Restore all vUI movable framesto their default locations"], ResetMovers)
 	
 	Right:CreateHeader(Language["Settings Window"])
 	Right:CreateSwitch("gui-hide-in-combat", Settings["gui-hide-in-combat"], Language["Hide In Combat"], Language["Hide the settings window when engaging in combat"])
 	Right:CreateSwitch("gui-enable-fade", Settings["gui-enable-fade"], Language["Fade While Moving"], Language["Fade out the settings window while moving"], UpdateGUIEnableFade)
-	Right:CreateSlider("gui-faded-alpha", Settings["gui-faded-alpha"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the settings window|n while faded"], nil, nil, "%")
+	Right:CreateSlider("gui-faded-alpha", Settings["gui-faded-alpha"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the settings window while faded"], nil, nil, "%")
 	
 	if Settings["ui-display-welcome"] then
 		local Color1 = Settings["ui-widget-color"]

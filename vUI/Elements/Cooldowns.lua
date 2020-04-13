@@ -243,5 +243,5 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:GetWindow(Language["General"])
 	
 	Left:CreateHeader(Language["Cooldown Flash"])
-	Left:CreateSwitch("cooldowns-enable", Settings["cooldowns-enable"], Language["Enable Cooldown Flash"], Language["When an ability comes off cooldown|n the icon will flash as an alert"], UpdateEnableCooldownFlash)
+	Left:CreateSwitch("cooldowns-enable", Settings["cooldowns-enable"], Language["Enable Cooldown Flash"], Language["When an ability comes off cooldown the icon will flash as an alert"], UpdateEnableCooldownFlash)
 end)

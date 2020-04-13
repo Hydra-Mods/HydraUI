@@ -422,9 +422,9 @@ GUI:AddOptions(function(self)
 	
 	Left:CreateHeader(Language["Styling"])
 	Left:CreateSwitch("experience-display-level", Settings["experience-display-level"], Language["Display Level"], Language["Display your current level in the experience bar"], UpdateDisplayLevel)
-	Left:CreateSwitch("experience-display-progress", Settings["experience-display-progress"], Language["Display Progress Value"], Language["Display your current progress|ninformation in the experience bar"], UpdateDisplayProgress)
-	Left:CreateSwitch("experience-display-percent", Settings["experience-display-percent"], Language["Display Percent Value"], Language["Display your current percent|ninformation in the experience bar"], UpdateDisplayPercent)
-	Left:CreateSwitch("experience-display-rested-value", Settings["experience-display-rested-value"], Language["Display Rested Value"], Language["Display your current rested|nvalue on the experience bar"], UpdateShowRestedValue)
+	Left:CreateSwitch("experience-display-progress", Settings["experience-display-progress"], Language["Display Progress Value"], Language["Display your current progressinformation in the experience bar"], UpdateDisplayProgress)
+	Left:CreateSwitch("experience-display-percent", Settings["experience-display-percent"], Language["Display Percent Value"], Language["Display your current percentinformation in the experience bar"], UpdateDisplayPercent)
+	Left:CreateSwitch("experience-display-rested-value", Settings["experience-display-rested-value"], Language["Display Rested Value"], Language["Display your current restedvalue on the experience bar"], UpdateShowRestedValue)
 	Left:CreateSwitch("experience-show-tooltip", Settings["experience-show-tooltip"], Language["Enable Tooltip"], Language["Display a tooltip when mousing over the experience bar"])	Left:CreateSwitch("experience-show-tooltip", Settings["experience-show-tooltip"], Language["Enable Tooltip"], Language["Display a tooltip when mousing over the experience bar"])
 	Left:CreateSwitch("experience-animate", Settings["experience-animate"], Language["Animate Experience Changes"], Language["Smoothly animate changes to the experience bar"])
 	

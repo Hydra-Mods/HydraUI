@@ -125,12 +125,12 @@ local CreateID = function(text)
 end
 
 local AnchorOnEnter = function(self)
-	if (self.Tooltip and self.Tooltip ~= "") then
+	if (self.Tooltip and match(self.Tooltip, "%S")) then
 		local R, G, B = vUI:HexToRGB(Settings["ui-widget-font-color"])
 		
 		GameTooltip_SetDefaultAnchor(GameTooltip, self)
 		
-		GameTooltip:AddLine(self.Tooltip, R, G, B)
+		GameTooltip:AddLine(self.Tooltip, R, G, B, true)
 		GameTooltip:Show()
 	end
 end

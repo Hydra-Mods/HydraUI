@@ -140,7 +140,7 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:GetWindow(Language["General"])
 	
 	Right:CreateHeader(Language["Merchant"])
-	Right:CreateSwitch("auto-repair-enable", Settings["auto-repair-enable"], Language["Auto Repair Equipment"], Language["Automatically repair damaged items|nwhen visiting a repair merchant"], UpdateAutoRepair)
+	Right:CreateSwitch("auto-repair-enable", Settings["auto-repair-enable"], Language["Auto Repair Equipment"], Language["Automatically repair damaged itemswhen visiting a repair merchant"], UpdateAutoRepair)
 	Right:CreateSwitch("auto-repair-report", Settings["auto-repair-report"], Language["Auto Repair Report"], Language["Report the cost of automatic repairs into the chat"])
 	Right:CreateSwitch("auto-vendor-enable", Settings["auto-vendor-enable"], Language["Auto Vendor Greys"], Language["Automatically sell all |cFF9D9D9D[Poor]|r quality items"], UpdateAutoVendor)
 	Right:CreateSwitch("auto-vendor-report", Settings["auto-vendor-report"], Language["Auto Vendor Report"], Language["Report the profit of automatic vendoring into the chat"])
