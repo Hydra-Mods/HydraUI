@@ -170,7 +170,7 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:GetWindow(Language["Action Bars"])
 	
 	Right:CreateHeader(Language["Key Binding"])
-	Right:CreateButton(Language["Toggle"], Language["Key Bind Mode"], Language["While toggled, you can hover over action buttons|nand press a key combination to rebind that action"], ToggleBindingMode)
+	Right:CreateButton(Language["Toggle"], Language["Key Bind Mode"], Language["While toggled, you can hover over action buttons and press a key combination to rebind that action"], ToggleBindingMode)
 	Right:CreateButton(Language["Save"], Language["Save Changes"], Language["Save key binding changes"], SaveChanges)
 	Right:CreateButton(Language["Discard"], Language["Discard Changes"], Language["Discard key binding changes"], DiscardChanges)
 	
