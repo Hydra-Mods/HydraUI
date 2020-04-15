@@ -4,7 +4,6 @@ local DT = vUI:GetModule("DataText")
 
 local GetBestMapForUnit = C_Map.GetBestMapForUnit
 local GetPlayerMapPosition = C_Map.GetPlayerMapPosition
-local floor = floor
 
 local OnEnter = function(self)
 	GameTooltip_SetDefaultAnchor(GameTooltip, self)

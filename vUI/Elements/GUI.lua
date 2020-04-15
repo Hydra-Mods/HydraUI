@@ -148,12 +148,12 @@ end
 -- Line
 GUI.Widgets.CreateLine = function(self, text)
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.ID = CreateID(text)
 	
 	Anchor.Text = Anchor:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Anchor.Text, "LEFT", Anchor, HEADER_SPACING, 0)
-	Anchor.Text:SetScaledSize(GROUP_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor.Text, GROUP_WIDTH - 6, WIDGET_HEIGHT)
 	Anchor.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Anchor.Text:SetJustifyH("LEFT")
 	Anchor.Text:SetText(format("|cFF%s%s|r", Settings["ui-widget-font-color"], text))
@@ -166,7 +166,7 @@ end
 -- Double Line
 GUI.Widgets.CreateDoubleLine = function(self, left, right)
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.ID = CreateID(left)
 	
 	left = tostring(left)
@@ -174,14 +174,14 @@ GUI.Widgets.CreateDoubleLine = function(self, left, right)
 	
 	Anchor.Left = Anchor:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Anchor.Left, "LEFT", Anchor, HEADER_SPACING, 0)
-	Anchor.Left:SetScaledSize((GROUP_WIDTH / 2) - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor.Left, (GROUP_WIDTH / 2) - 6, WIDGET_HEIGHT)
 	Anchor.Left:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Anchor.Left:SetJustifyH("LEFT")
 	Anchor.Left:SetText(format("|cFF%s%s|r", Settings["ui-widget-font-color"], left))
 	
 	Anchor.Right = Anchor:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Anchor.Right, "RIGHT", Anchor, -HEADER_SPACING, 0)
-	Anchor.Right:SetScaledSize((GROUP_WIDTH / 2) - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor.Right, (GROUP_WIDTH / 2) - 6, WIDGET_HEIGHT)
 	Anchor.Right:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Anchor.Right:SetJustifyH("RIGHT")
 	Anchor.Right:SetText(format("|cFF%s%s|r", Settings["ui-widget-font-color"], right))
@@ -230,7 +230,7 @@ end
 -- Header
 GUI.Widgets.CreateHeader = function(self, text)
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.IsHeader = true
 	
 	Anchor.Text = Anchor:CreateFontString(nil, "OVERLAY")
@@ -278,7 +278,7 @@ end
 -- Footer
 GUI.Widgets.CreateFooter = function(self)
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.IsHeader = true
 	
 	-- Header Left Line
@@ -304,7 +304,7 @@ end
 -- Header
 GUI.Widgets.CreateSupportHeader = function(self, text)
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.IsHeader = true
 	
 	Anchor.Text = Anchor:CreateFontString(nil, "OVERLAY")
@@ -331,7 +331,7 @@ GUI.Widgets.CreateSupportHeader = function(self, text)
 	
 	HeaderLeft.Heart = HeaderLeft:CreateTexture(nil, "OVERLAY")
 	vUI:SetPoint(HeaderLeft.Heart, "LEFT", HeaderLeft.NewTexture, "RIGHT", 1, -1)
-	HeaderLeft.Heart:SetScaledSize(16, 16)
+	vUI:SetSize(HeaderLeft.Heart, 16, 16)
 	HeaderLeft.Heart:SetTexture(Media:GetTexture("Small Star"))
 	HeaderLeft.Heart:SetVertexColorHex("FFB900")
 	
@@ -352,7 +352,7 @@ GUI.Widgets.CreateSupportHeader = function(self, text)
 	
 	HeaderRight.Heart = HeaderRight:CreateTexture(nil, "OVERLAY")
 	vUI:SetPoint(HeaderRight.Heart, "RIGHT", HeaderRight.NewTexture, "LEFT", -1, -1)
-	HeaderRight.Heart:SetScaledSize(16, 16)
+	vUI:SetSize(HeaderRight.Heart, 16, 16)
 	HeaderRight.Heart:SetTexture(Media:GetTexture("Small Star"))
 	HeaderRight.Heart:SetVertexColorHex("FFB900")
 	
@@ -406,7 +406,7 @@ end
 
 GUI.Widgets.CreateButton = function(self, value, label, tooltip, hook)
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.ID = CreateID(value)
 	Anchor.Text = label
 	Anchor.Tooltip = tooltip
@@ -417,7 +417,7 @@ GUI.Widgets.CreateButton = function(self, value, label, tooltip, hook)
 	Anchor:SetScript("OnLeave", AnchorOnLeave)
 	
 	local Button = CreateFrame("Frame", nil, Anchor)
-	Button:SetScaledSize(BUTTON_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Button, BUTTON_WIDTH, WIDGET_HEIGHT)
 	vUI:SetPoint(Button, "RIGHT", Anchor, 0, 0)
 	Button:SetBackdrop(vUI.BackdropAndBorder)
 	Button:SetBackdropColorHex(Settings["ui-widget-bright-color"])
@@ -444,14 +444,14 @@ GUI.Widgets.CreateButton = function(self, value, label, tooltip, hook)
 	
 	Button.MiddleText = Button:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Button.MiddleText, "CENTER", Button, "CENTER", 0, 0)
-	Button.MiddleText:SetScaledSize(BUTTON_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Button.MiddleText, BUTTON_WIDTH - 6, WIDGET_HEIGHT)
 	Button.MiddleText:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Button.MiddleText:SetJustifyH("CENTER")
 	Button.MiddleText:SetText(value)
 	
 	Button.Text = Button:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Button.Text, "LEFT", Anchor, LABEL_SPACING, 0)
-	Button.Text:SetScaledSize(GROUP_WIDTH - BUTTON_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Button.Text, GROUP_WIDTH - BUTTON_WIDTH - 6, WIDGET_HEIGHT)
 	Button.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Button.Text:SetJustifyH("LEFT")
 	Button.Text:SetText("|cFF"..Settings["ui-widget-font-color"]..label.."|r")
@@ -468,7 +468,7 @@ local STATUSBAR_WIDTH = 100
 
 GUI.Widgets.CreateStatusBar = function(self, value, minvalue, maxvalue, label, tooltip, hook)
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.Text = label
 	Anchor.Tooltip = tooltip
 	
@@ -476,7 +476,7 @@ GUI.Widgets.CreateStatusBar = function(self, value, minvalue, maxvalue, label, t
 	Anchor:SetScript("OnLeave", AnchorOnLeave)
 	
 	local Backdrop = CreateFrame("Frame", nil, Anchor)
-	Backdrop:SetScaledSize(STATUSBAR_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Backdrop, STATUSBAR_WIDTH, WIDGET_HEIGHT)
 	vUI:SetPoint(Backdrop, "RIGHT", Anchor, 0, 0)
 	Backdrop:SetBackdrop(vUI.BackdropAndBorder)
 	Backdrop:SetBackdropColorHex(Settings["ui-window-main-color"])
@@ -491,7 +491,7 @@ GUI.Widgets.CreateStatusBar = function(self, value, minvalue, maxvalue, label, t
 	Backdrop.BG:SetVertexColorHex(Settings["ui-widget-bg-color"])
 	
 	local Bar = CreateFrame("StatusBar", nil, Backdrop)
-	Bar:SetScaledSize(STATUSBAR_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Bar, STATUSBAR_WIDTH, WIDGET_HEIGHT)
 	vUI:SetPoint(Bar, "TOPLEFT", Backdrop, 1, -1)
 	vUI:SetPoint(Bar, "BOTTOMRIGHT", Backdrop, -1, 1)
 	Bar:SetBackdrop(vUI.BackdropAndBorder)
@@ -509,21 +509,21 @@ GUI.Widgets.CreateStatusBar = function(self, value, minvalue, maxvalue, label, t
 	Bar.Anim:SetDuration(0.15)
 	
 	Bar.Spark = Bar:CreateTexture(nil, "ARTWORK")
-	Bar.Spark:SetScaledSize(1, WIDGET_HEIGHT - 2)
+	vUI:SetSize(Bar.Spark, 1, WIDGET_HEIGHT - 2)
 	vUI:SetPoint(Bar.Spark, "LEFT", Bar:GetStatusBarTexture(), "RIGHT", 0, 0)
 	Bar.Spark:SetTexture(Media:GetTexture("Blank"))
 	Bar.Spark:SetVertexColor(0, 0, 0)
 	
 	Bar.MiddleText = Bar:CreateFontString(nil, "ARTWORK")
 	vUI:SetPoint(Bar.MiddleText, "CENTER", Bar, "CENTER", 0, 0)
-	Bar.MiddleText:SetScaledSize(STATUSBAR_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Bar.MiddleText, STATUSBAR_WIDTH - 6, WIDGET_HEIGHT)
 	Bar.MiddleText:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Bar.MiddleText:SetJustifyH("CENTER")
 	Bar.MiddleText:SetText(value)
 	
 	Bar.Text = Bar:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Bar.Text, "LEFT", Anchor, LABEL_SPACING, 0)
-	Bar.Text:SetScaledSize(GROUP_WIDTH - STATUSBAR_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Bar.Text, GROUP_WIDTH - STATUSBAR_WIDTH - 6, WIDGET_HEIGHT)
 	Bar.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Bar.Text:SetJustifyH("LEFT")
 	Bar.Text:SetText("|cFF"..Settings["ui-widget-font-color"]..label.."|r")
@@ -574,7 +574,7 @@ GUI.Widgets.CreateCheckbox = function(self, id, value, label, tooltip, hook)
 	end
 	
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.ID = id
 	Anchor.Text = label
 	Anchor.Tooltip = tooltip
@@ -583,7 +583,7 @@ GUI.Widgets.CreateCheckbox = function(self, id, value, label, tooltip, hook)
 	Anchor:SetScript("OnLeave", AnchorOnLeave)
 	
 	local Checkbox = CreateFrame("Frame", nil, Anchor)
-	Checkbox:SetScaledSize(CHECKBOX_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Checkbox, CHECKBOX_WIDTH, WIDGET_HEIGHT)
 	vUI:SetPoint(Checkbox, "RIGHT", Anchor, 0, 0)
 	Checkbox:SetBackdrop(vUI.BackdropAndBorder)
 	Checkbox:SetBackdropColorHex(Settings["ui-window-main-color"])
@@ -618,7 +618,7 @@ GUI.Widgets.CreateCheckbox = function(self, id, value, label, tooltip, hook)
 	
 	Checkbox.Text = Anchor:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Checkbox.Text, "LEFT", Anchor, LABEL_SPACING, 0)
-	Checkbox.Text:SetScaledSize(GROUP_WIDTH - CHECKBOX_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Checkbox.Text, GROUP_WIDTH - CHECKBOX_WIDTH - 6, WIDGET_HEIGHT)
 	Checkbox.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Checkbox.Text:SetJustifyH("LEFT")
 	Checkbox.Text:SetText("|cFF"..Settings["ui-widget-font-color"]..label.."|r")
@@ -746,7 +746,7 @@ GUI.Widgets.CreateSwitch = function(self, id, value, label, tooltip, hook)
 	end
 	
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.ID = id
 	Anchor.Text = label
 	Anchor.Tooltip = tooltip
@@ -757,7 +757,7 @@ GUI.Widgets.CreateSwitch = function(self, id, value, label, tooltip, hook)
 	Anchor:SetScript("OnLeave", AnchorOnLeave)
 	
 	local Switch = CreateFrame("Frame", nil, Anchor)
-	Switch:SetScaledSize(SWITCH_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Switch, SWITCH_WIDTH, WIDGET_HEIGHT)
 	vUI:SetPoint(Switch, "RIGHT", Anchor, 0, 0)
 	Switch:SetBackdrop(vUI.BackdropAndBorder)
 	Switch:SetBackdropColorHex(Settings["ui-window-main-color"])
@@ -779,14 +779,14 @@ GUI.Widgets.CreateSwitch = function(self, id, value, label, tooltip, hook)
 	Switch.BG:SetVertexColorHex(Settings["ui-widget-bg-color"])
 	
 	Switch.Thumb = CreateFrame("Frame", nil, Switch)
-	Switch.Thumb:SetScaledSize(WIDGET_HEIGHT, WIDGET_HEIGHT)
+	vUI:SetSize(Switch.Thumb, WIDGET_HEIGHT, WIDGET_HEIGHT)
 	Switch.Thumb:SetBackdrop(vUI.BackdropAndBorder)
 	Switch.Thumb:SetBackdropBorderColor(0, 0, 0)
 	Switch.Thumb:SetBackdropColorHex(Settings["ui-widget-bright-color"])
 	vUI:SetPoint(Switch.Thumb, Switch.Value and "RIGHT" or "LEFT", Switch, 0, 0)
 	
 	Switch.ThumbTexture = Switch.Thumb:CreateTexture(nil, "ARTWORK")
-	Switch.ThumbTexture:SetScaledSize(WIDGET_HEIGHT - 2, WIDGET_HEIGHT - 2)
+	vUI:SetSize(Switch.ThumbTexture, WIDGET_HEIGHT - 2, WIDGET_HEIGHT - 2)
 	vUI:SetPoint(Switch.ThumbTexture, "TOPLEFT", Switch.Thumb, 1, -1)
 	vUI:SetPoint(Switch.ThumbTexture, "BOTTOMRIGHT", Switch.Thumb, -1, 1)
 	Switch.ThumbTexture:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
@@ -800,7 +800,7 @@ GUI.Widgets.CreateSwitch = function(self, id, value, label, tooltip, hook)
 	
 	Switch.Text = Anchor:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Switch.Text, "LEFT", Anchor, LABEL_SPACING, 0)
-	Switch.Text:SetScaledSize(GROUP_WIDTH - SWITCH_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Switch.Text, GROUP_WIDTH - SWITCH_WIDTH - 6, WIDGET_HEIGHT)
 	Switch.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Switch.Text:SetJustifyH("LEFT")
 	Switch.Text:SetText("|cFF"..Settings["ui-widget-font-color"]..label.."|r")
@@ -885,7 +885,7 @@ function GUI:CreateInputWindow()
 	end
 	
 	local Window = CreateFrame("Frame", nil, self)
-	Window:SetScaledSize(300, 200)
+	vUI:SetSize(Window, 300, 200)
 	vUI:SetPoint(Window, "CENTER", UIParent, 0, 0)
 	Window:SetBackdrop(vUI.BackdropAndBorder)
 	Window:SetBackdropColorHex(Settings["ui-window-bg-color"])
@@ -923,7 +923,7 @@ function GUI:CreateInputWindow()
 	
 	-- Close button
 	Window.CloseButton = CreateFrame("Frame", nil, Window)
-	Window.CloseButton:SetScaledSize(HEADER_HEIGHT, HEADER_HEIGHT)
+	vUI:SetSize(Window.CloseButton, HEADER_HEIGHT, HEADER_HEIGHT)
 	vUI:SetPoint(Window.CloseButton, "TOPRIGHT", Window, -SPACING, -SPACING)
 	Window.CloseButton:SetBackdrop(vUI.BackdropAndBorder)
 	Window.CloseButton:SetBackdropColor(0, 0, 0, 0)
@@ -950,7 +950,7 @@ function GUI:CreateInputWindow()
 	
 	Window.CloseButton.Cross = Window.CloseButton:CreateTexture(nil, "OVERLAY")
 	Window.CloseButton.Cross:SetPoint("CENTER", Window.CloseButton, 0, 0)
-	Window.CloseButton.Cross:SetScaledSize(16, 16)
+	vUI:SetSize(Window.CloseButton.Cross, 16, 16)
 	Window.CloseButton.Cross:SetTexture(Media:GetTexture("Close"))
 	Window.CloseButton.Cross:SetVertexColorHex("EEEEEE")
 	
@@ -1036,7 +1036,7 @@ GUI.Widgets.CreateInput = function(self, id, value, label, tooltip, hook)
 	end
 	
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.ID = id
 	Anchor.Text = label
 	Anchor.Tooltip = tooltip
@@ -1045,7 +1045,7 @@ GUI.Widgets.CreateInput = function(self, id, value, label, tooltip, hook)
 	Anchor:SetScript("OnLeave", AnchorOnLeave)
 	
 	local Input = CreateFrame("Frame", nil, Anchor)
-	Input:SetScaledSize(INPUT_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Input, INPUT_WIDTH, WIDGET_HEIGHT)
 	vUI:SetPoint(Input, "RIGHT", Anchor, 0, 0)
 	Input:SetBackdrop(vUI.BackdropAndBorder)
 	Input:SetBackdropColorHex(Settings["ui-widget-bg-color"])
@@ -1082,7 +1082,7 @@ GUI.Widgets.CreateInput = function(self, id, value, label, tooltip, hook)
 	
 	Input.ButtonText = Input:CreateFontString(nil, "OVERLAY")
 	Input.ButtonText:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
-	Input.ButtonText:SetScaledSize(INPUT_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Input.ButtonText, INPUT_WIDTH, WIDGET_HEIGHT)
 	vUI:SetPoint(Input.ButtonText, "TOPLEFT", Input, SPACING, -SPACING)
 	vUI:SetPoint(Input.ButtonText, "BOTTOMRIGHT", Input, -SPACING, SPACING)
 	Input.ButtonText:SetJustifyH("LEFT")
@@ -1090,7 +1090,7 @@ GUI.Widgets.CreateInput = function(self, id, value, label, tooltip, hook)
 	
 	Input.Text = Input:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Input.Text, "LEFT", Anchor, LABEL_SPACING, 0)
-	Input.Text:SetScaledSize(GROUP_WIDTH - INPUT_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Input.Text, GROUP_WIDTH - INPUT_WIDTH - 6, WIDGET_HEIGHT)
 	Input.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Input.Text:SetJustifyH("LEFT")
 	Input.Text:SetText("|cFF"..Settings["ui-widget-font-color"]..label.."|r")
@@ -1127,7 +1127,7 @@ GUI.Widgets.CreateInputWithButton = function(self, id, value, button, label, too
 	end
 	
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.Text = label
 	Anchor.Tooltip = tooltip
 	
@@ -1136,7 +1136,7 @@ GUI.Widgets.CreateInputWithButton = function(self, id, value, button, label, too
 	
 	local Text = Anchor:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Text, "LEFT", Anchor, LABEL_SPACING, 0)
-	Text:SetScaledSize(GROUP_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Text, GROUP_WIDTH - 6, WIDGET_HEIGHT)
 	Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Text:SetJustifyH("LEFT")
 	Text:SetShadowColor(0, 0, 0)
@@ -1144,12 +1144,12 @@ GUI.Widgets.CreateInputWithButton = function(self, id, value, button, label, too
 	Text:SetText("|cFF"..Settings["ui-widget-font-color"]..label.."|r")
 	
 	local Anchor2 = CreateFrame("Frame", nil, self)
-	Anchor2:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor2, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor2.ID = id
 	Anchor2.Text = label
 	
 	local Button = CreateFrame("Frame", nil, Anchor2)
-	Button:SetScaledSize(INPUT_BUTTON_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Button, INPUT_BUTTON_WIDTH, WIDGET_HEIGHT)
 	vUI:SetPoint(Button, "RIGHT", Anchor2, 0, 0)
 	Button:SetBackdrop(vUI.BackdropAndBorder)
 	Button:SetBackdropColor(0.17, 0.17, 0.17)
@@ -1180,7 +1180,7 @@ GUI.Widgets.CreateInputWithButton = function(self, id, value, button, label, too
 	Button.MiddleText:SetText(button)
 	
 	local Input = CreateFrame("Frame", nil, Anchor2)
-	Input:SetScaledSize(INPUT_BUTTON_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Input, INPUT_BUTTON_WIDTH, WIDGET_HEIGHT)
 	vUI:SetPoint(Input, "LEFT", Anchor2, 0, 0)
 	Input:SetBackdrop(vUI.BackdropAndBorder)
 	Input:SetBackdropColorHex(Settings["ui-widget-bg-color"])
@@ -1296,7 +1296,7 @@ GUI.CreateExportWindow = function(self)
 	end
 	
 	local Window = CreateFrame("Frame", nil, self)
-	Window:SetScaledSize(300, 220)
+	vUI:SetSize(Window, 300, 220)
 	vUI:SetPoint(Window, "CENTER", UIParent, 0, 0)
 	Window:SetBackdrop(vUI.BackdropAndBorder)
 	Window:SetBackdropColorHex(Settings["ui-window-bg-color"])
@@ -1332,7 +1332,7 @@ GUI.CreateExportWindow = function(self)
 	
 	-- Close button
 	Window.Header.CloseButton = CreateFrame("Frame", nil, Window.Header)
-	Window.Header.CloseButton:SetScaledSize(HEADER_HEIGHT, HEADER_HEIGHT)
+	vUI:SetSize(Window.Header.CloseButton, HEADER_HEIGHT, HEADER_HEIGHT)
 	vUI:SetPoint(Window.Header.CloseButton, "RIGHT", Window.Header, 0, 0)
 	Window.Header.CloseButton:SetScript("OnEnter", function(self) self.Cross:SetVertexColor(1, 0, 0) end)
 	Window.Header.CloseButton:SetScript("OnLeave", function(self) self.Cross:SetVertexColor(1, 1, 1) end)
@@ -1340,7 +1340,7 @@ GUI.CreateExportWindow = function(self)
 	
 	Window.Header.CloseButton.Cross = Window.Header.CloseButton:CreateTexture(nil, "OVERLAY")
 	Window.Header.CloseButton.Cross:SetPoint("CENTER", Window.Header.CloseButton, 0, 0)
-	Window.Header.CloseButton.Cross:SetScaledSize(16, 16)
+	vUI:SetSize(Window.Header.CloseButton.Cross, 16, 16)
 	Window.Header.CloseButton.Cross:SetTexture(Media:GetTexture("Close"))
 	Window.Header.CloseButton.Cross:SetVertexColorHex("EEEEEE")
 	
@@ -1372,7 +1372,7 @@ GUI.CreateExportWindow = function(self)
 	
 	Window.Tester = Window.Header:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Window.Tester, "LEFT", UIParent, 20, 0)
-	Window.Tester:SetScaledSize(260, 800)
+	vUI:SetSize(Window.Tester, 260, 800)
 	Window.Tester:SetJustifyH("LEFT")
 	Window.Tester:SetWordWrap(true)
 	Window.Tester:SetFontInfo(Settings["ui-header-font"], Settings["ui-header-font-size"])
@@ -1428,7 +1428,7 @@ GUI.CreateImportWindow = function(self)
 	end
 	
 	local Window = CreateFrame("Frame", nil, self)
-	Window:SetScaledSize(300, 220)
+	vUI:SetSize(Window, 300, 220)
 	vUI:SetPoint(Window, "CENTER", UIParent, 0, 0)
 	Window:SetBackdrop(vUI.BackdropAndBorder)
 	Window:SetBackdropColorHex(Settings["ui-window-bg-color"])
@@ -1464,7 +1464,7 @@ GUI.CreateImportWindow = function(self)
 	
 	-- Close button
 	Window.Header.CloseButton = CreateFrame("Frame", nil, Window.Header)
-	Window.Header.CloseButton:SetScaledSize(HEADER_HEIGHT, HEADER_HEIGHT)
+	vUI:SetSize(Window.Header.CloseButton, HEADER_HEIGHT, HEADER_HEIGHT)
 	vUI:SetPoint(Window.Header.CloseButton, "RIGHT", Window.Header, 0, 0)
 	Window.Header.CloseButton:SetScript("OnEnter", function(self) self.Cross:SetVertexColor(1, 0, 0) end)
 	Window.Header.CloseButton:SetScript("OnLeave", function(self) self.Cross:SetVertexColor(1, 1, 1) end)
@@ -1472,7 +1472,7 @@ GUI.CreateImportWindow = function(self)
 	
 	Window.Header.CloseButton.Cross = Window.Header.CloseButton:CreateTexture(nil, "OVERLAY")
 	Window.Header.CloseButton.Cross:SetPoint("CENTER", Window.Header.CloseButton, 0, 0)
-	Window.Header.CloseButton.Cross:SetScaledSize(16, 16)
+	vUI:SetSize(Window.Header.CloseButton.Cross, 16, 16)
 	Window.Header.CloseButton.Cross:SetTexture(Media:GetTexture("Close"))
 	Window.Header.CloseButton.Cross:SetVertexColorHex("EEEEEE")
 	
@@ -1758,7 +1758,7 @@ local AddDropdownScrollBar = function(self)
 	self.ScrollBar = ScrollBar
 	
 	local Thumb = ScrollBar:GetThumbTexture() 
-	Thumb:SetScaledSize(ScrollWidth, WIDGET_HEIGHT)
+	vUI:SetSize(Thumb, ScrollWidth, WIDGET_HEIGHT)
 	Thumb:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 	Thumb:SetVertexColor(0, 0, 0)
 	
@@ -1818,7 +1818,7 @@ end
 
 local DropdownCreateSelection = function(self, key, value)
 	local MenuItem = CreateFrame("Frame", nil, self.Menu)
-	MenuItem:SetScaledSize(DROPDOWN_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetSize(MenuItem, DROPDOWN_WIDTH - 6, WIDGET_HEIGHT)
 	MenuItem:SetBackdrop(vUI.BackdropAndBorder)
 	MenuItem:SetBackdropColorHex(Settings["ui-widget-bg-color"])
 	MenuItem:SetBackdropBorderColor(0, 0, 0)
@@ -1854,7 +1854,7 @@ local DropdownCreateSelection = function(self, key, value)
 	
 	MenuItem.Text = MenuItem:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(MenuItem.Text, "LEFT", MenuItem, 5, 0)
-	MenuItem.Text:SetScaledSize((DROPDOWN_WIDTH - 6) - 12, WIDGET_HEIGHT)
+	vUI:SetSize(MenuItem.Text, (DROPDOWN_WIDTH - 6) - 12, WIDGET_HEIGHT)
 	MenuItem.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	MenuItem.Text:SetJustifyH("LEFT")
 	MenuItem.Text:SetText(key)
@@ -1885,7 +1885,7 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	end
 	
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.ID = id
 	Anchor.Text = label
 	Anchor.Tooltip = tooltip
@@ -1896,7 +1896,7 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	Anchor:SetScript("OnLeave", AnchorOnLeave)
 	
 	local Dropdown = CreateFrame("Frame", nil, Anchor)
-	Dropdown:SetScaledSize(DROPDOWN_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Dropdown, DROPDOWN_WIDTH, WIDGET_HEIGHT)
 	vUI:SetPoint(Dropdown, "RIGHT", Anchor, 0, 0)
 	Dropdown:SetBackdrop(vUI.BackdropAndBorder)
 	Dropdown:SetBackdropColor(0.6, 0.6, 0.6)
@@ -1921,12 +1921,12 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	
 	Dropdown.Current = Dropdown:CreateFontString(nil, "ARTWORK")
 	vUI:SetPoint(Dropdown.Current, "LEFT", Dropdown, HEADER_SPACING, 0)
-	Dropdown.Current:SetScaledSize(DROPDOWN_WIDTH - 20, Settings["ui-font-size"])
+	vUI:SetSize(Dropdown.Current, DROPDOWN_WIDTH - 20, Settings["ui-font-size"])
 	Dropdown.Current:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Dropdown.Current:SetJustifyH("LEFT")
 	
 	Dropdown.Button = CreateFrame("Frame", nil, Dropdown)
-	Dropdown.Button:SetScaledSize(DROPDOWN_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Dropdown.Button, DROPDOWN_WIDTH, WIDGET_HEIGHT)
 	vUI:SetPoint(Dropdown.Button, "LEFT", Dropdown, 0, 0)
 	Dropdown.Button:SetBackdrop(vUI.BackdropAndBorder)
 	Dropdown.Button:SetBackdropColor(0, 0, 0, 0)
@@ -1945,19 +1945,19 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	
 	Dropdown.Text = Dropdown:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Dropdown.Text, "LEFT", Anchor, LABEL_SPACING, 0)
-	Dropdown.Text:SetScaledSize(GROUP_WIDTH - DROPDOWN_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Dropdown.Text, GROUP_WIDTH - DROPDOWN_WIDTH - 6, WIDGET_HEIGHT)
 	Dropdown.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Dropdown.Text:SetJustifyH("LEFT")
 	Dropdown.Text:SetScaledWidth(DROPDOWN_WIDTH - 4)
 	Dropdown.Text:SetText("|cFF"..Settings["ui-widget-font-color"]..label.."|r")
 	
 	Dropdown.ArrowAnchor = CreateFrame("Frame", nil, Dropdown)
-	Dropdown.ArrowAnchor:SetScaledSize(WIDGET_HEIGHT, WIDGET_HEIGHT)
+	vUI:SetSize(Dropdown.ArrowAnchor, WIDGET_HEIGHT, WIDGET_HEIGHT)
 	vUI:SetPoint(Dropdown.ArrowAnchor, "RIGHT", Dropdown, 0, 0)
 	
 	local ArrowMiddle = Dropdown.Button:CreateTexture(nil, "OVERLAY", 7)
 	vUI:SetPoint(ArrowMiddle, "CENTER", Dropdown.ArrowAnchor, 0, 0)
-	ArrowMiddle:SetScaledSize(4, 1)
+	vUI:SetSize(ArrowMiddle, 4, 1)
 	ArrowMiddle:SetTexture(Media:GetTexture("Blank"))
 	ArrowMiddle:SetVertexColorHex(Settings["ui-widget-color"])
 	
@@ -1968,7 +1968,7 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	ArrowMiddle.BG:SetVertexColor(0, 0, 0)
 	
 	local ArrowTop = Dropdown.Button:CreateTexture(nil, "OVERLAY", 7)
-	ArrowTop:SetScaledSize(6, 1)
+	vUI:SetSize(ArrowTop, 6, 1)
 	vUI:SetPoint(ArrowTop, "BOTTOM", ArrowMiddle, "TOP", 0, 0)
 	ArrowTop:SetTexture(Media:GetTexture("Blank"))
 	ArrowTop:SetVertexColorHex(Settings["ui-widget-color"])
@@ -1984,7 +1984,7 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	ArrowTop.Anim:SetDuration(0.15)
 	
 	local ArrowBottom = Dropdown.Button:CreateTexture(nil, "OVERLAY", 7)
-	ArrowBottom:SetScaledSize(2, 1)
+	vUI:SetSize(ArrowBottom, 2, 1)
 	vUI:SetPoint(ArrowBottom, "TOP", ArrowMiddle, "BOTTOM", 0, 0)
 	ArrowBottom:SetTexture(Media:GetTexture("Blank"))
 	ArrowBottom:SetVertexColorHex(Settings["ui-widget-color"])
@@ -2001,7 +2001,7 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	
 	Dropdown.Menu = CreateFrame("Frame", nil, Dropdown)
 	vUI:SetPoint(Dropdown.Menu, "TOPLEFT", Dropdown, "BOTTOMLEFT", SPACING, -2)
-	Dropdown.Menu:SetScaledSize(DROPDOWN_WIDTH - (SPACING * 2), 1)
+	vUI:SetSize(Dropdown.Menu, DROPDOWN_WIDTH - (SPACING * 2), 1)
 	Dropdown.Menu:SetBackdrop(vUI.BackdropAndBorder)
 	Dropdown.Menu:SetBackdropColorHex(Settings["ui-window-main-color"])
 	Dropdown.Menu:SetBackdropBorderColor(0, 0, 0)
@@ -2293,7 +2293,7 @@ GUI.Widgets.CreateSlider = function(self, id, value, minvalue, maxvalue, step, l
 	end
 	
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, DROPDOWN_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, DROPDOWN_HEIGHT)
 	Anchor.ID = id
 	Anchor.Text = label
 	Anchor.Tooltip = tooltip
@@ -2312,7 +2312,7 @@ GUI.Widgets.CreateSlider = function(self, id, value, minvalue, maxvalue, step, l
 	end
 	
 	local EditBox = CreateFrame("Frame", nil, Anchor)
-	EditBox:SetScaledSize(EDITBOX_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(EditBox, EDITBOX_WIDTH, WIDGET_HEIGHT)
 	vUI:SetPoint(EditBox, "RIGHT", Anchor, 0, 0)
 	EditBox:SetBackdrop(vUI.BackdropAndBorder)
 	EditBox:SetBackdropColorHex(Settings["ui-window-main-color"])
@@ -2361,7 +2361,7 @@ GUI.Widgets.CreateSlider = function(self, id, value, minvalue, maxvalue, step, l
 	
 	local Slider = CreateFrame("Slider", nil, Anchor)
 	vUI:SetPoint(Slider, "RIGHT", EditBox, "LEFT", -2, 0)
-	Slider:SetScaledSize(SLIDER_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Slider, SLIDER_WIDTH, WIDGET_HEIGHT)
 	Slider:SetThumbTexture(Media:GetTexture("Blank"))
 	Slider:SetOrientation("HORIZONTAL")
 	Slider:SetValueStep(step)
@@ -2385,7 +2385,7 @@ GUI.Widgets.CreateSlider = function(self, id, value, minvalue, maxvalue, step, l
 	
 	Slider.Text = Slider:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Slider.Text, "LEFT", Anchor, LABEL_SPACING, 0)
-	Slider.Text:SetScaledSize(GROUP_WIDTH - SLIDER_WIDTH - EDITBOX_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Slider.Text, GROUP_WIDTH - SLIDER_WIDTH - EDITBOX_WIDTH - 6, WIDGET_HEIGHT)
 	Slider.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Slider.Text:SetJustifyH("LEFT")
 	Slider.Text:SetText("|cFF"..Settings["ui-widget-font-color"]..label.."|r")
@@ -2397,7 +2397,7 @@ GUI.Widgets.CreateSlider = function(self, id, value, minvalue, maxvalue, step, l
 	Slider.TrackTexture:SetVertexColorHex(Settings["ui-widget-bg-color"])
 	
 	local Thumb = Slider:GetThumbTexture()
-	Thumb:SetScaledSize(8, WIDGET_HEIGHT)
+	vUI:SetSize(Thumb, 8, WIDGET_HEIGHT)
 	Thumb:SetTexture(Media:GetTexture("Blank"))
 	Thumb:SetVertexColor(0, 0, 0)
 	
@@ -2589,7 +2589,7 @@ local CreateColorPicker = function()
 	end
 	
 	local ColorPicker = CreateFrame("Frame", "vUIColorPicker", GUI)
-	ColorPicker:SetScaledSize(388, 290)
+	vUI:SetSize(ColorPicker, 388, 290)
 	vUI:SetPoint(ColorPicker, "CENTER", GUI, 0, 50)
 	ColorPicker:SetBackdrop(vUI.BackdropAndBorder)
 	ColorPicker:SetBackdropColorHex(Settings["ui-window-main-color"])
@@ -2627,7 +2627,7 @@ local CreateColorPicker = function()
 	
 	-- Close button
 	ColorPicker.CloseButton = CreateFrame("Frame", nil, ColorPicker)
-	ColorPicker.CloseButton:SetScaledSize(HEADER_HEIGHT, HEADER_HEIGHT)
+	vUI:SetSize(ColorPicker.CloseButton, HEADER_HEIGHT, HEADER_HEIGHT)
 	vUI:SetPoint(ColorPicker.CloseButton, "LEFT", ColorPicker.Header, "RIGHT", 2, 0)
 	ColorPicker.CloseButton:SetBackdrop(vUI.BackdropAndBorder)
 	ColorPicker.CloseButton:SetBackdropColor(0, 0, 0, 0)
@@ -2654,7 +2654,7 @@ local CreateColorPicker = function()
 	
 	ColorPicker.CloseButton.Cross = ColorPicker.CloseButton:CreateTexture(nil, "OVERLAY")
 	ColorPicker.CloseButton.Cross:SetPoint("CENTER", ColorPicker.CloseButton, 0, 0)
-	ColorPicker.CloseButton.Cross:SetScaledSize(16, 16)
+	vUI:SetSize(ColorPicker.CloseButton.Cross, 16, 16)
 	ColorPicker.CloseButton.Cross:SetTexture(Media:GetTexture("Close"))
 	ColorPicker.CloseButton.Cross:SetVertexColorHex("EEEEEE")
 	
@@ -2669,7 +2669,7 @@ local CreateColorPicker = function()
 	
 	-- Current
 	ColorPicker.Current = CreateFrame("Frame", nil, ColorPicker)
-	ColorPicker.Current:SetScaledSize((390 / 3), 20)
+	vUI:SetSize(ColorPicker.Current, (390 / 3), 20)
 	vUI:SetPoint(ColorPicker.Current, "TOPLEFT", ColorPicker.SwatchParent, "BOTTOMLEFT", 0, -2)
 	ColorPicker.Current:SetBackdrop(vUI.BackdropAndBorder)
 	ColorPicker.Current:SetBackdropColor(0, 0, 0)
@@ -2689,7 +2689,7 @@ local CreateColorPicker = function()
 	ColorPicker.CurrentText:SetTextColorHex(Settings["ui-header-font-color"])
 	
 	ColorPicker.CurrentHex = CreateFrame("Frame", nil, ColorPicker)
-	ColorPicker.CurrentHex:SetScaledSize(108, 20)
+	vUI:SetSize(ColorPicker.CurrentHex, 108, 20)
 	vUI:SetPoint(ColorPicker.CurrentHex, "TOPLEFT", ColorPicker.Current, "BOTTOMLEFT", 0, -2)
 	ColorPicker.CurrentHex:SetBackdrop(vUI.BackdropAndBorder)
 	ColorPicker.CurrentHex:SetBackdropColor(0, 0, 0)
@@ -2707,7 +2707,7 @@ local CreateColorPicker = function()
 	ColorPicker.CurrentHexText:SetJustifyH("CENTER")
 	
 	ColorPicker.CompareCurrentParent = CreateFrame("Frame", nil, ColorPicker)
-	ColorPicker.CompareCurrentParent:SetScaledSize(20, 20)
+	vUI:SetSize(ColorPicker.CompareCurrentParent, 20, 20)
 	vUI:SetPoint(ColorPicker.CompareCurrentParent, "LEFT", ColorPicker.CurrentHex, "RIGHT", 2, 0)
 	ColorPicker.CompareCurrentParent:SetBackdrop(vUI.BackdropAndBorder)
 	ColorPicker.CompareCurrentParent:SetBackdropColorHex(Settings["ui-window-bg-color"])
@@ -2720,7 +2720,7 @@ local CreateColorPicker = function()
 	
 	-- New
 	ColorPicker.New = CreateFrame("Frame", nil, ColorPicker)
-	ColorPicker.New:SetScaledSize((390 / 3), 20)
+	vUI:SetSize(ColorPicker.New, (390 / 3), 20)
 	vUI:SetPoint(ColorPicker.New, "TOPLEFT", ColorPicker.Current, "TOPRIGHT", 2, 0)
 	ColorPicker.New:SetBackdrop(vUI.BackdropAndBorder)
 	ColorPicker.New:SetBackdropColor(0, 0, 0)
@@ -2740,7 +2740,7 @@ local CreateColorPicker = function()
 	ColorPicker.NewText:SetTextColorHex(Settings["ui-header-font-color"])
 	
 	ColorPicker.NewHex = CreateFrame("Frame", nil, ColorPicker)
-	ColorPicker.NewHex:SetScaledSize(108, 20)
+	vUI:SetSize(ColorPicker.NewHex, 108, 20)
 	vUI:SetPoint(ColorPicker.NewHex, "TOPRIGHT", ColorPicker.New, "BOTTOMRIGHT", 0, -2)
 	ColorPicker.NewHex:SetBackdrop(vUI.BackdropAndBorder)
 	ColorPicker.NewHex:SetBackdropColor(0, 0, 0)
@@ -2771,14 +2771,14 @@ local CreateColorPicker = function()
 	ColorPicker.NewHexText:SetScript("OnChar", SwatchEditBoxOnChar)
 	
 	ColorPicker.CompareNewParent = CreateFrame("Frame", nil, ColorPicker)
-	ColorPicker.CompareNewParent:SetScaledSize(20, 20)
+	vUI:SetSize(ColorPicker.CompareNewParent, 20, 20)
 	vUI:SetPoint(ColorPicker.CompareNewParent, "RIGHT", ColorPicker.NewHex, "LEFT", -2, 0)
 	ColorPicker.CompareNewParent:SetBackdrop(vUI.BackdropAndBorder)
 	ColorPicker.CompareNewParent:SetBackdropColorHex(Settings["ui-window-bg-color"])
 	ColorPicker.CompareNewParent:SetBackdropBorderColor(0, 0, 0)
 	
 	ColorPicker.CompareNew = ColorPicker.CompareNewParent:CreateTexture(nil, "OVERLAY")
-	ColorPicker.CompareNew:SetScaledSize(ColorPicker.CompareNewParent:GetWidth() - 2, 19)
+	vUI:SetSize(ColorPicker.CompareNew, ColorPicker.CompareNewParent:GetWidth() - 2, 19)
 	vUI:SetPoint(ColorPicker.CompareNew, "TOPLEFT", ColorPicker.CompareNewParent, 1, -1)
 	vUI:SetPoint(ColorPicker.CompareNew, "BOTTOMRIGHT", ColorPicker.CompareNewParent, -1, 1)
 	ColorPicker.CompareNew:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
@@ -2790,7 +2790,7 @@ local CreateColorPicker = function()
 	
 	-- Accept
 	ColorPicker.Accept = CreateFrame("Frame", nil, ColorPicker)
-	ColorPicker.Accept:SetScaledSize((390 / 3) - (SPACING * 3) + 1, 20)
+	vUI:SetSize(ColorPicker.Accept, (390 / 3) - (SPACING * 3) + 1, 20)
 	vUI:SetPoint(ColorPicker.Accept, "TOPLEFT", ColorPicker.New, "TOPRIGHT", 2, 0)
 	ColorPicker.Accept:SetBackdrop(vUI.BackdropAndBorder)
 	ColorPicker.Accept:SetBackdropColor(0, 0, 0)
@@ -2821,7 +2821,7 @@ local CreateColorPicker = function()
 	
 	-- Cancel
 	ColorPicker.Cancel = CreateFrame("Frame", nil, ColorPicker)
-	ColorPicker.Cancel:SetScaledSize((390 / 3) - (SPACING * 3) + 1, 20)
+	vUI:SetSize(ColorPicker.Cancel, (390 / 3) - (SPACING * 3) + 1, 20)
 	vUI:SetPoint(ColorPicker.Cancel, "TOPLEFT", ColorPicker.Accept, "BOTTOMLEFT", 0, -2)
 	ColorPicker.Cancel:SetBackdrop(vUI.BackdropAndBorder)
 	ColorPicker.Cancel:SetBackdropColor(0, 0, 0)
@@ -2909,7 +2909,7 @@ local CreateColorPicker = function()
 	for i = 1, MAX_SWATCHES_Y do
 		for j = 1, MAX_SWATCHES_X do
 			local Swatch = CreateFrame("Frame", nil, ColorPicker)
-			Swatch:SetScaledSize(SWATCH_SIZE, SWATCH_SIZE)
+			vUI:SetSize(Swatch, SWATCH_SIZE, SWATCH_SIZE)
 			Swatch:SetBackdrop(vUI.BackdropAndBorder)
 			Swatch:SetBackdropColorHex(Settings["ui-window-main-color"])
 			Swatch:SetBackdropBorderColor(0, 0, 0)
@@ -3016,7 +3016,7 @@ GUI.Widgets.CreateColorSelection = function(self, id, value, label, tooltip, hoo
 	end
 	
 	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetScaledSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Anchor, GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.ID = id
 	Anchor.Text = label
 	Anchor.Tooltip = tooltip
@@ -3025,7 +3025,7 @@ GUI.Widgets.CreateColorSelection = function(self, id, value, label, tooltip, hoo
 	Anchor:SetScript("OnLeave", AnchorOnLeave)
 	
 	local Swatch = CreateFrame("Frame", nil, Anchor)
-	Swatch:SetScaledSize(SWATCH_SIZE, SWATCH_SIZE)
+	vUI:SetSize(Swatch, SWATCH_SIZE, SWATCH_SIZE)
 	vUI:SetPoint(Swatch, "RIGHT", Anchor, 0, 0)
 	Swatch:SetBackdrop(vUI.BackdropAndBorder)
 	Swatch:SetBackdropColorHex(Settings["ui-window-main-color"])
@@ -3038,7 +3038,7 @@ GUI.Widgets.CreateColorSelection = function(self, id, value, label, tooltip, hoo
 	Swatch.Texture:SetVertexColorHex(value)
 	
 	local Button = CreateFrame("Frame", nil, Anchor)
-	Button:SetScaledSize(COLOR_WIDTH, WIDGET_HEIGHT)
+	vUI:SetSize(Button, COLOR_WIDTH, WIDGET_HEIGHT)
 	vUI:SetPoint(Button, "RIGHT", Swatch, "LEFT", -2, 0)
 	Button:SetBackdrop(vUI.BackdropAndBorder)
 	Button:SetBackdropColorHex(Settings["ui-window-main-color"])
@@ -3073,14 +3073,14 @@ GUI.Widgets.CreateColorSelection = function(self, id, value, label, tooltip, hoo
 	
 	Button.MiddleText = Button:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Button.MiddleText, "CENTER", Button, 0, 0)
-	Button.MiddleText:SetScaledSize(COLOR_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Button.MiddleText, COLOR_WIDTH - 6, WIDGET_HEIGHT)
 	Button.MiddleText:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Button.MiddleText:SetJustifyH("CENTER")
 	Button.MiddleText:SetText("#"..upper(value))
 	
 	Button.Text = Button:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Button.Text, "LEFT", Anchor, LABEL_SPACING, 0)
-	Button.Text:SetScaledSize(GROUP_WIDTH - COLOR_WIDTH - SWATCH_SIZE - 6, WIDGET_HEIGHT)
+	vUI:SetSize(Button.Text, GROUP_WIDTH - COLOR_WIDTH - SWATCH_SIZE - 6, WIDGET_HEIGHT)
 	Button.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
 	Button.Text:SetJustifyH("LEFT")
 	Button.Text:SetText("|cFF"..Settings["ui-widget-font-color"]..label.."|r")
@@ -3230,7 +3230,7 @@ local AddWindowScrollBar = function(self)
 	ScrollBar.Window = self
 	
 	local Thumb = ScrollBar:GetThumbTexture() 
-	Thumb:SetScaledSize(ScrollBar:GetWidth(), WIDGET_HEIGHT)
+	vUI:SetSize(Thumb, ScrollBar:GetWidth(), WIDGET_HEIGHT)
 	Thumb:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 	Thumb:SetVertexColor(0, 0, 0)
 	
@@ -3354,7 +3354,7 @@ end
 function GUI:CreateSpacer(name)
 	-- Button
 	local Button = CreateFrame("Frame", nil, self)
-	Button:SetScaledSize(MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT)
+	vUI:SetSize(Button, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT)
 	Button:SetFrameLevel(self:GetFrameLevel() + 2)
 	Button.SortName = override or name
 	Button.Name = name
@@ -3386,7 +3386,7 @@ function GUI:CreateWindow(name, default, override)
 	
 	-- Button
 	local Button = CreateFrame("Frame", nil, self)
-	Button:SetScaledSize(MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT)
+	vUI:SetSize(Button, MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT)
 	Button:SetBackdrop(vUI.BackdropAndBorder)
 	Button:SetBackdropColor(0, 0, 0)
 	Button:SetBackdropBorderColor(0, 0, 0)
@@ -3421,7 +3421,7 @@ function GUI:CreateWindow(name, default, override)
 	
 	Button.Text = Button:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(Button.Text, "CENTER", Button, 0, -1)
-	Button.Text:SetScaledSize(MENU_BUTTON_WIDTH - 6, MENU_BUTTON_HEIGHT)
+	vUI:SetSize(Button.Text, MENU_BUTTON_WIDTH - 6, MENU_BUTTON_HEIGHT)
 	Button.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-header-font-size"])
 	Button.Text:SetJustifyH("CENTER")
 	Button.Text:SetText("|cFF" .. Settings["ui-button-font-color"] .. name .. "|r")
@@ -3661,7 +3661,7 @@ function GUI:Create()
 	self.BlackTexture:SetVertexColor(0, 0, 0)
 	
 	self:SetFrameStrata("HIGH")
-	self:SetScaledSize(GUI_WIDTH, GUI_HEIGHT)
+	vUI:SetSize(self, GUI_WIDTH, GUI_HEIGHT)
 	vUI:SetPoint(self, "CENTER", UIParent, 0, 0)
 	self:SetBackdrop(vUI.BackdropAndBorder)
 	self:SetBackdropColorHex(Settings["ui-window-bg-color"])
@@ -3692,7 +3692,7 @@ function GUI:Create()
 	
 	-- Header
 	self.Header = CreateFrame("Frame", nil, self)
-	self.Header:SetScaledSize(HEADER_WIDTH - (HEADER_HEIGHT - 2) - SPACING - 1, HEADER_HEIGHT)
+	vUI:SetSize(self.Header, HEADER_WIDTH - (HEADER_HEIGHT - 2) - SPACING - 1, HEADER_HEIGHT)
 	vUI:SetPoint(self.Header, "TOPLEFT", self, SPACING, -SPACING)
 	self.Header:SetBackdrop(vUI.BackdropAndBorder)
 	self.Header:SetBackdropColor(0, 0, 0, 0)
@@ -3706,7 +3706,7 @@ function GUI:Create()
 	
 	self.Header.Text = self.Header:CreateFontString(nil, "OVERLAY")
 	vUI:SetPoint(self.Header.Text, "CENTER", self.Header, 0, -1)
-	self.Header.Text:SetScaledSize(HEADER_WIDTH - 6, HEADER_HEIGHT)
+	vUI:SetSize(self.Header.Text, HEADER_WIDTH - 6, HEADER_HEIGHT)
 	self.Header.Text:SetFontInfo(Settings["ui-header-font"], Settings["ui-title-font-size"])
 	self.Header.Text:SetJustifyH("CENTER")
 	self.Header.Text:SetTextColorHex(Settings["ui-header-font-color"])
@@ -3743,7 +3743,7 @@ function GUI:Create()
 	self.ScrollBar = ScrollBar
 	
 	local Thumb = ScrollBar:GetThumbTexture() 
-	Thumb:SetScaledSize(ScrollBar:GetWidth(), WIDGET_HEIGHT)
+	vUI:SetSize(Thumb, ScrollBar:GetWidth(), WIDGET_HEIGHT)
 	Thumb:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 	Thumb:SetVertexColor(0, 0, 0)
 	
@@ -3767,7 +3767,7 @@ function GUI:Create()
 	
 	-- Close button
 	self.CloseButton = CreateFrame("Frame", nil, self)
-	self.CloseButton:SetScaledSize(HEADER_HEIGHT, HEADER_HEIGHT)
+	vUI:SetSize(self.CloseButton, HEADER_HEIGHT, HEADER_HEIGHT)
 	vUI:SetPoint(self.CloseButton, "TOPRIGHT", self, -SPACING, -SPACING)
 	self.CloseButton:SetBackdrop(vUI.BackdropAndBorder)
 	self.CloseButton:SetBackdropColor(0, 0, 0, 0)
@@ -3798,9 +3798,9 @@ function GUI:Create()
 	
 	self.CloseButton.Cross = self.CloseButton:CreateTexture(nil, "OVERLAY")
 	self.CloseButton.Cross:SetPoint("CENTER", self.CloseButton, 0, 0)
-	self.CloseButton.Cross:SetScaledSize(16, 16)
+	vUI:SetSize(self.CloseButton.Cross, 16, 16)
 	self.CloseButton.Cross:SetTexture(Media:GetTexture("Close"))
-	self.CloseButton.Cross:SetVertexColorHex("EEEEEE")
+	self.CloseButton.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
 end
 
 -- Groups
