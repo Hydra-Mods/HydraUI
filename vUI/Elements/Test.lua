@@ -161,9 +161,10 @@ GUI:AddOptions(function(self)
 	Left:CreateDoubleLine("p3lim", "Rainrider")
 	
 	Right:CreateHeader(Language["LibStub"])
-	Right:CreateDoubleLine("Kaelten", "CtlAltDelAmmo")
-	Right:CreateDoubleLine("jnwhiteh", "nevcairiel")
-	Right:CreateDoubleLine("mikeclueby4", "")
+	Right:CreateDoubleLine("Kaelten", "Cladhaire")
+	Right:CreateDoubleLine("ckknight", "Mikk")
+	Right:CreateDoubleLine("Ammo", "Nevcairiel")
+	Right:CreateLine("joshborke")
 	
 	Right:CreateHeader(Language["LibSharedMedia"])
 	Right:CreateDoubleLine("Elkano", "funkehdude")
