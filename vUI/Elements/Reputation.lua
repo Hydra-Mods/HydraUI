@@ -57,10 +57,10 @@ function Reputation:CreateBar()
 	self.BarBG:SetBackdropBorderColor(0, 0, 0)
 	
 	self.Texture = self.BarBG:CreateTexture(nil, "ARTWORK")
-	self.Texture:SetScaledPoint("TOPLEFT", self.BarBG, 1, -1)
-	self.Texture:SetScaledPoint("BOTTOMRIGHT", self.BarBG, -1, 1)
+	vUI:SetPoint(self.Texture, "TOPLEFT", self.BarBG, 1, -1)
+	vUI:SetPoint(self.Texture, "BOTTOMRIGHT", self.BarBG, -1, 1)
 	self.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
-	self.Texture:SetVertexColorHex(Settings["ui-window-main-color"])
+	self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	self.BGAll = CreateFrame("Frame", nil, self)
 	vUI:SetPoint(self.BGAll, "TOPLEFT", self.BarBG, -3, 3)

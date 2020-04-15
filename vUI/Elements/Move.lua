@@ -178,7 +178,7 @@ function vUI:CreateMover(frame, padding)
 	
 	Mover.Label = Mover.BG:CreateFontString(nil, "OVERLAY")
 	vUI:SetFontInfo(Mover.Label, Settings["ui-widget-font"], 12)
-	Mover.Label:SetScaledPoint("CENTER", Mover, 0, 0)
+	vUI:SetPoint(Mover.Label, "CENTER", Mover, 0, 0)
 	Mover.Label:SetText(Label)
 	
 	local OldA1, OldParent, OldA2, OldX, OldY = frame:GetPoint()

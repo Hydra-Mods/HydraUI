@@ -504,7 +504,6 @@ function Namespace:get(key)
 	end
 end
 
--- Wrappers to reintroduce UnitAura lookup by name
 local UnitAura = UnitAura
 local UnitBuff = UnitBuff
 local UnitDebuff = UnitDebuff
@@ -541,48 +540,16 @@ UnitDebuffByName = function(unit, name, filter)
 	end
 end
 
-local SetScaledHeight = function(self, height)
-	self:SetHeight(GetScale(height))
-end
-
 function vUI:SetHeight(object, height)
 	object:SetHeight(GetScale(height))
-end
-
-local SetScaledWidth = function(self, width)
-	self:SetWidth(GetScale(width))
 end
 
 function vUI:SetWidth(object, width)
 	object:SetWidth(GetScale(width))
 end
 
-local SetScaledSize = function(self, width, height)
-	self:SetSize(GetScale(width), GetScale(height or width))
-end
-
 function vUI:SetSize(object, width, height)
 	object:SetSize(GetScale(width), GetScale(height or width))
-end
-
-local SetScaledPoint = function(self, anchor1, parent, anchor2, x, y)
-	if (type(parent) == "number") then
-		parent = GetScale(parent)
-	end
-	
-	if (type(anchor2) == "number") then
-		anchor2 = GetScale(anchor2)
-	end
-	
-	if (type(x) == "number") then
-		x = GetScale(x)
-	end
-	
-	if (type(y) == "number") then
-		y = GetScale(y)
-	end
-	
-	self:SetPoint(anchor1, parent, anchor2, x, y)
 end
 
 function vUI:SetPoint(object, anchor1, parent, anchor2, x, y)
@@ -605,48 +572,6 @@ function vUI:SetPoint(object, anchor1, parent, anchor2, x, y)
 	object:SetPoint(anchor1, parent, anchor2, x, y)
 end
 
-local SetBackdropColorHex = function(self, hex)
-	if hex then
-		self:SetBackdropColor(vUI:HexToRGB(hex))
-	end
-end
-
-local SetBackdropBorderColorHex = function(self, hex)
-	if hex then
-		self:SetBackdropBorderColor(vUI:HexToRGB(hex))
-	end
-end
-
-local SetTextColorHex = function(self, hex)
-	if hex then
-		self:SetTextColor(vUI:HexToRGB(hex))
-	end
-end
-
-local SetVertexColorHex = function(self, hex)
-	if hex then
-		self:SetVertexColor(vUI:HexToRGB(hex))
-	end
-end
-
-local SetStatusBarColorHex = function(self, hex)
-	if hex then
-		self:SetStatusBarColor(vUI:HexToRGB(hex))
-	end
-end
-
-local SetFontInfo = function(self, font, size, flags)
-	local Font, IsPixel = Core[4]:GetFont(font)
-	
-	if IsPixel then
-		self:SetFont(Font, size, "MONOCHROME, OUTLINE")
-		self:SetShadowColor(0, 0, 0, 0)
-	else
-		self:SetFont(Font, size, flags)
-		self:SetShadowColor(0, 0, 0)
-		self:SetShadowOffset(1, -1)
-	end
-end
 
 function vUI:SetFontInfo(object, font, size, flags)
 	local Font, IsPixel = Core[4]:GetFont(font)
@@ -659,90 +584,6 @@ function vUI:SetFontInfo(object, font, size, flags)
 		object:SetShadowColor(0, 0, 0)
 		object:SetShadowOffset(1, -1)
 	end
-end
-
-local SetShadowed = function(self, flag)
-	if (flag and not self.Shadow) then
-		local Shadow = CreateFrame("Frame", nil, self)
-		Shadow:SetScaledPoint("TOPLEFT", self, -1, 1)
-		Shadow:SetScaledPoint("BOTTOMRIGHT", self, 1, -1)
-		Shadow:SetBackdrop(vUI.Outline)
-		Shadow:SetBackdropBorderColor(0, 0, 0)
-		Shadow:SetAlpha(0.4)
-		
-		Shadow.Outer1 = CreateFrame("Frame", nil, Shadow)
-		Shadow.Outer1:SetScaledPoint("TOPLEFT", self, -2, 2)
-		Shadow.Outer1:SetScaledPoint("BOTTOMRIGHT", self, 2, -2)
-		Shadow.Outer1:SetBackdrop(vUI.Outline)
-		Shadow.Outer1:SetBackdropBorderColor(0, 0, 0)
-		Shadow.Outer1:SetAlpha(0.2)
-		
-		Shadow.Outer2 = CreateFrame("Frame", nil, Shadow)
-		Shadow.Outer2:SetScaledPoint("TOPLEFT", self, -3, 3)
-		Shadow.Outer2:SetScaledPoint("BOTTOMRIGHT", self, 3, -3)
-		Shadow.Outer2:SetBackdrop(vUI.Outline)
-		Shadow.Outer2:SetBackdropBorderColor(0, 0, 0)
-		Shadow.Outer2:SetAlpha(0.1)
-		
-		self.Shadow = Shadow
-	elseif (not flag and self.Shadow) then
-		self.Shadow:Hide()
-	end
-end
-
-local AddMethodByReference = function(self, key, newkey, value)
-	if (self[key] and not self[newkey]) then
-		rawset(self, newkey, value)
-	end
-end
-
-local Handled = {
-	["Frame"] = true, 
-	["Texture"] = true,
-	["FontString"] = true
-}
-
-local Object = vUI
-local HandledCount = 0
-
--- Thank you Tukz for letting me use this script!
-local AddMethodsToObject = function(object)
-	local Metatable = getmetatable(object).__index
-	
-	AddMethodByReference(Metatable, "SetHeight", "SetScaledHeight", SetScaledHeight)
-	AddMethodByReference(Metatable, "SetWidth", "SetScaledWidth", SetScaledWidth)
-	AddMethodByReference(Metatable, "SetSize", "SetScaledSize", SetScaledSize)
-	AddMethodByReference(Metatable, "SetPoint", "SetScaledPoint", SetScaledPoint)
-	AddMethodByReference(Metatable, "SetBackdropColor", "SetBackdropColorHex", SetBackdropColorHex)
-	AddMethodByReference(Metatable, "SetBackdropBorderColor", "SetBackdropBorderColorHex", SetBackdropBorderColorHex)
-	AddMethodByReference(Metatable, "SetTextColor", "SetTextColorHex", SetTextColorHex)
-	AddMethodByReference(Metatable, "SetVertexColor", "SetVertexColorHex", SetVertexColorHex)
-	AddMethodByReference(Metatable, "SetStatusBarColor", "SetStatusBarColorHex", SetStatusBarColorHex)
-	AddMethodByReference(Metatable, "SetFont", "SetFontInfo", SetFontInfo)
-	AddMethodByReference(Metatable, "SetBackdrop", "SetShadowed", SetShadowed)
-	
-	Handled[object:GetObjectType()] = true
-end
-
-AddMethodsToObject(Object)
-AddMethodsToObject(Object:CreateTexture())
-AddMethodsToObject(Object:CreateFontString())
-
-local HandledCount = 0
-local EnumerateFrames = EnumerateFrames
-Object = EnumerateFrames()
-
-while Object do
-	if (not Object:IsForbidden() and not Handled[Object:GetObjectType()]) then
-		AddMethodsToObject(Object)
-		HandledCount = HandledCount + 1
-		
-		if (HandledCount == 23) then -- We found everything we need
-			break
-		end
-	end
-	
-	Object = EnumerateFrames(Object)
 end
 
 function vUI:OnEvent(event, ...)

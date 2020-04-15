@@ -62,44 +62,44 @@ local OnChange = function(direction, buttonSize, spacing)
     height = buttonSize + panelTotalPadding
   end
 
-  MinimapButtons.Panel:SetScaledSize(width, height)
+  vUI:SetSize(MinimapButtons.Panel, width, height)
 
 	for _, Button in pairs(MinimapButtons.items) do
 		if (Button:IsShown()) then
-			Button:SetScaledSize(buttonSize)
+			vUI:SetSize(Button, buttonSize)
 			Button:ClearAllPoints()
 
       if not lastButton then
         if (direction == "LEFT") then
-          Button:SetScaledPoint("TOPRIGHT", MinimapButtons.Panel, -3, -3)
+          vUI:SetPoint(Button, "TOPRIGHT", MinimapButtons.Panel, -3, -3)
         end
 
         if (direction == "RIGHT") then
-          Button:SetScaledPoint("TOPLEFT", MinimapButtons.Panel, 3, -3)
+          vUI:SetPoint(Button, "TOPLEFT", MinimapButtons.Panel, 3, -3)
         end
 
         if (direction == "DOWN") then
-          Button:SetScaledPoint("TOPLEFT", MinimapButtons.Panel, 3, -3)
+          vUI:SetPoint(Button, "TOPLEFT", MinimapButtons.Panel, 3, -3)
         end
 
         if (direction == "UP") then
-          Button:SetScaledPoint("BOTTOMRIGHT", MinimapButtons.Panel, -3, 3)
+          vUI:SetPoint(Button, "BOTTOMRIGHT", MinimapButtons.Panel, -3, 3)
         end
       else
         if (direction == "LEFT") then
-          Button:SetScaledPoint("RIGHT", lastButton, "LEFT", -spacing, 0)
+          vUI:SetPoint(Button, "RIGHT", lastButton, "LEFT", -spacing, 0)
         end
 
         if (direction == "RIGHT") then
-          Button:SetScaledPoint("LEFT", lastButton, "RIGHT", spacing, 0)
+          vUI:SetPoint(Button, "LEFT", lastButton, "RIGHT", spacing, 0)
         end
 
         if (direction == "DOWN") then
-          Button:SetScaledPoint("TOP", lastButton, "BOTTOM", 0, -spacing)
+          vUI:SetPoint(Button, "TOP", lastButton, "BOTTOM", 0, -spacing)
         end
 
         if (direction == "UP") then
-          Button:SetScaledPoint("BOTTOM", lastButton, "TOP", 0, spacing)
+          vUI:SetPoint(Button, "BOTTOM", lastButton, "TOP", 0, spacing)
         end
 			end
 
@@ -150,23 +150,23 @@ function MinimapButtons:SkinButtons()
 					end
 	
 					region:ClearAllPoints()
-					region:SetScaledPoint("TOPLEFT", Child, 1, -1)
-					region:SetScaledPoint("BOTTOMRIGHT", Child, -1, 1)
+					vUI:SetPoint(region, "TOPLEFT", Child, 1, -1)
+					vUI:SetPoint(region, "BOTTOMRIGHT", Child, -1, 1)
 					region:SetDrawLayer('ARTWORK')
 					region:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 				end
 			end
 
 			Child.Backdrop = CreateFrame("Frame", nil, Child)
-			Child.Backdrop:SetScaledPoint("TOPLEFT", Child, 0, 0)
-			Child.Backdrop:SetScaledPoint("BOTTOMRIGHT", Child, 0, 0)
+			vUI:SetPoint(Child.Backdrop, "TOPLEFT", Child, 0, 0)
+			vUI:SetPoint(Child.Backdrop, "BOTTOMRIGHT", Child, 0, 0)
 			Child.Backdrop:SetBackdrop(vUI.Backdrop)
 			Child.Backdrop:SetBackdropColor(0, 0, 0)
 			Child.Backdrop:SetFrameLevel(Child:GetFrameLevel() - 1)
 			
 			Child.Backdrop.Texture = Child.Backdrop:CreateTexture(nil, "BACKDROP")
-			Child.Backdrop.Texture:SetScaledPoint("TOPLEFT", Child.Backdrop, 1, -1)
-			Child.Backdrop.Texture:SetScaledPoint("BOTTOMRIGHT", Child.Backdrop, -1, 1)
+			vUI:SetPoint(Child.Backdrop.Texture, "TOPLEFT", Child.Backdrop, 1, -1)
+			vUI:SetPoint(Child.Backdrop.Texture, "BOTTOMRIGHT", Child.Backdrop, -1, 1)
 			Child.Backdrop.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
 			Child.Backdrop.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 
@@ -178,8 +178,8 @@ function MinimapButtons:SkinButtons()
 					local Highlight = Child:CreateTexture(nil, "ARTWORK", button)
 					Highlight:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
 					Highlight:SetVertexColor(1, 1, 1, 0.2)
-					Highlight:SetScaledPoint("TOPLEFT", Child, 1, -1)
-					Highlight:SetScaledPoint("BOTTOMRIGHT", Child, -1, 1)
+					vUI:SetPoint(Highlight, "TOPLEFT", Child, 1, -1)
+					vUI:SetPoint(Highlight, "BOTTOMRIGHT", Child, -1, 1)
 					
 					Child.Highlight = Highlight
 					Child:SetHighlightTexture(Highlight)
@@ -189,8 +189,8 @@ function MinimapButtons:SkinButtons()
 					local Pushed = Child:CreateTexture(nil, "ARTWORK", button)
 					Pushed:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
 					Pushed:SetVertexColor(0.9, 0.8, 0.1, 0.3)
-					Pushed:SetScaledPoint("TOPLEFT", Child, 1, -1)
-					Pushed:SetScaledPoint("BOTTOMRIGHT", Child, -1, 1)
+					vUI:SetPoint(Pushed, "TOPLEFT", Child, 1, -1)
+					vUI:SetPoint(Pushed, "BOTTOMRIGHT", Child, -1, 1)
 					
 					Child.Pushed = Pushed
 					Child:SetPushedTexture(Pushed)
@@ -216,9 +216,9 @@ function MinimapButtons:CreatePanel()
 	
 	if (Settings["minimap-show-time"]) then
 		-- NOTE: here be unicorn numbers
-		Frame:SetScaledPoint("TOPRIGHT", UIParent, "TOPRIGHT", -12, -(minimapHeight + 26 + 13))
+		vUI:SetPoint(Frame, "TOPRIGHT", UIParent, "TOPRIGHT", -12, -(minimapHeight + 26 + 13))
 	else
-		Frame:SetScaledPoint("TOPRIGHT", UIParent, "TOPRIGHT", -12, -(minimapHeight + 6))
+		vUI:SetPoint(Frame, "TOPRIGHT", UIParent, "TOPRIGHT", -12, -(minimapHeight + 6))
 	end
 
   self.Panel = Frame

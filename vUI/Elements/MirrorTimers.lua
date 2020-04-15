@@ -75,8 +75,8 @@ function MirrorTimers:Load()
 	self.Bar.Text:SetJustifyH("CENTER")
 	
 	self.BarOutline = self.Bar:CreateTexture(nil, "BORDER")
-	self.BarOutline:SetScaledPoint("TOPLEFT", self.Bar, -1, 1)
-	self.BarOutline:SetScaledPoint("BOTTOMRIGHT", self.Bar, 1, -1)
+	vUI:SetPoint(self.BarOutline, "TOPLEFT", self.Bar, -1, 1)
+	vUI:SetPoint(self.BarOutline, "BOTTOMRIGHT", self.Bar, 1, -1)
 	self.BarOutline:SetTexture(Media:GetTexture("Blank"))
 	self.BarOutline:SetVertexColor(0, 0, 0)
 	
