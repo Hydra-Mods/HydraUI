@@ -52,10 +52,8 @@ function Tooltips:UpdateFonts(tooltip)
 	for i = 1, tooltip:GetNumRegions() do
 		local Region = select(i, tooltip:GetRegions())
 		
-		--if (Region:GetObjectType() == "FontString" and not Region.Handled) then
 		if (Region:GetObjectType() == "FontString") then
-			Region:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
-			--Region.Handled = true
+			vUI:SetFontInfo(Region, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 		end
 	end
 	
@@ -66,20 +64,12 @@ function Tooltips:UpdateFonts(tooltip)
 			local Prefix = _G[Child:GetName() .. "PrefixText"]
 			local Suffix = _G[Child:GetName() .. "SuffixText"]
 			
-			--if (Prefix and not Prefix.Handled) then
 			if Prefix then
-				Prefix:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
-				--Prefix.SetFont = function() end
-				--Prefix.SetFontObject = function() end
-				--Prefix.Handled = true
+				vUI:SetFontInfo(Prefix, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 			end
 			
-			--if (Suffix and not Suffix.Handled) then
 			if Suffix then
-				Suffix:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
-				--Suffix.SetFont = function() end
-				--Suffix.SetFontObject = function() end
-				--Suffix.Handled = true
+				vUI:SetFontInfo(Suffix, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 			end
 		end
 	end
@@ -90,7 +80,6 @@ function Tooltips:UpdateFonts(tooltip)
 		for i = 1, tooltip.numMoneyFrames do
 			MoneyFrame = _G[tooltip:GetName() .. "MoneyFrame" .. i]
 			
-			--if (MoneyFrame and not MoneyFrame.Handled) then
 			if MoneyFrame then
 				for j = 1, MoneyFrame:GetNumChildren() do
 					local Region = select(j, MoneyFrame:GetChildren())
@@ -99,14 +88,10 @@ function Tooltips:UpdateFonts(tooltip)
 						local Text = _G[Region:GetName() .. "Text"]
 						
 						if Text then
-							Text:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
-							--Text.SetFont = function() end
-							--Text.SetFontObject = function() end
+							vUI:SetFontInfo(Text, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 						end
 					end
 				end
-				
-				--MoneyFrame.Handled = true
 			end
 		end
 	end
@@ -117,9 +102,9 @@ end
 local SetTooltipStyle = function(self)
 	if self.Styled then
 		if (self.GetUnit and self:GetUnit()) then
-			self.OuterBG:SetScaledPoint("TOPLEFT", GameTooltipStatusBar, -4, 4)
+			vUI:SetPoint(self.OuterBG, "TOPLEFT", GameTooltipStatusBar, -4, 4)
 		else
-			self.OuterBG:SetScaledPoint("TOPLEFT", self, -3, 3)
+			vUI:SetPoint(self.OuterBG, "TOPLEFT", self, -3, 3)
 		end
 		
 		Tooltips:UpdateFonts(self)
@@ -132,27 +117,27 @@ local SetTooltipStyle = function(self)
 		self.Backdrop:SetAllPoints(self)
 		self.Backdrop:SetBackdrop(vUI.BackdropAndBorder)
 		self.Backdrop:SetBackdropBorderColor(0, 0, 0)
-		self.Backdrop:SetBackdropColorHex(Settings["ui-window-main-color"])
+		self.Backdrop:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 		self.Backdrop:SetFrameStrata("TOOLTIP")
 		self.Backdrop:SetFrameLevel(2)
 		
 		self.OuterBG = CreateFrame("Frame", nil, self)
-		self.OuterBG:SetScaledPoint("TOPLEFT", self, -3, 3)
-		self.OuterBG:SetScaledPoint("BOTTOMRIGHT", self, 3, -3)
+		vUI:SetPoint(self.OuterBG, "TOPLEFT", self, -3, 3)
+		vUI:SetPoint(self.OuterBG, "BOTTOMRIGHT", self, 3, -3)
 		self.OuterBG:SetBackdrop(vUI.BackdropAndBorder)
 		self.OuterBG:SetBackdropBorderColor(0, 0, 0)
 		self.OuterBG:SetFrameStrata("TOOLTIP")
 		self.OuterBG:SetFrameLevel(1)
-		self.OuterBG:SetBackdropColorHex(Settings["ui-window-bg-color"])
+		self.OuterBG:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 		
 		if (self == AutoCompleteBox) then
 			for i = 1, AUTOCOMPLETE_MAX_BUTTONS do
 				local Text = _G["AutoCompleteButton" .. i .. "Text"]
 				
-				Text:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+				vUI:SetFontInfo(Text, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 			end
 			
-			AutoCompleteInstructions:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+			vUI:SetFontInfo(AutoCompleteInstructions, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 			
 			AutoCompleteBox.Backdrop:SetFrameStrata("DIALOG")
 			AutoCompleteBox.OuterBG:SetFrameStrata("DIALOG")
@@ -233,8 +218,8 @@ local OnTooltipSetUnit = function(self)
 			Class = ""
 		end
 		
-		GameTooltipStatusBar:SetStatusBarColorHex(Color)
-		GameTooltipStatusBar.BG:SetVertexColorHex(Color)
+		GameTooltipStatusBar:SetStatusBarColor(vUI:HexToRGB(Color))
+		GameTooltipStatusBar.BG:SetVertexColor(vUI:HexToRGB(Color))
 		
 		if (EffectiveLevel > 0 and EffectiveLevel ~= Level) then
 			local EffectiveColor = GetQuestDifficultyColor(EffectiveLevel)
@@ -309,7 +294,7 @@ local OnTooltipSetUnit = function(self)
 		--GameTooltipStatusBar.BG:SetVertexColorHex(Color)
 		
 		if self.OuterBG then
-			self.OuterBG:SetScaledPoint("TOPLEFT", GameTooltipStatusBar, -4, 4)
+			vUI:SetPoint(self.OuterBG, "TOPLEFT", GameTooltipStatusBar, -4, 4)
 		end
 	end
 end
@@ -395,9 +380,9 @@ Tooltips.GameTooltip_SetDefaultAnchor = function(self, parent)
 	self:ClearAllPoints()
 	
 	if vUIMetersFrame then
-		self:SetScaledPoint("BOTTOMLEFT", vUIMetersFrame, "TOPLEFT", 3, 5)
+		vUI:SetPoint(self, "BOTTOMLEFT", vUIMetersFrame, "TOPLEFT", 3, 5)
 	else
-		self:SetScaledPoint("BOTTOMRIGHT", Tooltips, -3, 3)
+		vUI:SetPoint(self, "BOTTOMRIGHT", Tooltips, -3, 3)
 	end
 end
 
@@ -453,44 +438,44 @@ local OnValueChanged = function(self)
 		end
 	end
 	
-	self:SetStatusBarColorHex(Color)
-	self.BG:SetVertexColorHex(Color)
+	self:SetStatusBarColor(vUI:HexToRGB(Color))
+	self.BG:SetVertexColor(vUI:HexToRGB(Color))
 end
 
 function Tooltips:UpdateStatusBarFonts()
-	GameTooltipStatusBar.HealthValue:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
-	GameTooltipStatusBar.HealthPercent:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+	vUI:SetFontInfo(GameTooltipStatusBar.HealthValue, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+	vUI:SetFontInfo(GameTooltipStatusBar.HealthPercent, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 end
 
 function Tooltips:StyleStatusBar()
 	GameTooltipStatusBar:ClearAllPoints()
-	GameTooltipStatusBar:SetScaledHeight(Settings["tooltips-health-bar-height"])
-	GameTooltipStatusBar:SetScaledPoint("BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", 1, 3)
-	GameTooltipStatusBar:SetScaledPoint("BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -1, 3)
+	vUI:SetHeight(GameTooltipStatusBar, Settings["tooltips-health-bar-height"])
+	vUI:SetPoint(GameTooltipStatusBar, "BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", 1, 3)
+	vUI:SetPoint(GameTooltipStatusBar, "BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -1, 3)
 	GameTooltipStatusBar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 	
 	GameTooltipStatusBar.BG = GameTooltipStatusBar:CreateTexture(nil, "ARTWORK")
-	GameTooltipStatusBar.BG:SetScaledPoint("TOPLEFT", GameTooltipStatusBar, 0, 0)
-	GameTooltipStatusBar.BG:SetScaledPoint("BOTTOMRIGHT", GameTooltipStatusBar, 0, 0)
+	vUI:SetPoint(GameTooltipStatusBar.BG, "TOPLEFT", GameTooltipStatusBar, 0, 0)
+	vUI:SetPoint(GameTooltipStatusBar.BG, "BOTTOMRIGHT", GameTooltipStatusBar, 0, 0)
 	GameTooltipStatusBar.BG:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
 	GameTooltipStatusBar.BG:SetAlpha(0.2)
 	
 	GameTooltipStatusBar.Backdrop = CreateFrame("Frame", nil, GameTooltipStatusBar)
-	GameTooltipStatusBar.Backdrop:SetScaledPoint("TOPLEFT", GameTooltipStatusBar, -1, 1)
-	GameTooltipStatusBar.Backdrop:SetScaledPoint("BOTTOMRIGHT", GameTooltipStatusBar, 1, -1)
+	vUI:SetPoint(GameTooltipStatusBar.Backdrop, "TOPLEFT", GameTooltipStatusBar, -1, 1)
+	vUI:SetPoint(GameTooltipStatusBar.Backdrop, "BOTTOMRIGHT", GameTooltipStatusBar, 1, -1)
 	GameTooltipStatusBar.Backdrop:SetBackdrop(vUI.BackdropAndBorder)
 	GameTooltipStatusBar.Backdrop:SetBackdropColor(0, 0, 0)
 	GameTooltipStatusBar.Backdrop:SetBackdropBorderColor(0, 0, 0)
 	GameTooltipStatusBar.Backdrop:SetFrameLevel(GameTooltipStatusBar:GetFrameLevel() - 1)
 	
 	GameTooltipStatusBar.HealthValue = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
-	GameTooltipStatusBar.HealthValue:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
-	GameTooltipStatusBar.HealthValue:SetScaledPoint("LEFT", GameTooltipStatusBar, 3, 0)
+	vUI:SetFontInfo(GameTooltipStatusBar.HealthValue, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+	vUI:SetPoint(GameTooltipStatusBar.HealthValue, "LEFT", GameTooltipStatusBar, 3, 0)
 	GameTooltipStatusBar.HealthValue:SetJustifyH("LEFT")
 	
 	GameTooltipStatusBar.HealthPercent = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
-	GameTooltipStatusBar.HealthPercent:SetFontInfo(Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
-	GameTooltipStatusBar.HealthPercent:SetScaledPoint("RIGHT", GameTooltipStatusBar, -3, 0)
+	vUI:SetFontInfo(GameTooltipStatusBar.HealthPercent, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+	vUI:SetPoint(GameTooltipStatusBar.HealthPercent, "RIGHT", GameTooltipStatusBar, -3, 0)
 	GameTooltipStatusBar.HealthPercent:SetJustifyH("RIGHT")
 	
 	GameTooltipStatusBar:HookScript("OnValueChanged", OnValueChanged)
@@ -498,15 +483,15 @@ function Tooltips:StyleStatusBar()
 end
 
 local ItemRefCloseOnEnter = function(self)
-	self.Cross:SetVertexColorHex("C0392B")
+	self.Cross:SetVertexColor(vUI:HexToRGB("C0392B"))
 end
 
 local ItemRefCloseOnLeave = function(self)
-	self.Cross:SetVertexColorHex("EEEEEE")
+	self.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
 end
 
 local ItemRefCloseOnMouseUp = function(self)
-	self.Texture:SetVertexColorHex(Settings["ui-header-texture-color"])
+	self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	ItemRefTooltip:Hide()
 end
@@ -522,8 +507,8 @@ function Tooltips:SkinItemRef()
 	
 	-- Close button
 	local CloseButton = CreateFrame("Frame", nil, ItemRefTooltip)
-	CloseButton:SetScaledSize(20, 20)
-	CloseButton:SetScaledPoint("TOPRIGHT", ItemRefTooltip, -3, -3)
+	vUI:SetSize(CloseButton, 20, 20)
+	vUI:SetPoint(CloseButton, "TOPRIGHT", ItemRefTooltip, -3, -3)
 	CloseButton:SetBackdrop(vUI.BackdropAndBorder)
 	CloseButton:SetBackdropColor(0, 0, 0, 0)
 	CloseButton:SetBackdropBorderColor(0, 0, 0)
@@ -533,16 +518,16 @@ function Tooltips:SkinItemRef()
 	CloseButton:SetScript("OnMouseDown", ItemRefCloseOnMouseDown)
 	
 	CloseButton.Texture = CloseButton:CreateTexture(nil, "ARTWORK")
-	CloseButton.Texture:SetScaledPoint("TOPLEFT", CloseButton, 1, -1)
-	CloseButton.Texture:SetScaledPoint("BOTTOMRIGHT", CloseButton, -1, 1)
+	vUI:SetPoint(CloseButton.Texture, "TOPLEFT", CloseButton, 1, -1)
+	vUI:SetPoint(CloseButton.Texture, "BOTTOMRIGHT", CloseButton, -1, 1)
 	CloseButton.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
-	CloseButton.Texture:SetVertexColorHex(Settings["ui-header-texture-color"])
+	CloseButton.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	CloseButton.Cross = CloseButton:CreateTexture(nil, "OVERLAY")
-	CloseButton.Cross:SetPoint("CENTER", CloseButton, 0, 0)
-	CloseButton.Cross:SetScaledSize(16, 16)
+	vUI:SetPoint(CloseButton.Cross, "CENTER", CloseButton, 0, 0)
+	vUI:SetSize(CloseButton.Cross, 16, 16)
 	CloseButton.Cross:SetTexture(Media:GetTexture("Close"))
-	CloseButton.Cross:SetVertexColorHex("EEEEEE")
+	CloseButton.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
 	
 	ItemRefTooltip.NewCloseButton = CloseButton
 end
@@ -552,8 +537,8 @@ function Tooltips:Load()
 		return
 	end
 	
-	self:SetScaledSize(200, 26)
-	self:SetScaledPoint("BOTTOMRIGHT", UIParent, -13, 101)
+	vUI:SetSize(self, 200, 26)
+	vUI:SetPoint(self, "BOTTOMRIGHT", UIParent, -13, 101)
 	
 	self:AddHooks()
 	self:StyleStatusBar()

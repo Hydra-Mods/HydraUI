@@ -25,79 +25,79 @@ end
 
 function MM:Style()
 	-- Backdrop
-	self:SetScaledPoint("TOPRIGHT", UIParent, -12, -12)
-	self:SetScaledSize((Settings["minimap-size"] + 8), (44 + 8 + Settings["minimap-size"]))
+	vUI:SetPoint(self, "TOPRIGHT", UIParent, -12, -12)
+	vUI:SetSize(self, (Settings["minimap-size"] + 8), (44 + 8 + Settings["minimap-size"]))
 	self:SetBackdrop(vUI.BackdropAndBorder)
 	self:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self:SetBackdropBorderColor(0, 0, 0)
 	
 	-- Top Info
 	self.TopFrame = CreateFrame("Frame", "vUIMinimapTop", self)
-	self.TopFrame:SetScaledHeight(20)
-	self.TopFrame:SetScaledPoint("TOPLEFT", self, 3, -3)
-	self.TopFrame:SetScaledPoint("TOPRIGHT", self, -3, -3)
+	vUI:SetHeight(self.TopFrame, 20)
+	vUI:SetPoint(self.TopFrame, "TOPLEFT", self, 3, -3)
+	vUI:SetPoint(self.TopFrame, "TOPRIGHT", self, -3, -3)
 	self.TopFrame:SetBackdrop(vUI.BackdropAndBorder)
 	self.TopFrame:SetBackdropColor(0, 0, 0, 0)
 	self.TopFrame:SetBackdropBorderColor(0, 0, 0)
 	
 	self.TopFrame.Tex = self.TopFrame:CreateTexture(nil, "ARTWORK")
-	self.TopFrame.Tex:SetPoint("TOPLEFT", self.TopFrame, 1, -1)
-	self.TopFrame.Tex:SetPoint("BOTTOMRIGHT", self.TopFrame, -1, 1)
+	vUI:SetPoint(self.TopFrame.Tex, "TOPLEFT", self.TopFrame, 1, -1)
+	vUI:SetPoint(self.TopFrame.Tex, "BOTTOMRIGHT", self.TopFrame, -1, 1)
 	self.TopFrame.Tex:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
-	self.TopFrame.Tex:SetVertexColorHex(Settings["ui-header-texture-color"])
+	self.TopFrame.Tex:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	-- Bottom Info
 	self.BottomFrame = CreateFrame("Frame", "vUIMinimapBottom", self)
-	self.BottomFrame:SetScaledHeight(20)
-	self.BottomFrame:SetScaledPoint("BOTTOMLEFT", self, 3, 3)
-	self.BottomFrame:SetScaledPoint("BOTTOMRIGHT", self, -3, 3)
+	vUI:SetHeight(self.BottomFrame, 20)
+	vUI:SetPoint(self.BottomFrame, "BOTTOMLEFT", self, 3, 3)
+	vUI:SetPoint(self.BottomFrame, "BOTTOMRIGHT", self, -3, 3)
 	self.BottomFrame:SetBackdrop(vUI.BackdropAndBorder)
 	self.BottomFrame:SetBackdropColor(0, 0, 0, 0)
 	self.BottomFrame:SetBackdropBorderColor(0, 0, 0)
 	
 	self.BottomFrame.Tex = self.BottomFrame:CreateTexture(nil, "ARTWORK")
-	self.BottomFrame.Tex:SetPoint("TOPLEFT", self.BottomFrame, 1, -1)
-	self.BottomFrame.Tex:SetPoint("BOTTOMRIGHT", self.BottomFrame, -1, 1)
+	vUI:SetPoint(self.BottomFrame.Tex, "TOPLEFT", self.BottomFrame, 1, -1)
+	vUI:SetPoint(self.BottomFrame.Tex, "BOTTOMRIGHT", self.BottomFrame, -1, 1)
 	self.BottomFrame.Tex:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
-	self.BottomFrame.Tex:SetVertexColorHex(Settings["ui-header-texture-color"])
+	self.BottomFrame.Tex:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	-- Style minimap
 	Minimap:SetMaskTexture(Media:GetTexture("Blank"))
 	Minimap:SetParent(self)
 	Minimap:ClearAllPoints()
-	Minimap:SetScaledPoint("TOP", self.TopFrame, "BOTTOM", 0, -3)
-	Minimap:SetScaledSize(Settings["minimap-size"], Settings["minimap-size"])
+	vUI:SetPoint(Minimap, "TOP", self.TopFrame, "BOTTOM", 0, -3)
+	vUI:SetSize(Minimap, Settings["minimap-size"], Settings["minimap-size"])
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", OnMouseWheel)
 	
 	Minimap.BG = Minimap:CreateTexture(nil, "BACKGROUND")
 	Minimap.BG:SetTexture(Media:GetTexture("Blank"))
 	Minimap.BG:SetVertexColor(0, 0, 0)
-	Minimap.BG:SetScaledPoint("TOPLEFT", Minimap, -1, 1)
-	Minimap.BG:SetScaledPoint("BOTTOMRIGHT", Minimap, 1, -1)
+	vUI:SetPoint(Minimap.BG, "TOPLEFT", Minimap, -1, 1)
+	vUI:SetPoint(Minimap.BG, "BOTTOMRIGHT", Minimap, 1, -1)
 	
 	MiniMapMailFrame:ClearAllPoints()
-	MiniMapMailFrame:SetScaledPoint("TOPRIGHT", -4, 12)
+	vUI:SetPoint(MiniMapMailFrame, "TOPRIGHT", -4, 12)
 	
-	MiniMapMailIcon:SetScaledSize(32, 32)
+	vUI:SetSize(MiniMapMailIcon, 32, 32)
 	MiniMapMailIcon:SetTexture(Media:GetTexture("Mail 2"))
-	MiniMapMailIcon:SetVertexColorHex("EEEEEE")
+	MiniMapMailIcon:SetVertexColor(vUI:HexToRGB("EEEEEE"))
 	
 	MinimapNorthTag:SetTexture(nil)
 	
 	QueueStatusMinimapButton:ClearAllPoints()
-	QueueStatusMinimapButton:SetScaledPoint("BOTTOMLEFT", Minimap, 1, 1)
+	vUI:SetPoint(QueueStatusMinimapButton, "BOTTOMLEFT", Minimap, 1, 1)
 	
 	if MiniMapTrackingFrame then
 		MiniMapTrackingFrame:ClearAllPoints()
-		MiniMapTrackingFrame:SetScaledSize(24, 24)
-		MiniMapTrackingFrame:SetScaledPoint("TOPLEFT", Minimap, 1, -1)
+		vUI:SetSize(MiniMapTrackingFrame, 24, 24)
+		vUI:SetPoint(MiniMapTrackingFrame, "TOPLEFT", Minimap, 1, -1)
 		MiniMapTrackingFrame:SetFrameLevel(Minimap:GetFrameLevel() + 1)
 		
-		MiniMapTrackingIcon:SetScaledSize(18, 18)
+		vUI:SetSize(MiniMapTrackingIcon, 18, 18)
 		MiniMapTrackingIcon:ClearAllPoints()
-		MiniMapTrackingIcon:SetScaledPoint("TOPLEFT", MiniMapTrackingFrame, 1, -1)
-		MiniMapTrackingIcon:SetScaledPoint("BOTTOMRIGHT", MiniMapTrackingFrame, -1, 1)
+		vUI:SetPoint(MiniMapTrackingIcon, "TOPLEFT", MiniMapTrackingFrame, 1, -1)
+		vUI:SetPoint(MiniMapTrackingIcon, "BOTTOMRIGHT", MiniMapTrackingFrame, -1, 1)
 		MiniMapTrackingIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		
 		MiniMapTrackingBorder:Hide()
@@ -131,9 +131,9 @@ function MM:Load()
 end
 
 local UpdateMinimapSize = function(value)
-	MM:SetScaledSize((value + 8), (44 + 8 + value))
+	vUI:SetSize(MM, (value + 8), (44 + 8 + value))
 	
-	Minimap:SetScaledSize(value, value)
+	vUI:SetSize(Minimap, value, value)
 	Minimap:SetZoom(Minimap:GetZoom() + 1)
 	Minimap:SetZoom(Minimap:GetZoom() - 1)
 	Minimap:UpdateBlips()

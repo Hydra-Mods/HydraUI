@@ -33,7 +33,7 @@ function DT:NewAnchor(name, parent)
 	end
 	
 	local Anchor = CreateFrame("Frame", nil, parent)
-	Anchor:SetScaledSize(120, 20)
+	vUI:SetSize(Anchor, 120, 20)
 	Anchor:SetFrameLevel(parent:GetFrameLevel() + 1)
 	Anchor:SetFrameStrata(parent:GetFrameStrata())
 	Anchor:SetBackdrop(vUI.Backdrop)
@@ -45,11 +45,11 @@ function DT:NewAnchor(name, parent)
 	Anchor.SaveValue = SaveValue
 	
 	Anchor.Highlight = Anchor:CreateTexture(nil, "ARTWORK")
-	Anchor.Highlight:SetScaledPoint("BOTTOMLEFT", Anchor, 20, 0)
-	Anchor.Highlight:SetScaledPoint("BOTTOMRIGHT", Anchor, -20, 0)
-	Anchor.Highlight:SetScaledHeight(14)
+	vUI:SetPoint(Anchor.Highlight, "BOTTOMLEFT", Anchor, 20, 0)
+	vUI:SetPoint(Anchor.Highlight, "BOTTOMRIGHT", Anchor, -20, 0)
+	vUI:SetHeight(Anchor.Highlight, 14)
 	Anchor.Highlight:SetTexture(Media:GetTexture("RenHorizonUp"))
-	Anchor.Highlight:SetVertexColorHex(Settings["ui-widget-color"])
+	Anchor.Highlight:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
 	Anchor.Highlight:SetAlpha(0)
 	
 	Anchor.Fade = CreateAnimationGroup(Anchor.Highlight)
@@ -66,8 +66,8 @@ function DT:NewAnchor(name, parent)
 	Anchor.FadeOut:SetChange(0)
 	
 	Anchor.Text = Anchor:CreateFontString(nil, "ARTWORK")
-	Anchor.Text:SetFontInfo(Settings["data-text-font"], Settings["data-text-font-size"], Settings["data-text-font-flags"])
-	Anchor.Text:SetScaledPoint("CENTER", Anchor, "CENTER", 0, 0)
+	vUI:SetFontInfo(Anchor.Text, Settings["data-text-font"], Settings["data-text-font-size"], Settings["data-text-font-flags"])
+	vUI:SetPoint(Anchor.Text, "CENTER", Anchor, "CENTER", 0, 0)
 	Anchor.Text:SetJustifyH("CENTER")
 	
 	self.Anchors[name] = Anchor
@@ -123,16 +123,16 @@ function DT:Load()
 		local Height = vUIChatFrameBottom:GetHeight()
 		
 		local ChatLeft = self:NewAnchor("Chat-Left", vUIChatFrameBottom)
-		ChatLeft:SetScaledSize(Width, Height)
-		ChatLeft:SetScaledPoint("LEFT", vUIChatFrameBottom, 0, 0)
+		vUI:SetSize(ChatLeft, Width, Height)
+		vUI:SetPoint(ChatLeft, "LEFT", vUIChatFrameBottom, 0, 0)
 		
 		local ChatMiddle = self:NewAnchor("Chat-Middle", vUIChatFrameBottom)
-		ChatMiddle:SetScaledSize(Width, Height)
-		ChatMiddle:SetScaledPoint("LEFT", ChatLeft, "RIGHT", 0, 0)
+		vUI:SetSize(ChatMiddle, Width, Height)
+		vUI:SetPoint(ChatMiddle, "LEFT", ChatLeft, "RIGHT", 0, 0)
 		
 		local ChatRight = self:NewAnchor("Chat-Right", vUIChatFrameBottom)
-		ChatRight:SetScaledSize(Width, Height)
-		ChatRight:SetScaledPoint("LEFT", ChatMiddle, "RIGHT", 0, 0)
+		vUI:SetSize(ChatRight, Width, Height)
+		vUI:SetPoint(ChatRight, "LEFT", ChatMiddle, "RIGHT", 0, 0)
 		
 		self:SetDataText("Chat-Left", Settings["data-text-chat-left"])
 		self:SetDataText("Chat-Middle", Settings["data-text-chat-middle"])
@@ -141,12 +141,12 @@ function DT:Load()
 	
 	if Settings["minimap-enable"] then
 		local MinimapTop = self:NewAnchor("Minimap-Top", vUIMinimapTop)
-		MinimapTop:SetScaledSize(vUIMinimapTop:GetSize())
-		MinimapTop:SetScaledPoint("CENTER", vUIMinimapTop, 0, 0)
+		vUI:SetSize(MinimapTop, vUIMinimapTop:GetSize())
+		vUI:SetPoint(MinimapTop, "CENTER", vUIMinimapTop, 0, 0)
 		
 		local MinimapBottom = self:NewAnchor("Minimap-Bottom", vUIMinimapBottom)
-		MinimapBottom:SetScaledSize(vUIMinimapBottom:GetSize())
-		MinimapBottom:SetScaledPoint("CENTER", vUIMinimapBottom, 0, 0)
+		vUI:SetSize(MinimapBottom, vUIMinimapBottom:GetSize())
+		vUI:SetPoint(MinimapBottom, "CENTER", vUIMinimapBottom, 0, 0)
 		
 		self:SetDataText("Minimap-Top", Settings["data-text-minimap-top"])
 		self:SetDataText("Minimap-Bottom", Settings["data-text-minimap-bottom"])
@@ -183,7 +183,7 @@ end
 
 local UpdateFont = function()
 	for Name, Anchor in pairs(DT.Anchors) do
-		Anchor.Text:SetFontInfo(Settings["data-text-font"], Settings["data-text-font-size"], Settings["data-text-font-flags"])
+		vUI:SetFontInfo(Anchor.Text, Settings["data-text-font"], Settings["data-text-font-size"], Settings["data-text-font-flags"])
 	end
 end
 

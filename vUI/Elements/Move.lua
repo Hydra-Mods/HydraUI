@@ -65,7 +65,7 @@ function vUI:ResetAllMovers()
 			local A1, Parent, A2, X, Y = unpack(self.FrameDefaults[self.MovingFrames[i].Name])
 			
 			self.MovingFrames[i]:ClearAllPoints()
-			self.MovingFrames[i]:SetScaledPoint(A1, _G[Parent], A2, X, Y)
+			vUI:SetPoint(self.MovingFrames[i], A1, _G[Parent], A2, X, Y)
 			
 			vUIMove[self.MovingFrames[i].Name] = {A1, Parent, A2, X, Y}
 		end
@@ -91,7 +91,7 @@ local MoverOnMouseUp = function(self, button)
 			local ParentObject = _G[Parent]
 			
 			self:ClearAllPoints()
-			self:SetScaledPoint(A1, ParentObject, A2, X, Y)
+			vUI:SetPoint(self, A1, ParentObject, A2, X, Y)
 			
 			vUIMove[self.Name] = {A1, Parent, A2, X, Y}
 		end
@@ -99,7 +99,7 @@ local MoverOnMouseUp = function(self, button)
 end
 
 local MoverOnEnter = function(self)
-	self:SetBackdropColorHex("FF4444")
+	self:SetBackdropColor(vUI:HexToRGB("FF4444"))
 	
 	local A1, Parent, A2, X, Y = self:GetPoint()
 	
@@ -120,7 +120,7 @@ local MoverOnEnter = function(self)
 end
 
 local MoverOnLeave = function(self)
-	self:SetBackdropColorHex(Settings["ui-window-bg-color"])
+	self:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	
 	GameTooltip:Hide()
 end
@@ -153,7 +153,7 @@ function vUI:CreateMover(frame, padding)
 	local Width, Height = frame:GetSize()
 	
 	local Mover = CreateFrame("Frame", nil, UIParent)
-	Mover:SetScaledSize(Width + Padding, Height + Padding)
+	vUI:SetSize(Mover, Width + Padding, Height + Padding)
 	Mover:SetBackdrop(vUI.BackdropAndBorder)
 	Mover:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	Mover:SetBackdropBorderColor(0, 0, 0)
@@ -170,21 +170,21 @@ function vUI:CreateMover(frame, padding)
 	Mover:Hide()
 	
 	Mover.BG = CreateFrame("Frame", nil, Mover)
-	Mover.BG:SetScaledPoint("TOPLEFT", Mover, 3, -3)
-	Mover.BG:SetScaledPoint("BOTTOMRIGHT", Mover, -3, 3)
+	vUI:SetPoint(Mover.BG, "TOPLEFT", Mover, 3, -3)
+	vUI:SetPoint(Mover.BG, "BOTTOMRIGHT", Mover, -3, 3)
 	Mover.BG:SetBackdrop(vUI.BackdropAndBorder)
 	Mover.BG:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	Mover.BG:SetBackdropBorderColor(0, 0, 0)
 	
 	Mover.Label = Mover.BG:CreateFontString(nil, "OVERLAY")
-	Mover.Label:SetFontInfo(Settings["ui-widget-font"], 12)
+	vUI:SetFontInfo(Mover.Label, Settings["ui-widget-font"], 12)
 	Mover.Label:SetScaledPoint("CENTER", Mover, 0, 0)
 	Mover.Label:SetText(Label)
 	
 	local OldA1, OldParent, OldA2, OldX, OldY = frame:GetPoint()
 	
 	frame:ClearAllPoints()
-	frame:SetScaledPoint("CENTER", Mover, 0, 0)
+	vUI:SetPoint(frame, "CENTER", Mover, 0, 0)
 	frame.Mover = Mover
 	frame:HookScript("OnSizeChanged", OnSizeChanged)
 	
@@ -194,9 +194,9 @@ function vUI:CreateMover(frame, padding)
 		local A1, Parent, A2, X, Y = unpack(vUIMove[Name])
 		local ParentObject = _G[Parent]		
 		
-		Mover:SetScaledPoint(A1, ParentObject, A2, X, Y)
+		vUI:SetPoint(Mover, A1, ParentObject, A2, X, Y)
 	else
-		Mover:SetScaledPoint(OldA1, OldParent, OldA2, OldX, OldY)
+		vUI:SetPoint(Mover, OldA1, OldParent, OldA2, OldX, OldY)
 		
 		vUIMove[Name] = {OldA1, OldParent, OldA2, OldX, OldY}
 	end

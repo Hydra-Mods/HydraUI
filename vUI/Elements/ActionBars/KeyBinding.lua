@@ -87,8 +87,8 @@ function KeyBinding:OnUpdate(elapsed)
 		local MouseFocus = GetMouseFocus()
 		
 		if (MouseFocus and MouseFocus.action) then
-			self.Hover:SetScaledPoint("TOPLEFT", MouseFocus, 1, -1)
-			self.Hover:SetScaledPoint("BOTTOMRIGHT", MouseFocus, -1, 1)
+			vUI:SetPoint(self.Hover, "TOPLEFT", MouseFocus, 1, -1)
+			vUI:SetPoint(self.Hover, "BOTTOMRIGHT", MouseFocus, -1, 1)
 			self.Hover:Show()
 		elseif self.Hover:IsShown() then
 			self.Hover:Hide()
@@ -141,7 +141,7 @@ function KeyBinding:Load()
 	self.Hover:SetFrameLevel(50)
 	self.Hover:SetFrameStrata("DIALOG")
 	self.Hover:SetBackdrop(vUI.Outline)
-	self.Hover:SetBackdropBorderColorHex("388E3C")
+	self.Hover:SetBackdropBorderColor(vUI:HexToRGB("388E3C"))
 	self.Hover:Hide()
 end
 

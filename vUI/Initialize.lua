@@ -197,6 +197,34 @@ function vUI:LoadPlugins()
 	end
 end
 
+function vUI:AddPluginInfo()
+	if (#self.Plugins == 0) then
+		return
+	end
+	
+	local Left, Right = GUI:CreateWindow("Plugins")
+	local Anchor
+	
+	for i = 1, #vUI.Plugins do
+		if ((i % 2) == 0) then
+			Anchor = Right
+		else
+			Anchor = Left
+		end
+		
+		Anchor:CreateHeader(vUI.Plugins[i].Title)
+		
+		Anchor:CreateDoubleLine(Language["Author"], vUI.Plugins[i].Author)
+		Anchor:CreateDoubleLine(Language["Version"], vUI.Plugins[i].Version)
+		--Anchor:CreateHeader(Language["Description"])
+		Anchor:CreateLine(" ")
+		Anchor:CreateMessage(vUI.Plugins[i].Notes)
+	end
+	
+	Left:CreateFooter()
+	Right:CreateFooter()
+end
+
 -- NYI, Concept list for my preferred CVars, and those important to the UI
 function vUI:SetCVars()
 	C_CVar.SetCVar("countdownForCooldowns", 1)
@@ -231,6 +259,7 @@ end
 function vUI:PLAYER_ENTERING_WORLD(event)
 	self:LoadModules()
 	self:LoadPlugins()
+	self:AddPluginInfo()
 	
 	self:UnregisterEvent(event)
 end
@@ -517,12 +546,24 @@ local SetScaledHeight = function(self, height)
 	self:SetHeight(GetScale(height))
 end
 
+function vUI:SetHeight(object, height)
+	object:SetHeight(GetScale(height))
+end
+
 local SetScaledWidth = function(self, width)
 	self:SetWidth(GetScale(width))
 end
 
+function vUI:SetWidth(object, width)
+	object:SetWidth(GetScale(width))
+end
+
 local SetScaledSize = function(self, width, height)
 	self:SetSize(GetScale(width), GetScale(height or width))
+end
+
+function vUI:SetSize(object, width, height)
+	object:SetSize(GetScale(width), GetScale(height or width))
 end
 
 local SetScaledPoint = function(self, anchor1, parent, anchor2, x, y)
@@ -543,6 +584,26 @@ local SetScaledPoint = function(self, anchor1, parent, anchor2, x, y)
 	end
 	
 	self:SetPoint(anchor1, parent, anchor2, x, y)
+end
+
+function vUI:SetPoint(object, anchor1, parent, anchor2, x, y)
+	if (type(parent) == "number") then
+		parent = GetScale(parent)
+	end
+	
+	if (type(anchor2) == "number") then
+		anchor2 = GetScale(anchor2)
+	end
+	
+	if (type(x) == "number") then
+		x = GetScale(x)
+	end
+	
+	if (type(y) == "number") then
+		y = GetScale(y)
+	end
+	
+	object:SetPoint(anchor1, parent, anchor2, x, y)
 end
 
 local SetBackdropColorHex = function(self, hex)
@@ -585,6 +646,19 @@ local SetFontInfo = function(self, font, size, flags)
 		self:SetFont(Font, size, flags)
 		self:SetShadowColor(0, 0, 0)
 		self:SetShadowOffset(1, -1)
+	end
+end
+
+function vUI:SetFontInfo(object, font, size, flags)
+	local Font, IsPixel = Core[4]:GetFont(font)
+	
+	if IsPixel then
+		object:SetFont(Font, size, "MONOCHROME, OUTLINE")
+		object:SetShadowColor(0, 0, 0, 0)
+	else
+		object:SetFont(Font, size, flags)
+		object:SetShadowColor(0, 0, 0)
+		object:SetShadowOffset(1, -1)
 	end
 end
 

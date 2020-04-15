@@ -20,9 +20,9 @@ local SortAlerts = function()
 		ActiveAlerts[i]:ClearAllPoints()
 		
 		if (i == 1) then
-			ActiveAlerts[i]:SetScaledPoint("BOTTOMLEFT", vUIChatFrameTop, "TOPLEFT", -3, 5)
+			vUI:SetPoint(ActiveAlerts[i], "BOTTOMLEFT", vUIChatFrameTop, "TOPLEFT", -3, 5)
 		else
-			ActiveAlerts[i]:SetScaledPoint("BOTTOM", ActiveAlerts[i-1], "TOP", 0, 2)
+			vUI:SetPoint(ActiveAlerts[i], "BOTTOM", ActiveAlerts[i-1], "TOP", 0, 2)
 		end
 	end
 end
@@ -90,7 +90,7 @@ end
 
 local CreateAlertFrame = function()
 	local AlertFrame = CreateFrame("Frame", nil, UIParent)
-	AlertFrame:SetScaledSize(ALERT_WIDTH, (HEADER_HEIGHT + (LINE_HEIGHT * 2)))
+	vUI:SetSize(AlertFrame, ALERT_WIDTH, (HEADER_HEIGHT + (LINE_HEIGHT * 2)))
 	AlertFrame:SetBackdrop(vUI.BackdropAndBorder)
 	AlertFrame:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	AlertFrame:SetBackdropBorderColor(0, 0, 0)
@@ -120,20 +120,20 @@ local CreateAlertFrame = function()
 	
 	-- Header
 	AlertFrame.Header = CreateFrame("Frame", nil, AlertFrame)
-	AlertFrame.Header:SetScaledSize(ALERT_WIDTH, HEADER_HEIGHT)
-	AlertFrame.Header:SetScaledPoint("TOP", AlertFrame, 0, 0)
+	vUI:SetSize(AlertFrame.Header, ALERT_WIDTH, HEADER_HEIGHT)
+	vUI:SetPoint(AlertFrame.Header, "TOP", AlertFrame, 0, 0)
 	AlertFrame.Header:SetBackdrop(vUI.BackdropAndBorder)
 	AlertFrame.Header:SetBackdropColor(0, 0, 0, 0)
 	AlertFrame.Header:SetBackdropBorderColor(0, 0, 0)
 	
 	AlertFrame.Header.Texture = AlertFrame.Header:CreateTexture(nil, "ARTWORK")
-	AlertFrame.Header.Texture:SetScaledPoint("TOPLEFT", AlertFrame.Header, 1, -1)
-	AlertFrame.Header.Texture:SetScaledPoint("BOTTOMRIGHT", AlertFrame.Header, -1, 1)
+	vUI:SetPoint(AlertFrame.Header.Texture, "TOPLEFT", AlertFrame.Header, 1, -1)
+	vUI:SetPoint(AlertFrame.Header.Texture, "BOTTOMRIGHT", AlertFrame.Header, -1, 1)
 	AlertFrame.Header.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
 	AlertFrame.Header.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	AlertFrame.Header.Text = AlertFrame.Header:CreateFontString(nil, "OVERLAY")
-	AlertFrame.Header.Text:SetScaledPoint("LEFT", AlertFrame.Header, 5, 0)
+	vUI:SetPoint(AlertFrame.Header.Text, "LEFT", AlertFrame.Header, 5, 0)
 	AlertFrame.Header.Text:SetFont(Media:GetFont(Settings["ui-header-font"]), Settings["ui-font-size"])
 	AlertFrame.Header.Text:SetJustifyH("LEFT")
 	AlertFrame.Header.Text:SetShadowColor(0, 0, 0)
@@ -143,13 +143,13 @@ local CreateAlertFrame = function()
 	
 	-- Line 1
 	AlertFrame.Line1 = CreateFrame("Frame", nil, AlertFrame)
-	AlertFrame.Line1:SetScaledSize(ALERT_WIDTH - 2, LINE_HEIGHT)
-	AlertFrame.Line1:SetScaledPoint("TOP", AlertFrame.Header, "BOTTOM", 0, 0)
+	vUI:SetSize(AlertFrame.Line1, ALERT_WIDTH - 2, LINE_HEIGHT)
+	vUI:SetPoint(AlertFrame.Line1, "TOP", AlertFrame.Header, "BOTTOM", 0, 0)
 	--AlertFrame.Line1:SetBackdrop(vUI.Backdrop)
 	--AlertFrame.Line1:SetBackdropColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
 	AlertFrame.Line1.Text = AlertFrame.Line1:CreateFontString(nil, "OVERLAY")
-	AlertFrame.Line1.Text:SetScaledPoint("LEFT", AlertFrame.Line1, 3, 0)
+	vUI:SetPoint(AlertFrame.Line1.Text, "LEFT", AlertFrame.Line1, 3, 0)
 	AlertFrame.Line1.Text:SetFont(Media:GetFont(Settings["ui-widget-font"]), Settings["ui-font-size"])
 	AlertFrame.Line1.Text:SetJustifyH("LEFT")
 	AlertFrame.Line1.Text:SetShadowColor(0, 0, 0)
@@ -158,13 +158,13 @@ local CreateAlertFrame = function()
 	
 	-- Line 2
 	AlertFrame.Line2 = CreateFrame("Frame", nil, AlertFrame)
-	AlertFrame.Line2:SetScaledSize(ALERT_WIDTH - 2, LINE_HEIGHT)
-	AlertFrame.Line2:SetScaledPoint("TOP", AlertFrame.Line1, "BOTTOM", 0, 1)
+	vUI:SetSize(AlertFrame.Line2, ALERT_WIDTH - 2, LINE_HEIGHT)
+	vUI:SetPoint(AlertFrame.Line2, "TOP", AlertFrame.Line1, "BOTTOM", 0, 1)
 	--AlertFrame.Line2:SetBackdrop(vUI.Backdrop)
 	--AlertFrame.Line2:SetBackdropColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
 	AlertFrame.Line2.Text = AlertFrame.Line2:CreateFontString(nil, "OVERLAY")
-	AlertFrame.Line2.Text:SetScaledPoint("LEFT", AlertFrame.Line2, 3, 0)
+	vUI:SetPoint(AlertFrame.Line2.Text, "LEFT", AlertFrame.Line2, 3, 0)
 	AlertFrame.Line2.Text:SetFont(Media:GetFont(Settings["ui-widget-font"]), Settings["ui-font-size"])
 	AlertFrame.Line2.Text:SetJustifyH("LEFT")
 	AlertFrame.Line2.Text:SetShadowColor(0, 0, 0)
@@ -173,8 +173,8 @@ local CreateAlertFrame = function()
 	
 	-- Close button
 	AlertFrame.CloseButton = CreateFrame("Frame", nil, AlertFrame.Header)
-	AlertFrame.CloseButton:SetScaledSize(HEADER_HEIGHT - 2, HEADER_HEIGHT - 2)
-	AlertFrame.CloseButton:SetScaledPoint("RIGHT", AlertFrame.Header, -1, 0)
+	vUI:SetSize(AlertFrame.CloseButton, HEADER_HEIGHT - 2, HEADER_HEIGHT - 2)
+	vUI:SetPoint(AlertFrame.CloseButton, "RIGHT", AlertFrame.Header, -1, 0)
 	AlertFrame.CloseButton:SetBackdrop(vUI.Backdrop)
 	AlertFrame.CloseButton:SetBackdropColor(0, 0, 0, 0)
 	AlertFrame.CloseButton:SetScript("OnEnter", function(self) self.Text:SetTextColor(1, 0, 0) end)
@@ -183,7 +183,7 @@ local CreateAlertFrame = function()
 	AlertFrame.CloseButton.Parent = AlertFrame
 	
 	AlertFrame.CloseButton.Text = AlertFrame.CloseButton:CreateFontString(nil, "OVERLAY")
-	AlertFrame.CloseButton.Text:SetScaledPoint("CENTER", AlertFrame.CloseButton, 0, 0)
+	vUI:SetPoint(AlertFrame.CloseButton.Text, "CENTER", AlertFrame.CloseButton, 0, 0)
 	AlertFrame.CloseButton.Text:SetFont(Media:GetFont("PT Sans"), 18)
 	AlertFrame.CloseButton.Text:SetJustifyH("CENTER")
 	AlertFrame.CloseButton.Text:SetShadowColor(0, 0, 0)

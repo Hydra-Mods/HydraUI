@@ -8,7 +8,7 @@ local GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 function Bubbles:RefreshBubble(bubble)
 	local R, G, B = vUI:HexToRGB(Settings["ui-window-main-color"])
 	
-	bubble.Text:SetFontInfo(Settings["chat-bubbles-font"], Settings["chat-bubbles-font-size"], Settings["chat-bubbles-font-flags"])
+	vUI:SetFontInfo(bubble.Text, Settings["chat-bubbles-font"], Settings["chat-bubbles-font-size"], Settings["chat-bubbles-font-flags"])
 	bubble:SetBackdropColor(R, G, B, Settings["chat-bubbles-opacity"] / 100)
 	
 	self.NeedsRefresh = false	
@@ -21,7 +21,7 @@ function Bubbles:SkinBubble(bubble)
 		if Region:IsObjectType("Texture") then
 			Region:SetTexture(nil)
 		elseif Region:IsObjectType("FontString") then
-			Region:SetFontInfo(Settings["chat-bubbles-font"], Settings["chat-bubbles-font-size"], Settings["chat-bubbles-font-flags"])
+			vUI:SetFontInfo(Region, Settings["chat-bubbles-font"], Settings["chat-bubbles-font-size"], Settings["chat-bubbles-font-flags"])
 			
 			bubble.Text = Region
 		end
@@ -37,36 +37,36 @@ function Bubbles:SkinBubble(bubble)
 	bubble:SetScale(Scale)
 	
 	bubble.Top = bubble:CreateTexture(nil, "OVERLAY")
-	bubble.Top:SetScaledHeight(2)
+	vUI:SetHeight(bubble.Top, 2)
 	bubble.Top:SetTexture(Media:GetTexture("Blank"))
-	bubble.Top:SetVertexColorHex(Settings["ui-window-bg-color"])
-	bubble.Top:SetScaledPoint("TOPLEFT", bubble, 1, -1)
-	bubble.Top:SetScaledPoint("TOPRIGHT", bubble, -1, -1)
+	vUI:SetVertexColorHex(bubble.Top, Settings["ui-window-bg-color"])
+	vUI:SetPoint(bubble.Top, "TOPLEFT", bubble, 1, -1)
+	vUI:SetPoint(bubble.Top, "TOPRIGHT", bubble, -1, -1)
 	
 	bubble.Bottom = bubble:CreateTexture(nil, "OVERLAY")
-	bubble.Bottom:SetScaledHeight(2)
+	vUI:SetHeight(bubble.Bottom, 2)
 	bubble.Bottom:SetTexture(Media:GetTexture("Blank"))
-	bubble.Bottom:SetVertexColorHex(Settings["ui-window-bg-color"])
-	bubble.Bottom:SetScaledPoint("BOTTOMLEFT", bubble, 1, 1)
-	bubble.Bottom:SetScaledPoint("BOTTOMRIGHT", bubble, -1, 1)
+	vUI:SetVertexColorHex(bubble.Bottom, Settings["ui-window-bg-color"])
+	vUI:SetPoint(bubble.Bottom, "BOTTOMLEFT", bubble, 1, 1)
+	vUI:SetPoint(bubble.Bottom, "BOTTOMRIGHT", bubble, -1, 1)
 	
 	bubble.Left = bubble:CreateTexture(nil, "OVERLAY")
-	bubble.Left:SetScaledWidth(2)
+	vUI:SetWidth(bubble.Left, 2)
 	bubble.Left:SetTexture(Media:GetTexture("Blank"))
-	bubble.Left:SetVertexColorHex(Settings["ui-window-bg-color"])
-	bubble.Left:SetScaledPoint("BOTTOMLEFT", bubble, 1, 1)
-	bubble.Left:SetScaledPoint("TOPLEFT", bubble, 1, -1)
+	vUI:SetVertexColorHex(bubble.Left, Settings["ui-window-bg-color"])
+	vUI:SetPoint(bubble.Left, "BOTTOMLEFT", bubble, 1, 1)
+	vUI:SetPoint(bubble.Left, "TOPLEFT", bubble, 1, -1)
 	
 	bubble.Right = bubble:CreateTexture(nil, "OVERLAY")
-	bubble.Right:SetScaledWidth(2)
+	vUI:SetWidth(bubble.Right, 2)
 	bubble.Right:SetTexture(Media:GetTexture("Blank"))
-	bubble.Right:SetVertexColorHex(Settings["ui-window-bg-color"])
-	bubble.Right:SetScaledPoint("BOTTOMRIGHT", bubble, -1, 1)
-	bubble.Right:SetScaledPoint("TOPRIGHT", bubble, -1, -1)
+	vUI:SetVertexColorHex(bubble.Right, Settings["ui-window-bg-color"])
+	vUI:SetPoint(bubble.Right, "BOTTOMRIGHT", bubble, -1, 1)
+	vUI:SetPoint(bubble.Right, "TOPRIGHT", bubble, -1, -1)
 	
 	bubble.InnerBorder = CreateFrame("Frame", nil, bubble)
-	bubble.InnerBorder:SetScaledPoint("TOPLEFT", bubble, 3, -3)
-	bubble.InnerBorder:SetScaledPoint("BOTTOMRIGHT", bubble, -3, 3)
+	vUI:SetPoint(bubble.InnerBorder, "TOPLEFT", bubble, 3, -3)
+	vUI:SetPoint(bubble.InnerBorder, "BOTTOMRIGHT", bubble, -3, 3)
 	bubble.InnerBorder:SetBackdrop(vUI.Outline)
 	bubble.InnerBorder:SetBackdropBorderColor(0, 0, 0)
 	

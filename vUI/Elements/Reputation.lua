@@ -27,13 +27,13 @@ local UpdatePercentVisibility = function(value)
 end
 
 function Reputation:CreateBar()
-	self:SetScaledSize(Settings["reputation-width"], Settings["reputation-height"])
+	vUI:SetSize(self, Settings["reputation-width"], Settings["reputation-height"])
 	self:SetFrameStrata("HIGH")
 	
 	if (Settings["experience-enable"] and UnitLevel("player") ~= MAX_PLAYER_LEVEL) then
-		self:SetScaledPoint("TOP", vUIExperienceBar, "BOTTOM", 0, -8)
+		vUI:SetPoint(self, "TOP", vUIExperienceBar, "BOTTOM", 0, -8)
 	else
-		self:SetScaledPoint("TOP", UIParent, 0, -13)
+		vUI:SetPoint(self, "TOP", UIParent, 0, -13)
 	end
 	
 	self.Fade = CreateAnimationGroup(self)
@@ -50,10 +50,10 @@ function Reputation:CreateBar()
 	self.FadeOut:SetScript("OnFinished", FadeOnFinished)
 	
 	self.BarBG = CreateFrame("Frame", nil, self)
-	self.BarBG:SetScaledPoint("TOPLEFT", self, 0, 0)
-	self.BarBG:SetScaledPoint("BOTTOMRIGHT", self, 0, 0)
+	vUI:SetPoint(self.BarBG,"TOPLEFT", self, 0, 0)
+	vUI:SetPoint(self.BarBG, "BOTTOMRIGHT", self, 0, 0)
 	self.BarBG:SetBackdrop(vUI.BackdropAndBorder)
-	self.BarBG:SetBackdropColorHex(Settings["ui-window-main-color"])
+	self.BarBG:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	self.BarBG:SetBackdropBorderColor(0, 0, 0)
 	
 	self.Texture = self.BarBG:CreateTexture(nil, "ARTWORK")
@@ -63,28 +63,28 @@ function Reputation:CreateBar()
 	self.Texture:SetVertexColorHex(Settings["ui-window-main-color"])
 	
 	self.BGAll = CreateFrame("Frame", nil, self)
-	self.BGAll:SetScaledPoint("TOPLEFT", self.BarBG, -3, 3)
-	self.BGAll:SetScaledPoint("BOTTOMRIGHT", self.BarBG, 3, -3)
+	vUI:SetPoint(self.BGAll, "TOPLEFT", self.BarBG, -3, 3)
+	vUI:SetPoint(self.BGAll, "BOTTOMRIGHT", self.BarBG, 3, -3)
 	self.BGAll:SetBackdrop(vUI.BackdropAndBorder)
-	self.BGAll:SetBackdropColorHex(Settings["ui-window-bg-color"])
+	self.BGAll:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self.BGAll:SetBackdropBorderColor(0, 0, 0)
 	
 	self.Bar = CreateFrame("StatusBar", nil, self.BarBG)
 	self.Bar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
-	self.Bar:SetScaledPoint("TOPLEFT", self.BarBG, 1, -1)
-	self.Bar:SetScaledPoint("BOTTOMRIGHT", self.BarBG, -1, 1)
+	vUI:SetPoint(self.Bar, "TOPLEFT", self.BarBG, 1, -1)
+	vUI:SetPoint(self.Bar, "BOTTOMRIGHT", self.BarBG, -1, 1)
 	self.Bar:SetFrameLevel(6)
 	
 	self.Bar.BG = self.Bar:CreateTexture(nil, "BORDER")
 	self.Bar.BG:SetAllPoints(self.Bar)
 	self.Bar.BG:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
-	self.Bar.BG:SetVertexColorHex(Settings["ui-window-main-color"])
+	self.Bar.BG:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	self.Bar.BG:SetAlpha(0.2)
 	
 	self.Bar.Spark = self.Bar:CreateTexture(nil, "OVERLAY")
 	self.Bar.Spark:SetDrawLayer("OVERLAY", 7)
-	self.Bar.Spark:SetScaledSize(1, Settings["reputation-height"])
-	self.Bar.Spark:SetScaledPoint("LEFT", self.Bar:GetStatusBarTexture(), "RIGHT", 0, 0)
+	vUI:SetSize(self.Bar.Spark, 1, Settings["reputation-height"])
+	vUI:SetPoint(self.Bar.Spark, "LEFT", self.Bar:GetStatusBarTexture(), "RIGHT", 0, 0)
 	self.Bar.Spark:SetTexture(Media:GetTexture("Blank"))
 	self.Bar.Spark:SetVertexColor(0, 0, 0)
 	
@@ -113,8 +113,8 @@ function Reputation:CreateBar()
 	self.Flash.Out:SetChange(0)
 	
 	self.Progress = self.Bar:CreateFontString(nil, "OVERLAY")
-	self.Progress:SetScaledPoint("LEFT", self.Bar, 5, 0)
-	self.Progress:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetPoint(self.Progress, "LEFT", self.Bar, 5, 0)
+	vUI:SetFontInfo(self.Progress, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Progress:SetJustifyH("LEFT")
 	
 	if (not Settings["reputation-display-progress"]) then
@@ -122,8 +122,8 @@ function Reputation:CreateBar()
 	end
 	
 	self.Percentage = self.Bar:CreateFontString(nil, "OVERLAY")
-	self.Percentage:SetScaledPoint("RIGHT", self.Bar, -5, 0)
-	self.Percentage:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetPoint(self.Percentage, "RIGHT", self.Bar, -5, 0)
+	vUI:SetFontInfo(self.Percentage, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Percentage:SetJustifyH("RIGHT")
 	
 	UpdateProgressVisibility(Settings["reputation-progress-visibility"])
@@ -144,7 +144,7 @@ function Reputation:OnEvent()
 		Value = Value - Min
 		
 		self.Bar:SetMinMaxValues(0, Max)
-		self.Bar:SetStatusBarColorHex(Settings["color-reaction-" .. StandingID])
+		self.Bar:SetStatusBarColor(vUI:HexToRGB(Settings["color-reaction-" .. StandingID]))
 		
 		self.Progress:SetText(format("%s: %s / %s", Name, vUI:Comma(Value), vUI:Comma(Max)))
 		self.Percentage:SetText(floor((Value / Max * 100 + 0.05) * 10) / 10 .. "%")
@@ -275,12 +275,12 @@ local UpdateDisplayPercent = function(value)
 end
 
 local UpdateBarWidth = function(value)
-	Reputation:SetScaledWidth(value)
+	vUI:SetWidth(Reputation, value)
 end
 
 local UpdateBarHeight = function(value)
-	Reputation:SetScaledHeight(value)
-	Reputation.Bar.Spark:SetScaledHeight(value)
+	vUI:SetHeight(Reputation, value)
+	vUI:SetHeight(Reputation.Bar.Spark, value)
 end
 
 GUI:AddOptions(function(self)

@@ -15,8 +15,8 @@ local HOLD_TIME = 1.6
 local CustomZoneText = CreateFrame("Frame")
 
 local CustomZoneTextFrame = CreateFrame("Frame", nil, UIParent)
-CustomZoneTextFrame:SetScaledSize(200, ZoneTextSize)
-CustomZoneTextFrame:SetScaledPoint("TOP", UIParent, 0, -220)
+vUI:SetSize(CustomZoneTextFrame, 200, ZoneTextSize)
+vUI:SetPoint(CustomZoneTextFrame, "TOP", UIParent, 0, -220)
 CustomZoneTextFrame:SetAlpha(0)
 
 CustomZoneTextFrame.Group = CreateAnimationGroup(CustomZoneTextFrame)
@@ -39,8 +39,8 @@ CustomZoneTextFrame.FadeOut:SetOrder(3)
 CustomZoneTextFrame.FadeOut:SetScript("OnFinished", function(self) self.Parent:Hide() end)
 
 local CustomSubZoneTextFrame = CreateFrame("Frame", nil, UIParent)
-CustomSubZoneTextFrame:SetScaledSize(200, SubZoneTextSize)
-CustomSubZoneTextFrame:SetScaledPoint("TOP", CustomZoneTextFrame, "BOTTOM", 0, 0)
+vUI:SetSize(CustomSubZoneTextFrame, 200, SubZoneTextSize)
+vUI:SetPoint(CustomSubZoneTextFrame, "TOP", CustomZoneTextFrame, "BOTTOM", 0, 0)
 CustomSubZoneTextFrame:SetAlpha(0)
 
 CustomSubZoneTextFrame.Group = CreateAnimationGroup(CustomSubZoneTextFrame)
@@ -63,22 +63,22 @@ CustomSubZoneTextFrame.FadeOut:SetOrder(3)
 CustomSubZoneTextFrame.FadeOut:SetScript("OnFinished", function(self) self.Parent:Hide() end)
 
 local ZoneText = CustomZoneTextFrame:CreateFontString(nil, "OVERLAY")
-ZoneText:SetScaledPoint("CENTER", CustomZoneTextFrame, 0, 0)
+vUI:SetPoint(ZoneText, "CENTER", CustomZoneTextFrame, 0, 0)
 ZoneText:SetShadowColor(0, 0, 0)
 ZoneText:SetShadowOffset(1, -1)
 
 local PVPInfoText = CustomSubZoneTextFrame:CreateFontString(nil, "OVERLAY")
-PVPInfoText:SetScaledPoint("CENTER", CustomSubZoneTextFrame, 0, 0)
+vUI:SetPoint(PVPInfoText, "CENTER", CustomSubZoneTextFrame, 0, 0)
 PVPInfoText:SetShadowColor(0, 0, 0)
 PVPInfoText:SetShadowOffset(1, -1)
 
 local SubZoneText = CustomSubZoneTextFrame:CreateFontString(nil, "OVERLAY")
-SubZoneText:SetScaledPoint("CENTER", CustomSubZoneTextFrame, 0, 0)
+vUI:SetPoint(SubZoneText, "CENTER", CustomSubZoneTextFrame, 0, 0)
 SubZoneText:SetShadowColor(0, 0, 0)
 SubZoneText:SetShadowOffset(1, -1)
 
 local PVPArenaText = CustomSubZoneTextFrame:CreateFontString(nil, "OVERLAY")
-PVPArenaText:SetScaledPoint("CENTER", CustomSubZoneTextFrame, 0, 0)
+vUI:SetPoint(PVPArenaText, "CENTER", CustomSubZoneTextFrame, 0, 0)
 PVPArenaText:SetShadowColor(0, 0, 0)
 PVPArenaText:SetShadowOffset(1, -1)
 
@@ -152,13 +152,13 @@ local SetZoneText = function(show)
 		ZonePVPType = PVPType
 	elseif (not show) then
 		PVPInfoText:SetText("")
-		SubZoneText:SetPoint("CENTER", CustomSubZoneTextFrame, 0, 0)
+		vUI:SetPoint(SubZoneText, "CENTER", CustomSubZoneTextFrame, 0, 0)
 	end
 	
 	if (PVPInfoText:GetText() == "") then
-		SubZoneText:SetPoint("CENTER", CustomSubZoneTextFrame, 0, 0)
+		vUI:SetPoint(SubZoneText, "CENTER", CustomSubZoneTextFrame, 0, 0)
 	else
-		SubZoneText:SetPoint("TOP", PVPInfoText, "BOTTOM", 0, 0)
+		vUI:SetPoint(SubZoneText, "TOP", PVPInfoText, "BOTTOM", 0, 0)
 	end
 end
 

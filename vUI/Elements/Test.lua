@@ -197,7 +197,7 @@ function Fonts:Load()
 	RaidWarningFrameSlot1:SetFont(Font, 16)
 	RaidWarningFrameSlot2:SetFont(Font, 16)
 	
-	AutoFollowStatusText:SetFontInfo(Font, 18)
+	vUI:SetFontInfo(AutoFollowStatusText, Font, 18)
 end
 
 --[[
