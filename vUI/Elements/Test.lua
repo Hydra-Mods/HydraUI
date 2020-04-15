@@ -41,7 +41,7 @@ GUI:AddOptions(function(self)
 	
 	Left:CreateHeader(Language["UI Information"])
 	Left:CreateDoubleLine(Language["UI Version"], vUI.UIVersion)
-	Left:CreateDoubleLine(Language["Game Version"], vUI.GameVersion)
+	Left:CreateDoubleLine(Language["Game Version"], GetBuildInfo())
 	Left:CreateDoubleLine(Language["Client"], GetClient())
 	Left:CreateDoubleLine(Language["UI Scale"], Settings["ui-scale"])
 	Left:CreateDoubleLine(Language["Suggested Scale"], vUI:GetSuggestedScale())

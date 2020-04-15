@@ -26,7 +26,6 @@ setmetatable(Language, {__index = Index})
 
 -- Some Data
 vUI.UIVersion = GetAddOnMetadata("vUI", "Version")
-vUI.GameVersion = GetBuildInfo()
 vUI.UserName = UnitName("player")
 vUI.UserClass = select(2, UnitClass("player"))
 vUI.UserClassName = UnitClass("player")
