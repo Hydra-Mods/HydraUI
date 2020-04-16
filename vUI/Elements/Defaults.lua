@@ -109,13 +109,6 @@ Defaults["color-magic"] = "3399FF"
 Defaults["color-poison"] = "009900"
 Defaults["color-none"] = "000000"
 
--- Difficulty
-Defaults["color-trivial"] = "9A9A9A"
-Defaults["color-standard"] = "27AE60"
-Defaults["color-difficult"] = "F1C40F"
-Defaults["color-verydifficult"] = "E57A45"
-Defaults["color-impossible"] = "FF4444"
-
 -- Combo Points
 Defaults["color-combo-1"] = "FF6666"
 Defaults["color-combo-2"] = "FFB266"

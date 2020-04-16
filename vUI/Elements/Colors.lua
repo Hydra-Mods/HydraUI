@@ -168,13 +168,6 @@ GUI:AddOptions(function(self)
 	Right:CreateColorSelection("color-poison", Settings["color-poison"], Language["Poison"], "")
 	Right:CreateColorSelection("color-none", Settings["color-none"], Language["None"], "")
 	
-	Left:CreateHeader(Language["Difficulty Colors"])
-	Left:CreateColorSelection("color-trivial", Settings["color-trivial"], Language["Very Easy"], "")
-	Left:CreateColorSelection("color-standard", Settings["color-standard"], Language["Easy"], "")
-	Left:CreateColorSelection("color-difficult", Settings["color-difficult"], Language["Medium"], "")
-	Left:CreateColorSelection("color-verydifficult", Settings["color-verydifficult"], Language["Hard"], "")
-	Left:CreateColorSelection("color-impossible", Settings["color-impossible"], Language["Very Hard"], "")
-	
 	Left:CreateHeader(Language["Combo Points Colors"])
 	Left:CreateColorSelection("color-combo-1", Settings["color-combo-1"], Language["Combo Point 1"], "")
 	Left:CreateColorSelection("color-combo-2", Settings["color-combo-2"], Language["Combo Point 2"], "")
