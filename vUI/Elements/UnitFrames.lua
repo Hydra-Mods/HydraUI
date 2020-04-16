@@ -539,9 +539,9 @@ end
 
 local PostCastStart = function(self, unit, name)
 	if self.notInterruptible then
-		self:SetStatusBarColorHex(Settings["color-casting-uninterruptible"])
+		self:SetStatusBarColor(vUI:HexToRGB(Settings["color-casting-uninterruptible"]))
 	else
-		self:SetStatusBarColorHex(Settings["color-casting-start"])
+		self:SetStatusBarColor(vUI:HexToRGB(Settings["color-casting-start"]))
 	end
 end
 
@@ -1097,7 +1097,7 @@ local StylePlayer = function(self, unit)
 			SoulShards[i] = CreateFrame("StatusBar", self:GetName() .. "SoulShard" .. i, SoulShards)
 			vUI:SetSize(SoulShards[i], Width, 8)
 			SoulShards[i]:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
-			SoulShards[i]:SetStatusBarColorHex(Settings["color-soul-shards"])
+			SoulShards[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-soul-shards"]))
 			
 			SoulShards[i].bg = SoulShards:CreateTexture(nil, "BORDER")
 			SoulShards[i].bg:SetAllPoints(SoulShards[i])
@@ -1129,7 +1129,7 @@ local StylePlayer = function(self, unit)
 			Chi[i] = CreateFrame("StatusBar", self:GetName() .. "Chi" .. i, Chi)
 			vUI:SetSize(Chi[i], Width, 8)
 			Chi[i]:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
-			Chi[i]:SetStatusBarColorHex(Settings["color-chi"])
+			Chi[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-chi"]))
 			
 			Chi[i].bg = Chi:CreateTexture(nil, "BORDER")
 			Chi[i].bg:SetAllPoints(Chi[i])
@@ -1161,7 +1161,7 @@ local StylePlayer = function(self, unit)
 			Runes[i] = CreateFrame("StatusBar", self:GetName() .. "Rune" .. i, Runes)
 			vUI:SetSize(Runes[i], Width, 8)
 			Runes[i]:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
-			Runes[i]:SetStatusBarColorHex(Settings["color-runes"])
+			Runes[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-runes"]))
 			Runes[i].Duration = 0
 			
 			Runes[i].bg = Runes[i]:CreateTexture(nil, "BORDER")
@@ -1218,7 +1218,7 @@ local StylePlayer = function(self, unit)
 			HolyPower[i] = CreateFrame("StatusBar", self:GetName() .. "HolyPower" .. i, HolyPower)
 			vUI:SetSize(HolyPower[i], Width, 8)
 			HolyPower[i]:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
-			HolyPower[i]:SetStatusBarColorHex(Settings["color-holy-power"])
+			HolyPower[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-holy-power"]))
 			
 			HolyPower[i].bg = HolyPower:CreateTexture(nil, "BORDER")
 			HolyPower[i].bg:SetAllPoints(HolyPower[i])
@@ -3206,7 +3206,7 @@ local UpdateNamePlatesTargetHighlight = function(value)
 end
 
 local NamePlateSetFont = function(self)
-	vUI:SetFontInfo(self.To, Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
+	vUI:SetFontInfo(self.Top, Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	vUI:SetFontInfo(self.TopLeft, Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	vUI:SetFontInfo(self.TopRight, Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	vUI:SetFontInfo(self.Bottom, Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
