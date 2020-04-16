@@ -1,5 +1,5 @@
 local AddonName, Namespace = ...
-local vUI, GUI, Language, Media, Settings, Defaults = Namespace:get()
+local vUI, GUI, Language, Media, Settings = Namespace:get()
 local oUF = Namespace.oUF
 local R, G, B
 

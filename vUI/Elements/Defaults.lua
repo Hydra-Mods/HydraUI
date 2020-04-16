@@ -1,4 +1,4 @@
-local Defaults = select(2, ...):get(6)
+local vUI, GUI, Language, Media, Settings, Defaults = select(2, ...):get()
 
 -- These are just default values. Use the GUI to change settings.
 

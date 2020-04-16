@@ -18,6 +18,10 @@ local vUI = CreateFrame("Frame", nil, UIParent)
 local GUI = CreateFrame("Frame", nil, UIParent)
 local Language = {}
 
+local Media = {}
+local Settings = {}
+local Defaults = {}
+
 local Index = function(self, key)
 	return key
 end
@@ -44,15 +48,6 @@ vUI.Modules = {}
 vUI.Plugins = {}
 
 GUI.Queue = {}
-
-local Core = {
-	[1] = vUI, -- Functions/Constants
-	[2] = GUI, -- Settings GUI
-	[3] = Language, -- Language
-	[4] = {}, -- Media
-	[5] = {}, -- Settings
-	[6] = {}, -- Defaults
-}
 
 --[[function GUI:CreateWindow(name, func)
 	-- add to a table by name where the function is run when the window is selected. After this and AddToWindow are run, flag for a sort
@@ -234,13 +229,13 @@ function vUI:VARIABLES_LOADED(event)
 		C_CVar.SetCVar("useUIScale", 1)
 	end
 	
-	Core[6]["ui-scale"] = self:GetSuggestedScale()
+	Defaults["ui-scale"] = self:GetSuggestedScale()
 	
 	self:CreateProfileData()
 	self:UpdateProfileList()
 	self:ApplyProfile(self:GetActiveProfileName())
 	
-	self:SetScale(Core[5]["ui-scale"])
+	self:SetScale(Settings["ui-scale"])
 	self:UpdateoUFColors()
 	
 	-- Load the GUI
@@ -294,7 +289,9 @@ local GetScale = function(x)
 	return floor(Scale * x + 0.5)
 end
 
-vUI.GetScale = GetScale
+function vUI:GetScale(x)
+	return GetScale(x)
+end
 
 function vUI:SetScale(x)
 	x = max(0.4, x)
@@ -337,38 +334,6 @@ function vUI:Comma(number)
    	local Left, Number, Right = match(Number, "^([^%d]*%d)(%d+)(.-)$")
 	
 	return Left and Left .. reverse(gsub(reverse(Number), "(%d%d%d)", "%1,")) or number
-end
-
-function vUI:UnitDifficultyColor(unit)
-	local T = 5
-	
-	if (not Core[T]) then
-		T = 6
-	end
-	
-	if (not Core[T]["color-standard"]) then
-		return
-	end
-	
-	local Level = UnitLevel("player")
-	
-	if (Level == -1) then
-		return "|cFF" .. Core[T]["color-impossible"]
-	end
-	
-	local Difference = UnitLevel(unit) - Level
-	
-	if (Difference >= 5) then
-		return "|cFF" .. Core[T]["color-impossible"]
-	elseif (Difference >= 3) then
-		return "|cFF" .. Core[T]["color-verydifficult"]
-	elseif (Difference >= -2) then
-		return "|cFF" .. Core[T]["color-difficult"]
-	elseif (-Difference <= GetQuestGreenRange()) then
-		return "|cFF" .. Core[T]["color-standard"]
-	else
-		return "|cFF" .. Core[T]["color-trivial"]
-	end
 end
 
 vUI.Backdrop = {
@@ -489,55 +454,15 @@ end
 setprinthandler(NewPrint)
 
 function vUI:print(...)
-	if Core[5]["ui-widget-color"] then
-		print("|cFF" .. Core[5]["ui-widget-color"] .. "vUI|r:", ...)
+	if Settings["ui-widget-color"] then
+		print("|cFF" .. Settings["ui-widget-color"] .. "vUI|r:", ...)
 	else
-		print("|cFF" .. Core[6]["ui-widget-color"] .. "vUI|r:", ...)
+		print("|cFF" .. Defaults["ui-widget-color"] .. "vUI|r:", ...)
 	end
 end
 
-function Namespace:get(key)
-	if (not key) then
-		return Core[1], Core[2], Core[3], Core[4], Core[5], Core[6]
-	else
-		return Core[key]
-	end
-end
-
-local UnitAura = UnitAura
-local UnitBuff = UnitBuff
-local UnitDebuff = UnitDebuff
-
-local Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3
-
-UnitAuraByName = function(unit, name, filter)
-	for i = 1, 40 do
-		Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3 = UnitAura(unit, i, filter)
-		
-		if (Name == name) then
-			return Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3
-		end
-	end
-end
-
-UnitBuffByName = function(unit, name, filter)
-	for i = 1, 40 do
-		Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3 = UnitBuff(unit, i, filter)
-		
-		if (Name == name) then
-			return Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3
-		end
-	end
-end
-
-UnitDebuffByName = function(unit, name, filter)
-	for i = 1, 40 do
-		Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3 = UnitDebuff(unit, i, filter)
-		
-		if (Name == name) then
-			return Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3
-		end
-	end
+function Namespace:get()
+	return vUI, GUI, Language, Media, Settings, Defaults
 end
 
 function vUI:SetHeight(object, height)
@@ -574,7 +499,7 @@ end
 
 
 function vUI:SetFontInfo(object, font, size, flags)
-	local Font, IsPixel = Core[4]:GetFont(font)
+	local Font, IsPixel = Media:GetFont(font)
 	
 	if IsPixel then
 		object:SetFont(Font, size, "MONOCHROME, OUTLINE")
@@ -597,3 +522,39 @@ vUI:RegisterEvent("PLAYER_ENTERING_WORLD")
 vUI:SetScript("OnEvent", vUI.OnEvent)
 
 _G["vUIGlobal"] = Namespace
+
+local UnitAura = UnitAura
+local UnitBuff = UnitBuff
+local UnitDebuff = UnitDebuff
+
+local Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3
+
+UnitAuraByName = function(unit, name, filter)
+	for i = 1, 40 do
+		Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3 = UnitAura(unit, i, filter)
+		
+		if (Name == name) then
+			return Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3
+		end
+	end
+end
+
+UnitBuffByName = function(unit, name, filter)
+	for i = 1, 40 do
+		Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3 = UnitBuff(unit, i, filter)
+		
+		if (Name == name) then
+			return Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3
+		end
+	end
+end
+
+UnitDebuffByName = function(unit, name, filter)
+	for i = 1, 40 do
+		Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3 = UnitDebuff(unit, i, filter)
+		
+		if (Name == name) then
+			return Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3
+		end
+	end
+end

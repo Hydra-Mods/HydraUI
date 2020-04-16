@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings, Defaults = select(2, ...):get()
+local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
 local Commands = {}
 
