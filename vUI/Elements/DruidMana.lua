@@ -73,7 +73,7 @@ function DruidMana:CreateBar()
 	self.Bar:SetFrameLevel(6)
 	
 	self.Bar:SetMinMaxValues(0, UnitPowerMax("player", ManaID))
-	self.Bar:SetStatusBarColorHex(Settings["color-mana"])
+	self.Bar:SetStatusBarColor(vUI:HexToRGB(Settings["color-mana"]))
 	
 	self.Bar.BG = self.Bar:CreateTexture(nil, "BORDER")
 	self.Bar.BG:SetAllPoints(self.Bar)
