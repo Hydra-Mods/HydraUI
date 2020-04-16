@@ -281,10 +281,10 @@ end
 local UpdateChatFrameSize = function()
 	local Width = Settings["chat-frame-width"]
 	
-	vUIChatFrame:SetScaledSize(Width, Settings["chat-frame-height"])
+	vUI:SetSize(vUIChatFrame, Width, Settings["chat-frame-height"])
 	
-	vUIChatFrameTop:SetScaledSize(Width, BAR_HEIGHT)
-	vUIChatFrameBottom:SetScaledSize(Width, BAR_HEIGHT)
+	vUI:SetSize(vUIChatFrameTop, Width, BAR_HEIGHT)
+	vUI:SetSize(vUIChatFrameBottom, Width, BAR_HEIGHT)
 end
 
 local Kill = function(object)
