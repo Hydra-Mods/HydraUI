@@ -64,6 +64,9 @@ Media:SetStyle("vUI", {
 	["data-text-font-flags"] = "",
 	["data-text-label-color"] = "FFFFFF",
 	["data-text-value-color"] = "FFC44D",
+	
+	["experience-bar-color"] = "4C9900", 
+	["experience-rested-color"] = "00B4FF",
 })
 
 -- vUI 2
@@ -130,6 +133,9 @@ Media:SetStyle("vUI 2", {
 	["data-text-font-flags"] = "",
 	["data-text-label-color"] = "FFFFFF",
 	["data-text-value-color"] = "FFB74D",
+	
+	["experience-bar-color"] = "4C9900", 
+	["experience-rested-color"] = "00B4FF",
 })
 
 -- Conjured Muffin -- Casting: 2ECC71 - Interrupted: F39C12 - Failed: D35400
@@ -196,6 +202,9 @@ Media:SetStyle("Conjured Muffin", {
 	["data-text-font-flags"] = "",
 	["data-text-label-color"] = "EFEBE9",
 	["data-text-value-color"] = "3EC5E9",
+	
+	["experience-bar-color"] = "27AE60",
+	["experience-rested-color"] = "3EC5E9",
 })
 
 --[[ Zen
@@ -262,6 +271,9 @@ Media:SetStyle("Zen", {
 	["data-text-font-flags"] = "",
 	["data-text-label-color"] = "FFFFFF",
 	["data-text-value-color"] = "00FF99",
+	
+	["experience-bar-color"] = "4C9900", 
+	["experience-rested-color"] = "00B4FF",
 })]]
 
 -- Sci-Fi
@@ -328,6 +340,9 @@ Media:SetStyle("Sci-Fi", {
 	["data-text-font-flags"] = "",
 	["data-text-label-color"] = "FFB54F",
 	["data-text-value-color"] = "FAFAFA",
+	
+	["experience-bar-color"] = "4C9900", 
+	["experience-rested-color"] = "00B4FF",
 })
 
 GUI:AddOptions(function(self)
