@@ -712,7 +712,7 @@ local SetClassicStyle = function()
 	
 	vUIActionBar5:ClearAllPoints()
 	vUI:SetPoint(vUIActionBar5, "TOPRIGHT", vUIBottomActionBarsPanel, -(SPACING + 1), -(SPACING + 1))
-	vUIActionBar5:SetScaledSize((BUTTON_SIZE * 6) + (SPACING * 5), (BUTTON_SIZE * 2) + SPACING)
+	vUI:SetSize(vUIActionBar5, (BUTTON_SIZE * 6) + (SPACING * 5), (BUTTON_SIZE * 2) + SPACING)
 	
 	vUIActionBar2:ClearAllPoints()
 	vUI:SetPoint(vUIActionBar2, "TOPLEFT", vUIBottomActionBarsPanel, (SPACING + 1), -(SPACING + 1))
