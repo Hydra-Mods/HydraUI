@@ -532,8 +532,8 @@ local SkinPetButton = function(button)
 	
 	if Normal2 then
 		Normal2:ClearAllPoints()
-		vUI:SetPoint(Normal2, "TOPLEFT")
-		vUI:SetPoint(Normal2, "BOTTOMRIGHT")
+		vUI:SetPoint(Normal2, "TOPLEFT", button)
+		vUI:SetPoint(Normal2, "BOTTOMRIGHT", button)
 		Normal2:SetTexture("")
 	end
 	
