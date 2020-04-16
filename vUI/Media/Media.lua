@@ -149,7 +149,7 @@ end
 
 function Media:ApplyStyle(name)
 	if (not self.Styles[name]) then
-		return vUI:print(format('No template exists with the name "%s"', name))
+		return vUI:print(format(Language['No style exists with the name "%s"'], name))
 	end
 	
 	local Profile = vUI:GetActiveProfile()

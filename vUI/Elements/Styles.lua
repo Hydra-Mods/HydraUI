@@ -345,11 +345,27 @@ Media:SetStyle("Sci-Fi", {
 	["experience-rested-color"] = "00B4FF",
 })
 
+local AcceptNewStyle = function(value)
+	Media:ApplyStyle(value)
+	
+	ReloadUI()
+end
+
+local UpdateStyle = function(value)
+	local Label = value
+	
+	if Media.Styles[value]["ui-widget-color"] then
+		Label = format("|cFF%s%s|r", Media.Styles[value]["ui-widget-color"], value)
+	end
+	
+	vUI:DisplayPopup(Language["Attention"], format(Language['Are you sure you would like to change to the current style to "%s"?'], Label), Language["Accept"], AcceptNewStyle, Language["Cancel"], nil, value)
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Styles"])
 	
 	Left:CreateHeader(Language["Styles"])
-	Left:CreateDropdown("ui-style", Settings["ui-style"], Media:GetStyleList(), Language["Select Style"], Language["Select a style to load"], function(v) Media:ApplyStyle(v); ReloadUI(); end):RequiresReload(true)
+	Left:CreateDropdown("ui-style", Settings["ui-style"], Media:GetStyleList(), Language["Select Style"], Language["Select a style to load"], UpdateStyle)
 	
 	Left:CreateHeader(Language["Headers"])
 	Left:CreateColorSelection("ui-header-font-color", Settings["ui-header-font-color"], Language["Text Color"], "")
