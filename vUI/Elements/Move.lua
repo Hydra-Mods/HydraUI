@@ -81,7 +81,7 @@ function vUI:IsMoved(frame)
 end
 
 local OnSizeChanged = function(self)
-	self.Mover:SetScaledSize(self:GetSize())
+	vUI:SetSize(self.Mover, self:GetSize())
 end
 
 local MoverOnMouseUp = function(self, button)
