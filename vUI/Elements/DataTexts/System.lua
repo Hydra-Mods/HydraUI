@@ -1,7 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
-
 local GetFramerate = GetFramerate
 local GetNetStats = GetNetStats
 local floor = floor
@@ -34,4 +32,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("System", OnEnable, OnDisable, Update)
+vUI:AddDataText("System", OnEnable, OnDisable, Update)

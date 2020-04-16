@@ -1,7 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
-
 local select = select
 local GetMaxNumQuestsCanAccept = C_QuestLog.GetMaxNumQuestsCanAccept
 local GetNumQuestLogEntries = GetNumQuestLogEntries
@@ -34,4 +32,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Quests", OnEnable, OnDisable, Update)
+vUI:AddDataText("Quests", OnEnable, OnDisable, Update)

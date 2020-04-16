@@ -1,7 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
-
 local GetNumFriends = C_FriendList.GetNumFriends
 local GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
 local BNGetNumFriends = BNGetNumFriends
@@ -283,4 +281,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Friends", OnEnable, OnDisable, Update)
+vUI:AddDataText("Friends", OnEnable, OnDisable, Update)

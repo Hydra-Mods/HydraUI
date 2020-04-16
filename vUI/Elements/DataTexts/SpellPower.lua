@@ -1,7 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
-
 local GetSpellBonusDamage = GetSpellBonusDamage
 local GetSpellBonusHealing = GetSpellBonusHealing
 
@@ -57,4 +55,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Spell Power", OnEnable, OnDisable, Update)
+vUI:AddDataText("Spell Power", OnEnable, OnDisable, Update)

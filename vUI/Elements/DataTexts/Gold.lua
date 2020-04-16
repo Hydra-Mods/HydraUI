@@ -1,6 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
 local Gold = vUI:GetModule("Gold")
 
 local GetMoney = GetMoney
@@ -69,4 +68,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Gold", OnEnable, OnDisable, Update)
+vUI:AddDataText("Gold", OnEnable, OnDisable, Update)

@@ -1,7 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
-
 local UnitLevel = UnitLevel
 local Label = Language["Level"]
 
@@ -29,4 +27,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Level", OnEnable, OnDisable, Update)
+vUI:AddDataText("Level", OnEnable, OnDisable, Update)

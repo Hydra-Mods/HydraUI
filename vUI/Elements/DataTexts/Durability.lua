@@ -1,7 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
-
 local Slots = {1, 3, 5, 9, 10, 6, 7, 8, 16, 17, 18}
 local GetRepairAllCost = GetRepairAllCost
 local GetInventoryItemLink = GetInventoryItemLink
@@ -90,4 +88,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Durability", OnEnable, OnDisable, Update)
+vUI:AddDataText("Durability", OnEnable, OnDisable, Update)

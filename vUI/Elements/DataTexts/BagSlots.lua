@@ -1,7 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
-
 local GetContainerNumSlots = GetContainerNumSlots
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
@@ -76,4 +74,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Bag Slots", OnEnable, OnDisable, Update)
+vUI:AddDataText("Bag Slots", OnEnable, OnDisable, Update)

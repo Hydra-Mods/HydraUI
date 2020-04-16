@@ -94,15 +94,6 @@ function DT:SetDataText(anchor, name)
 	Anchor:Enable()
 end
 
-function DT:SetType(name, enable, disable, update)
-	if self.Types[name] then
-		return
-	end
-	
-	self.Types[name] = {Enable = enable, Disable = disable, Update = update}
-	self.List[name] = name
-end
-
 function DT:SetTooltipsEnabled(value)
 	for Name, Anchor in pairs(self.Anchors) do
 		if (Anchor:HasScript("OnEnter")) then
@@ -155,6 +146,15 @@ function DT:Load()
 	self:SetTooltipsEnabled(Settings["data-text-enable-tooltips"])
 	
 	SetCVar("timeMgrUseMilitaryTime", Settings["data-text-24-hour"])
+end
+
+function vUI:AddDataText(name, enable, disable, update)
+	if DT.Types[name] then
+		return
+	end
+	
+	DT.Types[name] = {Enable = enable, Disable = disable, Update = update}
+	DT.List[name] = name
 end
 
 local UpdateLeftText = function(value)

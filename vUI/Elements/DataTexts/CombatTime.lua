@@ -1,7 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
-
 local format = format
 local date = date
 
@@ -54,4 +52,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Combat Time", OnEnable, OnDisable, Update)
+vUI:AddDataText("Combat Time", OnEnable, OnDisable, Update)

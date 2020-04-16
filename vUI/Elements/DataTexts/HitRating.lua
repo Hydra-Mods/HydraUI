@@ -1,7 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
-
 local GetHitModifier = GetHitModifier
 local GetSpellHitModifier = GetSpellHitModifier
 local Label = Language["Hit"]
@@ -44,4 +42,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Hit", OnEnable, OnDisable, Update)
+vUI:AddDataText("Hit", OnEnable, OnDisable, Update)

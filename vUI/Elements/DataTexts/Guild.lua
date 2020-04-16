@@ -1,7 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
-
 local IsInGuild = IsInGuild
 local GuildRoster = GuildRoster
 local GetGuildInfo = GetGuildInfo
@@ -136,4 +134,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Guild", OnEnable, OnDisable, Update)
+vUI:AddDataText("Guild", OnEnable, OnDisable, Update)

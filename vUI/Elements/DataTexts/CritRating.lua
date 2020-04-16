@@ -1,7 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
-
 local GetRangedCritChance = GetRangedCritChance
 local GetSpellCritChance = GetSpellCritChance
 local GetCritChance = GetCritChance
@@ -67,4 +65,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Crit", OnEnable, OnDisable, Update)
+vUI:AddDataText("Crit", OnEnable, OnDisable, Update)

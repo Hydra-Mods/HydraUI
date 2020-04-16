@@ -1,7 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
-
 local UnitStat = UnitStat
 
 local ValidStat = {
@@ -57,4 +55,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Primary Stat", OnEnable, OnDisable, Update)
+vUI:AddDataText("Primary Stat", OnEnable, OnDisable, Update)

@@ -1,7 +1,5 @@
 local vUI, GUI, Language, Media, Settings = select(2, ...):get()
 
-local DT = vUI:GetModule("DataText")
-
 local gsub = gsub
 local format = format
 local GameTime_GetGameTime = GameTime_GetGameTime
@@ -74,4 +72,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-DT:SetType("Time - Realm", OnEnable, OnDisable, Update)
+vUI:AddDataText("Time - Realm", OnEnable, OnDisable, Update)
