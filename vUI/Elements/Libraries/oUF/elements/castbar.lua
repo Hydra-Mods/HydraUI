@@ -142,10 +142,10 @@ local function UNIT_SPELLCAST_START(self, event, unit)
 		shield:Hide()
 	end
 	
-	element:SetStatusBarColorHex(Settings["color-casting-start"])
+	element:SetStatusBarColor(vUI:HexToRGB(Settings["color-casting-start"]))
 	
 	if element.bg then
-		element.bg:SetVertexColorHex(Settings["color-casting-start"])
+		element.bg:SetVertexColor(vUI:HexToRGB(Settings["color-casting-start"]))
 	end
 	
 	local sf = element.SafeZone
@@ -187,10 +187,10 @@ local function UNIT_SPELLCAST_FAILED(self, event, unit, castID)
 	element.notInterruptible = nil
 	element.holdTime = element.timeToHold or 0
 
-	element:SetStatusBarColorHex(Settings["color-casting-stopped"])
+	element:SetStatusBarColor(vUI:HexToRGB(Settings["color-casting-stopped"]))
 
 	if element.bg then
-		element.bg:SetVertexColorHex(Settings["color-casting-stopped"])
+		element.bg:SetVertexColor(vUI:HexToRGB(Settings["color-casting-stopped"]))
 	end
 
 	--[[ Callback: Castbar:PostCastFailed(unit)
@@ -221,10 +221,10 @@ local function UNIT_SPELLCAST_INTERRUPTED(self, event, unit, castID)
 	element.channeling = nil
 	element.holdTime = element.timeToHold or 0
 
-	element:SetStatusBarColorHex(Settings["color-casting-interrupted"])
+	element:SetStatusBarColor(vUI:HexToRGB(Settings["color-casting-interrupted"]))
 
 	if element.bg then
-		element.bg:SetVertexColorHex(Settings["color-casting-interrupted"])
+		element.bg:SetVertexColor(vUI:HexToRGB(Settings["color-casting-interrupted"]))
 	end
 
 	--[[ Callback: Castbar:PostCastInterrupted(unit)
@@ -328,10 +328,10 @@ local function UNIT_SPELLCAST_STOP(self, event, unit, castID)
 	element.casting = nil
 	element.notInterruptible = nil
 
-	element:SetStatusBarColorHex(Settings["color-casting-stopped"])
+	element:SetStatusBarColor(vUI:HexToRGB(Settings["color-casting-stopped"]))
 	
 	if element.bg then
-		element.bg:SetVertexColorHex(Settings["color-casting-stopped"])
+		element.bg:SetVertexColor(vUI:HexToRGB(Settings["color-casting-stopped"]))
 	end
 	
 	if (unit == "player" and UnitIsUnit("player", "target")) then -- Simulate the event for the target cast bar
@@ -395,10 +395,10 @@ local function UNIT_SPELLCAST_CHANNEL_START(self, event, unit, _, spellID)
 		shield:Hide()
 	end
 
-	element:SetStatusBarColorHex(Settings["color-casting-start"])
+	element:SetStatusBarColor(vUI:HexToRGB(Settings["color-casting-start"]))
 
 	if element.bg then
-		element.bg:SetVertexColorHex(Settings["color-casting-start"])
+		element.bg:SetVertexColor(vUI:HexToRGB(Settings["color-casting-start"]))
 	end
 
 	local sf = element.SafeZone
@@ -461,10 +461,10 @@ local function UNIT_SPELLCAST_CHANNEL_STOP(self, event, unit)
 		element.channeling = nil
 		element.notInterruptible = nil
 
-		element:SetStatusBarColorHex(Settings["color-casting-stopped"])
+		element:SetStatusBarColor(vUI:HexToRGB(Settings["color-casting-stopped"]))
 
 		if element.bg then
-			element.bg:SetVertexColorHex(Settings["color-casting-stopped"])
+			element.bg:SetVertexColor(vUI:HexToRGB(Settings["color-casting-stopped"]))
 		end
 
 		--[[ Callback: Castbar:PostChannelStop(unit)

@@ -798,7 +798,7 @@ local StyleNamePlate = function(self, unit)
 	
 	TargetIndicator.Right = TargetIndicator:CreateTexture(nil, "ARTWORK")
 	vUI:SetSize(TargetIndicator.Right, 16, 16)
-	vUI:SetPoint(TargetIndicator.Righ, "LEFT", TargetIndicator, "RIGHT", -3, 0)
+	vUI:SetPoint(TargetIndicator.Right, "LEFT", TargetIndicator, "RIGHT", -3, 0)
 	TargetIndicator.Right:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
 	
 	if (Settings["nameplates-target-indicator-size"] == "SMALL") then
