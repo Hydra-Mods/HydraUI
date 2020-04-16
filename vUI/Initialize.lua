@@ -14,13 +14,29 @@ local gsub = gsub
 local type = type
 local UnitLevel = UnitLevel
 local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
-local vUI = CreateFrame("Frame", nil, UIParent)
-local GUI = CreateFrame("Frame", nil, UIParent)
-local Language = {}
 
+local Resolution = GetCurrentResolution()
+local ScreenHeight
+local Scale = 1
+
+-- Data storage
 local Media = {}
 local Settings = {}
 local Defaults = {}
+
+-- GUI
+local GUI = CreateFrame("Frame", nil, UIParent)
+
+GUI.Queue = {}
+
+function GUI:AddOptions(func)
+	if (type(func) == "function") then
+		tinsert(self.Queue, func)
+	end
+end
+
+-- Language
+local Language = {}
 
 local Index = function(self, key)
 	return key
@@ -28,7 +44,13 @@ end
 
 setmetatable(Language, {__index = Index})
 
--- Some Data
+-- Core functions and data
+local vUI = CreateFrame("Frame", nil, UIParent)
+
+vUI.Modules = {}
+vUI.Plugins = {}
+
+-- Some constants
 vUI.UIVersion = GetAddOnMetadata("vUI", "Version")
 vUI.UserName = UnitName("player")
 vUI.UserClass = select(2, UnitClass("player"))
@@ -43,33 +65,6 @@ vUI.UserGoldKey = format("%s:%s:%s", vUI.UserName, vUI.UserRealm, vUI.UserFactio
 if (vUI.UserLocale == "enGB") then
 	vUI.UserLocale = "enUS"
 end
-
-vUI.Modules = {}
-vUI.Plugins = {}
-
-GUI.Queue = {}
-
---[[function GUI:CreateWindow(name, func)
-	-- add to a table by name where the function is run when the window is selected. After this and AddToWindow are run, flag for a sort
-end]]
-
-function GUI:AddToWindow(name, func)
-	
-end
-
-function GUI:AddOptions(func)
-	if (type(func) == "function") then
-		tinsert(self.Queue, func)
-	end
-end
-
---[[
-	
-	vUI:AddOptions("Action Bars", function(self, left, right)
-		
-	end)
-	
---]]
 
 local Hook = function(self, global, hook)
 	if _G[global] then
@@ -87,14 +82,6 @@ local Hook = function(self, global, hook)
 	end
 end
 
-local ModuleAddOptions = function(self, func)
-	local Left, Right = GUI:CreateWindow(self.Name)
-	
-	if func then
-		func(self, Left, Right)
-	end
-end
-
 function vUI:NewModule(name)
 	if self.Modules[name] then
 		return self.Modules[name]
@@ -105,7 +92,6 @@ function vUI:NewModule(name)
 	Module.Name = name
 	Module.Loaded = false
 	Module.Hook = Hook
-	Module.AddOptions = ModuleAddOptions
 	
 	self.Modules[name] = Module
 	self.Modules[#self.Modules + 1] = Module
@@ -210,7 +196,6 @@ function vUI:AddPluginInfo()
 		
 		Anchor:CreateDoubleLine(Language["Author"], vUI.Plugins[i].Author)
 		Anchor:CreateDoubleLine(Language["Version"], vUI.Plugins[i].Version)
-		--Anchor:CreateHeader(Language["Description"])
 		Anchor:CreateLine(" ")
 		Anchor:CreateMessage(vUI.Plugins[i].Notes)
 	end
@@ -224,54 +209,12 @@ function vUI:SetCVars()
 	C_CVar.SetCVar("countdownForCooldowns", 1)
 end
 
-function vUI:VARIABLES_LOADED(event)
-	if (not C_CVar.GetCVar("useUIScale")) then
-		C_CVar.SetCVar("useUIScale", 1)
-	end
-	
-	Defaults["ui-scale"] = self:GetSuggestedScale()
-	
-	self:CreateProfileData()
-	self:UpdateProfileList()
-	self:ApplyProfile(self:GetActiveProfileName())
-	
-	self:SetScale(Settings["ui-scale"])
-	self:UpdateoUFColors()
-	
-	-- Load the GUI
-	GUI:Create()
-	GUI:RunQueue()
-	
-	-- Show the default window, if one was found
-	if GUI.DefaultWindow then
-		GUI:ShowWindow(GUI.DefaultWindow)
-	end
-	
-	self:UnregisterEvent(event)
-end
-
-function vUI:PLAYER_ENTERING_WORLD(event)
-	self:LoadModules()
-	self:LoadPlugins()
-	self:AddPluginInfo()
-	
-	self:UnregisterEvent(event)
-end
-
-function vUI:AddOptions(name, func)
-	
-end
-
 --[[
 	Scale comprehension references:
 	https://wow.gamepedia.com/UI_Scale
 	https://www.reddit.com/r/WowUI/comments/95o7qc/other_how_to_pixel_perfect_ui_xpost_rwow/
 	https://www.wowinterface.com/forums/showthread.php?t=31813
 --]]
-
-local Resolution = GetCurrentResolution()
-local ScreenHeight
-local Scale = 1
 
 function vUI:UpdateScreenHeight()
 	if (C_CVar.GetCVar("gxMaximize") == "1") then -- A fullscreen resolution
@@ -461,10 +404,6 @@ function vUI:print(...)
 	end
 end
 
-function Namespace:get()
-	return vUI, GUI, Language, Media, Settings, Defaults
-end
-
 function vUI:SetHeight(object, height)
 	object:SetHeight(GetScale(height))
 end
@@ -511,6 +450,41 @@ function vUI:SetFontInfo(object, font, size, flags)
 	end
 end
 
+function vUI:VARIABLES_LOADED(event)
+	if (not C_CVar.GetCVar("useUIScale")) then
+		C_CVar.SetCVar("useUIScale", 1)
+	end
+	
+	Defaults["ui-scale"] = self:GetSuggestedScale()
+	
+	-- Import profile data and load a profile
+	self:CreateProfileData()
+	self:UpdateProfileList()
+	self:ApplyProfile(self:GetActiveProfileName())
+	
+	self:SetScale(Settings["ui-scale"])
+	self:UpdateoUFColors()
+	
+	-- Load the GUI
+	GUI:Create()
+	GUI:RunQueue()
+	
+	-- Show the default window
+	if GUI.DefaultWindow then
+		GUI:ShowWindow(GUI.DefaultWindow)
+	end
+	
+	self:UnregisterEvent(event)
+end
+
+function vUI:PLAYER_ENTERING_WORLD(event)
+	self:LoadModules()
+	self:LoadPlugins()
+	self:AddPluginInfo()
+	
+	self:UnregisterEvent(event)
+end
+
 function vUI:OnEvent(event, ...)
 	if self[event] then
 		self[event](self, event, ...)
@@ -521,8 +495,7 @@ vUI:RegisterEvent("VARIABLES_LOADED")
 vUI:RegisterEvent("PLAYER_ENTERING_WORLD")
 vUI:SetScript("OnEvent", vUI.OnEvent)
 
-_G["vUIGlobal"] = Namespace
-
+-- Aura wrappers for lookup by name
 local UnitAura = UnitAura
 local UnitBuff = UnitBuff
 local UnitDebuff = UnitDebuff
@@ -558,3 +531,11 @@ UnitDebuffByName = function(unit, name, filter)
 		end
 	end
 end
+
+-- Access data tables
+function Namespace:get()
+	return vUI, GUI, Language, Media, Settings, Defaults
+end
+
+-- Global access
+_G["vUIGlobal"] = Namespace
