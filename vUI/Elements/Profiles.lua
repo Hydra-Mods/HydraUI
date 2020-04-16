@@ -474,12 +474,15 @@ function vUI:SetProfileMetadata(name, meta, value) -- /run vUI:get(7):SetProfile
 	end
 end
 
+local AcceptNewProfile = function(value)
+	vUI:SetActiveProfile(value)
+	
+	ReloadUI()
+end
+
 local UpdateActiveProfile = function(value)
 	if (value ~= vUI:GetActiveProfileName()) then
-		vUI:SetActiveProfile(value)
-		
-		ReloadUI()
-		--vUI:UpdateProfileInfo()
+		vUI:DisplayPopup(Language["Attention"], format(Language['Are you sure you would like to change to the current profile to "|cff%s%s|r"?'], Settings["ui-widget-color"], value), Language["Accept"], AcceptNewProfile, Language["Cancel"], nil, value)
 	end
 end
 
