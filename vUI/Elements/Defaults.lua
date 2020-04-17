@@ -115,6 +115,7 @@ Defaults["color-combo-2"] = "FFB266"
 Defaults["color-combo-3"] = "FFFF66"
 Defaults["color-combo-4"] = "B2FF66"
 Defaults["color-combo-5"] = "66FF66"
+Defaults["color-combo-6"] = "66FF66"
 
 -- Casting
 Defaults["color-casting-start"] = "4C9900"

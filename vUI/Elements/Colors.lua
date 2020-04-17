@@ -174,6 +174,7 @@ GUI:AddOptions(function(self)
 	Left:CreateColorSelection("color-combo-3", Settings["color-combo-3"], Language["Combo Point 3"], "")
 	Left:CreateColorSelection("color-combo-4", Settings["color-combo-4"], Language["Combo Point 4"], "")
 	Left:CreateColorSelection("color-combo-5", Settings["color-combo-5"], Language["Combo Point 5"], "")
+	Left:CreateColorSelection("color-combo-6", Settings["color-combo-6"], Language["Combo Point 6"], "")
 	
 	Right:CreateHeader(Language["Misc Colors"])
 	Right:CreateColorSelection("color-tapped", Settings["color-tapped"], Language["Tagged"], "")
