@@ -1052,8 +1052,6 @@ local StylePlayer = function(self, unit)
     Castbar.timeToHold = 0.7
 	
 	if (vUI.UserClass == "ROGUE" or vUI.UserClass == "DRUID") then
-		local Max (vUI.UserClass == "ROGUE" and 6 or 5)
-	
 		local ComboPoints = CreateFrame("Frame", self:GetName() .. "ComboPoints", self)
 		vUI:SetPoint(ComboPoints, "BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 		vUI:SetSize(ComboPoints, Settings["unitframes-player-width"], 10)
@@ -1061,6 +1059,7 @@ local StylePlayer = function(self, unit)
 		ComboPoints:SetBackdropColor(0, 0, 0)
 		ComboPoints:SetBackdropBorderColor(0, 0, 0)
 		
+		local Max = (vUI.UserClass == "ROGUE" and 6 or 5)
 		local Width = (Settings["unitframes-player-width"] / Max)
 		
 		for i = 1, Max do
