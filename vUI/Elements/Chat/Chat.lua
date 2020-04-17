@@ -411,11 +411,11 @@ local JumpButtonOnMouseUp = function(self)
 end
 
 local JumpButtonOnEnter = function(self)
-	self.Arrow:SetVertexColorHex("FFFFFF")
+	self.Arrow:SetVertexColor(1, 1, 1)
 end
 
 local JumpButtonOnLeave = function(self)
-	self.Arrow:SetVertexColorHex("00CC66")
+	self.Arrow:SetVertexColor(vUI:HexToRGB("00CC66"))
 end
 
 local JumpButtonOnFinished = function(self)
