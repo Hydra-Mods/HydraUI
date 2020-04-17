@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local Vehicle = vUI:NewModule("Vehicle")
 
@@ -72,7 +72,7 @@ function Vehicle:Load()
 	self.Button.Texture = self.Button:CreateTexture(nil, "ARTWORK")
 	vUI:SetPoint(self.Button.Texture, "TOPLEFT", self.Button, 1, -1)
 	vUI:SetPoint(self.Button.Texture, "BOTTOMRIGHT", self.Button, -1, 1)
-	self.Button.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	self.Button.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	self.Button.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	self.Button.Text = self.Button:CreateFontString(nil, "OVERLAY", 7)

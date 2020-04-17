@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local select = select
 local tostring = tostring
@@ -205,7 +205,7 @@ local CreateChatFramePanels = function()
 	LeftChatFrameBottom.Texture = LeftChatFrameBottom:CreateTexture(nil, "OVERLAY")
 	vUI:SetPoint(LeftChatFrameBottom.Texture, "TOPLEFT", LeftChatFrameBottom, 1, -1)
 	vUI:SetPoint(LeftChatFrameBottom.Texture, "BOTTOMRIGHT", LeftChatFrameBottom, -1, 1)
-	LeftChatFrameBottom.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	LeftChatFrameBottom.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	LeftChatFrameBottom.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	local ChatFrameBG = CreateFrame("Frame", "vUIChatFrame", UIParent)
@@ -227,7 +227,7 @@ local CreateChatFramePanels = function()
 	LeftChatFrameTop.Texture = LeftChatFrameTop:CreateTexture(nil, "OVERLAY")
 	vUI:SetPoint(LeftChatFrameTop.Texture, "TOPLEFT", LeftChatFrameTop, 1, -1)
 	vUI:SetPoint(LeftChatFrameTop.Texture, "BOTTOMRIGHT", LeftChatFrameTop, -1, 1)
-	LeftChatFrameTop.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	LeftChatFrameTop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	LeftChatFrameTop.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	-- All this just to achieve an empty center :P
@@ -517,7 +517,7 @@ local StyleChatFrame = function(frame)
 	EditBox.HeaderBackdrop.Tex = EditBox.HeaderBackdrop:CreateTexture(nil, "BORDER")
 	vUI:SetPoint(EditBox.HeaderBackdrop.Tex, "TOPLEFT", EditBox.HeaderBackdrop, 1, -1)
 	vUI:SetPoint(EditBox.HeaderBackdrop.Tex, "BOTTOMRIGHT", EditBox.HeaderBackdrop, -1, 1)
-	EditBox.HeaderBackdrop.Tex:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	EditBox.HeaderBackdrop.Tex:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	EditBox.HeaderBackdrop.Tex:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	EditBox.Backdrop = CreateFrame("Frame", nil, EditBox)
@@ -532,7 +532,7 @@ local StyleChatFrame = function(frame)
 	EditBox.Backdrop.Tex = EditBox.Backdrop:CreateTexture(nil, "BORDER")
 	vUI:SetPoint(EditBox.Backdrop.Tex, "TOPLEFT", EditBox.Backdrop, 1, -1)
 	vUI:SetPoint(EditBox.Backdrop.Tex, "BOTTOMRIGHT", EditBox.Backdrop, -1, 1)
-	EditBox.Backdrop.Tex:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	EditBox.Backdrop.Tex:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	EditBox.Backdrop.Tex:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	local AnimGroup = CreateAnimationGroup(EditBox.Backdrop.Tex)
@@ -564,13 +564,13 @@ local StyleChatFrame = function(frame)
 	JumpButton.Texture = JumpButton:CreateTexture(nil, "ARTWORK")
 	vUI:SetPoint(JumpButton.Texture, "TOPLEFT", JumpButton, 1, -1)
 	vUI:SetPoint(JumpButton.Texture, "BOTTOMRIGHT", JumpButton, -1, 1)
-	JumpButton.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	JumpButton.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	JumpButton.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	JumpButton.Arrow = JumpButton:CreateTexture(nil, "OVERLAY")
 	vUI:SetPoint(JumpButton.Arrow, "CENTER", JumpButton, 0, 0)
 	vUI:SetSize(JumpButton.Arrow, 16, 16)
-	JumpButton.Arrow:SetTexture(Media:GetTexture("Arrow Down"))
+	JumpButton.Arrow:SetTexture(Assets:GetTexture("Arrow Down"))
 	JumpButton.Arrow:SetVertexColor(vUI:HexToRGB("00CC66"))
 	
 	JumpButton.Fade = CreateAnimationGroup(JumpButton)
@@ -631,7 +631,7 @@ local MoveChatFrames = function()
 		
 		FCF_SetChatWindowFontSize(nil, Frame, Settings["chat-font-size"])
 		
-		local Font, IsPixel = Media:GetFont(Settings["chat-font"])
+		local Font, IsPixel = Assets:GetFont(Settings["chat-font"])
 		
 		if IsPixel then
 			Frame:SetFont(Font, Settings["chat-font-size"], "MONOCHROME, OUTLINE")
@@ -878,7 +878,7 @@ local UpdateChatFont = function()
 
 		FCF_SetChatWindowFontSize(nil, Frame, Settings["chat-font-size"])
 		
-		local Font, IsPixel = Media:GetFont(Settings["chat-font"])
+		local Font, IsPixel = Assets:GetFont(Settings["chat-font"])
 		
 		if IsPixel then
 			Frame:SetFont(Font, Settings["chat-font-size"], "MONOCHROME, OUTLINE")
@@ -896,7 +896,7 @@ local UpdateChatTabFont = function()
 
 	for i = 1, NUM_CHAT_WINDOWS do
 		local TabText = _G["ChatFrame" .. i .. "TabText"]
-		local Font, IsPixel = Media:GetFont(Settings["chat-tab-font"])
+		local Font, IsPixel = Assets:GetFont(Settings["chat-tab-font"])
 		
 		TabText:_SetTextColor(R, G, B)
 		
@@ -951,14 +951,14 @@ GUI:AddOptions(function(self)
 	Left:CreateSwitch("chat-enable-friend-links", Settings["chat-enable-friend-links"], Language["Enable Friend Tag Links"], "Enable friend tag links in the chat frame")
 	
 	Right:CreateHeader(Language["Chat Frame Font"])
-	Right:CreateDropdown("chat-font", Settings["chat-font"], Media:GetFontList(), Language["Font"], "Set the font of the chat frame", UpdateChatFont, "Font")
+	Right:CreateDropdown("chat-font", Settings["chat-font"], Assets:GetFontList(), Language["Font"], "Set the font of the chat frame", UpdateChatFont, "Font")
 	Right:CreateSlider("chat-font-size", Settings["chat-font-size"], 8, 18, 1, "Font Size", "Set the font size of the chat frame", UpdateChatFont)
-	Right:CreateDropdown("chat-font-flags", Settings["chat-font-flags"], Media:GetFlagsList(), Language["Font Flags"], "Set the font flags of the chat frame", UpdateChatFont)
+	Right:CreateDropdown("chat-font-flags", Settings["chat-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], "Set the font flags of the chat frame", UpdateChatFont)
 	
 	Right:CreateHeader(Language["Tab Font"])
-	Right:CreateDropdown("chat-tab-font", Settings["chat-tab-font"], Media:GetFontList(), Language["Font"], "Set the font of the chat frame tabs", UpdateChatTabFont, "Font")
+	Right:CreateDropdown("chat-tab-font", Settings["chat-tab-font"], Assets:GetFontList(), Language["Font"], "Set the font of the chat frame tabs", UpdateChatTabFont, "Font")
 	Right:CreateSlider("chat-tab-font-size", Settings["chat-tab-font-size"], 8, 18, 1, "Font Size", "Set the font size of the chat frame tabs", UpdateChatTabFont)
-	Right:CreateDropdown("chat-tab-font-flags", Settings["chat-tab-font-flags"], Media:GetFlagsList(), Language["Font Flags"], "Set the font flags of the chat frame tabs", UpdateChatTabFont)
+	Right:CreateDropdown("chat-tab-font-flags", Settings["chat-tab-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], "Set the font flags of the chat frame tabs", UpdateChatTabFont)
 	Right:CreateColorSelection("chat-tab-font-color", Settings["chat-tab-font-color"], Language["Font Color"], "Set the color of the chat frame tabs", UpdateChatTabFont)
 	Right:CreateColorSelection("chat-tab-font-color-mouseover", Settings["chat-tab-font-color-mouseover"], Language["Font Color Mouseover"], "Set the color of the chat frame tab while mousing over it")
 end)

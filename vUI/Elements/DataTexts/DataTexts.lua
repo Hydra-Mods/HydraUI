@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local DT = vUI:NewModule("DataText")
 
@@ -48,7 +48,7 @@ function DT:NewAnchor(name, parent)
 	vUI:SetPoint(Anchor.Highlight, "BOTTOMLEFT", Anchor, 20, 0)
 	vUI:SetPoint(Anchor.Highlight, "BOTTOMRIGHT", Anchor, -20, 0)
 	vUI:SetHeight(Anchor.Highlight, 14)
-	Anchor.Highlight:SetTexture(Media:GetTexture("RenHorizonUp"))
+	Anchor.Highlight:SetTexture(Assets:GetTexture("RenHorizonUp"))
 	Anchor.Highlight:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
 	Anchor.Highlight:SetAlpha(0)
 	
@@ -217,9 +217,9 @@ GUI:AddOptions(function(self)
 	Left:CreateDropdown("data-text-minimap-bottom", Settings["data-text-minimap-bottom"], DT.List, Language["Set Bottom Text"], Language["Set the information to be displayed in the bottom minimap data text anchor"], UpdateMinimapBottomText)
 	
 	Right:CreateHeader(Language["Font"])
-	Right:CreateDropdown("data-text-font", Settings["data-text-font"], Media:GetFontList(), Language["Font"], Language["Set the font of the data texts"], UpdateFont, "Font")
+	Right:CreateDropdown("data-text-font", Settings["data-text-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the data texts"], UpdateFont, "Font")
 	Right:CreateSlider("data-text-font-size", Settings["data-text-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the data texts"], UpdateFont)
-	Right:CreateDropdown("data-text-font-flags", Settings["data-text-font-flags"], Media:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the data texts"], UpdateFont)
+	Right:CreateDropdown("data-text-font-flags", Settings["data-text-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the data texts"], UpdateFont)
 	
 	Right:CreateHeader(Language["Colors"])
 	Right:CreateColorSelection("data-text-label-color", Settings["data-text-label-color"], "Label Color", "Set the text color of data text labels", function() DT:UpdateAllAnchors() end)

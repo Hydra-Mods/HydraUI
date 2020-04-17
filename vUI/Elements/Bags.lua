@@ -2,7 +2,7 @@ if 1 == 1 then
 	return
 end
 
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local temp = {
 	--["Hydrazine:Whitemane"] = 1,
@@ -73,7 +73,7 @@ function Bags:SkinSlot(slot)
 	slot.Backdrop.Texture = slot:CreateTexture(nil, "BACKDROP", 2)
 	slot.Backdrop.Texture:SetScaledPoint("TOPLEFT", slot.Backdrop, 1, -1)
 	slot.Backdrop.Texture:SetScaledPoint("BOTTOMRIGHT", slot.Backdrop, -1, 1)
-	slot.Backdrop.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	slot.Backdrop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	slot.Backdrop.Texture:SetVertexColorHex(Settings["ui-window-main-color"])
 	
 	local Highlight = slot:CreateTexture(nil, "ARTWORK")
@@ -259,7 +259,7 @@ function Bags:CreateBagFrame()
 	Frame.BlackTexture:SetDrawLayer("BACKGROUND", -7)
 	Frame.BlackTexture:SetScaledPoint("TOPLEFT", Frame, 0, 0)
 	Frame.BlackTexture:SetScaledPoint("BOTTOMRIGHT", Frame, 0, 0)
-	Frame.BlackTexture:SetTexture(Media:GetTexture("Blank"))
+	Frame.BlackTexture:SetTexture(Assets:GetTexture("Blank"))
 	Frame.BlackTexture:SetVertexColor(0, 0, 0)
 	
 	Frame.Fade = CreateAnimationGroup(Frame)
@@ -290,13 +290,13 @@ function Bags:CreateBagFrame()
 	CloseButton.Texture = CloseButton:CreateTexture(nil, "ARTWORK")
 	CloseButton.Texture:SetScaledPoint("TOPLEFT", CloseButton, 1, -1)
 	CloseButton.Texture:SetScaledPoint("BOTTOMRIGHT", CloseButton, -1, 1)
-	CloseButton.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	CloseButton.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	CloseButton.Texture:SetVertexColorHex(Settings["ui-header-texture-color"])
 	
 	CloseButton.Cross = CloseButton:CreateTexture(nil, "OVERLAY")
 	CloseButton.Cross:SetPoint("CENTER", CloseButton, 0, 0)
 	CloseButton.Cross:SetScaledSize(16, 16)
-	CloseButton.Cross:SetTexture(Media:GetTexture("vUI Close"))
+	CloseButton.Cross:SetTexture(Assets:GetTexture("vUI Close"))
 	CloseButton.Cross:SetVertexColorHex("EEEEEE")
 	
 	-- Header
@@ -311,7 +311,7 @@ function Bags:CreateBagFrame()
 	Header.Texture = Header:CreateTexture(nil, "OVERLAY")
 	Header.Texture:SetScaledPoint("TOPLEFT", Header, 1, -1)
 	Header.Texture:SetScaledPoint("BOTTOMRIGHT", Header, -1, 1)
-	Header.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	Header.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	Header.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	Header.Text = Header:CreateFontString(nil, "OVERLAY")
@@ -332,7 +332,7 @@ function Bags:CreateBagFrame()
 	Footer.Texture = Footer:CreateTexture(nil, "OVERLAY")
 	Footer.Texture:SetScaledPoint("TOPLEFT", Footer, 1, -1)
 	Footer.Texture:SetScaledPoint("BOTTOMRIGHT", Footer, -1, 1)
-	Footer.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	Footer.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	Footer.Texture:SetVertexColorHex(Settings["ui-window-main-color"])
 	
 	Footer.LeftText = Footer:CreateFontString(nil, "OVERLAY")

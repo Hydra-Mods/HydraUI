@@ -1,6 +1,6 @@
 ## Interface: 80300
 ## Author: Hydra
-## Version: 1.00168
+## Version: 1.00169
 ## Title: |cFFFFC44DvUI|r
 ## Notes: An interface replacement for World of Warcraft: Battle for Azeroth
 ## SavedVariables: vUIProfileData, vUIProfiles, vUIData, vUIMove, vUIGold
@@ -14,7 +14,7 @@ Elements\Libraries\AceSerializer-3.0.lua
 Elements\Libraries\LibCompress.lua
 Elements\Libraries\LibAnim.lua
 Elements\Libraries\oUF\oUF.xml
-Media\Media.lua
+Assets\Assets.lua
 Languages\deDE.lua
 Languages\esES.lua
 Languages\esMX.lua

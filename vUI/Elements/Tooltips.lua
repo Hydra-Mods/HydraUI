@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local Tooltips = vUI:NewModule("Tooltips")
 local MyGuild
@@ -452,12 +452,12 @@ function Tooltips:StyleStatusBar()
 	vUI:SetHeight(GameTooltipStatusBar, Settings["tooltips-health-bar-height"])
 	vUI:SetPoint(GameTooltipStatusBar, "BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", 1, 3)
 	vUI:SetPoint(GameTooltipStatusBar, "BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -1, 3)
-	GameTooltipStatusBar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	GameTooltipStatusBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	
 	GameTooltipStatusBar.BG = GameTooltipStatusBar:CreateTexture(nil, "ARTWORK")
 	vUI:SetPoint(GameTooltipStatusBar.BG, "TOPLEFT", GameTooltipStatusBar, 0, 0)
 	vUI:SetPoint(GameTooltipStatusBar.BG, "BOTTOMRIGHT", GameTooltipStatusBar, 0, 0)
-	GameTooltipStatusBar.BG:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	GameTooltipStatusBar.BG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	GameTooltipStatusBar.BG:SetAlpha(0.2)
 	
 	GameTooltipStatusBar.Backdrop = CreateFrame("Frame", nil, GameTooltipStatusBar)
@@ -520,13 +520,13 @@ function Tooltips:SkinItemRef()
 	CloseButton.Texture = CloseButton:CreateTexture(nil, "ARTWORK")
 	vUI:SetPoint(CloseButton.Texture, "TOPLEFT", CloseButton, 1, -1)
 	vUI:SetPoint(CloseButton.Texture, "BOTTOMRIGHT", CloseButton, -1, 1)
-	CloseButton.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	CloseButton.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	CloseButton.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	CloseButton.Cross = CloseButton:CreateTexture(nil, "OVERLAY")
 	vUI:SetPoint(CloseButton.Cross, "CENTER", CloseButton, 0, 0)
 	vUI:SetSize(CloseButton.Cross, 16, 16)
-	CloseButton.Cross:SetTexture(Media:GetTexture("Close"))
+	CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
 	CloseButton.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
 	
 	ItemRefTooltip.NewCloseButton = CloseButton
@@ -575,9 +575,9 @@ GUI:AddOptions(function(self)
 	Left:CreateSwitch("tooltips-show-id", Settings["tooltips-show-id"], Language["Display ID's"], Language["Dislay item and spell ID's in the tooltip"])
 	
 	Left:CreateHeader(Language["Font"])
-	Left:CreateDropdown("tooltips-font", Settings["tooltips-font"], Media:GetFontList(), Language["Font"], Language["Set the font of the tooltip text"], nil, "Font")
+	Left:CreateDropdown("tooltips-font", Settings["tooltips-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the tooltip text"], nil, "Font")
 	Left:CreateSlider("tooltips-font-size", Settings["tooltips-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the tooltip text"])
-	Left:CreateDropdown("tooltips-font-flags", Settings["tooltips-font-flags"], Media:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the tooltip text"])
+	Left:CreateDropdown("tooltips-font-flags", Settings["tooltips-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the tooltip text"])
 	
 	Right:CreateHeader(Language["Information"])
 	Right:CreateSwitch("tooltips-display-realm", Settings["tooltips-display-realm"], Language["Display Realm"], Language["Display character realms"])

@@ -20,7 +20,7 @@ local ScreenHeight
 local Scale = 1
 
 -- Data storage
-local Media = {}
+local Assets = {}
 local Settings = {}
 local Defaults = {}
 
@@ -280,19 +280,19 @@ function vUI:Comma(number)
 end
 
 vUI.Backdrop = {
-	bgFile = "Interface\\AddOns\\vUI\\Media\\Textures\\Blank.tga",
+	bgFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga",
 	insets = {top = 0, left = 0, bottom = 0, right = 0},
 }
 
 vUI.BackdropAndBorder = {
-	bgFile = "Interface\\AddOns\\vUI\\Media\\Textures\\Blank.tga",
-	edgeFile = "Interface\\AddOns\\vUI\\Media\\Textures\\Blank.tga",
+	bgFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga",
+	edgeFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga",
 	edgeSize = 1,
 	insets = {top = 0, left = 0, bottom = 0, right = 0},
 }
 
 vUI.Outline = {
-	edgeFile = "Interface\\AddOns\\vUI\\Media\\Textures\\Blank.tga",
+	edgeFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga",
 	edgeSize = 1,
 	insets = {left = 0, right = 0, top = 0, bottom = 0},
 }
@@ -438,7 +438,7 @@ end
 
 
 function vUI:SetFontInfo(object, font, size, flags)
-	local Font, IsPixel = Media:GetFont(font)
+	local Font, IsPixel = Assets:GetFont(font)
 	
 	if IsPixel then
 		object:SetFont(Font, size, "MONOCHROME, OUTLINE")
@@ -534,7 +534,7 @@ end
 
 -- Access data tables
 function Namespace:get()
-	return vUI, GUI, Language, Media, Settings, Defaults
+	return vUI, GUI, Language, Assets, Settings, Defaults
 end
 
 -- Global access

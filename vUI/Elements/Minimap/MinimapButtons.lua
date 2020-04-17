@@ -2,7 +2,7 @@ if (1 == 1) then
 	return
 end
 
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local MinimapButtons = vUI:NewModule("Minimap Buttons")
 
@@ -167,7 +167,7 @@ function MinimapButtons:SkinButtons()
 			Child.Backdrop.Texture = Child.Backdrop:CreateTexture(nil, "BACKDROP")
 			vUI:SetPoint(Child.Backdrop.Texture, "TOPLEFT", Child.Backdrop, 1, -1)
 			vUI:SetPoint(Child.Backdrop.Texture, "BOTTOMRIGHT", Child.Backdrop, -1, 1)
-			Child.Backdrop.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+			Child.Backdrop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 			Child.Backdrop.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 
 			Child:SetFrameLevel(Minimap:GetFrameLevel() + 10)
@@ -176,7 +176,7 @@ function MinimapButtons:SkinButtons()
 			if (objectType == "Button" or objectType == "Frame") then
 				if (Child.SetHighlightTexture) then
 					local Highlight = Child:CreateTexture(nil, "ARTWORK", button)
-					Highlight:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
+					Highlight:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 					Highlight:SetVertexColor(1, 1, 1, 0.2)
 					vUI:SetPoint(Highlight, "TOPLEFT", Child, 1, -1)
 					vUI:SetPoint(Highlight, "BOTTOMRIGHT", Child, -1, 1)
@@ -187,7 +187,7 @@ function MinimapButtons:SkinButtons()
 
 				if (Child.SetPushedTexture) then
 					local Pushed = Child:CreateTexture(nil, "ARTWORK", button)
-					Pushed:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
+					Pushed:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 					Pushed:SetVertexColor(0.9, 0.8, 0.1, 0.3)
 					vUI:SetPoint(Pushed, "TOPLEFT", Child, 1, -1)
 					vUI:SetPoint(Pushed, "BOTTOMRIGHT", Child, -1, 1)

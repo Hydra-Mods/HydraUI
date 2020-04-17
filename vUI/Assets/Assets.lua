@@ -1,26 +1,26 @@
-local vUI, GUI, Language, Media, Settings, Defaults = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 local SharedMedia = LibStub:GetLibrary("LibSharedMedia-3.0")
 local Textures = SharedMedia:HashTable("statusbar")
 local Fonts = SharedMedia:HashTable("font")
 
-Media.Fonts = {}
-Media.Textures = {}
-Media.Highlights = {}
-Media.Styles = {}
-Media.Palettes = {}
-Media.Sounds = {}
+Assets.Fonts = {}
+Assets.Textures = {}
+Assets.Highlights = {}
+Assets.Styles = {}
+Assets.Palettes = {}
+Assets.Sounds = {}
 
-Media.FontList = {}
-Media.TextureList = {}
-Media.HighlightList = {}
-Media.StyleList = {}
-Media.PaletteList = {}
-Media.SoundList = {}
+Assets.FontList = {}
+Assets.TextureList = {}
+Assets.HighlightList = {}
+Assets.StyleList = {}
+Assets.PaletteList = {}
+Assets.SoundList = {}
 
-Media.FontOffset = {}
-Media.FontIsPixel = {}
+Assets.FontOffset = {}
+Assets.FontIsPixel = {}
 
-Media.FlagsList = {
+Assets.FlagsList = {
 	["Outline"] = "OUTLINE",
 	["Thick Outline"] = "THICKOUTLINE",
 	["Monochrome"] = "MONOCHROME",
@@ -28,12 +28,12 @@ Media.FlagsList = {
 	["None"] = "",
 }
 
-function Media:GetFlagsList()
+function Assets:GetFlagsList()
 	return self.FlagsList
 end
 
 -- Fonts
-function Media:SetFont(name, path, silent, ispixel)
+function Assets:SetFont(name, path, silent, ispixel)
 	if self.Fonts[name] then
 		return
 	end
@@ -51,7 +51,7 @@ function Media:SetFont(name, path, silent, ispixel)
 	end
 end
 
-function Media:GetFont(name)
+function Assets:GetFont(name)
 	if self.Fonts[name] then
 		return self.Fonts[name], self.FontIsPixel[name]
 	else
@@ -59,12 +59,12 @@ function Media:GetFont(name)
 	end
 end
 
-function Media:GetFontList()
+function Assets:GetFontList()
 	return self.FontList
 end
 
 -- Textures
-function Media:SetTexture(name, path, silent)
+function Assets:SetTexture(name, path, silent)
 	if self.Textures[name] then
 		return
 	end
@@ -78,7 +78,7 @@ function Media:SetTexture(name, path, silent)
 	end
 end
 
-function Media:GetTexture(name)
+function Assets:GetTexture(name)
 	if self.Textures[name] then
 		return self.Textures[name]
 	else
@@ -86,12 +86,12 @@ function Media:GetTexture(name)
 	end
 end
 
-function Media:GetTextureList()
+function Assets:GetTextureList()
 	return self.TextureList
 end
 
 -- Highlights
-function Media:SetHighlight(name, path, silent)
+function Assets:SetHighlight(name, path, silent)
 	if self.Highlights[name] then
 		return
 	end
@@ -103,7 +103,7 @@ function Media:SetHighlight(name, path, silent)
 	end
 end
 
-function Media:GetHighlight(name)
+function Assets:GetHighlight(name)
 	if self.Highlights[name] then
 		return self.Highlights[name]
 	else
@@ -111,12 +111,12 @@ function Media:GetHighlight(name)
 	end
 end
 
-function Media:GetHighlightList()
+function Assets:GetHighlightList()
 	return self.HighlightList
 end
 
 -- Style templates
-function Media:SetStyle(name, info, silent)
+function Assets:SetStyle(name, info, silent)
 	if self.Styles[name] then
 		return
 	end
@@ -135,7 +135,7 @@ function Media:SetStyle(name, info, silent)
 	end
 end
 
-function Media:GetStyle(name)
+function Assets:GetStyle(name)
 	if self.Styles[name] then
 		return self.Styles[name]
 	else
@@ -143,11 +143,11 @@ function Media:GetStyle(name)
 	end
 end
 
-function Media:GetStyleList()
+function Assets:GetStyleList()
 	return self.StyleList
 end
 
-function Media:ApplyStyle(name)
+function Assets:ApplyStyle(name)
 	if (not self.Styles[name]) then
 		return vUI:print(format(Language['No style exists with the name "%s"'], name))
 	end
@@ -168,7 +168,7 @@ function Media:ApplyStyle(name)
 end
 
 -- Palettes
-function Media:SetPalette(name, info, silent)
+function Assets:SetPalette(name, info, silent)
 	if self.Palettes[name] then
 		return
 	end
@@ -180,7 +180,7 @@ function Media:SetPalette(name, info, silent)
 	end
 end
 
-function Media:GetPalette(name)
+function Assets:GetPalette(name)
 	if self.Palettes[name] then
 		return self.Palettes[name]
 	else
@@ -188,75 +188,75 @@ function Media:GetPalette(name)
 	end
 end
 
-function Media:GetPaletteList()
+function Assets:GetPaletteList()
 	return self.PaletteList
 end
 
 -- Some pre-loaded goodness.
 
 -- Fonts
-Media:SetFont("PT Sans", "Interface\\Addons\\vUI\\Media\\Fonts\\PTSans.ttf")
-Media:SetFont("Roboto", "Interface\\Addons\\vUI\\Media\\Fonts\\Roboto.ttf")
-Media:SetFont("Prototype", "Interface\\Addons\\vUI\\Media\\Fonts\\Prototype.ttf")
-Media:SetFont("Mosk", "Interface\\Addons\\vUI\\Media\\Fonts\\MoskBold.ttf")
-Media:SetFont("Matthan", "Interface\\Addons\\vUI\\Media\\Fonts\\MatthanSans.ttf")
-Media:SetFont("Expressway", "Interface\\Addons\\vUI\\Media\\Fonts\\Expressway.ttf")
-Media:SetFont("FranKlein", "Interface\\Addons\\vUI\\Media\\Fonts\\FranKleinBoldRegular.ttf")
-Media:SetFont("Noto Sans", "Interface\\Addons\\vUI\\Media\\Fonts\\NotoSansCondensedSemiBold.ttf")
-Media:SetFont("Visitor", "Interface\\Addons\\vUI\\Media\\Fonts\\Visitor.ttf", nil, true)
-Media:SetFont("Pixel Arial", "Interface\\Addons\\vUI\\Media\\Fonts\\PixelArial.ttf", nil, true)
+Assets:SetFont("PT Sans", "Interface\\Addons\\vUI\\Assets\\Fonts\\PTSans.ttf")
+Assets:SetFont("Roboto", "Interface\\Addons\\vUI\\Assets\\Fonts\\Roboto.ttf")
+Assets:SetFont("Prototype", "Interface\\Addons\\vUI\\Assets\\Fonts\\Prototype.ttf")
+Assets:SetFont("Mosk", "Interface\\Addons\\vUI\\Assets\\Fonts\\MoskBold.ttf")
+Assets:SetFont("Matthan", "Interface\\Addons\\vUI\\Assets\\Fonts\\MatthanSans.ttf")
+Assets:SetFont("Expressway", "Interface\\Addons\\vUI\\Assets\\Fonts\\Expressway.ttf")
+Assets:SetFont("FranKlein", "Interface\\Addons\\vUI\\Assets\\Fonts\\FranKleinBoldRegular.ttf")
+Assets:SetFont("Noto Sans", "Interface\\Addons\\vUI\\Assets\\Fonts\\NotoSansCondensedSemiBold.ttf")
+Assets:SetFont("Visitor", "Interface\\Addons\\vUI\\Assets\\Fonts\\Visitor.ttf", nil, true)
+Assets:SetFont("Pixel Arial", "Interface\\Addons\\vUI\\Assets\\Fonts\\PixelArial.ttf", nil, true)
 
 for Name, Path in pairs(Fonts) do
-	Media:SetFont(Name, Path)
+	Assets:SetFont(Name, Path)
 end
 
 -- Textures
-Media:SetTexture("Blank", "Interface\\AddOns\\vUI\\Media\\Textures\\Blank.tga")
-Media:SetTexture("vUI 1", "Interface\\AddOns\\vUI\\Media\\Textures\\vUI1.tga")
-Media:SetTexture("vUI 2", "Interface\\AddOns\\vUI\\Media\\Textures\\vUI2.tga")
-Media:SetTexture("vUI 3", "Interface\\AddOns\\vUI\\Media\\Textures\\vUI3.tga")
-Media:SetTexture("vUI 4", "Interface\\AddOns\\vUI\\Media\\Textures\\vUI4.tga")
-Media:SetTexture("Bettina", "Interface\\AddOns\\vUI\\Media\\Textures\\Bettina.tga")
-Media:SetTexture("Ferous", "Interface\\AddOns\\vUI\\Media\\Textures\\Ferous.tga")
-Media:SetTexture("Halycon", "Interface\\AddOns\\vUI\\Media\\Textures\\Halycon.tga")
-Media:SetTexture("Kola", "Interface\\AddOns\\vUI\\Media\\Textures\\Kola.tga")
-Media:SetTexture("Ferous 27", "Interface\\AddOns\\vUI\\Media\\Textures\\fer27.tga")
-Media:SetTexture("pHishTex5", "Interface\\AddOns\\vUI\\Media\\Textures\\pHishTex5.tga")
-Media:SetTexture("pHishTex6", "Interface\\AddOns\\vUI\\Media\\Textures\\pHishTex6.tga")
-Media:SetTexture("pHishTex7", "Interface\\AddOns\\vUI\\Media\\Textures\\pHishTex7.tga")
-Media:SetTexture("pHishTex11", "Interface\\AddOns\\vUI\\Media\\Textures\\pHishTex11.tga")
-Media:SetTexture("pHishTex12", "Interface\\AddOns\\vUI\\Media\\Textures\\pHishTex12.tga")
+Assets:SetTexture("Blank", "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga")
+Assets:SetTexture("vUI 1", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUI1.tga")
+Assets:SetTexture("vUI 2", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUI2.tga")
+Assets:SetTexture("vUI 3", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUI3.tga")
+Assets:SetTexture("vUI 4", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUI4.tga")
+Assets:SetTexture("Bettina", "Interface\\AddOns\\vUI\\Assets\\Textures\\Bettina.tga")
+Assets:SetTexture("Ferous", "Interface\\AddOns\\vUI\\Assets\\Textures\\Ferous.tga")
+Assets:SetTexture("Halycon", "Interface\\AddOns\\vUI\\Assets\\Textures\\Halycon.tga")
+Assets:SetTexture("Kola", "Interface\\AddOns\\vUI\\Assets\\Textures\\Kola.tga")
+Assets:SetTexture("Ferous 27", "Interface\\AddOns\\vUI\\Assets\\Textures\\fer27.tga")
+Assets:SetTexture("pHishTex5", "Interface\\AddOns\\vUI\\Assets\\Textures\\pHishTex5.tga")
+Assets:SetTexture("pHishTex6", "Interface\\AddOns\\vUI\\Assets\\Textures\\pHishTex6.tga")
+Assets:SetTexture("pHishTex7", "Interface\\AddOns\\vUI\\Assets\\Textures\\pHishTex7.tga")
+Assets:SetTexture("pHishTex11", "Interface\\AddOns\\vUI\\Assets\\Textures\\pHishTex11.tga")
+Assets:SetTexture("pHishTex12", "Interface\\AddOns\\vUI\\Assets\\Textures\\pHishTex12.tga")
 
-Media:SetTexture("noInterrupt", "Interface\\AddOns\\vUI\\Media\\Textures\\noInterrupt.tga", true)
-Media:SetTexture("RenHorizonUp", "Interface\\AddOns\\vUI\\Media\\Textures\\RenHorizonUp.tga", true)
-Media:SetTexture("RenaitreTunnel", "Interface\\AddOns\\vUI\\Media\\Textures\\RenaitreTunnel.tga", true)
-Media:SetTexture("Mail", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIMail.tga", true)
-Media:SetTexture("Mail 2", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIMailTextured.tga", true)
-Media:SetTexture("Close", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIClose.tga", true)
-Media:SetTexture("pHishTex28", "Interface\\AddOns\\vUI\\Media\\Textures\\pHishTex28.tga", true)
-Media:SetTexture("Warning", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIWarning.tga", true)
-Media:SetTexture("Leader", "Interface\\AddOns\\vUI\\Media\\Textures\\vUILeader.tga", true)
-Media:SetTexture("Assist", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIAssist.tga", true)
-Media:SetTexture("Heart", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIHeart.tga", true)
-Media:SetTexture("Arrow Down", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIArrowDown.tga", true)
-Media:SetTexture("Arrow Up", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIArrowUp.tga", true)
-Media:SetTexture("Arrow Left", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIArrowLeft.tga", true)
-Media:SetTexture("Arrow Left Large", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIArrowLeftLarge.tga", true)
-Media:SetTexture("Arrow Right", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIArrowRight.tga", true)
-Media:SetTexture("Arrow Right Large", "Interface\\AddOns\\vUI\\Media\\Textures\\vUIArrowRightLarge.tga", true)
-Media:SetTexture("Skull", "Interface\\AddOns\\vUI\\Media\\Textures\\vUISkull.tga", true)
-Media:SetTexture("Small Star", "Interface\\AddOns\\vUI\\Media\\Textures\\vUISmallStar.tga", true)
+Assets:SetTexture("noInterrupt", "Interface\\AddOns\\vUI\\Assets\\Textures\\noInterrupt.tga", true)
+Assets:SetTexture("RenHorizonUp", "Interface\\AddOns\\vUI\\Assets\\Textures\\RenHorizonUp.tga", true)
+Assets:SetTexture("RenaitreTunnel", "Interface\\AddOns\\vUI\\Assets\\Textures\\RenaitreTunnel.tga", true)
+Assets:SetTexture("Mail", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIMail.tga", true)
+Assets:SetTexture("Mail 2", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIMailTextured.tga", true)
+Assets:SetTexture("Close", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIClose.tga", true)
+Assets:SetTexture("pHishTex28", "Interface\\AddOns\\vUI\\Assets\\Textures\\pHishTex28.tga", true)
+Assets:SetTexture("Warning", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIWarning.tga", true)
+Assets:SetTexture("Leader", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUILeader.tga", true)
+Assets:SetTexture("Assist", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIAssist.tga", true)
+Assets:SetTexture("Heart", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIHeart.tga", true)
+Assets:SetTexture("Arrow Down", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowDown.tga", true)
+Assets:SetTexture("Arrow Up", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowUp.tga", true)
+Assets:SetTexture("Arrow Left", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowLeft.tga", true)
+Assets:SetTexture("Arrow Left Large", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowLeftLarge.tga", true)
+Assets:SetTexture("Arrow Right", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowRight.tga", true)
+Assets:SetTexture("Arrow Right Large", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowRightLarge.tga", true)
+Assets:SetTexture("Skull", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUISkull.tga", true)
+Assets:SetTexture("Small Star", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUISmallStar.tga", true)
 
 for Name, Path in pairs(Textures) do
-	Media:SetTexture(Name, Path)
+	Assets:SetTexture(Name, Path)
 end
 
 -- Highlights
-Media:SetHighlight("Blank", "Interface\\AddOns\\vUI\\Media\\Textures\\Blank.tga")
-Media:SetHighlight("RenHorizonUp", "Interface\\AddOns\\vUI\\Media\\Textures\\RenHorizonUp.tga")
-Media:SetHighlight("RenHorizonDown", "Interface\\AddOns\\vUI\\Media\\Textures\\RenHorizonDown.tga")
-Media:SetHighlight("RenaitreTunnel", "Interface\\AddOns\\vUI\\Media\\Textures\\RenaitreTunnel.tga")
-Media:SetHighlight("Ferous 14", "Interface\\AddOns\\vUI\\Media\\Textures\\fer14.tga")
+Assets:SetHighlight("Blank", "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga")
+Assets:SetHighlight("RenHorizonUp", "Interface\\AddOns\\vUI\\Assets\\Textures\\RenHorizonUp.tga")
+Assets:SetHighlight("RenHorizonDown", "Interface\\AddOns\\vUI\\Assets\\Textures\\RenHorizonDown.tga")
+Assets:SetHighlight("RenaitreTunnel", "Interface\\AddOns\\vUI\\Assets\\Textures\\RenaitreTunnel.tga")
+Assets:SetHighlight("Ferous 14", "Interface\\AddOns\\vUI\\Assets\\Textures\\fer14.tga")
 
 -- Palettes - Yes, doing these did take forever. And yes it was worth it.
 
@@ -328,10 +328,10 @@ Classes[1] = {"C41F3B", "A330C9", "FF7D0A", "A9D271"}
 Classes[2] = {"40C7EB", "00FF96", "F58CBA", "FFFFFF"}
 Classes[3] = {"FFF569", "0070DE", "8787ED", "C79C6E"}]]
 
-Media:SetPalette("Large", Large)
-Media:SetPalette("Default", Default)
-Media:SetPalette("Lite", Lite)
-Media:SetPalette("Rapid", Rapid)
-Media:SetPalette("Fluent", Fluent)
-Media:SetPalette("Flat", Flat)
---Media:SetPalette("Classes", Classes)
+Assets:SetPalette("Large", Large)
+Assets:SetPalette("Default", Default)
+Assets:SetPalette("Lite", Lite)
+Assets:SetPalette("Rapid", Rapid)
+Assets:SetPalette("Fluent", Fluent)
+Assets:SetPalette("Flat", Flat)
+--Assets:SetPalette("Classes", Classes)

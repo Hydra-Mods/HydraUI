@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings, Defaults = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local DefaultKey = "%s-%s"
 local date = date

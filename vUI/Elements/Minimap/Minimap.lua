@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local MM = vUI:NewModule("Minimap")
 
@@ -43,7 +43,7 @@ function MM:Style()
 	self.TopFrame.Tex = self.TopFrame:CreateTexture(nil, "ARTWORK")
 	vUI:SetPoint(self.TopFrame.Tex, "TOPLEFT", self.TopFrame, 1, -1)
 	vUI:SetPoint(self.TopFrame.Tex, "BOTTOMRIGHT", self.TopFrame, -1, 1)
-	self.TopFrame.Tex:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	self.TopFrame.Tex:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	self.TopFrame.Tex:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	-- Bottom Info
@@ -58,11 +58,11 @@ function MM:Style()
 	self.BottomFrame.Tex = self.BottomFrame:CreateTexture(nil, "ARTWORK")
 	vUI:SetPoint(self.BottomFrame.Tex, "TOPLEFT", self.BottomFrame, 1, -1)
 	vUI:SetPoint(self.BottomFrame.Tex, "BOTTOMRIGHT", self.BottomFrame, -1, 1)
-	self.BottomFrame.Tex:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	self.BottomFrame.Tex:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	self.BottomFrame.Tex:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	-- Style minimap
-	Minimap:SetMaskTexture(Media:GetTexture("Blank"))
+	Minimap:SetMaskTexture(Assets:GetTexture("Blank"))
 	Minimap:SetParent(self)
 	Minimap:ClearAllPoints()
 	vUI:SetPoint(Minimap, "TOP", self.TopFrame, "BOTTOM", 0, -3)
@@ -71,7 +71,7 @@ function MM:Style()
 	Minimap:SetScript("OnMouseWheel", OnMouseWheel)
 	
 	Minimap.BG = Minimap:CreateTexture(nil, "BACKGROUND")
-	Minimap.BG:SetTexture(Media:GetTexture("Blank"))
+	Minimap.BG:SetTexture(Assets:GetTexture("Blank"))
 	Minimap.BG:SetVertexColor(0, 0, 0)
 	vUI:SetPoint(Minimap.BG, "TOPLEFT", Minimap, -1, 1)
 	vUI:SetPoint(Minimap.BG, "BOTTOMRIGHT", Minimap, 1, -1)
@@ -80,7 +80,7 @@ function MM:Style()
 	vUI:SetPoint(MiniMapMailFrame, "TOPRIGHT", -4, 12)
 	
 	vUI:SetSize(MiniMapMailIcon, 32, 32)
-	MiniMapMailIcon:SetTexture(Media:GetTexture("Mail 2"))
+	MiniMapMailIcon:SetTexture(Assets:GetTexture("Mail 2"))
 	MiniMapMailIcon:SetVertexColor(vUI:HexToRGB("EEEEEE"))
 	
 	MinimapNorthTag:SetTexture(nil)

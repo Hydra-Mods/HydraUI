@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 if (vUI.UserClass ~= "DRUID") then
 	return
@@ -67,7 +67,7 @@ function DruidMana:CreateBar()
 	self.BarBG:SetBackdropBorderColor(0, 0, 0)
 	
 	self.Bar = CreateFrame("StatusBar", nil, self.BarBG)
-	self.Bar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	self.Bar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	vUI:SetPoint(self.Bar, "TOPLEFT", self.BarBG, 1, -1)
 	vUI:SetPoint(self.Bar, "BOTTOMRIGHT", self.BarBG, -1, 1)
 	self.Bar:SetFrameLevel(6)
@@ -77,7 +77,7 @@ function DruidMana:CreateBar()
 	
 	self.Bar.BG = self.Bar:CreateTexture(nil, "BORDER")
 	self.Bar.BG:SetAllPoints(self.Bar)
-	self.Bar.BG:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	self.Bar.BG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	self.Bar.BG:SetVertexColor(vUI:HexToRGB(Settings["color-mana"]))
 	self.Bar.BG:SetAlpha(0.2)
 	

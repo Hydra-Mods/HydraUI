@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local ZoneTextSize = 32
 local SubZoneTextSize = 26
@@ -227,14 +227,14 @@ CustomZoneText["ZONE_CHANGED_INDOORS"] = OnEvent
 CustomZoneText["ZONE_CHANGED_NEW_AREA"] = OnEvent
 
 local UpdateZoneTextFont = function(value)
-	--ZoneText:SetFont(Media:GetFont(Settings["ui-header-font"]), 32)
+	--ZoneText:SetFont(Assets:GetFont(Settings["ui-header-font"]), 32)
 end
 
 CustomZoneText["PLAYER_ENTERING_WORLD"] = function(self, event)
-	ZoneText:SetFont(Media:GetFont(Settings["ui-header-font"]), ZoneTextSize)
-	PVPInfoText:SetFont(Media:GetFont(Settings["ui-header-font"]), SubZoneTextSize)
-	SubZoneText:SetFont(Media:GetFont(Settings["ui-header-font"]), SubZoneTextSize)
-	PVPArenaText:SetFont(Media:GetFont(Settings["ui-header-font"]), SubZoneTextSize)
+	ZoneText:SetFont(Assets:GetFont(Settings["ui-header-font"]), ZoneTextSize)
+	PVPInfoText:SetFont(Assets:GetFont(Settings["ui-header-font"]), SubZoneTextSize)
+	SubZoneText:SetFont(Assets:GetFont(Settings["ui-header-font"]), SubZoneTextSize)
+	PVPArenaText:SetFont(Assets:GetFont(Settings["ui-header-font"]), SubZoneTextSize)
 	
 	-- Kill default zone texts
 	if ZoneTextFrame then

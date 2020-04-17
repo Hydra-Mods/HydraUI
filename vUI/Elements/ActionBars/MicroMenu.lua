@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local MicroButtons = vUI:NewModule("Micro Buttons")
 local BagsFrame = vUI:GetModule("Bags Frame")

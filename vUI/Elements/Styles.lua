@@ -1,7 +1,7 @@
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 -- vUI Default
-Media:SetStyle("vUI", {
+Assets:SetStyle("vUI", {
 	["ui-widget-font"] = "Roboto",
 	["ui-header-font"] = "Roboto",
 	["ui-button-font"] = "Roboto",
@@ -70,7 +70,7 @@ Media:SetStyle("vUI", {
 })
 
 -- vUI 2
-Media:SetStyle("vUI 2", {
+Assets:SetStyle("vUI 2", {
 	["ui-widget-font"] = "PT Sans",
 	["ui-header-font"] = "PT Sans",
 	["ui-button-font"] = "PT Sans",
@@ -139,7 +139,7 @@ Media:SetStyle("vUI 2", {
 })
 
 -- Conjured Muffin -- Casting: 2ECC71 - Interrupted: F39C12 - Failed: D35400
-Media:SetStyle("Conjured Muffin", {
+Assets:SetStyle("Conjured Muffin", {
 	["ui-widget-font"] = "Roboto",
 	["ui-header-font"] = "Roboto",
 	["ui-button-font"] = "Roboto",
@@ -208,7 +208,7 @@ Media:SetStyle("Conjured Muffin", {
 })
 
 --[[ Zen
-Media:SetStyle("Zen", {
+Assets:SetStyle("Zen", {
 	["ui-widget-font"] = "Prototype",
 	["ui-header-font"] = "Prototype",
 	["ui-button-font"] = "Prototype",
@@ -277,7 +277,7 @@ Media:SetStyle("Zen", {
 })]]
 
 -- Sci-Fi
-Media:SetStyle("Sci-Fi", {
+Assets:SetStyle("Sci-Fi", {
 	["ui-widget-font"] = "Prototype",
 	["ui-header-font"] = "Prototype",
 	["ui-button-font"] = "Prototype",
@@ -346,7 +346,7 @@ Media:SetStyle("Sci-Fi", {
 })
 
 local AcceptNewStyle = function(value)
-	Media:ApplyStyle(value)
+	Assets:ApplyStyle(value)
 	
 	ReloadUI()
 end
@@ -354,8 +354,8 @@ end
 local UpdateStyle = function(value)
 	local Label = value
 	
-	if Media.Styles[value]["ui-widget-color"] then
-		Label = format("|cFF%s%s|r", Media.Styles[value]["ui-widget-color"], value)
+	if Assets.Styles[value]["ui-widget-color"] then
+		Label = format("|cFF%s%s|r", Assets.Styles[value]["ui-widget-color"], value)
 	end
 	
 	vUI:DisplayPopup(Language["Attention"], format(Language['Are you sure you would like to change to the current style to "%s"?'], Label), Language["Accept"], AcceptNewStyle, Language["Cancel"], nil, value)
@@ -365,21 +365,21 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Styles"])
 	
 	Left:CreateHeader(Language["Styles"])
-	Left:CreateDropdown("ui-style", Settings["ui-style"], Media:GetStyleList(), Language["Select Style"], Language["Select a style to load"], UpdateStyle)
+	Left:CreateDropdown("ui-style", Settings["ui-style"], Assets:GetStyleList(), Language["Select Style"], Language["Select a style to load"], UpdateStyle)
 	
 	Left:CreateHeader(Language["Headers"])
 	Left:CreateColorSelection("ui-header-font-color", Settings["ui-header-font-color"], Language["Text Color"], "")
 	Left:CreateColorSelection("ui-header-texture-color", Settings["ui-header-texture-color"], Language["Texture Color"], "")
-	Left:CreateDropdown("ui-header-texture", Settings["ui-header-texture"], Media:GetTextureList(), Language["Texture"], "", nil, "Texture")
-	Left:CreateDropdown("ui-header-font", Settings["ui-header-font"], Media:GetFontList(), Language["Header Font"], "", nil, "Font")
+	Left:CreateDropdown("ui-header-texture", Settings["ui-header-texture"], Assets:GetTextureList(), Language["Texture"], "", nil, "Texture")
+	Left:CreateDropdown("ui-header-font", Settings["ui-header-font"], Assets:GetFontList(), Language["Header Font"], "", nil, "Font")
 	
 	Left:CreateHeader(Language["Widgets"])
 	Left:CreateColorSelection("ui-widget-color", Settings["ui-widget-color"], Language["Color"], "")
 	Left:CreateColorSelection("ui-widget-bright-color", Settings["ui-widget-bright-color"], Language["Bright Color"], "")
 	Left:CreateColorSelection("ui-widget-bg-color", Settings["ui-widget-bg-color"], Language["Background Color"], "")
 	Left:CreateColorSelection("ui-widget-font-color", Settings["ui-widget-font-color"], Language["Label Color"], "")
-	Left:CreateDropdown("ui-widget-texture", Settings["ui-widget-texture"], Media:GetTextureList(), Language["Texture"], "", nil, "Texture")
-	Left:CreateDropdown("ui-widget-font", Settings["ui-widget-font"], Media:GetFontList(), Language["Font"], "", nil, "Font")
+	Left:CreateDropdown("ui-widget-texture", Settings["ui-widget-texture"], Assets:GetTextureList(), Language["Texture"], "", nil, "Texture")
+	Left:CreateDropdown("ui-widget-font", Settings["ui-widget-font"], Assets:GetFontList(), Language["Font"], "", nil, "Font")
 	
 	Right:CreateHeader(Language["What is a style?"])
 	Right:CreateMessage(Language["Styles store media settings such as fonts, textures, and colors to create an overall theme."])
@@ -395,8 +395,8 @@ GUI:AddOptions(function(self)
 	Right:CreateHeader(Language["Buttons"])
 	Right:CreateColorSelection("ui-button-texture-color", Settings["ui-button-texture-color"], Language["Texture Color"], "")
 	Right:CreateColorSelection("ui-button-font-color", Settings["ui-button-font-color"], Language["Font Color"], "")
-	Right:CreateDropdown("ui-button-texture", Settings["ui-button-texture"], Media:GetTextureList(), Language["Texture"], "", nil, "Texture")
-	Right:CreateDropdown("ui-button-font", Settings["ui-button-font"], Media:GetFontList(), Language["Font"], "", nil, "Font")
+	Right:CreateDropdown("ui-button-texture", Settings["ui-button-texture"], Assets:GetTextureList(), Language["Texture"], "", nil, "Texture")
+	Right:CreateDropdown("ui-button-font", Settings["ui-button-font"], Assets:GetFontList(), Language["Font"], "", nil, "Font")
 	
 	Left:CreateHeader(Language["Font Sizes"])
 	Left:CreateSlider("ui-font-size", Settings["ui-font-size"], 8, 18, 1, Language["General Font Size"], Language["Set the general font size of the UI"])

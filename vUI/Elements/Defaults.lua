@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings, Defaults = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 -- These are just default values. Use the GUI to change settings.
 
@@ -9,7 +9,7 @@ Defaults["ui-display-welcome"] = true
 Defaults["ui-display-dev-tools"] = false
 Defaults["ui-display-whats-new"] = true -- NYI
 
--- Media
+-- Main
 Defaults["ui-style"] = "vUI"
 
 Defaults["ui-header-font"] = "Roboto"

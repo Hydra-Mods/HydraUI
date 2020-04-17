@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local Testing = {
 	["Zeraphine:Mal'Ganis"] = 1,
@@ -41,7 +41,7 @@ local CreateMetersPanels = function()
 	MeterBGBottomFrame.Texture = MeterBGBottomFrame:CreateTexture(nil, "OVERLAY")
 	MeterBGBottomFrame.Texture:SetScaledPoint("TOPLEFT", MeterBGBottomFrame, 1, -1)
 	MeterBGBottomFrame.Texture:SetScaledPoint("BOTTOMRIGHT", MeterBGBottomFrame, -1, 1)
-	MeterBGBottomFrame.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	MeterBGBottomFrame.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	MeterBGBottomFrame.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	local MeterBGLeft = CreateFrame("Frame", nil, UIParent)
@@ -87,7 +87,7 @@ local CreateMetersPanels = function()
 	TopLeft.Texture = TopLeft:CreateTexture(nil, "OVERLAY")
 	TopLeft.Texture:SetScaledPoint("TOPLEFT", TopLeft, 1, -1)
 	TopLeft.Texture:SetScaledPoint("BOTTOMRIGHT", TopLeft, -1, 1)
-	TopLeft.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	TopLeft.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	TopLeft.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	local TopRight = CreateFrame("Frame", nil, UIParent)
@@ -101,7 +101,7 @@ local CreateMetersPanels = function()
 	TopRight.Texture = TopRight:CreateTexture(nil, "OVERLAY")
 	TopRight.Texture:SetScaledPoint("TOPLEFT", TopRight, 1, -1)
 	TopRight.Texture:SetScaledPoint("BOTTOMRIGHT", TopRight, -1, 1)
-	TopRight.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	TopRight.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	TopRight.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	local MeterBGMiddle = CreateFrame("Frame", nil, UIParent)

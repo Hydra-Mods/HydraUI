@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local MirrorTimers = vUI:NewModule("Mirror Timers")
 
@@ -59,14 +59,14 @@ function MirrorTimers:Load()
 	vUI:SetPoint(self.Bar, "TOP", UIParent, 0, -120)
 	vUI:SetSize(self.Bar, 210, 20)
 	self.Bar:SetFrameLevel(5)
-	self.Bar:SetStatusBarTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	self.Bar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	self.Bar:SetScript("OnUpdate", self.OnUpdate)
 	self.Bar:Hide()
 	
 	self.BarBG = self.Bar:CreateTexture(nil, "BORDER")
 	vUI:SetPoint(self.BarBG, "TOPLEFT", self.Bar, 0, 0)
 	vUI:SetPoint(self.BarBG, "BOTTOMRIGHT", self.Bar, 0, 0)
-	self.BarBG:SetTexture(Media:GetTexture(Settings["ui-widget-texture"]))
+	self.BarBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	self.BarBG:SetAlpha(0.2)
 	
 	self.Bar.Text = self.Bar:CreateFontString(nil, "OVERLAY")
@@ -77,7 +77,7 @@ function MirrorTimers:Load()
 	self.BarOutline = self.Bar:CreateTexture(nil, "BORDER")
 	vUI:SetPoint(self.BarOutline, "TOPLEFT", self.Bar, -1, 1)
 	vUI:SetPoint(self.BarOutline, "BOTTOMRIGHT", self.Bar, 1, -1)
-	self.BarOutline:SetTexture(Media:GetTexture("Blank"))
+	self.BarOutline:SetTexture(Assets:GetTexture("Blank"))
 	self.BarOutline:SetVertexColor(0, 0, 0)
 	
 	self.OuterBG = CreateFrame("Frame", nil, self.Bar)

@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local format = format
 local select = select
@@ -179,19 +179,19 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["Acknowledgements"])
 	Left:CreateMessage("Thank you to the following people who have supported the development of this project! It has taken immense time and effort, and the support of these people helps make it possible.")
 	
-	--Right:CreateHeader(Language["|TInterface\\AddOns\\vUI\\Media\\Textures\\vUISmallStar:16|t Supporters |TInterface\\AddOns\\vUI\\Media\\Textures\\vUISmallStar:16|t"])
+	--Right:CreateHeader(Language["|TInterface\\AddOns\\vUI\\Assets\\Textures\\vUISmallStar:16|t Supporters |TInterface\\AddOns\\vUI\\Assets\\Textures\\vUISmallStar:16|t"])
 	Right:CreateSupportHeader(Language["Supporters"])
 	Right:CreateLine("Innie")
 end)
 
 local Fonts = vUI:NewModule("Fonts")
 
-_G.STANDARD_TEXT_FONT = Media:GetFont("PT Sans")
-_G.UNIT_NAME_FONT = Media:GetFont("PT Sans")
-_G.DAMAGE_TEXT_FONT = Media:GetFont("PT Sans")
+_G.STANDARD_TEXT_FONT = Assets:GetFont("PT Sans")
+_G.UNIT_NAME_FONT = Assets:GetFont("PT Sans")
+_G.DAMAGE_TEXT_FONT = Assets:GetFont("PT Sans")
 
 function Fonts:Load()
-	local Font = Media:GetFont(Settings["ui-widget-font"])
+	local Font = Assets:GetFont(Settings["ui-widget-font"])
 	
 	UIErrorsFrame:SetFont(Font, 16)
 	
