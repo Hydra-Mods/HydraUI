@@ -104,7 +104,7 @@ function AutoRepair:OnEvent()
 			RepairAllItems(1)
 			
 			if Settings["auto-repair-report"] then
-				vUI:print(format(Language["Your equipped items have been repaired for %s"], CostString))
+				vUI:print(format(Language["Your equipped items have been repaired for %s using guild funds"], CostString))
 			end
 		else
 			if (Money > Cost) then
