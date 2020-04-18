@@ -250,6 +250,7 @@ Defaults["bags-frame-opacity"] = 40
 
 -- Auto Repair
 Defaults["auto-repair-enable"] = true
+Defaults["auto-repair-use-guild"] = true
 Defaults["auto-repair-report"] = true
 
 -- Auto Vendor
