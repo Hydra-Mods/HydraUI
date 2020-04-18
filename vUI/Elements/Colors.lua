@@ -103,6 +103,7 @@ function vUI:UpdateComboColors()
 	self:SetColorEntry(self.ComboPoints, 3, Settings["color-combo-3"])
 	self:SetColorEntry(self.ComboPoints, 4, Settings["color-combo-4"])
 	self:SetColorEntry(self.ComboPoints, 5, Settings["color-combo-5"])
+	self:SetColorEntry(self.ComboPoints, 6, Settings["color-combo-6"])
 end
 
 GUI:AddOptions(function(self)
