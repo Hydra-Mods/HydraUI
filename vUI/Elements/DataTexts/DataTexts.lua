@@ -75,6 +75,12 @@ function DT:NewAnchor(name, parent)
 	return Anchor
 end
 
+function DT:GetAnchor(name)
+	if self.Anchors[name] then
+		return self.Anchors[name]
+	end
+end
+
 function DT:SetDataText(anchor, name)
 	if ((not self.Anchors[anchor]) or (not self.Types[name])) then
 		return

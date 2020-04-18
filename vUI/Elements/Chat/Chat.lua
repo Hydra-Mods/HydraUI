@@ -282,9 +282,15 @@ local UpdateChatFrameSize = function()
 	local Width = Settings["chat-frame-width"]
 	
 	vUI:SetSize(vUIChatFrame, Width, Settings["chat-frame-height"])
-	
 	vUI:SetSize(vUIChatFrameTop, Width, BAR_HEIGHT)
 	vUI:SetSize(vUIChatFrameBottom, Width, BAR_HEIGHT)
+	
+	-- Update data text width
+	local DT = vUI:GetModule("DataText")
+	
+	vUI:SetWidth(DT:GetAnchor("Chat-Left"), Width / 3)
+	vUI:SetWidth(DT:GetAnchor("Chat-Middle"), Width / 3)
+	vUI:SetWidth(DT:GetAnchor("Chat-Right"), Width / 3)
 end
 
 local Kill = function(object)
