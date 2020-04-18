@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Media, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local BUTTON_SIZE = 32
 local STANCE_SIZE = 32
@@ -98,7 +98,7 @@ local SkinButton = function(button)
 		button.CountBG = button:CreateTexture(nil, "BORDER")
 		button.CountBG:SetScaledPoint("BOTTOMRIGHT", button, 0, 0)
 		button.CountBG:SetScaledSize(24, 16)
-		button.CountBG:SetTexture(Media:GetTexture("Blank"))
+		button.CountBG:SetTexture(Assets:GetTexture("Blank"))
 		button.CountBG:SetVertexColor(0, 0, 0, 0.9)
 		button.CountBG:Hide()
 	end]]
@@ -127,12 +127,12 @@ local SkinButton = function(button)
 	button.Backdrop.Texture = button.Backdrop:CreateTexture(nil, "BACKDROP")
 	vUI:SetPoint(button.Backdrop.Texture, "TOPLEFT", button.Backdrop, 1, -1)
 	vUI:SetPoint(button.Backdrop.Texture, "BOTTOMRIGHT", button.Backdrop, -1, 1)
-	button.Backdrop.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	button.Backdrop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	button.Backdrop.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	if (button.SetHighlightTexture and not button.Highlight) then
 		local Highlight = button:CreateTexture(nil, "ARTWORK", button)
-		Highlight:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
+		Highlight:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 		Highlight:SetVertexColor(1, 1, 1, 0.2)
 		vUI:SetPoint(Highlight, "TOPLEFT", button, 1, -1)
 		vUI:SetPoint(Highlight, "BOTTOMRIGHT", button, -1, 1)
@@ -143,7 +143,7 @@ local SkinButton = function(button)
 	
 	if (button.SetPushedTexture and not button.Pushed) then
 		local Pushed = button:CreateTexture(nil, "ARTWORK", button)
-		Pushed:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
+		Pushed:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 		Pushed:SetVertexColor(0.9, 0.8, 0.1, 0.3)
 		vUI:SetPoint(Pushed, "TOPLEFT", button, 1, -1)
 		vUI:SetPoint(Pushed, "BOTTOMRIGHT", button, -1, 1)
@@ -154,7 +154,7 @@ local SkinButton = function(button)
 	
 	if (button.SetCheckedTexture and not button.Checked) then
 		local Checked = button:CreateTexture(nil, "ARTWORK", button)
-		Checked:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
+		Checked:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 		Checked:SetVertexColor(0.1, 0.9, 0.1, 0.2)
 		Checked.SetAlpha = function() end
 		vUI:SetPoint(Checked, "TOPLEFT", button, 1, -1)
@@ -165,14 +165,14 @@ local SkinButton = function(button)
 	end
 	
 	if button.Flash then
-		button.Flash:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
+		button.Flash:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 		button.Flash:SetVertexColor(0.7, 0.7, 0.1, 0.3)
 		vUI:SetPoint(button.Flash, "TOPLEFT", button, 1, -1)
 		vUI:SetPoint(button.Flash, "BOTTOMRIGHT", button, -1, 1)
 	end
 	
 	local Range = button:CreateTexture(nil, "ARTWORK", button)
-	Range:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
+	Range:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 	Range:SetVertexColor(0.7, 0, 0)
 	vUI:SetPoint(Range, "TOPLEFT", button, 1, -1)
 	vUI:SetPoint(Range, "BOTTOMRIGHT", button, -1, 1)
@@ -186,7 +186,7 @@ local SkinButton = function(button)
 		vUI:SetPoint(button.cooldown, "BOTTOMRIGHT", button, -1, 1)
 		
 		button.cooldown:SetDrawEdge(true)
-		button.cooldown:SetEdgeTexture(Media:GetTexture("Blank"))
+		button.cooldown:SetEdgeTexture(Assets:GetTexture("Blank"))
 		button.cooldown:SetSwipeColor(0, 0, 0, 1)
 	end
 	
@@ -539,7 +539,7 @@ local SkinPetButton = function(button)
 	
 	if (button.SetHighlightTexture and not button.Highlight) then
 		local Highlight = button:CreateTexture(nil, "ARTWORK", button)
-		Highlight:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
+		Highlight:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 		Highlight:SetVertexColor(1, 1, 1, 0.2)
 		vUI:SetPoint(Highlight, "TOPLEFT", button, 1, -1)
 		vUI:SetPoint(Highlight, "BOTTOMRIGHT", button, -1, 1)
@@ -550,7 +550,7 @@ local SkinPetButton = function(button)
 	
 	if (button.SetPushedTexture and not button.Pushed) then
 		local Pushed = button:CreateTexture(nil, "ARTWORK", button)
-		Pushed:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
+		Pushed:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 		Pushed:SetVertexColor(0.9, 0.8, 0.1, 0.3)
 		vUI:SetPoint(Pushed, "TOPLEFT", button, 1, -1)
 		vUI:SetPoint(Pushed, "BOTTOMRIGHT", button, -1, 1)
@@ -561,7 +561,7 @@ local SkinPetButton = function(button)
 	
 	if (button.SetCheckedTexture and not button.Checked) then
 		local Checked = button:CreateTexture(nil, "ARTWORK", button)
-		Checked:SetTexture(Media:GetTexture(Settings["action-bars-button-highlight"]))
+		Checked:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 		Checked:SetVertexColor(0.1, 0.9, 0.1, 0.2)
 		Checked.SetAlpha = function() end
 		vUI:SetPoint(Checked, "TOPLEFT", button, 1, -1)
@@ -581,7 +581,7 @@ local SkinPetButton = function(button)
 	button.Backdrop.Texture = button.Backdrop:CreateTexture(nil, "BACKDROP")
 	vUI:SetPoint(button.Backdrop.Texture, "TOPLEFT", button.Backdrop, 1, -1)
 	vUI:SetPoint(button.Backdrop.Texture, "BOTTOMRIGHT", button.Backdrop, -1, 1)
-	button.Backdrop.Texture:SetTexture(Media:GetTexture(Settings["ui-header-texture"]))
+	button.Backdrop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	button.Backdrop.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	button.Styled = true
@@ -619,7 +619,7 @@ local CreatePetBar = function()
 		PetActionBar[i] = Button
 	end
 	
-	RegisterStateDriver(vUIPetActionBarsPanel, "visibility", "[pet,nooverridebar,nobonusbar:5] show; hide")
+	RegisterStateDriver(vUIPetActionBarsPanel, "visibility", "[pet,nopetbattle,nooverridebar,nobonusbar:5] show; hide")
 end
 
 local CreateStanceBar = function()
@@ -680,6 +680,8 @@ local CreateBarPanels = function()
 	BottomPanel:SetBackdropBorderColor(0, 0, 0)
 	BottomPanel:SetFrameStrata("LOW")
 	
+	--RegisterStateDriver(BottomPanel, "visibility", "[nopetbattle] show; hide")
+	
 	if (not Settings["action-bars-show-bottom-bg"]) then
 		BottomPanel:SetAlpha(0)
 	end
@@ -691,6 +693,8 @@ local CreateBarPanels = function()
 	SidePanel:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	SidePanel:SetBackdropBorderColor(0, 0, 0)
 	SidePanel:SetFrameStrata("LOW")
+	
+	--RegisterStateDriver(SidePanel, "visibility", "[nopetbattle] show; hide")
 	
 	local PetPanel = CreateFrame("Frame", "vUIPetActionBarsPanel", UIParent)
 	vUI:SetSize(PetPanel, ((BUTTON_SIZE * 1) + (SPACING * 3)), ((BUTTON_SIZE * 10) + (SPACING * 12)))
@@ -935,7 +939,7 @@ local SetStanceSize = function(value)
 end
 
 local SetHighlightTexture = function(value)
-	local Texture = Media:GetTexture(value)
+	local Texture = Assets:GetTexture(value)
 	
 	for i = 1, Num do
 		vUIActionBar1[i].Highlight:SetTexture(Texture)
@@ -1282,9 +1286,9 @@ GUI:AddOptions(function(self)
 	Left:CreateSlider("action-bars-stance-size", Settings["action-bars-stance-size"], 24, 40, 1, "Stance Button Size", "Set the size of the stance buttons", SetStanceSize)
 	
 	Left:CreateHeader(Language["Font"])
-	Left:CreateDropdown("action-bars-font", Settings["action-bars-font"], Media:GetFontList(), Language["Font"], "Set the font of the action bar buttons", UpdateActionBarFont, "Font")
+	Left:CreateDropdown("action-bars-font", Settings["action-bars-font"], Assets:GetFontList(), Language["Font"], "Set the font of the action bar buttons", UpdateActionBarFont, "Font")
 	Left:CreateSlider("action-bars-font-size", Settings["action-bars-font-size"], 8, 18, 1, "Font Size", "Set the font size of the action bar buttons", UpdateActionBarFont)
-	Left:CreateDropdown("action-bars-font-flags", Settings["action-bars-font-flags"], Media:GetFlagsList(), Language["Font Flags"], "Set the font flags of the action bar buttons", UpdateActionBarFont)
+	Left:CreateDropdown("action-bars-font-flags", Settings["action-bars-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], "Set the font flags of the action bar buttons", UpdateActionBarFont)
 	
 	Left:CreateHeader(Language["Backdrops"])
 	Left:CreateSwitch("action-bars-show-bottom-bg", Settings["action-bars-show-bottom-bg"], "Show Bottom Backdrop", "Display the backdrop of the bottom action bars", UpdateShowBottomBG)
@@ -1303,5 +1307,5 @@ GUI:AddOptions(function(self)
 	Right:CreateSwitch("action-bars-show-hotkeys", Settings["action-bars-show-hotkeys"], "Show Hotkeys", "Display hotkey text on action buttons", UpdateShowHotKey)
 	Right:CreateSwitch("action-bars-show-macro-names", Settings["action-bars-show-macro-names"], "Show Macro Names", "Display macro name text on action buttons", UpdateShowMacroName)
 	Right:CreateSwitch("action-bars-show-count", Settings["action-bars-show-count"], "Show Count Text", "Display count text on action buttons", UpdateShowCount)
-	Right:CreateDropdown("action-bars-button-highlight", Settings["action-bars-button-highlight"], Media:GetTextureList(), Language["Highlight Texture"], "Set the highlight texture used on action buttons", SetHighlightTexture, "Texture")
+	Right:CreateDropdown("action-bars-button-highlight", Settings["action-bars-button-highlight"], Assets:GetTextureList(), Language["Highlight Texture"], "Set the highlight texture used on action buttons", SetHighlightTexture, "Texture")
 end)
