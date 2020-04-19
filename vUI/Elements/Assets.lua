@@ -322,16 +322,9 @@ Fluent[6] = {"EF6950", "BF0077", "744DA9", "018574", "486860", "525E54"}
 Fluent[7] = {"D13438", "C239B3", "B146C2", "00CC6A", "498205", "847545"}
 Fluent[8] = {"FF4343", "9A0089", "881798", "10893E", "107C10", "7E735F"}
 
---[[local Classes = {}
-
-Classes[1] = {"C41F3B", "A330C9", "FF7D0A", "A9D271"}
-Classes[2] = {"40C7EB", "00FF96", "F58CBA", "FFFFFF"}
-Classes[3] = {"FFF569", "0070DE", "8787ED", "C79C6E"}]]
-
 Assets:SetPalette("Large", Large)
 Assets:SetPalette("Default", Default)
 Assets:SetPalette("Lite", Lite)
 Assets:SetPalette("Rapid", Rapid)
 Assets:SetPalette("Fluent", Fluent)
 Assets:SetPalette("Flat", Flat)
---Assets:SetPalette("Classes", Classes)

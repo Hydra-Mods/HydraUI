@@ -14,7 +14,7 @@ Elements\Libraries\AceSerializer-3.0.lua
 Elements\Libraries\LibCompress.lua
 Elements\Libraries\LibAnim.lua
 Elements\Libraries\oUF\oUF.xml
-Assets\Assets.lua
+Elements\Assets.lua
 Languages\deDE.lua
 Languages\esES.lua
 Languages\esMX.lua
