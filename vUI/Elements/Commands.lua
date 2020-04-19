@@ -10,11 +10,16 @@ Commands["settings"] = function()
 	GUI:Toggle()
 end
 
+Commands["keybind"] = function()
+	vUI:GetModule("Key Binding"):Toggle()
+end
+
 Commands["help"] = function()
 	print(format(Language["|cFF%svUI|r Commands"], Settings["ui-widget-color"]))
 	print(" ")
 	print(format("|Hcommand:/vui|h|cFF%s/vui|r|h - Toggle the settings window", Settings["ui-widget-color"]))
 	print(format("|Hcommand:/vui move|h|cFF%s/vui move|r|h - Drag UI elements around the screen", Settings["ui-widget-color"]))
+	print(format("|Hcommand:/vui keybind|h|cFF%s/vui keybind|r|h - Toggle mouseover keybinding", Settings["ui-widget-color"]))
 end
 
 local RunCommand = function(arg)

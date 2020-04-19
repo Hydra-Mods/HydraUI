@@ -3672,22 +3672,33 @@ function GUI:Create()
 	self:SetScript("OnDragStart", self.StartMoving)
 	self:SetScript("OnDragStop", self.StopMovingOrSizing)
 	self:SetClampedToScreen(true)
+	self:SetScale(0.2)
 	self:Hide()
 	
-	self.Fade = CreateAnimationGroup(self)
+	self.Group = CreateAnimationGroup(self)
 	
-	self.FadeIn = self.Fade:CreateAnimation("Fade")
+	self.ScaleIn = self.Group:CreateAnimation("Scale")
+	self.ScaleIn:SetEasing("in")
+	self.ScaleIn:SetDuration(0.15)
+	self.ScaleIn:SetChange(1)
+	
+	self.FadeIn = self.Group:CreateAnimation("Fade")
 	self.FadeIn:SetEasing("in")
 	self.FadeIn:SetDuration(0.15)
 	self.FadeIn:SetChange(1)
 	
-	self.FadeOut = self.Fade:CreateAnimation("Fade")
+	self.ScaleOut = self.Group:CreateAnimation("Scale")
+	self.ScaleOut:SetEasing("out")
+	self.ScaleOut:SetDuration(0.15)
+	self.ScaleOut:SetChange(0.2)
+	
+	self.FadeOut = self.Group:CreateAnimation("Fade")
 	self.FadeOut:SetEasing("out")
 	self.FadeOut:SetDuration(0.15)
 	self.FadeOut:SetChange(0)
 	self.FadeOut:SetScript("OnFinished", FadeOnFinished)
 	
-	self.Fader = self.Fade:CreateAnimation("Fade")
+	self.Fader = self.Group:CreateAnimation("Fade")
 	self.Fader:SetDuration(0.15)
 	
 	-- Header
@@ -3777,6 +3788,7 @@ function GUI:Create()
 	self.CloseButton:SetScript("OnMouseUp", function(self)
 		self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 		
+		GUI.ScaleOut:Play()
 		GUI.FadeOut:Play()
 		
 		if (GUI.ColorPicker and GUI.ColorPicker:GetAlpha() > 0) then
@@ -3849,6 +3861,7 @@ end
 local ReopenWindow = function(self)
 	GUI:SetAlpha(0)
 	GUI:Show()
+	GUI.ScaleIn:Play()
 	GUI.FadeIn:Play()
 end
 
@@ -3928,8 +3941,10 @@ function GUI:Toggle()
 		self:RegisterEvent("MODIFIER_STATE_CHANGED")
 		self:SetAlpha(0)
 		self:Show()
+		self.ScaleIn:Play()
 		self.FadeIn:Play()
 	else
+		self.ScaleOut:Play()
 		self.FadeOut:Play()
 		
 		if (self.ColorPicker and self.ColorPicker:GetAlpha() > 0) then

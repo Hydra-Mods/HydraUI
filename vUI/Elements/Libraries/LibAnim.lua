@@ -528,7 +528,7 @@ local AnimMethods = {
 		end,
 		
 		GetProgress = function(self)
-			return self.AlphaOffset
+			return self.CurrentValue
 		end,
 		
 		Reset = function(self)
@@ -552,7 +552,7 @@ local AnimMethods = {
 		end,
 		
 		GetProgress = function(self)
-			return self.HeightOffset
+			return self.CurrentValue
 		end,
 		
 		Reset = function(self)
@@ -576,7 +576,7 @@ local AnimMethods = {
 		end,
 		
 		GetProgress = function(self)
-			return self.WidthOffset
+			return self.CurrentValue
 		end,
 		
 		Reset = function(self)
@@ -612,7 +612,7 @@ local AnimMethods = {
 		end,
 		
 		GetProgress = function(self)
-			return self.ColorOffset
+			return self.CurrentValue
 		end,
 		
 		Reset = function(self)
@@ -636,7 +636,7 @@ local AnimMethods = {
 		end,
 		
 		GetProgress = function(self)
-			return self.ValueOffset
+			return self.CurrentValue
 		end,
 		
 		Reset = function(self)
@@ -684,7 +684,7 @@ local AnimMethods = {
 		end,
 		
 		GetProgress = function(self)
-			return self.NumberOffset
+			return self.CurrentValue
 		end,
 		
 		Reset = function(self)
@@ -709,6 +709,29 @@ local AnimMethods = {
 		
 		Finish = function(self)
 			self:Stop()
+		end,
+	},
+	
+	scale = {
+		SetChange = function(self, width)
+			self.EndScaleSetting = width or 0
+		end,
+		
+		GetChange = function(self)
+			return self.EndScaleSetting
+		end,
+		
+		GetProgress = function(self)
+			return self.Timer
+		end,
+		
+		Reset = function(self)
+			self.Timer = 0
+		end,
+		
+		Finish = function(self)
+			self:Stop()
+			self.Parent:SetScale(self.EndScale)
 		end,
 	},
 }
@@ -979,8 +1002,8 @@ Update["fade"] = function(self, elapsed, i)
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
 	else
-		self.AlphaOffset = Easing[self.Easing](self.Timer, self.StartAlpha, self.Change, self.Duration)
-		self.Parent:SetAlpha(self.AlphaOffset)
+		self.CurrentValue = Easing[self.Easing](self.Timer, self.StartAlpha, self.Change, self.Duration)
+		self.Parent:SetAlpha(self.CurrentValue)
 	end
 end
 
@@ -1008,8 +1031,8 @@ Update["height"] = function(self, elapsed, i)
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
 	else
-		self.HeightOffset = Easing[self.Easing](self.Timer, self.StartHeight, self.HeightChange, self.Duration)
-		self.Parent:SetHeight(self.HeightOffset)
+		self.CurrentValue = Easing[self.Easing](self.Timer, self.StartHeight, self.HeightChange, self.Duration)
+		self.Parent:SetHeight(self.CurrentValue)
 	end
 end
 
@@ -1037,8 +1060,8 @@ Update["width"] = function(self, elapsed, i)
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
 	else
-		self.WidthOffset = Easing[self.Easing](self.Timer, self.StartWidth, self.WidthChange, self.Duration)
-		self.Parent:SetWidth(self.WidthOffset)
+		self.CurrentValue = Easing[self.Easing](self.Timer, self.StartWidth, self.WidthChange, self.Duration)
+		self.Parent:SetWidth(self.CurrentValue)
 	end
 end
 
@@ -1064,7 +1087,7 @@ Update["color"] = function(self, elapsed, i)
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
 	else
-		self.ColorOffset = Easing[self.Easing](self.Timer, 0, self.Duration, self.Duration)
+		self.CurrentValue = Easing[self.Easing](self.Timer, 0, self.Duration, self.Duration)
 		Set[self.ColorType](self.Parent, GetColor(self.Timer / self.Duration, self.StartR, self.StartG, self.StartB, self.EndR, self.EndG, self.EndB))
 	end
 end
@@ -1089,8 +1112,8 @@ Update["progress"] = function(self, elapsed, i)
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
 	else
-		self.ValueOffset = Easing[self.Easing](self.Timer, self.StartValue, self.ProgressChange, self.Duration)
-		self.Parent:SetValue(self.ValueOffset)
+		self.CurrentValue = Easing[self.Easing](self.Timer, self.StartValue, self.ProgressChange, self.Duration)
+		self.Parent:SetValue(self.CurrentValue)
 	end
 end
 
@@ -1138,8 +1161,37 @@ Update["number"] = function(self, elapsed, i)
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
 	else
-		self.NumberOffset = Easing[self.Easing](self.Timer, self.StartNumber, self.NumberChange, self.Duration)
-		self.Parent:SetText(self.Prefix..floor(self.NumberOffset)..self.Postfix)
+		self.CurrentValue = Easing[self.Easing](self.Timer, self.StartNumber, self.NumberChange, self.Duration)
+		self.Parent:SetText(self.Prefix..floor(self.CurrentValue)..self.Postfix)
+	end
+end
+
+-- Scale
+Initialize["scale"] = function(self)
+	if self.Playing then
+		return
+	end
+	
+	self.Timer = 0
+	self.StartScale = self.Parent:GetScale() or 1
+	self.EndScale = self.EndScaleSetting or 1
+	self.ScaleChange = self.EndScale - self.StartScale
+	
+	self:StartUpdating()
+end
+
+Update["scale"] = function(self, elapsed, i)
+	self.Timer = self.Timer + elapsed
+	
+	if (self.Timer >= self.Duration) then
+		tremove(Updater, i)
+		self.Parent:SetScale(self.EndScale)
+		self.Playing = false
+		self:Callback("OnFinished")
+		self.Group:CheckOrder()
+	else
+		self.CurrentValue = Easing[self.Easing](self.Timer, self.StartScale, self.ScaleChange, self.Duration)
+		self.Parent:SetScale(self.CurrentValue)
 	end
 end
 
