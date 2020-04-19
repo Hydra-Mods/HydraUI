@@ -1,5 +1,5 @@
 -- LibAnim by Hydra
-local Version = 2.05
+local Version = 2.06
 
 if (_LibAnim and _LibAnim >= Version) then
 	return
@@ -722,7 +722,7 @@ local AnimMethods = {
 		end,
 		
 		GetProgress = function(self)
-			return self.Timer
+			return self.CurrentValue
 		end,
 		
 		Reset = function(self)

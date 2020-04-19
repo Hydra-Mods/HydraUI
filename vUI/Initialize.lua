@@ -54,13 +54,10 @@ vUI.Plugins = {}
 vUI.UIVersion = GetAddOnMetadata("vUI", "Version")
 vUI.UserName = UnitName("player")
 vUI.UserClass = select(2, UnitClass("player"))
-vUI.UserClassName = UnitClass("player")
 vUI.UserRace = UnitRace("player")
 vUI.UserRealm = GetRealmName()
-vUI.UserFaction = UnitFactionGroup("player")
 vUI.UserLocale = GetLocale()
 vUI.UserProfileKey = format("%s:%s", vUI.UserName, vUI.UserRealm)
-vUI.UserGoldKey = format("%s:%s:%s", vUI.UserName, vUI.UserRealm, vUI.UserFaction)
 
 if (vUI.UserLocale == "enGB") then
 	vUI.UserLocale = "enUS"
