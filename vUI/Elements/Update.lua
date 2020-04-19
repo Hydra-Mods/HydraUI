@@ -97,7 +97,7 @@ function Update:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
 		if (message > AddOnVersion) then
 			--vUI:SendAlert("New Version", format("Update to version |cFF%s%s|r!", Settings["ui-header-font-color"], Version), nil, UpdateOnMouseUp, true)
 			vUI:print(format(Language["Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui"], Settings["ui-header-font-color"], message))
-			print(Language["Join the Discord community for support and feedback https://discord.gg/wfCVkJe"])
+			print(Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"])
 			
 			self:UnregisterEvent(event)
 		end
@@ -106,7 +106,7 @@ function Update:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
 			SendAddonMessage("vUI-Version", AddOnVersion, "WHISPER", sender)
 		elseif (message > AddOnVersion) then -- We're behind!
 			vUI:print(format(Language["Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui"], Settings["ui-header-font-color"], message))
-			print(Language["Join the Discord community for support and feedback https://discord.gg/wfCVkJe"])
+			print(Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"])
 			
 			-- Store this higher version and tell anyone else who asks?
 			

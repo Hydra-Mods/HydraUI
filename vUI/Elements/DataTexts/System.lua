@@ -3,8 +3,25 @@ local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 local GetFramerate = GetFramerate
 local GetNetStats = GetNetStats
 local floor = floor
-local FPSLabel = "FPS"
-local MSLabel = "MS"
+local select = select
+local FPSLabel = Language["FPS"]
+local MSLabel = Language["MS"]
+
+local OnEnter = function(self)
+	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	
+	local HomeLatency, WorldLatency = select(3, GetNetStats())
+	
+	GameTooltip:AddLine(Language["Latency:"], 1, 0.7, 0)
+	GameTooltip:AddLine(format(Language["%s ms (home)"], HomeLatency), 1, 1, 1)
+	GameTooltip:AddLine(format(Language["%s ms (world)"], WorldLatency), 1, 1, 1)
+	
+	GameTooltip:Show()
+end
+
+local OnLeave = function()
+	GameTooltip:Hide()
+end
 
 local Update = function(self, elapsed)
 	self.Elapsed = self.Elapsed + elapsed
@@ -18,6 +35,8 @@ end
 
 local OnEnable = function(self)
 	self:SetScript("OnUpdate", Update)
+	self:SetScript("OnEnter", OnEnter)
+	self:SetScript("OnLeave", OnLeave)
 	
 	self.Elapsed = 0
 	
@@ -26,6 +45,8 @@ end
 
 local OnDisable = function(self)
 	self:SetScript("OnUpdate", nil)
+	self:SetScript("OnEnter", nil)
+	self:SetScript("OnLeave", nil)
 	
 	self.Elapsed = 0
 	

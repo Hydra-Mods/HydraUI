@@ -53,7 +53,8 @@ function AutoVendor:OnEvent()
 	
 	for Bag = 0, 4 do
 		for Slot = 1, GetContainerNumSlots(Bag) do
-			local Link, ID = GetContainerItemLink(Bag, Slot), GetContainerItemID(Bag, Slot)
+			local Link = GetContainerItemLink(Bag, Slot)
+			local ID = GetContainerItemID(Bag, Slot)
 			
 			if (Link and ID and not self.Filter[ID]) then
 				local TotalPrice = 0

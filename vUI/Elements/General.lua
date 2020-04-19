@@ -26,7 +26,7 @@ local GetDiscordLink = function()
 	end
 	
 	if (not Throttle:IsThrottled("discord-request")) then
-		vUI:print(Language["Join the Discord community for support and feedback https://discord.gg/wfCVkJe"])
+		vUI:print(Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"])
 		
 		Throttle:Start("discord-request")
 	end
