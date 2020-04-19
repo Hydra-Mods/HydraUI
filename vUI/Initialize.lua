@@ -12,12 +12,6 @@ local min = math.min
 local max = math.max
 local gsub = gsub
 local type = type
-local UnitLevel = UnitLevel
-local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
-
-local Resolution = GetCurrentResolution()
-local ScreenHeight
-local Scale = 1
 
 -- Data storage
 local Assets = {}
@@ -63,6 +57,7 @@ if (vUI.UserLocale == "enGB") then
 	vUI.UserLocale = "enUS"
 end
 
+-- Modules and plugins
 local Hook = function(self, global, hook)
 	if _G[global] then
 		local Func
@@ -213,6 +208,9 @@ end
 	https://www.wowinterface.com/forums/showthread.php?t=31813
 --]]
 
+local ScreenHeight
+local Scale = 1
+
 function vUI:UpdateScreenHeight()
 	if (C_CVar.GetCVar("gxMaximize") == "1") then -- A fullscreen resolution
 		self.ScreenResolution = C_CVar.GetCVar("gxFullscreenResolution")
@@ -275,6 +273,7 @@ function vUI:Comma(number)
 	return Left and Left .. reverse(gsub(reverse(Number), "(%d%d%d)", "%1,")) or number
 end
 
+-- Backdrops
 vUI.Backdrop = {
 	bgFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga",
 	insets = {top = 0, left = 0, bottom = 0, right = 0},
@@ -293,6 +292,7 @@ vUI.Outline = {
 	insets = {left = 0, right = 0, top = 0, bottom = 0},
 }
 
+-- Tools
 vUI.TimerPool = {}
 
 local TimerOnFinished = function(self)
@@ -358,6 +358,8 @@ function vUI:Reset()
 	
 	ReloadUI()
 end
+
+local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
 
 local NewPrint = function(...)
 	local NumArgs = select("#", ...)
@@ -431,7 +433,6 @@ function vUI:SetPoint(object, anchor1, parent, anchor2, x, y)
 	
 	object:SetPoint(anchor1, parent, anchor2, x, y)
 end
-
 
 function vUI:SetFontInfo(object, font, size, flags)
 	local Font, IsPixel = Assets:GetFont(font)

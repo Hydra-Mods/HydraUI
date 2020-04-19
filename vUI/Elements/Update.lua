@@ -57,6 +57,12 @@ function Update:PLAYER_ENTERING_WORLD(event)
 	--self:UnregisterEvent(event)
 end
 
+function Update:GUILD_ROSTER_UPDATE()
+	if IsInGuild() then
+		SendAddonMessage("vUI-Version", AddOnVersion, "GUILD")
+	end
+end
+
 -- /run vUIData.Version = 1 -- Leaving this here for a while so I can reset version manually for testing.
 function Update:VARIABLES_LOADED(event)
 	if (not vUIData) then
