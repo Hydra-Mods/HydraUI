@@ -182,19 +182,19 @@ function vUI:AddPluginInfo()
 	local Left, Right = GUI:CreateWindow("Plugins")
 	local Anchor
 	
-	for i = 1, #vUI.Plugins do
+	for i = 1, #self.Plugins do
 		if ((i % 2) == 0) then
 			Anchor = Right
 		else
 			Anchor = Left
 		end
 		
-		Anchor:CreateHeader(vUI.Plugins[i].Title)
+		Anchor:CreateHeader(self.Plugins[i].Title)
 		
-		Anchor:CreateDoubleLine(Language["Author"], vUI.Plugins[i].Author)
-		Anchor:CreateDoubleLine(Language["Version"], vUI.Plugins[i].Version)
+		Anchor:CreateDoubleLine(Language["Author"], self.Plugins[i].Author)
+		Anchor:CreateDoubleLine(Language["Version"], self.Plugins[i].Version)
 		Anchor:CreateLine(" ")
-		Anchor:CreateMessage(vUI.Plugins[i].Notes)
+		Anchor:CreateMessage(self.Plugins[i].Notes)
 	end
 	
 	Left:CreateFooter()
@@ -234,8 +234,7 @@ function vUI:GetScale(x)
 end
 
 function vUI:SetScale(x)
-	x = max(0.4, x)
-	x = min(1.2, x)
+	x = min(1.2, max(0.4, x))
 	
 	C_CVar.SetCVar("uiScale", x)
 	
