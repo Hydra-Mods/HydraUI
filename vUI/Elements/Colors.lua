@@ -8,7 +8,6 @@ vUI.ReactionColors = {}
 vUI.ZoneColors = {}
 vUI.PowerColors = {}
 vUI.DebuffColors = {}
-vUI.ClassificationColors = {}
 vUI.ComboPoints = {}
 
 function vUI:SetColorEntry(t, key, hex)
@@ -87,14 +86,6 @@ function vUI:UpdateDebuffColors()
 	self:SetColorEntry(self.DebuffColors, "Magic", Settings["color-magic"])
 	self:SetColorEntry(self.DebuffColors, "Poison", Settings["color-poison"])
 	self:SetColorEntry(self.DebuffColors, "none", Settings["color-none"])
-end
-
-function vUI:UpdateClassificationColors()
-	self:SetColorEntry(self.ClassificationColors, "trivial", Settings["color-trivial"])
-	self:SetColorEntry(self.ClassificationColors, "standard", Settings["color-standard"])
-	self:SetColorEntry(self.ClassificationColors, "difficult", Settings["color-difficult"])
-	self:SetColorEntry(self.ClassificationColors, "verydifficult", Settings["color-verydifficult"])
-	self:SetColorEntry(self.ClassificationColors, "impossible", Settings["color-impossible"])
 end
 
 function vUI:UpdateComboColors()
@@ -192,6 +183,5 @@ GUI:AddOptions(function(self)
 	vUI:UpdateZoneColors()
 	vUI:UpdatePowerColors()
 	vUI:UpdateDebuffColors()
-	vUI:UpdateClassificationColors()
 	vUI:UpdateComboColors()
 end)
