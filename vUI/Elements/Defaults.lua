@@ -241,7 +241,7 @@ Defaults["cooldowns-enable"] = true
 Defaults["meters-container-show"] = true
 
 -- Micro Buttons
-Defaults["micro-buttons-visiblity"] = "HIDE"
+Defaults["micro-buttons-visiblity"] = "SHOW"
 Defaults["micro-buttons-opacity"] = 40
 
 -- Bags Frame

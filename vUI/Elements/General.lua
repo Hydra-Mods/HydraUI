@@ -88,3 +88,100 @@ GUI:AddOptions(function(self)
 		end
 	end
 end)
+
+-- Putting Styles here too
+local AcceptNewStyle = function(value)
+	Assets:ApplyStyle(value)
+	
+	ReloadUI()
+end
+
+local UpdateStyle = function(value)
+	local Label = value
+	
+	if Assets.Styles[value]["ui-widget-color"] then
+		Label = format("|cFF%s%s|r", Assets.Styles[value]["ui-widget-color"], value)
+	end
+	
+	vUI:DisplayPopup(Language["Attention"], format(Language['Are you sure you would like to change to the current style to "%s"?'], Label), Language["Accept"], AcceptNewStyle, Language["Cancel"], nil, value)
+end
+
+GUI:AddOptions(function(self)
+	local Left, Right = self:CreateWindow(Language["Styles"])
+	
+	Left:CreateHeader(Language["Styles"])
+	Left:CreateDropdown("ui-style", Settings["ui-style"], Assets:GetStyleList(), Language["Select Style"], Language["Select a style to load"], UpdateStyle)
+	
+	Left:CreateHeader(Language["Headers"])
+	Left:CreateColorSelection("ui-header-font-color", Settings["ui-header-font-color"], Language["Text Color"], "")
+	Left:CreateColorSelection("ui-header-texture-color", Settings["ui-header-texture-color"], Language["Texture Color"], "")
+	Left:CreateDropdown("ui-header-texture", Settings["ui-header-texture"], Assets:GetTextureList(), Language["Texture"], "", nil, "Texture")
+	Left:CreateDropdown("ui-header-font", Settings["ui-header-font"], Assets:GetFontList(), Language["Header Font"], "", nil, "Font")
+	
+	Left:CreateHeader(Language["Widgets"])
+	Left:CreateColorSelection("ui-widget-color", Settings["ui-widget-color"], Language["Color"], "")
+	Left:CreateColorSelection("ui-widget-bright-color", Settings["ui-widget-bright-color"], Language["Bright Color"], "")
+	Left:CreateColorSelection("ui-widget-bg-color", Settings["ui-widget-bg-color"], Language["Background Color"], "")
+	Left:CreateColorSelection("ui-widget-font-color", Settings["ui-widget-font-color"], Language["Label Color"], "")
+	Left:CreateDropdown("ui-widget-texture", Settings["ui-widget-texture"], Assets:GetTextureList(), Language["Texture"], "", nil, "Texture")
+	Left:CreateDropdown("ui-widget-font", Settings["ui-widget-font"], Assets:GetFontList(), Language["Font"], "", nil, "Font")
+	
+	Right:CreateHeader(Language["What is a style?"])
+	Right:CreateMessage(Language["Styles store visual settings such as fonts, textures, and colors to create an overall theme."])
+	
+	Right:CreateHeader(Language["Console"])
+	Right:CreateButton(Language["Reload"], Language["Reload UI"], Language["Reload the UI"], ReloadUI)
+	Right:CreateButton(Language["Delete"], Language["Delete Saved Variables"], Language["Reset all saved variables"], vUI.Reset)
+	
+	Right:CreateHeader(Language["Windows"])
+	Right:CreateColorSelection("ui-window-bg-color", Settings["ui-window-bg-color"], Language["Background Color"], "")
+	Right:CreateColorSelection("ui-window-main-color", Settings["ui-window-main-color"], Language["Main Color"], "")
+	
+	Right:CreateHeader(Language["Buttons"])
+	Right:CreateColorSelection("ui-button-texture-color", Settings["ui-button-texture-color"], Language["Texture Color"], "")
+	Right:CreateColorSelection("ui-button-font-color", Settings["ui-button-font-color"], Language["Font Color"], "")
+	Right:CreateDropdown("ui-button-texture", Settings["ui-button-texture"], Assets:GetTextureList(), Language["Texture"], "", nil, "Texture")
+	Right:CreateDropdown("ui-button-font", Settings["ui-button-font"], Assets:GetFontList(), Language["Font"], "", nil, "Font")
+	
+	Left:CreateHeader(Language["Font Sizes"])
+	Left:CreateSlider("ui-font-size", Settings["ui-font-size"], 8, 18, 1, Language["General Font Size"], Language["Set the general font size of the UI"])
+	Left:CreateSlider("ui-header-font-size", Settings["ui-header-font-size"], 8, 18, 1, Language["Header Font Size"], Language["Set the font size of header elements in the UI"])
+	Left:CreateSlider("ui-title-font-size", Settings["ui-title-font-size"], 8, 18, 1, Language["Title Font Size"], Language["Set the font size of title elements in the UI"])
+end)
+
+GUI:AddOptions(function(self)
+	local Left, Right = self:GetWindow(Language["Profiles"])
+	
+	Right:CreateHeader(Language["What is a profile?"])
+	Right:CreateMessage(Language["Profiles store your settings so that you can quickly and easily change between configurations."])
+	
+	local Name = vUI:GetActiveProfileName()
+	local Profile = vUI:GetProfile(Name)
+	local MostUsed = vUI:GetMostUsedProfile()
+	local NumServed, IsAll = vUI:GetNumServedByProfile(Name)
+	local NumEmpty = vUI:CountEmptyProfiles()
+	local NumUnused = vUI:CountUnusedProfiles()
+	local MostUsedServed = NumServed
+	
+	if IsAll then
+		NumServed = format("%d (%s)", NumServed, Language["All"])
+	end
+	
+	if (Profile ~= MostUsed) then
+		MostUsedServed = vUI:GetNumServedByProfile(MostUsed)
+	end
+	
+	Right:CreateHeader(Language["Info"])
+	Right:CreateDoubleLine(Language["Current Profile:"], Name)
+	Right:CreateDoubleLine(Language["Created By:"], Profile["profile-created-by"])
+	Right:CreateDoubleLine(Language["Created On:"], vUI:IsToday(Profile["profile-created"]))
+	Right:CreateDoubleLine(Language["Last Modified:"], vUI:IsToday(Profile["profile-last-modified"]))
+	Right:CreateDoubleLine(Language["Modifications:"], vUI:CountChangedValues(Name))
+	Right:CreateDoubleLine(Language["Serving Characters:"], NumServed)
+	
+	Right:CreateHeader(Language["General"])
+	Right:CreateDoubleLine(Language["Popular Profile:"], format("%s (%d)", MostUsed, MostUsedServed))
+	Right:CreateDoubleLine(Language["Stored Profiles:"], vUI:GetProfileCount())
+	Right:CreateDoubleLine(Language["Empty Profiles:"], NumEmpty)
+	Right:CreateDoubleLine(Language["Unused Profiles:"], NumUnused)
+end)

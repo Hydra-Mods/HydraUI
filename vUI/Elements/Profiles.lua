@@ -1,7 +1,6 @@
 local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local DefaultKey = "%s-%s"
-local date = date
 local pairs = pairs
 local format = format
 local match = string.match
@@ -27,25 +26,6 @@ vUI.PreserveSettings = {
 	["ui-language"] = true,
 }
 
-function vUI:GetCurrentDate()
-	return date("%Y-%m-%d %I:%M %p")
-end
-
--- If the date given is today, change "2019-07-24 2:06 PM" to "Today 2:06 PM"
-local IsToday = function(s)
-	local Date, Time = match(s, "(%d+%-%d+%-%d+)%s(.+)")
-	
-	if (not Date or not Time) then
-		return s
-	end
-	
-	if (Date == date("%Y-%m-%d")) then
-		s = format("%s %s", Language["Today"], Time)
-	end
-	
-	return s
-end
-
 function vUI:UpdateProfileInfo()
 	local Name = self:GetActiveProfileName()
 	local Profile = self:GetProfile(Name)
@@ -63,8 +43,8 @@ function vUI:UpdateProfileInfo()
 	
 	GUI:GetWidgetByWindow(Language["Profiles"], "current-profile").Right:SetText(Name)
 	GUI:GetWidgetByWindow(Language["Profiles"], "created-by").Right:SetText(Profile["profile-created-by"])
-	GUI:GetWidgetByWindow(Language["Profiles"], "created-on").Right:SetText(IsToday(Profile["profile-created"]))
-	GUI:GetWidgetByWindow(Language["Profiles"], "last-modified").Right:SetText(IsToday(Profile["profile-last-modified"]))
+	GUI:GetWidgetByWindow(Language["Profiles"], "created-on").Right:SetText(vUI:IsToday(Profile["profile-created"]))
+	GUI:GetWidgetByWindow(Language["Profiles"], "last-modified").Right:SetText(vUI:IsToday(Profile["profile-last-modified"]))
 	GUI:GetWidgetByWindow(Language["Profiles"], "modifications").Right:SetText(self:CountChangedValues(Name))
 	GUI:GetWidgetByWindow(Language["Profiles"], "serving-characters").Right:SetText(NumServed)
 	
@@ -438,18 +418,15 @@ function vUI:CountUnusedProfiles()
 end
 
 function vUI:RenameProfile(from, to)
-	local FromProfile = vUIProfiles[from]
-	local ToProfile = vUIProfiles[to]
-	
-	if (not FromProfile) then
+	if (not vUIProfiles[from]) then
 		return
-	elseif ToProfile then
+	elseif vUIProfiles[to] then
 		self:print(format('A profile already exists with the name "%s".', to))
 		
 		return
 	end
 	
-	vUIProfiles[to] = FromProfile
+	vUIProfiles[to] = vUIProfiles[from]
 	vUIProfiles[to]["profile-name"] = to
 	
 	vUIProfiles[from] = nil
@@ -493,8 +470,6 @@ local CreateProfile = function(value)
 	local Widget = GUI:GetWidgetByWindow(Language["Profiles"], "ui-profile")
 	Widget.Dropdown:CreateSelection(value, value)
 	Widget.Dropdown:Sort()
-	
-	--ReloadUI() -- Temp
 end
 
 local DeleteProfile = function(value)
@@ -504,7 +479,6 @@ local DeleteProfile = function(value)
 	local Widget = GUI:GetWidgetByWindow(Language["Profiles"], "ui-profile")
 	Widget.Dropdown:RemoveSelection(value)
 	Widget.Dropdown.Current:SetText(vUI:GetActiveProfileName())
-	--ReloadUI() -- Temp
 end
 
 local AceSerializer = LibStub:GetLibrary("AceSerializer-3.0")
@@ -611,47 +585,14 @@ GUI:AddOptions(function(self)
 	--Left:CreateButton("Apply", "Apply Current Profile", "", UpdateActiveProfile)
 	
 	Left:CreateHeader(Language["Modify"])
-	Left:CreateInput("profile-key", vUI:GetDefaultProfileKey(), Language["Create New Profile"], "", CreateProfile):DisableSaving()
-	Left:CreateInput("profile-delete", vUI:GetDefaultProfileKey(), Language["Delete Profile"], "", DeleteProfile):DisableSaving()
-	Left:CreateInput("profile-rename", "", Language["Rename Profile"], "", RenameProfile):DisableSaving()
-	Left:CreateButton(Language["Restore"], Language["Restore To Default"], "", RestoreToDefault):RequiresReload(true)
-	Left:CreateButton(Language["Delete"], Language["Delete Empty Profiles"], "", DeleteEmpty):RequiresReload(true)
-	Left:CreateButton(Language["Delete"], Language["Delete Unused Profiles"], "", DeleteUnused):RequiresReload(true)
+	Left:CreateInput("profile-key", vUI:GetDefaultProfileKey(), Language["Create New Profile"], Language["Create a new profile to store a different collection of settings"], CreateProfile):DisableSaving()
+	Left:CreateInput("profile-delete", vUI:GetDefaultProfileKey(), Language["Delete Profile"], Language["Delete a profile"], DeleteProfile):DisableSaving()
+	Left:CreateInput("profile-rename", "", Language["Rename Profile"], Language["Rename the currently selected profile"], RenameProfile):DisableSaving()
+	Left:CreateButton(Language["Restore"], Language["Restore To Default"], Language["Restore the currently selected profile to default settings"], RestoreToDefault):RequiresReload(true)
+	Left:CreateButton(Language["Delete"], Language["Delete Empty Profiles"], Language["Delete any profiles that have no settings that vary from default"], DeleteEmpty):RequiresReload(true)
+	Left:CreateButton(Language["Delete"], Language["Delete Unused Profiles"], Language["Delete any profiles that are not currently in use by any characters"], DeleteUnused):RequiresReload(true)
 	
 	--[[Left:CreateHeader(Language["Sharing is caring"])
 	Left:CreateButton(Language["Import"], Language["Import A Profile"], "", ShowImportWindow)
 	Left:CreateButton(Language["Export"], Language["Export Current Profile"], "", ShowExportWindow)]]
-	
-	Right:CreateHeader(Language["What is a profile?"])
-	Right:CreateMessage(Language["Profiles store your settings so that you can quickly and easily change between configurations."])
-	
-	local Name = vUI:GetActiveProfileName()
-	local Profile = vUI:GetProfile(Name)
-	local MostUsed = vUI:GetMostUsedProfile()
-	local NumServed, IsAll = vUI:GetNumServedByProfile(Name)
-	local NumEmpty = vUI:CountEmptyProfiles()
-	local NumUnused = vUI:CountUnusedProfiles()
-	local MostUsedServed = NumServed
-	
-	if IsAll then
-		NumServed = format("%d (%s)", NumServed, Language["All"])
-	end
-	
-	if (Profile ~= MostUsed) then
-		MostUsedServed = vUI:GetNumServedByProfile(MostUsed)
-	end
-	
-	Right:CreateHeader(Language["Info"])
-	Right:CreateDoubleLine(Language["Current Profile:"], Name)
-	Right:CreateDoubleLine(Language["Created By:"], Profile["profile-created-by"])
-	Right:CreateDoubleLine(Language["Created On:"], IsToday(Profile["profile-created"]))
-	Right:CreateDoubleLine(Language["Last Modified:"], IsToday(Profile["profile-last-modified"]))
-	Right:CreateDoubleLine(Language["Modifications:"], vUI:CountChangedValues(Name))
-	Right:CreateDoubleLine(Language["Serving Characters:"], NumServed)
-	
-	Right:CreateHeader(Language["General"])
-	Right:CreateDoubleLine(Language["Popular Profile:"], format("%s (%d)", MostUsed, MostUsedServed))
-	Right:CreateDoubleLine(Language["Stored Profiles:"], vUI:GetProfileCount())
-	Right:CreateDoubleLine(Language["Empty Profiles:"], NumEmpty)
-	Right:CreateDoubleLine(Language["Unused Profiles:"], NumUnused)
 end)

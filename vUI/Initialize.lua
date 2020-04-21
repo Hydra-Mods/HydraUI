@@ -2,8 +2,8 @@ local AddOn, Namespace = ...
 local tonumber = tonumber
 local tostring = tostring
 local select = select
+local date = date
 local sub = string.sub
-local len = string.len
 local format = string.format
 local floor = math.floor
 local match = string.match
@@ -252,27 +252,6 @@ function vUI:GetSuggestedScale()
 	return (768 / ScreenHeight)
 end
 
-function vUI:ShortValue(num)
-	if (num >= 1000000) then
-		return format("%.2fm", num / 1000000)
-	elseif (num >= 1000) then
-		return format("%dk", num / 1000)
-	else
-		return num
-	end
-end
-
-function vUI:Comma(number)
-	if (not number) then
-		return
-	end
-	
-	local Number = format("%.0f", floor(number + 0.5))
-   	local Left, Number, Right = match(Number, "^([^%d]*%d)(%d+)(.-)$")
-	
-	return Left and Left .. reverse(gsub(reverse(Number), "(%d%d%d)", "%1,")) or number
-end
-
 -- Backdrops
 vUI.Backdrop = {
 	bgFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga",
@@ -325,11 +304,7 @@ function vUI:HexToRGB(hex)
 		return
 	end
 	
-	if (len(hex) == 8) then
-		return tonumber("0x"..sub(hex, 1, 2)) / 255, tonumber("0x"..sub(hex, 3, 4)) / 255, tonumber("0x"..sub(hex, 5, 6)) / 255, tonumber("0x"..sub(hex, 7, 8)) / 255
-	else
-		return tonumber("0x"..sub(hex, 1, 2)) / 255, tonumber("0x"..sub(hex, 3, 4)) / 255, tonumber("0x"..sub(hex, 5, 6)) / 255
-	end
+	return tonumber("0x"..sub(hex, 1, 2)) / 255, tonumber("0x"..sub(hex, 3, 4)) / 255, tonumber("0x"..sub(hex, 5, 6)) / 255
 end
 
 function vUI:RGBToHex(r, g, b)
@@ -348,6 +323,46 @@ function vUI:FormatTime(seconds)
 	end
 	
 	return format("%.1fs", seconds)
+end
+
+function vUI:ShortValue(num)
+	if (num >= 1000000) then
+		return format("%.2fm", num / 1000000)
+	elseif (num >= 1000) then
+		return format("%dk", num / 1000)
+	else
+		return num
+	end
+end
+
+function vUI:Comma(number)
+	if (not number) then
+		return
+	end
+	
+	local Number = format("%.0f", floor(number + 0.5))
+   	local Left, Number, Right = match(Number, "^([^%d]*%d)(%d+)(.-)$")
+	
+	return Left and Left .. reverse(gsub(reverse(Number), "(%d%d%d)", "%1,")) or number
+end
+
+function vUI:GetCurrentDate()
+	return date("%Y-%m-%d %I:%M %p")
+end
+
+-- If the date given is today, change "2019-07-24 2:06 PM" to "Today 2:06 PM"
+function vUI:IsToday(s)
+	local Date, Time = match(s, "(%d+%-%d+%-%d+)%s(.+)")
+	
+	if (not Date or not Time) then
+		return s
+	end
+	
+	if (Date == date("%Y-%m-%d")) then
+		s = format("%s %s", Language["Today"], Time)
+	end
+	
+	return s
 end
 
 function vUI:Reset()

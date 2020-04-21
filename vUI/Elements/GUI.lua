@@ -198,6 +198,7 @@ CheckString:SetJustifyH("LEFT")
 
 GUI.Widgets.CreateMessage = function(self, text) -- Create as many lines as needed for the message
 	vUI:SetFontInfo(CheckString, Settings["ui-widget-font"], Settings["ui-font-size"])
+	CheckString:SetText(text)
 	
 	local Line = ""
 	local NewLine = ""
@@ -209,7 +210,7 @@ GUI.Widgets.CreateMessage = function(self, text) -- Create as many lines as need
 		CheckString:SetText(NewLine)
 		
 		if (CheckString:GetStringWidth() >= (GROUP_WIDTH - 6)) then
-			if string.find(Line, "%S+$") then -- A word needs to be wrapped
+			if string.find(Line, "(%S+)$") then -- A word needs to be wrapped
 				self:CreateLine(Line)
 				Line = word -- Start a new line with the wrapped word
 				Indent = 1
