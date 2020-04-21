@@ -198,7 +198,7 @@ function vUI:CreateMover(frame, padding)
 	else
 		vUI:SetPoint(Mover, OldA1, OldParent, OldA2, OldX, OldY)
 		
-		vUIMove[Name] = {OldA1, OldParent, OldA2, OldX, OldY}
+		vUIMove[Name] = {OldA1, OldParent:GetName(), OldA2, OldX, OldY}
 	end
 	
 	table.insert(self.MovingFrames, Mover)
