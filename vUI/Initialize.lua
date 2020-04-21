@@ -365,13 +365,18 @@ function vUI:IsToday(s)
 	return s
 end
 
-function vUI:Reset()
-	-- Create a prompt
-	--vUIData = nil
-	vUIProfiles = nil
+local ResetOnAccept = function()
 	vUIProfileData = nil
+	vUIProfiles = nil
+	vUIData = nil
+	vUIMove = nil
+	vUIGold = nil
 	
 	ReloadUI()
+end
+
+function vUI:Reset()
+	vUI:DisplayPopup(Language["Attention"], Language["This action will delete ALL saved UI information. Are you sure you wish to continue?"], Language["Accept"], ResetOnAccept, Language["Cancel"])
 end
 
 local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME

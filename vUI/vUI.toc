@@ -30,6 +30,7 @@ Elements\Defaults.lua
 Elements\Profiles.lua
 Elements\GUI.lua
 Elements\Colors.lua
+Elements\Fonts.lua
 Elements\Throttle.lua
 Elements\Move.lua
 Elements\Alerts.lua
@@ -84,4 +85,6 @@ Elements\Announcements.lua
 Elements\Cooldowns.lua
 Elements\Scale.lua
 Elements\Commands.lua
+Elements\Credit.lua
+Elements\Debug.lua
 Elements\Test.lua
