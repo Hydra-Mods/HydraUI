@@ -75,6 +75,7 @@ Elements\DataTexts\Level.lua
 Elements\DataTexts\Honor.lua
 Elements\DataTexts\Location.lua
 Elements\DataTexts\System.lua
+Elements\DataTexts\ItemLevel.lua
 Elements\MetersBG.lua
 Elements\Loot.lua
 Elements\DruidMana.lua
