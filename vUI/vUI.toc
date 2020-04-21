@@ -48,7 +48,6 @@ Elements\ActionBars\BagSlots.lua
 Elements\ActionBars\MicroMenu.lua
 Elements\UnitFrames.lua
 Elements\Tooltips.lua
-Elements\MetersBG.lua
 Elements\Minimap\Minimap.lua
 Elements\ZoneText.lua
 Elements\Update.lua
@@ -59,7 +58,6 @@ Elements\DataTexts\Gold.lua
 Elements\DataTexts\TimeLocal.lua
 Elements\DataTexts\TimeRealm.lua
 Elements\DataTexts\Armor.lua
-Elements\DataTexts\HitRating.lua
 Elements\DataTexts\CritRating.lua
 Elements\DataTexts\ManaRegen.lua
 Elements\DataTexts\BagSlots.lua
@@ -76,6 +74,7 @@ Elements\DataTexts\Coordinates.lua
 Elements\DataTexts\Level.lua
 Elements\DataTexts\Location.lua
 Elements\DataTexts\System.lua
+Elements\MetersBG.lua
 Elements\Loot.lua
 Elements\DruidMana.lua
 Elements\MirrorTimers.lua
