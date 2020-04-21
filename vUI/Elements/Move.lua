@@ -56,9 +56,7 @@ function vUI:ToggleMovers()
 end
 
 function vUI:ResetAllMovers()
-	if (not vUIMove) then
-		vUIMove = {}
-	end
+	vUIMove = {}
 	
 	for i = 1, #self.MovingFrames do
 		if self.FrameDefaults[self.MovingFrames[i].Name] then
@@ -67,7 +65,7 @@ function vUI:ResetAllMovers()
 			self.MovingFrames[i]:ClearAllPoints()
 			vUI:SetPoint(self.MovingFrames[i], A1, _G[Parent], A2, X, Y)
 			
-			vUIMove[self.MovingFrames[i].Name] = {A1, Parent, A2, X, Y}
+			--vUIMove[self.MovingFrames[i].Name] = {A1, Parent, A2, X, Y}
 		end
 	end
 end
@@ -93,7 +91,7 @@ local MoverOnMouseUp = function(self, button)
 			self:ClearAllPoints()
 			vUI:SetPoint(self, A1, ParentObject, A2, X, Y)
 			
-			vUIMove[self.Name] = {A1, Parent, A2, X, Y}
+			vUIMove[self.Name] = {A1, Parent:GetName(), A2, X, Y}
 		end
 	end
 end
@@ -160,7 +158,7 @@ function vUI:CreateMover(frame, padding)
 	Mover:SetFrameLevel(20)
 	Mover:SetFrameStrata("HIGH")
 	Mover:SetMovable(true)
-	Mover:SetUserPlaced(true)
+	--Mover:SetUserPlaced(true)
 	Mover:SetClampedToScreen(true)
 	Mover:SetScript("OnMouseUp", MoverOnMouseUp)
 	Mover:SetScript("OnEnter", MoverOnEnter)
@@ -196,9 +194,9 @@ function vUI:CreateMover(frame, padding)
 		
 		vUI:SetPoint(Mover, A1, ParentObject, A2, X, Y)
 	else
-		vUI:SetPoint(Mover, OldA1, OldParent, OldA2, OldX, OldY)
+		vUI:SetPoint(Mover, A1, Parent, A2, X, Y)
 		
-		vUIMove[Name] = {OldA1, OldParent:GetName(), OldA2, OldX, OldY}
+		--vUIMove[Name] = {OldA1, OldParent:GetName(), OldA2, OldX, OldY}
 	end
 	
 	table.insert(self.MovingFrames, Mover)

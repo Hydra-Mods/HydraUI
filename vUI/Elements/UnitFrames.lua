@@ -2615,7 +2615,8 @@ UF:SetScript("OnEvent", function(self, event)
 			
 			self.RaidAnchor = CreateFrame("Frame", "vUI Raid Anchor", UIParent)
 			vUI:SetSize(self.RaidAnchor, (4 * (Settings["raid-health-height"] + Settings["raid-power-height"] + 3) + 4 * 2), ((Settings["raid-health-height"] + Settings["raid-power-height"]) * 10) + (2 * (10 - 1)))
-			vUI:SetPoint(self.RaidAnchor, "TOPLEFT", UIParent, 10, -10)
+			--vUI:SetPoint(self.RaidAnchor, "TOPLEFT", UIParent, 10, -10)
+			vUI:SetPoint(self.RaidAnchor, "BOTTOMLEFT", vUIChatFrameTop, "TOPLEFT", -3, 5)
 			
 			local Hider = CreateFrame("Frame", nil, UIParent, "SecureHandlerStateTemplate")
 			Hider:Hide()
