@@ -66,7 +66,7 @@ local SkinButton = function(button)
 		local HotKeyText = button.HotKey:GetText()
 		
 		if HotKeyText then
-			button.HotKey:SetText("|cffFFFFFF" .. HotKeyText .. "|r")
+			button.HotKey:SetText("|cFFFFFFFF" .. HotKeyText .. "|r")
 		end
 		
 		button.HotKey.OST = button.HotKey.SetText
@@ -486,7 +486,7 @@ local SkinPetButton = function(button)
 		local HotKeyText = button.HotKey:GetText()
 		
 		if HotKeyText then
-			button.HotKey:SetText("|cffFFFFFF" .. HotKeyText .. "|r")
+			button.HotKey:SetText("|cFFFFFFFF" .. HotKeyText .. "|r")
 		end
 		
 		button.HotKey.OST = button.HotKey.SetText

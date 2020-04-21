@@ -16,7 +16,7 @@ local OnEnter = function(self)
 		
 		if NumSlots then
 			local FreeSlots = GetContainerNumFreeSlots(i)
-			local Name = "|cffFFFFFF[" .. BACKPACK_TOOLTIP .. "]|r"
+			local Name = "|cFFFFFFFF[" .. BACKPACK_TOOLTIP .. "]|r"
 			
 			if (i > 0) then
 				Name = GetInventoryItemLink("player", ContainerIDToInventoryID(i))
@@ -53,7 +53,7 @@ local Update = function(self)
 		end
 	end
 	
-	self.Text:SetFormattedText("|cff%s%s:|r |cff%s%s/%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], TotalSlots-FreeSlots, TotalSlots)
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s/%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], TotalSlots-FreeSlots, TotalSlots)
 end
 
 local OnEnable = function(self)

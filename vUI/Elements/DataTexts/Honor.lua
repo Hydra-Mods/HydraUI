@@ -39,7 +39,7 @@ local Update = function(self, event, unit)
 	local Honor = UnitHonor("player")
 	local MaxHonor = UnitHonorMax("player")
 	
-	self.Text:SetFormattedText("%s: %s / %s", Label, Honor, MaxHonor)
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s / %s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Honor, MaxHonor)
 end
 
 local OnEnable = function(self)

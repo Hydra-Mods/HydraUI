@@ -51,7 +51,7 @@ local Update = function(self, elapsed)
 		X = X * 100
 		Y = Y * 100
 		
-		self.Text:SetFormattedText("|cff%s%.2f|r, |cff%s%.2f|r", Settings["data-text-value-color"], X, Settings["data-text-value-color"], Y)
+		self.Text:SetFormattedText("|cFF%s%.2f|r, |cFF%s%.2f|r", Settings["data-text-value-color"], X, Settings["data-text-value-color"], Y)
 		
 		if self.TooltipShown then
 			GameTooltip:ClearLines()

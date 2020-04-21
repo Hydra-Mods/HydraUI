@@ -14,11 +14,11 @@ function Private.argcheck(value, num, ...)
 end
 
 function Private.print(...)
-	print('|cff33ff99oUF:|r', ...)
+	print('|cFF33ff99oUF:|r', ...)
 end
 
 function Private.error(...)
-	Private.print('|cffff0000Error:|r ' .. string.format(...))
+	Private.print('|cFFff0000Error:|r ' .. string.format(...))
 end
 
 function Private.unitExists(unit)

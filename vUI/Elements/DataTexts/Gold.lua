@@ -47,7 +47,7 @@ local OnLeave = function()
 end
 
 local Update = function(self)
-	self.Text:SetFormattedText("|cff%s%s|r", Settings["data-text-value-color"], GetCoinTextureString(GetMoney()))
+	self.Text:SetFormattedText("|cFF%s%s|r", Settings["data-text-value-color"], GetCoinTextureString(GetMoney()))
 end
 
 local OnEnable = function(self)

@@ -8,7 +8,7 @@ local OnMouseUp = function()
 end
 
 local Update = function(self)
-	self.Text:SetFormattedText("|cff%s%s:|r |cff%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], UnitLevel("player"))
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], UnitLevel("player"))
 end
 
 local OnEnable = function(self)

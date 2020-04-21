@@ -24,7 +24,7 @@ end
 local Update = function(self)
 	local Average, Equipped, PVP = GetAverageItemLevel()
 	
-	self.Text:SetFormattedText("|cFF%s%s: |cFF%s%.2f|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Equipped)
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.2f|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Equipped)
 end
 
 local OnEnable = function(self)

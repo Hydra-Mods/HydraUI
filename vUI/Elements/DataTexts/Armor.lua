@@ -19,7 +19,7 @@ local Update = function(self, event, unit)
 	
 	Reduction = 100 * (Reduction / (Reduction + 1))
 	
-	self.Text:SetFormattedText("|cff%s%s:|r |cff%s%.1f%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Reduction)
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.1f%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Reduction)
 end
 
 local OnEnable = function(self)

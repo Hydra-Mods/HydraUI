@@ -60,9 +60,9 @@ local Update = function(self)
 	end
 	
 	if (Count > 0) then
-		self.Text:SetFormattedText("|cff%s%s:|r |cff%s%s%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], floor(Total / Count * 100))
+		self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], floor(Total / Count * 100))
 	else
-		self.Text:SetFormattedText("|cff%s%s:|r |cff%sN/A|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"])
+		self.Text:SetFormattedText("|cFF%s%s:|r |cFF%sN/A|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"])
 	end
 end
 
