@@ -23,6 +23,22 @@ local SaveValue = function(anchor)
 	anchor.LastValue = anchor.Text:GetText()
 end
 
+local SetTooltip = function(anchor)
+	--GameTooltip_SetDefaultAnchor(GameTooltip, anchor)
+	
+	local X, Y = anchor:GetCenter()
+	local Position = (Y > UIParent:GetHeight() / 2) and "TOP" or "BOTTOM"
+	
+	GameTooltip:SetOwner(anchor, "ANCHOR_NONE")
+	GameTooltip:ClearAllPoints()
+	
+	if (Position == "TOP") then
+		vUI:SetPoint(GameTooltip, "TOP", anchor, "BOTTOM", -8)
+	else
+		vUI:SetPoint(GameTooltip, "BOTTOM", anchor, "TOP", 8)
+	end
+end
+
 function DT:NewAnchor(name, parent)
 	if self.Anchors[name] then
 		return
@@ -43,6 +59,7 @@ function DT:NewAnchor(name, parent)
 	Anchor.PlayFlash = PlayFlash
 	Anchor.ShouldFlash = ShouldFlash
 	Anchor.SaveValue = SaveValue
+	Anchor.SetTooltip = SetTooltip
 	
 	Anchor.Highlight = Anchor:CreateTexture(nil, "ARTWORK")
 	vUI:SetPoint(Anchor.Highlight, "BOTTOMLEFT", Anchor, 20, 0)

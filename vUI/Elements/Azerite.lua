@@ -140,6 +140,76 @@ function Azerite:OnEvent()
 	vUI:SetWidth(self.HeaderBG, self.HeaderBG.Text:GetWidth() + 14)
 end
 
+function Azerite:OnEnter()
+	if (Settings["azerite-display-progress"] and Settings["azerite-progress-visibility"] == "MOUSEOVER") then
+		if (not self.Progress:IsShown()) then
+			self.Progress:Show()
+		end
+	end
+	
+	if (Settings["azerite-display-percent"] and Settings["azerite-percent-visibility"] == "MOUSEOVER") then
+		if (not self.Percentage:IsShown()) then
+			self.Percentage:Show()
+		end
+	end
+	
+	if (not Settings["azerite-show-tooltip"]) then
+		return
+	end
+	
+	GameTooltip:SetOwner(self, "ANCHOR_BOTTOM", 0, -8)
+	
+	local Name, StandingID, Min, Max, Value, FactionID = GetWatchedFactionInfo()
+	
+	if (not Name) then
+		return
+	end
+	
+	GameTooltip:AddLine(Name)
+	GameTooltip:AddLine(" ")
+	
+	Max = Max - Min
+	Value = Value - Min
+	
+	local Remaining = Max - Value
+	local RemainingPercent = floor((Remaining / Max * 100 + 0.05) * 10) / 10
+	
+	GameTooltip:AddLine(Language["Current Azerite"])
+	GameTooltip:AddDoubleLine(format("%s / %s", vUI:Comma(Value), vUI:Comma(Max)), format("%s%%", floor((Value / Max * 100 + 0.05) * 10) / 10), 1, 1, 1, 1, 1, 1)
+	
+	GameTooltip:AddLine(" ")
+	GameTooltip:AddLine(Language["Remaining Azerite"])
+	GameTooltip:AddDoubleLine(format("%s", vUI:Comma(Remaining)), format("%s%%", RemainingPercent), 1, 1, 1, 1, 1, 1)
+	
+	GameTooltip:AddLine(" ")
+	GameTooltip:AddLine(Language["Faction standing"])
+	GameTooltip:AddLine(_G["FACTION_STANDING_LABEL" .. StandingID], 1, 1, 1)
+	
+	self.TooltipShown = true
+	
+	GameTooltip:Show()
+end
+
+function Azerite:OnLeave()
+	if Settings["azerite-show-tooltip"] then
+		GameTooltip:Hide()
+		
+		self.TooltipShown = false
+	end
+	
+	if (Settings["azerite-display-progress"] and Settings["azerite-progress-visibility"] == "MOUSEOVER") then
+		if self.Progress:IsShown() then
+			self.Progress:Hide()
+		end
+	end
+	
+	if (Settings["azerite-display-percent"] and Settings["azerite-percent-visibility"] == "MOUSEOVER") then
+		if self.Percentage:IsShown() then
+			self.Percentage:Hide()
+		end
+	end
+end
+
 function Azerite:Load()
 	if (not Settings["azerite-enable"]) then
 		return
@@ -154,3 +224,49 @@ function Azerite:Load()
 	self:SetScript("OnLeave", self.OnLeave)
 	--self:SetScript("OnMouseUp", self.OnMouseUp)
 end
+
+local UpdateDisplayProgress = function(value)
+	if value then
+		Azerite.Progress:Show()
+	else
+		Azerite.Progress:Hide()
+	end
+end
+
+local UpdateDisplayPercent = function(value)
+	if value then
+		Azerite.Percentage:Show()
+	else
+		Azerite.Percentage:Hide()
+	end
+end
+
+local UpdateBarWidth = function(value)
+	vUI:SetWidth(Azerite, value)
+end
+
+local UpdateBarHeight = function(value)
+	vUI:SetHeight(Azerite, value)
+	vUI:SetHeight(Azerite.Bar.Spark, value)
+end
+
+GUI:AddOptions(function(self)
+	local Left, Right = self:CreateWindow(Language["Azerite"])
+	
+	Left:CreateHeader(Language["Enable"])
+	Left:CreateSwitch("azerite-enable", true, Language["Enable Azerite Module"], Language["Enable the vUI azerite module"], ReloadUI):RequiresReload(true)
+	
+	Left:CreateHeader(Language["Styling"])
+	Left:CreateSwitch("azerite-display-progress", Settings["azerite-display-progress"], Language["Display Progress Value"], Language["Display your current progress information in the azerite bar"], UpdateDisplayProgress)
+	Left:CreateSwitch("azerite-display-percent", Settings["azerite-display-percent"], Language["Display Percent Value"], Language["Display your current percent information in the azerite bar"], UpdateDisplayPercent)
+	Left:CreateSwitch("azerite-show-tooltip", Settings["azerite-show-tooltip"], Language["Enable Tooltip"], Language["Display a tooltip when mousing over the azerite bar"])
+	Left:CreateSwitch("azerite-animate", Settings["azerite-animate"], Language["Animate Azerite Changes"], Language["Smoothly animate changes to the azerite bar"])
+	
+	Right:CreateHeader(Language["Size"])
+	Right:CreateSlider("azerite-width", Settings["azerite-width"], 240, 400, 10, Language["Bar Width"], Language["Set the width of the azerite bar"], UpdateBarWidth)
+	Right:CreateSlider("azerite-height", Settings["azerite-height"], 6, 30, 1, Language["Bar Height"], Language["Set the height of the azerite bar"], UpdateBarHeight)
+	
+	Right:CreateHeader(Language["Visibility"])
+	Right:CreateDropdown("azerite-progress-visibility", Settings["azerite-progress-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Progress Text"], Language["Set when to display the progress information"], UpdateProgressVisibility)
+	Right:CreateDropdown("azerite-percent-visibility", Settings["azerite-percent-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Percent Text"], Language["Set when to display the percent information"], UpdatePercentVisibility)
+end)

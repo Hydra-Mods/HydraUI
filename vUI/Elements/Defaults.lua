@@ -217,7 +217,10 @@ Defaults["azerite-width"] = 310
 Defaults["azerite-height"] = 18
 Defaults["azerite-display-progress"] = true
 Defaults["azerite-display-percent"] = true
-Defaults["azerite-position"] = "TOP"
+Defaults["azerite-show-tooltip"] = true
+Defaults["azerite-animate"] = true
+Defaults["azerite-progress-visibility"] = "ALWAYS"
+Defaults["azerite-percent-visibility"] = "ALWAYS"
 
 -- Auras
 Defaults["auras-enable"] = true

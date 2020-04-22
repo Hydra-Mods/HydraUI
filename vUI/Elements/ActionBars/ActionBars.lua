@@ -293,6 +293,7 @@ local UpdateBar1 = function()
 	]])
 	
 	RegisterStateDriver(ActionBar1, "page", ActionBar1.GetBar())
+	RegisterStateDriver(ActionBar1, "visibility", "[nopetbattle] show; hide")
 end
 
 local CreateBar1 = function()
@@ -351,6 +352,8 @@ local CreateBar2 = function()
 	vUI:SetSize(ActionBar2, ((BUTTON_SIZE * 12) + (SPACING * 11)), BUTTON_SIZE)
 	ActionBar2:SetFrameStrata("MEDIUM")
 	
+	RegisterStateDriver(ActionBar2, "visibility", "[nopetbattle] show; hide")
+	
 	if (not Settings["action-bars-show-2"]) then
 		ActionBar2:Hide()
 	end
@@ -378,6 +381,8 @@ local CreateBar3 = function()
 	vUI:SetPoint(ActionBar3, "RIGHT", vUISideActionBarsPanel, -(SPACING + 1), 0)
 	ActionBar3:SetFrameStrata("MEDIUM")
 	
+	RegisterStateDriver(ActionBar3, "visibility", "[nopetbattle] show; hide")
+	
 	if (not Settings["action-bars-show-3"]) then
 		ActionBar3:Hide()
 	end
@@ -404,6 +409,8 @@ local CreateBar4 = function()
 	vUI:SetSize(ActionBar4, BUTTON_SIZE, ((BUTTON_SIZE * 12) + (SPACING * 11)))
 	ActionBar4:SetFrameStrata("MEDIUM")
 	
+	RegisterStateDriver(ActionBar4, "visibility", "[nopetbattle] show; hide")
+	
 	if (not Settings["action-bars-show-4"]) then
 		ActionBar4:Hide()
 	end
@@ -429,6 +436,8 @@ local CreateBar5 = function()
 	local ActionBar5 = CreateFrame("Frame", "vUIActionBar5", UIParent, "SecureHandlerStateTemplate")
 	vUI:SetSize(ActionBar5, BUTTON_SIZE, ((BUTTON_SIZE * 12) + (SPACING * 11)))
 	ActionBar5:SetFrameStrata("MEDIUM")
+	
+	RegisterStateDriver(ActionBar5, "visibility", "[nopetbattle] show; hide")
 	
 	if (not Settings["action-bars-show-5"]) then
 		ActionBar5:Hide()
@@ -634,6 +643,8 @@ local CreateStanceBar = function()
 	StancePanel:SetBackdropBorderColor(0, 0, 0)
 	StancePanel:SetFrameStrata("LOW")
 	
+	RegisterStateDriver(StancePanel, "visibility", "[nopetbattle] show; hide")
+	
 	if (not Settings["action-bars-show-stance-bg"]) then
 		StancePanel:SetAlpha(0)
 	end
@@ -680,7 +691,7 @@ local CreateBarPanels = function()
 	BottomPanel:SetBackdropBorderColor(0, 0, 0)
 	BottomPanel:SetFrameStrata("LOW")
 	
-	--RegisterStateDriver(BottomPanel, "visibility", "[nopetbattle] show; hide")
+	RegisterStateDriver(BottomPanel, "visibility", "[nopetbattle] show; hide")
 	
 	if (not Settings["action-bars-show-bottom-bg"]) then
 		BottomPanel:SetAlpha(0)
@@ -694,7 +705,7 @@ local CreateBarPanels = function()
 	SidePanel:SetBackdropBorderColor(0, 0, 0)
 	SidePanel:SetFrameStrata("LOW")
 	
-	--RegisterStateDriver(SidePanel, "visibility", "[nopetbattle] show; hide")
+	RegisterStateDriver(SidePanel, "visibility", "[nopetbattle] show; hide")
 	
 	local PetPanel = CreateFrame("Frame", "vUIPetActionBarsPanel", UIParent)
 	vUI:SetSize(PetPanel, ((BUTTON_SIZE * 1) + (SPACING * 3)), ((BUTTON_SIZE * 10) + (SPACING * 12)))

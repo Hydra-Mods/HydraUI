@@ -229,3 +229,36 @@ function vUI:SendAlert(header, line1, line2, func, nofade)
 	AlertFrame.Line2.Text:SetText(line2)
 	AlertFrame.FadeIn:Play()
 end
+
+function Alerts:OnEvent(event, ...)
+	self[event](self, ...)
+end
+
+function Alerts:UPDATE_PENDING_MAIL()
+	local Sender1, Sender2, Sender3 = GetLatestThreeSenders()
+	local Title
+	local Body
+	
+	if (Sender1 or Sender2 or Sender3) then
+		Title = HAVE_MAIL_FROM
+	else
+		Title = HAVE_MAIL
+	end
+	
+	if Sender1 then
+		Body = Sender1
+	end
+	
+	if Sender2 then
+		Body = Body .. ", ".. Sender2
+	end
+	
+	if Sender3 then
+		Body = Body .. ", ".. Sender3
+	end
+	
+	vUI:SendAlert(Title, Body, " ", true, nil)
+end
+
+Alerts:RegisterEvent("UPDATE_PENDING_MAIL")
+Alerts:SetScript("OnEvent", Alerts.OnEvent)
