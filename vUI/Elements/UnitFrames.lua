@@ -48,9 +48,10 @@ local ShortClasses = {
 }
 
 local Ignore = {
-	["Sated"] = true,
-	["Temporal Displacement"] = true,
-	["Challenger's Burden"] = true,
+	[GetSpellInfo(57724)] = true, -- Sated
+	[GetSpellInfo(288293)] = true, -- Temporal Displacement
+	[GetSpellInfo(206150)] = true, -- Challenger's Might
+	[GetSpellInfo(206151)] = true, -- Challenger's Burden
 }
 
 local CustomFilter = function(icons, unit, icon, name, texture, count, dtype, duration, timeLeft, caster)
@@ -724,6 +725,7 @@ local StyleNamePlate = function(self, unit)
 	Debuffs.onlyShowPlayer = Settings["nameplates-only-player-debuffs"]
 	Debuffs.showType = true
 	Debuffs.disableMouse = true
+	Debuffs.CustomFilter = CustomFilter
 	
     -- Castbar
     local Castbar = CreateFrame("StatusBar", nil, self)
