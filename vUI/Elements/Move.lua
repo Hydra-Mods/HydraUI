@@ -91,7 +91,7 @@ local MoverOnMouseUp = function(self, button)
 			self:ClearAllPoints()
 			vUI:SetPoint(self, A1, ParentObject, A2, X, Y)
 			
-			vUIMove[self.Name] = {A1, Parent:GetName(), A2, X, Y}
+			vUIMove[self.Name] = {A1, Parent, A2, X, Y}
 		end
 	end
 end
