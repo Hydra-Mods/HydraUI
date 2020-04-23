@@ -366,6 +366,13 @@ Defaults["raid-health-smooth"] = true
 Defaults["raid-power-height"] = 2
 Defaults["raid-power-color"] = "POWER"
 Defaults["raid-power-smooth"] = true
+Defaults["raid-x-offset"] = 2
+Defaults["raid-y-offset"] = -2
+Defaults["raid-units-per-column"] = 10
+Defaults["raid-max-columns"] = 2
+Defaults["raid-column-spacing"] = 2
+Defaults["raid-column-anchor"] = "LEFT"
+Defaults["raid-sorting-method"] = "GROUP"
 
 -- Name Plates
 Defaults["nameplates-enable"] = true

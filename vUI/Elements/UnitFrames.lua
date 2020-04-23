@@ -2466,6 +2466,30 @@ local UpdateShowPlayerBuffs = function(value)
 	end
 end
 
+local UpdateRaidSortingMethod = function(value)
+	if (value == "CLASS") then
+		vUI.UnitFrames["raid"]:SetAttribute("groupingOrder", "DEATHKNIGHT,DEMONHUNTER,DRUID,HUNTER,MAGE,MONK,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR")
+		vUI.UnitFrames["raid"]:SetAttribute("sortMethod", "NAME")
+		vUI.UnitFrames["raid"]:SetAttribute("groupBy", "CLASS")
+	elseif (value == "ROLE") then
+		vUI.UnitFrames["raid"]:SetAttribute("groupingOrder", "TANK,HEALER,DAMAGER,NONE")
+		vUI.UnitFrames["raid"]:SetAttribute("sortMethod", "NAME")
+		vUI.UnitFrames["raid"]:SetAttribute("groupBy", "ASSIGNEDROLE")
+	elseif (value == "NAME") then
+		vUI.UnitFrames["raid"]:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+		vUI.UnitFrames["raid"]:SetAttribute("sortMethod", "NAME")
+		vUI.UnitFrames["raid"]:SetAttribute("groupBy", nil)
+	elseif (value == "MTMA") then
+		vUI.UnitFrames["raid"]:SetAttribute("groupingOrder", "MAINTANK,MAINASSIST,NONE")
+		vUI.UnitFrames["raid"]:SetAttribute("sortMethod", "NAME")
+		vUI.UnitFrames["raid"]:SetAttribute("groupBy", "ROLE")
+	else -- GROUP
+		vUI.UnitFrames["raid"]:SetAttribute("groupingOrder", "1,2,3,4,5,6,7,8")
+		vUI.UnitFrames["raid"]:SetAttribute("sortMethod", "INDEX")
+		vUI.UnitFrames["raid"]:SetAttribute("groupBy", "GROUP")
+	end
+end
+
 local NamePlateCVars = {
     nameplateGlobalScale = 1,
     NamePlateHorizontalScale = 1,
@@ -2598,15 +2622,12 @@ UF:SetScript("OnEvent", function(self, event)
 				"showPlayer", true,
 				"showParty", false,
 				"showRaid", true,
-				"xoffset", 2,
-				"yOffset", -2,
-				"groupFilter", "1,2,3,4,5,6,7,8",
-				"groupingOrder", "1,2,3,4,5,6,7,8",
-				"groupBy", "GROUP",
-				"maxColumns", ceil(40 / 10),
-				"unitsPerColumn", 10,
-				"columnSpacing", 2,
-				"columnAnchorPoint", "LEFT",
+				"xoffset", Settings["raid-x-offset"],
+				"yOffset", Settings["raid-y-offset"],
+				"maxColumns", Settings["raid-max-columns"],
+				"unitsPerColumn", Settings["raid-units-per-column"],
+				"columnSpacing", Settings["raid-column-spacing"],
+				"columnAnchorPoint", Settings["raid-column-anchor"],
 				"oUF-initialConfigFunction", [[
 					local Header = self:GetParent()
 					
@@ -2634,6 +2655,8 @@ UF:SetScript("OnEvent", function(self, event)
 			vUI:SetPoint(Raid, "TOPLEFT", self.RaidAnchor, 0, 0)
 			
 			vUI.UnitFrames["raid"] = Raid
+			
+			UpdateRaidSortingMethod(Settings["raid-sorting-method"])
 			
 			vUI:CreateMover(self.RaidAnchor)
 		end
@@ -3135,6 +3158,30 @@ GUI:AddOptions(function(self)
 	--Defaults["party-pets-power-height"] = 22
 end)
 
+local UpdateRaidXOffset = function(value)
+	vUI.UnitFrames["raid"]:SetAttribute("xoffset", value)
+end
+
+local UpdateRaidYOffset = function(value)
+	vUI.UnitFrames["raid"]:SetAttribute("yoffset", value)
+end
+
+local UpdateRaidUnitsPerColumn = function(value)
+	vUI.UnitFrames["raid"]:SetAttribute("unitsPerColumn", value)
+end
+
+local UpdateRaidMaxColumns = function(value)
+	vUI.UnitFrames["raid"]:SetAttribute("maxColumns", value)
+end
+
+local UpdateRaidColumnSpacing = function(value)
+	vUI.UnitFrames["raid"]:SetAttribute("columnSpacing", value)
+end
+
+local UpdateRaidColumnAnchor = function(value)
+	vUI.UnitFrames["raid"]:SetAttribute("columnSpacing", value)
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Raid"])
 	
@@ -3149,6 +3196,15 @@ GUI:AddOptions(function(self)
 	Right:CreateHeader(Language["Range Opacity"])
 	Right:CreateSlider("raid-in-range", Settings["raid-in-range"], 0, 100, 5, Language["In Range"], Language["Set the opacity of raid members within range of you"])
 	Right:CreateSlider("raid-out-of-range", Settings["raid-out-of-range"], 0, 100, 5, Language["Out of Range"], Language["Set the opacity of raid members out of your range"])
+	
+	Right:CreateHeader(Language["Attributes"])
+	Right:CreateSlider("raid-x-offset", Settings["raid-x-offset"], -10, 10, 1, Language["X Offset"], Language["Set the x offset of raid units from eachother"], UpdateRaidXOffset)
+	Right:CreateSlider("raid-y-offset", Settings["raid-y-offset"], -10, 10, 1, Language["Y Offset"], Language["Set the y offset of raid units from eachother"], UpdateRaidYOffset)
+	Right:CreateSlider("raid-units-per-column", Settings["raid-units-per-column"], 1, 40, 1, Language["Units Per Column"], Language["Set the maximum number of units per column"], UpdateRaidUnitsPerColumn)
+	Right:CreateSlider("raid-max-columns", Settings["raid-max-columns"], 1, 40, 1, Language["Max Columns"], Language["Set the maximum number of visible columns of raid units"], UpdateRaidMaxColumns)
+	Right:CreateSlider("raid-column-spacing", Settings["raid-column-spacing"], -10, 10, 1, Language["Column Spacing"], Language["Set the spacing between columns of raid units"], UpdateRaidColumnSpacing)
+	Right:CreateDropdown("raid-sorting-method", Settings["raid-sorting-method"], {[Language["Group"]] = "GROUP", [Language["Name"]] = "NAME", [Language["Class"]] = "CLASS", [Language["Role"]] = "ROLE", [Language["Main Tank"]] = "MTMA"}, Language["Sorting Method"], Language["Set how the raid units are sorted"], UpdateRaidSortingMethod)
+	Right:CreateDropdown("raid-column-anchor", Settings["raid-column-anchor"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Top"]] = "TOP", [Language["Bottom"]] = "BOTTOM"}, Language["New Column Anchor"], Language["Set where new columns should anchor to"], UpdateRaidColumnAnchor)
 end)
 
 local NamePlatesUpdateEnableDebuffs = function(self, value)

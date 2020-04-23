@@ -8,8 +8,13 @@ local GetPowerLevel = C_AzeriteItem.GetPowerLevel
 
 function Azerite:CreateBar()
 	vUI:SetSize(self, Settings["azerite-width"], Settings["azerite-height"])
-	vUI:SetPoint(self, "TOP", UIParent, 0, -13)
 	self:SetFrameStrata("HIGH")
+	
+	if Settings["experience-enable"] then
+		vUI:SetPoint(self, "TOP", vUIExperienceBar, "BOTTOM", 0, -6)
+	else
+		vUI:SetPoint(self, "TOP", UIParent, 0, -13)
+	end
 	
 	self.HeaderBG = CreateFrame("Frame", nil, self)
 	vUI:SetHeight(self.HeaderBG, Settings["azerite-height"])
