@@ -50,11 +50,12 @@ function Update:PLAYER_ENTERING_WORLD(event)
 		SendAddonMessage("vUI-Version", AddOnVersion, "PARTY")
 	end
 	
-	if UnitInBattleground("player") then
-		SendAddonMessage("vUI-Version", AddOnVersion, "BATTLEGROUND")
+	if IsInInstance() then
+		SendAddonMessage("vUI-Version", AddOnVersion, "INSTANCE_CHAT")
 	end
 	
-	--self:UnregisterEvent(event)
+	SendAddonMessage("vUI-Version", AddOnVersion, "CHANNEL", 1)
+	SendAddonMessage("vUI-Version", AddOnVersion, "CHANNEL", 2)
 end
 
 function Update:GUILD_ROSTER_UPDATE()
@@ -105,7 +106,8 @@ function Update:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
 			vUI:print(format(Language["Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui"], Settings["ui-header-font-color"], message))
 			print(Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"])
 			
-			self:UnregisterEvent(event)
+			-- Store this higher version and tell anyone else who asks
+			AddOnVersion = message
 		end
 	else
 		if (AddOnVersion > message) then -- We have a higher version, share it
@@ -114,9 +116,8 @@ function Update:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
 			vUI:print(format(Language["Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui"], Settings["ui-header-font-color"], message))
 			print(Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"])
 			
-			-- Store this higher version and tell anyone else who asks?
-			
-			self:UnregisterEvent(event)
+			-- Store this higher version and tell anyone else who asks
+			AddOnVersion = message
 		end
 	end
 end
