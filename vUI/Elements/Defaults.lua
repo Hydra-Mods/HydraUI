@@ -344,6 +344,9 @@ Defaults["party-power-height"] = 6
 Defaults["party-power-reverse"] = false
 Defaults["party-power-color"] = "POWER"
 Defaults["party-power-smooth"] = true
+Defaults["party-x-offset"] = 2
+Defaults["party-y-offset"] = 0
+Defaults["party-point"] = "LEFT"
 
 -- Unitframes: Party Pets
 Defaults["party-pets-enable"] = true

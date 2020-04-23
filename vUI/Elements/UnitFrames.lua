@@ -2570,9 +2570,9 @@ UF:SetScript("OnEvent", function(self, event)
 				"showPlayer", true,
 				"showParty", true,
 				"showRaid", false,
-				"xoffset", 2,
-				"yOffset", 0,
-				"point", "LEFT",
+				"xoffset", Settings["party-x-offset"],
+				"yOffset", Settings["party-y-offset"],
+				"point", Settings["party-point"],
 				"oUF-initialConfigFunction", [[
 					local Header = self:GetParent()
 					
@@ -2599,9 +2599,9 @@ UF:SetScript("OnEvent", function(self, event)
 					"showPlayer", false,
 					"showParty", true,
 					"showRaid", false,
-					"xoffset", 2,
-					"yOffset", 0,
-					"point", "LEFT",
+					"xoffset", Settings["party-x-offset"],
+					"yOffset", Settings["party-y-offset"],
+					"point", Settings["party-point"],
 					"oUF-initialConfigFunction", [[
 						local Header = self:GetParent()
 						
@@ -3123,6 +3123,18 @@ local UpdatePartyShowRole = function(value)
 	end
 end
 
+local UpdatePartyXOffset = function(value)
+	vUI.UnitFrames["party"]:SetAttribute("xoffset", value)
+end
+
+local UpdatePartyYOffset = function(value)
+	vUI.UnitFrames["party"]:SetAttribute("yoffset", value)
+end
+
+local UpdatePartyAnchor = function(value)
+	vUI.UnitFrames["party"]:SetAttribute("point", value)
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Party"])
 	
@@ -3151,6 +3163,11 @@ GUI:AddOptions(function(self)
 	Right:CreateHeader(Language["Range Opacity"])
 	Right:CreateSlider("party-in-range", Settings["party-in-range"], 0, 100, 5, Language["In Range"], Language["Set the opacity of party members within range of you"])
 	Right:CreateSlider("party-out-of-range", Settings["party-out-of-range"], 0, 100, 5, Language["Out of Range"], Language["Set the opacity of party members out of your range"])
+	
+	Right:CreateHeader(Language["Attributes"])
+	Right:CreateSlider("party-x-offset", Settings["party-x-offset"], -10, 10, 1, Language["X Offset"], Language["Set the x offset of party units from eachother"], UpdatePartyXOffset)
+	Right:CreateSlider("party-y-offset", Settings["party-y-offset"], -10, 10, 1, Language["Y Offset"], Language["Set the y offset of party units from eachother"], UpdatePartyYOffset)
+	Right:CreateDropdown("party-point", Settings["party-point"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Top"]] = "TOP", [Language["Bottom"]] = "BOTTOM"}, Language["Anchor Point"], Language["Set where new party members will anchor to previous ones"], UpdatePartyAnchor)
 	
 	Right:CreateHeader(Language["Party Pets Size"])
 	Right:CreateSlider("party-pets-width", Settings["party-pets-width"], 40, 200, 1, Language["Width"], Language["Set the width of party pet unit frames"], ReloadUI, nil):RequiresReload(true)
