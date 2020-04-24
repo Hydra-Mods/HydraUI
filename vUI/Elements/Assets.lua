@@ -201,7 +201,6 @@ Assets:SetFont("Prototype", "Interface\\Addons\\vUI\\Assets\\Fonts\\Prototype.tt
 Assets:SetFont("Mosk", "Interface\\Addons\\vUI\\Assets\\Fonts\\MoskBold.ttf")
 Assets:SetFont("Matthan", "Interface\\Addons\\vUI\\Assets\\Fonts\\MatthanSans.ttf")
 Assets:SetFont("Expressway", "Interface\\Addons\\vUI\\Assets\\Fonts\\Expressway.ttf")
-Assets:SetFont("FranKlein", "Interface\\Addons\\vUI\\Assets\\Fonts\\FranKleinBoldRegular.ttf")
 Assets:SetFont("Noto Sans", "Interface\\Addons\\vUI\\Assets\\Fonts\\NotoSansCondensedSemiBold.ttf")
 Assets:SetFont("Visitor", "Interface\\Addons\\vUI\\Assets\\Fonts\\Visitor.ttf", nil, true)
 Assets:SetFont("Pixel Arial", "Interface\\Addons\\vUI\\Assets\\Fonts\\PixelArial.ttf", nil, true)
