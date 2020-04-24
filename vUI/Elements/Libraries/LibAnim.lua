@@ -744,16 +744,31 @@ local AnimMethods = {
 		end,
 		
 		GetTextureSize = function(self)
-			return self.TextureWidthSetting
+			return self.TextureWidthSetting, self.TextureHeightSetting
 		end,
 	
-		SetFrameSize = function(self, width, height)
-			self.FrameWidthSetting = width or 0
-			self.FrameHeightSetting = height or width or 0
+		SetFrameSize = function(self, size)
+			self.FrameSizeSetting = size or 0
 		end,
 		
 		GetFrameSize = function(self)
-			return self.TextureHeightSetting
+			return self.FrameSizeSetting
+		end,
+		
+		SetNumFrames = function(self, frames)
+			self.NumFramesSetting = frames or 0
+		end,
+		
+		GetNumFrames = function(self)
+			return self.NumFramesSetting
+		end,
+		
+		SetFrameDelay = function(self, delay)
+			self.DelaySetting = delay or 0
+		end,
+		
+		GetFrameDelay = function(self)
+			return self.DelaySetting
 		end,
 		
 		GetProgress = function(self)
@@ -1237,15 +1252,16 @@ Initialize["frames"] = function(self)
 	
 	self.Timer = 0
 	self.Frame = 1
-	self.NumFrames = 29
-	self.DelayTimer = 0.1
-	self.Throttle = 0.1
+	self.Delay = self.DelaySetting or 0
+	self.Throttle = self.Delay
+	self.NumFrames = self.NumFramesSetting or 0
 	self.TextureWidth = self.TextureWidthSetting or self.Parent:GetWidth()
 	self.TextureHeight = self.TextureHeightSetting or self.Parent:GetHeight()
-	self.NumColumns = floor(self.TextureWidth / self.Parent:GetWidth())
-	self.NumRows = floor(self.TextureHeight / self.Parent:GetHeight())
-	self.ColumnWidth = floor(self.TextureHeight / self.Parent:GetWidth())
-	self.RowHeight = floor(self.TextureHeight / self.Parent:GetWidth())
+	self.FrameSize = self.FrameSizeSetting or 0
+	self.NumColumns = floor(self.TextureWidth / self.FrameSize)
+	self.ColumnWidth = self.FrameSize / self.TextureWidth
+	self.NumRows = floor(self.TextureHeight / self.FrameSize)
+	self.RowHeight = self.FrameSize / self.TextureHeight
 	
 	self:StartUpdating()
 end
@@ -1259,17 +1275,25 @@ Update["frames"] = function(self, elapsed, i)
 		self:Callback("OnFinished")
 		self.Group:CheckOrder()
 	else
-		--[[self.Frame = floor(Easing[self.Easing](self.Timer, 0, self.Duration, self.Duration))
+		if (self.Throttle > self.Delay) then
+			local Advance = floor(self.Throttle / self.Delay)
+			
+			while (self.Frame + Advance > self.NumFrames) do
+				self.Frame = self.Frame - self.NumFrames
+			end
+			
+			self.Frame = self.Frame + Advance
+			
+			local Left = mod(self.Frame - 1, self.NumColumns) * self.ColumnWidth
+			local Right = Left + self.ColumnWidth
+			local Bottom = ceil(self.Frame / self.NumColumns) * self.RowHeight
+			local Top = Bottom - self.RowHeight
+			
+			self.Parent:SetTexCoord(Left, Right, Top, Bottom)
+			self.Throttle = 0
+		end
 		
-		local Left = mod(self.Frame - 1, self.NumColumns) * self.ColumnWidth
-		local Right = Left + self.ColumnWidth
-		local Bottom = ceil(self.Frame / self.NumColumns) * self.RowHeight
-		local Top = Bottom - self.RowHeight
-		
-		self.Parent:SetTexCoord(Left, Right, Top, Bottom)]]
-		
-		local info = LFG_EYE_TEXTURES["default"]
-		AnimateTexCoords(self.Parent, info.width, info.height, info.iconSize, info.iconSize, info.frames, elapsed, info.delay)
+		self.Throttle = self.Throttle + elapsed
 	end
 end
 
