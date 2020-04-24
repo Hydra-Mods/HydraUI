@@ -98,7 +98,11 @@ function KeyBinding:OnUpdate(elapsed)
 	end
 end
 
-local DisableKeyBindingMode = function()
+local PopupOnAccept = function()
+	KeyBinding:Disable()
+end
+
+local PopupOnCancel = function()
 	KeyBinding:Disable()
 end
 
@@ -109,9 +113,9 @@ function KeyBinding:Enable()
 	self:SetScript("OnKeyUp", self.OnKeyUp)
 	self.Active = true
 	
-	vUI:print("Binding mode enabled.")
+	vUI:print("Key binding mode is currently active.")
 	
-	vUI:DisplayPopup(Language["Attention"], Language["Key binding mode is currently active. Would you like to exit key binding mode?"], Language["Accept"], DisableKeyBindingMode, Language["Cancel"])
+	vUI:DisplayPopup(Language["Attention"], Language["Key binding mode is currently active. Would you like to exit key binding mode?"], Language["Accept"], PopupOnAccept, Language["Cancel"], ReloadUI) -- PopupOnCancel
 end
 
 function KeyBinding:Disable()
@@ -122,7 +126,7 @@ function KeyBinding:Disable()
 	self.Active = false
 	self.TargetBindingName = nil
 	
-	vUI:print("Binding mode is disabled.")
+	vUI:print("Key binding mode is currently disabled.")
 	vUI:ClearPopup()
 end
 
@@ -158,8 +162,12 @@ local OnAccept = function()
 	KeyBinding:Disable()
 end
 
+local OnCancel = function()
+	KeyBinding:Disable()
+end
+
 local SaveChanges = function()
-	vUI:DisplayPopup(Language["Attention"], Language["Are you sure you would like to save these key binding changes?"], Language["Accept"], OnAccept, Language["Cancel"])
+	vUI:DisplayPopup(Language["Attention"], Language["Are you sure you would like to save these key binding changes?"], Language["Accept"], OnAccept, Language["Cancel"], OnCancel)
 end
 
 local DiscardChanges = function()
