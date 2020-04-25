@@ -174,7 +174,7 @@ function vUI:AddPluginInfo()
 		return
 	end
 	
-	local Left, Right = GUI:CreateWindow("Plugins")
+	local Left, Right = GUI:CreateWindow("Plugins", nil, "zzzPlugins")
 	local Anchor
 	
 	for i = 1, #self.Plugins do
