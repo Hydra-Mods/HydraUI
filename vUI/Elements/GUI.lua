@@ -11,6 +11,7 @@ local upper = string.upper
 local lower = string.lower
 local sub = string.sub
 local gsub = string.gsub
+local find = string.find
 local floor = math.floor
 local InCombatLockdown = InCombatLockdown
 local IsModifierKeyDown = IsModifierKeyDown
@@ -210,7 +211,7 @@ GUI.Widgets.CreateMessage = function(self, text) -- Create as many lines as need
 		CheckString:SetText(NewLine)
 		
 		if (CheckString:GetStringWidth() >= (GROUP_WIDTH - 6)) then
-			if string.find(Line, "(%S+)$") then -- A word needs to be wrapped
+			if find(Line, "(%S+)$") then -- A word needs to be wrapped
 				self:CreateLine(Line)
 				Line = word -- Start a new line with the wrapped word
 				Indent = 1
@@ -3518,31 +3519,27 @@ function GUI:ClearSearch()
 	end
 end
 
-function GUI:AddSearchResult(result)
-	self.SearchResults[#self.SearchResults + 1] = result
-end
-
-function GUI:GetNumSearchResults()
-	return #self.SearchResults
-end
-
 function GUI:Search(query)
+	if (#self.SearchResults > 0) then
+		self:ClearSearch()
+	end
+	
 	for key, value in pairs(self.Windows) do
 		for i = 1, #value.LeftWidgets do
-			if (value.LeftWidgets[i].ID == id) then
-				self:AddSearchResult(value.LeftWidgets[i].ID)
+			if value.LeftWidgets[i].ID and find(gsub(value.LeftWidgets[i].ID, "-", " "), query) then
+				self.SearchResults[#self.SearchResults + 1] = value.LeftWidgets[i].ID
 			end
 		end
 		
 		for i = 1, #value.RightWidgets do
-			if (value.RightWidgets[i].ID == id) then
-				self:AddSearchResult(value.RightWidgets[i].ID)
+			if value.RightWidgets[i].ID and find(gsub(value.RightWidgets[i].ID, "-", " "), query) then
+				self.SearchResults[#self.SearchResults + 1] = value.RightWidgets[i].ID
 			end
 		end
 	end
 	
-	if (self:GetNumSearchResults() > 0) then
-		print('?')
+	if (#self.SearchResults > 0) then
+		return self.SearchResults
 	end
 end
 

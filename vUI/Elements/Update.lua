@@ -23,7 +23,7 @@ local Update = vUI:NewModule("Update")
 }
 ]]
 
--- Make a frame to display a simple "What's new" list.
+-- display a simple "What's new" list.
 local WhatsNewOnMouseUp = function()
 	
 end
