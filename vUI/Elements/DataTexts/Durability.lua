@@ -13,6 +13,9 @@ local ScanTooltip = CreateFrame("GameTooltip", nil, UIParent, "GameTooltipTempla
 local OnEnter = function(self)
 	GameTooltip_SetDefaultAnchor(GameTooltip, self)
 	
+	GameTooltip:AddLine(Label)
+	GameTooltip:AddLine(" ")
+	
 	local TotalCost = 0
 	local Current, Max, HasItem, HasCooldown, RepairCost
 	

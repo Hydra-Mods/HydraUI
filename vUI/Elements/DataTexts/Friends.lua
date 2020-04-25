@@ -210,8 +210,12 @@ local OnEnter = function(self)
 	GameTooltip_SetDefaultAnchor(GameTooltip, self)
 	
 	local NumFriends = GetNumFriends()
+	local NumFriendsOnline = GetNumOnlineFriends()
 	local NumBNFriends, NumBNOnline = BNGetNumFriends()
 	local Name
+	
+	GameTooltip:AddDoubleLine(Label, format("%s/%s", NumBNOnline + NumFriendsOnline, NumFriends + NumBNFriends))
+	GameTooltip:AddLine(" ")
 	
 	-- B.Net friends
 	for i = 1, NumBNFriends do
