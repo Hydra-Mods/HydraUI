@@ -84,10 +84,6 @@ local OnLeave = function(self)
 	self.TooltipShown = false
 end
 
-local OnMouseUp = function()
-	ToggleFriendsFrame(3)
-end
-
 local Update = function(self, event)
 	if (not IsInGuild()) then
 		self.Text:SetText(Language["No Guild"])
@@ -118,7 +114,7 @@ local OnEnable = function(self)
 	self:SetScript("OnEvent", Update)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
-	self:SetScript("OnMouseUp", OnMouseUp)
+	self:SetScript("OnMouseUp", ToggleCommunitiesFrame)
 	
 	self:Update()
 end
