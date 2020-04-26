@@ -1285,11 +1285,9 @@ Update["frames"] = function(self, elapsed, i)
 			self.Frame = self.Frame + Advance
 			
 			local Left = mod(self.Frame - 1, self.NumColumns) * self.ColumnWidth
-			local Right = Left + self.ColumnWidth
 			local Bottom = ceil(self.Frame / self.NumColumns) * self.RowHeight
-			local Top = Bottom - self.RowHeight
 			
-			self.Parent:SetTexCoord(Left, Right, Top, Bottom)
+			self.Parent:SetTexCoord(Left, Left + self.ColumnWidth, Bottom - self.RowHeight, Bottom)
 			self.Throttle = 0
 		end
 		
