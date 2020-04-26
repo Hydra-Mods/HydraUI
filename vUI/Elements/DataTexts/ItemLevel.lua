@@ -3,6 +3,10 @@ local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 local GetAverageItemLevel = GetAverageItemLevel
 local Label = Language["Item Level"]
 
+local OnMouseUp = function()
+	ToggleCharacter("PaperDollFrame")
+end
+
 local OnEnter = function(self)
 	GameTooltip_SetDefaultAnchor(GameTooltip, self)
 	
@@ -30,6 +34,7 @@ end
 local OnEnable = function(self)
 	self:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 	self:SetScript("OnEvent", Update)
+	self:SetScript("OnMouseUp", OnMouseUp)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
 	
@@ -39,6 +44,7 @@ end
 local OnDisable = function(self)
 	self:UnregisterEvent("PLAYER_EQUIPMENT_CHANGED")
 	self:SetScript("OnEvent", nil)
+	self:SetScript("OnMouseUp", nil)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
 	

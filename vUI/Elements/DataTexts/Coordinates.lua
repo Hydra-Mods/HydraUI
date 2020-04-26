@@ -6,6 +6,7 @@ local GetPlayerMapPosition = C_Map.GetPlayerMapPosition
 local OnEnter = function(self)
 	GameTooltip_SetDefaultAnchor(GameTooltip, self)
 	
+	-- Location
 	local ZoneText = GetRealZoneText()
 	local SubZoneText = GetMinimapZoneText()
 	local PVPType, IsFFA, Faction = GetZonePVPInfo()
@@ -29,6 +30,18 @@ local OnEnter = function(self)
 	else
 		GameTooltip:AddLine(CONTESTED_TERRITORY, Color[1], Color[2], Color[3])
 	end
+	
+	-- Coordinates
+	local MapID = GetBestMapForUnit("player")
+	local Position = GetPlayerMapPosition(MapID, "player")
+	local X, Y = Position:GetXY()
+	
+	X = X * 100
+	Y = Y * 100
+	
+	GameTooltip:AddLine(" ")
+	GameTooltip:AddLine(Language["Coordinates"])
+	GameTooltip:AddLine(format("%.2f, %.2f", X, Y), 1, 1, 1)
 	
 	self.TooltipShown = true
 	

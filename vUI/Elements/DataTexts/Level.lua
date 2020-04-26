@@ -14,7 +14,7 @@ end
 local OnEnable = function(self)
 	self:RegisterEvent("PLAYER_LEVEL_UP")
 	self:SetScript("OnEvent", Update)
-	self:SetScript("OnMouseUp", Update)
+	self:SetScript("OnMouseUp", OnMouseUp)
 	
 	self:Update()
 end
