@@ -36,7 +36,7 @@ local OnEnter = function(self)
 	
 	if (TrashValue > 0) then
 		GameTooltip:AddLine(" ")
-		GameTooltip:AddDoubleLine(Language["Trash item vendor value:"], GetCoinTextureString(TrashValue), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["|cFF9D9D9D[Poor quality]|r item value:"], GetCoinTextureString(TrashValue), 1, 1, 1, 1, 1, 1)
 	end
 	
 	GameTooltip:Show()

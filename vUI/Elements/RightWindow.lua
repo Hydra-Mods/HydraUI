@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Testing = {
 	["Zeraphine:Mal'Ganis"] = 1,
@@ -181,11 +181,15 @@ local UpdateRightText = function(value)
 	DT:SetDataText("Window-Right", value)
 end
 
+Defaults["data-text-extra-left"] = "Bag Slots"
+Defaults["data-text-extra-middle"] = "Friends"
+Defaults["data-text-extra-right"] = "Guild"
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:GetWindow(Language["Data Texts"])
 	
 	Left:CreateHeader(Language["Right Window Texts"])
-	Left:CreateDropdown("data-text-extra-left", "Durability", DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the left data text anchor"], UpdateLeftText)
-	Left:CreateDropdown("data-text-extra-middle", "Durability", DT.List, Language["Set Middle Text"], Language["Set the information to be displayed in the middle data text anchor"], UpdateMiddleText)
-	Left:CreateDropdown("data-text-extra-right", "Durability", DT.List, Language["Set Right Text"], Language["Set the information to be displayed in the right data text anchor"], UpdateRightText)
+	Left:CreateDropdown("data-text-extra-left", Settings["data-text-extra-left"], DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the left data text anchor"], UpdateLeftText)
+	Left:CreateDropdown("data-text-extra-middle", Settings["data-text-extra-middle"], DT.List, Language["Set Middle Text"], Language["Set the information to be displayed in the middle data text anchor"], UpdateMiddleText)
+	Left:CreateDropdown("data-text-extra-right", Settings["data-text-extra-right"], DT.List, Language["Set Right Text"], Language["Set the information to be displayed in the right data text anchor"], UpdateRightText)
 end)
