@@ -23,7 +23,6 @@ vUI.ProfileMetadata = {
 -- Some settings shouldn't be sent to others
 vUI.PreserveSettings = {
 	["ui-scale"] = true,
-	["ui-language"] = true,
 }
 
 function vUI:UpdateProfileInfo()
@@ -443,6 +442,24 @@ function vUI:RenameProfile(from, to)
 	-- Update dropdown menu if needed
 	
 	self:print(format('Profile "%s" has been renamed to "%s".', from, to))
+end
+
+function vUI:CopyProfile(from, to)
+	if (not vUIProfiles[from]) or (not vUIProfiles[to]) then
+		return
+	end
+	
+	local ToProfile = vUIProfiles[to]
+	
+	for Name, Value in pairs(vUIProfiles[from]) do
+		for ID in pairs(Value) do
+			if (not self.ProfileMetadata[ID]) then
+				ToProfile[ID] = Value
+			end
+		end
+	end
+	
+	self:print(format('Profile "%s" has been copied from "%s".', to, from))
 end
 
 function vUI:SetProfileMetadata(name, meta, value) -- /run vUI:get(7):SetProfileMetadata("ProfileName", "profile-created-by", "Hydra")
