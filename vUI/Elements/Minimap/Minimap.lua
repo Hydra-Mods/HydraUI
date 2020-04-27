@@ -1,6 +1,6 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
-local MM = vUI:NewModule("Minimap")
+local Map = vUI:NewModule("Minimap")
 
 local Kill = function(object)
 	if object.UnregisterAllEvents then
@@ -23,7 +23,7 @@ local OnMouseWheel = function(self, delta)
 	end
 end
 
-function MM:Style()
+function Map:Style()
 	-- Backdrop
 	vUI:SetPoint(self, "TOPRIGHT", UIParent, -12, -12)
 	vUI:SetSize(self, (Settings["minimap-size"] + 8), (44 + 8 + Settings["minimap-size"]))
@@ -118,7 +118,7 @@ function MM:Style()
 	vUI:CreateMover(self)
 end
 
-function MM:Load()
+function Map:Load()
 	if (not Settings["minimap-enable"]) then
 		return
 	end
@@ -131,7 +131,7 @@ function MM:Load()
 end
 
 local UpdateMinimapSize = function(value)
-	vUI:SetSize(MM, (value + 8), (44 + 8 + value))
+	vUI:SetSize(Map, (value + 8), (44 + 8 + value))
 	
 	vUI:SetSize(Minimap, value, value)
 	Minimap:SetZoom(Minimap:GetZoom() + 1)

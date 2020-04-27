@@ -25,12 +25,11 @@ local OnEnter = function(self)
 	
 	if (Change ~= 0) then
 		GameTooltip:AddLine(" ")
-		GameTooltip:AddLine(Language["Session"])
 		
 		if (Change > 0) then
-			GameTooltip:AddDoubleLine(Language["|cFF66FF66Profit|r"], GetCoinTextureString(Change), 1, 1, 1, 1, 1, 1)
+			GameTooltip:AddDoubleLine(Language["Session:"], GetCoinTextureString(Change), 1, 1, 1, 0.4, 1, 0.4)
 		else
-			GameTooltip:AddDoubleLine(Language["|cFFFF6666Loss|r"], GetCoinTextureString(Change * -1), 1, 1, 1, 1, 1, 1)
+			GameTooltip:AddDoubleLine(Language["Session:"], GetCoinTextureString(Change * -1), 1, 1, 1, 1, 0.4, 0.4)
 		end
 	end
 	
