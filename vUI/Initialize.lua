@@ -199,6 +199,11 @@ end
 -- NYI, Concept list for my preferred CVars, and those important to the UI
 function vUI:SetCVars()
 	C_CVar.SetCVar("countdownForCooldowns", 1)
+	
+	-- Name plates
+	C_CVar.SetCVar("NameplatePersonalShowAlways", 0)
+	C_CVar.SetCVar("NameplatePersonalShowInCombat", 0)
+	C_CVar.SetCVar("NameplatePersonalShowWithTarget", 0)
 end
 
 --[[
@@ -240,8 +245,8 @@ function vUI:SetScale(x)
 	
 	Scale = (768 / ScreenHeight) / x
 	
-	self.BackdropAndBorder.edgeSize = GetScale(x)
-	self.Outline.edgeSize = GetScale(x)
+	--self.BackdropAndBorder.edgeSize = GetScale(x)
+	--self.Outline.edgeSize = GetScale(x)
 end
 
 function vUI:SetSuggestedScale()
@@ -254,19 +259,19 @@ end
 
 -- Backdrops
 vUI.Backdrop = {
-	bgFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga",
+	bgFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga",
 	insets = {top = 0, left = 0, bottom = 0, right = 0},
 }
 
 vUI.BackdropAndBorder = {
-	bgFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga",
-	edgeFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga",
+	bgFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga",
+	edgeFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga",
 	edgeSize = 1,
 	insets = {top = 0, left = 0, bottom = 0, right = 0},
 }
 
 vUI.Outline = {
-	edgeFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga",
+	edgeFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga",
 	edgeSize = 1,
 	insets = {left = 0, right = 0, top = 0, bottom = 0},
 }
@@ -422,19 +427,22 @@ function vUI:print(...)
 end
 
 function vUI:SetHeight(object, height)
-	object:SetHeight(GetScale(height))
+	--object:SetHeight(GetScale(height))
+	object:SetHeight(height)
 end
 
 function vUI:SetWidth(object, width)
-	object:SetWidth(GetScale(width))
+	--object:SetWidth(GetScale(width))
+	object:SetWidth(width)
 end
 
 function vUI:SetSize(object, width, height)
-	object:SetSize(GetScale(width), GetScale(height or width))
+	--object:SetSize(GetScale(width), GetScale(height or width))
+	object:SetSize(width, height or width)
 end
 
 function vUI:SetPoint(object, anchor1, parent, anchor2, x, y)
-	if (type(parent) == "number") then
+	--[[if (type(parent) == "number") then
 		parent = GetScale(parent)
 	end
 	
@@ -448,7 +456,7 @@ function vUI:SetPoint(object, anchor1, parent, anchor2, x, y)
 	
 	if (type(y) == "number") then
 		y = GetScale(y)
-	end
+	end]]
 	
 	object:SetPoint(anchor1, parent, anchor2, x, y)
 end

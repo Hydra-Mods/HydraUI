@@ -210,7 +210,7 @@ for Name, Path in pairs(Fonts) do
 end
 
 -- Textures
-Assets:SetTexture("Blank", "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga")
+Assets:SetTexture("Blank", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga")
 Assets:SetTexture("vUI 1", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUI1.tga")
 Assets:SetTexture("vUI 2", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUI2.tga")
 Assets:SetTexture("vUI 3", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUI3.tga")
@@ -251,7 +251,7 @@ for Name, Path in pairs(Textures) do
 end
 
 -- Highlights
-Assets:SetHighlight("Blank", "Interface\\AddOns\\vUI\\Assets\\Textures\\Blank.tga")
+Assets:SetHighlight("Blank", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga")
 Assets:SetHighlight("RenHorizonUp", "Interface\\AddOns\\vUI\\Assets\\Textures\\RenHorizonUp.tga")
 Assets:SetHighlight("RenHorizonDown", "Interface\\AddOns\\vUI\\Assets\\Textures\\RenHorizonDown.tga")
 Assets:SetHighlight("RenaitreTunnel", "Interface\\AddOns\\vUI\\Assets\\Textures\\RenaitreTunnel.tga")
