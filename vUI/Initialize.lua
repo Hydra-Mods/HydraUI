@@ -312,13 +312,13 @@ function vUI:RGBToHex(r, g, b)
 end
 
 function vUI:FormatTime(seconds)
-	if (seconds >= 86400) then
-		return format("%dd", floor(seconds / 86400 + 0.5))
-	elseif (seconds >= 3600) then
-		return format("%dh", floor(seconds / 3600 + 0.5))
-	elseif (seconds >= 60) then
-		return format("%dm", floor(seconds / 60 + 0.5))
-	elseif (seconds >= 6) then
+	if (seconds > 86399) then
+		return format("%dd", ceil(seconds / 86400))
+	elseif (seconds > 3599) then
+		return format("%dh", ceil(seconds / 3600))
+	elseif (seconds > 59) then
+		return format("%dm", ceil(seconds / 60))
+	elseif (seconds > 5) then
 		return format("%ds", floor(seconds))
 	end
 	
