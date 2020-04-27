@@ -340,8 +340,7 @@ function vUI:Comma(number)
 		return
 	end
 	
-	local Number = floor(number + 0.5)
-   	local Left, Number = match(Number, "^([^%d]*%d)(%d+)(.-)$")
+   	local Left, Number = match(floor(number + 0.5), "^([^%d]*%d)(%d+)(.-)$")
 	
 	return Left and Left .. reverse(gsub(reverse(Number), "(%d%d%d)", "%1,")) or number
 end
