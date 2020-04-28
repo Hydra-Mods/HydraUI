@@ -238,10 +238,10 @@ local BagFadeOnFinished = function(self)
 end
 
 function Bags:CreateBagFrame()
-	local Frame = CreateFrame("Frame", "vUI Bags", UIParent)
+	local Frame = CreateFrame("Frame", "vUI Bags", vUI.UIParent)
 	Frame:SetScaledSize(390, 300)
-	--Frame:SetScaledPoint("BOTTOMRIGHT", UIParent, -13, 13)
-	Frame:SetScaledPoint("BOTTOMLEFT", UIParent, "LEFT", 60, -130)
+	--Frame:SetScaledPoint("BOTTOMRIGHT", vUI.UIParent, -13, 13)
+	Frame:SetScaledPoint("BOTTOMLEFT", vUI.UIParent, "LEFT", 60, -130)
 	Frame:SetBackdrop(vUI.BackdropAndBorder)
 	Frame:SetBackdropColorHex(Settings["ui-window-bg-color"])
 	Frame:SetBackdropBorderColor(0, 0, 0)

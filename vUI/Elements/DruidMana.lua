@@ -43,8 +43,8 @@ function DruidMana:UPDATE_SHAPESHIFT_FORM()
 end
 
 function DruidMana:CreateBar()
-	vUI:SetSize(self, Settings["unitframes-player-width"], Settings["unitframes-player-power-height"] + 2)
-	vUI:SetPoint(self, "CENTER", UIParent, 0, -180)
+	self:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-power-height"] + 2)
+	self:SetPoint("CENTER", vUI.UIParent, 0, -180)
 	
 	self.Fade = CreateAnimationGroup(self)
 	
@@ -60,16 +60,16 @@ function DruidMana:CreateBar()
 	self.FadeOut:SetScript("OnFinished", FadeOnFinished)
 	
 	self.BarBG = CreateFrame("Frame", nil, self)
-	vUI:SetPoint(self.BarBG, "TOPLEFT", self, 0, 0)
-	vUI:SetPoint(self.BarBG, "BOTTOMRIGHT", self, 0, 0)
+	self.BarBG:SetPoint("TOPLEFT", self, 0, 0)
+	self.BarBG:SetPoint("BOTTOMRIGHT", self, 0, 0)
 	self.BarBG:SetBackdrop(vUI.BackdropAndBorder)
 	self.BarBG:SetBackdropColor(0, 0, 0)
 	self.BarBG:SetBackdropBorderColor(0, 0, 0)
 	
 	self.Bar = CreateFrame("StatusBar", nil, self.BarBG)
 	self.Bar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	vUI:SetPoint(self.Bar, "TOPLEFT", self.BarBG, 1, -1)
-	vUI:SetPoint(self.Bar, "BOTTOMRIGHT", self.BarBG, -1, 1)
+	self.Bar:SetPoint("TOPLEFT", self.BarBG, 1, -1)
+	self.Bar:SetPoint("BOTTOMRIGHT", self.BarBG, -1, 1)
 	self.Bar:SetFrameLevel(6)
 	
 	self.Bar:SetMinMaxValues(0, UnitPowerMax("player", ManaID))
@@ -82,12 +82,12 @@ function DruidMana:CreateBar()
 	self.Bar.BG:SetAlpha(0.2)
 	
 	self.Percentage = self.Bar:CreateFontString(nil, "OVERLAY")
-	vUI:SetPoint(self.Percentage, "LEFT", self.Bar, 3, 0)
+	self.Percentage:SetPoint("LEFT", self.Bar, 3, 0)
 	vUI:SetFontInfo(self.Percentage, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Percentage:SetJustifyH("LEFT")
 	
 	self.Progress = self.Bar:CreateFontString(nil, "OVERLAY")
-	vUI:SetPoint(self.Progress, "RIGHT", self.Bar, -3, 0)
+	self.Progress:SetPoint("RIGHT", self.Bar, -3, 0)
 	vUI:SetFontInfo(self.Progress, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Progress:SetJustifyH("RIGHT")
 	

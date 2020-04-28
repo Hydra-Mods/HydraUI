@@ -27,13 +27,13 @@ local UpdatePercentVisibility = function(value)
 end
 
 function Reputation:CreateBar()
-	vUI:SetSize(self, Settings["reputation-width"], Settings["reputation-height"])
+	self:SetSize(Settings["reputation-width"], Settings["reputation-height"])
 	self:SetFrameStrata("HIGH")
 	
 	if (Settings["experience-enable"] and UnitLevel("player") ~= MAX_PLAYER_LEVEL) then
-		vUI:SetPoint(self, "TOP", vUIExperienceBar, "BOTTOM", 0, -8)
+		self:SetPoint("TOP", vUIExperienceBar, "BOTTOM", 0, -8)
 	else
-		vUI:SetPoint(self, "TOP", UIParent, 0, -13)
+		self:SetPoint("TOP", vUI.UIParent, 0, -13)
 	end
 	
 	self.Fade = CreateAnimationGroup(self)
@@ -50,29 +50,29 @@ function Reputation:CreateBar()
 	self.FadeOut:SetScript("OnFinished", FadeOnFinished)
 	
 	self.BarBG = CreateFrame("Frame", nil, self)
-	vUI:SetPoint(self.BarBG,"TOPLEFT", self, 0, 0)
-	vUI:SetPoint(self.BarBG, "BOTTOMRIGHT", self, 0, 0)
+	self.BarBG:SetPoint("TOPLEFT", self, 0, 0)
+	self.BarBG:SetPoint("BOTTOMRIGHT", self, 0, 0)
 	self.BarBG:SetBackdrop(vUI.BackdropAndBorder)
 	self.BarBG:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	self.BarBG:SetBackdropBorderColor(0, 0, 0)
 	
 	self.Texture = self.BarBG:CreateTexture(nil, "ARTWORK")
-	vUI:SetPoint(self.Texture, "TOPLEFT", self.BarBG, 1, -1)
-	vUI:SetPoint(self.Texture, "BOTTOMRIGHT", self.BarBG, -1, 1)
+	self.Texture:SetPoint("TOPLEFT", self.BarBG, 1, -1)
+	self.Texture:SetPoint("BOTTOMRIGHT", self.BarBG, -1, 1)
 	self.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	self.BGAll = CreateFrame("Frame", nil, self)
-	vUI:SetPoint(self.BGAll, "TOPLEFT", self.BarBG, -3, 3)
-	vUI:SetPoint(self.BGAll, "BOTTOMRIGHT", self.BarBG, 3, -3)
+	self.BGAll:SetPoint("TOPLEFT", self.BarBG, -3, 3)
+	self.BGAll:SetPoint("BOTTOMRIGHT", self.BarBG, 3, -3)
 	self.BGAll:SetBackdrop(vUI.BackdropAndBorder)
 	self.BGAll:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self.BGAll:SetBackdropBorderColor(0, 0, 0)
 	
 	self.Bar = CreateFrame("StatusBar", nil, self.BarBG)
 	self.Bar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	vUI:SetPoint(self.Bar, "TOPLEFT", self.BarBG, 1, -1)
-	vUI:SetPoint(self.Bar, "BOTTOMRIGHT", self.BarBG, -1, 1)
+	self.Bar:SetPoint("TOPLEFT", self.BarBG, 1, -1)
+	self.Bar:SetPoint("BOTTOMRIGHT", self.BarBG, -1, 1)
 	self.Bar:SetFrameLevel(6)
 	
 	self.Bar.BG = self.Bar:CreateTexture(nil, "BORDER")
@@ -83,8 +83,8 @@ function Reputation:CreateBar()
 	
 	self.Bar.Spark = self.Bar:CreateTexture(nil, "OVERLAY")
 	self.Bar.Spark:SetDrawLayer("OVERLAY", 7)
-	vUI:SetSize(self.Bar.Spark, 1, Settings["reputation-height"])
-	vUI:SetPoint(self.Bar.Spark, "LEFT", self.Bar:GetStatusBarTexture(), "RIGHT", 0, 0)
+	self.Bar.Spark:SetSize(1, Settings["reputation-height"])
+	self.Bar.Spark:SetPoint("LEFT", self.Bar:GetStatusBarTexture(), "RIGHT", 0, 0)
 	self.Bar.Spark:SetTexture(Assets:GetTexture("Blank"))
 	self.Bar.Spark:SetVertexColor(0, 0, 0)
 	
@@ -113,7 +113,7 @@ function Reputation:CreateBar()
 	self.Flash.Out:SetChange(0)
 	
 	self.Progress = self.Bar:CreateFontString(nil, "OVERLAY")
-	vUI:SetPoint(self.Progress, "LEFT", self.Bar, 5, 0)
+	self.Progress:SetPoint("LEFT", self.Bar, 5, 0)
 	vUI:SetFontInfo(self.Progress, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Progress:SetJustifyH("LEFT")
 	
@@ -122,7 +122,7 @@ function Reputation:CreateBar()
 	end
 	
 	self.Percentage = self.Bar:CreateFontString(nil, "OVERLAY")
-	vUI:SetPoint(self.Percentage, "RIGHT", self.Bar, -5, 0)
+	self.Percentage:SetPoint("RIGHT", self.Bar, -5, 0)
 	vUI:SetFontInfo(self.Percentage, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Percentage:SetJustifyH("RIGHT")
 	
@@ -275,12 +275,12 @@ local UpdateDisplayPercent = function(value)
 end
 
 local UpdateBarWidth = function(value)
-	vUI:SetWidth(Reputation, value)
+	Reputation:SetWidth(value)
 end
 
 local UpdateBarHeight = function(value)
-	vUI:SetHeight(Reputation, value)
-	vUI:SetHeight(Reputation.Bar.Spark, value)
+	Reputation:SetHeight(value)
+	Reputation.Bar.Spark:SetHeight(value)
 end
 
 GUI:AddOptions(function(self)

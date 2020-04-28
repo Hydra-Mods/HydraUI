@@ -87,8 +87,8 @@ function KeyBinding:OnUpdate(elapsed)
 		local MouseFocus = GetMouseFocus()
 		
 		if (MouseFocus and MouseFocus.action) then
-			vUI:SetPoint(self.Hover, "TOPLEFT", MouseFocus, 1, -1)
-			vUI:SetPoint(self.Hover, "BOTTOMRIGHT", MouseFocus, -1, 1)
+			self.Hover:SetPoint("TOPLEFT", MouseFocus, 1, -1)
+			self.Hover:SetPoint("BOTTOMRIGHT", MouseFocus, -1, 1)
 			self.Hover:Show()
 		elseif self.Hover:IsShown() then
 			self.Hover:Hide()

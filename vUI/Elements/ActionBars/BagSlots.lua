@@ -54,9 +54,9 @@ function BagsFrame:Load()
 		return
 	end
 	
-	local Panel = CreateFrame("Frame", "vUI Bags Window", UIParent)
-	vUI:SetSize(Panel, 184, 40)
-	vUI:SetPoint(Panel, "BOTTOMRIGHT", -10, 10)
+	local Panel = CreateFrame("Frame", "vUI Bags Window", vUI.UIParent)
+	Panel:SetSize(184, 40)
+	Panel:SetPoint("BOTTOMRIGHT", -10, 10)
 	Panel:SetBackdrop(vUI.BackdropAndBorder)
 	Panel:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	Panel:SetBackdropBorderColor(0, 0, 0)
@@ -73,7 +73,7 @@ function BagsFrame:Load()
 		
 		Object:SetParent(Panel)
 		Object:ClearAllPoints()
-		vUI:SetSize(Object, 32, 32)
+		Object:SetSize(32, 32)
 		Object:HookScript("OnEnter", BagsFrameButtonOnEnter)
 		Object:HookScript("OnLeave", BagsFrameButtonOnLeave)
 		
@@ -88,14 +88,14 @@ function BagsFrame:Load()
 		
 		if Count then
 			Count:ClearAllPoints()
-			vUI:SetPoint(Count, "BOTTOMRIGHT", 0, 2)
+			Count:SetPoint("BOTTOMRIGHT", 0, 2)
 			Count:SetJustifyH("RIGHT")
 			vUI:SetFontInfo(Count, Settings["ui-widget-font"], Settings["ui-font-size"])
 		end
 		
 		if Stock then
 			Stock:ClearAllPoints()
-			vUI:SetPoint(Stock, "TOPLEFT", 0, -2)
+			Stock:SetPoint("TOPLEFT", 0, -2)
 			Stock:SetJustifyH("LEFT")
 			vUI:SetFontInfo(Stock, Settings["ui-widget-font"], Settings["ui-font-size"])
 		end
@@ -105,38 +105,38 @@ function BagsFrame:Load()
 		end
 		
 		Object.BG = Object:CreateTexture(nil, "BACKGROUND")
-		vUI:SetPoint(Object.BG, "TOPLEFT", Object, -1, 1)
-		vUI:SetPoint(Object.BG, "BOTTOMRIGHT", Object, 1, -1)
+		Object.BG:SetPoint("TOPLEFT", Object, -1, 1)
+		Object.BG:SetPoint("BOTTOMRIGHT", Object, 1, -1)
 		Object.BG:SetColorTexture(0, 0, 0)
 		
 		--[[local Checked = Object:CreateTexture(nil, "ARTWORK")
-		vUI:SetPoint(Checked, "TOPLEFT", Object, 0, 0)
-		vUI:SetPoint(Checked, "BOTTOMRIGHT", Object, 0, 0)
+		Checked:SetPoint("TOPLEFT", Object, 0, 0)
+		Checked:SetPoint("BOTTOMRIGHT", Object, 0, 0)
 		Checked:SetColorTexture(0.1, 0.8, 0.1)
 		Checked:SetAlpha(0.2)
 		
 		Object:SetCheckedTexture(Checked)]]
 		
 		local Highlight = Object:CreateTexture(nil, "ARTWORK")
-		vUI:SetPoint(Highlight, "TOPLEFT", Object, 0, 0)
-		vUI:SetPoint(Highlight, "BOTTOMRIGHT", Object, 0, 0)
+		Highlight:SetPoint("TOPLEFT", Object, 0, 0)
+		Highlight:SetPoint("BOTTOMRIGHT", Object, 0, 0)
 		Highlight:SetColorTexture(1, 1, 1)
 		Highlight:SetAlpha(0.2)
 		
 		Object:SetHighlightTexture(Highlight)
 		
 		local Pushed = Object:CreateTexture(nil, "ARTWORK", 7)
-		vUI:SetPoint(Pushed, "TOPLEFT", Object, 0, 0)
-		vUI:SetPoint(Pushed, "BOTTOMRIGHT", Object, 0, 0)
+		Pushed:SetPoint("TOPLEFT", Object, 0, 0)
+		Pushed:SetPoint("BOTTOMRIGHT", Object, 0, 0)
 		Pushed:SetColorTexture(0.2, 0.9, 0.2)
 		Pushed:SetAlpha(0.4)
 		
 		Object:SetPushedTexture(Pushed)
 		
 		if (i == 1) then
-			vUI:SetPoint(Object, "LEFT", Panel, 4, 0)
+			Object:SetPoint("LEFT", Panel, 4, 0)
 		else
-			vUI:SetPoint(Object, "LEFT", self.Objects[i-1], "RIGHT", 4, 0)
+			Object:SetPoint("LEFT", self.Objects[i-1], "RIGHT", 4, 0)
 		end
 	end
 	

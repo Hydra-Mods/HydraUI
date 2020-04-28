@@ -24,7 +24,7 @@ local SkinAura = function(button, name, index)
 	
 	vUI:SetFontInfo(button.duration, Settings["ui-widget-font"], Settings["ui-font-size"])
 	button.duration:ClearAllPoints()
-	vUI:SetPoint(button.duration, "TOP", button, "BOTTOM", 0, -3)
+	button.duration:SetPoint("TOP", button, "BOTTOM", 0, -3)
 	button.duration.SetFontObject = function() end
 	button.duration.ClearAllPoints = function() end
 	
@@ -94,7 +94,7 @@ local SkinTempEnchants = function()
 			
 			vUI:SetFontInfo(Enchant.duration, Settings["ui-widget-font"], Settings["ui-font-size"])
 			Enchant.duration:ClearAllPoints()
-			vUI:SetPoint(Enchant.duration, "TOP", Enchant, "BOTTOM", 0, -4)
+			Enchant.duration:SetPoint("TOP", Enchant, "BOTTOM", 0, -4)
 			Enchant.duration.SetFontObject = function() end
 			
 			vUI:SetFontInfo(Enchant.count, Settings["ui-widget-font"], Settings["ui-font-size"])
@@ -131,9 +131,9 @@ Auras.BuffFrame_UpdateAllBuffAnchors = function()
 			Aura:ClearAllPoints()
 			
 			if PreviousAura then
-				vUI:SetPoint(Aura, "TOPRIGHT", PreviousAura, "TOPLEFT", -2, 0)
+				Aura:SetPoint("TOPRIGHT", PreviousAura, "TOPLEFT", -2, 0)
 			else
-				vUI:SetPoint(Aura, "TOPRIGHT", Auras.Buffs, "TOPRIGHT", 0, 0)
+				Aura:SetPoint("TOPRIGHT", Auras.Buffs, "TOPRIGHT", 0, 0)
 			end
 			
 			PreviousAura = Aura
@@ -150,24 +150,24 @@ Auras.BuffFrame_UpdateAllBuffAnchors = function()
 		Aura:ClearAllPoints()
 		
 		if (Index > 1 and (Index % Settings["auras-per-row"] == 1)) then
-			vUI:SetPoint(Aura, "TOP", RowAnchor, "BOTTOM", 0, -Settings["auras-row-spacing"])
+			Aura:SetPoint("TOP", RowAnchor, "BOTTOM", 0, -Settings["auras-row-spacing"])
 			
 			RowAnchor = Aura
 			NumRows = NumRows + 1
 		elseif (Index == 1) then
-			vUI:SetPoint(Aura, "TOPRIGHT", Auras.Buffs, "TOPRIGHT", 0, 0)
+			Aura:SetPoint("TOPRIGHT", Auras.Buffs, "TOPRIGHT", 0, 0)
 			
 			RowAnchor = Aura
 			NumRows = 1
 		else
 			if (NumAuras == 1) then
 				if PreviousAura then
-					vUI:SetPoint(Aura, "TOPRIGHT", PreviousAura, "TOPLEFT", -2, 0)
+					Aura:SetPoint("TOPRIGHT", PreviousAura, "TOPLEFT", -2, 0)
 				else
-					vUI:SetPoint(Aura, "TOPRIGHT", Auras.Buffs, "TOPRIGHT", 0, 0)
+					Aura:SetPoint("TOPRIGHT", Auras.Buffs, "TOPRIGHT", 0, 0)
 				end
 			else
-				vUI:SetPoint(Aura, "RIGHT", PreviousAura, "LEFT", -2, 0)
+				Aura:SetPoint("RIGHT", PreviousAura, "LEFT", -2, 0)
 			end
 		end
 		
@@ -183,7 +183,7 @@ Auras.DebuffButton_UpdateAnchors = function(name, index)
 	Aura:ClearAllPoints()
 	
 	if ((index > 1) and (index % Settings["auras-per-row"] == 1)) then
-		vUI:SetPoint(Aura, "TOP", _G[name .. (index - Settings["auras-per-row"])], "BOTTOM", 0, -Settings["auras-row-spacing"])
+		Aura:SetPoint("TOP", _G[name .. (index - Settings["auras-per-row"])], "BOTTOM", 0, -Settings["auras-row-spacing"])
 	elseif (index == 1) then
 		if (Rows < 2) then
 			Aura.offsetY = 1 * ((2 * Settings["auras-spacing"]) + Settings["auras-size"]) -- Make the default UI happy
@@ -191,9 +191,9 @@ Auras.DebuffButton_UpdateAnchors = function(name, index)
 			Aura.offsetY = Rows * (Settings["auras-spacing"] + Settings["auras-size"])
 		end
 		
-		vUI:SetPoint(Aura, "TOPRIGHT", Auras.Debuffs, "TOPRIGHT", 0, 0)
+		Aura:SetPoint("TOPRIGHT", Auras.Debuffs, "TOPRIGHT", 0, 0)
 	else
-		vUI:SetPoint(Aura, "RIGHT", _G[name..(index - 1)], "LEFT", -5, 0)
+		Aura:SetPoint("RIGHT", _G[name..(index - 1)], "LEFT", -5, 0)
 	end
 end
 
@@ -209,7 +209,7 @@ Auras.AuraButton_Update = function(name, index)
 		SkinAura(Button, name, index)
 	end
 	
-	vUI:SetSize(Button, Settings["auras-size"])
+	Button:SetSize(Settings["auras-size"], Settings["auras-size"])
 	
 	Name, Texture, Count, DebuffType = UnitAura("player", index, Filter)
 	
@@ -233,13 +233,13 @@ function Auras:Load()
 	local BuffRows = ceil(BUFF_MAX_DISPLAY / Settings["auras-per-row"])
 	local DebuffRows = ceil(DEBUFF_MAX_DISPLAY / Settings["auras-per-row"])
 	
-	self.Buffs = CreateFrame("Frame", "vUI Buffs", UIParent)
-	vUI:SetSize(self.Buffs, (Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * BuffRows) + (Settings["auras-row-spacing"] * (BuffRows - 1))))
-	vUI:SetPoint(self.Buffs, "TOPRIGHT", UIParent, "TOPRIGHT", -(Settings["minimap-size"] + 22), -12)
+	self.Buffs = CreateFrame("Frame", "vUI Buffs", vUI.UIParent)
+	self.Buffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * BuffRows) + (Settings["auras-row-spacing"] * (BuffRows - 1))))
+	self.Buffs:SetPoint("TOPRIGHT", vUI.UIParent, "TOPRIGHT", -(Settings["minimap-size"] + 22), -12)
 	
-	self.Debuffs = CreateFrame("Frame", "vUI Debuffs", UIParent)
-	vUI:SetSize(self.Debuffs, (Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * DebuffRows) + Settings["auras-row-spacing"]))
-	vUI:SetPoint(self.Debuffs, "TOPRIGHT", self.Buffs, "BOTTOMRIGHT", 0, -2)
+	self.Debuffs = CreateFrame("Frame", "vUI Debuffs", vUI.UIParent)
+	self.Debuffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * DebuffRows) + Settings["auras-row-spacing"]))
+	self.Debuffs:SetPoint("TOPRIGHT", self.Buffs, "BOTTOMRIGHT", 0, -2)
 	
 	vUI:CreateMover(self.Buffs)
 	vUI:CreateMover(self.Debuffs)
@@ -254,8 +254,8 @@ local UpdateSizes = function()
 	local BuffRows = ceil(BUFF_MAX_DISPLAY / Settings["auras-per-row"])
 	local DebuffRows = ceil(DEBUFF_MAX_DISPLAY / Settings["auras-per-row"])
 	
-	vUI:SetSize(Auras.Buffs, (Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * BuffRows) + (Settings["auras-row-spacing"] * (BuffRows - 1))))
-	vUI:SetSize(Auras.Debuffs, (Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * DebuffRows) + Settings["auras-row-spacing"]))
+	Auras.Buffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * BuffRows) + (Settings["auras-row-spacing"] * (BuffRows - 1))))
+	Auras.Debuffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * DebuffRows) + Settings["auras-row-spacing"]))
 	
 	BuffFrame_Update()
 end

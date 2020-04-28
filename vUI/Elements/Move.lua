@@ -19,7 +19,7 @@ local OnDragStop = function(self)
 	local A1, Parent, A2, X, Y = self:GetPoint()
 	
 	if (not Parent) then
-		Parent = UIParent
+		Parent = vUI.UIParent
 	end
 	
 	vUIMove[self.Name] = {A1, Parent:GetName(), A2, X, Y}
@@ -63,7 +63,7 @@ function vUI:ResetAllMovers()
 			local A1, Parent, A2, X, Y = unpack(self.FrameDefaults[self.MovingFrames[i].Name])
 			
 			self.MovingFrames[i]:ClearAllPoints()
-			vUI:SetPoint(self.MovingFrames[i], A1, _G[Parent], A2, X, Y)
+			self.MovingFrames[i]:SetPoint(A1, _G[Parent], A2, X, Y)
 			
 			--vUIMove[self.MovingFrames[i].Name] = {A1, Parent, A2, X, Y}
 		end
@@ -79,7 +79,7 @@ function vUI:IsMoved(frame)
 end
 
 local OnSizeChanged = function(self)
-	vUI:SetSize(self.Mover, self:GetSize())
+	self.Mover:SetSize(self:GetSize())
 end
 
 local MoverOnMouseUp = function(self, button)
@@ -89,7 +89,7 @@ local MoverOnMouseUp = function(self, button)
 			local ParentObject = _G[Parent]
 			
 			self:ClearAllPoints()
-			vUI:SetPoint(self, A1, ParentObject, A2, X, Y)
+			self:SetPoint(A1, ParentObject, A2, X, Y)
 			
 			vUIMove[self.Name] = {A1, Parent, A2, X, Y}
 		end
@@ -142,7 +142,7 @@ function vUI:CreateMover(frame, padding)
 	end
 	
 	if (not Parent) then
-		Parent = UIParent
+		Parent = vUI.UIParent
 	end
 	
 	local ParentName = Parent:GetName()
@@ -150,8 +150,8 @@ function vUI:CreateMover(frame, padding)
 	local Padding = padding or 0
 	local Width, Height = frame:GetSize()
 	
-	local Mover = CreateFrame("Frame", nil, UIParent)
-	vUI:SetSize(Mover, Width + Padding, Height + Padding)
+	local Mover = CreateFrame("Frame", nil, vUI.UIParent)
+	Mover:SetSize(Width + Padding, Height + Padding)
 	Mover:SetBackdrop(vUI.BackdropAndBorder)
 	Mover:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	Mover:SetBackdropBorderColor(0, 0, 0)
@@ -168,21 +168,21 @@ function vUI:CreateMover(frame, padding)
 	Mover:Hide()
 	
 	Mover.BG = CreateFrame("Frame", nil, Mover)
-	vUI:SetPoint(Mover.BG, "TOPLEFT", Mover, 3, -3)
-	vUI:SetPoint(Mover.BG, "BOTTOMRIGHT", Mover, -3, 3)
+	Mover.BG:SetPoint("TOPLEFT", Mover, 3, -3)
+	Mover.BG:SetPoint("BOTTOMRIGHT", Mover, -3, 3)
 	Mover.BG:SetBackdrop(vUI.BackdropAndBorder)
 	Mover.BG:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	Mover.BG:SetBackdropBorderColor(0, 0, 0)
 	
 	Mover.Label = Mover.BG:CreateFontString(nil, "OVERLAY")
 	vUI:SetFontInfo(Mover.Label, Settings["ui-widget-font"], 12)
-	vUI:SetPoint(Mover.Label, "CENTER", Mover, 0, 0)
+	Mover.Label:SetPoint("CENTER", Mover, 0, 0)
 	Mover.Label:SetText(Label)
 	
 	local OldA1, OldParent, OldA2, OldX, OldY = frame:GetPoint()
 	
 	frame:ClearAllPoints()
-	vUI:SetPoint(frame, "CENTER", Mover, 0, 0)
+	frame:SetPoint("CENTER", Mover, 0, 0)
 	frame.Mover = Mover
 	frame:HookScript("OnSizeChanged", OnSizeChanged)
 	
@@ -192,9 +192,9 @@ function vUI:CreateMover(frame, padding)
 		local A1, Parent, A2, X, Y = unpack(vUIMove[Name])
 		local ParentObject = _G[Parent]		
 		
-		vUI:SetPoint(Mover, A1, ParentObject, A2, X, Y)
+		Mover:SetPoint(A1, ParentObject, A2, X, Y)
 	else
-		vUI:SetPoint(Mover, A1, Parent, A2, X, Y)
+		Mover:SetPoint(A1, Parent, A2, X, Y)
 		
 		--vUIMove[Name] = {OldA1, OldParent:GetName(), OldA2, OldX, OldY}
 	end

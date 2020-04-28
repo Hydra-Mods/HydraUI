@@ -7,50 +7,50 @@ local GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
 local GetPowerLevel = C_AzeriteItem.GetPowerLevel
 
 function Azerite:CreateBar()
-	vUI:SetSize(self, Settings["azerite-width"], Settings["azerite-height"])
+	self:SetSize(Settings["azerite-width"], Settings["azerite-height"])
 	self:SetFrameStrata("HIGH")
 	
 	if Settings["experience-enable"] then
-		vUI:SetPoint(self, "TOP", vUIExperienceBar, "BOTTOM", 0, -6)
+		self:SetPoint("TOP", vUIExperienceBar, "BOTTOM", 0, -6)
 	else
-		vUI:SetPoint(self, "TOP", UIParent, 0, -13)
+		self:SetPoint("TOP", vUI.UIParent, 0, -13)
 	end
 	
 	self.HeaderBG = CreateFrame("Frame", nil, self)
-	vUI:SetHeight(self.HeaderBG, Settings["azerite-height"])
-	vUI:SetPoint(self.HeaderBG, "LEFT", self, 0, 0)
+	self.HeaderBG:SetHeight(Settings["azerite-height"])
+	self.HeaderBG:SetPoint("LEFT", self, 0, 0)
 	self.HeaderBG:SetBackdrop(vUI.BackdropAndBorder)
 	self.HeaderBG:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self.HeaderBG:SetBackdropBorderColor(0, 0, 0)
 	
 	self.HeaderBG.Texture = self.HeaderBG:CreateTexture(nil, "ARTWORK")
-	vUI:SetPoint(self.HeaderBG.Texture, "TOPLEFT", self.HeaderBG, 1, -1)
-	vUI:SetPoint(self.HeaderBG.Texture, "BOTTOMRIGHT", self.HeaderBG, -1, 1)
+	self.HeaderBG.Texture:SetPoint("TOPLEFT", self.HeaderBG, 1, -1)
+	self.HeaderBG.Texture:SetPoint("BOTTOMRIGHT", self.HeaderBG, -1, 1)
 	self.HeaderBG.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	self.HeaderBG.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	self.HeaderBG.Text = self.HeaderBG:CreateFontString(nil, "OVERLAY")
-	vUI:SetPoint(self.HeaderBG.Text, "CENTER", self.HeaderBG, 0, 0)
+	self.HeaderBG.Text:SetPoint("CENTER", self.HeaderBG, 0, 0)
 	vUI:SetFontInfo(self.HeaderBG.Text, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.HeaderBG.Text:SetJustifyH("CENTER")
 	self.HeaderBG.Text:SetText(format("|cFF%s%s:|r", Settings["ui-widget-color"], Language["Level"]))
 	
 	self.BarBG = CreateFrame("Frame", nil, self)
-	vUI:SetPoint(self.BarBG, "TOPLEFT", self.HeaderBG, "TOPRIGHT", 2, 0)
-	vUI:SetPoint(self.BarBG, "BOTTOMRIGHT", self, 0, 0)
+	self.BarBG:SetPoint("TOPLEFT", self.HeaderBG, "TOPRIGHT", 2, 0)
+	self.BarBG:SetPoint("BOTTOMRIGHT", self, 0, 0)
 	self.BarBG:SetBackdrop(vUI.BackdropAndBorder)
 	self.BarBG:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	self.BarBG:SetBackdropBorderColor(0, 0, 0)
 	
 	self.Texture = self.BarBG:CreateTexture(nil, "ARTWORK")
-	vUI:SetPoint(self.Texture, "TOPLEFT", self.BarBG, 1, -1)
-	vUI:SetPoint(self.Texture, "BOTTOMRIGHT", self.BarBG, -1, 1)
+	self.Texture:SetPoint("TOPLEFT", self.BarBG, 1, -1)
+	self.Texture:SetPoint("BOTTOMRIGHT", self.BarBG, -1, 1)
 	self.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	self.BGAll = CreateFrame("Frame", nil, self)
-	vUI:SetPoint(self.BGAll, "TOPLEFT", self.HeaderBG, -3, 3)
-	vUI:SetPoint(self.BGAll, "BOTTOMRIGHT", self.BarBG, 3, -3)
+	self.BGAll:SetPoint("TOPLEFT", self.HeaderBG, -3, 3)
+	self.BGAll:SetPoint("BOTTOMRIGHT", self.BarBG, 3, -3)
 	self.BGAll:SetBackdrop(vUI.BackdropAndBorder)
 	self.BGAll:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self.BGAll:SetBackdropBorderColor(0, 0, 0)
@@ -58,8 +58,8 @@ function Azerite:CreateBar()
 	self.Bar = CreateFrame("StatusBar", nil, self.BarBG)
 	self.Bar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	self.Bar:SetStatusBarColor(vUI:HexToRGB("EECC99"))
-	vUI:SetPoint(self.Bar, "TOPLEFT", self.BarBG, 1, -1)
-	vUI:SetPoint(self.Bar, "BOTTOMRIGHT", self.BarBG, -1, 1)
+	self.Bar:SetPoint("TOPLEFT", self.BarBG, 1, -1)
+	self.Bar:SetPoint("BOTTOMRIGHT", self.BarBG, -1, 1)
 	self.Bar:SetFrameLevel(6)
 	
 	self.Bar.BG = self.Bar:CreateTexture(nil, "BORDER")
@@ -70,8 +70,8 @@ function Azerite:CreateBar()
 	
 	self.Bar.Spark = self.Bar:CreateTexture(nil, "OVERLAY")
 	self.Bar.Spark:SetDrawLayer("OVERLAY", 7)
-	vUI:SetSize(self.Bar.Spark, 1, Settings["azerite-height"])
-	vUI:SetPoint(self.Bar.Spark, "LEFT", self.Bar:GetStatusBarTexture(), "RIGHT", 0, 0)
+	self.Bar.Spark:SetSize(1, Settings["azerite-height"])
+	self.Bar.Spark:SetPoint("LEFT", self.Bar:GetStatusBarTexture(), "RIGHT", 0, 0)
 	self.Bar.Spark:SetTexture(Assets:GetTexture("Blank"))
 	self.Bar.Spark:SetVertexColor(0, 0, 0)
 	
@@ -102,14 +102,14 @@ function Azerite:CreateBar()
 	self.Flash.Out:SetChange(0)
 	
 	self.Progress = self.Bar:CreateFontString(nil, "OVERLAY")
-	vUI:SetPoint(self.Progress, "LEFT", self.Bar, 5, 0)
+	self.Progress:SetPoint("LEFT", self.Bar, 5, 0)
 	vUI:SetFontInfo(self.Progress, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Progress:SetJustifyH("LEFT")
 	
 	-- Add fade to self.Progress
 	
 	self.Percentage = self.Bar:CreateFontString(nil, "OVERLAY")
-	vUI:SetPoint(self.Percentage, "RIGHT", self.Bar, -5, 0)
+	self.Percentage:SetPoint("RIGHT", self.Bar, -5, 0)
 	vUI:SetFontInfo(self.Percentage, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Percentage:SetJustifyH("RIGHT")
 	
@@ -142,7 +142,7 @@ function Azerite:OnEvent()
 	self.Change:Play()
 	
 	self.HeaderBG.Text:SetText(format("|cFF%s%s:|r %s", Settings["ui-header-font-color"], Language["Level"], Level))
-	vUI:SetWidth(self.HeaderBG, self.HeaderBG.Text:GetWidth() + 14)
+	self.HeaderBG:SetWidth(self.HeaderBG.Text:GetWidth() + 14)
 end
 
 function Azerite:OnEnter()
@@ -247,12 +247,12 @@ local UpdateDisplayPercent = function(value)
 end
 
 local UpdateBarWidth = function(value)
-	vUI:SetWidth(Azerite, value)
+	Azerite:SetWidth(value)
 end
 
 local UpdateBarHeight = function(value)
-	vUI:SetHeight(Azerite, value)
-	vUI:SetHeight(Azerite.Bar.Spark, value)
+	Azerite:SetHeight(value)
+	Azerite.Bar.Spark:SetHeight(value)
 end
 
 GUI:AddOptions(function(self)

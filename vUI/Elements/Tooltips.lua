@@ -102,9 +102,9 @@ end
 local SetTooltipStyle = function(self)
 	if self.Styled then
 		if (self.GetUnit and self:GetUnit()) then
-			vUI:SetPoint(self.OuterBG, "TOPLEFT", GameTooltipStatusBar, -4, 4)
+			self.OuterBG:SetPoint("TOPLEFT", GameTooltipStatusBar, -4, 4)
 		else
-			vUI:SetPoint(self.OuterBG, "TOPLEFT", self, -3, 3)
+			self.OuterBG:SetPoint("TOPLEFT", self, -3, 3)
 		end
 		
 		Tooltips:UpdateFonts(self)
@@ -122,8 +122,8 @@ local SetTooltipStyle = function(self)
 		self.Backdrop:SetFrameLevel(2)
 		
 		self.OuterBG = CreateFrame("Frame", nil, self)
-		vUI:SetPoint(self.OuterBG, "TOPLEFT", self, -3, 3)
-		vUI:SetPoint(self.OuterBG, "BOTTOMRIGHT", self, 3, -3)
+		self.OuterBG:SetPoint("TOPLEFT", self, -3, 3)
+		self.OuterBG:SetPoint("BOTTOMRIGHT", self, 3, -3)
 		self.OuterBG:SetBackdrop(vUI.BackdropAndBorder)
 		self.OuterBG:SetBackdropBorderColor(0, 0, 0)
 		self.OuterBG:SetFrameStrata("TOOLTIP")
@@ -294,7 +294,7 @@ local OnTooltipSetUnit = function(self)
 		--GameTooltipStatusBar.BG:SetVertexColorHex(Color)
 		
 		if self.OuterBG then
-			vUI:SetPoint(self.OuterBG, "TOPLEFT", GameTooltipStatusBar, -4, 4)
+			self.OuterBG:SetPoint("TOPLEFT", GameTooltipStatusBar, -4, 4)
 		end
 	end
 end
@@ -380,9 +380,9 @@ Tooltips.GameTooltip_SetDefaultAnchor = function(self, parent)
 	self:ClearAllPoints()
 	
 	if vUIMetersFrame then
-		vUI:SetPoint(self, "BOTTOMLEFT", vUIMetersFrame, "TOPLEFT", 3, 5)
+		self:SetPoint("BOTTOMLEFT", vUIMetersFrame, "TOPLEFT", 3, 5)
 	else
-		vUI:SetPoint(self, "BOTTOMRIGHT", Tooltips, -3, 3)
+		self:SetPoint("BOTTOMRIGHT", Tooltips, -3, 3)
 	end
 end
 
@@ -449,20 +449,20 @@ end
 
 function Tooltips:StyleStatusBar()
 	GameTooltipStatusBar:ClearAllPoints()
-	vUI:SetHeight(GameTooltipStatusBar, Settings["tooltips-health-bar-height"])
-	vUI:SetPoint(GameTooltipStatusBar, "BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", 1, 3)
-	vUI:SetPoint(GameTooltipStatusBar, "BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -1, 3)
+	GameTooltipStatusBar:SetHeight(Settings["tooltips-health-bar-height"])
+	GameTooltipStatusBar:SetPoint("BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", 1, 3)
+	GameTooltipStatusBar:SetPoint("BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -1, 3)
 	GameTooltipStatusBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	
 	GameTooltipStatusBar.BG = GameTooltipStatusBar:CreateTexture(nil, "ARTWORK")
-	vUI:SetPoint(GameTooltipStatusBar.BG, "TOPLEFT", GameTooltipStatusBar, 0, 0)
-	vUI:SetPoint(GameTooltipStatusBar.BG, "BOTTOMRIGHT", GameTooltipStatusBar, 0, 0)
+	GameTooltipStatusBar.BG:SetPoint("TOPLEFT", GameTooltipStatusBar, 0, 0)
+	GameTooltipStatusBar.BG:SetPoint("BOTTOMRIGHT", GameTooltipStatusBar, 0, 0)
 	GameTooltipStatusBar.BG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	GameTooltipStatusBar.BG:SetAlpha(0.2)
 	
 	GameTooltipStatusBar.Backdrop = CreateFrame("Frame", nil, GameTooltipStatusBar)
-	vUI:SetPoint(GameTooltipStatusBar.Backdrop, "TOPLEFT", GameTooltipStatusBar, -1, 1)
-	vUI:SetPoint(GameTooltipStatusBar.Backdrop, "BOTTOMRIGHT", GameTooltipStatusBar, 1, -1)
+	GameTooltipStatusBar.Backdrop:SetPoint("TOPLEFT", GameTooltipStatusBar, -1, 1)
+	GameTooltipStatusBar.Backdrop:SetPoint("BOTTOMRIGHT", GameTooltipStatusBar, 1, -1)
 	GameTooltipStatusBar.Backdrop:SetBackdrop(vUI.BackdropAndBorder)
 	GameTooltipStatusBar.Backdrop:SetBackdropColor(0, 0, 0)
 	GameTooltipStatusBar.Backdrop:SetBackdropBorderColor(0, 0, 0)
@@ -470,12 +470,12 @@ function Tooltips:StyleStatusBar()
 	
 	GameTooltipStatusBar.HealthValue = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
 	vUI:SetFontInfo(GameTooltipStatusBar.HealthValue, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
-	vUI:SetPoint(GameTooltipStatusBar.HealthValue, "LEFT", GameTooltipStatusBar, 3, 0)
+	GameTooltipStatusBar.HealthValue:SetPoint("LEFT", GameTooltipStatusBar, 3, 0)
 	GameTooltipStatusBar.HealthValue:SetJustifyH("LEFT")
 	
 	GameTooltipStatusBar.HealthPercent = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
 	vUI:SetFontInfo(GameTooltipStatusBar.HealthPercent, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
-	vUI:SetPoint(GameTooltipStatusBar.HealthPercent, "RIGHT", GameTooltipStatusBar, -3, 0)
+	GameTooltipStatusBar.HealthPercent:SetPoint("RIGHT", GameTooltipStatusBar, -3, 0)
 	GameTooltipStatusBar.HealthPercent:SetJustifyH("RIGHT")
 	
 	GameTooltipStatusBar:HookScript("OnValueChanged", OnValueChanged)
@@ -507,8 +507,8 @@ function Tooltips:SkinItemRef()
 	
 	-- Close button
 	local CloseButton = CreateFrame("Frame", nil, ItemRefTooltip)
-	vUI:SetSize(CloseButton, 20, 20)
-	vUI:SetPoint(CloseButton, "TOPRIGHT", ItemRefTooltip, -3, -3)
+	CloseButton:SetSize(20, 20)
+	CloseButton:SetPoint("TOPRIGHT", ItemRefTooltip, -3, -3)
 	CloseButton:SetBackdrop(vUI.BackdropAndBorder)
 	CloseButton:SetBackdropColor(0, 0, 0, 0)
 	CloseButton:SetBackdropBorderColor(0, 0, 0)
@@ -518,14 +518,14 @@ function Tooltips:SkinItemRef()
 	CloseButton:SetScript("OnMouseDown", ItemRefCloseOnMouseDown)
 	
 	CloseButton.Texture = CloseButton:CreateTexture(nil, "ARTWORK")
-	vUI:SetPoint(CloseButton.Texture, "TOPLEFT", CloseButton, 1, -1)
-	vUI:SetPoint(CloseButton.Texture, "BOTTOMRIGHT", CloseButton, -1, 1)
+	CloseButton.Texture:SetPoint("TOPLEFT", CloseButton, 1, -1)
+	CloseButton.Texture:SetPoint("BOTTOMRIGHT", CloseButton, -1, 1)
 	CloseButton.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	CloseButton.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	CloseButton.Cross = CloseButton:CreateTexture(nil, "OVERLAY")
-	vUI:SetPoint(CloseButton.Cross, "CENTER", CloseButton, 0, 0)
-	vUI:SetSize(CloseButton.Cross, 16, 16)
+	CloseButton.Cross:SetPoint("CENTER", CloseButton, 0, 0)
+	CloseButton.Cross:SetSize(16, 16)
 	CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
 	CloseButton.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
 	
@@ -537,8 +537,8 @@ function Tooltips:Load()
 		return
 	end
 	
-	vUI:SetSize(self, 200, 26)
-	vUI:SetPoint(self, "BOTTOMRIGHT", UIParent, -13, 101)
+	self:SetSize(200, 26)
+	self:SetPoint("BOTTOMRIGHT", vUI.UIParent, -13, 101)
 	
 	self:AddHooks()
 	self:StyleStatusBar()

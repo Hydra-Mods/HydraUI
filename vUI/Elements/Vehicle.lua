@@ -52,9 +52,9 @@ function Vehicle:Exit()
 end
 
 function Vehicle:Load()
-	self.Button = CreateFrame("Button", "vUI Vehicle", UIParent)
-	vUI:SetSize(self.Button, Settings["minimap-size"] + 8, 22)
-	vUI:SetPoint(self.Button, "TOP", _G["vUI Minimap"], "BOTTOM", 0, -2)
+	self.Button = CreateFrame("Button", "vUI Vehicle", vUI.UIParent)
+	self.Button:SetSize(Settings["minimap-size"] + 8, 22)
+	self.Button:SetPoint("TOP", _G["vUI Minimap"], "BOTTOM", 0, -2)
 	self.Button:SetFrameStrata("HIGH")
 	self.Button:SetFrameLevel(10)
 	self.Button:SetBackdrop(vUI.BackdropAndBorder)
@@ -70,15 +70,15 @@ function Vehicle:Load()
 	self.Button:SetScript("OnEvent", self.OnEvent)
 	
 	self.Button.Texture = self.Button:CreateTexture(nil, "ARTWORK")
-	vUI:SetPoint(self.Button.Texture, "TOPLEFT", self.Button, 1, -1)
-	vUI:SetPoint(self.Button.Texture, "BOTTOMRIGHT", self.Button, -1, 1)
+	self.Button.Texture:SetPoint("TOPLEFT", self.Button, 1, -1)
+	self.Button.Texture:SetPoint("BOTTOMRIGHT", self.Button, -1, 1)
 	self.Button.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	self.Button.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	self.Button.Text = self.Button:CreateFontString(nil, "OVERLAY", 7)
-	vUI:SetPoint(self.Button.Text, "CENTER", self.Button, 0, -1)
+	self.Button.Text:SetPoint("CENTER", self.Button, 0, -1)
 	vUI:SetFontInfo(self.Button.Text, Settings["ui-header-font"], Settings["ui-font-size"])
-	vUI:SetSize(self.Button.Text, self.Button:GetWidth() - 12, 20)
+	self.Button.Text:SetSize(self.Button:GetWidth() - 12, 20)
 	
 	self.Button.Fade = CreateAnimationGroup(self.Button)
 	

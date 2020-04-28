@@ -13,7 +13,7 @@ local UnitLevel = UnitLevel
 local GetXPExhaustion = GetXPExhaustion
 local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 
-local ExperienceBar = CreateFrame("StatusBar", "vUIExperienceBar", UIParent)
+local ExperienceBar = CreateFrame("StatusBar", "vUIExperienceBar", vUI.UIParent)
 
 ExperienceBar.Elapsed = 0
 
@@ -55,7 +55,7 @@ local UpdateXP = function(self, first)
 	self.Percentage:SetText(floor((XP / MaxXP * 100 + 0.05) * 10) / 10 .. "%")
 	
 	self.HeaderBG.Text:SetText(format("|cFF%s%s:|r %s", Settings["ui-header-font-color"], Language["Level"], UnitLevel("player")))
-	vUI:SetWidth(self.HeaderBG, self.HeaderBG.Text:GetWidth() + 14)
+	self.HeaderBG:SetWidth(self.HeaderBG.Text:GetWidth() + 14)
 	
 	if (XP > 0) then
 		if (self.Bar.Spark:GetAlpha() == 0) then
@@ -107,14 +107,14 @@ local UpdateDisplayLevel = function(value)
 		vUIExperienceBar.HeaderBG:Show()
 		
 		vUIExperienceBar.BarBG:ClearAllPoints()
-		vUI:SetPoint(vUIExperienceBar.BarBG, "TOPLEFT", vUIExperienceBar.HeaderBG, "TOPRIGHT", 2, 0)
-		vUI:SetPoint(vUIExperienceBar.BarBG, "BOTTOMRIGHT", vUIExperienceBar, 0, 0)
+		vUIExperienceBar.BarBG:SetPoint("TOPLEFT", vUIExperienceBar.HeaderBG, "TOPRIGHT", 2, 0)
+		vUIExperienceBar.BarBG:SetPoint("BOTTOMRIGHT", vUIExperienceBar, 0, 0)
 	else
 		vUIExperienceBar.HeaderBG:Hide()
 		
 		vUIExperienceBar.BarBG:ClearAllPoints()
-		vUI:SetPoint(vUIExperienceBar.BarBG, "TOPLEFT", vUIExperienceBar, 0, 0)
-		vUI:SetPoint(vUIExperienceBar.BarBG, "BOTTOMRIGHT", vUIExperienceBar, 0, 0)
+		vUIExperienceBar.BarBG:SetPoint("TOPLEFT", vUIExperienceBar, 0, 0)
+		vUIExperienceBar.BarBG:SetPoint("BOTTOMRIGHT", vUIExperienceBar, 0, 0)
 	end
 end
 
@@ -135,13 +135,13 @@ local UpdateDisplayPercent = function(value)
 end
 
 local UpdateBarWidth = function(value)
-	vUI:SetWidth(vUIExperienceBar, value)
+	vUIExperienceBar:SetWidth(value)
 end
 
 local UpdateBarHeight = function(value)
-	vUI:SetHeight(vUIExperienceBar, value)
-	vUI:SetHeight(vUIExperienceBar.HeaderBG, value)
-	vUI:SetHeight(vUIExperienceBar.Bar.Spark, value)
+	vUIExperienceBar:SetHeight(value)
+	vUIExperienceBar.HeaderBG:SetHeight(value)
+	vUIExperienceBar.Bar.Spark:SetHeight(value)
 end
 
 function ExperienceBar:OnEnter()
@@ -252,8 +252,8 @@ ExperienceBar["PLAYER_ENTERING_WORLD"] = function(self)
 		return
 	end
 	
-	vUI:SetSize(self, Settings["experience-width"], Settings["experience-height"])
-	vUI:SetPoint(self, "TOP", UIParent, 0, -13)
+	self:SetSize(Settings["experience-width"], Settings["experience-height"])
+	self:SetPoint("TOP", vUI.UIParent, 0, -13)
 	self:SetFrameStrata("HIGH")
 	self:SetScript("OnEnter", self.OnEnter)
 	self:SetScript("OnLeave", self.OnLeave)
@@ -261,40 +261,40 @@ ExperienceBar["PLAYER_ENTERING_WORLD"] = function(self)
 	self.LastXP = UnitXP("player")
 	
 	self.HeaderBG = CreateFrame("Frame", nil, self)
-	vUI:SetHeight(self.HeaderBG, Settings["experience-height"])
-	vUI:SetPoint(self.HeaderBG, "LEFT", self, 0, 0)
+	self.HeaderBG:SetHeight(Settings["experience-height"])
+	self.HeaderBG:SetPoint("LEFT", self, 0, 0)
 	self.HeaderBG:SetBackdrop(vUI.BackdropAndBorder)
 	self.HeaderBG:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self.HeaderBG:SetBackdropBorderColor(0, 0, 0)
 	
 	self.HeaderBG.Texture = self.HeaderBG:CreateTexture(nil, "ARTWORK")
-	vUI:SetPoint(self.HeaderBG.Texture, "TOPLEFT", self.HeaderBG, 1, -1)
-	vUI:SetPoint(self.HeaderBG.Texture, "BOTTOMRIGHT", self.HeaderBG, -1, 1)
+	self.HeaderBG.Texture:SetPoint("TOPLEFT", self.HeaderBG, 1, -1)
+	self.HeaderBG.Texture:SetPoint("BOTTOMRIGHT", self.HeaderBG, -1, 1)
 	self.HeaderBG.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	self.HeaderBG.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	self.HeaderBG.Text = self.HeaderBG:CreateFontString(nil, "OVERLAY")
-	vUI:SetPoint(self.HeaderBG.Text, "CENTER", self.HeaderBG, 0, 0)
+	self.HeaderBG.Text:SetPoint("CENTER", self.HeaderBG, 0, 0)
 	vUI:SetFontInfo(self.HeaderBG.Text, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.HeaderBG.Text:SetJustifyH("CENTER")
 	self.HeaderBG.Text:SetText(format("|cFF%s%s:|r", Settings["ui-widget-color"], Language["Level"]))
 	
 	self.BarBG = CreateFrame("Frame", nil, self)
-	vUI:SetPoint(self.BarBG, "TOPLEFT", self.HeaderBG, "TOPRIGHT", 2, 0)
-	vUI:SetPoint(self.BarBG, "BOTTOMRIGHT", self, 0, 0)
+	self.BarBG:SetPoint("TOPLEFT", self.HeaderBG, "TOPRIGHT", 2, 0)
+	self.BarBG:SetPoint("BOTTOMRIGHT", self, 0, 0)
 	self.BarBG:SetBackdrop(vUI.BackdropAndBorder)
 	self.BarBG:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	self.BarBG:SetBackdropBorderColor(0, 0, 0)
 	
 	self.Texture = self.BarBG:CreateTexture(nil, "ARTWORK")
-	vUI:SetPoint(self.Texture, "TOPLEFT", self.BarBG, 1, -1)
-	vUI:SetPoint(self.Texture, "BOTTOMRIGHT", self.BarBG, -1, 1)
+	self.Texture:SetPoint("TOPLEFT", self.BarBG, 1, -1)
+	self.Texture:SetPoint("BOTTOMRIGHT", self.BarBG, -1, 1)
 	self.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	self.BGAll = CreateFrame("Frame", nil, self)
-	vUI:SetPoint(self.BGAll, "TOPLEFT", self.HeaderBG, -3, 3)
-	vUI:SetPoint(self.BGAll, "BOTTOMRIGHT", self.BarBG, 3, -3)
+	self.BGAll:SetPoint("TOPLEFT", self.HeaderBG, -3, 3)
+	self.BGAll:SetPoint("BOTTOMRIGHT", self.BarBG, 3, -3)
 	self.BGAll:SetBackdrop(vUI.BackdropAndBorder)
 	self.BGAll:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self.BGAll:SetBackdropBorderColor(0, 0, 0)
@@ -302,8 +302,8 @@ ExperienceBar["PLAYER_ENTERING_WORLD"] = function(self)
 	self.Bar = CreateFrame("StatusBar", nil, self.BarBG)
 	self.Bar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	self.Bar:SetStatusBarColor(vUI:HexToRGB(Settings["experience-bar-color"]))
-	vUI:SetPoint(self.Bar, "TOPLEFT", self.BarBG, 1, -1)
-	vUI:SetPoint(self.Bar, "BOTTOMRIGHT", self.BarBG, -1, 1)
+	self.Bar:SetPoint("TOPLEFT", self.BarBG, 1, -1)
+	self.Bar:SetPoint("BOTTOMRIGHT", self.BarBG, -1, 1)
 	self.Bar:SetFrameLevel(6)
 	
 	self.Bar.BG = self.Bar:CreateTexture(nil, "BORDER")
@@ -314,8 +314,8 @@ ExperienceBar["PLAYER_ENTERING_WORLD"] = function(self)
 	
 	self.Bar.Spark = self.Bar:CreateTexture(nil, "OVERLAY")
 	self.Bar.Spark:SetDrawLayer("OVERLAY", 7)
-	vUI:SetSize(self.Bar.Spark, 1, Settings["experience-height"])
-	vUI:SetPoint(self.Bar.Spark, "LEFT", self.Bar:GetStatusBarTexture(), "RIGHT", 0, 0)
+	self.Bar.Spark:SetSize(1, Settings["experience-height"])
+	self.Bar.Spark:SetPoint("LEFT", self.Bar:GetStatusBarTexture(), "RIGHT", 0, 0)
 	self.Bar.Spark:SetTexture(Assets:GetTexture("Blank"))
 	self.Bar.Spark:SetVertexColor(0, 0, 0)
 	
@@ -350,20 +350,20 @@ ExperienceBar["PLAYER_ENTERING_WORLD"] = function(self)
 	self.Bar.Rested:SetAllPoints(self.Bar)
 	
 	self.Bar.Rested.Spark = self.Bar.Rested:CreateTexture(nil, "OVERLAY")
-	vUI:SetSize(self.Bar.Rested.Spark, 1, Settings["experience-height"])
-	vUI:SetPoint(self.Bar.Rested.Spark, "LEFT", self.Bar.Rested:GetStatusBarTexture(), "RIGHT", 0, 0)
+	self.Bar.Rested.Spark:SetSize(1, Settings["experience-height"])
+	self.Bar.Rested.Spark:SetPoint("LEFT", self.Bar.Rested:GetStatusBarTexture(), "RIGHT", 0, 0)
 	self.Bar.Rested.Spark:SetTexture(Assets:GetTexture("Blank"))
 	self.Bar.Rested.Spark:SetVertexColor(0, 0, 0)
 	
 	self.Progress = self.Bar:CreateFontString(nil, "OVERLAY")
-	vUI:SetPoint(self.Progress, "LEFT", self.Bar, 5, 0)
+	self.Progress:SetPoint("LEFT", self.Bar, 5, 0)
 	vUI:SetFontInfo(self.Progress, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Progress:SetJustifyH("LEFT")
 	
 	-- Add fade to self.Progress
 	
 	self.Percentage = self.Bar:CreateFontString(nil, "OVERLAY")
-	vUI:SetPoint(self.Percentage, "RIGHT", self.Bar, -5, 0)
+	self.Percentage:SetPoint("RIGHT", self.Bar, -5, 0)
 	vUI:SetFontInfo(self.Percentage, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Percentage:SetJustifyH("RIGHT")
 	

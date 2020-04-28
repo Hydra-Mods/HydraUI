@@ -18,8 +18,49 @@ local Assets = {}
 local Settings = {}
 local Defaults = {}
 
+-- Core functions and data
+local vUI = CreateFrame("Frame", nil, UIParent)
+vUI.Modules = {}
+vUI.Plugins = {}
+
+vUI.UIParent = CreateFrame("Frame", "vUIParent", UIParent)
+vUI.UIParent:SetPoint("CENTER", UIParent)
+vUI.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
+
+-- Some constants
+vUI.UIVersion = GetAddOnMetadata("vUI", "Version")
+vUI.UserName = UnitName("player")
+vUI.UserClass = select(2, UnitClass("player"))
+vUI.UserRace = UnitRace("player")
+vUI.UserRealm = GetRealmName()
+vUI.UserLocale = GetLocale()
+vUI.UserProfileKey = format("%s:%s", vUI.UserName, vUI.UserRealm)
+
+if (vUI.UserLocale == "enGB") then
+	vUI.UserLocale = "enUS"
+end
+
+-- Backdrops
+vUI.Backdrop = {
+	bgFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga",
+	insets = {top = 0, left = 0, bottom = 0, right = 0},
+}
+
+vUI.BackdropAndBorder = {
+	bgFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga",
+	edgeFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga",
+	edgeSize = 1,
+	insets = {top = 0, left = 0, bottom = 0, right = 0},
+}
+
+vUI.Outline = {
+	edgeFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga",
+	edgeSize = 1,
+	insets = {left = 0, right = 0, top = 0, bottom = 0},
+}
+
 -- GUI
-local GUI = CreateFrame("Frame", nil, UIParent)
+local GUI = CreateFrame("Frame", nil, vUI.UIParent)
 
 GUI.Queue = {}
 
@@ -37,25 +78,6 @@ local Index = function(self, key)
 end
 
 setmetatable(Language, {__index = Index})
-
--- Core functions and data
-local vUI = CreateFrame("Frame", nil, UIParent)
-
-vUI.Modules = {}
-vUI.Plugins = {}
-
--- Some constants
-vUI.UIVersion = GetAddOnMetadata("vUI", "Version")
-vUI.UserName = UnitName("player")
-vUI.UserClass = select(2, UnitClass("player"))
-vUI.UserRace = UnitRace("player")
-vUI.UserRealm = GetRealmName()
-vUI.UserLocale = GetLocale()
-vUI.UserProfileKey = format("%s:%s", vUI.UserName, vUI.UserRealm)
-
-if (vUI.UserLocale == "enGB") then
-	vUI.UserLocale = "enUS"
-end
 
 -- Modules and plugins
 local Hook = function(self, global, hook)
@@ -79,7 +101,7 @@ function vUI:NewModule(name)
 		return self.Modules[name]
 	end
 	
-	local Module = CreateFrame("Frame", "vUI " .. name, UIParent)
+	local Module = CreateFrame("Frame", "vUI " .. name, self.UIParent)
 	
 	Module.Name = name
 	Module.Loaded = false
@@ -123,7 +145,7 @@ function vUI:NewPlugin(name)
 		return self.Plugins[name]
 	end
 	
-	local Plugin = CreateFrame("Frame", name, UIParent)
+	local Plugin = CreateFrame("Frame", name, self.UIParent)
 	local Name, Title, Notes = GetAddOnInfo(name)
 	local Author = GetAddOnMetadata(name, "Author")
 	local Version = GetAddOnMetadata(name, "Version")
@@ -213,40 +235,28 @@ end
 	https://www.wowinterface.com/forums/showthread.php?t=31813
 --]]
 
-local ScreenHeight
-local Scale = 1
+local ScreenWidth, ScreenHeight
 
-function vUI:UpdateScreenHeight()
+function vUI:UpdateScreenSize()
 	if (C_CVar.GetCVar("gxMaximize") == "1") then -- A fullscreen resolution
 		self.ScreenResolution = C_CVar.GetCVar("gxFullscreenResolution")
 	else -- Windowed
 		self.ScreenResolution = C_CVar.GetCVar("gxWindowedResolution")
 	end
 	
-	ScreenHeight = tonumber(match(self.ScreenResolution, "%d+x(%d+)"))
+	ScreenWidth, ScreenHeight = match(self.ScreenResolution, "(%d+)x(%d+)")
+	
+	self.UIParent:SetSize(tonumber(ScreenWidth), tonumber(ScreenHeight))
 end
 
-vUI:UpdateScreenHeight()
-
-local GetScale = function(x)
-	return floor(Scale * x + 0.5)
-end
-
-function vUI:GetScale(x)
-	return GetScale(x)
-end
+vUI:UpdateScreenSize()
 
 function vUI:SetScale(x)
 	x = min(1.2, max(0.4, x))
 	
-	C_CVar.SetCVar("uiScale", x)
+	self:UpdateScreenSize()
 	
-	self:UpdateScreenHeight()
-	
-	Scale = (768 / ScreenHeight) / x
-	
-	--self.BackdropAndBorder.edgeSize = GetScale(x)
-	--self.Outline.edgeSize = GetScale(x)
+	self.UIParent:SetScale((768 / ScreenHeight) / x)
 end
 
 function vUI:SetSuggestedScale()
@@ -256,25 +266,6 @@ end
 function vUI:GetSuggestedScale()
 	return (768 / ScreenHeight)
 end
-
--- Backdrops
-vUI.Backdrop = {
-	bgFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga",
-	insets = {top = 0, left = 0, bottom = 0, right = 0},
-}
-
-vUI.BackdropAndBorder = {
-	bgFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga",
-	edgeFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga",
-	edgeSize = 1,
-	insets = {top = 0, left = 0, bottom = 0, right = 0},
-}
-
-vUI.Outline = {
-	edgeFile = "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIBlank.tga",
-	edgeSize = 1,
-	insets = {left = 0, right = 0, top = 0, bottom = 0},
-}
 
 -- Tools
 vUI.TimerPool = {}
@@ -309,7 +300,7 @@ function vUI:HexToRGB(hex)
 		return
 	end
 	
-	return tonumber("0x"..sub(hex, 1, 2)) / 255, tonumber("0x"..sub(hex, 3, 4)) / 255, tonumber("0x"..sub(hex, 5, 6)) / 255
+	return tonumber("0x" .. sub(hex, 1, 2)) / 255, tonumber("0x" .. sub(hex, 3, 4)) / 255, tonumber("0x" .. sub(hex, 5, 6)) / 255
 end
 
 function vUI:RGBToHex(r, g, b)
@@ -426,41 +417,6 @@ function vUI:print(...)
 	end
 end
 
-function vUI:SetHeight(object, height)
-	--object:SetHeight(GetScale(height))
-	object:SetHeight(height)
-end
-
-function vUI:SetWidth(object, width)
-	--object:SetWidth(GetScale(width))
-	object:SetWidth(width)
-end
-
-function vUI:SetSize(object, width, height)
-	--object:SetSize(GetScale(width), GetScale(height or width))
-	object:SetSize(width, height or width)
-end
-
-function vUI:SetPoint(object, anchor1, parent, anchor2, x, y)
-	--[[if (type(parent) == "number") then
-		parent = GetScale(parent)
-	end
-	
-	if (type(anchor2) == "number") then
-		anchor2 = GetScale(anchor2)
-	end
-	
-	if (type(x) == "number") then
-		x = GetScale(x)
-	end
-	
-	if (type(y) == "number") then
-		y = GetScale(y)
-	end]]
-	
-	object:SetPoint(anchor1, parent, anchor2, x, y)
-end
-
 function vUI:SetFontInfo(object, font, size, flags)
 	local Font, IsPixel = Assets:GetFont(font)
 	
@@ -474,11 +430,8 @@ function vUI:SetFontInfo(object, font, size, flags)
 	end
 end
 
+-- Events
 function vUI:VARIABLES_LOADED(event)
-	if (not C_CVar.GetCVar("useUIScale")) then
-		C_CVar.SetCVar("useUIScale", 1)
-	end
-	
 	Defaults["ui-scale"] = self:GetSuggestedScale()
 	
 	-- Import profile data and load a profile
@@ -518,43 +471,6 @@ end
 vUI:RegisterEvent("VARIABLES_LOADED")
 vUI:RegisterEvent("PLAYER_ENTERING_WORLD")
 vUI:SetScript("OnEvent", vUI.OnEvent)
-
--- Aura wrappers for lookup by name
-local UnitAura = UnitAura
-local UnitBuff = UnitBuff
-local UnitDebuff = UnitDebuff
-
-local Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3
-
-UnitAuraByName = function(unit, name, filter)
-	for i = 1, 40 do
-		Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3 = UnitAura(unit, i, filter)
-		
-		if (Name == name) then
-			return Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3
-		end
-	end
-end
-
-UnitBuffByName = function(unit, name, filter)
-	for i = 1, 40 do
-		Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3 = UnitBuff(unit, i, filter)
-		
-		if (Name == name) then
-			return Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3
-		end
-	end
-end
-
-UnitDebuffByName = function(unit, name, filter)
-	for i = 1, 40 do
-		Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3 = UnitDebuff(unit, i, filter)
-		
-		if (Name == name) then
-			return Name, Texture, Count, DebuffType, Duration, Expiration, Caster, IsStealable, NameplateShowSelf, SpellID, CanApply, IsBossDebuff, CasterIsPlayer, NameplateShowAll, TimeMod, Effect1, Effect2, Effect3
-		end
-	end
-end
 
 -- Access data tables
 function Namespace:get()

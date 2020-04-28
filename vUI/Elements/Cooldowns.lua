@@ -57,16 +57,16 @@ local GetTexture = function(cd, id)
 	end
 end
 
-local Frame = CreateFrame("Frame", nil, UIParent)
-vUI:SetSize(Frame, 60, 60)
-vUI:SetPoint(Frame, "CENTER", UIParent, "CENTER", 0, 100) -- -300
+local Frame = CreateFrame("Frame", nil, vUI.UIParent)
+Frame:SetSize(60, 60)
+Frame:SetPoint("CENTER", vUI.UIParent, "CENTER", 0, 100) -- -300
 Frame:SetBackdrop(vUI.Backdrop)
 Frame:SetBackdropColor(0, 0, 0)
 Frame:SetAlpha(0)
 
 Frame.Icon = Frame:CreateTexture(nil, "OVERLAY")
-vUI:SetPoint(Frame.Icon, "TOPLEFT", Frame, 1, -1)
-vUI:SetPoint(Frame.Icon, "BOTTOMRIGHT", Frame, -1, 1)
+Frame.Icon:SetPoint("TOPLEFT", Frame, 1, -1)
+Frame.Icon:SetPoint("BOTTOMRIGHT", Frame, -1, 1)
 Frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 
 Frame.Anim = CreateAnimationGroup(Frame)
@@ -209,12 +209,12 @@ function Cooldowns:Load()
 		return
 	end
 	
-	local Anchor = CreateFrame("Frame", "vUI Cooldown Flash", UIParent)
-	vUI:SetSize(Anchor, 60, 60)
-	vUI:SetPoint(Anchor, "CENTER", UIParent, "CENTER", 0, 100)
+	local Anchor = CreateFrame("Frame", "vUI Cooldown Flash", vUI.UIParent)
+	Anchor:SetSize(60, 60)
+	Anchor:SetPoint("CENTER", vUI.UIParent, "CENTER", 0, 100)
 	
-	vUI:SetSize(Frame, 60, 60)
-	vUI:SetPoint(Frame, "CENTER", Anchor, "CENTER", 0, 0)
+	Frame:SetSize(60, 60)
+	Frame:SetPoint("CENTER", Anchor, "CENTER", 0, 0)
 	
 	vUI:CreateMover(Anchor)
 	
