@@ -11,13 +11,16 @@ local RevertScaleChange = function()
 end
 
 local ScaleOnAccept = function()
-	vUI:SetSuggestedScale()
+	local Suggested = vUI:GetSuggestedScale()
+	local Profile = vUI:GetProfile(vUI:GetActiveProfileName())
+	
+	Profile["ui-scale"] = Suggested
+	
+	vUI:SetScale(Suggested)
 end
 
 local SetSuggestedScale = function()
-	local Suggested = vUI:GetSuggestedScale()
-	
-	vUI:DisplayPopup(Language["Attention"], format(Language["Are you sure you would like to change your UI scale to the suggested setting of %s?"], Suggested), "Accept", ScaleOnAccept, "Cancel")
+	vUI:DisplayPopup(Language["Attention"], format(Language["Are you sure you would like to change your UI scale to the suggested setting of %s?"], vUI:GetSuggestedScale()), "Accept", ScaleOnAccept, "Cancel")
 end
 
 GUI:AddOptions(function(self)
