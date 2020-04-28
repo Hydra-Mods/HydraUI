@@ -1112,6 +1112,8 @@ GUI.Widgets.CreateInput = function(self, id, value, label, tooltip, hook)
 	
 	tinsert(self.Widgets, Anchor)
 	
+	Anchor.Input = Input
+	
 	return Input
 end
 
@@ -1250,6 +1252,8 @@ GUI.Widgets.CreateInputWithButton = function(self, id, value, button, label, too
 	
 	tinsert(self.Widgets, Anchor)
 	tinsert(self.Widgets, Anchor2)
+	
+	Anchor.Input = Input
 	
 	return Input
 end

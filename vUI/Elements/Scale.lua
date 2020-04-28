@@ -14,9 +14,13 @@ local ScaleOnAccept = function()
 	local Suggested = vUI:GetSuggestedScale()
 	local Profile = vUI:GetProfile(vUI:GetActiveProfileName())
 	
-	Profile["ui-scale"] = Suggested
+	if (Profile["ui-scale"] ~= Suggested) then
+		Profile["ui-scale"] = Suggested
+	end
 	
 	vUI:SetScale(Suggested)
+	
+	GUI:GetWidgetByWindow(Language["General"], "ui-scale").Input.ButtonText:SetText(Suggested)
 end
 
 local SetSuggestedScale = function()

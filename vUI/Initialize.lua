@@ -24,7 +24,7 @@ vUI.Modules = {}
 vUI.Plugins = {}
 
 vUI.UIParent = CreateFrame("Frame", "vUIParent", UIParent)
-vUI.UIParent:SetPoint("CENTER", UIParent)
+vUI.UIParent:SetAllPoints(UIParent)
 vUI.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
 
 -- Some constants
@@ -252,11 +252,8 @@ end
 vUI:UpdateScreenSize()
 
 function vUI:SetScale(x)
-	x = min(1.2, max(0.4, x))
-	
 	self:UpdateScreenSize()
-	
-	self.UIParent:SetScale((768 / ScreenHeight) / x)
+	self.UIParent:SetScale((768 / ScreenHeight) / min(1.2, max(0.4, x)))
 end
 
 function vUI:SetSuggestedScale()
