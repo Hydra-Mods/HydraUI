@@ -24,18 +24,20 @@ local SaveValue = function(anchor)
 end
 
 local SetTooltip = function(anchor)
-	--GameTooltip_SetDefaultAnchor(GameTooltip, anchor)
-	
-	local X, Y = anchor:GetCenter()
-	local Position = (Y > vUI.UIParent:GetHeight() / 2) and "TOP" or "BOTTOM"
-	
-	GameTooltip:SetOwner(anchor, "ANCHOR_NONE")
-	GameTooltip:ClearAllPoints()
-	
-	if (Position == "TOP") then
-		GameTooltip:SetPoint("TOP", anchor, "BOTTOM", -8)
+	if Settings["data-text-hover-tooltips"] then
+		local X, Y = anchor:GetCenter()
+		local Position = (Y > vUI.UIParent:GetHeight() / 2) and "TOP" or "BOTTOM"
+		
+		GameTooltip:SetOwner(anchor, "ANCHOR_NONE")
+		GameTooltip:ClearAllPoints()
+		
+		if (Position == "TOP") then
+			GameTooltip:SetPoint("TOP", anchor, "BOTTOM", 0, -8)
+		else
+			GameTooltip:SetPoint("BOTTOM", anchor, "TOP", 0, 8)
+		end
 	else
-		GameTooltip:SetPoint("BOTTOM", anchor, "TOP", 8)
+		GameTooltip_SetDefaultAnchor(GameTooltip, anchor)
 	end
 end
 
@@ -250,6 +252,7 @@ GUI:AddOptions(function(self)
 	
 	Right:CreateHeader(Language["Styling"])
 	Right:CreateSwitch("data-text-enable-tooltips", Settings["data-text-enable-tooltips"], Language["Enable Tooltips"], Language["Display tooltip information when hovering over data texts"], UpdateEnableTooltips)
+	Right:CreateSwitch("data-text-hover-tooltips", Settings["data-text-hover-tooltips"], Language["Hover Tooltips"], Language["Display tooltip information directly by the data text instead of at the default tooltip location"])
 	Right:CreateSwitch("data-text-24-hour", Settings["data-text-24-hour"], Language["Enable 24 Hour Time"], Language["Display time in a 24 hour format"], UpdateTimeFormat)
 	
 	Right:CreateHeader(Language["Gold"])

@@ -8,7 +8,7 @@ local OnMouseUp = function()
 end
 
 local OnEnter = function(self)
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	self:SetTooltip()
 	
 	local Average, Equipped, PVP = GetAverageItemLevel()
 	

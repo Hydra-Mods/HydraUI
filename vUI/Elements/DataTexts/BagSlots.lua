@@ -6,7 +6,7 @@ local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local Label = Language["Bags"]
 
 local OnEnter = function(self)
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	self:SetTooltip()
 	
 	GameTooltip:AddLine(Language["Inventory"])
 	GameTooltip:AddLine(" ")

@@ -4,7 +4,7 @@ local GetMinimapZoneText = GetMinimapZoneText
 local GetZonePVPInfo = GetZonePVPInfo
 
 local OnEnter = function(self)
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	self:SetTooltip()
 	
 	local ZoneText = GetRealZoneText()
 	local SubZoneText = GetMinimapZoneText()

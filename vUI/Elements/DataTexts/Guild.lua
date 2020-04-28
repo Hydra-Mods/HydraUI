@@ -25,7 +25,7 @@ local OnEnter = function(self)
 	
 	self:RegisterEvent("MODIFIER_STATE_CHANGED")
 	
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	self:SetTooltip()
 	
 	GuildRoster()
 	

@@ -4,7 +4,7 @@ local GetBestMapForUnit = C_Map.GetBestMapForUnit
 local GetPlayerMapPosition = C_Map.GetPlayerMapPosition
 
 local OnEnter = function(self)
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	self:SetTooltip()
 	
 	-- Location
 	local ZoneText = GetRealZoneText()

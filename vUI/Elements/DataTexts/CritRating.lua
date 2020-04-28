@@ -6,7 +6,7 @@ local GetCritChance = GetCritChance
 local Label = Language["Crit"]
 
 local OnEnter = function(self)
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	self:SetTooltip()
 	
 	GameTooltip:Show()
 end

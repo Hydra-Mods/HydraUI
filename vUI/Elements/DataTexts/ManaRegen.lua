@@ -5,7 +5,7 @@ local InCombatLockdown = InCombatLockdown
 local Label = Language["Regen"]
 
 local OnEnter = function(self)
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	self:SetTooltip()
 	
 	local Base, Casting = GetManaRegen()
 	

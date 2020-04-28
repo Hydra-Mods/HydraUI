@@ -11,7 +11,7 @@ local Label = Language["Durability"]
 local ScanTooltip = CreateFrame("GameTooltip", nil, UIParent, "GameTooltipTemplate")
 
 local OnEnter = function(self)
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	self:SetTooltip()
 	
 	GameTooltip:AddLine(Label)
 	GameTooltip:AddLine(" ")

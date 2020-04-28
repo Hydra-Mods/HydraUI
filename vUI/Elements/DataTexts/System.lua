@@ -8,7 +8,7 @@ local FPSLabel = Language["FPS"]
 local MSLabel = Language["MS"]
 
 local OnEnter = function(self)
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	self:SetTooltip()
 	
 	local HomeLatency, WorldLatency = select(3, GetNetStats())
 	

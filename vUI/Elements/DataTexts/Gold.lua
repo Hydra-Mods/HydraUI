@@ -6,7 +6,7 @@ local GetMoney = GetMoney
 local GetCoinTextureString = GetCoinTextureString
 
 local OnEnter = function(self)
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	self:SetTooltip()
 	
 	local TrashValue = select(2, vUI:GetTrashValue())
 	local ServerInfo, ServerTotalGold = Gold:GetServerInfo()

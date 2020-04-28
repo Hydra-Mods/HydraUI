@@ -207,7 +207,7 @@ local GetClientInformation = function(client, name, info)
 end
 
 local OnEnter = function(self)
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	self:SetTooltip()
 	
 	local NumFriends = GetNumFriends()
 	local NumFriendsOnline = GetNumOnlineFriends()
