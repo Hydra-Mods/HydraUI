@@ -70,7 +70,7 @@ GUI:AddOptions(function(self)
 end)
 
 function Debug:DISPLAY_SIZE_CHANGED()
-	vUI:UpdateScreenHeight()
+	vUI:UpdateScreenSize()
 	
 	GUI:GetWidgetByWindow(Language["Debug"], "suggested-scale").Right:SetText(vUI:GetSuggestedScale())
 	GUI:GetWidgetByWindow(Language["Debug"], "resolution").Right:SetText(vUI.ScreenResolution)
@@ -78,7 +78,7 @@ function Debug:DISPLAY_SIZE_CHANGED()
 end
 
 function Debug:UI_SCALE_CHANGED()
-	vUI:UpdateScreenHeight()
+	vUI:UpdateScreenSize()
 	
 	GUI:GetWidgetByWindow(Language["Debug"], "suggested-scale").Right:SetText(vUI:GetSuggestedScale())
 end
