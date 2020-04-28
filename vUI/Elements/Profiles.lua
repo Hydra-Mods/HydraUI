@@ -7,12 +7,6 @@ local match = string.match
 
 vUI.ProfileList = {}
 
---[[
-	To do:
-	
-	vUI:CopyProfile(from, to)
---]]
-
 vUI.ProfileMetadata = {
 	["profile-name"] = true,
 	["profile-created"] = true,
@@ -24,34 +18,6 @@ vUI.ProfileMetadata = {
 vUI.PreserveSettings = {
 	["ui-scale"] = true,
 }
-
-function vUI:UpdateProfileInfo()
-	local Name = self:GetActiveProfileName()
-	local Profile = self:GetProfile(Name)
-	local MostUsed = self:GetMostUsedProfile()
-	local NumServed, IsAll = self:GetNumServedByProfile(Name)
-	local MostUsedServed = NumServed
-	
-	if IsAll then
-		NumServed = format("%d (%s)", NumServed, Language["All"])
-	end
-	
-	if (Profile ~= MostUsed) then
-		MostUsedServed = self:GetNumServedByProfile(MostUsed)
-	end
-	
-	GUI:GetWidgetByWindow(Language["Profiles"], "current-profile").Right:SetText(Name)
-	GUI:GetWidgetByWindow(Language["Profiles"], "created-by").Right:SetText(Profile["profile-created-by"])
-	GUI:GetWidgetByWindow(Language["Profiles"], "created-on").Right:SetText(vUI:IsToday(Profile["profile-created"]))
-	GUI:GetWidgetByWindow(Language["Profiles"], "last-modified").Right:SetText(vUI:IsToday(Profile["profile-last-modified"]))
-	GUI:GetWidgetByWindow(Language["Profiles"], "modifications").Right:SetText(self:CountChangedValues(Name))
-	GUI:GetWidgetByWindow(Language["Profiles"], "serving-characters").Right:SetText(NumServed)
-	
-	GUI:GetWidgetByWindow(Language["Profiles"], "popular-profile").Right:SetText(format("%s (%d)", MostUsed, MostUsedServed))
-	GUI:GetWidgetByWindow(Language["Profiles"], "stored-profiles").Right:SetText(self:GetProfileCount())
-	GUI:GetWidgetByWindow(Language["Profiles"], "empty-profiles").Right:SetText(self:CountEmptyProfiles())
-	GUI:GetWidgetByWindow(Language["Profiles"], "unused-profiles").Right:SetText(self:CountUnusedProfiles())
-end
 
 function vUI:UpdateProfileList()
 	if vUIProfiles then
@@ -462,10 +428,38 @@ function vUI:CopyProfile(from, to)
 	self:print(format('Profile "%s" has been copied from "%s".', to, from))
 end
 
-function vUI:SetProfileMetadata(name, meta, value) -- /run vUI:get(7):SetProfileMetadata("ProfileName", "profile-created-by", "Hydra")
+function vUI:SetProfileMetadata(name, meta, value) -- /run vUI:get(1):SetProfileMetadata("ProfileName", "profile-created-by", "Hydra")
 	if (vUIProfiles[name] and self.ProfileMetadata[meta]) then
 		vUIProfiles[name][meta] = value
 	end
+end
+
+function vUI:UpdateProfileInfo()
+	local Name = self:GetActiveProfileName()
+	local Profile = self:GetProfile(Name)
+	local MostUsed = self:GetMostUsedProfile()
+	local NumServed, IsAll = self:GetNumServedByProfile(Name)
+	local MostUsedServed = NumServed
+	
+	if IsAll then
+		NumServed = format("%d (%s)", NumServed, Language["All"])
+	end
+	
+	if (Profile ~= MostUsed) then
+		MostUsedServed = self:GetNumServedByProfile(MostUsed)
+	end
+	
+	GUI:GetWidgetByWindow(Language["Profiles"], "current-profile").Right:SetText(Name)
+	GUI:GetWidgetByWindow(Language["Profiles"], "created-by").Right:SetText(Profile["profile-created-by"])
+	GUI:GetWidgetByWindow(Language["Profiles"], "created-on").Right:SetText(vUI:IsToday(Profile["profile-created"]))
+	GUI:GetWidgetByWindow(Language["Profiles"], "last-modified").Right:SetText(vUI:IsToday(Profile["profile-last-modified"]))
+	GUI:GetWidgetByWindow(Language["Profiles"], "modifications").Right:SetText(self:CountChangedValues(Name))
+	GUI:GetWidgetByWindow(Language["Profiles"], "serving-characters").Right:SetText(NumServed)
+	
+	GUI:GetWidgetByWindow(Language["Profiles"], "popular-profile").Right:SetText(format("%s (%d)", MostUsed, MostUsedServed))
+	GUI:GetWidgetByWindow(Language["Profiles"], "stored-profiles").Right:SetText(self:GetProfileCount())
+	GUI:GetWidgetByWindow(Language["Profiles"], "empty-profiles").Right:SetText(self:CountEmptyProfiles())
+	GUI:GetWidgetByWindow(Language["Profiles"], "unused-profiles").Right:SetText(self:CountUnusedProfiles())
 end
 
 local AcceptNewProfile = function(value)
@@ -565,14 +559,14 @@ local DeleteEmpty = function()
 	vUI:DeleteEmptyProfiles()
 	vUI:UpdateProfileInfo()
 	
-	ReloadUI() -- Temp
+	--ReloadUI() -- Temp
 end
 
 local DeleteUnused = function()
 	vUI:DeleteUnusedProfiles()
 	vUI:UpdateProfileInfo()
 	
-	ReloadUI() -- Temp
+	--ReloadUI() -- Temp
 end
 
 local RenameProfile = function(value)
@@ -606,8 +600,8 @@ GUI:AddOptions(function(self)
 	Left:CreateInput("profile-delete", vUI:GetDefaultProfileKey(), Language["Delete Profile"], Language["Delete a profile"], DeleteProfile):DisableSaving()
 	Left:CreateInput("profile-rename", "", Language["Rename Profile"], Language["Rename the currently selected profile"], RenameProfile):DisableSaving()
 	Left:CreateButton(Language["Restore"], Language["Restore To Default"], Language["Restore the currently selected profile to default settings"], RestoreToDefault):RequiresReload(true)
-	Left:CreateButton(Language["Delete"], Language["Delete Empty Profiles"], Language["Delete any profiles that have no settings that vary from default"], DeleteEmpty):RequiresReload(true)
-	Left:CreateButton(Language["Delete"], Language["Delete Unused Profiles"], Language["Delete any profiles that are not currently in use by any characters"], DeleteUnused):RequiresReload(true)
+	Left:CreateButton(Language["Delete"], Language["Delete Empty Profiles"], Language["Delete any profiles that have no settings that vary from default"], DeleteEmpty)
+	Left:CreateButton(Language["Delete"], Language["Delete Unused Profiles"], Language["Delete any profiles that are not currently in use by any characters"], DeleteUnused)
 	
 	--[[Left:CreateHeader(Language["Sharing is caring"])
 	Left:CreateButton(Language["Import"], Language["Import A Profile"], "", ShowImportWindow)
