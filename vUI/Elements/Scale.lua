@@ -24,7 +24,7 @@ local ScaleOnAccept = function()
 end
 
 local SetSuggestedScale = function()
-	vUI:DisplayPopup(Language["Attention"], format(Language["Are you sure you would like to change your UI scale to the suggested setting of %s?"], vUI:GetSuggestedScale()), "Accept", ScaleOnAccept, "Cancel")
+	vUI:DisplayPopup(Language["Attention"], format(Language["Are you sure you would like to change your UI scale to the suggested setting of %s?"], vUI:GetSuggestedScale()), Language["Accept"], ScaleOnAccept, Language["Cancel"])
 end
 
 GUI:AddOptions(function(self)
@@ -32,6 +32,6 @@ GUI:AddOptions(function(self)
 	
 	Right:CreateHeader(Language["Scale"])
 	--Right:CreateLine("|cFFE81123Do not use this to resize UI elements|r")
-	Right:CreateInput("ui-scale", Settings["ui-scale"], Language["Set UI Scale"], "Set the scale for the UI", UpdateUIScale)
+	Right:CreateInput("ui-scale", Settings["ui-scale"], Language["Set UI Scale"], Language["Set the scale for the UI"], UpdateUIScale)
 	Right:CreateButton(Language["Apply"], Language["Set Suggested Scale"], Language["Apply the scale recommended based on your resolution"], SetSuggestedScale)
 end)
