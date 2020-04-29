@@ -280,6 +280,10 @@ Defaults["unitframes-player-power-height"] = 15
 Defaults["unitframes-player-power-reverse"] = false
 Defaults["unitframes-player-power-color"] = "POWER"
 Defaults["unitframes-player-power-smooth"] = true
+Defaults["unitframes-player-health-left"] = ""
+Defaults["unitframes-player-health-right"] = "[HealthPercent]"
+Defaults["unitframes-player-power-left"] = "[HealthValues]"
+Defaults["unitframes-player-power-right"] = "[PowerValues]"
 
 -- Unitframes: Target
 Defaults["unitframes-target-width"] = 238
@@ -291,6 +295,10 @@ Defaults["unitframes-target-power-height"] = 15
 Defaults["unitframes-target-power-reverse"] = false
 Defaults["unitframes-target-power-color"] = "POWER"
 Defaults["unitframes-target-power-smooth"] = true
+Defaults["unitframes-target-health-left"] = "[LevelColor][Level][Plus]|r [Name30]"
+Defaults["unitframes-target-health-right"] = "[HealthPercent]"
+Defaults["unitframes-target-power-left"] = "[HealthValues]"
+Defaults["unitframes-target-power-right"] = "[PowerValues]"
 
 -- Unitframes: Target of Target
 Defaults["unitframes-targettarget-width"] = 110
