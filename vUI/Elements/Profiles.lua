@@ -509,19 +509,19 @@ function vUI:DecodeProfile(encoded)
 	local Decoded = LibDeflate:DecodeForPrint(encoded)
 	
 	if (not Decoded) then
-		return vUI:print("Failure decoding")
+		return self:print("Failure decoding")
 	end
 	
 	local Decompressed = LibDeflate:DecompressDeflate(Decoded)
 	
 	if (not Decompressed) then
-		return vUI:print("Failure decompressing")
+		return self:print("Failure decompressing")
 	end
 	
 	local Success, Deserialized = AceSerializer:Deserialize(Decompressed)
 	
 	if (not Success) then
-		return vUI:print("Failure deserializing")
+		return self:print("Failure deserializing")
 	end
 	
 	return Deserialized
