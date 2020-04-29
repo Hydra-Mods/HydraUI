@@ -88,21 +88,20 @@ function Map:Style()
 	QueueStatusMinimapButton:ClearAllPoints()
 	QueueStatusMinimapButton:SetPoint("BOTTOMLEFT", Minimap, 1, 1)
 	
-	if MiniMapTrackingFrame then
-		MiniMapTrackingFrame:ClearAllPoints()
-		MiniMapTrackingFrame:SetSize(24, 24)
-		MiniMapTrackingFrame:SetPoint("TOPLEFT", Minimap, 1, -1)
-		MiniMapTrackingFrame:SetFrameLevel(Minimap:GetFrameLevel() + 1)
+	--[[if MiniMapTrackingButton then
+		MiniMapTrackingButton:ClearAllPoints()
+		MiniMapTrackingButton:SetSize(24, 24)
+		MiniMapTrackingButton:SetPoint("TOPLEFT", Minimap, 1, -1)
+		MiniMapTrackingButton:SetFrameLevel(Minimap:GetFrameLevel() + 1)
 		
 		MiniMapTrackingIcon:SetSize(18, 18)
 		MiniMapTrackingIcon:ClearAllPoints()
-		MiniMapTrackingIcon:SetPoint("TOPLEFT", MiniMapTrackingFrame, 1, -1)
-		MiniMapTrackingIcon:SetPoint("BOTTOMRIGHT", MiniMapTrackingFrame, -1, 1)
-		MiniMapTrackingIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-		
-		MiniMapTrackingBorder:Hide()
-		MiniMapTrackingBorder.Show = function() end
-	end
+		MiniMapTrackingIcon:SetPoint("TOPLEFT", MiniMapTrackingButton, 1, -1)
+		MiniMapTrackingIcon:SetPoint("BOTTOMRIGHT", MiniMapTrackingButton, -1, 1)
+	end]]
+	
+	GarrisonLandingPageMinimapButton:ClearAllPoints()
+	GarrisonLandingPageMinimapButton:SetPoint("BOTTOMLEFT", Minimap, -2, -3)
 	
 	Kill(MinimapCluster)
 	Kill(MinimapBorder)

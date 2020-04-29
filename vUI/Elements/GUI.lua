@@ -1281,7 +1281,7 @@ GUI.SetExportWindowText = function(self, text)
 	
 	if self.ExportWindow then
 		self.ExportWindow.Input:SetText(text)
-		--self.ExportWindow.Input:HighlightText()
+		self.ExportWindow.Input:HighlightText()
 		self.ExportWindow.Input:SetAutoFocus(true)
 	end
 end
@@ -1302,7 +1302,7 @@ GUI.CreateExportWindow = function(self)
 	end
 	
 	local Window = CreateFrame("Frame", nil, self)
-	Window:SetSize(300, 220)
+	Window:SetSize(300, 300)
 	Window:SetPoint("CENTER", vUI.UIParent, 0, 0)
 	Window:SetBackdrop(vUI.BackdropAndBorder)
 	Window:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
@@ -1370,7 +1370,7 @@ GUI.CreateExportWindow = function(self)
 	Window.Input:EnableMouse(true)
 	Window.Input:SetMultiLine(true)
 	Window.Input:SetMaxLetters(999)
-	--Window.Input:SetCursorPosition(0)
+	Window.Input:SetCursorPosition(0)
 	
 	Window.Input:SetScript("OnEnterPressed", ExportWindowOnEnterPressed)
 	Window.Input:SetScript("OnEscapePressed", ExportWindowOnEnterPressed)
@@ -1411,10 +1411,9 @@ local ImportWindowOnEnterPressed = function(self)
 		return
 	end
 	
-	local Profile = vUI:GetDecoded(Text)
+	local Profile = vUI:DecodeProfile(Text)
 	
 	if Profile then
-		print('something?')
 		vUI:AddProfile(Profile)
 	end
 	
@@ -1434,7 +1433,7 @@ GUI.CreateImportWindow = function(self)
 	end
 	
 	local Window = CreateFrame("Frame", nil, self)
-	Window:SetSize(300, 220)
+	Window:SetSize(300, 300)
 	Window:SetPoint("CENTER", vUI.UIParent, 0, 0)
 	Window:SetBackdrop(vUI.BackdropAndBorder)
 	Window:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
@@ -1497,11 +1496,11 @@ GUI.CreateImportWindow = function(self)
 	Window.Input:SetFrameLevel(99)
 	Window.Input:SetJustifyH("LEFT")
 	Window.Input:SetAutoFocus(false)
+	Window.Input:SetCountInvisibleLetters(false)
 	Window.Input:EnableKeyboard(true)
 	Window.Input:EnableMouse(true)
 	Window.Input:SetMultiLine(true)
-	Window.Input:SetMaxLetters(255)
-	Window.Input:SetCursorPosition(0)
+	Window.Input:SetMaxLetters(999)
 	
 	Window.Input:SetScript("OnEnterPressed", ImportWindowOnEnterPressed)
 	Window.Input:SetScript("OnEscapePressed", ImportWindowOnEnterPressed)

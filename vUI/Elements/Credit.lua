@@ -12,20 +12,26 @@ GUI:AddOptions(function(self)
 	Left:CreateDoubleLine("Foof", "Eclipse")
 	Left:CreateDoubleLine("AlleyKat", "Zork")
 	
-	Left:CreateHeader(Language["oUF"])
+	Left:CreateHeader("oUF")
 	Left:CreateDoubleLine("Haste", "lightspark")
 	Left:CreateDoubleLine("p3lim", "Rainrider")
 	
-	Right:CreateHeader(Language["LibStub"])
+	Left:CreateHeader("AceSerializer")
+	Left:CreateLine("Nevcairiel")
+	
+	Right:CreateHeader("LibStub")
 	Right:CreateDoubleLine("Kaelten", "Cladhaire")
 	Right:CreateDoubleLine("ckknight", "Mikk")
 	Right:CreateDoubleLine("Ammo", "Nevcairiel")
 	Right:CreateLine("joshborke")
 	
-	Right:CreateHeader(Language["LibSharedMedia"])
+	Right:CreateHeader("LibSharedMedia")
 	Right:CreateDoubleLine("Elkano", "funkehdude")
 	
-	Right:CreateHeader(Language["vUI"])
+	Right:CreateHeader("LibDeflate")
+	Right:CreateLine("yoursafety")
+	
+	Right:CreateHeader("vUI")
 	Right:CreateLine("Hydra")
 	
 	-- Supporters

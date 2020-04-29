@@ -11,7 +11,7 @@ Elements\Libraries\CallbackHandler-1.0.lua
 Elements\Libraries\ChatThrottleLib.lua
 Elements\Libraries\LibSharedMedia-3.0.lua
 Elements\Libraries\AceSerializer-3.0.lua
-Elements\Libraries\LibCompress.lua
+Elements\Libraries\LibDeflate.lua
 Elements\Libraries\LibAnim.lua
 Elements\Libraries\oUF\oUF.xml
 Elements\Assets.lua

@@ -1,5 +1,9 @@
 local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
+local AceSerializer = LibStub:GetLibrary("AceSerializer-3.0")
+local LibDeflate = LibStub:GetLibrary("LibDeflate")
+local DeflateLevel = {level = 9}
+
 local DefaultKey = "%s-%s"
 local pairs = pairs
 local format = format
@@ -226,7 +230,7 @@ function vUI:DeleteProfile(name)
 		
 		local Default = self:GetMostUsedProfile()
 		
-		-- If we just wiped out a profile that characters were using, reroute them to a different profile for the time being.
+		-- If we just wiped out a profile that characters were using, reroute them to an existing profile.
 		for Key, ProfileName in pairs(vUIProfileData) do
 			if (ProfileName == name) then
 				vUIProfileData[Key] = Default
@@ -492,58 +496,39 @@ local DeleteProfile = function(value)
 	Widget.Dropdown.Current:SetText(vUI:GetActiveProfileName())
 end
 
-local AceSerializer = LibStub:GetLibrary("AceSerializer-3.0")
-local LibCompress = LibStub:GetLibrary("LibCompress")
-local Encoder = LibCompress:GetAddonEncodeTable()
-
-function vUI:GetEncoded()
-	local Profile = self:GetActiveProfile()
+function vUI:GetEncodedProfile()
+	local Profile = vUI:GetActiveProfile()
 	local Serialized = AceSerializer:Serialize(Profile)
-	local Compressed = LibCompress:Compress(Serialized)
-	local Encoded = Encoder:Encode(Compressed)
+	local Compressed = LibDeflate:CompressDeflate(Serialized, DeflateLevel)
+	local Encoded = LibDeflate:EncodeForPrint(Compressed)
 	
 	return Encoded
 end
 
-function vUI:GetDecoded(encoded)
-	local Decoded = Encoder:Decode(encoded)
-	local Decompressed = LibCompress:Decompress(Decoded)
-	local Message, Deserialized = AceSerializer:Deserialize(Decompressed)
+function vUI:DecodeProfile(encoded)
+	local Decoded = LibDeflate:DecodeForPrint(encoded)
 	
-	if (not Message) then
-		self:print("Failure deserializing.")
-	else
-		return Deserialized
+	if (not Decoded) then
+		return vUI:print("Failure decoding")
 	end
-end
-
--- Test
-local TestvUItring = function()
-	local Profile = vUI:GetActiveProfile()
 	
-	local Result = AceSerializer:Serialize(Profile)
-	local Compressed = LibCompress:Compress(Result)
-	local Encoded = Encoder:Encode(Compressed)
+	local Decompressed = LibDeflate:DecompressDeflate(Decoded)
 	
-	local Decoded = Encoder:Decode(Encoded)
-	local Decompressed = LibCompress:Decompress(Decoded)
-	local Success, Value = AceSerializer:Deserialize(Decompressed)
-	
-	if Success then
-		print("Success", Value["ui-display-dev-tools"])
-		
-		-- Merge values into settings
-	else
-		print(Value) -- Error
+	if (not Decompressed) then
+		return vUI:print("Failure decompressing")
 	end
-end
-
-__testSerialize = function() -- /run __testSerialize()
-	TestvUItring()
+	
+	local Success, Deserialized = AceSerializer:Deserialize(Decompressed)
+	
+	if (not Success) then
+		return vUI:print("Failure deserializing")
+	end
+	
+	return Deserialized
 end
 
 local ShowExportWindow = function()
-	local Encoded = vUI:GetEncoded()
+	local Encoded = vUI:GetEncodedProfile()
 	
 	GUI:CreateExportWindow()
 	GUI:SetExportWindowText(Encoded)
@@ -558,15 +543,11 @@ end
 local DeleteEmpty = function()
 	vUI:DeleteEmptyProfiles()
 	vUI:UpdateProfileInfo()
-	
-	--ReloadUI() -- Temp
 end
 
 local DeleteUnused = function()
 	vUI:DeleteUnusedProfiles()
 	vUI:UpdateProfileInfo()
-	
-	--ReloadUI() -- Temp
 end
 
 local RenameProfile = function(value)
@@ -603,7 +584,7 @@ GUI:AddOptions(function(self)
 	Left:CreateButton(Language["Delete"], Language["Delete Empty Profiles"], Language["Delete any profiles that have no settings that vary from default"], DeleteEmpty)
 	Left:CreateButton(Language["Delete"], Language["Delete Unused Profiles"], Language["Delete any profiles that are not currently in use by any characters"], DeleteUnused)
 	
-	--[[Left:CreateHeader(Language["Sharing is caring"])
+	Left:CreateHeader(Language["Sharing is caring"])
 	Left:CreateButton(Language["Import"], Language["Import A Profile"], "", ShowImportWindow)
-	Left:CreateButton(Language["Export"], Language["Export Current Profile"], "", ShowExportWindow)]]
+	Left:CreateButton(Language["Export"], Language["Export Current Profile"], "", ShowExportWindow)
 end)
