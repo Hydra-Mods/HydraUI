@@ -105,9 +105,13 @@ function vUI:AddProfile(profile)
 		vUIProfiles[Name] = profile
 		self.ProfileList[Name] = Name
 		
-		self:SendAlert(Language["Import successful"], format(Language["New profile: %s"], Name))
+		local Widget = GUI:GetWidgetByWindow(Language["Profiles"], "ui-profile")
+		Widget.Dropdown:CreateSelection(Name, Name)
+		Widget.Dropdown:Sort()
+		
+		self:print(format(Language['Added profile: "%s."'], Name))
 	else
-		self:print(format('A profile already exists with the name "%s."', Name))
+		self:print(format(Language['A profile already exists with the name "%s."'], Name))
 	end
 end
 
