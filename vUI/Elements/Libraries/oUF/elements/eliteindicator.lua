@@ -4,17 +4,17 @@ local oUF = ns.oUF
 local UnitClassification = UnitClassification
 
 local SkullClasses = {
-	["worldboss"] = "FFEB3B",
-	["elite"] = "FFEB3B",
-	["rareelite"] = "C0C0C0",
-	["rare"] = "C0C0C0",
+	["worldboss"] = {1, 0.92, 0.23},
+	["elite"] = {1, 0.92, 0.23},
+	["rareelite"] = {0.75, 0.75, 0.75},
+	["rare"] = {0.75, 0.75, 0.75},
 }
 
 local Update = function(self, event)
 	local Class = UnitClassification(self.unit)
 	
 	if (Class and SkullClasses[Class]) then
-		self.EliteIndicator:SetVertexColorHex(SkullClasses[Class])
+		self.EliteIndicator:SetVertexColor(SkullClasses[Class][1], SkullClasses[Class][2], SkullClasses[Class][3])
 		self.EliteIndicator:Show()
 	else
 		self.EliteIndicator:Hide()
