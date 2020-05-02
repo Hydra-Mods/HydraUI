@@ -20,10 +20,10 @@ vUI.ProfileMetadata = {
 }
 
 vUI.PreserveSettings = {
-	["ui-scale"] = true,
-	["ui-display-welcome"] = true,
-	["ui-display-dev-tools"] = true,
-	["ui-picker-palette"] = true,
+	"ui-scale",
+	"ui-display-welcome",
+	"ui-display-dev-tools",
+	"ui-picker-palette",
 }
 
 function vUI:UpdateProfileList()
@@ -449,8 +449,9 @@ function vUI:GetEncodedProfile()
 	local Profile = vUI:GetActiveProfile()
 	
 	-- Strip preserved settings before serializing
-	for key in pairs(self.PreserveSettings) do
-		Profile[key] = nil
+	for i = 1, #self.PreserveSettings do
+		print(self.PreserveSettings[i])
+		Profile[self.PreserveSettings[i]] = nil
 	end
 	
 	local Serialized = AceSerializer:Serialize(Profile)
