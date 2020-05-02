@@ -873,6 +873,8 @@ local InputWindowOnEnterPressed = function(self)
 		elseif Input.Hook then
 			Input.Hook(Text, Input.ID)
 		end
+		
+		GUI:ToggleInputWindow(Input)
 	end
 end
 

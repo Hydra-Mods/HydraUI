@@ -18,7 +18,6 @@ vUI.ProfileMetadata = {
 	["profile-last-modified"] = true,
 }
 
--- Some settings shouldn't be sent to others
 vUI.PreserveSettings = {
 	["ui-scale"] = true,
 }
@@ -502,6 +501,12 @@ end
 
 function vUI:GetEncodedProfile()
 	local Profile = vUI:GetActiveProfile()
+	
+	-- Strip preserved settings before serializing
+	for key in pairs(self.PreserveSettings) do
+		Profile[key] = nil
+	end
+	
 	local Serialized = AceSerializer:Serialize(Profile)
 	local Compressed = LibDeflate:CompressDeflate(Serialized, DeflateLevel)
 	local Encoded = LibDeflate:EncodeForPrint(Compressed)
