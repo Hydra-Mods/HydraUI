@@ -2163,6 +2163,8 @@ local StyleRaid = function(self, unit)
 	Health:SetHeight(Settings["raid-health-height"])
 	Health:SetFrameLevel(5)
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetReverseFill(Settings["raid-health-reverse"])
+	Health:SetOrientation(Settings["raid-health-orientation"])
 	
 	local HealBar = CreateFrame("StatusBar", nil, self)
 	HealBar:SetAllPoints(Health)
@@ -2201,6 +2203,8 @@ local StyleRaid = function(self, unit)
 	Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetHeight(Settings["raid-power-height"])
 	Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-color"]))
+	Power:SetReverseFill(Settings["raid-power-reverse"])
+	Power:SetOrientation(Settings["raid-power-orientation"])
 	
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetPoint("TOPLEFT", Power, 0, 0)
@@ -3044,6 +3048,22 @@ local UpdatePartyHealthHeight = function(value)
 	end
 end
 
+local UpdatePartyHealthColor = function(value)
+	if vUI.UnitFrames["party"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["party"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["party"]:GetChildren())
+			
+			if Unit then
+				SetHealthAttributes(Unit.Health, value)
+				
+				Unit.Health:ForceUpdate()
+			end
+		end
+	end
+end
+
 local UpdatePartyPowerHeight = function(value)
 	if vUI.UnitFrames["party"] then
 		local Unit
@@ -3096,22 +3116,6 @@ local UpdatePartyPowerReverseFill = function(value)
 			
 			if Unit then
 				Unit.Power:SetReverseFill(value)
-			end
-		end
-	end
-end
-
-local UpdatePartyHealthColor = function(value)
-	if vUI.UnitFrames["party"] then
-		local Unit
-		
-		for i = 1, vUI.UnitFrames["party"]:GetNumChildren() do
-			Unit = select(i, vUI.UnitFrames["party"]:GetChildren())
-			
-			if Unit then
-				SetHealthAttributes(Unit.Health, value)
-				
-				Unit.Health:ForceUpdate()
 			end
 		end
 	end
@@ -3221,6 +3225,124 @@ GUI:AddOptions(function(self)
 	--Defaults["party-pets-power-height"] = 22
 end)
 
+local UpdateRaidWidth = function(value)
+	if vUI.UnitFrames["raid"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["raid"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["raid"]:GetChildren())
+			
+			if Unit then
+				Unit:SetWidth(value)
+			end
+		end
+	end
+end
+
+local UpdateRaidHealthHeight = function(value)
+	if vUI.UnitFrames["raid"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["raid"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["raid"]:GetChildren())
+			
+			if Unit then
+				Unit:setHeight(value + Settings["raid-power-height"] + 3)
+				Unit.Health:SetHeight(value)
+			end
+		end
+	end
+end
+
+local UpdateRaidHealthColor = function(value)
+	if vUI.UnitFrames["raid"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["raid"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["raid"]:GetChildren())
+			
+			if Unit then
+				SetHealthAttributes(Unit.Health, value)
+				
+				Unit.Health:ForceUpdate()
+			end
+		end
+	end
+end
+
+local UpdateRaidHealthOrientation = function(value)
+	if vUI.UnitFrames["raid"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["raid"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["raid"]:GetChildren())
+			
+			if Unit then
+				Unit.Health:SetOrientation(value)
+			end
+		end
+	end
+end
+
+local UpdateRaidHealthReverseFill = function(value)
+	if vUI.UnitFrames["raid"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["raid"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["raid"]:GetChildren())
+			
+			if Unit then
+				Unit.Health:SetReverseFill(value)
+			end
+		end
+	end
+end
+
+local UpdateRaidPowerHeight = function(value)
+	if vUI.UnitFrames["raid"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["raid"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["raid"]:GetChildren())
+			
+			if Unit then
+				Unit:SetHeight(value + Settings["raid-health-height"] + 3)
+				Unit.Power:SetHeight(value)
+			end
+		end
+	end
+end
+
+local UpdateRaidPowerReverseFill = function(value)
+	if vUI.UnitFrames["raid"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["raid"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["raid"]:GetChildren())
+			
+			if Unit then
+				Unit.Power:SetReverseFill(value)
+			end
+		end
+	end
+end
+
+local UpdateRaidPowerColor = function(value)
+	if vUI.UnitFrames["raid"] then
+		local Unit
+		
+		for i = 1, vUI.UnitFrames["raid"]:GetNumChildren() do
+			Unit = select(i, vUI.UnitFrames["raid"]:GetChildren())
+			
+			if Unit then
+				SetPowerAttributes(Unit.Power, value)
+				
+				Unit.Power:ForceUpdate()
+			end
+		end
+	end
+end
+
 local UpdateRaidXOffset = function(value)
 	vUI.UnitFrames["raid"]:SetAttribute("xoffset", value)
 end
@@ -3252,9 +3374,18 @@ GUI:AddOptions(function(self)
 	Left:CreateSwitch("raid-enable", Settings["raid-enable"], Language["Enable Raid Module"], Language["Enable the raid frames module"], ReloadUI):RequiresReload(true)
 	
 	Left:CreateHeader(Language["Raid Size"])
-	Left:CreateSlider("raid-width", Settings["raid-width"], 40, 200, 1, "Width", "Set the width of the raid frames", ReloadUI, nil):RequiresReload(true)
-	Left:CreateSlider("raid-health-height", Settings["raid-health-height"], 10, 60, 1, "Health Height", "Set the height of raid health bars", ReloadUI, nil):RequiresReload(true)
-	Left:CreateSlider("raid-power-height", Settings["raid-power-height"], 2, 30, 1, "Power Height", "Set the height of raid power bars", ReloadUI, nil):RequiresReload(true)
+	Left:CreateSlider("raid-width", Settings["raid-width"], 40, 200, 1, Language["Width"], Language["Set the width of the raid frames"], UpdateRaidWidth, nil)
+	
+	Left:CreateHeader(Language["Health"])
+	Left:CreateSlider("raid-health-height", Settings["raid-health-height"], 12, 60, 1, Language["Health Height"], Language["Set the height of raid health bars"], UpdateRaidHealthHeight)
+	Left:CreateDropdown("raid-health-color", Settings["raid-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdateRaidHealthColor)
+	Left:CreateDropdown("raid-health-orientation", Settings["raid-health-orientation"], {[Language["Horizontal"]] = "HORIZONTAL", [Language["Vertical"]] = "VERTICAL"}, Language["Fill Orientation"], Language["Set the fill orientation of the health bar"], UpdateRaidHealthOrientation)
+	Left:CreateSwitch("raid-health-reverse", Settings["raid-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateRaidHealthReverseFill)
+	
+	Left:CreateHeader(Language["Power"])
+	Left:CreateSlider("raid-power-height", Settings["raid-power-height"], 2, 30, 1, Language["Power Height"], Language["Set the height of raid power bars"], UpdateRaidPowerHeight)
+	Left:CreateDropdown("raid-power-color", Settings["raid-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateRaidPowerColor)
+	Left:CreateSwitch("raid-power-reverse", Settings["raid-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateRaidPowerReverseFill)
 	
 	Right:CreateHeader(Language["Range Opacity"])
 	Right:CreateSlider("raid-in-range", Settings["raid-in-range"], 0, 100, 5, Language["In Range"], Language["Set the opacity of raid members within range of you"])
@@ -3415,8 +3546,8 @@ GUI:AddOptions(function(self)
 	Right:CreateDropdown("nameplates-target-indicator-size", Settings["nameplates-target-indicator-size"], {["Small"] = "SMALL", ["Large"] = "LARGE"}, Language["Indicator Size"], Language["Select the size of the target indicator"], UpdateNamePlatesTargetIndicatorSize)
 end)
 
---[[/run FakeGroup()
-FakeGroup = function()
+--/run vUIFakeRaid()
+vUIFakeRaid = function()
 	local Header = _G["vUI Raid"]
 	
 	if Header then
@@ -3433,4 +3564,4 @@ FakeGroup = function()
 			Frame:Show()
 		end
 	end
-end]]
+end
