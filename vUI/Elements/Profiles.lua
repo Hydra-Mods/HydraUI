@@ -16,10 +16,14 @@ vUI.ProfileMetadata = {
 	["profile-created"] = true,
 	["profile-created-by"] = true,
 	["profile-last-modified"] = true,
+	["profile-last-modified"] = true,
 }
 
 vUI.PreserveSettings = {
 	["ui-scale"] = true,
+	["ui-display-welcome"] = true,
+	["ui-display-dev-tools"] = true,
+	["ui-picker-palette"] = true,
 }
 
 function vUI:UpdateProfileList()
@@ -435,10 +439,47 @@ function vUI:CopyProfile(from, to)
 	self:print(format('Profile "%s" has been copied from "%s".', to, from))
 end
 
-function vUI:SetProfileMetadata(name, meta, value) -- /run vUI:get(1):SetProfileMetadata("ProfileName", "profile-created-by", "Hydra")
+function vUI:SetProfileMetadata(name, meta, value) -- /run vUIGlobal:get():SetProfileMetadata("ProfileName", "profile-created-by", "Hydra")
 	if (vUIProfiles[name] and self.ProfileMetadata[meta]) then
 		vUIProfiles[name][meta] = value
 	end
+end
+
+function vUI:GetEncodedProfile()
+	local Profile = vUI:GetActiveProfile()
+	
+	-- Strip preserved settings before serializing
+	for key in pairs(self.PreserveSettings) do
+		Profile[key] = nil
+	end
+	
+	local Serialized = AceSerializer:Serialize(Profile)
+	local Compressed = LibDeflate:CompressDeflate(Serialized, DeflateLevel)
+	local Encoded = LibDeflate:EncodeForPrint(Compressed)
+	
+	return Encoded
+end
+
+function vUI:DecodeProfile(encoded)
+	local Decoded = LibDeflate:DecodeForPrint(encoded)
+	
+	if (not Decoded) then
+		return self:print("Failure decoding")
+	end
+	
+	local Decompressed = LibDeflate:DecompressDeflate(Decoded)
+	
+	if (not Decompressed) then
+		return self:print("Failure decompressing")
+	end
+	
+	local Success, Deserialized = AceSerializer:Deserialize(Decompressed)
+	
+	if (not Success) then
+		return self:print("Failure deserializing")
+	end
+	
+	return Deserialized
 end
 
 function vUI:UpdateProfileInfo()
@@ -497,43 +538,6 @@ local DeleteProfile = function(value)
 	local Widget = GUI:GetWidgetByWindow(Language["Profiles"], "ui-profile")
 	Widget.Dropdown:RemoveSelection(value)
 	Widget.Dropdown.Current:SetText(vUI:GetActiveProfileName())
-end
-
-function vUI:GetEncodedProfile()
-	local Profile = vUI:GetActiveProfile()
-	
-	-- Strip preserved settings before serializing
-	for key in pairs(self.PreserveSettings) do
-		Profile[key] = nil
-	end
-	
-	local Serialized = AceSerializer:Serialize(Profile)
-	local Compressed = LibDeflate:CompressDeflate(Serialized, DeflateLevel)
-	local Encoded = LibDeflate:EncodeForPrint(Compressed)
-	
-	return Encoded
-end
-
-function vUI:DecodeProfile(encoded)
-	local Decoded = LibDeflate:DecodeForPrint(encoded)
-	
-	if (not Decoded) then
-		return self:print("Failure decoding")
-	end
-	
-	local Decompressed = LibDeflate:DecompressDeflate(Decoded)
-	
-	if (not Decompressed) then
-		return self:print("Failure decompressing")
-	end
-	
-	local Success, Deserialized = AceSerializer:Deserialize(Decompressed)
-	
-	if (not Success) then
-		return self:print("Failure deserializing")
-	end
-	
-	return Deserialized
 end
 
 local ShowExportWindow = function()

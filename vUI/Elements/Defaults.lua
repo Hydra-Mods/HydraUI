@@ -4,7 +4,6 @@ local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 -- UI
 Defaults["ui-scale"] = 0.71111111111111
-Defaults["ui-language"] = GetLocale()
 Defaults["ui-display-welcome"] = true
 Defaults["ui-display-dev-tools"] = false
 Defaults["ui-display-whats-new"] = true -- NYI
@@ -42,8 +41,8 @@ Defaults["ui-highlight-texture"] = "Blank" -- TBI
 Defaults["ui-highlight-color"] = "FFFFFF" -- TBI
 
 Defaults["ui-picker-palette"] = "Default"
-Defaults["ui-picker-format"] = "Hex"
-Defaults["ui-picker-show-texture"] = true
+--Defaults["ui-picker-format"] = "Hex"
+--Defaults["ui-picker-show-texture"] = true
 
 Defaults["gui-enable-fade"] = false
 Defaults["gui-faded-alpha"] = 20
