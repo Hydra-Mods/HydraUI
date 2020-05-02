@@ -3,8 +3,8 @@ local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 local AceSerializer = LibStub:GetLibrary("AceSerializer-3.0")
 local LibDeflate = LibStub:GetLibrary("LibDeflate")
 local DeflateLevel = {level = 9}
-
 local DefaultKey = "%s-%s"
+
 local pairs = pairs
 local format = format
 local match = string.match
@@ -15,7 +15,6 @@ vUI.ProfileMetadata = {
 	["profile-name"] = true,
 	["profile-created"] = true,
 	["profile-created-by"] = true,
-	["profile-last-modified"] = true,
 	["profile-last-modified"] = true,
 }
 
@@ -32,12 +31,6 @@ function vUI:UpdateProfileList()
 			self.ProfileList[Name] = Name
 		end
 	end
-end
-
-function vUI:UpdateProfileLastModified(name)
-	local Profile = self:GetProfile(name)
-	
-	Profile["profile-last-modified"] = self:GetCurrentDate()
 end
 
 function vUI:GetProfileCount()
@@ -102,7 +95,11 @@ function vUI:AddProfile(profile)
 	
 	local Name = profile["profile-name"]
 	
-	-- Do I overwrite the imported profile's metadata with new stuff for the player?
+	-- Create a prompt to rename the profile here, if needed or desired.
+	
+	profile["profile-created"] = self:GetCurrentDate()
+	profile["profile-created-by"] = self.UserProfileKey
+	profile["profile-last-modified"] = self:GetCurrentDate()
 	
 	if (Name and not vUIProfiles[Name]) then
 		vUIProfiles[Name] = profile
@@ -148,8 +145,6 @@ function vUI:CreateProfile(name)
 	vUIProfiles[name]["profile-created"] = self:GetCurrentDate()
 	vUIProfiles[name]["profile-created-by"] = self:GetDefaultProfileKey()
 	vUIProfiles[name]["profile-last-modified"] = self:GetCurrentDate()
-	
-	--vUIProfileData[self.UserProfileKey] = name
 	
 	self.ProfileList[name] = name
 	
@@ -437,6 +432,12 @@ function vUI:CopyProfile(from, to)
 	end
 	
 	self:print(format('Profile "%s" has been copied from "%s".', to, from))
+end
+
+function vUI:UpdateProfileLastModified(name)
+	local Profile = self:GetProfile(name)
+	
+	Profile["profile-last-modified"] = self:GetCurrentDate()
 end
 
 function vUI:SetProfileMetadata(name, meta, value) -- /run vUIGlobal:get():SetProfileMetadata("ProfileName", "profile-created-by", "Hydra")
