@@ -134,8 +134,6 @@ local CreateMetersPanels = function()
 	InnerRightOutline:SetBackdropBorderColor(0, 0, 0)
 	
 	-- Weird spot for this to live, right now.
-	local DT = vUI:GetModule("DataText")
-	
 	local Width = MeterBGBottomFrame:GetWidth() / 3
 	local Height = MeterBGBottomFrame:GetHeight()
 	
@@ -151,9 +149,9 @@ local CreateMetersPanels = function()
 	BottomRight:SetSize(Width, Height)
 	BottomRight:SetPoint("LEFT", BottomMiddle, "RIGHT", 0, 0)
 	
-	DT:SetDataText("Window-Left", "Durability")
-	DT:SetDataText("Window-Middle", "Guild")
-	DT:SetDataText("Window-Right", "Friends")
+	DT:SetDataText("Window-Left", Settings["data-text-extra-left"])
+	DT:SetDataText("Window-Middle", Settings["data-text-extra-middle"])
+	DT:SetDataText("Window-Right", Settings["data-text-extra-right"])
 end
 
 local Frame = CreateFrame("Frame")

@@ -47,7 +47,7 @@ SLASH_GLOBALSTRINGFIND1 = "/gfind"
 SlashCmdList["GLOBALSTRINGFIND"] = function(query)
 	for Key, Value in pairs(_G) do
 		if (Value and type(Value) == "string") then
-			if Value:find(query) then
+			if Value:lower():find(query:lower()) then
 				print(format("|cFFFFFF00%s|r |cFFFFFFFF= %s|r", Key, Value))
 			end
 		end
