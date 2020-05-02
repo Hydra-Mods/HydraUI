@@ -1420,6 +1420,8 @@ local ImportWindowOnEnterPressed = function(self)
 	self:SetText("")
 	self:SetAutoFocus(false)
 	self:ClearFocus()
+	
+	GUI:ToggleImportWindow()
 end
 
 local ImportWindowOnMouseDown = function(self)
