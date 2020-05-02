@@ -27,7 +27,7 @@ vUI.UIParent = CreateFrame("Frame", "vUIParent", UIParent)
 vUI.UIParent:SetAllPoints(UIParent)
 vUI.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
 
--- Some constants
+-- Constants
 vUI.UIVersion = GetAddOnMetadata("vUI", "Version")
 vUI.UserName = UnitName("player")
 vUI.UserClass = select(2, UnitClass("player"))
@@ -323,9 +323,9 @@ function vUI:ShortValue(num)
 		return format("%.2fm", num / 1000000)
 	elseif (num > 999) then
 		return format("%dk", num / 1000)
-	else
-		return num
 	end
+	
+	return num
 end
 
 function vUI:Comma(number)
