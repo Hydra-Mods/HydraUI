@@ -86,22 +86,10 @@ function Map:Style()
 	MinimapNorthTag:SetTexture(nil)
 	
 	QueueStatusMinimapButton:ClearAllPoints()
-	QueueStatusMinimapButton:SetPoint("BOTTOMLEFT", Minimap, 1, 1)
-	
-	--[[if MiniMapTrackingButton then
-		MiniMapTrackingButton:ClearAllPoints()
-		MiniMapTrackingButton:SetSize(24, 24)
-		MiniMapTrackingButton:SetPoint("TOPLEFT", Minimap, 1, -1)
-		MiniMapTrackingButton:SetFrameLevel(Minimap:GetFrameLevel() + 1)
-		
-		MiniMapTrackingIcon:SetSize(18, 18)
-		MiniMapTrackingIcon:ClearAllPoints()
-		MiniMapTrackingIcon:SetPoint("TOPLEFT", MiniMapTrackingButton, 1, -1)
-		MiniMapTrackingIcon:SetPoint("BOTTOMRIGHT", MiniMapTrackingButton, -1, 1)
-	end]]
+	QueueStatusMinimapButton:SetPoint("BOTTOMLEFT", Minimap, -1, 1)
 	
 	GarrisonLandingPageMinimapButton:ClearAllPoints()
-	GarrisonLandingPageMinimapButton:SetPoint("BOTTOMLEFT", Minimap, -2, -3)
+	GarrisonLandingPageMinimapButton:SetPoint("BOTTOMRIGHT", Minimap, 2, -3)
 	
 	Kill(MinimapCluster)
 	Kill(MinimapBorder)
