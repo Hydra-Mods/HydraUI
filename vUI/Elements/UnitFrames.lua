@@ -1118,6 +1118,38 @@ local StylePlayer = function(self, unit)
 		
 		self.ClassPower = SoulShards
 		self.AuraParent = SoulShards
+	elseif vUI.UserClass == "MAGE" then
+		local ArcaneCharges = CreateFrame("Frame", self:GetName() .. "ArcaneCharges", self)
+		ArcaneCharges:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+		ArcaneCharges:SetSize(Settings["unitframes-player-width"], 10)
+		ArcaneCharges:SetBackdrop(vUI.Backdrop)
+		ArcaneCharges:SetBackdropColor(0, 0, 0)
+		ArcaneCharges:SetBackdropBorderColor(0, 0, 0)
+		
+		local Width = (Settings["unitframes-player-width"] / 4)
+		
+		for i = 1, 4 do
+			ArcaneCharges[i] = CreateFrame("StatusBar", self:GetName() .. "ArcaneCharge" .. i, ArcaneCharges)
+			ArcaneCharges[i]:SetSize(Width, 8)
+			ArcaneCharges[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+			ArcaneCharges[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-arcane-charges"]))
+			
+			ArcaneCharges[i].bg = ArcaneCharges:CreateTexture(nil, "BORDER")
+			ArcaneCharges[i].bg:SetAllPoints(ArcaneCharges[i])
+			ArcaneCharges[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+			ArcaneCharges[i].bg:SetVertexColor(vUI:HexToRGB(Settings["color-arcane-charges"]))
+			ArcaneCharges[i].bg:SetAlpha(0.3)
+			
+			if (i == 1) then
+				ArcaneCharges[i]:SetPoint("LEFT", ArcaneCharges, 1, 0)
+			else
+				ArcaneCharges[i]:SetPoint("TOPLEFT", ArcaneCharges[i-1], "TOPRIGHT", 1, 0)
+				ArcaneCharges[i]:SetWidth(Width - 2)
+			end
+		end
+		
+		self.ClassPower = ArcaneCharges
+		self.AuraParent = ArcaneCharges
 	elseif (vUI.UserClass == "MONK") then
 		local Chi = CreateFrame("Frame", self:GetName() .. "Chi", self)
 		Chi:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
