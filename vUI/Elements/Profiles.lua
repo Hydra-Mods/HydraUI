@@ -451,7 +451,6 @@ function vUI:GetEncodedProfile()
 	
 	-- Strip preserved settings before serializing
 	for i = 1, #self.PreserveSettings do
-		print(self.PreserveSettings[i])
 		Profile[self.PreserveSettings[i]] = nil
 	end
 	
