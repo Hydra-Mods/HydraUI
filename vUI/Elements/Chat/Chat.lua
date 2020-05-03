@@ -650,8 +650,6 @@ local MoveChatFrames = function()
 	end
 	
 	GeneralDockManager:ClearAllPoints()
-	--GeneralDockManager:SetWidth(FRAME_WIDTH + 16)
-	--GeneralDockManager:SetPoint("CENTER", vUIChatFrameTop, 0, 6)
 	GeneralDockManager:SetPoint("LEFT", vUIChatFrameTop, 0, 6)
 	GeneralDockManager:SetPoint("RIGHT", vUIChatFrameTop, 0, 6)
 	GeneralDockManager:SetFrameStrata("MEDIUM")
