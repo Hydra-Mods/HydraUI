@@ -17,6 +17,8 @@ local ChatEdit_ActivateChat = ChatEdit_ActivateChat
 local ChatEdit_ParseText = ChatEdit_ParseText
 local ChatEdit_UpdateHeader = ChatEdit_UpdateHeader
 
+local Chat = vUI:NewModule("Chat")
+
 -- When hovering over a chat frame, fade in the scroll controls
 
 local FormatDiscordHyperlink = function(id)
@@ -98,24 +100,6 @@ local FindLinks = function(self, event, msg, ...)
 	return false, msg, ...
 end
 
-ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_OFFICER", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY_LEADER", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_LEADER", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND_LEADER", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", FindLinks)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", FindLinks)
-
 --[[ Scooping the GMOTD to see if there's any yummy links.
 ChatFrame_DisplayGMOTD = function(frame, message)
 	if (message and (message ~= "")) then
@@ -189,111 +173,127 @@ ItemRefTooltip.SetHyperlink = function(self, link, text, button, chatFrame)
 	end
 end
 
-local CreateChatFramePanels = function()
+Chat.RemoveTextures = {
+	"TabLeft",
+	"TabMiddle",
+	"TabRight",
+	"TabSelectedLeft",
+	"TabSelectedMiddle",
+	"TabSelectedRight",
+	"TabHighlightLeft",
+	"TabHighlightMiddle",
+	"TabHighlightRight",
+	"ButtonFrameUpButton",
+	"ButtonFrameDownButton",
+	"ButtonFrameBottomButton",
+	"ButtonFrameMinimizeButton",
+	"ButtonFrame",
+	"EditBoxFocusLeft",
+	"EditBoxFocusMid",
+	"EditBoxFocusRight",
+	"EditBoxLeft",
+	"EditBoxMid",
+	"EditBoxRight",
+}
+
+function Chat:CreateChatWindow()
 	local R, G, B = vUI:HexToRGB(Settings["ui-window-main-color"])
-	
 	local Width = Settings["chat-frame-width"]
 	
-	local LeftChatFrameBottom = CreateFrame("Frame", "vUIChatFrameBottom", vUI.UIParent)
-	LeftChatFrameBottom:SetSize(Width, BAR_HEIGHT)
-	LeftChatFrameBottom:SetPoint("BOTTOMLEFT", vUI.UIParent, 13, 13)
-	LeftChatFrameBottom:SetBackdrop(vUI.BackdropAndBorder)
-	LeftChatFrameBottom:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
-	LeftChatFrameBottom:SetBackdropBorderColor(0, 0, 0)
-	LeftChatFrameBottom:SetFrameStrata("MEDIUM")
-	
-	LeftChatFrameBottom.Texture = LeftChatFrameBottom:CreateTexture(nil, "OVERLAY")
-	LeftChatFrameBottom.Texture:SetPoint("TOPLEFT", LeftChatFrameBottom, 1, -1)
-	LeftChatFrameBottom.Texture:SetPoint("BOTTOMRIGHT", LeftChatFrameBottom, -1, 1)
-	LeftChatFrameBottom.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	LeftChatFrameBottom.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
-	
-	local ChatFrameBG = CreateFrame("Frame", "vUIChatFrame", vUI.UIParent)
-	ChatFrameBG:SetSize(Width, Settings["chat-frame-height"])
-	ChatFrameBG:SetPoint("BOTTOMLEFT", LeftChatFrameBottom, "TOPLEFT", 0, 2)
-	ChatFrameBG:SetBackdrop(vUI.BackdropAndBorder)
-	ChatFrameBG:SetBackdropColor(R, G, B, (Settings["chat-bg-opacity"] / 100))
-	ChatFrameBG:SetBackdropBorderColor(0, 0, 0)
-	ChatFrameBG:SetFrameStrata("LOW")
-	
-	local LeftChatFrameTop = CreateFrame("Frame", "vUIChatFrameTop", vUI.UIParent)
-	LeftChatFrameTop:SetSize(Width, BAR_HEIGHT)
-	LeftChatFrameTop:SetPoint("BOTTOM", ChatFrameBG, "TOP", 0, 2)
-	LeftChatFrameTop:SetBackdrop(vUI.BackdropAndBorder)
-	LeftChatFrameTop:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
-	LeftChatFrameTop:SetBackdropBorderColor(0, 0, 0)
-	LeftChatFrameTop:SetFrameStrata("MEDIUM")
-	
-	LeftChatFrameTop.Texture = LeftChatFrameTop:CreateTexture(nil, "OVERLAY")
-	LeftChatFrameTop.Texture:SetPoint("TOPLEFT", LeftChatFrameTop, 1, -1)
-	LeftChatFrameTop.Texture:SetPoint("BOTTOMRIGHT", LeftChatFrameTop, -1, 1)
-	LeftChatFrameTop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	LeftChatFrameTop.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
+	self:SetSize(Width + 4, Settings["chat-frame-height"] + (BAR_HEIGHT * 2) + (4 * 2))
+	self:SetPoint("BOTTOMLEFT", vUI.UIParent, 11, 11)
+	self:SetBackdrop(vUI.BackdropAndBorder)
+	self:SetBackdropColor(R, G, B, (Settings["chat-bg-opacity"] / 100))
+	self:SetBackdropBorderColor(0, 0, 0)
+	self:SetFrameStrata("LOW")
 	
 	-- All this just to achieve an empty center :P
-	local ChatFrameBGTop = CreateFrame("Frame", nil, ChatFrameBG)
-	ChatFrameBGTop:SetPoint("TOPLEFT", LeftChatFrameTop, -3, 3)
-	ChatFrameBGTop:SetPoint("BOTTOMRIGHT", LeftChatFrameTop, 3, -3)
-	ChatFrameBGTop:SetBackdrop(vUI.BackdropAndBorder)
-	ChatFrameBGTop:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
-	ChatFrameBGTop:SetBackdropBorderColor(0, 0, 0, 0)
-	ChatFrameBGTop:SetFrameStrata("LOW")
+	self.Top = CreateFrame("Frame", nil, self)
+	self.Top:SetHeight(BAR_HEIGHT + 4)
+	self.Top:SetPoint("TOPLEFT", self, 0, 0)
+	self.Top:SetPoint("TOPRIGHT", self, 0, 0)
+	self.Top:SetBackdrop(vUI.BackdropAndBorder)
+	self.Top:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
+	self.Top:SetBackdropBorderColor(0, 0, 0, 0)
+	self.Top:SetFrameStrata("LOW")
 	
-	local ChatFrameBGBottom = CreateFrame("Frame", nil, ChatFrameBG)
-	ChatFrameBGBottom:SetPoint("TOPLEFT", LeftChatFrameBottom, -3, 3)
-	ChatFrameBGBottom:SetPoint("BOTTOMRIGHT", LeftChatFrameBottom, 3, -3)
-	ChatFrameBGBottom:SetBackdrop(vUI.BackdropAndBorder)
-	ChatFrameBGBottom:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
-	ChatFrameBGBottom:SetBackdropBorderColor(0, 0, 0, 0)
-	ChatFrameBGBottom:SetFrameStrata("LOW")
+	self.Bottom = CreateFrame("Frame", nil, self)
+	self.Bottom:SetHeight(BAR_HEIGHT + 4)
+	self.Bottom:SetPoint("BOTTOMLEFT", self, 0, 0)
+	self.Bottom:SetPoint("BOTTOMRIGHT", self, 0, 0)
+	self.Bottom:SetBackdrop(vUI.BackdropAndBorder)
+	self.Bottom:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
+	self.Bottom:SetBackdropBorderColor(0, 0, 0, 0)
+	self.Bottom:SetFrameStrata("LOW")
 	
-	local ChatFrameBGLeft = CreateFrame("Frame", nil, ChatFrameBG)
-	ChatFrameBGLeft:SetWidth(4)
-	ChatFrameBGLeft:SetPoint("TOPLEFT", ChatFrameBGTop, 0, 0)
-	ChatFrameBGLeft:SetPoint("BOTTOMLEFT", ChatFrameBGBottom, "TOPLEFT", 0, 0)
-	ChatFrameBGLeft:SetBackdrop(vUI.BackdropAndBorder)
-	ChatFrameBGLeft:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
-	ChatFrameBGLeft:SetBackdropBorderColor(0, 0, 0, 0)
-	ChatFrameBGLeft:SetFrameStrata("LOW")
+	self.Left = CreateFrame("Frame", nil, self)
+	self.Left:SetWidth(2)
+	self.Left:SetPoint("TOPLEFT", self, 0, 0)
+	self.Left:SetPoint("BOTTOMLEFT", self, 0, 0)
+	self.Left:SetBackdrop(vUI.BackdropAndBorder)
+	self.Left:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
+	self.Left:SetBackdropBorderColor(0, 0, 0, 0)
+	self.Left:SetFrameStrata("LOW")
 	
-	local ChatFrameBGRight = CreateFrame("Frame", nil, ChatFrameBG)
-	ChatFrameBGRight:SetWidth(4)
-	ChatFrameBGRight:SetPoint("TOPRIGHT", ChatFrameBGTop, 0, 0)
-	ChatFrameBGRight:SetPoint("BOTTOMRIGHT", ChatFrameBGBottom, 0, 0)
-	ChatFrameBGRight:SetBackdrop(vUI.BackdropAndBorder)
-	ChatFrameBGRight:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
-	ChatFrameBGRight:SetBackdropBorderColor(0, 0, 0, 0)
-	ChatFrameBGRight:SetFrameStrata("LOW")
+	self.Right = CreateFrame("Frame", nil, self)
+	self.Right:SetWidth(2)
+	self.Right:SetPoint("TOPRIGHT", self, 0, 0)
+	self.Right:SetPoint("BOTTOMRIGHT", self, 0, 0)
+	self.Right:SetBackdrop(vUI.BackdropAndBorder)
+	self.Right:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
+	self.Right:SetBackdropBorderColor(0, 0, 0, 0)
+	self.Right:SetFrameStrata("LOW")
 	
-	local OuterOutline = CreateFrame("Frame", nil, ChatFrameBG)
-	OuterOutline:SetPoint("TOPLEFT", ChatFrameBGTop, 0, 0)
-	OuterOutline:SetPoint("BOTTOMRIGHT", ChatFrameBGBottom, 0, 0)
-	OuterOutline:SetBackdrop(vUI.Outline)
-	OuterOutline:SetBackdropBorderColor(0, 0, 0)
+	self.TopBar = CreateFrame("Frame", "vUIChatFrameTop", vUI.UIParent)
+	self.TopBar:SetHeight(BAR_HEIGHT)
+	self.TopBar:SetPoint("TOPLEFT", self, 2, -2)
+	self.TopBar:SetPoint("TOPRIGHT", self, -2, -2)
+	self.TopBar:SetBackdrop(vUI.BackdropAndBorder)
+	self.TopBar:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
+	self.TopBar:SetBackdropBorderColor(0, 0, 0)
+	self.TopBar:SetFrameStrata("MEDIUM")
 	
-	local InnerOutline = CreateFrame("Frame", nil, ChatFrameBG)
-	InnerOutline:SetPoint("TOPLEFT", ChatFrameBG, 0, 0)
-	InnerOutline:SetPoint("BOTTOMRIGHT", ChatFrameBG, 0, 0)
-	InnerOutline:SetBackdrop(vUI.Outline)
-	InnerOutline:SetBackdropBorderColor(0, 0, 0)
+	self.TopBar.Texture = self.TopBar:CreateTexture(nil, "OVERLAY")
+	self.TopBar.Texture:SetPoint("TOPLEFT", self.TopBar, 1, -1)
+	self.TopBar.Texture:SetPoint("BOTTOMRIGHT", self.TopBar, -1, 1)
+	self.TopBar.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	self.TopBar.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
+	
+	self.BottomBar = CreateFrame("Frame", "vUIChatFrameBottom", vUI.UIParent)
+	self.BottomBar:SetHeight(BAR_HEIGHT)
+	self.BottomBar:SetPoint("BOTTOMLEFT", self, 2, 2)
+	self.BottomBar:SetPoint("BOTTOMRIGHT", self, -2, 2)
+	self.BottomBar:SetBackdrop(vUI.BackdropAndBorder)
+	self.BottomBar:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
+	self.BottomBar:SetBackdropBorderColor(0, 0, 0)
+	self.BottomBar:SetFrameStrata("MEDIUM")
+	
+	self.BottomBar.Texture = self.BottomBar:CreateTexture(nil, "OVERLAY")
+	self.BottomBar.Texture:SetPoint("TOPLEFT", self.BottomBar, 1, -1)
+	self.BottomBar.Texture:SetPoint("BOTTOMRIGHT", self.BottomBar, -1, 1)
+	self.BottomBar.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	self.BottomBar.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
+	
+	selfAnchor = CreateFrame("Frame", nil, self)
+	selfAnchor:SetPoint("TOPLEFT", self.TopBar, "BOTTOMLEFT", 0, -2)
+	selfAnchor:SetPoint("BOTTOMRIGHT", self.BottomBar, "TOPRIGHT", 0, 2)
+	
+	self.OuterOutline = CreateFrame("Frame", nil, self)
+	self.OuterOutline:SetPoint("TOPLEFT", self.TopBar, -3, 3)
+	self.OuterOutline:SetPoint("BOTTOMRIGHT", self.BottomBar, 3, -3)
+	self.OuterOutline:SetBackdrop(vUI.Outline)
+	self.OuterOutline:SetBackdropBorderColor(0, 0, 0)
+	
+	self.InnerOutline = CreateFrame("Frame", nil, self)
+	self.InnerOutline:SetPoint("TOPLEFT", self.TopBar, "BOTTOMLEFT", 0, -2)
+	self.InnerOutline:SetPoint("BOTTOMRIGHT", self.BottomBar, "TOPRIGHT", 0, 2)
+	self.InnerOutline:SetBackdrop(vUI.Outline)
+	self.InnerOutline:SetBackdropBorderColor(0, 0, 0)
+	
+	vUI:CreateMover(self, 2)
 end
 
-local UpdateChatFrameSize = function()
-	local Width = Settings["chat-frame-width"]
-	
-	vUIChatFrame:SetSize(Width, Settings["chat-frame-height"])
-	vUIChatFrameTop:SetSize(Width, BAR_HEIGHT)
-	vUIChatFrameBottom:SetSize(Width, BAR_HEIGHT)
-	
-	-- Update data text width
-	local DT = vUI:GetModule("DataText")
-	
-	DT:GetAnchor("Chat-Left"):SetWidth(Width / 3)
-	DT:GetAnchor("Chat-Middle"):SetWidth(Width / 3)
-	DT:GetAnchor("Chat-Right"):SetWidth(Width / 3)
-end
-
-local Kill = function(object)
+local Disable = function(object)
 	if not object then
 		return
 	end
@@ -326,7 +326,7 @@ local OnMouseWheel = function(self, delta)
 	end
 end
 
-local UpdateEditBoxColor = function(editbox)
+Chat.ChatEdit_UpdateHeader = function(editbox)
 	local ChatType = editbox:GetAttribute("chatType")
 	local Backdrop = editbox.Backdrop
 	
@@ -366,37 +366,14 @@ local UpdateEditBoxColor = function(editbox)
 	editbox.HeaderBackdrop:SetWidth(editbox.header:GetWidth() + 14)
 end
 
-local KillTextures = {
-	"TabLeft",
-	"TabMiddle",
-	"TabRight",
-	"TabSelectedLeft",
-	"TabSelectedMiddle",
-	"TabSelectedRight",
-	"TabHighlightLeft",
-	"TabHighlightMiddle",
-	"TabHighlightRight",
-	"ButtonFrameUpButton",
-	"ButtonFrameDownButton",
-	"ButtonFrameBottomButton",
-	"ButtonFrameMinimizeButton",
-	"ButtonFrame",
-	"EditBoxFocusLeft",
-	"EditBoxFocusMid",
-	"EditBoxFocusRight",
-	"EditBoxLeft",
-	"EditBoxMid",
-	"EditBoxRight",
-}
-
 local OnEditFocusLost = function(self)
-	vUIChatFrameBottom:Show()
+	Chat.BottomBar:Show()
 	
 	self:Hide()
 end
 
 local OnEditFocusGained = function(self)
-	vUIChatFrameBottom:Hide()
+	Chat.BottomBar:Hide()
 end
 
 local CheckForBottom = function(self)
@@ -436,7 +413,7 @@ local TabOnLeave = function(self)
 	self.TabText:_SetTextColor(vUI:HexToRGB(Settings["chat-tab-font-color"]))
 end
 
-local StyleChatFrame = function(frame)
+function Chat:StyleChatFrame(frame)
 	if frame.Styled then
 		return
 	end
@@ -447,13 +424,13 @@ local StyleChatFrame = function(frame)
 	local EditBox = _G[FrameName.."EditBox"]
 	
 	if frame.ScrollBar then
-		Kill(frame.ScrollBar)
-		Kill(frame.ScrollToBottomButton)
-		Kill(_G[FrameName.."ThumbTexture"])
+		Disable(frame.ScrollBar)
+		Disable(frame.ScrollToBottomButton)
+		Disable(_G[FrameName.."ThumbTexture"])
 	end
 	
 	if Tab.conversationIcon then
-		Kill(Tab.conversationIconKill)
+		Disable(Tab.conversationIconKill)
 	end
 	
 	-- Hide editbox every time we click on a tab
@@ -488,8 +465,8 @@ local StyleChatFrame = function(frame)
 	frame:SetClampedToScreen(false)
 	frame:SetFading(false)
 	frame:SetScript("OnMouseWheel", OnMouseWheel)
-	frame:SetSize(vUIChatFrame:GetWidth() - 8, vUIChatFrame:GetHeight() - 8)
-	frame:SetFrameLevel(vUIChatFrame:GetFrameLevel() + 1)
+	frame:SetSize(self:GetWidth() - 8, self:GetHeight() - 8)
+	frame:SetFrameLevel(self:GetFrameLevel() + 1)
 	frame:SetFrameStrata("MEDIUM")
 	frame:SetJustifyH("LEFT")
 	frame:SetFading(Settings["chat-enable-fading"])
@@ -503,8 +480,8 @@ local StyleChatFrame = function(frame)
 	end
 	
 	EditBox:ClearAllPoints()
-	EditBox:SetPoint("TOPLEFT", vUIChatFrameBottom, 5, -2)
-	EditBox:SetPoint("BOTTOMRIGHT", vUIChatFrameBottom, -1, 2)
+	EditBox:SetPoint("TOPLEFT", self.BottomBar, 5, -2)
+	EditBox:SetPoint("BOTTOMRIGHT", self.BottomBar, -1, 2)
 	vUI:SetFontInfo(EditBox, Settings["chat-font"], Settings["chat-font-size"], Settings["chat-font-flags"])
 	EditBox:SetAltArrowKeyMode(false)
 	EditBox:Hide()
@@ -516,7 +493,7 @@ local StyleChatFrame = function(frame)
 	EditBox.HeaderBackdrop:SetBackdropColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	EditBox.HeaderBackdrop:SetBackdropBorderColor(0, 0, 0)
 	EditBox.HeaderBackdrop:SetSize(60, 22)
-	EditBox.HeaderBackdrop:SetPoint("LEFT", vUIChatFrameBottom, 0, 0)
+	EditBox.HeaderBackdrop:SetPoint("LEFT", self.BottomBar, 0, 0)
 	EditBox.HeaderBackdrop:SetFrameStrata("HIGH")
 	EditBox.HeaderBackdrop:SetFrameLevel(1)
 	
@@ -599,8 +576,8 @@ local StyleChatFrame = function(frame)
 		_G[FrameName..CHAT_FRAME_TEXTURES[i]]:SetTexture(nil)
 	end
 	
-	for i = 1, #KillTextures do
-		Kill(_G[FrameName..KillTextures[i]])
+	for i = 1, #self.RemoveTextures do
+		Disable(_G[FrameName..self.RemoveTextures[i]])
 	end
 	
 	hooksecurefunc(frame, "SetScrollOffset", CheckForBottom)
@@ -608,27 +585,27 @@ local StyleChatFrame = function(frame)
 	frame.Styled = true
 end
 
-local StyleTemporaryWindow = function()
+Chat.FCF_OpenTemporaryWindow = function()
 	local Frame = FCF_GetCurrentChatFrame()
 	
 	if (not Frame.Styled) then
-		StyleChatFrame(Frame)
+		Chat:StyleChatFrame(Frame)
 	end
 end
 
-local MoveChatFrames = function()
+function Chat:MoveChatFrames()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local Frame = _G["ChatFrame"..i]
 		
-		Frame:SetSize(vUIChatFrame:GetWidth() - 8, vUIChatFrame:GetHeight() - 8)
-		Frame:SetFrameLevel(vUIChatFrame:GetFrameLevel() + 1)
+		Frame:SetSize(selfAnchor:GetWidth() - 8, selfAnchor:GetHeight() - 8)
+		Frame:SetFrameLevel(selfAnchor:GetFrameLevel() + 1)
 		Frame:SetFrameStrata("MEDIUM")
 		Frame:SetJustifyH("LEFT")
 		
 		if (Frame:GetID() == 1) then
 			Frame:ClearAllPoints()
-			Frame:SetPoint("TOPLEFT", vUIChatFrame, 4, -4)
-			Frame:SetPoint("BOTTOMRIGHT", vUIChatFrame, -4, 4)
+			Frame:SetPoint("TOPLEFT", selfAnchor, 4, -3)
+			Frame:SetPoint("BOTTOMRIGHT", selfAnchor, -4, 3)
 		end
 		
 		if (not Frame.isLocked) then
@@ -650,40 +627,34 @@ local MoveChatFrames = function()
 	end
 	
 	GeneralDockManager:ClearAllPoints()
-	GeneralDockManager:SetPoint("LEFT", vUIChatFrameTop, 0, 6)
-	GeneralDockManager:SetPoint("RIGHT", vUIChatFrameTop, 0, 6)
+	GeneralDockManager:SetPoint("LEFT", self.TopBar, 0, 6)
+	GeneralDockManager:SetPoint("RIGHT", self.TopBar, 0, 6)
 	GeneralDockManager:SetFrameStrata("MEDIUM")
 	
 	GeneralDockManagerOverflowButton:ClearAllPoints()
-	GeneralDockManagerOverflowButton:SetPoint("RIGHT", vUIChatFrameTop, -2, 0)
+	GeneralDockManagerOverflowButton:SetPoint("RIGHT", self.TopBar, -2, 0)
 	
 	DEFAULT_CHAT_FRAME:SetUserPlaced(true)
 end
 
-local Setup = function()
+function Chat:StyleChatFrames()
 	for i = 1, NUM_CHAT_WINDOWS do
 		local Frame = _G["ChatFrame"..i]
 		
-		StyleChatFrame(Frame)
+		self:StyleChatFrame(Frame)
 		FCFTab_UpdateAlpha(Frame)
 	end
 	
-	ChatTypeInfo.WHISPER.sticky = 1
-	ChatTypeInfo.BN_WHISPER.sticky = 1
-	ChatTypeInfo.OFFICER.sticky = 1
-	ChatTypeInfo.RAID_WARNING.sticky = 1
-	ChatTypeInfo.CHANNEL.sticky = 1
+	Disable(ChatConfigFrameDefaultButton)
+	Disable(ChatFrameMenuButton)
+	Disable(QuickJoinToastButton)
 	
-	Kill(ChatConfigFrameDefaultButton)
-	Kill(ChatFrameMenuButton)
-	Kill(QuickJoinToastButton)
-	
-	Kill(ChatFrameChannelButton)
-	Kill(ChatFrameToggleVoiceDeafenButton)
-	Kill(ChatFrameToggleVoiceMuteButton)
+	Disable(ChatFrameChannelButton)
+	Disable(ChatFrameToggleVoiceDeafenButton)
+	Disable(ChatFrameToggleVoiceMuteButton)
 end
 
-local Install = function()
+function Chat:Install()
 	-- General
 	FCF_ResetChatWindows()
 	FCF_SetLocked(ChatFrame1, 1)
@@ -773,49 +744,38 @@ local Install = function()
 	
 	DEFAULT_CHAT_FRAME:SetUserPlaced(true)
 	
-	SetCVar("chatMouseScroll", 1)
-	SetCVar("chatStyle", "im")
-	SetCVar("WholeChatWindowClickable", 0)
-	SetCVar("WhisperMode", "inline")
-	--SetCVar("BnWhisperMode", "inline")
-	SetCVar("removeChatDelay", 1)
+	C_CVar.SetCVar("chatMouseScroll", 1)
+	C_CVar.SetCVar("chatStyle", "im")
+	C_CVar.SetCVar("WholeChatWindowClickable", 0)
+	C_CVar.SetCVar("WhisperMode", "inline")
+	--C_CVar.SetCVar("BnWhisperMode", "inline")
+	C_CVar.SetCVar("removeChatDelay", 1)
 	
-	--MoveChatFrames()
+	--Chat:MoveChatFrames()
 	FCF_SelectDockFrame(ChatFrame1)
 end
 
-local EventFrame = CreateFrame("Frame")
-EventFrame:RegisterEvent("PLAYER_LOGIN")
-EventFrame:SetScript("OnEvent", function(self, event)
-	if self[event] then
-		self[event](self, event)
-	end
-end)
+function Chat:AddMessageFilters()
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_SYSTEM", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_OFFICER", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY_LEADER", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_LEADER", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BATTLEGROUND_LEADER", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER_INFORM", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER_INFORM", FindLinks)
+	ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", FindLinks)
+end
 
-EventFrame["UI_SCALE_CHANGED"] = MoveChatFrames
-
-EventFrame["PLAYER_LOGIN"] = function(self, event)
-	if (not Settings["chat-enable"]) then
-		self:UnregisterEvent(event)
-		
-		return
-	end
-	
-	CreateChatFramePanels()
-	Setup()
-	
-	if (not vUIData) then
-		vUIData = {}
-	end
-	
-	if (not vUIData.ChatInstalled) then
-		Install()
-		
-		vUIData.ChatInstalled = true
-	end
-	
-	MoveChatFrames()
-	
+function Chat:SetChatTypeInfo()
 	_G["CHAT_DISCORD_SEND"] = Language["Discord: "]
 	_G["CHAT_URL_SEND"] = Language["URL: "]
 	_G["CHAT_EMAIL_SEND"] = Language["Email: "]
@@ -825,6 +785,12 @@ EventFrame["PLAYER_LOGIN"] = function(self, event)
 	ChatTypeInfo["EMAIL"] = {sticky = 0, r = 102/255, g = 187/255,  b = 106/255}
 	ChatTypeInfo["DISCORD"] = {sticky = 0, r = 114/255, g = 137/255,  b = 218/255}
 	ChatTypeInfo["FRIEND"] = {sticky = 0, r = 0, g = 170/255,  b = 255/255}
+	
+	ChatTypeInfo["WHISPER"].sticky = 1
+	ChatTypeInfo["BN_WHISPER"].sticky = 1
+	ChatTypeInfo["OFFICER"].sticky = 1
+	ChatTypeInfo["RAID_WARNING"].sticky = 1
+	ChatTypeInfo["CHANNEL"].sticky = 1
 	
 	ChatTypeInfo["SAY"].colorNameByClass = true
 	ChatTypeInfo["YELL"].colorNameByClass = true
@@ -861,23 +827,80 @@ EventFrame["PLAYER_LOGIN"] = function(self, event)
 	ChatTypeInfo["CHANNEL19"].colorNameByClass = true
 	ChatTypeInfo["CHANNEL20"].colorNameByClass = true
 	
-	if (GetCVar("colorChatNamesByClass") == 0) then
-		SetCVar("colorChatNamesByClass", 1)
+	if (C_CVar.GetCVar("colorChatNamesByClass") == 0) then
+		C_CVar.SetCVar("colorChatNamesByClass", 1)
+	end
+end
+
+function Chat:UI_SCALE_CHANGED()
+	self:MoveChatFrames()
+end
+
+function Chat:PLAYER_LOGIN(event)
+	if (not Settings["chat-enable"]) then
+		self:UnregisterEvent(event)
+		
+		return
 	end
 	
-	hooksecurefunc("ChatEdit_UpdateHeader", UpdateEditBoxColor)
-	hooksecurefunc("FCF_OpenTemporaryWindow", StyleTemporaryWindow)
+	self:AddMessageFilters()
+	self:CreateChatWindow()
+	self:StyleChatFrames()
+	
+	if (not vUIData) then
+		vUIData = {}
+	end
+	
+	if (not vUIData.ChatInstalled) then
+		self:Install()
+		
+		vUIData.ChatInstalled = true
+	end
+	
+	self:MoveChatFrames()
+	self:SetChatTypeInfo()
+	
+	self:Hook("ChatEdit_UpdateHeader")
+	self:Hook("FCF_OpenTemporaryWindow")
 	
 	self:RegisterEvent("UI_SCALE_CHANGED")
 	self:UnregisterEvent(event)
 end
 
+function Chat:OnEvent(event)
+	self[event](self, event)
+end
+
+Chat:RegisterEvent("PLAYER_LOGIN")
+Chat:SetScript("OnEvent", Chat.OnEvent)
+
 vUI.FormatLinks = FormatLinks
+
+local UpdateChatFrameSize = function()
+	local Width = Settings["chat-frame-width"]
+	
+	Chat:SetSize(Width + 4, Settings["chat-frame-height"] + (BAR_HEIGHT * 2) + (4 * 2))
+	
+	Chat.TopBar:ClearAllPoints()
+	Chat.TopBar:SetPoint("TOPLEFT", Chat, 2, -2)
+	Chat.TopBar:SetPoint("TOPRIGHT", Chat, -2, -2)
+	
+	Chat.BottomBar:ClearAllPoints()
+	Chat.BottomBar:SetPoint("BOTTOMLEFT", Chat, 2, 2)
+	Chat.BottomBar:SetPoint("BOTTOMRIGHT", Chat, -2, 2)
+	
+	-- Update data text width
+	local DT = vUI:GetModule("DataText")
+	
+	DT:GetAnchor("Chat-Left"):SetWidth(Width / 3)
+	DT:GetAnchor("Chat-Middle"):SetWidth(Width / 3)
+	DT:GetAnchor("Chat-Right"):SetWidth(Width / 3)
+end
 
 local UpdateOpacity = function(value)
 	local R, G, B = vUI:HexToRGB(Settings["ui-window-main-color"])
 	
-	vUIChatFrame:SetBackdropColor(R, G, B, (value / 100))
+	Chat:SetBackdropColor(R, G, B, (value / 100))
 end
 
 local UpdateChatFont = function()
@@ -920,7 +943,7 @@ local UpdateChatTabFont = function()
 end
 
 local RunChatInstall = function()
-	Install()
+	Chat:Install()
 	ReloadUI()
 end
 
