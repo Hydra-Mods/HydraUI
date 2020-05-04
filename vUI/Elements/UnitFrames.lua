@@ -3558,12 +3558,34 @@ GUI:AddOptions(function(self)
 end)
 
 --/run vUIFakeRaid()
-vUIFakeRaid = function()
+vUIFakeRaid = function(num)
 	local Header = _G["vUI Raid"]
+	local Index = num and num - 1 or 24
 	
 	if Header then
-		if (Header:GetAttribute("startingIndex") ~= -19) then
-			Header:SetAttribute("startingIndex", -19)
+		if (Header:GetAttribute("startingIndex") ~= -Index) then
+			Header:SetAttribute("startingIndex", -Index)
+		end
+		
+		for i = 1, select("#", Header:GetChildren()) do
+			local Frame = select(i, Header:GetChildren())
+			
+			Frame.unit = "player"
+			UnregisterUnitWatch(Frame)
+			RegisterUnitWatch(Frame, true)
+			Frame:Show()
+		end
+	end
+end
+
+--/run vUIFakeParty()
+vUIFakeParty = function(num)
+	local Header = _G["vUI Party"]
+	local Index = num and num - 1 or 4
+	
+	if Header then
+		if (Header:GetAttribute("startingIndex") ~= -Index) then
+			Header:SetAttribute("startingIndex", -Index)
 		end
 		
 		for i = 1, select("#", Header:GetChildren()) do
