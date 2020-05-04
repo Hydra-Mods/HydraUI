@@ -3,13 +3,9 @@ local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 local tonumber = tonumber
 local match = string.match
 local SendAddonMessage = C_ChatInfo.SendAddonMessage
-local UnitInBattleground = UnitInBattleground
 local IsInGuild = IsInGuild
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
-
--- Use a button in GUI to request newer versions? -- Put a pretty hard throttle on the button too so it can't be smashed.
--- vUI:print("If any version data is recieved, you will be prompted.")
 
 local AddOnVersion = tonumber(vUI.UIVersion)
 
@@ -44,13 +40,15 @@ function Update:PLAYER_ENTERING_WORLD(event)
 		SendAddonMessage("vUI-Version", AddOnVersion, "GUILD")
 	end
 	
-	if IsInRaid() then
-		SendAddonMessage("vUI-Version", AddOnVersion, "RAID")
-	elseif IsInGroup() then
-		SendAddonMessage("vUI-Version", AddOnVersion, "PARTY")
+	if IsInGroup(LE_PARTY_CATEGORY_HOME) then
+		if IsInRaid() then
+			SendAddonMessage("vUI-Version", AddOnVersion, "RAID")
+		elseif IsInGroup() then
+			SendAddonMessage("vUI-Version", AddOnVersion, "PARTY")
+		end
 	end
 	
-	if IsInInstance() then
+	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
 		SendAddonMessage("vUI-Version", AddOnVersion, "INSTANCE_CHAT")
 	end
 	
@@ -61,6 +59,20 @@ end
 function Update:GUILD_ROSTER_UPDATE()
 	if IsInGuild() then
 		SendAddonMessage("vUI-Version", AddOnVersion, "GUILD")
+	end
+end
+
+function Update:GROUP_ROSTER_UPDATE()
+	if IsInGroup(LE_PARTY_CATEGORY_HOME) then
+		if IsInRaid() then
+			SendAddonMessage("vUI-Version", AddOnVersion, "RAID")
+		elseif IsInGroup() then
+			SendAddonMessage("vUI-Version", AddOnVersion, "PARTY")
+		end
+	end
+	
+	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
+		SendAddonMessage("vUI-Version", AddOnVersion, "INSTANCE_CHAT")
 	end
 end
 
@@ -131,6 +143,7 @@ end
 Update:RegisterEvent("VARIABLES_LOADED")
 Update:RegisterEvent("PLAYER_ENTERING_WORLD")
 Update:RegisterEvent("GUILD_ROSTER_UPDATE")
+Update:RegisterEvent("GROUP_ROSTER_UPDATE")
 Update:RegisterEvent("CHAT_MSG_ADDON")
 Update:SetScript("OnEvent", Update.OnEvent)
 

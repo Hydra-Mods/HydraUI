@@ -2630,7 +2630,7 @@ UF:SetScript("OnEvent", function(self, event)
 			)
 			
 			self.PartyAnchor = CreateFrame("Frame", "vUI Party Anchor", vUI.UIParent)
-			self.PartyAnchor:SetSize((5 * Settings["party-width"] + (4 * 2)), (Settings["party-health-height"] + Settings["party-power-height"]) + 3)
+			self.PartyAnchor:SetSize((5 * Settings["party-width"] + (4 * Settings["party-x-offset"])), (Settings["party-health-height"] + Settings["party-power-height"]) + 3)
 			self.PartyAnchor:SetPoint("BOTTOMLEFT", vUIChatFrameTop, "TOPLEFT", -3, 5)
 			
 			Party:SetPoint("BOTTOMLEFT", self.PartyAnchor, 0, 0)
@@ -2687,7 +2687,7 @@ UF:SetScript("OnEvent", function(self, event)
 			)
 			
 			self.RaidAnchor = CreateFrame("Frame", "vUI Raid Anchor", vUI.UIParent)
-			self.RaidAnchor:SetSize((4 * (Settings["raid-health-height"] + Settings["raid-power-height"] + 3) + 4 * 2), ((Settings["raid-health-height"] + Settings["raid-power-height"]) * 10) + (2 * (10 - 1)))
+			self.RaidAnchor:SetSize((4 * Settings["raid-width"] + (4 * Settings["raid-x-offset"])), ((Settings["raid-health-height"] + Settings["raid-power-height"]) * Settings["raid-units-per-column"]) + (2 * (Settings["raid-units-per-column"] - 1)))
 			--self.RaidAnchor:SetPoint("TOPLEFT", vUI.UIParent, 10, -10)
 			self.RaidAnchor:SetPoint("BOTTOMLEFT", vUIChatFrameTop, "TOPLEFT", -3, 5)
 			

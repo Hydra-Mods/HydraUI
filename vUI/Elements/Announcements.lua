@@ -9,6 +9,8 @@ local CastMessage = "casts \124cff71d5ff\124Hspell:%d:0\124h[%s]\124h\124r on %s
 local CastingMessage = Language["casting %s on %s."]
 local UNKNOWN = UNKNOWN
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
+local IsBattleground = C_PvP.IsBattleground
+local IsRatedBattleground = C_PvP.IsRatedBattleground
 local SendChatMessage = SendChatMessage
 local UnitIsFriend = UnitIsFriend
 local IsInRaid = IsInRaid
@@ -28,7 +30,7 @@ Announcements.Spells = {
 }
 
 function Announcements:GetChannelToSend()
-	if (Settings["announcements-channel"] == "SELF") then
+	if ((Settings["announcements-channel"] == "SELF") or (IsBattleground() or IsRatedBattleground())) then
 		return
 	elseif (Settings["announcements-channel"] == "GROUP") then
 		if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
