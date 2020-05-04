@@ -443,6 +443,10 @@ end
 function vUI:SetProfileMetadata(name, meta, value) -- /run vUIGlobal:get():SetProfileMetadata("ProfileName", "profile-created-by", "Hydra")
 	if (vUIProfiles[name] and self.ProfileMetadata[meta]) then
 		vUIProfiles[name][meta] = value
+		
+		if (name == self:GetActiveProfileName()) then
+			self:UpdateProfileInfo()
+		end
 	end
 end
 
