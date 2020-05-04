@@ -310,6 +310,8 @@ Defaults["unitframes-targettarget-power-height"] = 3
 Defaults["unitframes-targettarget-power-reverse"] = false
 Defaults["unitframes-targettarget-power-color"] = "POWER"
 Defaults["unitframes-targettarget-power-smooth"] = true
+Defaults["unitframes-targettarget-health-left"] = "[Name10]"
+Defaults["unitframes-targettarget-health-right"] = "[HealthPercent]"
 
 -- Unitframes: Pet
 Defaults["unitframes-pet-width"] = 110
@@ -322,6 +324,8 @@ Defaults["unitframes-pet-power-height"] = 3
 Defaults["unitframes-pet-power-reverse"] = false
 Defaults["unitframes-pet-power-color"] = "POWER"
 Defaults["unitframes-pet-power-smooth"] = true
+Defaults["unitframes-pet-health-left"] = "[Name10]"
+Defaults["unitframes-pet-health-right"] = "[HealthPercent]"
 
 -- Unitframes: Bosses
 Defaults["unitframes-boss-enable"] = true
