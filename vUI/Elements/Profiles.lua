@@ -523,7 +523,7 @@ end
 
 local UpdateActiveProfile = function(value)
 	if (value ~= vUI:GetActiveProfileName()) then
-		vUI:DisplayPopup(Language["Attention"], format(Language['Are you sure you would like to change to the current profile to "|cFF%s%s|r"?'], Settings["ui-widget-color"], value), Language["Accept"], AcceptNewProfile, Language["Cancel"], nil, value)
+		vUI:DisplayPopup(Language["Attention"], format(Language['Are you sure you would like to change to the current profile to "%s"?'], value), Language["Accept"], AcceptNewProfile, Language["Cancel"], nil, value)
 	end
 end
 

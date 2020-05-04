@@ -3052,7 +3052,7 @@ local UpdatePartyHealthHeight = function(value)
 			Unit = select(i, vUI.UnitFrames["party"]:GetChildren())
 			
 			if Unit then
-				Unit:setHeight(value + Settings["party-power-height"] + 3)
+				Unit:SetHeight(value + Settings["party-power-height"] + 3)
 				Unit.Health:SetHeight(value)
 			end
 		end
@@ -3258,7 +3258,7 @@ local UpdateRaidHealthHeight = function(value)
 			Unit = select(i, vUI.UnitFrames["raid"]:GetChildren())
 			
 			if Unit then
-				Unit:setHeight(value + Settings["raid-power-height"] + 3)
+				Unit:SetHeight(value + Settings["raid-power-height"] + 3)
 				Unit.Health:SetHeight(value)
 			end
 		end
