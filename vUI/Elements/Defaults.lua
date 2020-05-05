@@ -231,6 +231,9 @@ Defaults["auras-per-row"] = 12
 -- Minimap
 Defaults["minimap-enable"] = true
 Defaults["minimap-size"] = 140
+Defaults["minimap-show-top"] = true
+Defaults["minimap-show-bottom"] = true
+
 Defaults["minimap-buttonbar-enable"] = true
 Defaults["minimap-buttonbar-direction"] = "LEFT"
 Defaults["minimap-buttonbar-buttonspacing"] = 1

@@ -8,17 +8,7 @@ local BUTTON_WIDTH = ((POPUP_WIDTH - 6) / 2) - 1
 
 -- IsSevere flag, where you need to hold accept for 1 sec to apply the click. place a statusbar in the button. For things like deleting profiles/saved data
 
-local Button1OnMouseUp = function(self)
-	self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	if self.Callback then
-		self.Callback(self.Arg1, self.Arg2)
-	end
-	
-	self:GetParent():Hide()
-end
-
-local Button2OnMouseUp = function(self)
+local ButtonOnMouseUp = function(self)
 	self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
 	
 	if self.Callback then
@@ -106,7 +96,7 @@ Popup.CreatePopupFrame = function(self)
 	self.Button1:SetBackdrop(vUI.BackdropAndBorder)
 	self.Button1:SetBackdropColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
 	self.Button1:SetBackdropBorderColor(0, 0, 0)
-	self.Button1:SetScript("OnMouseUp", Button1OnMouseUp)
+	self.Button1:SetScript("OnMouseUp", ButtonOnMouseUp)
 	self.Button1:SetScript("OnMouseDown", ButtonOnMouseDown)
 	self.Button1:SetScript("OnEnter", ButtonOnEnter)
 	self.Button1:SetScript("OnLeave", ButtonOnLeave)
@@ -140,7 +130,7 @@ Popup.CreatePopupFrame = function(self)
 	self.Button2:SetBackdrop(vUI.BackdropAndBorder)
 	self.Button2:SetBackdropColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
 	self.Button2:SetBackdropBorderColor(0, 0, 0)
-	self.Button2:SetScript("OnMouseUp", Button2OnMouseUp)
+	self.Button2:SetScript("OnMouseUp", ButtonOnMouseUp)
 	self.Button2:SetScript("OnMouseDown", ButtonOnMouseDown)
 	self.Button2:SetScript("OnEnter", ButtonOnEnter)
 	self.Button2:SetScript("OnLeave", ButtonOnLeave)

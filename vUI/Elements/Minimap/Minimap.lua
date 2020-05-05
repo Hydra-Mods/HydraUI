@@ -26,7 +26,7 @@ end
 function Map:Style()
 	-- Backdrop
 	self:SetPoint("TOPRIGHT", vUI.UIParent, -12, -12)
-	self:SetSize((Settings["minimap-size"] + 8), (44 + 8 + Settings["minimap-size"]))
+	self:SetSize((Settings["minimap-size"] + 8), ((Settings["minimap-show-top"] == true and 22 or 0) + (Settings["minimap-show-bottom"] == true and 22 or 0) + 8 + Settings["minimap-size"]))
 	self:SetBackdrop(vUI.BackdropAndBorder)
 	self:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self:SetBackdropBorderColor(0, 0, 0)
@@ -65,7 +65,6 @@ function Map:Style()
 	Minimap:SetMaskTexture(Assets:GetTexture("Blank"))
 	Minimap:SetParent(self)
 	Minimap:ClearAllPoints()
-	Minimap:SetPoint("TOP", self.TopFrame, "BOTTOM", 0, -3)
 	Minimap:SetSize(Settings["minimap-size"], Settings["minimap-size"])
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", OnMouseWheel)
@@ -102,7 +101,81 @@ function Map:Style()
 	Disable(GameTimeFrame)
 	Disable(TimeManagerClockButton)
 	
+	if Settings["minimap-show-top"] and not Settings["minimap-show-bottom"] then
+		Minimap:SetPoint("BOTTOM", Map, 0, 4)
+	elseif Settings["minimap-show-bottom"] and not Settings["minimap-show-top"] then
+		Minimap:SetPoint("TOP", Map, 0, -4)
+	else
+		Minimap:SetPoint("CENTER", Map, 0, 0)
+	end
+	
+	if (not Settings["minimap-show-top"]) then
+		self.TopFrame:Hide()
+	end
+	
+	if (not Settings["minimap-show-bottom"]) then
+		self.BottomFrame:Hide()
+	end
+	
 	vUI:CreateMover(self)
+end
+
+local UpdateMinimapSize = function(value)
+	Map:SetSize((value + 8), ((Settings["minimap-show-top"] == true and 22 or 0) + (Settings["minimap-show-bottom"] == true and 22 or 0) + 8 + value))
+	
+	Minimap:SetSize(value, value)
+	Minimap:SetZoom(Minimap:GetZoom() + 1)
+	Minimap:SetZoom(Minimap:GetZoom() - 1)
+	Minimap:UpdateBlips()
+	Minimap:ClearAllPoints()
+	
+	if Settings["minimap-show-top"] and not Settings["minimap-show-bottom"] then
+		Minimap:SetPoint("BOTTOM", Map, 0, 4)
+	elseif Settings["minimap-show-bottom"] and not Settings["minimap-show-top"] then
+		Minimap:SetPoint("TOP", Map, 0, -4)
+	else
+		Minimap:SetPoint("CENTER", Map, 0, 0)
+	end
+end
+
+local UpdateShowTopBar = function(value)
+	local Anchor = vUI:GetModule("DataText"):GetAnchor("Minimap-Top")
+	
+	if value then
+		Map.TopFrame:Show()
+		
+		if Anchor.Enable then
+			Anchor:Enable()
+		end
+	else
+		Map.TopFrame:Hide()
+		
+		if Anchor.Disable then
+			Anchor:Disable()
+		end
+	end
+	
+	UpdateMinimapSize(Settings["minimap-size"])
+end
+
+local UpdateShowBottomBar = function(value)
+	local Anchor = vUI:GetModule("DataText"):GetAnchor("Minimap-Bottom")
+	
+	if value then
+		Map.BottomFrame:Show()
+		
+		if Anchor.Enable then
+			Anchor:Enable()
+		end
+	else
+		Map.BottomFrame:Hide()
+		
+		if Anchor.Disable then
+			Anchor:Disable()
+		end
+	end
+	
+	UpdateMinimapSize(Settings["minimap-size"])
 end
 
 function Map:Load()
@@ -117,21 +190,14 @@ function Map:Load()
 	end
 end
 
-local UpdateMinimapSize = function(value)
-	Map:SetSize((value + 8), (44 + 8 + value))
-	
-	Minimap:SetSize(value, value)
-	Minimap:SetZoom(Minimap:GetZoom() + 1)
-	Minimap:SetZoom(Minimap:GetZoom() - 1)
-	Minimap:UpdateBlips()
-end
-
 GUI:AddOptions(function(self)
-	local Left = self:CreateWindow(Language["Minimap"])
+	local Left = self:CreateWindow(Language["Mini Map"])
 	
 	Left:CreateHeader(Language["Enable"])
-	Left:CreateSwitch("minimap-enable", Settings["minimap-enable"], Language["Enable Minimap Module"], Language["Enable the vUI Minimap module"], ReloadUI):RequiresReload(true)
+	Left:CreateSwitch("minimap-enable", Settings["minimap-enable"], Language["Enable Mini Map Module"], Language["Enable the vUI mini map module"], ReloadUI):RequiresReload(true)
 	
 	Left:CreateHeader(Language["Styling"])
-	Left:CreateSlider("minimap-size", Settings["minimap-size"], 100, 250, 10, Language["Minimap Size"], Language["Set the size of the Minimap"], UpdateMinimapSize)
+	Left:CreateSlider("minimap-size", Settings["minimap-size"], 100, 250, 10, Language["Mini Map Size"], Language["Set the size of the mini map"], UpdateMinimapSize)
+	Left:CreateSwitch("minimap-show-top", Settings["minimap-show-top"], Language["Enable Top Bar"], Language["Enable the data text bar on top of the mini map"], UpdateShowTopBar)
+	Left:CreateSwitch("minimap-show-bottom", Settings["minimap-show-bottom"], Language["Enable Bottom Bar"], Language["Enable the data text bar on the bottom of the mini map"], UpdateShowBottomBar)
 end)
