@@ -373,10 +373,10 @@ Defaults["party-pets-power-height"] = 0 -- NYI
 
 -- Unitframes: Raid
 Defaults["raid-enable"] = true
-Defaults["raid-width"] = 90
+Defaults["raid-width"] = 78
 Defaults["raid-in-range"] = 100
 Defaults["raid-out-of-range"] = 50
-Defaults["raid-health-height"] = 23
+Defaults["raid-health-height"] = 22
 Defaults["raid-health-reverse"] = false
 Defaults["raid-health-color"] = "CLASS"
 Defaults["raid-health-orientation"] = "HORIZONTAL"
@@ -388,10 +388,11 @@ Defaults["raid-power-orientation"] = "HORIZONTAL"
 Defaults["raid-power-smooth"] = true
 Defaults["raid-x-offset"] = 2
 Defaults["raid-y-offset"] = -2
-Defaults["raid-units-per-column"] = 10
+Defaults["raid-units-per-column"] = 5
 Defaults["raid-max-columns"] = 8
 Defaults["raid-column-spacing"] = 2
-Defaults["raid-column-anchor"] = "LEFT"
+Defaults["raid-point"] = "LEFT"
+Defaults["raid-column-anchor"] = "TOP"
 Defaults["raid-sorting-method"] = "GROUP"
 
 -- Name Plates

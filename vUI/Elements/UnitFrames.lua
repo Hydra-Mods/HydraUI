@@ -2672,6 +2672,7 @@ UF:SetScript("OnEvent", function(self, event)
 				"showPlayer", true,
 				"showParty", false,
 				"showRaid", true,
+				"point", Settings["raid-point"],
 				"xoffset", Settings["raid-x-offset"],
 				"yOffset", Settings["raid-y-offset"],
 				"maxColumns", Settings["raid-max-columns"],
@@ -3378,6 +3379,10 @@ local UpdateRaidColumnAnchor = function(value)
 	vUI.UnitFrames["raid"]:SetAttribute("columnSpacing", value)
 end
 
+local UpdateRaidPoint = function(value)
+	vUI.UnitFrames["raid"]:SetAttribute("point", value)
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Raid"])
 	
@@ -3409,6 +3414,7 @@ GUI:AddOptions(function(self)
 	Right:CreateSlider("raid-max-columns", Settings["raid-max-columns"], 1, 40, 1, Language["Max Columns"], Language["Set the maximum number of visible columns of raid units"], UpdateRaidMaxColumns)
 	Right:CreateSlider("raid-column-spacing", Settings["raid-column-spacing"], -10, 10, 1, Language["Column Spacing"], Language["Set the spacing between columns of raid units"], UpdateRaidColumnSpacing)
 	Right:CreateDropdown("raid-sorting-method", Settings["raid-sorting-method"], {[Language["Group"]] = "GROUP", [Language["Name"]] = "NAME", [Language["Class"]] = "CLASS", [Language["Role"]] = "ROLE", [Language["Main Tank"]] = "MTMA"}, Language["Sorting Method"], Language["Set how the raid units are sorted"], UpdateRaidSortingMethod)
+	Right:CreateDropdown("raid-point", Settings["raid-point"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Top"]] = "TOP", [Language["Bottom"]] = "BOTTOM"}, Language["Anchor Point"], Language["Set where new raid frames will connect to previous ones"], UpdateRaidPoint)
 	Right:CreateDropdown("raid-column-anchor", Settings["raid-column-anchor"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Top"]] = "TOP", [Language["Bottom"]] = "BOTTOM"}, Language["New Column Anchor"], Language["Set where new columns should anchor to"], UpdateRaidColumnAnchor)
 end)
 
