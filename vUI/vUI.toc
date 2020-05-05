@@ -48,7 +48,7 @@ Elements\ActionBars\BagSlots.lua
 Elements\ActionBars\MicroMenu.lua
 Elements\UnitFrames.lua
 Elements\Tooltips.lua
-Elements\Minimap\Minimap.lua
+Elements\MiniMap\MiniMap.lua
 Elements\ZoneText.lua
 Elements\Update.lua
 Elements\Auras.lua
