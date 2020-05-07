@@ -2688,7 +2688,7 @@ UF:SetScript("OnEvent", function(self, event)
 			)
 			
 			self.RaidAnchor = CreateFrame("Frame", "vUI Raid Anchor", vUI.UIParent)
-			self.RaidAnchor:SetSize((4 * Settings["raid-width"] + (4 * Settings["raid-x-offset"])), ((Settings["raid-health-height"] + Settings["raid-power-height"]) * Settings["raid-units-per-column"]) + (2 * (Settings["raid-units-per-column"] - 1)))
+			self.RaidAnchor:SetSize((5 * Settings["raid-width"] + (5 * Settings["raid-x-offset"] - 2)), ((Settings["raid-health-height"] + Settings["raid-power-height"]) * Settings["raid-units-per-column"]) + (2 * (Settings["raid-units-per-column"] - 1)))
 			--self.RaidAnchor:SetPoint("TOPLEFT", vUI.UIParent, 10, -10)
 			self.RaidAnchor:SetPoint("BOTTOMLEFT", vUIChatFrameTop, "TOPLEFT", -3, 5)
 			

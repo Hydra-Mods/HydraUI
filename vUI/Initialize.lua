@@ -213,9 +213,6 @@ function vUI:AddPluginInfo()
 		Anchor:CreateLine(" ")
 		Anchor:CreateMessage(self.Plugins[i].Notes)
 	end
-	
-	Left:CreateFooter()
-	Right:CreateFooter()
 end
 
 -- NYI, Concept list for my preferred CVars, and those important to the UI
@@ -437,9 +434,10 @@ function vUI:VARIABLES_LOADED(event)
 	self:ApplyProfile(self:GetActiveProfileName())
 	
 	self:SetScale(Settings["ui-scale"])
-	self:UpdateoUFColors()
 	
-	-- Load the GUI
+	self:UpdateoUFColors()
+	self:UpdateColors()
+	
 	GUI:Create()
 	GUI:RunQueue()
 	
@@ -448,13 +446,14 @@ function vUI:VARIABLES_LOADED(event)
 		GUI:ShowWindow(GUI.DefaultWindow)
 	end
 	
+	self:WelcomeMessage()
+	
 	self:UnregisterEvent(event)
 end
 
 function vUI:PLAYER_ENTERING_WORLD(event)
 	self:LoadModules()
 	self:LoadPlugins()
-	self:AddPluginInfo()
 	
 	self:UnregisterEvent(event)
 end

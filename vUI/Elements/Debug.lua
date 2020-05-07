@@ -38,6 +38,12 @@ local GetQuests = function()
 	return format("%s / %s", NumQuests, MaxQuests)
 end
 
+local GetSpecName = function()
+	local Name = select(2, GetSpecializationInfo(GetSpecialization()))
+	
+	return Name
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Debug"], nil, "zzzDebug")
 	
@@ -55,18 +61,18 @@ GUI:AddOptions(function(self)
 	Left:CreateDoubleLine(Language["Display Errors"], "")
 	
 	Right:CreateHeader(Language["User Information"])
-	Right:CreateDoubleLine(Language["Name"], vUI.UserName)
 	Right:CreateDoubleLine(Language["Level"], UnitLevel("player"))
 	Right:CreateDoubleLine(Language["Race"], vUI.UserRace)
 	Right:CreateDoubleLine(Language["Class"], UnitClass("player"))
+	Right:CreateDoubleLine(Language["Spec"], "")
 	Right:CreateDoubleLine(Language["Realm"], vUI.UserRealm)
 	Right:CreateDoubleLine(Language["Zone"], GetZoneText())
 	Right:CreateDoubleLine(Language["Sub Zone"], GetMinimapZoneText())
 	Right:CreateDoubleLine(Language["Quests"], GetQuests())
-	
 	Right:CreateHeader(Language["AddOns Information"])
 	Right:CreateDoubleLine(Language["Total AddOns"], GetNumAddOns())
 	Right:CreateDoubleLine(Language["Loaded AddOns"], GetNumLoadedAddOns())
+	Right:CreateDoubleLine(Language["Loaded Plugins"], #vUI.Plugins)
 end)
 
 function Debug:DISPLAY_SIZE_CHANGED()
@@ -116,6 +122,10 @@ function Debug:CVAR_UPDATE(cvar)
 	end
 end
 
+function Debug:ACTIVE_TALENT_GROUP_CHANGED()
+	GUI:GetWidgetByWindow(Language["Debug"], "spec").Right:SetText(GetSpecName())
+end
+
 function Debug:OnEvent(event)
 	if self[event] then
 		self[event](self)
@@ -130,10 +140,12 @@ function Debug:Load()
 	self:RegisterEvent("UI_SCALE_CHANGED")
 	self:RegisterEvent("QUEST_LOG_UPDATE")
 	self:RegisterEvent("CVAR_UPDATE")
+	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	
 	-- Unavailable until PEW
 	GUI:GetWidgetByWindow(Language["Debug"], "display-errors").Right:SetText(GetCVar("scriptErrors") == "1" and Language["Enabled"] or Language["Disabled"])
 	GUI:GetWidgetByWindow(Language["Debug"], "fullscreen").Right:SetText(GetCVar("gxMaximize") == "1" and Language["Enabled"] or Language["Disabled"])
+	GUI:GetWidgetByWindow(Language["Debug"], "spec").Right:SetText(GetSpecName())
 	
 	if (UnitLevel("player") < MAX_PLAYER_LEVEL_TABLE[GetAccountExpansionLevel()]) then
 		self:RegisterEvent("PLAYER_LEVEL_UP")

@@ -16,6 +16,25 @@ local UpdateDisplayDevTools = function()
 	end
 end
 
+function vUI:WelcomeMessage()
+	if Settings["ui-display-welcome"] then
+		local Color1 = Settings["ui-widget-color"]
+		local Color2 = Settings["ui-header-font-color"]
+		
+		print(format(Language["Welcome to |cFF%svUI|r version |cFF%s%s|r."], Color1, Color2, vUI.UIVersion))
+		print(format(Language["Type |cFF%s/vui|r to access the settings window, or click |cFF%s|Hcommand:/vui|h[here]|h|r."], Color1, Color1))
+		
+		-- May as well put this here for now too.
+		if Settings["ui-display-dev-tools"] then
+			local Name = UnitName("player")
+			
+			print(format(DevTools, Color1, Color1, Name, Color1, Color1))
+			
+			HasPrinted = true
+		end
+	end
+end
+
 local UpdateUIScale = function(value)
 	vUI:SetScale(tonumber(value))
 end
@@ -70,23 +89,6 @@ GUI:AddOptions(function(self)
 	Right:CreateSwitch("gui-hide-in-combat", Settings["gui-hide-in-combat"], Language["Hide In Combat"], Language["Hide the settings window when engaging in combat"])
 	Right:CreateSwitch("gui-enable-fade", Settings["gui-enable-fade"], Language["Fade While Moving"], Language["Fade out the settings window while moving"], UpdateGUIEnableFade)
 	Right:CreateSlider("gui-faded-alpha", Settings["gui-faded-alpha"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the settings window while faded"], nil, nil, "%")
-	
-	if Settings["ui-display-welcome"] then
-		local Color1 = Settings["ui-widget-color"]
-		local Color2 = Settings["ui-header-font-color"]
-		
-		print(format(Language["Welcome to |cFF%svUI|r version |cFF%s%s|r."], Color1, Color2, vUI.UIVersion))
-		print(format(Language["Type |cFF%s/vui|r to access the settings window, or click |cFF%s|Hcommand:/vui|h[here]|h|r."], Color1, Color1))
-		
-		-- May as well put this here for now too.
-		if Settings["ui-display-dev-tools"] then
-			local Name = UnitName("player")
-			
-			print(format(DevTools, Color1, Color1, Name, Color1, Color1))
-			
-			HasPrinted = true
-		end
-	end
 end)
 
 -- Putting Styles here too

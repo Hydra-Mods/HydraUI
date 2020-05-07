@@ -19,31 +19,6 @@ local GetMouseFocus = GetMouseFocus
 
 GUI.Widgets = {}
 
---[[
-	
-	Thoughts:
-	
-	- Rename RequiresReload to RequiresWarning etc
-	
-	To do:
-	- widgets:
-	Input (longer editbox that accepts text input, as well as dropping spells/actions/items into it)
-	Input.Imprint = a string that shows when the editbox is empty; a suggestion, or default value.
-	
-	DoubleButton
-	
-	- If template == "None" then disable the styles page
-	
-	- Set the scrollbars to have arrow button
-	- Dropdown breaks, when clicked won't respond. something like "---------------"
-	
-	- Widget methods
-	widget:Disable()
-	widget:Enable()
-	widget:GetValue()
-	widget:SetValue()
---]]
-
 -- Constants
 local GUI_WIDTH = 726
 local GUI_HEIGHT = 340
@@ -1068,7 +1043,7 @@ GUI.Widgets.CreateInput = function(self, id, value, label, tooltip, hook)
 	Input.Texture:SetPoint("TOPLEFT", Input, 1, -1)
 	Input.Texture:SetPoint("BOTTOMRIGHT", Input, -1, 1)
 	Input.Texture:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	Input.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bg-color"]))
+	Input.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
 	Input.Flash = Input:CreateTexture(nil, "OVERLAY")
 	Input.Flash:SetPoint("TOPLEFT", Input, 1, -1)
@@ -1196,7 +1171,7 @@ GUI.Widgets.CreateInputWithButton = function(self, id, value, button, label, too
 	Input.Texture:SetPoint("TOPLEFT", Input, 1, -1)
 	Input.Texture:SetPoint("BOTTOMRIGHT", Input, -1, 1)
 	Input.Texture:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	Input.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bg-color"]))
+	Input.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
 	Input.Flash = Input:CreateTexture(nil, "OVERLAY")
 	Input.Flash:SetPoint("TOPLEFT", Input, 1, -1)
@@ -3317,7 +3292,10 @@ function GUI:ShowWindow(name)
 	for WindowName, Window in pairs(self.Windows) do
 		if (WindowName ~= name) then
 			Window:Hide()
-			Window.Button.FadeOut:Play()
+			
+			if (Window.Button.Selected:GetAlpha() > 0) then
+				Window.Button.FadeOut:Play()
+			end
 		end
 	end
 	
@@ -3817,6 +3795,8 @@ function GUI:Create()
 	self.CloseButton.Cross:SetSize(16, 16)
 	self.CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
 	self.CloseButton.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
+	
+	vUI:AddPluginInfo() -- MOVE ME!
 end
 
 -- Groups

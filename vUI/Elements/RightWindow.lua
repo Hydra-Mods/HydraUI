@@ -9,6 +9,7 @@ local Testing = {
 	["Zaeta:Mal'Ganis"] = 1,
 	["Psyaviah:Mal'Ganis"] = 1,
 	["Artemis:Mal'Ganis"] = 1,
+	["Amnistia:Mal'Ganis"] = 1,
 }
 
 if (not Testing[vUI.UserProfileKey]) then

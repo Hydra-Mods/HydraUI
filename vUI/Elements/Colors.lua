@@ -97,6 +97,15 @@ function vUI:UpdateComboColors()
 	self:SetColorEntry(self.ComboPoints, 6, Settings["color-combo-6"])
 end
 
+function vUI:UpdateColors()
+	self:UpdateClassColors()
+	self:UpdateReactionColors()
+	self:UpdateZoneColors()
+	self:UpdatePowerColors()
+	self:UpdateDebuffColors()
+	self:UpdateComboColors()
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Colors"])
 	
@@ -177,11 +186,4 @@ GUI:AddOptions(function(self)
 	Left:CreateColorSelection("color-casting-stopped", Settings["color-casting-stopped"], Language["Stopped"], "")
 	Left:CreateColorSelection("color-casting-interrupted", Settings["color-casting-interrupted"], Language["Interrupted"], "")
 	Left:CreateColorSelection("color-casting-uninterruptible", Settings["color-casting-uninterruptible"], Language["Uninterruptible"], "")
-	
-	vUI:UpdateClassColors()
-	vUI:UpdateReactionColors()
-	vUI:UpdateZoneColors()
-	vUI:UpdatePowerColors()
-	vUI:UpdateDebuffColors()
-	vUI:UpdateComboColors()
 end)
