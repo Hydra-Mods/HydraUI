@@ -9,7 +9,7 @@ end
 function Vehicle:OnEnter()
 	local R, G, B = vUI:HexToRGB(Settings["ui-widget-font-color"])
 	
-	GameTooltip:SetOwner(self, "ANCHOR_PRESERVE")
+	GameTooltip:SetOwner(self, "ANCHOR_PRESERVE", 0, -6)
 	GameTooltip:AddLine(TAXI_CANCEL_DESCRIPTION, R, G, B)
 	GameTooltip:Show()
 end
