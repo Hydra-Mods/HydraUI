@@ -18,7 +18,7 @@ function Vehicle:OnLeave()
 	GameTooltip:Hide()
 end
 
-function Vehicle:OnEvent(event)
+function Vehicle:OnEvent()
     if CanExitVehicle() then
         if UnitOnTaxi("player") then
             self.Text:SetText(Language["Land Early"])
