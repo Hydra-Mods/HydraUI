@@ -7,7 +7,7 @@ local NOT_APPLICABLE = NOT_APPLICABLE
 local Label = MANA_REGEN
 
 local OnEnter = function(self)
-	if not UnitHasMana(unit) then
+	if not UnitHasMana("player") then
 		return
 	end
 
@@ -48,7 +48,7 @@ local Update = function(self, event, unit)
 		Result = NOT_APPLICABLE
 	end
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.0f|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Result)
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Result)
 end
 
 local OnEnable = function(self)
