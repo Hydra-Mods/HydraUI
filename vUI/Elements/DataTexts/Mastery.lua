@@ -1,6 +1,8 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local GetMasteryEffect = GetMasteryEffect
+local GetCombatRatingBonus = GetCombatRatingBonus
+local CR_MASTERY = CR_MASTERY
 local Label = STAT_MASTERY
 
 local OnMouseUp = function()
@@ -46,7 +48,10 @@ local Update = function(self, event, unit)
 		return
 	end
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.2f%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], GetMasteryEffect())
+	local Mastery, Bonus = GetMasteryEffect()
+	local MasteryBonus = GetCombatRatingBonus(CR_MASTERY) * Bonus
+	
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.2f%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], MasteryBonus)
 end
 
 local OnEnable = function(self)

@@ -129,7 +129,7 @@ end
 
 function DT:UpdateAllAnchors()
 	for Name, Anchor in pairs(self.Anchors) do
-		Anchor:Update(999)
+		Anchor:Update(999, "player")
 	end
 end
 
