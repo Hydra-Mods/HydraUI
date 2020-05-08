@@ -2,8 +2,6 @@ local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local CR_HASTE_MELEE = CR_HASTE_MELEE
 local GetHaste = GetHaste
-local GetCombatRating = GetCombatRating
-local GetCombatRatingBonus = GetCombatRatingBonus
 local Label = STAT_HASTE
 
 local OnMouseUp = function()
@@ -57,8 +55,8 @@ local OnDisable = function(self)
 	self:UnregisterEvent("HONOR_LEVEL_UPDATE")
 	self:SetScript("OnEvent", nil)
 	self:SetScript("OnMouseUp", nil)
-	--self:SetScript("OnEnter", nil)
-	--self:SetScript("OnLeave", nil)
+	self:SetScript("OnEnter", nil)
+	self:SetScript("OnLeave", nil)
 	
 	self.Text:SetText("")
 end
