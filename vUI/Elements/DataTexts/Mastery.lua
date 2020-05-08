@@ -10,8 +10,8 @@ end
 local OnEnter = function(self)
 	self:SetTooltip()
 	
-	local Mastery, bonusCoeff = GetMasteryEffect()
-	local MasteryBonus = GetCombatRatingBonus(CR_MASTERY) * bonusCoeff
+	local Mastery, Bonus = GetMasteryEffect()
+	local MasteryBonus = GetCombatRatingBonus(CR_MASTERY) * Bonus
 	local Spec = GetSpecialization()
 	
 	if Spec then

@@ -11,19 +11,15 @@ end
 local OnEnter = function(self)
 	self:SetTooltip()
 	
-	GameTooltip:AddLine(format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_HASTE), 1, 1, 1)
-	
-	local Tooltip
+	GameTooltip:AddLine(format(PAPERDOLLFRAME_TOOLTIP_FORMAT, Label), 1, 1, 1)
 	
 	if _G["STAT_HASTE_" .. vUI.UserClass .. "_TOOLTIP"] then
-		Tooltip = _G["STAT_HASTE_" .. vUI.UserClass .. "_TOOLTIP"]
+		GameTooltip:AddLine(_G["STAT_HASTE_" .. vUI.UserClass .. "_TOOLTIP"])
 	else
-		Tooltip = STAT_HASTE_TOOLTIP
+		GameTooltip:AddLine(STAT_HASTE_TOOLTIP)
 	end
 	
-	Tooltip = Tooltip .. format(STAT_HASTE_BASE_TOOLTIP, vUI:Comma(GetCombatRating(CR_HASTE_MELEE)), vUI:Comma(GetCombatRatingBonus(CR_HASTE_MELEE)))
-	
-	GameTooltip:AddLine(Tooltip)
+	GameTooltip:AddLine(format(STAT_HASTE_BASE_TOOLTIP, vUI:Comma(GetCombatRating(CR_HASTE_MELEE)), vUI:Comma(GetCombatRatingBonus(CR_HASTE_MELEE))))
 	
 	GameTooltip:Show()
 end

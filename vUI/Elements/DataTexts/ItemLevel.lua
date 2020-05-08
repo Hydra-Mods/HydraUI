@@ -1,7 +1,7 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local GetAverageItemLevel = GetAverageItemLevel
-local Label = Language["Item Level"]
+local Label = STAT_AVERAGE_ITEM_LEVEL
 
 local OnMouseUp = function()
 	ToggleCharacter("PaperDollFrame")
@@ -12,12 +12,13 @@ local OnEnter = function(self)
 	
 	local Average, Equipped, PVP = GetAverageItemLevel()
 	
-	GameTooltip:AddLine(Label)
-	GameTooltip:AddLine(" ")
-	GameTooltip:AddDoubleLine(Language["Average:"], format("%.2f", Average), 1, 1, 1)
-	GameTooltip:AddDoubleLine(Language["Equipped:"], format("%.2f", Equipped), 1, 1, 1)
-	GameTooltip:AddDoubleLine(Language["PVP:"], format("%.2f", PVP), 1, 1, 1)
+	if (Equipped ~= Average) then
+		GameTooltip:AddLine(format(PAPERDOLLFRAME_TOOLTIP_FORMAT, STAT_AVERAGE_ITEM_LEVEL) .. " " .. floor(Average) .. " " .. format(STAT_AVERAGE_ITEM_LEVEL_EQUIPPED, Equipped), 1, 1, 1)
+	else
+		GameTooltip:AddLine(format(PAPERDOLLFRAME_TOOLTIP_FORMAT, Label), 1, 1, 1)
+	end
 	
+	GameTooltip:AddLine(STAT_AVERAGE_ITEM_LEVEL_TOOLTIP)
 	GameTooltip:Show()
 end
 
@@ -26,9 +27,9 @@ local OnLeave = function()
 end
 
 local Update = function(self)
-	local Average, Equipped, PVP = GetAverageItemLevel()
+	local Average, Equipped = GetAverageItemLevel()
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.2f|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Equipped)
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%d|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Equipped)
 end
 
 local OnEnable = function(self)
