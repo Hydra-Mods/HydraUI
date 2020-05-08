@@ -33,7 +33,7 @@ local Update = function(self)
 end
 
 local OnEnable = function(self)
-	self:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
+	self:RegisterEvent("PLAYER_AVG_ITEM_LEVEL_UPDATE")
 	self:SetScript("OnEvent", Update)
 	self:SetScript("OnMouseUp", OnMouseUp)
 	self:SetScript("OnEnter", OnEnter)
@@ -43,7 +43,7 @@ local OnEnable = function(self)
 end
 
 local OnDisable = function(self)
-	self:UnregisterEvent("PLAYER_EQUIPMENT_CHANGED")
+	self:UnregisterEvent("PLAYER_AVG_ITEM_LEVEL_UPDATE")
 	self:SetScript("OnEvent", nil)
 	self:SetScript("OnMouseUp", nil)
 	self:SetScript("OnEnter", nil)
