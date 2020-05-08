@@ -6,10 +6,6 @@ local UnitHonorMax = UnitHonorMax
 local UnitHonorLevel = UnitHonorLevel
 local Label = Language["Honor"]
 
-local OnMouseUp = function()
-	PVEFrame_ToggleFrame("PVPUIFrame", "HonorFrame")
-end
-
 local OnEnter = function(self)
 	self:SetTooltip()
 	
@@ -33,6 +29,10 @@ end
 
 local OnLeave = function()
 	GameTooltip:Hide()
+end
+
+local OnMouseUp = function()
+	PVEFrame_ToggleFrame("PVPUIFrame", "HonorFrame")
 end
 
 local Update = function(self, event, unit)

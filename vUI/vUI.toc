@@ -72,6 +72,7 @@ Elements\DataTexts\PrimaryStat.lua
 Elements\DataTexts\Quests.lua
 Elements\DataTexts\Coordinates.lua
 Elements\DataTexts\Level.lua
+Elements\DataTexts\Haste.lua
 Elements\DataTexts\Honor.lua
 Elements\DataTexts\Location.lua
 Elements\DataTexts\System.lua
