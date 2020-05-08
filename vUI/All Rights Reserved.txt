@@ -1,4 +1,4 @@
-Copyright 2020 All Rights Reserved vUI (https://github.com/Hydra-WoW)
+Copyright 2020 All Rights Reserved vUI (https://github.com/Hydra-Mods)
 
 I reserve all rights to the software provided, unless direct authorization is given.
 Otherwise licensed material included within this software (libraries, fonts, and images) falls under the rights of their own individual copyright holders.
