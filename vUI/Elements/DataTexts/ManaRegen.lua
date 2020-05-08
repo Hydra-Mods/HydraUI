@@ -1,15 +1,22 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
+local UnitHasMana = UnitHasMana
 local GetManaRegen = GetManaRegen
 local InCombatLockdown = InCombatLockdown
-local Label = Language["Regen"]
+local NOT_APPLICABLE = NOT_APPLICABLE
+local Label = MANA_REGEN
 
 local OnEnter = function(self)
+	if not UnitHasMana(unit) then
+		return
+	end
+
 	self:SetTooltip()
 	
-	local Base, Casting = GetManaRegen()
+	local Base, Combat = GetManaRegen()
 	
-	GameTooltip:AddLine(format(MANA_COMBAT_REGEN_TOOLTIP, floor(Casting * 5)), nil, nil, nil, true)
+	GameTooltip:AddLine(format(PAPERDOLLFRAME_TOOLTIP_FORMAT, Label) .. " " .. vUI:Comma(floor(Combat * 5)), 1, 1, 1)
+	GameTooltip:AddLine(format(MANA_REGEN_TOOLTIP, vUI:Comma(floor(Base * 5))))
 	
 	GameTooltip:Show()
 end
@@ -27,9 +34,21 @@ local Update = function(self, event, unit)
 		return
 	end
 	
-	local Base, Casting = GetManaRegen()
+	local Result
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.0f|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], (InCombatLockdown() and Casting or Base) * 5)
+	if UnitHasMana("player") then
+		local Base, Combat = GetManaRegen()
+		
+		if InCombatLockdown() then
+			Result = Combat * 5
+		else
+			Result = Base * 5
+		end
+	else
+		Result = NOT_APPLICABLE
+	end
+	
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.0f|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Result)
 end
 
 local OnEnable = function(self)
@@ -56,4 +75,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-vUI:AddDataText("Regen", OnEnable, OnDisable, Update)
+vUI:AddDataText(Label, OnEnable, OnDisable, Update)

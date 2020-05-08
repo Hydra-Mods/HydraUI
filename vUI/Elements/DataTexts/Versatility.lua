@@ -11,9 +11,9 @@ end
 local OnEnter = function(self)
 	self:SetTooltip()
 	
-	local Versatility = GetCombatRating(CR_VERSATILITY_DAMAGE_DONE);
-	local DamageBonus = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE);
-	local DamageReduction = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_TAKEN) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_TAKEN);
+	local Versatility = GetCombatRating(CR_VERSATILITY_DAMAGE_DONE)
+	local DamageBonus = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
+	local DamageReduction = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_TAKEN) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_TAKEN)
 	
 	GameTooltip:AddLine(format(PAPERDOLLFRAME_TOOLTIP_FORMAT, Label), 1, 1, 1)
 	GameTooltip:AddLine(format(CR_VERSATILITY_TOOLTIP, DamageBonus, DamageReduction, vUI:Comma(Versatility), DamageBonus, DamageReduction))
