@@ -7,7 +7,7 @@ local NOT_APPLICABLE = NOT_APPLICABLE
 local Label = MANA_REGEN
 
 local OnEnter = function(self)
-	if not UnitHasMana("player") then
+	if (not UnitHasMana("player")) then
 		return
 	end
 
