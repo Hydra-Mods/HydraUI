@@ -1,5 +1,6 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
+local floor = floor
 local UnitHasMana = UnitHasMana
 local GetManaRegen = GetManaRegen
 local InCombatLockdown = InCombatLockdown
@@ -40,9 +41,9 @@ local Update = function(self, event, unit)
 		local Base, Combat = GetManaRegen()
 		
 		if InCombatLockdown() then
-			Result = Combat * 5
+			Result = floor(Combat * 5)
 		else
-			Result = Base * 5
+			Result = floor(Base * 5)
 		end
 	else
 		Result = NOT_APPLICABLE

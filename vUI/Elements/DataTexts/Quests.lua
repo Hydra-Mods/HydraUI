@@ -3,7 +3,7 @@ local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 local select = select
 local GetMaxNumQuestsCanAccept = C_QuestLog.GetMaxNumQuestsCanAccept
 local GetNumQuestLogEntries = GetNumQuestLogEntries
-local Label = Language["Quests"]
+local Label = QUESTS_LABEL
 
 local OnMouseUp = function()
 	ToggleFrame(QuestLogFrame)
