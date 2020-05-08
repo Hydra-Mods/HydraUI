@@ -259,8 +259,6 @@ local Update = function(self)
 	local Online = NumOnline + NumBNOnline
 	
 	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Online)
-	
-	--self:PlayFlash()
 end
 
 local OnEnable = function(self)

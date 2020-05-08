@@ -103,8 +103,6 @@ local Update = function(self, event)
 		end
 		
 		self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], select(3, GetNumGuildMembers()))
-		
-		--self:PlayFlash()
 	end
 end
 
