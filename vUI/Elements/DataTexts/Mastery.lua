@@ -60,8 +60,7 @@ local OnEnable = function(self)
 end
 
 local OnDisable = function(self)
-	self:UnregisterEvent("HONOR_XP_UPDATE")
-	self:UnregisterEvent("HONOR_LEVEL_UPDATE")
+	self:UnregisterEvent("UNIT_STATS")
 	self:SetScript("OnEvent", nil)
 	self:SetScript("OnMouseUp", nil)
 	self:SetScript("OnEnter", nil)

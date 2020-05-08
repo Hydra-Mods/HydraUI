@@ -1,8 +1,8 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
-local CR_HASTE_MELEE = CR_HASTE_MELEE
-local GetHaste = GetHaste
-local Label = STAT_HASTE
+local CR_VERSATILITY_DAMAGE_DONE = CR_VERSATILITY_DAMAGE_DONE
+local GetCombatRating = GetCombatRating
+local Label = STAT_VERSATILITY
 
 local OnMouseUp = function()
 	ToggleCharacter("PaperDollFrame")
@@ -11,15 +11,12 @@ end
 local OnEnter = function(self)
 	self:SetTooltip()
 	
+	local Versatility = GetCombatRating(CR_VERSATILITY_DAMAGE_DONE);
+	local DamageBonus = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE);
+	local DamageReduction = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_TAKEN) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_TAKEN);
+	
 	GameTooltip:AddLine(format(PAPERDOLLFRAME_TOOLTIP_FORMAT, Label), 1, 1, 1)
-	
-	if _G["STAT_HASTE_" .. vUI.UserClass .. "_TOOLTIP"] then
-		GameTooltip:AddLine(_G["STAT_HASTE_" .. vUI.UserClass .. "_TOOLTIP"])
-	else
-		GameTooltip:AddLine(STAT_HASTE_TOOLTIP)
-	end
-	
-	GameTooltip:AddLine(format(STAT_HASTE_BASE_TOOLTIP, vUI:Comma(GetCombatRating(CR_HASTE_MELEE)), vUI:Comma(GetCombatRatingBonus(CR_HASTE_MELEE))))
+	GameTooltip:AddLine(format(CR_VERSATILITY_TOOLTIP, DamageBonus, DamageReduction, vUI:Comma(Versatility), DamageBonus, DamageReduction))
 	
 	GameTooltip:Show()
 end
@@ -33,7 +30,7 @@ local Update = function(self, event, unit)
 		return
 	end
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.2f%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], GetHaste())
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.2f%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], GetCombatRating(CR_VERSATILITY_DAMAGE_DONE))
 end
 
 local OnEnable = function(self)
