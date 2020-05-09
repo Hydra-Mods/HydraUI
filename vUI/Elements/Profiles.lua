@@ -10,6 +10,7 @@ local format = format
 local match = string.match
 
 vUI.ProfileList = {}
+vUI.MigrateValues = {}
 
 vUI.ProfileMetadata = {
 	["profile-name"] = true,
@@ -450,6 +451,37 @@ function vUI:SetProfileMetadata(name, meta, value) -- /run vUIGlobal:get():SetPr
 	end
 end
 
+--[[
+	Test module: vUI:MigrateValue("tooltips-hide-on-unit", "NO_COMBAT", "IN_COMBAT") vUI:MigrateValue("unitframes-player-health-color", "CUSTOM", "CLASS")
+	Sometimes I might want to change setting names or values, but make sure that people still keep their settings so that I don't get yelled at.
+	This keeps profiles lean because I can remove old keys, and it allows me to seamlessly change existing settings and profiles
+	Remove MigrateValue declarations after a reasonable while.
+--]]
+
+function vUI:MigrateValue(key, from, to)
+	tinsert(self.MigrateValues, {Key = key, From = from, To = to})
+end
+
+function vUI:Migrate(profile)
+	for i = #self.MigrateValues, 1, -1 do
+		if profile[self.MigrateValues[i].Key] and profile[self.MigrateValues[i].Key] == self.MigrateValues[i].From then
+			profile[self.MigrateValues[i].Key] = self.MigrateValues[i].To
+			
+			tremove(self.MigrateValues, 1)
+		end
+	end
+end
+
+function vUI:MigrateData()
+	if ((not vUIProfiles) or (#self.MigrateValues == 0)) then
+		return
+	end
+	
+	for ProfileName, Profile in pairs(vUIProfiles) do
+		vUI:Migrate(Profile)
+	end
+end
+
 function vUI:GetEncodedProfile()
 	local Profile = vUI:GetActiveProfile()
 	
@@ -482,6 +514,11 @@ function vUI:DecodeProfile(encoded)
 	
 	if (not Success) then
 		return self:print("Failure deserializing")
+	end
+	
+	-- Check for migrated values
+	if (#self.MigrateValues > 0) then
+		self:Migrate(Deserialized)
 	end
 	
 	return Deserialized
