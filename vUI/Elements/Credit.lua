@@ -37,9 +37,9 @@ GUI:AddOptions(function(self)
 	-- Supporters
 	local Left, Right = self:CreateWindow(Language["Supporters"], nil, "zzzSupporters")
 	
-	Left:CreateHeader(Language["Acknowledgements"])
-	Left:CreateMessage("Thank you to the following people who have supported the development of this project! It has taken immense time and effort, and the support of these people helps make it possible.")
+	Left:CreateSupportHeader(Language["Supporters"])
+	Left:CreateDoubleLine("Innie", "Brightsides")
 	
-	Right:CreateSupportHeader(Language["Supporters"])
-	Right:CreateLine("Innie")
+	Right:CreateHeader(Language["Acknowledgements"])
+	Right:CreateMessage("Thank you to the following people who have supported the development of this project! It has taken immense time and effort, and the support of these people helps make it possible.")
 end)
