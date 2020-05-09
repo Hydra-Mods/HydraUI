@@ -175,6 +175,49 @@ local GetUnitColor = function(unit)
 	end
 end
 
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitCanAttack = UnitCanAttack
+local UnitIsPVP = UnitIsPVP
+local UnitReaction = UnitReaction
+
+local FilterUnit = function(unit)
+	local State
+	
+	if UnitPlayerControlled(unit) then
+		if UnitCanAttack(unit, "player") then
+			if (not UnitCanAttack("player", unit)) then
+				State = "FRIENDLY"
+			else
+				State = "HOSTILE"
+			end
+		elseif UnitCanAttack("player", unit) then
+			State = "FRIENDLY" -- NEUTRAL?
+		elseif UnitIsPVP(unit) then
+			State = "FRIENDLY"
+		else
+			State = "FRIENDLY" -- NEUTRAL?
+		end
+	else
+		local Reaction = UnitReaction(unit, "player")
+		
+		if Reaction then
+			if (Reaction >= 4) then
+				State = "FRIENDLY"
+			else
+				State = "HOSTILE"
+			end
+		else
+			State = "FRIENDLY" -- NEUTRAL?
+		end
+	end
+	
+	if (State == "HOSTILE" and Settings["tooltips-hide-on-unit"] == "HOSTILE") then
+		return true
+	elseif (State == "FRIENDLY" and Settings["tooltips-hide-on-unit"] == "FRIENDLY") then
+		return true
+	end
+end
+
 local OnTooltipSetUnit = function(self)
 	if (Settings["tooltips-hide-on-unit"] == "NO_COMBAT" and InCombatLockdown()) or Settings["tooltips-hide-on-unit"] == "ALWAYS" then
 		self:Hide()
@@ -188,6 +231,11 @@ local OnTooltipSetUnit = function(self)
 		local Class = UnitClass(UnitID)
 		
 		if (not Class) then
+			return
+		end
+		
+		if FilterUnit(UnitID) then
+			self:Hide()
 			return
 		end
 		
@@ -278,9 +326,6 @@ local OnTooltipSetUnit = function(self)
 			
 			self:AddLine(Language["Targeting: |cFF"] .. TargetColor .. UnitName(UnitID .. "target") .. "|r", 1, 1, 1)
 		end
-		
-		--GameTooltipStatusBar:OldSetStatusBarColor(vUI:HexToRGB(Color))
-		--GameTooltipStatusBar.BG:SetVertexColorHex(Color)
 		
 		if self.OuterBG then
 			self.OuterBG:SetPoint("TOPLEFT", GameTooltipStatusBar, -4, 4)
@@ -573,7 +618,7 @@ GUI:AddOptions(function(self)
 	Right:CreateSwitch("tooltips-display-title", Settings["tooltips-display-title"], Language["Display Title"], Language["Display character titles"])
 	
 	Right:CreateHeader(Language["Disable Tooltips"])
-	Right:CreateDropdown("tooltips-hide-on-unit", Settings["tooltips-hide-on-unit"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Combat"]] = "NO_COMBAT"}, Language["Disable Units"], Language["Set the tooltip to not display units"])
+	Right:CreateDropdown("tooltips-hide-on-unit", Settings["tooltips-hide-on-unit"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Friendly"]] = "FRIENDLY", [Language["Hostile"]] = "HOSTILE", [Language["Combat"]] = "NO_COMBAT"}, Language["Disable Units"], Language["Set the tooltip to not display units"])
 	Right:CreateDropdown("tooltips-hide-on-item", Settings["tooltips-hide-on-item"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Combat"]] = "NO_COMBAT"}, Language["Disable Items"], Language["Set the tooltip to not display items"])
 	Right:CreateDropdown("tooltips-hide-on-action", Settings["tooltips-hide-on-action"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Combat"]] = "NO_COMBAT"}, Language["Disable Actions"], Language["Set the tooltip to not display actions"])
 end)
