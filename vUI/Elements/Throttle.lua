@@ -1,11 +1,11 @@
 local vUI = select(2, ...):get()
 
+local tinsert = table.insert
+local tremove = table.remove
+
 local Throttle = vUI:NewModule("Throttle")
 Throttle.Inactive = {}
 Throttle.Active = {}
-
-local tinsert = table.insert
-local tremove = table.remove
 
 function Throttle:OnUpdate(ela)
 	for i = 1, #self.Active do

@@ -175,17 +175,6 @@ local GetUnitColor = function(unit)
 	end
 end
 
-local GetLevel = function(unit)
-	local Level = UnitLevel(unit)
-	local EffectiveLevel = UnitEffectiveLevel(unit)
-	
-	if (Level ~= EffectiveLevel) then
-		Level = format("%s (%s)", EffectiveLevel, Level)
-	else
-		
-	end
-end
-
 local OnTooltipSetUnit = function(self)
 	if (Settings["tooltips-hide-on-unit"] == "NO_COMBAT" and InCombatLockdown()) or Settings["tooltips-hide-on-unit"] == "ALWAYS" then
 		self:Hide()
