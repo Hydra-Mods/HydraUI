@@ -483,7 +483,7 @@ function vUI:MigrateData()
 end
 
 function vUI:GetEncodedProfile()
-	local Profile = vUI:GetActiveProfile()
+	local Profile = self:GetActiveProfile()
 	
 	-- Strip preserved settings before serializing
 	for i = 1, #self.PreserveSettings do
