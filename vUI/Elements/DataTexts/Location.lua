@@ -18,8 +18,6 @@ local OnEnter = function(self)
 		Label = ZoneText
 	end
 	
-	GameTooltip:AddLine(GetInstanceInfo())
-	GameTooltip:AddLine(" ")
 	GameTooltip:AddLine(Label, Color[1], Color[2], Color[3])
 	
 	if (PVPType == "friendly" or PVPType == "hostile") then
