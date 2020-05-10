@@ -16,7 +16,7 @@ local OnEnter = function(self)
 	local DamageReduction = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_TAKEN) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_TAKEN)
 	
 	GameTooltip:AddLine(format(PAPERDOLLFRAME_TOOLTIP_FORMAT, Label), 1, 1, 1)
-	GameTooltip:AddLine(format(CR_VERSATILITY_TOOLTIP, DamageBonus, DamageReduction, vUI:Comma(Versatility), DamageBonus, DamageReduction))
+	GameTooltip:AddLine(format(CR_VERSATILITY_TOOLTIP, DamageBonus, DamageReduction, vUI:Comma(Versatility), DamageBonus, DamageReduction), nil, nil, nil, true)
 	
 	GameTooltip:Show()
 end
