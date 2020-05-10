@@ -32,15 +32,20 @@ local OnEnter = function(self)
 	end
 	
 	-- Coordinates
-	local X, Y = GetPlayerMapPosition(GetBestMapForUnit("player"), "player"):GetXY()
+	local MapID = GetBestMapForUnit("player")
 	
-	GameTooltip:AddLine(" ")
-	GameTooltip:AddLine(Language["Coordinates"])
-	GameTooltip:AddLine(format("%.2f, %.2f", X * 100, Y * 100), 1, 1, 1)
-	
-	self.TooltipShown = true
-	
-	GameTooltip:Show()
+	if MapID then
+		local Position = GetPlayerMapPosition(MapID, "player")
+		local X, Y = Position:GetXY()
+		
+		GameTooltip:AddLine(" ")
+		GameTooltip:AddLine(Language["Coordinates"])
+		GameTooltip:AddLine(format("%.2f, %.2f", X * 100, Y * 100), 1, 1, 1)
+		
+		self.TooltipShown = true
+		
+		GameTooltip:Show()
+	end
 end
 
 local OnLeave = function(self)
@@ -52,13 +57,18 @@ local Update = function(self, elapsed)
 	self.Elapsed = self.Elapsed + elapsed
 	
 	if (self.Elapsed > 0.5) then
-		local X, Y = GetPlayerMapPosition(GetBestMapForUnit("player"), "player"):GetXY()
+		local MapID = GetBestMapForUnit("player")
 		
-		self.Text:SetFormattedText("|cFF%s%.2f|r, |cFF%s%.2f|r", Settings["data-text-value-color"], X * 100, Settings["data-text-value-color"], Y * 100)
-		
-		if self.TooltipShown then
-			GameTooltip:ClearLines()
-			OnEnter(self)
+		if MapID then
+			local Position = GetPlayerMapPosition(GetBestMapForUnit("player"), "player")
+			local X, Y = Position:GetXY()
+			
+			self.Text:SetFormattedText("|cFF%s%.2f|r, |cFF%s%.2f|r", Settings["data-text-value-color"], X * 100, Settings["data-text-value-color"], Y * 100)
+			
+			if self.TooltipShown then
+				GameTooltip:ClearLines()
+				OnEnter(self)
+			end
 		end
 		
 		self.Elapsed = 0
