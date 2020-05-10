@@ -36,12 +36,9 @@ local OnEnter = function(self)
 	local Position = GetPlayerMapPosition(MapID, "player")
 	local X, Y = Position:GetXY()
 	
-	X = X * 100
-	Y = Y * 100
-	
 	GameTooltip:AddLine(" ")
 	GameTooltip:AddLine(Language["Coordinates"])
-	GameTooltip:AddLine(format("%.2f, %.2f", X, Y), 1, 1, 1)
+	GameTooltip:AddLine(format("%.2f, %.2f", X * 100, Y * 100), 1, 1, 1)
 	
 	self.TooltipShown = true
 	
