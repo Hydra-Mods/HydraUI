@@ -35,8 +35,7 @@ local OnEnter = function(self)
 	local MapID = GetBestMapForUnit("player")
 	
 	if MapID then
-		local Position = GetPlayerMapPosition(MapID, "player")
-		local X, Y = Position:GetXY()
+		local X, Y = GetPlayerMapPosition(MapID, "player"):GetXY()
 		
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddLine(Language["Coordinates"])
@@ -60,8 +59,7 @@ local Update = function(self, elapsed)
 		local MapID = GetBestMapForUnit("player")
 		
 		if MapID then
-			local Position = GetPlayerMapPosition(GetBestMapForUnit("player"), "player")
-			local X, Y = Position:GetXY()
+			local X, Y = GetPlayerMapPosition(MapID, "player"):GetXY()
 			
 			self.Text:SetFormattedText("|cFF%s%.2f|r, |cFF%s%.2f|r", Settings["data-text-value-color"], X * 100, Settings["data-text-value-color"], Y * 100)
 			
