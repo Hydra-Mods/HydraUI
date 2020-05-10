@@ -13,7 +13,7 @@ GUI:AddOptions(function(self)
 	Left:CreateDoubleLine("Zork", "Simpy")
 	
 	Left:CreateHeader("oUF")
-	Left:CreateDoubleLine("Haste", "lightspark")
+	Left:CreateDoubleLine("haste", "lightspark")
 	Left:CreateDoubleLine("p3lim", "Rainrider")
 	
 	Left:CreateHeader("AceSerializer")
@@ -37,9 +37,8 @@ GUI:AddOptions(function(self)
 	-- Supporters
 	local Left, Right = self:CreateWindow(Language["Supporters"], nil, "zzzSupporters")
 	
-	Left:CreateSupportHeader(Language["Supporters"])
+	Left:CreateSupportHeader(Language["Hall of Legends"])
 	Left:CreateDoubleLine("Innie", "Brightsides")
 	
-	Right:CreateHeader(Language["Acknowledgements"])
-	Right:CreateMessage("Thank you to the following people who have supported the development of this project! It has taken immense time and effort, and the support of these people helps make it possible.")
+	Right:CreateMessage("Thank you to the following people who have supported the development of this project! It has taken immense time and effort, and your support helps keep it possible.")
 end)
