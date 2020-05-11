@@ -63,7 +63,7 @@ Popup.CreatePopupFrame = function(self)
 	
 	self.Header.Text = self.Header:CreateFontString(nil, "OVERLAY")
 	self.Header.Text:SetPoint("LEFT", self.Header, 5, -1)
-	vUI:SetFontInfo(self.Header.Text,Assets:GetFont(Settings["ui-header-font"]), 14)
+	vUI:SetFontInfo(self.Header.Text, Assets:GetFont(Settings["ui-header-font"]), 14)
 	self.Header.Text:SetJustifyH("LEFT")
 	self.Header.Text:SetShadowColor(0, 0, 0)
 	self.Header.Text:SetShadowOffset(1, -1)
