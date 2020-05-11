@@ -7,7 +7,8 @@ local IsInGuild = IsInGuild
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
 
-local AddOnVersion = tonumber(vUI.UIVersion)
+--local AddOnVersion = tonumber(vUI.UIVersion)
+local AddOnVersion = 1
 
 local Update = vUI:NewModule("Update")
 
@@ -21,12 +22,13 @@ local Update = vUI:NewModule("Update")
 
 -- display a simple "What's new" list.
 local WhatsNewOnMouseUp = function()
-	
+
 end
 
 -- To be implemented. Add something here like a link or whatever to update.
 local UpdateOnMouseUp = function()
 	vUI:print(Language["You can get an updated version of vUI here at https://www.curseforge.com/wow/addons/vui or by using the Twitch desktop app"])
+	print(Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"])
 end
 
 function Update:PLAYER_ENTERING_WORLD(event)
@@ -76,7 +78,6 @@ function Update:GROUP_ROSTER_UPDATE()
 	end
 end
 
--- /run vUIData.Version = 1 -- Leaving this here for a while so I can reset version manually for testing.
 function Update:VARIABLES_LOADED(event)
 	if (not vUIData) then
 		vUIData = {}
@@ -114,9 +115,9 @@ function Update:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
 	
 	if (channel == "WHISPER") then
 		if (message > AddOnVersion) then
-			--vUI:SendAlert("New Version", format("Update to version |cFF%s%s|r!", Settings["ui-header-font-color"], Version), nil, UpdateOnMouseUp, true)
-			vUI:print(format(Language["Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui"], Settings["ui-header-font-color"], message))
-			print(Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"])
+			vUI:SendAlert(Language["New Version!"], format(Language["Update to version |cFF%s%s|r"], Settings["ui-header-font-color"], message), nil, UpdateOnMouseUp, true)
+			--vUI:print(format(Language["Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui"], Settings["ui-header-font-color"], message))
+			--print(Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"])
 			
 			-- Store this higher version and tell anyone else who asks
 			AddOnVersion = message
@@ -125,8 +126,9 @@ function Update:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
 		if (AddOnVersion > message) then -- We have a higher version, share it
 			SendAddonMessage("vUI-Version", AddOnVersion, "WHISPER", sender)
 		elseif (message > AddOnVersion) then -- We're behind!
-			vUI:print(format(Language["Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui"], Settings["ui-header-font-color"], message))
-			print(Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"])
+			vUI:SendAlert(Language["New Version!"], format(Language["Update to version |cFF%s%s|r"], Settings["ui-header-font-color"], message), nil, UpdateOnMouseUp, true)
+			--vUI:print(format(Language["Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui"], Settings["ui-header-font-color"], message))
+			--print(Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"])
 			
 			-- Store this higher version and tell anyone else who asks
 			AddOnVersion = message

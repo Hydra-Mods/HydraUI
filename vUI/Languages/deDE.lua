@@ -291,6 +291,8 @@ Language["On Actions"] = "On Actions"
 Language["Set when the tooltip should hide actions"] = "Set when the tooltip should hide actions"
 
 -- Update
+Language["New Version"] = "New Version"
+Language["Update to version |cFF%s%s|r!"] = "Update to version |cFF%s%s|r!"
 Language["You can get an updated version of vUI here at https://www.curseforge.com/wow/addons/vui or by using the Twitch desktop app"] = "You can get an updated version of vUI here at https://www.curseforge.com/wow/addons/vui or by using the Twitch desktop app"
-Language["Join the Discord community for support and feedback https://discord.gg/wfCVkJe"] = "Join the Discord community for support and feedback https://discord.gg/wfCVkJe"
+Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"] = "Join the Discord community for support and feedback https://discord.gg/XGYDaBF"
 Language["Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui"] = "Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/vui"

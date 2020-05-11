@@ -20,7 +20,7 @@ local SortAlerts = function()
 		ActiveAlerts[i]:ClearAllPoints()
 		
 		if (i == 1) then
-			ActiveAlerts[i]:SetPoint("BOTTOMLEFT", vUIChatFrameTop, "TOPLEFT", -3, 5)
+			ActiveAlerts[i]:SetPoint("TOPRIGHT", _G["vUI Minimap"], "BOTTOMRIGHT", 0, -3)
 		else
 			ActiveAlerts[i]:SetPoint("BOTTOM", ActiveAlerts[i-1], "TOP", 0, 2)
 		end
@@ -138,15 +138,12 @@ local CreateAlertFrame = function()
 	AlertFrame.Header.Text:SetJustifyH("LEFT")
 	AlertFrame.Header.Text:SetShadowColor(0, 0, 0)
 	AlertFrame.Header.Text:SetShadowOffset(1, -1)
-	--AlertFrame.Header.Text:SetTextColor(vUI:HexToRGB(Settings["ui-header-font-color"]))
-	AlertFrame.Header.Text:SetTextColor(vUI:HexToRGB(Settings["ui-widget-color"]))
+	AlertFrame.Header.Text:SetTextColor(vUI:HexToRGB(Settings["ui-header-font-color"]))
 	
 	-- Line 1
 	AlertFrame.Line1 = CreateFrame("Frame", nil, AlertFrame)
 	AlertFrame.Line1:SetSize(ALERT_WIDTH - 2, LINE_HEIGHT)
 	AlertFrame.Line1:SetPoint("TOP", AlertFrame.Header, "BOTTOM", 0, 0)
-	--AlertFrame.Line1:SetBackdrop(vUI.Backdrop)
-	--AlertFrame.Line1:SetBackdropColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
 	AlertFrame.Line1.Text = AlertFrame.Line1:CreateFontString(nil, "OVERLAY")
 	AlertFrame.Line1.Text:SetPoint("LEFT", AlertFrame.Line1, 3, 0)
@@ -160,8 +157,6 @@ local CreateAlertFrame = function()
 	AlertFrame.Line2 = CreateFrame("Frame", nil, AlertFrame)
 	AlertFrame.Line2:SetSize(ALERT_WIDTH - 2, LINE_HEIGHT)
 	AlertFrame.Line2:SetPoint("TOP", AlertFrame.Line1, "BOTTOM", 0, 1)
-	--AlertFrame.Line2:SetBackdrop(vUI.Backdrop)
-	--AlertFrame.Line2:SetBackdropColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
 	AlertFrame.Line2.Text = AlertFrame.Line2:CreateFontString(nil, "OVERLAY")
 	AlertFrame.Line2.Text:SetPoint("LEFT", AlertFrame.Line2, 3, 0)

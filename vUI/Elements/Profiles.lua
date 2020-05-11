@@ -482,14 +482,20 @@ function vUI:MigrateData()
 	end
 end
 
-function vUI:GetEncodedProfile()
-	local Profile = self:GetActiveProfile()
+function vUI:CloneProfile(profile)
+	local Clone = {}
 	
-	-- Strip preserved settings before serializing
-	for i = 1, #self.PreserveSettings do
-		Profile[self.PreserveSettings[i]] = nil
+	for Key, Value in pairs(profile) do
+		if (not self.PreserveSettings[Key]) then -- Ignore preserved settings for serializing
+			Clone[Key] = Value
+		end
 	end
 	
+	return Clone
+end
+
+function vUI:GetEncodedProfile()
+	local Profile = self:CloneProfile(self:GetActiveProfile())
 	local Serialized = AceSerializer:Serialize(Profile)
 	local Compressed = LibDeflate:CompressDeflate(Serialized, DeflateLevel)
 	local Encoded = LibDeflate:EncodeForPrint(Compressed)
