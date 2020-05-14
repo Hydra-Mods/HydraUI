@@ -467,7 +467,6 @@ local SkinPetButton = function(button)
 	
 	local Name = button:GetName()
 	local Icon = _G[Name .. "Icon"]
-	local Normal2 = _G[Name .. "NormalTexture2"]
 	local HotKey = _G[Name .. "HotKey"]
 	local Shine = _G[Name .. "Shine"]
 	
@@ -539,11 +538,8 @@ local SkinPetButton = function(button)
 	
 	_G[Name.."Flash"]:SetTexture("")
 	
-	if Normal2 then
-		Normal2:ClearAllPoints()
-		Normal2:SetPoint("TOPLEFT", button)
-		Normal2:SetPoint("BOTTOMRIGHT", button)
-		Normal2:SetTexture("")
+	if _G[Name .. "NormalTexture2"] then
+		_G[Name .. "NormalTexture2"]:Hide()
 	end
 	
 	if (button.SetHighlightTexture and not button.Highlight) then
