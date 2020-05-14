@@ -285,6 +285,8 @@ Defaults["unitframes-player-health-left"] = ""
 Defaults["unitframes-player-health-right"] = "[HealthPercent]"
 Defaults["unitframes-player-power-left"] = "[HealthValues]"
 Defaults["unitframes-player-power-right"] = "[PowerValues]"
+Defaults["unitframes-player-cast-width"] = 250
+Defaults["unitframes-player-cast-height"] = 24
 
 -- Unitframes: Target
 Defaults["unitframes-target-width"] = 238
@@ -300,6 +302,8 @@ Defaults["unitframes-target-health-left"] = "[LevelColor][Level][Plus]|r [Name30
 Defaults["unitframes-target-health-right"] = "[HealthPercent]"
 Defaults["unitframes-target-power-left"] = "[HealthValues]"
 Defaults["unitframes-target-power-right"] = "[PowerValues]"
+Defaults["unitframes-target-cast-width"] = 250
+Defaults["unitframes-target-cast-height"] = 22
 
 -- Unitframes: Target of Target
 Defaults["unitframes-targettarget-width"] = 110
