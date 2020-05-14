@@ -438,10 +438,14 @@ Defaults["tooltips-show-health-text"] = true
 -- Bags
 Defaults["bags-loot-from-left"] = false
 
--- Quests
-Defaults["quest-watch-font"] = "Roboto"
-Defaults["quest-watch-font-size"] = 12
-Defaults["quest-watch-font-flags"] = ""
+-- Objective Tracker
+Defaults["tracker-enable"] = true
+Defaults["tracker-font"] = "Roboto"
+Defaults["tracker-font-size"] = 12
+Defaults["tracker-font-flags"] = ""
+Defaults["tracker-header-font"] = "Roboto"
+Defaults["tracker-header-font-size"] = 12
+Defaults["tracker-header-font-flags"] = ""
 
 -- Data Texts
 Defaults["data-text-font"] = "Roboto"

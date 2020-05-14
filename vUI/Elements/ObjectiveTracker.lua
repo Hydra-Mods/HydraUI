@@ -1,5 +1,9 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
+if 1 == 1 then
+	return
+end
+
 local Tracker = vUI:NewModule("Objective Tracker")
 
 --[[
@@ -13,7 +17,7 @@ local Tracker = vUI:NewModule("Objective Tracker")
 --]]
 
 function Tracker:Move()
-	self:SetSize(235, 140)
+	self:SetSize(235, 260)
 	self:SetPoint("RIGHT", vUIParent, -120, 120)
 	
 	ObjectiveTrackerFrame:SetMovable(true)
@@ -25,38 +29,89 @@ function Tracker:Move()
 end
 
 local AddObjective = function(self, block, objective)
-	vUI:SetFontInfo(block.HeaderText, Assets:GetFont(Settings["ui-font"]), 14)
+	if (not block.HeaderText.Handled) then
+		vUI:SetFontInfo(block.HeaderText, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+		block.HeaderText.Handled = true
+	end
 	
 	local Line = block.lines[objective]
 	
-	if Line then
-		vUI:SetFontInfo(Line.Text, Assets:GetFont(Settings["ui-font"]), 12)
+	if (Line and not Line.Handled) then
+		vUI:SetFontInfo(Line.Text, Settings["tracker-font"], Settings["tracker-font-size"], Settings["tracker-font-flags"])
+		Line.Handled = true
 		
-		if Line.Dash then
-			vUI:SetFontInfo(Line.Dash, Assets:GetFont(Settings["ui-font"]), 12)
+		if (Line.Dash and not Line.Dash.Handled) then
+			vUI:SetFontInfo(Line.Dash, Settings["tracker-font"], Settings["tracker-font-size"], Settings["tracker-font-flags"])
+			Line.Dash.Handled = true
 		end
+	end
+end
+
+local UpdateMinimizeButton = function()
+	if ObjectiveTrackerFrame.collapsed then
+		ObjectiveTrackerFrame.HeaderMenu.NewMinimize.Texture:SetTexture(Assets:GetTexture("Arrow Down"))
+	else
+		ObjectiveTrackerFrame.HeaderMenu.NewMinimize.Texture:SetTexture(Assets:GetTexture("Arrow Up"))
 	end
 end
 
 function Tracker:StyleWindow()
 	-- Header
-	vUI:SetFontInfo(ObjectiveTrackerFrame.HeaderMenu.Title, Assets:GetFont(Settings["ui-header-font"]), 14)
+	vUI:SetFontInfo(ObjectiveTrackerFrame.HeaderMenu.Title, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
 	
 	-- Quests
 	ObjectiveTrackerBlocksFrame.QuestHeader.Background:Hide()
-	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.QuestHeader.Text, Assets:GetFont(Settings["ui-header-font"]), 14)
+	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.QuestHeader.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
 	
 	-- Scenario
 	ObjectiveTrackerBlocksFrame.ScenarioHeader.Background:Hide()
-	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.ScenarioHeader.Text, Assets:GetFont(Settings["ui-header-font"]), 14)
+	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.ScenarioHeader.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
 	
 	-- Achievement
 	ObjectiveTrackerBlocksFrame.AchievementHeader.Background:Hide()
-	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.AchievementHeader.Text, Assets:GetFont(Settings["ui-header-font"]), 14)
+	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.AchievementHeader.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
 	
 	-- Bonus
 	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Background:Hide()
-	vUI:SetFontInfo(BONUS_OBJECTIVE_TRACKER_MODULE.Header.Text, Assets:GetFont(Settings["ui-header-font"]), 14)
+	vUI:SetFontInfo(BONUS_OBJECTIVE_TRACKER_MODULE.Header.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+	
+	--[[local Title = ObjectiveTrackerFrame:CreateFontString(nil, "OVERLAY")
+	Title:SetPoint("BOTTOMLEFT", ObjectiveTrackerFrame, "TOPLEFT", 0, 0)
+	vUI:SetFontInfo(Title, Settings["ui-header-font"], 12)
+	Title:SetJustifyH("LEFT")
+	Title:SetText(QUESTS_LABEL)
+	
+	local TitleDiv = CreateFrame("Frame", nil, ObjectiveTrackerFrame)
+	TitleDiv:SetSize(156, 4)
+	TitleDiv:SetPoint("BOTTOMLEFT", ObjectiveTrackerFrame, "TOPLEFT", 0, -6)
+	TitleDiv:SetBackdrop(vUI.BackdropAndBorder)
+	TitleDiv:SetBackdropColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
+	TitleDiv:SetBackdropBorderColor(0, 0, 0)
+	
+	TitleDiv.Texture = TitleDiv:CreateTexture(nil, "OVERLAY")
+	TitleDiv.Texture:SetPoint("TOPLEFT", TitleDiv, 1, -1)
+	TitleDiv.Texture:SetPoint("BOTTOMRIGHT", TitleDiv, -1, 1)
+	TitleDiv.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	TitleDiv.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))]]
+	
+	-- Hide minimize button
+	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetNormalTexture("")
+	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetPushedTexture("")
+	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetHighlightTexture("")
+	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetDisabledTexture("")
+	
+	ObjectiveTrackerFrame.HeaderMenu.NewMinimize = CreateFrame("Frame", nil, ObjectiveTrackerFrame)
+	ObjectiveTrackerFrame.HeaderMenu.NewMinimize:SetSize(20, 20)
+	ObjectiveTrackerFrame.HeaderMenu.NewMinimize:SetPoint("CENTER", ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, 0, 0)
+	ObjectiveTrackerFrame.HeaderMenu.NewMinimize:SetBackdrop(vUI.BackdropAndBorder)
+	ObjectiveTrackerFrame.HeaderMenu.NewMinimize:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
+	ObjectiveTrackerFrame.HeaderMenu.NewMinimize:SetBackdropBorderColor(0, 0, 0)
+	
+	ObjectiveTrackerFrame.HeaderMenu.NewMinimize.Texture = ObjectiveTrackerFrame.HeaderMenu.NewMinimize:CreateTexture(nil, "OVERLAY")
+	ObjectiveTrackerFrame.HeaderMenu.NewMinimize.Texture:SetSize(16, 16)
+	ObjectiveTrackerFrame.HeaderMenu.NewMinimize.Texture:SetPoint("CENTER", ObjectiveTrackerFrame.HeaderMenu.NewMinimize, 0, 0)
+	ObjectiveTrackerFrame.HeaderMenu.NewMinimize.Texture:SetTexture(Assets:GetTexture("Arrow Up"))
+	ObjectiveTrackerFrame.HeaderMenu.NewMinimize.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
 end
 
 function Tracker:AddHooks()
@@ -65,7 +120,7 @@ function Tracker:AddHooks()
 		
 		ObjectiveTracker_Update()
 		
-		if not QuestSuperTracking_IsSuperTrackedQuestValid() then
+		if (not QuestSuperTracking_IsSuperTrackedQuestValid()) then
 			QuestSuperTracking_ChooseClosestQuest()
 		end
 		
@@ -77,10 +132,61 @@ function Tracker:AddHooks()
 	end
 	
 	hooksecurefunc(SCENARIO_TRACKER_MODULE, "AddObjective", AddObjective)
+	
+	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:HookScript("OnClick", UpdateMinimizeButton)
 end
 
 function Tracker:Load()
+	if (not Settings["tracker-enable"]) then
+		return
+	end
+	
 	self:Move()
 	self:StyleWindow()
 	self:AddHooks()
 end
+
+local UpdateFont = function()
+	for i = 1, #ObjectiveTrackerFrame.MODULES do
+		for ID, Block in pairs(ObjectiveTrackerFrame.MODULES[i].usedBlocks) do
+			for Key, Value in pairs(Block.lines) do
+				vUI:SetFontInfo(Value.Text, Settings["tracker-font"], Settings["tracker-font-size"], Settings["tracker-font-flags"])
+				
+				if Value.Dash then
+					vUI:SetFontInfo(Value.Dash, Settings["tracker-font"], Settings["tracker-font-size"], Settings["tracker-font-flags"])
+				end
+			end
+		end
+	end
+end
+
+local UpdateHeaderFont = function()
+	for i = 1, #ObjectiveTrackerFrame.MODULES do
+		for ID, Block in pairs(ObjectiveTrackerFrame.MODULES[i].usedBlocks) do
+			vUI:SetFontInfo(Block.HeaderText, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+		end
+	end
+	
+	vUI:SetFontInfo(ObjectiveTrackerFrame.HeaderMenu.Title, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.QuestHeader.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.ScenarioHeader.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.AchievementHeader.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+	vUI:SetFontInfo(BONUS_OBJECTIVE_TRACKER_MODULE.Header.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+end
+
+GUI:AddOptions(function(self)
+	local Left, Right = self:CreateWindow(Language["Objectives"])
+	
+	Left:CreateHeader(Language["Enable"])
+	Left:CreateSwitch("tracker-enable", Settings["tracker-enable"], Language["Enable Tracker Module"], Language["Enable the vUI tracker module"], ReloadUI):RequiresReload(true)
+	
+	Left:CreateHeader(Language["Font"])
+	Left:CreateDropdown("tracker-font", Settings["tracker-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the tracker lines"], UpdateFont, "Font")
+	Left:CreateSlider("tracker-font-size", Settings["tracker-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the tracker lines"], UpdateFont)
+	Left:CreateDropdown("tracker-font-flags", Settings["tracker-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the tracker lines"], UpdateFont)
+	
+	Left:CreateHeader(Language["Header Font"])
+	Left:CreateDropdown("tracker-header-font", Settings["tracker-header-font"], Assets:GetFontList(), Language["Header Font"], Language["Set the font of the tracker header lines"], UpdateHeaderFont, "Font")
+	Left:CreateSlider("tracker-header-font-size", Settings["tracker-header-font-size"], 8, 18, 1, Language["Header Font Size"], Language["Set the font size of the tracker header lines"], UpdateHeaderFont)
+	Left:CreateDropdown("tracker-header-font-flags", Settings["tracker-header-font-flags"], Assets:GetFlagsList(), Language["Header Font Flags"], Language["Set the font flags of the tracker header lines"], UpdateHeaderFont)
+end)
