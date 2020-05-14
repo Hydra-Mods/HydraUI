@@ -444,6 +444,9 @@ Defaults["bags-loot-from-left"] = false
 
 -- Objective Tracker
 Defaults["tracker-enable"] = true
+Defaults["tracker-enable-backdrop"] = false
+Defaults["tracker-backdrop-opacity"] = 70
+Defaults["tracker-height"] = 400
 Defaults["tracker-font"] = "Roboto"
 Defaults["tracker-font-size"] = 12
 Defaults["tracker-font-flags"] = ""
