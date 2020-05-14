@@ -10,6 +10,7 @@ local format = format
 local match = string.match
 
 vUI.ProfileList = {}
+vUI.MigrateKeys = {}
 vUI.MigrateValues = {}
 
 vUI.ProfileMetadata = {
@@ -452,17 +453,30 @@ function vUI:SetProfileMetadata(name, meta, value) -- /run vUIGlobal:get():SetPr
 end
 
 --[[
-	Test module: vUI:MigrateValue("tooltips-hide-on-unit", "NO_COMBAT", "IN_COMBAT") vUI:MigrateValue("unitframes-player-health-color", "CUSTOM", "CLASS")
+	Test module: vUI:MigrateValue("tooltips-hide-on-unit", "NO_COMBAT", "IN_COMBAT") vUI:MigrateValue("unitframes-player-health-color", "CUSTOM", "CLASS") vUI:MigrateKey("ui-display-welcome", "ui-welcome")
 	Sometimes I might want to change setting names or values, but make sure that people still keep their settings so that I don't get yelled at.
 	This keeps profiles lean because I can remove old keys, and it allows me to seamlessly change existing settings and profiles
 	Remove MigrateValue declarations after a reasonable while.
 --]]
+
+function vUI:MigrateKey(from, to)
+	tinsert(self.MigrateKeys, {From = from, To = to})
+end
 
 function vUI:MigrateValue(key, from, to)
 	tinsert(self.MigrateValues, {Key = key, From = from, To = to})
 end
 
 function vUI:Migrate(profile)
+	for i = #self.MigrateKeys, 1, -1 do
+		if profile[self.MigrateKeys[i].From] then
+			profile[self.MigrateKeys[i].To] = profile[self.MigrateKeys[i].From]
+			profile[self.MigrateKeys[i].From] = nil
+			
+			tremove(self.MigrateKeys, 1)
+		end
+	end
+	
 	for i = #self.MigrateValues, 1, -1 do
 		if profile[self.MigrateValues[i].Key] and profile[self.MigrateValues[i].Key] == self.MigrateValues[i].From then
 			profile[self.MigrateValues[i].Key] = self.MigrateValues[i].To
