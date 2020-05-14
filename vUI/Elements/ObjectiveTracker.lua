@@ -17,7 +17,7 @@ local Tracker = vUI:NewModule("Objective Tracker")
 --]]
 
 function Tracker:Move()
-	self:SetSize(235, 260)
+	self:SetSize(235, 300)
 	self:SetPoint("RIGHT", vUIParent, -120, 120)
 	
 	ObjectiveTrackerFrame:SetMovable(true)
