@@ -56,10 +56,8 @@ end
 
 function Gold:PLAYER_MONEY()
 	local CurrentValue = GetMoney()
-	local LastValue = vUIGold[vUI.UserRealm][self.CurrentUser]
-	local Diff = CurrentValue - LastValue
 	
-	self.SessionChange = self.SessionChange + Diff
+	self.SessionChange = self.SessionChange + (CurrentValue - vUIGold[vUI.UserRealm][self.CurrentUser])
 	
 	vUIGold[vUI.UserRealm][self.CurrentUser] = CurrentValue
 end
