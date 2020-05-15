@@ -54,18 +54,12 @@ function Gold:GetServerInfo()
 	return self.Sorted, Total
 end
 
-function Gold:PLAYER_MONEY()
+function Gold:OnEvent()
 	local CurrentValue = GetMoney()
 	
 	self.SessionChange = self.SessionChange + (CurrentValue - vUIGold[vUI.UserRealm][self.CurrentUser])
 	
 	vUIGold[vUI.UserRealm][self.CurrentUser] = CurrentValue
-end
-
-function Gold:OnEvent(event)
-	if self[event] then
-		self[event](self)
-	end
 end
 
 function Gold:Reset()
