@@ -39,6 +39,7 @@ GUI:AddOptions(function(self)
 	
 	Left:CreateSupportHeader(Language["Hall of Legends"])
 	Left:CreateDoubleLine("Innie", "Brightsides")
+	Left:CreateLine("Erthelmi")
 	
 	Right:CreateMessage("Thank you to the following people who have supported the development of this project! It has taken immense time and effort, and your support helps keep it possible.")
 end)
