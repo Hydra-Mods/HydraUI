@@ -287,6 +287,7 @@ Defaults["unitframes-player-power-left"] = "[HealthValues]"
 Defaults["unitframes-player-power-right"] = "[PowerValues]"
 Defaults["unitframes-player-cast-width"] = 250
 Defaults["unitframes-player-cast-height"] = 24
+Defaults["unitframes-player-enable-castbar"] = true
 
 -- Unitframes: Target
 Defaults["unitframes-target-width"] = 238
@@ -304,6 +305,7 @@ Defaults["unitframes-target-power-left"] = "[HealthValues]"
 Defaults["unitframes-target-power-right"] = "[PowerValues]"
 Defaults["unitframes-target-cast-width"] = 250
 Defaults["unitframes-target-cast-height"] = 22
+Defaults["unitframes-target-enable-castbar"] = true
 
 -- Unitframes: Target of Target
 Defaults["unitframes-targettarget-width"] = 110

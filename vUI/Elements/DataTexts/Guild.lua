@@ -1,7 +1,7 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local IsInGuild = IsInGuild
-local GuildRoster = GuildRoster
+local GuildRoster = C_GuildInfo.GuildRoster
 local GetGuildInfo = GetGuildInfo
 local GetGuildRosterInfo = GetGuildRosterInfo
 local GetNumGuildMembers = GetNumGuildMembers

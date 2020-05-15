@@ -997,61 +997,63 @@ local StylePlayer = function(self, unit)
 	SetPowerAttributes(Power, Settings["unitframes-player-power-color"])
 	
     -- Castbar
-    local Castbar = CreateFrame("StatusBar", "vUI Casting Bar", self)
-    Castbar:SetSize(250, 24)
-    Castbar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	
-	local CastbarBG = Castbar:CreateTexture(nil, "ARTWORK")
-	CastbarBG:SetPoint("TOPLEFT", Castbar, 0, 0)
-	CastbarBG:SetPoint("BOTTOMRIGHT", Castbar, 0, 0)
-    CastbarBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	CastbarBG:SetAlpha(0.2)
-	
-    -- Add a background
-    local Background = Castbar:CreateTexture(nil, "BACKGROUND")
-    Background:SetPoint("TOPLEFT", Castbar, -1, 1)
-    Background:SetPoint("BOTTOMRIGHT", Castbar, 1, -1)
-    Background:SetTexture(Assets:GetTexture("Blank"))
-    Background:SetVertexColor(0, 0, 0)
-	
-    -- Add a timer
-    local Time = Castbar:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(Time, Settings["ui-widget-font"], Settings["ui-font-size"])
-	Time:SetPoint("RIGHT", Castbar, -3, 0)
-	Time:SetJustifyH("RIGHT")
-	
-    -- Add spell text
-    local Text = Castbar:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(Text, Settings["ui-widget-font"], Settings["ui-font-size"])
-	Text:SetPoint("LEFT", Castbar, 3, 0)
-	Text:SetSize(250 * 0.7, Settings["ui-font-size"])
-	Text:SetJustifyH("LEFT")
-	
-    -- Add spell icon
-    local Icon = Castbar:CreateTexture(nil, "OVERLAY")
-    Icon:SetSize(24, 24)
-    Icon:SetPoint("TOPRIGHT", Castbar, "TOPLEFT", -4, 0)
-    Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	
-	local IconBG = Castbar:CreateTexture(nil, "BACKGROUND")
-    IconBG:SetPoint("TOPLEFT", Icon, -1, 1)
-    IconBG:SetPoint("BOTTOMRIGHT", Icon, 1, -1)
-    IconBG:SetTexture(Assets:GetTexture("Blank"))
-    IconBG:SetVertexColor(0, 0, 0)
-	
-    -- Add safezone
-    local SafeZone = Castbar:CreateTexture(nil, "OVERLAY")
-	SafeZone:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	SafeZone:SetVertexColor(vUI:HexToRGB("C0392B"))
-	
-    -- Register it with oUF
-    Castbar.bg = CastbarBG
-    Castbar.Time = Time
-    Castbar.Text = Text
-    Castbar.Icon = Icon
-    Castbar.SafeZone = SafeZone
-    Castbar.showTradeSkills = true
-    Castbar.timeToHold = 0.7
+	if Settings["unitframes-player-enable-castbar"] then
+		local Castbar = CreateFrame("StatusBar", "vUI Casting Bar", self)
+		Castbar:SetSize(250, 24)
+		Castbar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		
+		local CastbarBG = Castbar:CreateTexture(nil, "ARTWORK")
+		CastbarBG:SetPoint("TOPLEFT", Castbar, 0, 0)
+		CastbarBG:SetPoint("BOTTOMRIGHT", Castbar, 0, 0)
+		CastbarBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		CastbarBG:SetAlpha(0.2)
+		
+		-- Add a background
+		local Background = Castbar:CreateTexture(nil, "BACKGROUND")
+		Background:SetPoint("TOPLEFT", Castbar, -1, 1)
+		Background:SetPoint("BOTTOMRIGHT", Castbar, 1, -1)
+		Background:SetTexture(Assets:GetTexture("Blank"))
+		Background:SetVertexColor(0, 0, 0)
+		
+		-- Add a timer
+		local Time = Castbar:CreateFontString(nil, "OVERLAY")
+		vUI:SetFontInfo(Time, Settings["ui-widget-font"], Settings["ui-font-size"])
+		Time:SetPoint("RIGHT", Castbar, -3, 0)
+		Time:SetJustifyH("RIGHT")
+		
+		-- Add spell text
+		local Text = Castbar:CreateFontString(nil, "OVERLAY")
+		vUI:SetFontInfo(Text, Settings["ui-widget-font"], Settings["ui-font-size"])
+		Text:SetPoint("LEFT", Castbar, 3, 0)
+		Text:SetSize(250 * 0.7, Settings["ui-font-size"])
+		Text:SetJustifyH("LEFT")
+		
+		-- Add spell icon
+		local Icon = Castbar:CreateTexture(nil, "OVERLAY")
+		Icon:SetSize(24, 24)
+		Icon:SetPoint("TOPRIGHT", Castbar, "TOPLEFT", -4, 0)
+		Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		
+		local IconBG = Castbar:CreateTexture(nil, "BACKGROUND")
+		IconBG:SetPoint("TOPLEFT", Icon, -1, 1)
+		IconBG:SetPoint("BOTTOMRIGHT", Icon, 1, -1)
+		IconBG:SetTexture(Assets:GetTexture("Blank"))
+		IconBG:SetVertexColor(0, 0, 0)
+		
+		-- Add safezone
+		local SafeZone = Castbar:CreateTexture(nil, "OVERLAY")
+		SafeZone:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		SafeZone:SetVertexColor(vUI:HexToRGB("C0392B"))
+		
+		-- Register it with oUF
+		Castbar.bg = CastbarBG
+		Castbar.Time = Time
+		Castbar.Text = Text
+		Castbar.Icon = Icon
+		Castbar.SafeZone = SafeZone
+		Castbar.showTradeSkills = true
+		Castbar.timeToHold = 0.7
+	end
 	
 	if (vUI.UserClass == "ROGUE" or vUI.UserClass == "DRUID") then
 		local ComboPoints = CreateFrame("Frame", self:GetName() .. "ComboPoints", self)
@@ -1463,56 +1465,58 @@ local StyleTarget = function(self, unit)
 	Debuffs.showType = true
 	
     -- Castbar
-    local Castbar = CreateFrame("StatusBar", "vUI Target Casting Bar", self)
-    Castbar:SetSize(250, 22)
-    Castbar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	
-	local CastbarBG = Castbar:CreateTexture(nil, "ARTWORK")
-	CastbarBG:SetPoint("TOPLEFT", Castbar, 0, 0)
-	CastbarBG:SetPoint("BOTTOMRIGHT", Castbar, 0, 0)
-    CastbarBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	CastbarBG:SetAlpha(0.2)
-	
-    -- Add a background
-    local Background = Castbar:CreateTexture(nil, "BACKGROUND")
-    Background:SetPoint("TOPLEFT", Castbar, -1, 1)
-    Background:SetPoint("BOTTOMRIGHT", Castbar, 1, -1)
-    Background:SetTexture(Assets:GetTexture("Blank"))
-    Background:SetVertexColor(0, 0, 0)
-	
-    -- Add a timer
-    local Time = Castbar:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(Time, Settings["ui-widget-font"], Settings["ui-font-size"])
-	Time:SetPoint("RIGHT", Castbar, -3, 0)
-	Time:SetJustifyH("RIGHT")
-	
-    -- Add spell text
-    local Text = Castbar:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(Text, Settings["ui-widget-font"], Settings["ui-font-size"])
-	Text:SetPoint("LEFT", Castbar, 3, 0)
-	Text:SetSize(250 * 0.7, Settings["ui-font-size"])
-	Text:SetJustifyH("LEFT")
-	
-    -- Add spell icon
-    local Icon = Castbar:CreateTexture(nil, "OVERLAY")
-    Icon:SetSize(22, 22)
-    Icon:SetPoint("TOPRIGHT", Castbar, "TOPLEFT", -4, 0)
-    Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	
-    local IconBG = Castbar:CreateTexture(nil, "BACKGROUND")
-    IconBG:SetPoint("TOPLEFT", Icon, -1, 1)
-    IconBG:SetPoint("BOTTOMRIGHT", Icon, 1, -1)
-    IconBG:SetTexture(Assets:GetTexture("Blank"))
-    IconBG:SetVertexColor(0, 0, 0)
-	
-    Castbar.bg = CastbarBG
-    Castbar.Time = Time
-    Castbar.Text = Text
-    Castbar.Icon = Icon
-    Castbar.showTradeSkills = true
-    Castbar.timeToHold = 0.3
-	Castbar.PostCastStart = PostCastStart
-	Castbar.PostChannelStart = PostCastStart
+	if Settings["unitframes-target-enable-castbar"] then
+		local Castbar = CreateFrame("StatusBar", "vUI Target Casting Bar", self)
+		Castbar:SetSize(250, 22)
+		Castbar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		
+		local CastbarBG = Castbar:CreateTexture(nil, "ARTWORK")
+		CastbarBG:SetPoint("TOPLEFT", Castbar, 0, 0)
+		CastbarBG:SetPoint("BOTTOMRIGHT", Castbar, 0, 0)
+		CastbarBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		CastbarBG:SetAlpha(0.2)
+		
+		-- Add a background
+		local Background = Castbar:CreateTexture(nil, "BACKGROUND")
+		Background:SetPoint("TOPLEFT", Castbar, -1, 1)
+		Background:SetPoint("BOTTOMRIGHT", Castbar, 1, -1)
+		Background:SetTexture(Assets:GetTexture("Blank"))
+		Background:SetVertexColor(0, 0, 0)
+		
+		-- Add a timer
+		local Time = Castbar:CreateFontString(nil, "OVERLAY")
+		vUI:SetFontInfo(Time, Settings["ui-widget-font"], Settings["ui-font-size"])
+		Time:SetPoint("RIGHT", Castbar, -3, 0)
+		Time:SetJustifyH("RIGHT")
+		
+		-- Add spell text
+		local Text = Castbar:CreateFontString(nil, "OVERLAY")
+		vUI:SetFontInfo(Text, Settings["ui-widget-font"], Settings["ui-font-size"])
+		Text:SetPoint("LEFT", Castbar, 3, 0)
+		Text:SetSize(250 * 0.7, Settings["ui-font-size"])
+		Text:SetJustifyH("LEFT")
+		
+		-- Add spell icon
+		local Icon = Castbar:CreateTexture(nil, "OVERLAY")
+		Icon:SetSize(22, 22)
+		Icon:SetPoint("TOPRIGHT", Castbar, "TOPLEFT", -4, 0)
+		Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		
+		local IconBG = Castbar:CreateTexture(nil, "BACKGROUND")
+		IconBG:SetPoint("TOPLEFT", Icon, -1, 1)
+		IconBG:SetPoint("BOTTOMRIGHT", Icon, 1, -1)
+		IconBG:SetTexture(Assets:GetTexture("Blank"))
+		IconBG:SetVertexColor(0, 0, 0)
+		
+		Castbar.bg = CastbarBG
+		Castbar.Time = Time
+		Castbar.Text = Text
+		Castbar.Icon = Icon
+		Castbar.showTradeSkills = true
+		Castbar.timeToHold = 0.3
+		Castbar.PostCastStart = PostCastStart
+		Castbar.PostChannelStart = PostCastStart
+	end
 	
 	-- Tags
 	self:Tag(HealthLeft, Settings["unitframes-target-health-left"])
@@ -1874,30 +1878,28 @@ local StyleFocus = function(self, unit)
 	
 	-- Auras
 	local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
-	Buffs:SetSize(Settings["unitframes-focus-width"], 28)
-	Buffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
-	Buffs.size = 28
+	Buffs:SetSize(((Settings["unitframes-focus-health-height"] + Settings["unitframes-focus-power-height"] + 3) * 3) + 4, Settings["unitframes-focus-health-height"] + Settings["unitframes-focus-power-height"] + 3)
+	Buffs:SetPoint("LEFT", self, "RIGHT", 2, 0)
+	Buffs.size = Settings["unitframes-focus-health-height"] + Settings["unitframes-focus-power-height"] + 3
 	Buffs.spacing = 2
-	Buffs.num = 40
-	Buffs.initialAnchor = "TOPLEFT"
+	Buffs.num = 3
+	Buffs.initialAnchor = "LEFT"
 	Buffs.tooltipAnchor = "ANCHOR_TOP"
 	Buffs["growth-x"] = "RIGHT"
-	Buffs["growth-y"] = "UP"
 	Buffs.PostCreateIcon = PostCreateIcon
 	Buffs.PostUpdateIcon = PostUpdateIcon
 	--Buffs.SetPosition = BuffsSetPosition
 	Buffs.showType = true
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
-	Debuffs:SetSize(Settings["unitframes-focus-width"], 28)
-	Debuffs:SetPoint("BOTTOM", Buffs, "TOP", 0, 2)
-	Debuffs.size = 28
+	Debuffs:SetSize(((Settings["unitframes-focus-health-height"] + Settings["unitframes-focus-power-height"] + 3) * 3) + 4, Settings["unitframes-focus-health-height"] + Settings["unitframes-focus-power-height"] + 3)
+	Debuffs:SetPoint("LEFT", Buffs, "RIGHT", 2, 0)
+	Debuffs.size = Settings["unitframes-focus-health-height"] + Settings["unitframes-focus-power-height"] + 3
 	Debuffs.spacing = 2
-	Debuffs.num = 16
-	Debuffs.initialAnchor = "TOPRIGHT"
+	Debuffs.num = 3
+	Debuffs.initialAnchor = "LEFT"
 	Debuffs.tooltipAnchor = "ANCHOR_TOP"
-	Debuffs["growth-x"] = "LEFT"
-	Debuffs["growth-y"] = "UP"
+	Debuffs["growth-x"] = "RIGHT"
 	Debuffs.PostCreateIcon = PostCreateIcon
 	Debuffs.PostUpdateIcon = PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["unitframes-only-focus-debuffs"]
@@ -2772,12 +2774,17 @@ UF:SetScript("OnEvent", function(self, event)
 			vUI:CreateMover(Target)
 			vUI:CreateMover(TargetTarget)
 			vUI:CreateMover(Pet)
+			vUI:CreateMover(Focus)
 			
-			Player.Castbar:SetPoint("BOTTOM", vUI.UIParent, 0, 118)
-			Target.Castbar:SetPoint("BOTTOM", vUI.UIParent, 0, 146)
+			if Settings["unitframes-player-enable-castbar"] then
+				Player.Castbar:SetPoint("BOTTOM", vUI.UIParent, 0, 118)
+				vUI:CreateMover(Player.Castbar, 2)
+			end
 			
-			vUI:CreateMover(Player.Castbar, 2)
-			vUI:CreateMover(Target.Castbar, 2)
+			if Settings["unitframes-target-enable-castbar"] then
+				Target.Castbar:SetPoint("BOTTOM", vUI.UIParent, 0, 146)
+				vUI:CreateMover(Target.Castbar, 2)
+			end
 		end
 		
 		if Settings["unitframes-boss-enable"] then
@@ -3048,6 +3055,28 @@ local UpdatePetPowerHeight = function(value)
 	end
 end
 
+local UpdateFocusWidth = function(value)
+	if vUI.UnitFrames["focus"] then
+		vUI.UnitFrames["focus"]:SetWidth(value)
+	end
+end
+
+local UpdateFocusHealthHeight = function(value)
+	if vUI.UnitFrames["focus"] then
+		vUI.UnitFrames["focus"].Health:SetHeight(value)
+		vUI.UnitFrames["focus"]:SetHeight(value + Settings["unitframes-focus-power-height"] + 3)
+	end
+end
+
+local UpdateFocusPowerHeight = function(value)
+	if vUI.UnitFrames["focus"] then
+		local Frame = vUI.UnitFrames["focus"]
+		
+		Frame.Power:SetHeight(value)
+		Frame:SetHeight(Settings["unitframes-focus-health-height"] + value + 3)
+	end
+end
+
 local UpdatePlayerHealthFill = function(value)
 	if vUI.UnitFrames["player"] then
 		vUI.UnitFrames["player"].Health:SetReverseFill(value)
@@ -3093,6 +3122,18 @@ end
 local UpdatePetPowerFill = function(value)
 	if vUI.UnitFrames["pet"] then
 		vUI.UnitFrames["pet"].Power:SetReverseFill(value)
+	end
+end
+
+local UpdateFocusHealthFill = function(value)
+	if vUI.UnitFrames["focus"] then
+		vUI.UnitFrames["focus"].Health:SetReverseFill(value)
+	end
+end
+
+local UpdateFocusPowerFill = function(value)
+	if vUI.UnitFrames["focus"] then
+		vUI.UnitFrames["focus"].Power:SetReverseFill(value)
 	end
 end
 
@@ -3176,6 +3217,26 @@ local UpdatePetPowerColor = function(value)
 	end
 end
 
+local UpdateFocusHealthColor = function(value)
+	if vUI.UnitFrames["focus"] then
+		local Health = vUI.UnitFrames["focus"].Health
+		
+		SetHealthAttributes(Health, value)
+		
+		Health:ForceUpdate()
+	end
+end
+
+local UpdateFocusPowerColor = function(value)
+	if vUI.UnitFrames["focus"] then
+		local Power = vUI.UnitFrames["focus"].Power
+		
+		SetPowerAttributes(Power, value)
+		
+		Power:ForceUpdate()
+	end
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Unit Frames"])
 	
@@ -3190,6 +3251,7 @@ GUI:AddOptions(function(self)
 	Left:CreateSlider("unitframes-player-cast-height", Settings["unitframes-player-cast-height"], 8, 50, 1, Language["Cast Bar Height"], Language["Set the height of the player cast bar"], UpdatePlayerCastBarSize)
 	Left:CreateDropdown("unitframes-player-health-color", Settings["unitframes-player-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdatePlayerHealthColor)
 	Left:CreateDropdown("unitframes-player-power-color", Settings["unitframes-player-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePlayerPowerColor)
+	Left:CreateSwitch("unitframes-player-enable-castbar", Settings["unitframes-player-enable-castbar"], Language["Enable Cast Bar"], Language["Enable the player cast bar"], ReloadUI):RequiresReload(true)
 	Left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
 	Left:CreateSwitch("unitframes-only-player-debuffs", Settings["unitframes-only-player-debuffs"], Language["Only Display Player Debuffs"], Language["If enabled, only your own debuffs will be displayed on the target"], UpdateOnlyPlayerDebuffs)
 	Left:CreateSwitch("unitframes-player-health-reverse", Settings["unitframes-player-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePlayerHealthFill)
@@ -3207,6 +3269,7 @@ GUI:AddOptions(function(self)
 	Right:CreateSlider("unitframes-target-cast-height", Settings["unitframes-target-cast-height"], 8, 50, 1, Language["Cast Bar Height"], Language["Set the height of the target cast bar"], UpdateTargetCastBarSize)
 	Right:CreateDropdown("unitframes-target-health-color", Settings["unitframes-target-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Color"], Language["Set the color of the health bar"], UpdateTargetHealthColor)
 	Right:CreateDropdown("unitframes-target-power-color", Settings["unitframes-target-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateTargetPowerColor)
+	Left:CreateSwitch("unitframes-target-enable-castbar", Settings["unitframes-target-enable-castbar"], Language["Enable Cast Bar"], Language["Enable the target cast bar"], ReloadUI):RequiresReload(true)
 	Right:CreateSwitch("unitframes-target-health-reverse", Settings["unitframes-target-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateTargetHealthFill)
 	Right:CreateSwitch("unitframes-target-power-reverse", Settings["unitframes-target-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateTargetPowerFill)
 	Right:CreateInput("unitframes-target-health-left", Settings["unitframes-target-health-left"], Language["Left Health Text"], Language["Set the text on the left of the target health bar"], ReloadUI):RequiresReload(true)
@@ -3235,6 +3298,17 @@ GUI:AddOptions(function(self)
 	Right:CreateSwitch("unitframes-pet-power-reverse", Settings["unitframes-pet-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePetPowerFill)
 	Right:CreateInput("unitframes-pet-health-left", Settings["unitframes-pet-health-left"], Language["Left Health Text"], Language["Set the text on the left of the pet health bar"], ReloadUI):RequiresReload(true)
 	Right:CreateInput("unitframes-pet-health-right", Settings["unitframes-pet-health-right"], Language["Right Health Text"], Language["Set the text on the right of the pet health bar"], ReloadUI):RequiresReload(true)
+	
+	Left:CreateHeader(Language["Focus"])
+	Left:CreateSlider("unitframes-focus-width", Settings["unitframes-focus-width"], 60, 320, 1, "Width", "Set the width of the focus unit frame", UpdateFocusWidth)
+	Left:CreateSlider("unitframes-focus-health-height", Settings["unitframes-focus-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the focus health bar", UpdateFocusHealthHeight)
+	Left:CreateSlider("unitframes-focus-power-height", Settings["unitframes-focus-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the focus power bar", UpdateFocusPowerHeight)
+	Left:CreateDropdown("unitframes-focus-health-color", Settings["unitframes-focus-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdateFocusHealthColor)
+	Left:CreateDropdown("unitframes-focus-power-color", Settings["unitframes-focus-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateFocusPowerColor)
+	Left:CreateSwitch("unitframes-focus-health-reverse", Settings["unitframes-focus-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateFocusHealthFill)
+	Left:CreateSwitch("unitframes-focus-power-reverse", Settings["unitframes-focus-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateFocusPowerFill)
+	Left:CreateInput("unitframes-focus-health-left", Settings["unitframes-focus-health-left"], Language["Left Health Text"], Language["Set the text on the left of the focus health bar"], ReloadUI):RequiresReload(true)
+	Left:CreateInput("unitframes-focus-health-right", Settings["unitframes-focus-health-right"], Language["Right Health Text"], Language["Set the text on the right of the focus health bar"], ReloadUI):RequiresReload(true)
 end)
 
 local UpdatePartyWidth = function(value)
