@@ -882,11 +882,11 @@ end
 
 local SetButtonSize = function(value)
 	for i = 1, Num do
-		vUIActionBar1[i]:SetSize(value)
-		vUIActionBar2[i]:SetSize(value)
-		vUIActionBar3[i]:SetSize(value)
-		vUIActionBar4[i]:SetSize(value)
-		vUIActionBar5[i]:SetSize(value)
+		vUIActionBar1[i]:SetSize(value, value)
+		vUIActionBar2[i]:SetSize(value, value)
+		vUIActionBar3[i]:SetSize(value, value)
+		vUIActionBar4[i]:SetSize(value, value)
+		vUIActionBar5[i]:SetSize(value, value)
 	end
 	
 	vUIActionBar1:SetSize(((value * 12) + (SPACING * 11)), value)
