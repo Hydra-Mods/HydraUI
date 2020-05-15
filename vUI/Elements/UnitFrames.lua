@@ -1053,6 +1053,8 @@ local StylePlayer = function(self, unit)
 		Castbar.SafeZone = SafeZone
 		Castbar.showTradeSkills = true
 		Castbar.timeToHold = 0.7
+		
+		self.Castbar = Castbar
 	end
 	
 	if (vUI.UserClass == "ROGUE" or vUI.UserClass == "DRUID") then
@@ -1331,7 +1333,6 @@ local StylePlayer = function(self, unit)
 	self.CombatIndicator = Combat
 	self.Buffs = Buffs
 	self.Debuffs = Debuffs
-	self.Castbar = Castbar
 	--self.RaidTargetIndicator = RaidTarget
 	self.ResurrectIndicator = Resurrect
 	self.LeaderIndicator = Leader
@@ -1516,6 +1517,8 @@ local StyleTarget = function(self, unit)
 		Castbar.timeToHold = 0.3
 		Castbar.PostCastStart = PostCastStart
 		Castbar.PostChannelStart = PostCastStart
+		
+		self.Castbar = Castbar
 	end
 	
 	-- Tags
@@ -1541,7 +1544,6 @@ local StyleTarget = function(self, unit)
 	self.PowerRight = PowerRight
 	self.Buffs = Buffs
 	self.Debuffs = Debuffs
-	self.Castbar = Castbar
 	self.RaidTargetIndicator = RaidTarget
 end
 
