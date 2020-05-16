@@ -985,9 +985,7 @@ local UpdateButtonStatus = function(self)
 	local IsUsable, NoMana = IsUsableAction(self.action)
 	
 	if IsUsable then
-		local InRange = IsActionInRange(self.action)
-		
-		if (InRange == false) then
+		if (IsActionInRange(self.action) == false) then
 			self.icon:SetVertexColor(vUI:HexToRGB("FF4C19"))
 		else
 			self.icon:SetVertexColor(vUI:HexToRGB("FFFFFF"))
