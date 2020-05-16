@@ -16,7 +16,7 @@ local ActionBars = CreateFrame("Frame")
 local Hider = CreateFrame("Frame", nil, UIParent, "SecureHandlerStateTemplate")
 Hider:Hide()
 
-local Kill = function(object)
+local Disable = function(object)
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()
 	end
@@ -43,7 +43,7 @@ local SkinButton = function(button)
 	end
 	
 	if _G[button:GetName() .. "FloatingBG"] then
-		Kill(_G[button:GetName() .. "FloatingBG"])
+		Disable(_G[button:GetName() .. "FloatingBG"])
 	end
 	
 	if _G[button:GetName() .. "Cooldown"] then

@@ -10,8 +10,6 @@ local format = format
 local match = string.match
 
 vUI.ProfileList = {}
-vUI.MigrateKeys = {}
-vUI.MigrateValues = {}
 
 vUI.ProfileMetadata = {
 	["profile-name"] = true,
@@ -453,18 +451,26 @@ function vUI:SetProfileMetadata(name, meta, value) -- /run vUIGlobal:get():SetPr
 end
 
 --[[
-	Test module: vUI:MigrateValue("tooltips-hide-on-unit", "NO_COMBAT", "IN_COMBAT") vUI:MigrateValue("unitframes-player-health-color", "CUSTOM", "CLASS") vUI:MigrateKey("ui-display-welcome", "ui-welcome")
+	Temporary module
 	Sometimes I might want to change setting names or values, but make sure that people still keep their settings so that I don't get yelled at.
 	This keeps profiles lean because I can remove old keys, and it allows me to seamlessly change existing settings and profiles
 	Remove MigrateValue declarations after a reasonable while.
 --]]
 
-function vUI:MigrateKey(from, to)
+vUI.MigrateKeys = {}
+vUI.MigrateValues = {}
+vUI.MigrateGlobals = {}
+
+function vUI:MigrateKey(from, to) -- vUI:MigrateKey("ui-display-welcome", "ui-welcome")
 	tinsert(self.MigrateKeys, {From = from, To = to})
 end
 
-function vUI:MigrateValue(key, from, to)
+function vUI:MigrateValue(key, from, to) -- vUI:MigrateValue("unitframes-player-health-color", "CUSTOM", "CLASS") vUI:MigrateValue("tooltips-hide-on-unit", "NO_COMBAT", "IN_COMBAT")
 	tinsert(self.MigrateValues, {Key = key, From = from, To = to})
+end
+
+function vUI:MigrateGlobal(from, to) -- vUI:MigrateGlobal("vUIData", "vUIMisc")
+	tinsert(self.MigrateGlobals, {From = from, To = to})
 end
 
 function vUI:Migrate(profile)
@@ -489,6 +495,20 @@ end
 function vUI:MigrateData()
 	if ((not vUIProfiles) or (#self.MigrateValues == 0)) then
 		return
+	end
+	
+	for i = #self.MigrateGlobals, 1, -1 do
+		if (not _G[self.MigrateGlobals[i].To]) then
+			_G[self.MigrateGlobals[i].To] = {}
+		end
+		
+		if _G[self.MigrateGlobals[i].From] then
+			for Key, Value in pairs(_G[self.MigrateGlobals[i].From]) do
+				_G[self.MigrateGlobals[i].To][Key] = Value
+			end
+			
+			tremove(self.MigrateGlobals, 1)
+		end
 	end
 	
 	for ProfileName, Profile in pairs(vUIProfiles) do
