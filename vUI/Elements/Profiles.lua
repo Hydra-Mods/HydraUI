@@ -493,10 +493,6 @@ function vUI:Migrate(profile)
 end
 
 function vUI:MigrateData()
-	if ((not vUIProfiles) or (#self.MigrateValues == 0)) then
-		return
-	end
-	
 	for i = #self.MigrateGlobals, 1, -1 do
 		if (not _G[self.MigrateGlobals[i].To]) then
 			_G[self.MigrateGlobals[i].To] = {}
@@ -509,6 +505,10 @@ function vUI:MigrateData()
 			
 			tremove(self.MigrateGlobals, 1)
 		end
+	end
+	
+	if ((not vUIProfiles) or (#self.MigrateValues == 0)) then
+		return
 	end
 	
 	for ProfileName, Profile in pairs(vUIProfiles) do
