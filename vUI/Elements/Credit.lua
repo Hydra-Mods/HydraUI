@@ -41,5 +41,8 @@ GUI:AddOptions(function(self)
 	Left:CreateDoubleLine("Innie", "Brightsides")
 	Left:CreateLine("Erthelmi")
 	
-	Right:CreateMessage("Thank you to the following people who have supported the development of this project! It has taken immense time and effort, and your support helps keep it possible.")
+	Right:CreateMessage("Thank you to all of these amazing people who have supported the development of this project!")
+	
+	Right:CreateHeader("|cFF0070DDRare Patrons|r")
+	Right:CreateLine("Smelly")
 end)

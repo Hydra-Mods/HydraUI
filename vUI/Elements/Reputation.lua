@@ -5,6 +5,9 @@ local Reputation = vUI:NewModule("Reputation")
 local format = format
 local floor = floor
 local GetWatchedFactionInfo = GetWatchedFactionInfo
+local IsFactionParagon = C_Reputation.IsFactionParagon
+local GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
+local GetFriendshipReputation = GetFriendshipReputation
 
 local FadeOnFinished = function(self)
 	self.Parent:Hide()
@@ -138,34 +141,62 @@ end
 
 function Reputation:OnEvent()
 	local Name, StandingID, Min, Max, Value, FactionID = GetWatchedFactionInfo()
+	local FriendID = GetFriendshipReputation(FactionID)
 	
-	if Name then
-		Max = Max - Min
-		Value = Value - Min
+	if (not Name or not FactionID) then
+		if self:IsShown() then
+			self.FadeOut:Play()
+		end
 		
-		self.Bar:SetMinMaxValues(0, Max)
-		self.Bar:SetStatusBarColor(vUI:HexToRGB(Settings["color-reaction-" .. StandingID]))
+		return
+	end
+	
+	if FriendID then
+		local FriendID, FriendValue, FriendMaxRep, FriendName, FriendText, FriendTexture, FriendTextLevel, Threshold, NextThreshold = GetFriendshipReputation(FactionID)
+		--level = GetFriendshipReputationRanks(FactionID)
 		
-		self.Progress:SetText(format("%s: %s / %s", Name, vUI:Comma(Value), vUI:Comma(Max)))
-		self.Percentage:SetText(floor((Value / Max * 100 + 0.05) * 10) / 10 .. "%")
+		Name = FriendName
 		
-		if Settings["reputation-animate"] then
-			self.Change:SetChange(Value)
-			self.Change:Play()
-			
-			if (not self.Flash:IsPlaying()) then
-				self.Flash:Play()
-			end
+		if NextThreshold then
+			Min, Max, Value = Threshold, NextThreshold, FriendValue
 		else
-			self.Bar:SetValue(Value)
+			Min, Max, Value = 0, 1, 1
 		end
 		
-		if (not self:IsShown()) then
-			self:Show()
-			self.FadeIn:Play()
+		StandingID = 5
+	elseif IsFactionParagon(FactionID) then
+		local ParagonValue, Threshold, _, RewardPending = GetFactionParagonInfo(FactionID)
+		Min, Max = 0, Threshold
+		Value = ParagonValue % Threshold
+		
+		if RewardPending then 
+			Value = Value + Threshold
 		end
-	elseif self:IsShown() then
-		self.FadeOut:Play()
+	end
+	
+	Max = Max - Min
+	Value = Value - Min
+	
+	self.Bar:SetMinMaxValues(0, Max)
+	self.Bar:SetStatusBarColor(vUI:HexToRGB(Settings["color-reaction-" .. StandingID]))
+	
+	self.Progress:SetText(format("%s: %s / %s", Name, vUI:Comma(Value), vUI:Comma(Max)))
+	self.Percentage:SetText(floor((Value / Max * 100 + 0.05) * 10) / 10 .. "%")
+	
+	if Settings["reputation-animate"] then
+		self.Change:SetChange(Value)
+		self.Change:Play()
+		
+		if (not self.Flash:IsPlaying()) then
+			self.Flash:Play()
+		end
+	else
+		self.Bar:SetValue(Value)
+	end
+	
+	if (not self:IsShown()) then
+		self:Show()
+		self.FadeIn:Play()
 	end
 end
 

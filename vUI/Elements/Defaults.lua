@@ -348,19 +348,6 @@ Defaults["unitframes-focus-power-smooth"] = true
 Defaults["unitframes-focus-health-left"] = "[Name10]"
 Defaults["unitframes-focus-health-right"] = "[HealthPercent]"
 
--- Focus Target
-Defaults["unitframes-focustarget-width"] = 200
-Defaults["unitframes-focustarget-health-height"] = 26
-Defaults["unitframes-focustarget-health-reverse"] = false
-Defaults["unitframes-focustarget-health-color"] = "CLASS"
-Defaults["unitframes-focustarget-health-smooth"] = true
-Defaults["unitframes-focustarget-power-height"] = 3
-Defaults["unitframes-focustarget-power-reverse"] = false
-Defaults["unitframes-focustarget-power-color"] = "POWER"
-Defaults["unitframes-focustarget-power-smooth"] = true
-Defaults["unitframes-focustarget-health-left"] = "[Name10]"
-Defaults["unitframes-focustarget-health-right"] = "[HealthPercent]"
-
 -- Unitframes: Bosses
 Defaults["unitframes-boss-enable"] = true
 Defaults["unitframes-boss-width"] = 238
@@ -469,18 +456,6 @@ Defaults["tooltips-show-health-text"] = true
 
 -- Bags
 Defaults["bags-loot-from-left"] = false
-
--- Objective Tracker
-Defaults["tracker-enable"] = true
-Defaults["tracker-enable-backdrop"] = false
-Defaults["tracker-backdrop-opacity"] = 70
-Defaults["tracker-height"] = 400
-Defaults["tracker-font"] = "Roboto"
-Defaults["tracker-font-size"] = 12
-Defaults["tracker-font-flags"] = ""
-Defaults["tracker-header-font"] = "Roboto"
-Defaults["tracker-header-font-size"] = 12
-Defaults["tracker-header-font-flags"] = ""
 
 -- Data Texts
 Defaults["data-text-font"] = "Roboto"
