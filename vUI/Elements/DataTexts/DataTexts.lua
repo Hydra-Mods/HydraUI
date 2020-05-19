@@ -6,23 +6,6 @@ DT.Anchors = {}
 DT.Types = {}
 DT.List = {}
 
-local ShouldFlash = function(anchor)
-	if (anchor.Text:GetText() ~= anchor.LastValue) then
-		return true
-	end
-end
-
-local PlayFlash = function(anchor)
-	if anchor:ShouldFlash() and (not anchor.Fade:IsPlaying()) then
-		anchor:SaveValue()
-		anchor.Fade:Play()
-	end
-end
-
-local SaveValue = function(anchor)
-	anchor.LastValue = anchor.Text:GetText()
-end
-
 local SetTooltip = function(anchor)
 	if Settings["data-text-hover-tooltips"] then
 		local X, Y = anchor:GetCenter()
@@ -58,31 +41,7 @@ function DT:NewAnchor(name, parent)
 	Anchor:SetBackdropColor(0, 0, 0, 0)
 	
 	Anchor.Name = name
-	Anchor.PlayFlash = PlayFlash
-	Anchor.ShouldFlash = ShouldFlash
-	Anchor.SaveValue = SaveValue
 	Anchor.SetTooltip = SetTooltip
-	
-	Anchor.Highlight = Anchor:CreateTexture(nil, "ARTWORK")
-	Anchor.Highlight:SetPoint("BOTTOMLEFT", Anchor, 20, 0)
-	Anchor.Highlight:SetPoint("BOTTOMRIGHT", Anchor, -20, 0)
-	Anchor.Highlight:SetHeight(14)
-	Anchor.Highlight:SetTexture(Assets:GetTexture("RenHorizonUp"))
-	Anchor.Highlight:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
-	Anchor.Highlight:SetAlpha(0)
-	
-	Anchor.Fade = CreateAnimationGroup(Anchor.Highlight)
-	
-	Anchor.FadeIn = Anchor.Fade:CreateAnimation("Fade")
-	Anchor.FadeIn:SetEasing("inout")
-	Anchor.FadeIn:SetDuration(0.15)
-	Anchor.FadeIn:SetChange(0.5)
-	
-	Anchor.FadeOut = Anchor.Fade:CreateAnimation("Fade")
-	Anchor.FadeOut:SetOrder(2)
-	Anchor.FadeOut:SetEasing("inout")
-	Anchor.FadeOut:SetDuration(0.6)
-	Anchor.FadeOut:SetChange(0)
 	
 	Anchor.Text = Anchor:CreateFontString(nil, "ARTWORK")
 	vUI:SetFontInfo(Anchor.Text, Settings["data-text-font"], Settings["data-text-font-size"], Settings["data-text-font-flags"])
