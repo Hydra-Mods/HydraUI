@@ -10,8 +10,8 @@ local OnEnter = function(self)
     local ArmorReduction = PaperDollFrame_GetArmorReduction(EffectiveArmor, UnitEffectiveLevel("player"))
 	local AgainstTarget = PaperDollFrame_GetArmorReductionAgainstTarget(EffectiveArmor)
 	
-	GameTooltip:AddLine(format(PAPERDOLLFRAME_TOOLTIP_FORMAT, Label) .. " " .. vUI:Comma(EffectiveArmor), 1, 1, 1)
-	GameTooltip:AddLine(format(STAT_ARMOR_TOOLTIP, ArmorReduction))
+	GameTooltip:AddLine(format("%s %s", Label, vUI:Comma(EffectiveArmor)), 1, 1, 1)
+	GameTooltip:AddLine(format(STAT_ARMOR_TOOLTIP, ArmorReduction), nil, nil, nil, true)
 	
 	if AgainstTarget then
 		GameTooltip:AddLine(format(STAT_ARMOR_TARGET_TOOLTIP, AgainstTarget))

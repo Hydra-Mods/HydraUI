@@ -11,7 +11,7 @@ end
 local OnEnter = function(self)
 	self:SetTooltip()
 	
-	GameTooltip:AddLine(format(PAPERDOLLFRAME_TOOLTIP_FORMAT, Label), 1, 1, 1)
+	GameTooltip:AddLine(Label, 1, 1, 1)
 	
 	if _G["STAT_HASTE_" .. vUI.UserClass .. "_TOOLTIP"] then
 		GameTooltip:AddLine(_G["STAT_HASTE_" .. vUI.UserClass .. "_TOOLTIP"])

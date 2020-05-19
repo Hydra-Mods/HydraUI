@@ -16,7 +16,7 @@ local OnEnter = function(self)
 	
 	local Base, Combat = GetManaRegen()
 	
-	GameTooltip:AddLine(format(PAPERDOLLFRAME_TOOLTIP_FORMAT, Label) .. " " .. vUI:Comma(floor(Combat * 5)), 1, 1, 1)
+	GameTooltip:AddLine(format("%s %s", Label, vUI:Comma(floor(Combat * 5))), 1, 1, 1)
 	GameTooltip:AddLine(format(MANA_REGEN_TOOLTIP, vUI:Comma(floor(Base * 5))))
 	
 	GameTooltip:Show()

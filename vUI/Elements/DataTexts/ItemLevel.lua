@@ -10,12 +10,12 @@ end
 local OnEnter = function(self)
 	self:SetTooltip()
 	
-	local Average, Equipped, PVP = GetAverageItemLevel()
+	local Average, Equipped = GetAverageItemLevel()
 	
 	if (Equipped ~= Average) then
-		GameTooltip:AddLine(format(PAPERDOLLFRAME_TOOLTIP_FORMAT, Label) .. " " .. floor(Average) .. " " .. format(STAT_AVERAGE_ITEM_LEVEL_EQUIPPED, Equipped), 1, 1, 1)
+		GameTooltip:AddLine(format("%s %s %s", Label, floor(Average), format(STAT_AVERAGE_ITEM_LEVEL_EQUIPPED, Equipped)), 1, 1, 1)
 	else
-		GameTooltip:AddLine(format(PAPERDOLLFRAME_TOOLTIP_FORMAT, Label), 1, 1, 1)
+		GameTooltip:AddLine(Label, 1, 1, 1)
 	end
 	
 	GameTooltip:AddLine(STAT_AVERAGE_ITEM_LEVEL_TOOLTIP)
