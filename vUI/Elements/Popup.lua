@@ -34,7 +34,7 @@ end
 
 Popup.CreatePopupFrame = function(self)
 	self:SetSize(POPUP_WIDTH, POPUP_HEIGHT)
-	self:SetPoint("TOP", vUI.UIParent, 0, -180)
+	self:SetPoint("CENTER", vUI.UIParent, 0, 250)
 	self:SetBackdrop(vUI.BackdropAndBorder)
 	self:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self:SetBackdropBorderColor(0, 0, 0)
@@ -44,8 +44,6 @@ Popup.CreatePopupFrame = function(self)
 	self:SetScript("OnDragStart", self.StartMoving)
 	self:SetScript("OnDragStop", self.StopMovingOrSizing)
 	self:SetClampedToScreen(true)
-	--self:SetAlpha(0)
-	--self:Hide()
 	
 	-- Header
 	self.Header = CreateFrame("Frame", nil, self)
