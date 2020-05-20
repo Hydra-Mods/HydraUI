@@ -864,7 +864,7 @@ function GUI:CreateInputWindow()
 	end
 	
 	local Window = CreateFrame("Frame", nil, self)
-	Window:SetSize(300, 80)
+	Window:SetSize(300, 200)
 	Window:SetPoint("CENTER", vUI.UIParent, 0, 0)
 	Window:SetBackdrop(vUI.BackdropAndBorder)
 	Window:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
@@ -949,7 +949,8 @@ function GUI:CreateInputWindow()
 	Window.Input:SetAutoFocus(false)
 	Window.Input:EnableKeyboard(true)
 	Window.Input:EnableMouse(true)
-	Window.Input:SetMaxLetters(9999)
+	Window.Input:SetMultiLine(true)
+	Window.Input:SetMaxLetters(255)
 	Window.Input:SetCursorPosition(0)
 	
 	Window.Input:SetScript("OnEnterPressed", InputWindowOnEnterPressed)
