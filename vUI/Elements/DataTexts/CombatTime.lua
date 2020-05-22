@@ -23,7 +23,7 @@ local OnEvent = function(self, event)
 		self.Elapsed = 0
 		self.Throttle = 0
 		self:SetScript("OnUpdate", OnUpdate)
-		self.Text:SetTextColorHex(Settings["ui-widget-color"])
+		self.Text:SetTextColor(vUI:HexToRGB(Settings["ui-widget-color"]))
 	elseif (event == "PLAYER_REGEN_ENABLED") then
 		self:SetScript("OnUpdate", nil)
 		self.Text:SetTextColor(1, 1, 1)
