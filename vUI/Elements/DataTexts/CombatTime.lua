@@ -12,18 +12,18 @@ local OnUpdate = function(self, elapsed)
 	self.Throttle = self.Throttle + elapsed
 	
 	if (self.Throttle > 1) then
-		self.Text:SetText(format("|cFF%s%s|r", Settings["data-text-value-color"], SecondsToTime(self.Elapsed)))
+		self.Text:SetText(SecondsToTime(self.Elapsed))
 		
 		self.Throttle = 0
 	end
 end
 
-local OnEvent = function(self, event)
+local Update = function(self, event)
 	if (event == "PLAYER_REGEN_DISABLED") then
 		self.Elapsed = 0
 		self.Throttle = 0
 		self:SetScript("OnUpdate", OnUpdate)
-		self.Text:SetTextColor(vUI:HexToRGB(Settings["ui-widget-color"]))
+		self.Text:SetTextColor(vUI:HexToRGB(Settings["data-text-value-color"]))
 	elseif (event == "PLAYER_REGEN_ENABLED") then
 		self:SetScript("OnUpdate", nil)
 		self.Text:SetTextColor(1, 1, 1)
@@ -35,7 +35,7 @@ local OnEnable = function(self)
 	self.Throttle = 0
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
-	self:SetScript("OnEvent", OnEvent)
+	self:SetScript("OnEvent", Update)
 	
 	self.Text:SetText(SecondsToTime(self.Elapsed))
 end
