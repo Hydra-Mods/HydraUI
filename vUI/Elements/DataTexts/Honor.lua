@@ -14,6 +14,7 @@ local OnEnter = function(self)
 	local Percent = floor((Honor / MaxHonor * 100 + 0.05) * 10) / 10
 	local Remaining = MaxHonor - Honor
 	local RemainingPercent = floor((Remaining / MaxHonor * 100 + 0.05) * 10) / 10
+	local Kills = GetPVPLifetimeStats()
 	
 	GameTooltip:AddLine(format(HONOR_LEVEL_TOOLTIP, UnitHonorLevel("player")))
 	GameTooltip:AddLine(" ")
@@ -23,6 +24,12 @@ local OnEnter = function(self)
 	GameTooltip:AddLine(" ")
 	GameTooltip:AddLine(Language["Remaining honor"])
 	GameTooltip:AddDoubleLine(format("%s", vUI:Comma(Remaining)), format("%s%%", RemainingPercent), 1, 1, 1, 1, 1, 1)
+	
+	if (Kills > 0) then
+		GameTooltip:AddLine(" ")
+		GameTooltip:AddLine(HONORABLE_KILLS)
+		GameTooltip:AddLine(Kills, 1, 1, 1)
+	end
 	
 	GameTooltip:Show()
 end
