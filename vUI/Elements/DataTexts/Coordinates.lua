@@ -78,6 +78,7 @@ local OnEnable = function(self)
 	self:SetScript("OnUpdate", Update)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
+	
 	self:Update(1)
 end
 

@@ -74,6 +74,7 @@ Elements\DataTexts\ManaRegen.lua
 Elements\DataTexts\Mastery.lua
 Elements\DataTexts\PrimaryStat.lua
 Elements\DataTexts\Quests.lua
+Elements\DataTexts\Speed.lua
 Elements\DataTexts\SpellPower.lua
 Elements\DataTexts\System.lua
 Elements\DataTexts\TimeLocal.lua

@@ -51,12 +51,11 @@ local Update = function(self, elapsed)
 end
 
 local OnEnable = function(self)
+	self.Elapsed = 0
 	self:SetScript("OnUpdate", Update)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
 	self:SetScript("OnMouseUp", OnMouseUp)
-	
-	self.Elapsed = 0
 	
 	self:Update(11)
 end
@@ -66,7 +65,6 @@ local OnDisable = function(self)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
 	self:SetScript("OnMouseUp", nil)
-	
 	self.Elapsed = 0
 	
 	self.Text:SetText("")

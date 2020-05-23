@@ -46,7 +46,6 @@ local OnDisable = function(self)
 	self:UnregisterEvent("PLAYER_REGEN_DISABLED")
 	self:SetScript("OnEvent", nil)
 	self:SetScript("OnUpdate", nil)
-	
 	self.Elapsed = 0
 	self.Throttle = 0
 	
