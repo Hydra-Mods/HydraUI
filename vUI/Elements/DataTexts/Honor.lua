@@ -15,7 +15,7 @@ local OnEnter = function(self)
 	local Remaining = MaxHonor - Honor
 	local RemainingPercent = floor((Remaining / MaxHonor * 100 + 0.05) * 10) / 10
 	
-	GameTooltip:AddLine(HONOR_LEVEL_TOOLTIP .. " " .. UnitHonorLevel("player"))
+	GameTooltip:AddLine(format(HONOR_LEVEL_TOOLTIP, UnitHonorLevel("player")))
 	GameTooltip:AddLine(" ")
 	GameTooltip:AddLine(Language["Current honor"])
 	GameTooltip:AddDoubleLine(format("%s / %s", vUI:Comma(Honor), vUI:Comma(MaxHonor)), format("%s%%", Percent), 1, 1, 1, 1, 1, 1)

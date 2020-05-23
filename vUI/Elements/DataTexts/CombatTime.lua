@@ -27,6 +27,7 @@ local Update = function(self, event)
 	elseif (event == "PLAYER_REGEN_ENABLED") then
 		self:SetScript("OnUpdate", nil)
 		self.Text:SetTextColor(1, 1, 1)
+		self.Text:SetText(SecondsToTime(0))
 	end
 end
 
