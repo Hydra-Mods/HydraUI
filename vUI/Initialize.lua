@@ -23,7 +23,7 @@ local vUI = CreateFrame("Frame", nil, UIParent)
 vUI.Modules = {}
 vUI.Plugins = {}
 
-vUI.UIParent = CreateFrame("Frame", "vUIParent", UIParent)
+vUI.UIParent = CreateFrame("Frame", "vUIParent", UIParent, "SecureHandlerStateTemplate")
 vUI.UIParent:SetAllPoints(UIParent)
 vUI.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
 

@@ -4,7 +4,7 @@ local floor = floor
 local UnitHonor = UnitHonor
 local UnitHonorMax = UnitHonorMax
 local UnitHonorLevel = UnitHonorLevel
-local Label = Language["Honor"]
+local Label = HONOR
 
 local OnEnter = function(self)
 	self:SetTooltip()

@@ -19,6 +19,10 @@ end
 local OnDragStop = function(self)
 	self:StopMovingOrSizing()
 	
+	if self.PostMove then
+		self:PostMove()
+	end
+	
 	local Name = self:GetName()
 	local A1, Parent, A2, X, Y = self:GetPoint()
 	
@@ -27,10 +31,6 @@ local OnDragStop = function(self)
 	end
 	
 	vUIMove[self.Name] = {A1, Parent:GetName(), A2, X, Y}
-	
-	if self.PostMove then
-		self:PostMove()
-	end
 end
 
 function vUI:ToggleMovers()
@@ -166,7 +166,6 @@ function vUI:CreateMover(frame, padding)
 	Mover:SetFrameLevel(20)
 	Mover:SetFrameStrata("HIGH")
 	Mover:SetMovable(true)
-	--Mover:SetUserPlaced(true)
 	Mover:SetClampedToScreen(true)
 	Mover:SetScript("OnMouseUp", MoverOnMouseUp)
 	Mover:SetScript("OnEnter", MoverOnEnter)
@@ -187,8 +186,6 @@ function vUI:CreateMover(frame, padding)
 	Mover.Label:SetPoint("CENTER", Mover, 0, 0)
 	Mover.Label:SetText(Label)
 	
-	local OldA1, OldParent, OldA2, OldX, OldY = frame:GetPoint()
-	
 	frame:ClearAllPoints()
 	frame:SetPoint("CENTER", Mover, 0, 0)
 	frame.Mover = Mover
@@ -203,8 +200,6 @@ function vUI:CreateMover(frame, padding)
 		Mover:SetPoint(A1, ParentObject, A2, X, Y)
 	else
 		Mover:SetPoint(A1, Parent, A2, X, Y)
-		
-		--vUIMove[Name] = {OldA1, OldParent:GetName(), OldA2, OldX, OldY}
 	end
 	
 	table.insert(self.MovingFrames, Mover)
