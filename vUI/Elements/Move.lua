@@ -9,6 +9,10 @@ vUI.FrameDefaults = {}
 vUI.MovingActive = false
 
 local OnDragStart = function(self)
+	if self.PreMove then
+		self:PreMove()
+	end
+	
 	self:StartMoving()
 end
 
@@ -23,6 +27,10 @@ local OnDragStop = function(self)
 	end
 	
 	vUIMove[self.Name] = {A1, Parent:GetName(), A2, X, Y}
+	
+	if self.PostMove then
+		self:PostMove()
+	end
 end
 
 function vUI:ToggleMovers()
@@ -150,7 +158,7 @@ function vUI:CreateMover(frame, padding)
 	local Padding = padding or 0
 	local Width, Height = frame:GetSize()
 	
-	local Mover = CreateFrame("Frame", nil, vUI.UIParent)
+	local Mover = CreateFrame("Frame", nil, vUI.UIParent, "SecureHandlerStateTemplate")
 	Mover:SetSize(Width + Padding, Height + Padding)
 	Mover:SetBackdrop(vUI.BackdropAndBorder)
 	Mover:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))

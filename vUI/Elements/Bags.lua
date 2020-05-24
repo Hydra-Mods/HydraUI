@@ -38,7 +38,7 @@ function Bags:SkinSlot(slot)
 	slot:SetParent(self.Frame.SlotContainer)
 	slot:SetFrameLevel(self.Frame.SlotContainer:GetFrameLevel() + 1)
 	slot:SetFrameStrata("HIGH")
-	slot:SetScaledSize(BUTTON_SIZE, BUTTON_SIZE)
+	slot:SetSize(BUTTON_SIZE, BUTTON_SIZE)
 	slot:SetScale(1)
 	
 	if Normal then
@@ -47,9 +47,9 @@ function Bags:SkinSlot(slot)
 	
 	if Count then
 		Count:ClearAllPoints()
-		Count:SetScaledPoint("BOTTOMRIGHT", -1, 1)
+		Count:SetPoint("BOTTOMRIGHT", -1, 1)
 		Count:SetJustifyH("RIGHT")
-		Count:SetFontInfo(Settings["ui-widget-font"], 12)
+		vUI:SetFontInfo(Count, Settings["ui-widget-font"], 12)
 	end
 	
 	if slot.icon then
@@ -61,32 +61,32 @@ function Bags:SkinSlot(slot)
 		local CooldownText = Cooldown:GetRegions()
 		
 		if CooldownText then
-			CooldownText:SetFontInfo(Settings["action-bars-font"], 18, Settings["action-bars-font-flags"])
+			vUI:SetFontInfo(CooldownText, Settings["action-bars-font"], 18, Settings["action-bars-font-flags"])
 		end
 	end
 	
 	slot.Backdrop = slot:CreateTexture(nil, "BACKGROUND")
-	slot.Backdrop:SetScaledPoint("TOPLEFT", slot, -1, 1)
-	slot.Backdrop:SetScaledPoint("BOTTOMRIGHT", slot, 1, -1)
+	slot.Backdrop:SetPoint("TOPLEFT", slot, -1, 1)
+	slot.Backdrop:SetPoint("BOTTOMRIGHT", slot, 1, -1)
 	slot.Backdrop:SetColorTexture(0, 0, 0)
 	
 	slot.Backdrop.Texture = slot:CreateTexture(nil, "BACKDROP", 2)
-	slot.Backdrop.Texture:SetScaledPoint("TOPLEFT", slot.Backdrop, 1, -1)
-	slot.Backdrop.Texture:SetScaledPoint("BOTTOMRIGHT", slot.Backdrop, -1, 1)
+	slot.Backdrop.Texture:SetPoint("TOPLEFT", slot.Backdrop, 1, -1)
+	slot.Backdrop.Texture:SetPoint("BOTTOMRIGHT", slot.Backdrop, -1, 1)
 	slot.Backdrop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	slot.Backdrop.Texture:SetVertexColorHex(Settings["ui-window-main-color"])
+	slot.Backdrop.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	local Highlight = slot:CreateTexture(nil, "ARTWORK")
-	Highlight:SetScaledPoint("TOPLEFT", slot, 0, 0)
-	Highlight:SetScaledPoint("BOTTOMRIGHT", slot, 0, 0)
+	Highlight:SetPoint("TOPLEFT", slot, 0, 0)
+	Highlight:SetPoint("BOTTOMRIGHT", slot, 0, 0)
 	Highlight:SetColorTexture(1, 1, 1)
 	Highlight:SetAlpha(0.2)
 	
 	slot:SetHighlightTexture(Highlight)
 	
 	local Pushed = slot:CreateTexture(nil, "ARTWORK", 7)
-	Pushed:SetScaledPoint("TOPLEFT", slot, 0, 0)
-	Pushed:SetScaledPoint("BOTTOMRIGHT", slot, 0, 0)
+	Pushed:SetPoint("TOPLEFT", slot, 0, 0)
+	Pushed:SetPoint("BOTTOMRIGHT", slot, 0, 0)
 	Pushed:SetColorTexture(0.2, 0.9, 0.2)
 	Pushed:SetAlpha(0.4)
 	
@@ -124,14 +124,14 @@ function Bags:UpdateBagSize()
 	
 	local NumRows = ceil(TotalSlots / NUM_PER_ROW)
 	
-	self.Frame:SetScaledWidth((NUM_PER_ROW * BUTTON_SIZE + 4) + (NUM_PER_ROW * 5) - 4)
-	self.Frame:SetScaledHeight((NumRows * BUTTON_SIZE + 4) + (NumRows * 4) + 6 + (HEADER_HEIGHT * 2 + 4))
+	self.Frame:SetWidth((NUM_PER_ROW * BUTTON_SIZE + 4) + (NUM_PER_ROW * 5) - 4)
+	self.Frame:SetHeight((NumRows * BUTTON_SIZE + 4) + (NumRows * 4) + 6 + (HEADER_HEIGHT * 2 + 4))
 end
 
 local GetTime = GetTime
 
 function Bags:UpdateSlot(bag, slot)
-	local Texture, ItemCount, Locked, Quality, Readable, _, _, IsFiltered, NoValue, ItemID = GetContainerItemInfo(bag - 1, slot:GetID())
+	local Texture, ItemCount, Locked, Quality, Readable, _, _, IsFiltered, NoValue, ItemID = GetContainerItemInfo(bag, slot:GetID())
 	local Name = slot:GetName()
 	
 	if Texture then
@@ -161,12 +161,12 @@ function Bags:UpdateSlots()
 	local Slot
 	
 	for Bag = 1, 5 do
-		NumSlots = GetContainerNumSlots((Bag - 1))
+		NumSlots = GetContainerNumSlots(Bag)
 		
 		for SlotID = 1, NumSlots do
-			Slot = _G["ContainerFrame" .. Bag .. "Item" .. SlotID]
+			Slot = _G["ContainerFrame" .. Bag - 1 .. "Item" .. SlotID]
 			
-			self:UpdateSlot(Bag, Slot)
+			self:UpdateSlot(Bag - 1, Slot)
 		end
 	end
 end
@@ -193,18 +193,18 @@ function Bags:PositionSlots()
 			Slot:ClearAllPoints()
 			
 			if (Index == 1) then
-				Slot:SetScaledPoint("TOPLEFT", self.Frame.SlotContainer, "TOPLEFT", 4, -4)
-				--Slot:SetScaledPoint("TOPLEFT", self.Frame.SlotContainer, "TOPLEFT", 4 + BUTTON_SIZE, -(4 + BUTTON_SIZE))
+				Slot:SetPoint("TOPLEFT", self.Frame.SlotContainer, "TOPLEFT", 4, -4)
+				--Slot:SetPoint("TOPLEFT", self.Frame.SlotContainer, "TOPLEFT", 4 + BUTTON_SIZE, -(4 + BUTTON_SIZE))
 				
 				LastRowStart = Slot
 			elseif ((Index % NUM_PER_ROW) == 1) then
-				Slot:SetScaledPoint("TOP", LastRowStart, "BOTTOM", 0, -4)
-				--Slot:SetScaledPoint("TOP", self.Frame.SlotContainer, "BOTTOM", 0, -(4 + BUTTON_SIZE))
+				Slot:SetPoint("TOP", LastRowStart, "BOTTOM", 0, -4)
+				--Slot:SetPoint("TOP", self.Frame.SlotContainer, "BOTTOM", 0, -(4 + BUTTON_SIZE))
 				
 				LastRowStart = Slot
 			else
-				Slot:SetScaledPoint("LEFT", LastSlot, "RIGHT", 4, 0)
-				--Slot:SetScaledPoint("LEFT", self.Frame.SlotContainer, "RIGHT", 4 + BUTTON_SIZE, 0)
+				Slot:SetPoint("LEFT", LastSlot, "RIGHT", 4, 0)
+				--Slot:SetPoint("LEFT", self.Frame.SlotContainer, "RIGHT", 4 + BUTTON_SIZE, 0)
 			end
 			
 			Index = Index + 1
@@ -214,15 +214,15 @@ function Bags:PositionSlots()
 end
 
 local CloseOnEnter = function(self)
-	self.Cross:SetVertexColorHex("C0392B")
+	self.Cross:SetVertexColor(vUI:HexToRGB("C0392B"))
 end
 
 local CloseOnLeave = function(self)
-	self.Cross:SetVertexColorHex("EEEEEE")
+	self.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
 end
 
 local CloseOnMouseUp = function(self)
-	self.Texture:SetVertexColorHex(Settings["ui-header-texture-color"])
+	self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	Bags:Toggle()
 end
@@ -239,11 +239,11 @@ end
 
 function Bags:CreateBagFrame()
 	local Frame = CreateFrame("Frame", "vUI Bags", vUI.UIParent)
-	Frame:SetScaledSize(390, 300)
-	--Frame:SetScaledPoint("BOTTOMRIGHT", vUI.UIParent, -13, 13)
-	Frame:SetScaledPoint("BOTTOMLEFT", vUI.UIParent, "LEFT", 60, -130)
+	Frame:SetSize(390, 300)
+	--Frame:SetPoint("BOTTOMRIGHT", vUI.UIParent, -13, 13)
+	Frame:SetPoint("BOTTOMLEFT", vUI.UIParent, "LEFT", 60, -130)
 	Frame:SetBackdrop(vUI.BackdropAndBorder)
-	Frame:SetBackdropColorHex(Settings["ui-window-bg-color"])
+	Frame:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	Frame:SetBackdropBorderColor(0, 0, 0)
 	Frame:SetFrameStrata("HIGH")
 	Frame:EnableMouse(true)
@@ -257,8 +257,8 @@ function Bags:CreateBagFrame()
 	-- This just makes the animation look better. That's all. ಠ_ಠ
 	Frame.BlackTexture = Frame:CreateTexture(nil, "BACKGROUND", -7)
 	Frame.BlackTexture:SetDrawLayer("BACKGROUND", -7)
-	Frame.BlackTexture:SetScaledPoint("TOPLEFT", Frame, 0, 0)
-	Frame.BlackTexture:SetScaledPoint("BOTTOMRIGHT", Frame, 0, 0)
+	Frame.BlackTexture:SetPoint("TOPLEFT", Frame, 0, 0)
+	Frame.BlackTexture:SetPoint("BOTTOMRIGHT", Frame, 0, 0)
 	Frame.BlackTexture:SetTexture(Assets:GetTexture("Blank"))
 	Frame.BlackTexture:SetVertexColor(0, 0, 0)
 	
@@ -277,8 +277,8 @@ function Bags:CreateBagFrame()
 	
 	-- Close button
 	local CloseButton = CreateFrame("Frame", nil, Frame)
-	CloseButton:SetScaledSize(22, 22)
-	CloseButton:SetScaledPoint("TOPRIGHT", Frame, -3, -3)
+	CloseButton:SetSize(22, 22)
+	CloseButton:SetPoint("TOPRIGHT", Frame, -3, -3)
 	CloseButton:SetBackdrop(vUI.BackdropAndBorder)
 	CloseButton:SetBackdropColor(0, 0, 0, 0)
 	CloseButton:SetBackdropBorderColor(0, 0, 0)
@@ -288,69 +288,69 @@ function Bags:CreateBagFrame()
 	CloseButton:SetScript("OnMouseDown", CloseOnMouseDown)
 	
 	CloseButton.Texture = CloseButton:CreateTexture(nil, "ARTWORK")
-	CloseButton.Texture:SetScaledPoint("TOPLEFT", CloseButton, 1, -1)
-	CloseButton.Texture:SetScaledPoint("BOTTOMRIGHT", CloseButton, -1, 1)
+	CloseButton.Texture:SetPoint("TOPLEFT", CloseButton, 1, -1)
+	CloseButton.Texture:SetPoint("BOTTOMRIGHT", CloseButton, -1, 1)
 	CloseButton.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	CloseButton.Texture:SetVertexColorHex(Settings["ui-header-texture-color"])
+	CloseButton.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	CloseButton.Cross = CloseButton:CreateTexture(nil, "OVERLAY")
 	CloseButton.Cross:SetPoint("CENTER", CloseButton, 0, 0)
-	CloseButton.Cross:SetScaledSize(16, 16)
-	CloseButton.Cross:SetTexture(Assets:GetTexture("vUI Close"))
-	CloseButton.Cross:SetVertexColorHex("EEEEEE")
+	CloseButton.Cross:SetSize(16, 16)
+	CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
+	CloseButton.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
 	
 	-- Header
 	local Header = CreateFrame("Frame", nil, Frame)
-	Header:SetScaledHeight(22)
-	Header:SetScaledPoint("TOPLEFT", Frame, 3, -3)
-	Header:SetScaledPoint("TOPRIGHT", CloseButton, "TOPLEFT", -2, -3)
+	Header:SetHeight(22)
+	Header:SetPoint("TOPLEFT", Frame, 3, -3)
+	Header:SetPoint("TOPRIGHT", CloseButton, "TOPLEFT", -2, -3)
 	Header:SetBackdrop(vUI.BackdropAndBorder)
-	Header:SetBackdropColorHex(Settings["ui-window-bg-color"])
+	Header:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	Header:SetBackdropBorderColor(0, 0, 0)
 	
 	Header.Texture = Header:CreateTexture(nil, "OVERLAY")
-	Header.Texture:SetScaledPoint("TOPLEFT", Header, 1, -1)
-	Header.Texture:SetScaledPoint("BOTTOMRIGHT", Header, -1, 1)
+	Header.Texture:SetPoint("TOPLEFT", Header, 1, -1)
+	Header.Texture:SetPoint("BOTTOMRIGHT", Header, -1, 1)
 	Header.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	Header.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	Header.Text = Header:CreateFontString(nil, "OVERLAY")
-	Header.Text:SetScaledPoint("LEFT", Header, 5, 0)
-	Header.Text:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+	Header.Text:SetPoint("LEFT", Header, 5, 0)
+	vUI:SetFontInfo(Header.Text, Settings["ui-widget-font"], Settings["ui-font-size"])
 	Header.Text:SetJustifyH("LEFT")
 	Header.Text:SetText("Inventory")
 	
 	-- Footer
 	local Footer = CreateFrame("Frame", nil, Frame)
-	Footer:SetScaledHeight(22)
-	Footer:SetScaledPoint("BOTTOMLEFT", Frame, 3, 3)
-	Footer:SetScaledPoint("BOTTOMRIGHT", Frame, -3, 3)
+	Footer:SetHeight(22)
+	Footer:SetPoint("BOTTOMLEFT", Frame, 3, 3)
+	Footer:SetPoint("BOTTOMRIGHT", Frame, -3, 3)
 	Footer:SetBackdrop(vUI.BackdropAndBorder)
-	Footer:SetBackdropColorHex(Settings["ui-window-main-color"])
+	Footer:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	Footer:SetBackdropBorderColor(0, 0, 0)
 	
 	Footer.Texture = Footer:CreateTexture(nil, "OVERLAY")
-	Footer.Texture:SetScaledPoint("TOPLEFT", Footer, 1, -1)
-	Footer.Texture:SetScaledPoint("BOTTOMRIGHT", Footer, -1, 1)
+	Footer.Texture:SetPoint("TOPLEFT", Footer, 1, -1)
+	Footer.Texture:SetPoint("BOTTOMRIGHT", Footer, -1, 1)
 	Footer.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	Footer.Texture:SetVertexColorHex(Settings["ui-window-main-color"])
+	Footer.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	Footer.LeftText = Footer:CreateFontString(nil, "OVERLAY")
-	Footer.LeftText:SetScaledPoint("LEFT", Footer, 5, 0)
-	Footer.LeftText:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+	Footer.LeftText:SetPoint("LEFT", Footer, 5, 0)
+	vUI:SetFontInfo(Footer.LeftText, Settings["ui-widget-font"], Settings["ui-font-size"])
 	Footer.LeftText:SetJustifyH("LEFT")
 	
 	Footer.RightText = Footer:CreateFontString(nil, "OVERLAY")
-	Footer.RightText:SetScaledPoint("RIGHT", Footer, -5, 0)
-	Footer.RightText:SetFontInfo(Settings["ui-widget-font"], Settings["ui-font-size"])
+	Footer.RightText:SetPoint("RIGHT", Footer, -5, 0)
+	vUI:SetFontInfo(Footer.RightText, Settings["ui-widget-font"], Settings["ui-font-size"])
 	Footer.RightText:SetJustifyH("RIGHT")
 	
 	-- Slots
 	local SlotContainer = CreateFrame("Frame", nil, Frame)
-	SlotContainer:SetScaledPoint("TOPLEFT", Header, "BOTTOMLEFT", 0, -2)
-	SlotContainer:SetScaledPoint("BOTTOMRIGHT", Footer, "TOPRIGHT", 0, 2)
+	SlotContainer:SetPoint("TOPLEFT", Header, "BOTTOMLEFT", 0, -2)
+	SlotContainer:SetPoint("BOTTOMRIGHT", Footer, "TOPRIGHT", 0, 2)
 	SlotContainer:SetBackdrop(vUI.BackdropAndBorder)
-	SlotContainer:SetBackdropColorHex(Settings["ui-window-main-color"])
+	SlotContainer:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	SlotContainer:SetBackdropBorderColor(0, 0, 0)
 	
 	Frame.CloseButton = CloseButton
@@ -403,23 +403,23 @@ end
 
 function Bags:ReplaceFunctions()
 	OpenBag = function()
-		self:Open()
+		Bags:Open()
 	end
 	
 	OpenAllBags = function()
-		self:Open()
+		Bags:Open()
 	end
 	
 	CloseAllBags = function()
-		self:Close()
+		Bags:Close()
 	end
 	
 	ToggleBag = function()
-		self:Toggle()
+		Bags:Toggle()
 	end
 	
 	ToggleBackpack = function()
-		self:Toggle()
+		Bags:Toggle()
 	end
 end
 
