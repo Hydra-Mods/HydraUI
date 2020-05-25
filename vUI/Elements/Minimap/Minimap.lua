@@ -2,7 +2,7 @@ local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local Map = vUI:NewModule("Minimap")
 
-local Disable = function(object)
+function Map:Disable(object)
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()
 	end
@@ -90,16 +90,39 @@ function Map:Style()
 	GarrisonLandingPageMinimapButton:ClearAllPoints()
 	GarrisonLandingPageMinimapButton:SetPoint("BOTTOMRIGHT", Minimap, 2, -3)
 	
-	Disable(MinimapCluster)
-	Disable(MinimapBorder)
-	Disable(MinimapBorderTop)
-	Disable(MinimapZoomIn)
-	Disable(MinimapZoomOut)
-	Disable(MinimapNorthTag)
-	Disable(MiniMapWorldMapButton)
-	Disable(MiniMapMailBorder)
-	Disable(GameTimeFrame)
-	Disable(TimeManagerClockButton)
+	MiniMapTrackingIconOverlay:SetTexture(nil)
+	MiniMapTrackingBackground:SetTexture(nil)
+	MiniMapTrackingButtonBorder:SetTexture(nil)
+	MiniMapTrackingButtonShine:SetTexture(nil)
+	MiniMapTrackingButton:SetHighlightTexture("")
+	
+	self.Tracking = CreateFrame("Frame", nil, Minimap)
+	self.Tracking:SetSize(24, 24)
+	self.Tracking:SetPoint("TOPLEFT", Minimap, 2, -2)
+	self.Tracking:SetBackdrop(vUI.BackdropAndBorder)
+	self.Tracking:SetBackdropColor(0, 0, 0)
+	self.Tracking:SetBackdropBorderColor(0, 0, 0)
+	
+	self.Tracking.Tex = self.Tracking:CreateTexture(nil, "ARTWORK")
+	self.Tracking.Tex:SetPoint("TOPLEFT", self.Tracking, 1, -1)
+	self.Tracking.Tex:SetPoint("BOTTOMRIGHT", self.Tracking, -1, 1)
+	self.Tracking.Tex:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	self.Tracking.Tex:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
+	
+	MiniMapTracking:SetParent(self.Tracking)
+	MiniMapTracking:ClearAllPoints()
+	MiniMapTracking:SetPoint("CENTER", self.Tracking, 0, 0)
+	
+	self:Disable(MinimapCluster)
+	self:Disable(MinimapBorder)
+	self:Disable(MinimapBorderTop)
+	self:Disable(MinimapZoomIn)
+	self:Disable(MinimapZoomOut)
+	self:Disable(MinimapNorthTag)
+	self:Disable(MiniMapWorldMapButton)
+	self:Disable(MiniMapMailBorder)
+	self:Disable(GameTimeFrame)
+	self:Disable(TimeManagerClockButton)
 	
 	if Settings["minimap-show-top"] and not Settings["minimap-show-bottom"] then
 		Minimap:SetPoint("BOTTOM", Map, 0, 4)
@@ -115,6 +138,10 @@ function Map:Style()
 	
 	if (not Settings["minimap-show-bottom"]) then
 		self.BottomFrame:Hide()
+	end
+	
+	if (not Settings["minimap-show-tracking"]) then
+		self.Tracking:Hide()
 	end
 	
 	vUI:CreateMover(self)
@@ -178,6 +205,14 @@ local UpdateShowBottomBar = function(value)
 	UpdateMinimapSize(Settings["minimap-size"])
 end
 
+local UpdateShowTracking = function(value)
+	if value then
+		Map.Tracking:Show()
+	else
+		Map.Tracking:Hide()
+	end
+end
+
 function Map:Load()
 	if (not Settings["minimap-enable"]) then
 		return
@@ -200,4 +235,5 @@ GUI:AddOptions(function(self)
 	Left:CreateSlider("minimap-size", Settings["minimap-size"], 100, 250, 10, Language["Mini Map Size"], Language["Set the size of the mini map"], UpdateMinimapSize)
 	Left:CreateSwitch("minimap-show-top", Settings["minimap-show-top"], Language["Enable Top Bar"], Language["Enable the data text bar on top of the mini map"], UpdateShowTopBar)
 	Left:CreateSwitch("minimap-show-bottom", Settings["minimap-show-bottom"], Language["Enable Bottom Bar"], Language["Enable the data text bar on the bottom of the mini map"], UpdateShowBottomBar)
+	Left:CreateSwitch("minimap-show-tracking", Settings["minimap-show-tracking"], Language["Enable Tracking"], Language["Enable the tracking button in the top left of the mini map"], UpdateShowTracking)
 end)
