@@ -28,7 +28,7 @@ local OnEnter = function(self)
 	if (Kills > 0) then
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddLine(HONORABLE_KILLS)
-		GameTooltip:AddLine(Kills, 1, 1, 1)
+		GameTooltip:AddLine(vUI:Comma(Kills), 1, 1, 1)
 	end
 	
 	GameTooltip:Show()

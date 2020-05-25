@@ -43,6 +43,9 @@ GUI:AddOptions(function(self)
 	
 	Right:CreateMessage("Thank you to all of these amazing people who have supported the development of this project!")
 	
-	Right:CreateHeader("|cFF0070DDRare Patrons|r")
+	Right:CreateHeader("|cFFA335EEEpic Patrons|r")
 	Right:CreateLine("Smelly")
+	
+	--Right:CreateHeader("|cFF0070DDRare Patrons|r")
+	--Right:CreateHeader("|cFF1EFF00Uncommon Patrons|r")
 end)
