@@ -582,6 +582,8 @@ function Chat:StyleChatFrame(frame)
 	
 	hooksecurefunc(frame, "SetScrollOffset", CheckForBottom)
 	
+	FCFTab_UpdateAlpha(frame)
+	
 	frame.Styled = true
 end
 
@@ -642,7 +644,6 @@ function Chat:StyleChatFrames()
 		local Frame = _G["ChatFrame"..i]
 		
 		self:StyleChatFrame(Frame)
-		FCFTab_UpdateAlpha(Frame)
 	end
 	
 	Disable(ChatConfigFrameDefaultButton)

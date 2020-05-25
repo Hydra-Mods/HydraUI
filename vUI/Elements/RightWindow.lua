@@ -1,9 +1,9 @@
 local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Testing = {
-	["Zeraphine:Mal'Ganis"] = 1,
+	--["Zeraphine:Mal'Ganis"] = 1,
 	["Neonsol:Mal'Ganis"] = 1,
-	["Venio:Mal'Ganis"] = 1,
+	--["Venio:Mal'Ganis"] = 1,
 	["Nitrite:Mal'Ganis"] = 1,
 	["Revival:Mal'Ganis"] = 1,
 	["Zaeta:Mal'Ganis"] = 1,
