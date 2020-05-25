@@ -608,7 +608,7 @@ GUI:AddOptions(function(self)
 	
 	Left:CreateHeader(Language["Font"])
 	Left:CreateDropdown("tooltips-font", Settings["tooltips-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the tooltip text"], nil, "Font")
-	Left:CreateSlider("tooltips-font-size", Settings["tooltips-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the tooltip text"])
+	Left:CreateSlider("tooltips-font-size", Settings["tooltips-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the tooltip text"])
 	Left:CreateDropdown("tooltips-font-flags", Settings["tooltips-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the tooltip text"])
 	
 	Right:CreateHeader(Language["Information"])

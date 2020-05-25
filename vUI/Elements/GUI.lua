@@ -306,11 +306,11 @@ GUI.Widgets.CreateSupportHeader = function(self, text)
 	HeaderLeft.NewTexture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	HeaderLeft.NewTexture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
 	
-	HeaderLeft.Heart = HeaderLeft:CreateTexture(nil, "OVERLAY")
-	HeaderLeft.Heart:SetPoint("LEFT", HeaderLeft.NewTexture, "RIGHT", 1, -1)
-	HeaderLeft.Heart:SetSize(16, 16)
-	HeaderLeft.Heart:SetTexture(Assets:GetTexture("Small Star"))
-	HeaderLeft.Heart:SetVertexColor(vUI:HexToRGB("FFB900"))
+	HeaderLeft.Star = HeaderLeft:CreateTexture(nil, "OVERLAY")
+	HeaderLeft.Star:SetPoint("LEFT", HeaderLeft.NewTexture, "RIGHT", 1, -1)
+	HeaderLeft.Star:SetSize(16, 16)
+	HeaderLeft.Star:SetTexture(Assets:GetTexture("Small Star"))
+	HeaderLeft.Star:SetVertexColor(vUI:HexToRGB("FFB900"))
 	
 	-- Header Right Line
 	local HeaderRight = CreateFrame("Frame", nil, Anchor)
@@ -327,11 +327,11 @@ GUI.Widgets.CreateSupportHeader = function(self, text)
 	HeaderRight.NewTexture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	HeaderRight.NewTexture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
 	
-	HeaderRight.Heart = HeaderRight:CreateTexture(nil, "OVERLAY")
-	HeaderRight.Heart:SetPoint("RIGHT", HeaderRight.NewTexture, "LEFT", -1, -1)
-	HeaderRight.Heart:SetSize(16, 16)
-	HeaderRight.Heart:SetTexture(Assets:GetTexture("Small Star"))
-	HeaderRight.Heart:SetVertexColor(vUI:HexToRGB("FFB900"))
+	HeaderRight.Star = HeaderRight:CreateTexture(nil, "OVERLAY")
+	HeaderRight.Star:SetPoint("RIGHT", HeaderRight.NewTexture, "LEFT", -1, -1)
+	HeaderRight.Star:SetSize(16, 16)
+	HeaderRight.Star:SetTexture(Assets:GetTexture("Small Star"))
+	HeaderRight.Star:SetVertexColor(vUI:HexToRGB("FFB900"))
 	
 	tinsert(self.Widgets, Anchor)
 	

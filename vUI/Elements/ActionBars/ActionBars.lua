@@ -1292,7 +1292,7 @@ GUI:AddOptions(function(self)
 	
 	Left:CreateHeader(Language["Font"])
 	Left:CreateDropdown("action-bars-font", Settings["action-bars-font"], Assets:GetFontList(), Language["Font"], "Set the font of the action bar buttons", UpdateActionBarFont, "Font")
-	Left:CreateSlider("action-bars-font-size", Settings["action-bars-font-size"], 8, 18, 1, "Font Size", "Set the font size of the action bar buttons", UpdateActionBarFont)
+	Left:CreateSlider("action-bars-font-size", Settings["action-bars-font-size"], 8, 32, 1, "Font Size", "Set the font size of the action bar buttons", UpdateActionBarFont)
 	Left:CreateDropdown("action-bars-font-flags", Settings["action-bars-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], "Set the font flags of the action bar buttons", UpdateActionBarFont)
 	
 	Left:CreateHeader(Language["Backdrops"])

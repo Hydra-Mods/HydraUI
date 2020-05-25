@@ -31,7 +31,7 @@ local UpdateOnMouseUp = function()
 	print(Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"])
 end
 
-function Update:PLAYER_ENTERING_WORLD(event)
+function Update:PLAYER_ENTERING_WORLD()
 	--[[if self.NewVersion then
 		vUI:SendAlert("What's new?", "Click here to learn more", nil, WhatsNewOnMouseUp, true)
 		

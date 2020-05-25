@@ -3840,7 +3840,7 @@ GUI:AddOptions(function(self)
 	
 	Left:CreateHeader(Language["Font"])
 	Left:CreateDropdown("nameplates-font", Settings["nameplates-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the name plates"], UpdateNamePlatesFont, "Font")
-	Left:CreateSlider("nameplates-font-size", Settings["nameplates-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the name plates"], UpdateNamePlatesFont)
+	Left:CreateSlider("nameplates-font-size", Settings["nameplates-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the name plates"], UpdateNamePlatesFont)
 	Left:CreateDropdown("nameplates-font-flags", Settings["nameplates-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the name plates"], UpdateNamePlatesFont)
 	
 	Left:CreateHeader(Language["Health"])
