@@ -806,7 +806,6 @@ function GUI:SetInputObject(input)
 	
 	self.InputWindow.ActiveInput = input
 	self.InputWindow.Input:SetText(Text)
-	--self.InputWindow.Input:SetAutoFocus(true)
 	self.InputWindow:Show()
 	self.InputWindow.FadeIn:Play()
 end

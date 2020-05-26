@@ -245,6 +245,7 @@ Assets:SetTexture("Arrow Right", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIA
 Assets:SetTexture("Arrow Right Large", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowRightLarge.tga", true)
 Assets:SetTexture("Skull", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUISkull.tga", true)
 Assets:SetTexture("Small Star", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUISmallStar.tga", true)
+Assets:SetTexture("Copy", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUICopy.tga", true)
 
 for Name, Path in pairs(Textures) do
 	Assets:SetTexture(Name, Path)

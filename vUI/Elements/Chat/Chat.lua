@@ -413,6 +413,175 @@ local TabOnLeave = function(self)
 	self.TabText:_SetTextColor(vUI:HexToRGB(Settings["chat-tab-font-color"]))
 end
 
+local CopyWindowOnEnterPressed = function(self)
+	self:SetAutoFocus(false)
+	self:ClearFocus()
+end
+
+local CopyWindowOnMouseDown = function(self)
+	self:SetAutoFocus(true)
+end
+
+local FadeOnFinished = function(self)
+	self.Parent:Hide()
+end
+
+function Chat:CreateCopyWindow()
+	if self.CopyWindow then
+		return
+	end
+	
+	local Window = CreateFrame("Frame", nil, vUI.UIParent)
+	Window:SetSize(Settings["chat-frame-width"] + 6, Settings["chat-frame-height"] + 6)
+	Window:SetPoint("BOTTOM", self, "TOP", 0, 3)
+	Window:SetBackdrop(vUI.BackdropAndBorder)
+	Window:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
+	Window:SetBackdropBorderColor(0, 0, 0)
+	Window:SetFrameStrata("DIALOG")
+	Window:SetMovable(true)
+	Window:EnableMouse(true)
+	Window:RegisterForDrag("LeftButton")
+	Window:SetScript("OnDragStart", Window.StartMoving)
+	Window:SetScript("OnDragStop", Window.StopMovingOrSizing)
+	Window:SetClampedToScreen(true)
+	Window:SetAlpha(0)
+	Window:Hide()
+	
+	-- Header
+	Window.Header = CreateFrame("Frame", nil, Window)
+	Window.Header:SetHeight(20)
+	Window.Header:SetPoint("TOPLEFT", Window, 3, -3)
+	Window.Header:SetPoint("TOPRIGHT", Window, -((3 + 2) + 20), -3)
+	Window.Header:SetBackdrop(vUI.BackdropAndBorder)
+	Window.Header:SetBackdropColor(0, 0, 0)
+	Window.Header:SetBackdropBorderColor(0, 0, 0)
+	
+	Window.HeaderTexture = Window.Header:CreateTexture(nil, "OVERLAY")
+	Window.HeaderTexture:SetPoint("TOPLEFT", Window.Header, 1, -1)
+	Window.HeaderTexture:SetPoint("BOTTOMRIGHT", Window.Header, -1, 1)
+	Window.HeaderTexture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	Window.HeaderTexture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
+	
+	Window.Header.Text = Window.Header:CreateFontString(nil, "OVERLAY")
+	Window.Header.Text:SetPoint("LEFT", Window.Header, 5, -1)
+	vUI:SetFontInfo(Window.Header.Text, Settings["chat-tab-font"], Settings["chat-tab-font-size"])
+	Window.Header.Text:SetJustifyH("LEFT")
+	Window.Header.Text:SetText("|cFF" .. Settings["chat-tab-font-color"] .. Language["Copy text"] .. "|r")
+	
+	-- Close button
+	Window.CloseButton = CreateFrame("Frame", nil, Window)
+	Window.CloseButton:SetSize(20, 20)
+	Window.CloseButton:SetPoint("TOPRIGHT", Window, -3, -3)
+	Window.CloseButton:SetBackdrop(vUI.BackdropAndBorder)
+	Window.CloseButton:SetBackdropColor(0, 0, 0, 0)
+	Window.CloseButton:SetBackdropBorderColor(0, 0, 0)
+	Window.CloseButton:SetScript("OnEnter", function(self) self.Cross:SetVertexColor(vUI:HexToRGB("C0392B")) end)
+	Window.CloseButton:SetScript("OnLeave", function(self) self.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE")) end)
+	Window.CloseButton:SetScript("OnMouseUp", function(self)
+		self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
+		
+		self:GetParent().FadeOut:Play()
+	end)
+	
+	Window.CloseButton:SetScript("OnMouseDown", function(self)
+		local R, G, B = vUI:HexToRGB(Settings["ui-header-texture-color"])
+		
+		self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
+	end)
+	
+	Window.CloseButton.Texture = Window.CloseButton:CreateTexture(nil, "ARTWORK")
+	Window.CloseButton.Texture:SetPoint("TOPLEFT", Window.CloseButton, 1, -1)
+	Window.CloseButton.Texture:SetPoint("BOTTOMRIGHT", Window.CloseButton, -1, 1)
+	Window.CloseButton.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	Window.CloseButton.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
+	
+	Window.CloseButton.Cross = Window.CloseButton:CreateTexture(nil, "OVERLAY")
+	Window.CloseButton.Cross:SetPoint("CENTER", Window.CloseButton, 0, 0)
+	Window.CloseButton.Cross:SetSize(16, 16)
+	Window.CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
+	Window.CloseButton.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
+	
+	Window.Inner = CreateFrame("Frame", nil, Window)
+	Window.Inner:SetPoint("TOPLEFT", Window.Header, "BOTTOMLEFT", 0, -2)
+	Window.Inner:SetPoint("BOTTOMRIGHT", Window, -3, 3)
+	Window.Inner:SetBackdrop(vUI.BackdropAndBorder)
+	Window.Inner:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
+	Window.Inner:SetBackdropBorderColor(0, 0, 0)
+	
+	Window.Input = CreateFrame("EditBox", nil, Window.Inner)
+	vUI:SetFontInfo(Window.Input, Settings["ui-widget-font"], Settings["ui-font-size"])
+	Window.Input:SetPoint("TOPLEFT", Window.Inner, 3, -3)
+	Window.Input:SetPoint("BOTTOMRIGHT", Window.Inner, -3, 3)
+	Window.Input:SetFrameStrata("DIALOG")
+	Window.Input:SetJustifyH("LEFT")
+	Window.Input:SetAutoFocus(false)
+	Window.Input:EnableKeyboard(true)
+	Window.Input:EnableMouse(true)
+	Window.Input:SetMultiLine(true)
+	Window.Input:SetMaxLetters(255)
+	Window.Input:SetCursorPosition(0)
+	
+	Window.Input:SetScript("OnEnterPressed", CopyWindowOnEnterPressed)
+	Window.Input:SetScript("OnEscapePressed", CopyWindowOnEnterPressed)
+	Window.Input:SetScript("OnMouseDown", CopyWindowOnMouseDown)
+	
+	-- This just makes the animation look better. That's all. ಠ_ಠ
+	Window.BlackTexture = Window:CreateTexture(nil, "BACKGROUND", -7)
+	Window.BlackTexture:SetPoint("TOPLEFT", Window, 0, 0)
+	Window.BlackTexture:SetPoint("BOTTOMRIGHT", Window, 0, 0)
+	Window.BlackTexture:SetTexture(Assets:GetTexture("Blank"))
+	Window.BlackTexture:SetVertexColor(0, 0, 0, 0)
+	
+	Window.Fade = CreateAnimationGroup(Window)
+	
+	Window.FadeIn = Window.Fade:CreateAnimation("Fade")
+	Window.FadeIn:SetEasing("in")
+	Window.FadeIn:SetDuration(0.15)
+	Window.FadeIn:SetChange(1)
+	
+	Window.FadeOut = Window.Fade:CreateAnimation("Fade")
+	Window.FadeOut:SetEasing("out")
+	Window.FadeOut:SetDuration(0.15)
+	Window.FadeOut:SetChange(0)
+	Window.FadeOut:SetScript("OnFinished", FadeOnFinished)
+	
+	self.CopyWindow = Window
+	
+	return Window
+end
+
+local OnTextCopied = function(self, text)
+	if (not Chat.CopyWindow) then
+		Chat:CreateCopyWindow()
+	end
+	
+	if (not Chat.CopyWindow:IsVisible()) then
+		Chat.CopyWindow:SetAlpha(0)
+		Chat.CopyWindow:Show()
+		Chat.CopyWindow.FadeIn:Play()
+	end
+	
+	Chat.CopyWindow.Input:SetText(text)
+	Chat.CopyWindow.Input:HighlightText()
+	Chat.CopyWindow.Input:SetAutoFocus(true)
+end
+
+local CopyButtonOnMouseUp = function(self)
+	local Parent = self:GetParent()
+	
+	if Parent:IsTextCopyable() then
+		Parent:EnableMouse(false)
+		Parent:SetTextCopyable(false)
+		
+		Parent.CopyHighlight:SetAlpha(0)
+	else
+		Parent:EnableMouse(true)
+		Parent:SetTextCopyable(true)
+		
+		Parent.CopyHighlight:SetAlpha(0.1)
+	end
+end
+
 function Chat:StyleChatFrame(frame)
 	if frame.Styled then
 		return
@@ -571,6 +740,33 @@ function Chat:StyleChatFrame(frame)
 	
 	frame.JumpButton = JumpButton
 	
+	frame.CopyHighlight = frame:CreateTexture(nil, "ARTWORK")
+	frame.CopyHighlight:SetPoint("TOPLEFT", frame, -3, 2)
+	frame.CopyHighlight:SetPoint("BOTTOMRIGHT", frame, 3, -2)
+	frame.CopyHighlight:SetTexture(Assets:GetTexture("Blank"))
+	frame.CopyHighlight:SetVertexColor(0.9, 0.9, 0.9)
+	frame.CopyHighlight:SetAlpha(0)
+	
+	-- Copy chat
+	local CopyButton = CreateFrame("Frame", nil, frame)
+	CopyButton:SetSize(24, 24)
+	CopyButton:SetPoint("TOPRIGHT", frame, 0, 0)
+	CopyButton:SetBackdrop(vUI.BackdropAndBorder)
+	CopyButton:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
+	CopyButton:SetBackdropBorderColor(0, 0, 0)
+	CopyButton:SetFrameStrata("HIGH")
+	CopyButton:SetScript("OnMouseUp", CopyButtonOnMouseUp)
+	CopyButton:SetScript("OnEnter", function(self) self:SetAlpha(1) end)
+	CopyButton:SetScript("OnLeave", function(self) self:SetAlpha(0) end)
+	CopyButton:SetAlpha(0)
+	
+	CopyButton.Texture = CopyButton:CreateTexture(nil, "ARTWORK")
+	CopyButton.Texture:SetPoint("CENTER", CopyButton, 0, 0)
+	CopyButton.Texture:SetSize(16, 16)
+	CopyButton.Texture:SetTexture(Assets:GetTexture("Copy"))
+	
+	frame.CopyButton = CopyButton
+	
 	-- Remove textures
 	for i = 1, #CHAT_FRAME_TEXTURES do
 		_G[FrameName..CHAT_FRAME_TEXTURES[i]]:SetTexture(nil)
@@ -583,6 +779,8 @@ function Chat:StyleChatFrame(frame)
 	hooksecurefunc(frame, "SetScrollOffset", CheckForBottom)
 	
 	FCFTab_UpdateAlpha(frame)
+	
+	frame:SetOnTextCopiedCallback(OnTextCopied)
 	
 	frame.Styled = true
 end

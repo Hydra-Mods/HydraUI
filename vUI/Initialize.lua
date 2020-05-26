@@ -381,7 +381,7 @@ local NewPrint = function(...)
 			if (i == 1) then
 				String = tostring(select(i, ...))
 			else
-				String = String .. " " .. tostring(select(i, ...))
+				String = format("%s %s", String, tostring(select(i, ...)))
 			end
 		end
 		
