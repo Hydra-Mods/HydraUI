@@ -40,6 +40,12 @@ function MirrorTimers:MIRROR_TIMER_STOP()
 	self.Bar:Hide()
 end
 
+function MirrorTimers:OnEvent(event, ...)
+	if self[event] then
+		self[event](self, ...)
+	end
+end
+
 MirrorTimers.MirrorTimer_Show = function(timer, value, maxvalue, scale, paused, label)
 	MirrorTimers.Bar.Max = maxvalue
 	MirrorTimers.Bar.Value = value
@@ -102,10 +108,6 @@ function MirrorTimers:Load()
 	for i = 1, MIRRORTIMER_NUMTIMERS do
 		_G["MirrorTimer" .. i]:SetParent(self.Hider)
 	end
+	
+	self:SetScript("OnEvent", self.OnEvent)
 end
-
-MirrorTimers:SetScript("OnEvent", function(self, event, ...)
-	if self[event] then
-		self[event](self, ...)
-	end
-end)
