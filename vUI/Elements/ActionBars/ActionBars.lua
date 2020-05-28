@@ -50,7 +50,7 @@ local SkinButton = function(button)
 		local Cooldown = _G[button:GetName() .. "Cooldown"]:GetRegions()
 		
 		if Cooldown then
-			vUI:SetFontInfo(Cooldown, Settings["action-bars-font"], 18, Settings["action-bars-font-flags"])
+			vUI:SetFontInfo(Cooldown, Settings["action-bars-font"], floor(BUTTON_SIZE / 2), Settings["action-bars-font-flags"])
 		end
 	end
 	
