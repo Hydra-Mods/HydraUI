@@ -53,7 +53,6 @@ end
 
 function Vehicle:Load()
 	self:SetSize(Settings["minimap-size"] + 8, 22)
-	self:SetPoint("TOP", _G["vUI Minimap"], "BOTTOM", 0, -2)
 	self:SetFrameStrata("HIGH")
 	self:SetFrameLevel(10)
 	self:SetBackdrop(vUI.BackdropAndBorder)
@@ -95,6 +94,12 @@ function Vehicle:Load()
 	if (not CanExitVehicle()) then
 		self:SetAlpha(0)
 		self:Hide()
+	end
+	
+	if Settings["minimap-enable"] then
+		self:SetPoint("TOP", _G["vUI Minimap"], "BOTTOM", 0, -2)
+	else
+		self:SetPoint("TOP", vUI.UIParent, 0, -120)
 	end
 	
 	vUI:CreateMover(self)
