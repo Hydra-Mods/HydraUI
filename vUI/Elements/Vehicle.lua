@@ -9,7 +9,7 @@ end
 function Vehicle:OnEnter()
 	local R, G, B = vUI:HexToRGB(Settings["ui-widget-font-color"])
 	
-	GameTooltip:SetOwner(self, "ANCHOR_PRESERVE", 0, -6)
+	GameTooltip:SetOwner(self, "ANCHOR_BOTTOMRIGHT", 0, -6)
 	GameTooltip:AddLine(TAXI_CANCEL_DESCRIPTION, R, G, B)
 	GameTooltip:Show()
 end
@@ -39,7 +39,7 @@ function Vehicle:OnEvent()
     end
 end
 
-function Vehicle:Exit()
+function Vehicle:OnMouseUp()
     if UnitOnTaxi("player") then
         TaxiRequestEarlyLanding()
 		
@@ -58,13 +58,15 @@ function Vehicle:Load()
 	self:SetBackdrop(vUI.BackdropAndBorder)
 	self:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self:SetBackdropBorderColor(0, 0, 0)
-	self:SetScript("OnMouseUp", self.Exit)
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("UPDATE_BONUS_ACTIONBAR")
 	self:RegisterEvent("UPDATE_MULTI_CAST_ACTIONBAR")
 	self:RegisterEvent("UNIT_ENTERED_VEHICLE")
 	self:RegisterEvent("UNIT_EXITED_VEHICLE")
 	self:RegisterEvent("VEHICLE_UPDATE")
+	self:SetScript("OnMouseUp", self.OnMouseUp)
+	self:SetScript("OnEnter", self.OnEnter)
+	self:SetScript("OnLeave", self.OnLeave)
 	self:SetScript("OnEvent", self.OnEvent)
 	
 	self.Texture = self:CreateTexture(nil, "ARTWORK")
