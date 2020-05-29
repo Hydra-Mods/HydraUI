@@ -576,7 +576,10 @@ function Tooltips:Load()
 	self:StyleStatusBar()
 	self:SkinItemRef()
 	
-	vUI:CreateMover(self)
+	self.Mover = vUI:CreateMover(self)
+	
+	--self.Mover.PreMove = function() GameTooltip_SetDefaultAnchor(GameTooltip, self) GameTooltip:AddLine("Example tooltip") GameTooltip:Show() end
+	--self.Mover.PostMove = function() GameTooltip:Hide() end
 	
 	if IsInGuild() then
 		MyGuild = GetGuildInfo("player")

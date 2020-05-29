@@ -363,7 +363,9 @@ Chat.ChatEdit_UpdateHeader = function(editbox)
 		editbox.header:SetText(HeaderText)
 	end
 	
-	editbox.HeaderBackdrop:SetWidth(editbox.header:GetWidth() + 14)
+	if editbox.HeaderBackdrop then
+		editbox.HeaderBackdrop:SetWidth(editbox.header:GetWidth() + 14)
+	end
 end
 
 local OnEditFocusLost = function(self)
