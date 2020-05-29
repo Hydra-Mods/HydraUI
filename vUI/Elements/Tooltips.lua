@@ -598,7 +598,7 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Tooltips"])
 	
 	Left:CreateHeader(Language["Enable"])
-	Left:CreateSwitch("tooltips-enable", Settings["tooltips-enable"], Language["Enable Tooltips Module"], Language["Enable the vUI tooltips module"]):RequiresReload(true)
+	Left:CreateSwitch("tooltips-enable", Settings["tooltips-enable"], Language["Enable Tooltips Module"], Language["Enable the vUI tooltips module"], ReloadUI):RequiresReload(true)
 	
 	Left:CreateHeader(Language["Styling"])
 	Left:CreateSlider("tooltips-health-bar-height", Settings["tooltips-health-bar-height"], 2, 30, 1, Language["Health Bar Height"], Language["Set the height of the tooltip health bar"], UpdateHealthBarHeight)
