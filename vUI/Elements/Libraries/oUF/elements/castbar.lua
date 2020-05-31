@@ -214,7 +214,7 @@ local function UNIT_SPELLCAST_INTERRUPTED(self, event, unit, castID)
 	
 	local text = element.Text
 	if(text) then
-		text:SetText(INTERRUPTED)
+		text:SetText(SPELL_FAILED_INTERRUPTED)
 	end
 
 	element.casting = nil

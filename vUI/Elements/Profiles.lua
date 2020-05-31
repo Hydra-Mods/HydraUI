@@ -179,12 +179,38 @@ function vUI:GetProfile(name)
 	end
 end
 
+function vUI:SetProfileValue(name, id, value)
+	if vUIProfiles[name] then
+		if (value ~= Defaults[id]) then -- Only saving a value if it's different than default
+			vUIProfiles[name][id] = value
+			
+			self:UpdateProfileLastModified(name)
+		else
+			vUIProfiles[name][id] = nil
+		end
+	end
+end
+
 function vUI:GetProfileList()
 	return self.ProfileList
 end
 
-function vUI:IsUsedBy(name)
+function vUI:ProfileIsUsedBy(name)
+	local First = true
+	local String
 	
+	for Key, ProfileName in pairs(vUIProfileData) do
+		if (ProfileName == name) then
+			if First then
+				String = Key
+				First = false
+			else
+				String = String .. ", " .. Key
+			end
+		end
+	end
+	
+	return String
 end
 
 function vUI:GetMostUsedProfile() -- Return most used profile as a fallback instead of "Default" which may not even exist if the user deletes it

@@ -62,13 +62,7 @@ local SetVariable = function(id, value)
 	local Name = vUI:GetActiveProfileName()
 	
 	if Name then
-		if (value ~= Defaults[id]) then -- Only saving a value if it's different than default
-			vUIProfiles[Name][id] = value
-			
-			vUI:UpdateProfileLastModified(Name)
-		else
-			vUIProfiles[Name][id] = nil
-		end
+		vUI:SetProfileValue(Name, id, value)
 	end
 	
 	Settings[id] = value
