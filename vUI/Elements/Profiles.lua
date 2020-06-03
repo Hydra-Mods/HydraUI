@@ -544,23 +544,21 @@ function vUI:MigrateMoverData()
 		return
 	end
 	
-	if self.Profiles then
+	if (vUIMove and self.Profiles) then
 		for Key, Profile in pairs(self.Profiles) do
 			if (not Profile.Move) then
 				Profile.Move = {}
 			end
 			
-			if vUIMove then
-				for Frame, Position in pairs(vUIMove) do
-					Profile.Move[Frame] = format("%s:%s:%s:%s:%s", unpack(Position))
-				end
+			for Frame, Position in pairs(vUIMove) do
+				Profile.Move[Frame] = format("%s:%s:%s:%s:%s", unpack(Position))
 			end
 		end
 		
-		self.Data.MoversMigrated = 1
+		vUIMove = nil
+		
+		self.Data.MoversMigrated = true
 	end
-	
-	vUIMove = nil
 end
 
 function vUI:RemoveData(key)
