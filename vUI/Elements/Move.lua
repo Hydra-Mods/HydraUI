@@ -60,7 +60,6 @@ local OnDragStop = function(self)
 		Profile.Move = {}
 	end
 	
-	--Profile.Move[self.Name] = {A1, Parent:GetName(), A2, X, Y}
 	Profile.Move[self.Name] = vUI:PositionToString(self)
 end
 
@@ -109,8 +108,6 @@ function vUI:ResetAllMovers()
 			
 			self.MovingFrames[i]:ClearAllPoints()
 			self.MovingFrames[i]:SetPoint(A1, _G[Parent], A2, X, Y)
-			
-			--vUIMove[self.MovingFrames[i].Name] = {A1, Parent, A2, X, Y}
 		end
 	end
 end
@@ -242,7 +239,6 @@ function vUI:CreateMover(frame, padding)
 	
 	if (Profile.Move and Profile.Move[Name]) then
 		local A1, Parent, A2, X, Y = self:StringToPosition(Profile.Move[Name])
-		--local A1, Parent, A2, X, Y = unpack(Profile.Move[Name])
 		local ParentObject = _G[Parent]		
 		
 		Mover:SetPoint(A1, ParentObject, A2, X, Y)
