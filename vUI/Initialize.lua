@@ -439,7 +439,7 @@ function vUI:VARIABLES_LOADED(event)
 	Defaults["ui-scale"] = self:GetSuggestedScale()
 	
 	-- Import profile data and load a profile
-	self:MigrateData()
+	--self:MigrateData()
 	self:CreateProfileData()
 	self:MigrateMoverData()
 	self:UpdateProfileList()
