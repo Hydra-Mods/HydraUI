@@ -3,6 +3,7 @@ local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 local unpack = unpack
 local find = string.find
 local gsub = string.gsub
+local match = string.match
 
 vUI.MovingFrames = {}
 vUI.FrameDefaults = {}
@@ -25,7 +26,7 @@ function vUI:StringToPosition(str)
 		return unpack(str) -- Migrated data will provide a table here. This leftover will be flushed after one login
 	end
 	
-	local A1, Parent, A2, X, Y = string.match(str, "(.*):(.*):(.*):(.*):(.*)")
+	local A1, Parent, A2, X, Y = match(str, "(.*):(.*):(.*):(.*):(.*)")
 	
 	Parent = _G[Parent]
 	
@@ -45,13 +46,6 @@ local OnDragStop = function(self)
 	
 	if self.PostMove then
 		self:PostMove()
-	end
-	
-	local Name = self:GetName()
-	local A1, Parent, A2, X, Y = self:GetPoint()
-	
-	if (not Parent) then
-		Parent = vUI.UIParent
 	end
 	
 	local Profile = vUI:GetActiveProfile()
@@ -239,9 +233,8 @@ function vUI:CreateMover(frame, padding)
 	
 	if (Profile.Move and Profile.Move[Name]) then
 		local A1, Parent, A2, X, Y = self:StringToPosition(Profile.Move[Name])
-		local ParentObject = _G[Parent]		
 		
-		Mover:SetPoint(A1, ParentObject, A2, X, Y)
+		Mover:SetPoint(A1, Parent, A2, X, Y)
 	else
 		Mover:SetPoint(A1, Parent, A2, X, Y)
 	end
