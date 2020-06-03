@@ -572,16 +572,22 @@ local CopyButtonOnMouseUp = function(self)
 	local Parent = self:GetParent()
 	
 	if Parent:IsTextCopyable() then
-		Parent:EnableMouse(false)
 		Parent:SetTextCopyable(false)
 		
 		Parent.CopyHighlight:SetAlpha(0)
 	else
-		Parent:EnableMouse(true)
 		Parent:SetTextCopyable(true)
 		
 		Parent.CopyHighlight:SetAlpha(0.1)
 	end
+end
+
+local ChatFrameOnEnter = function(self)
+	self.CopyButton:SetAlpha(1)
+end
+
+local ChatFrameOnLeave = function(self)
+	self.CopyButton:SetAlpha(0)
 end
 
 function Chat:StyleChatFrame(frame)
@@ -642,6 +648,8 @@ function Chat:StyleChatFrame(frame)
 	frame:SetJustifyH("LEFT")
 	frame:SetFading(Settings["chat-enable-fading"])
 	frame:SetTimeVisible(Settings["chat-fade-time"])
+	frame:HookScript("OnEnter", ChatFrameOnEnter)
+	frame:HookScript("OnLeave", ChatFrameOnLeave)
 	frame:Hide()
 	
 	FCF_SetChatWindowFontSize(nil, frame, 12)

@@ -36,7 +36,7 @@ function Gold:GetServerInfo()
 	local Table
 	local Total = 0
 	
-	for Name, Value in pairs(vUIGold[vUI.UserRealm]) do
+	for Name, Value in pairs(vUI.GoldData[vUI.UserRealm]) do
 		Table = self:GetTable()
 		
 		Table[1] = Name
@@ -57,29 +57,28 @@ end
 function Gold:OnEvent()
 	local CurrentValue = GetMoney()
 	
-	self.SessionChange = self.SessionChange + (CurrentValue - vUIGold[vUI.UserRealm][self.CurrentUser])
+	self.SessionChange = self.SessionChange + (CurrentValue - vUI.GoldData[vUI.UserRealm][self.CurrentUser])
 	
-	vUIGold[vUI.UserRealm][self.CurrentUser] = CurrentValue
+	vUI.GoldData[vUI.UserRealm][self.CurrentUser] = CurrentValue
 end
 
 function Gold:Reset()
 	vUIGold = nil
+	vUI.GoldData = nil
 	
 	self:Load()
 end
 
 function Gold:Load()
-	if (not vUIGold) then
-		vUIGold = {}
-	end
+	vUI:BindSavedVariable("vUIGold", "GoldData")
 	
-	if (not vUIGold[vUI.UserRealm]) then
-		vUIGold[vUI.UserRealm] = {}
+	if (not vUI.GoldData[vUI.UserRealm]) then
+		vUI.GoldData[vUI.UserRealm] = {}
 	end
 	
 	self.CurrentUser = string.format("|c%s%s|r", RAID_CLASS_COLORS[vUI.UserClass].colorStr, vUI.UserName)
 	
-	vUIGold[vUI.UserRealm][self.CurrentUser] = GetMoney()
+	vUI.GoldData[vUI.UserRealm][self.CurrentUser] = GetMoney()
 	
 	self:RegisterEvent("PLAYER_MONEY")
 	self:SetScript("OnEvent", self.OnEvent)

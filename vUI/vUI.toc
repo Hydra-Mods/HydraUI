@@ -3,7 +3,7 @@
 ## Version: 1.0029
 ## Title: |cFFFFC44DvUI|r
 ## Notes: An interface replacement for World of Warcraft: Battle for Azeroth
-## SavedVariables: vUIProfileData, vUIProfiles, vUIData, vUIMove, vUIGold
+## SavedVariables: vUIProfileData, vUIProfiles, vUIData, vUIGold
 
 Initialize.lua
 Elements\Libraries\LibStub.lua

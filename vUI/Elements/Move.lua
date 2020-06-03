@@ -8,6 +8,30 @@ vUI.MovingFrames = {}
 vUI.FrameDefaults = {}
 vUI.MovingActive = false
 
+function vUI:PositionToString(frame)
+	local A1, Parent, A2, X, Y = frame:GetPoint()
+	
+	if (not Parent) then
+		Parent = vUI.UIParent
+	end
+	
+	local String = format("%s:%s:%s:%s:%s", A1, Parent:GetName(), A2, X, Y)
+	
+	return String
+end
+
+function vUI:StringToPosition(str)
+	if (type(str) == "table") then -- Remove this after a month or two. (June 2nd 2020)
+		return unpack(str) -- Migrated data will provide a table here. This leftover will be flushed after one login
+	end
+	
+	local A1, Parent, A2, X, Y = string.match(str, "(.*):(.*):(.*):(.*):(.*)")
+	
+	Parent = _G[Parent]
+	
+	return A1, Parent, A2, tonumber(X), tonumber(Y)
+end
+
 local OnDragStart = function(self)
 	if self.PreMove then
 		self:PreMove()
@@ -30,7 +54,14 @@ local OnDragStop = function(self)
 		Parent = vUI.UIParent
 	end
 	
-	vUIMove[self.Name] = {A1, Parent:GetName(), A2, X, Y}
+	local Profile = vUI:GetActiveProfile()
+	
+	if (not Profile.Move) then
+		Profile.Move = {}
+	end
+	
+	--Profile.Move[self.Name] = {A1, Parent:GetName(), A2, X, Y}
+	Profile.Move[self.Name] = vUI:PositionToString(self)
 end
 
 function vUI:ToggleMovers()
@@ -64,7 +95,13 @@ function vUI:ToggleMovers()
 end
 
 function vUI:ResetAllMovers()
-	vUIMove = {}
+	if vUIProfiles then
+		for Key, Profile in pairs(vUIProfiles) do
+			if Profile.Move then
+				Profile.Move = {}
+			end
+		end
+	end
 	
 	for i = 1, #self.MovingFrames do
 		if self.FrameDefaults[self.MovingFrames[i].Name] then
@@ -79,8 +116,14 @@ function vUI:ResetAllMovers()
 end
 
 function vUI:IsMoved(frame)
+	local Profile = self:GetActiveProfile()
+	
+	if (not Profile.Move) then
+		return
+	end
+	
 	if (frame and frame.GetName) then
-		if vUIMove[frame:GetName()] then
+		if Profile.Move[frame:GetName()] then
 			return true
 		end
 	end
@@ -99,7 +142,13 @@ local MoverOnMouseUp = function(self, button)
 			self:ClearAllPoints()
 			self:SetPoint(A1, ParentObject, A2, X, Y)
 			
-			vUIMove[self.Name] = {A1, Parent, A2, X, Y}
+			local Profile = vUI:GetActiveProfile()
+			
+			if (not Profile.Move) then
+				return
+			end
+			
+			Profile.Move[self.Name] = nil -- We're back to default, so don't save the value
 		end
 	end
 end
@@ -132,10 +181,6 @@ local MoverOnLeave = function(self)
 end
 
 function vUI:CreateMover(frame, padding)
-	if (not vUIMove) then
-		vUIMove = {}
-	end
-	
 	local A1, Parent, A2, X, Y = frame:GetPoint()
 	local Name = frame:GetName()
 	
@@ -193,8 +238,11 @@ function vUI:CreateMover(frame, padding)
 	
 	self.FrameDefaults[Name] = {A1, ParentName, A2, X, Y}
 	
-	if vUIMove[Name] then
-		local A1, Parent, A2, X, Y = unpack(vUIMove[Name])
+	local Profile = self:GetActiveProfile()
+	
+	if (Profile.Move and Profile.Move[Name]) then
+		local A1, Parent, A2, X, Y = self:StringToPosition(Profile.Move[Name])
+		--local A1, Parent, A2, X, Y = unpack(Profile.Move[Name])
 		local ParentObject = _G[Parent]		
 		
 		Mover:SetPoint(A1, ParentObject, A2, X, Y)

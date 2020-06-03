@@ -354,6 +354,16 @@ function vUI:IsToday(s)
 	return s
 end
 
+function vUI:BindSavedVariable(global, key)
+	if (not _G[global]) then
+		_G[global] = {}
+	end
+	
+	if (not self[key]) then
+		self[key] = _G[global]
+	end
+end
+
 local ResetOnAccept = function()
 	vUIProfileData = nil
 	vUIProfiles = nil
@@ -431,6 +441,7 @@ function vUI:VARIABLES_LOADED(event)
 	-- Import profile data and load a profile
 	self:MigrateData()
 	self:CreateProfileData()
+	self:MigrateMoverData()
 	self:UpdateProfileList()
 	self:ApplyProfile(self:GetActiveProfileName())
 	

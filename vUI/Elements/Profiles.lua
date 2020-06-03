@@ -26,8 +26,8 @@ vUI.PreserveSettings = {
 }
 
 function vUI:UpdateProfileList()
-	if vUIProfiles then
-		for Name in pairs(vUIProfiles) do
+	if self.Profiles then
+		for Name in pairs(self.Profiles) do
 			self.ProfileList[Name] = Name
 		end
 	end
@@ -48,20 +48,20 @@ function vUI:GetDefaultProfileKey()
 end
 
 function vUI:GetActiveProfileName()
-	if (vUIProfileData and vUIProfileData[self.UserProfileKey]) then
-		return vUIProfileData[self.UserProfileKey]
+	if (self.ProfileData and self.ProfileData[self.UserProfileKey]) then
+		return self.ProfileData[self.UserProfileKey]
 	end
 end
 
 function vUI:GetActiveProfile()
-	if (vUIProfileData and vUIProfileData[self.UserProfileKey]) then
-		return self:GetProfile(vUIProfileData[self.UserProfileKey])
+	if (self.ProfileData and self.ProfileData[self.UserProfileKey]) then
+		return self:GetProfile(self.ProfileData[self.UserProfileKey])
 	end
 end
 
 function vUI:SetActiveProfile(name)
-	if (vUIProfileData and vUIProfileData[self.UserProfileKey]) then
-		vUIProfileData[self.UserProfileKey] = name
+	if (self.ProfileData and self.ProfileData[self.UserProfileKey]) then
+		self.ProfileData[self.UserProfileKey] = name
 	end
 end
 
@@ -79,12 +79,12 @@ function vUI:CountChangedValues(name)
 end
 
 function vUI:CreateProfileData()
-	if (not vUIProfileData) then -- No profile data exists, create a default
+	if (not self.ProfileData) then -- No profile data exists, create a default
 		self:CreateProfile(Language["Default"])
 	end
 	
-	if (not vUIProfileData[self.UserProfileKey]) then
-		vUIProfileData[self.UserProfileKey] = self:GetMostUsedProfile()
+	if (not self.ProfileData[self.UserProfileKey]) then
+		self.ProfileData[self.UserProfileKey] = self:GetMostUsedProfile()
 	end
 end
 
@@ -101,8 +101,8 @@ function vUI:AddProfile(profile)
 	profile["profile-created-by"] = self.UserProfileKey
 	profile["profile-last-modified"] = self:GetCurrentDate()
 	
-	if (Name and not vUIProfiles[Name]) then
-		vUIProfiles[Name] = profile
+	if (Name and not self.Profiles[Name]) then
+		self.Profiles[Name] = profile
 		self.ProfileList[Name] = Name
 		
 		local Widget = GUI:GetWidgetByWindow(Language["Profiles"], "ui-profile")
@@ -116,49 +116,44 @@ function vUI:AddProfile(profile)
 end
 
 function vUI:CreateProfile(name)
-	if (not vUIProfileData) then
-		vUIProfileData = {}
-	end
-	
-	if (not vUIProfiles) then
-		vUIProfiles = {}
-	end
+	self:BindSavedVariable("vUIProfileData", "ProfileData")
+	self:BindSavedVariable("vUIProfiles", "Profiles")
 	
 	if (not name) then
 		name = self:GetDefaultProfileKey()
 	end
 	
-	if (not vUIProfileData[self.UserProfileKey]) then
-		vUIProfileData[self.UserProfileKey] = name
+	if (not self.ProfileData[self.UserProfileKey]) then
+		self.ProfileData[self.UserProfileKey] = name
 	end
 	
-	if vUIProfiles[name] then
+	if self.Profiles[name] then
 		self.ProfileList[name] = name
 		
-		return vUIProfiles[name]
+		return self.Profiles[name]
 	end
 	
-	vUIProfiles[name] = {}
+	self.Profiles[name] = {}
 	
 	-- Some metadata just for additional information
-	vUIProfiles[name]["profile-name"] = name
-	vUIProfiles[name]["profile-created"] = self:GetCurrentDate()
-	vUIProfiles[name]["profile-created-by"] = self:GetDefaultProfileKey()
-	vUIProfiles[name]["profile-last-modified"] = self:GetCurrentDate()
+	self.Profiles[name]["profile-name"] = name
+	self.Profiles[name]["profile-created"] = self:GetCurrentDate()
+	self.Profiles[name]["profile-created-by"] = self:GetDefaultProfileKey()
+	self.Profiles[name]["profile-last-modified"] = self:GetCurrentDate()
 	
 	self.ProfileList[name] = name
 	
-	return vUIProfiles[name]
+	return self.Profiles[name]
 end
 
 function vUI:RestoreToDefault(name)
-	if (not vUIProfiles[name]) then
+	if (not self.Profiles[name]) then
 		return
 	end
 	
-	for ID in pairs(vUIProfiles[name]) do
+	for ID in pairs(self.Profiles[name]) do
 		if (not self.ProfileMetadata[ID]) then
-			vUIProfiles[name][ID] = nil
+			self.Profiles[name][ID] = nil
 		end
 	end
 	
@@ -166,27 +161,27 @@ function vUI:RestoreToDefault(name)
 end
 
 function vUI:GetProfile(name)
-	if vUIProfiles[name] then
-		return vUIProfiles[name]
+	if self.Profiles[name] then
+		return self.Profiles[name]
 	else
 		local Default = self:GetMostUsedProfile()
 		
 		if (not Default) then
 			return self:CreateProfile(Language["Default"])
-		elseif (Default and vUIProfiles[Default]) then
-			return vUIProfiles[Default]
+		elseif (Default and self.Profiles[Default]) then
+			return self.Profiles[Default]
 		end
 	end
 end
 
 function vUI:SetProfileValue(name, id, value)
-	if vUIProfiles[name] then
+	if self.Profiles[name] then
 		if (value ~= Defaults[id]) then -- Only saving a value if it's different than default
-			vUIProfiles[name][id] = value
+			self.Profiles[name][id] = value
 			
 			self:UpdateProfileLastModified(name)
 		else
-			vUIProfiles[name][id] = nil
+			self.Profiles[name][id] = nil
 		end
 	end
 end
@@ -199,7 +194,7 @@ function vUI:ProfileIsUsedBy(name)
 	local First = true
 	local String
 	
-	for Key, ProfileName in pairs(vUIProfileData) do
+	for Key, ProfileName in pairs(self.ProfileData) do
 		if (ProfileName == name) then
 			if First then
 				String = Key
@@ -218,7 +213,7 @@ function vUI:GetMostUsedProfile() -- Return most used profile as a fallback inst
 	local HighestValue = 0
 	local HighestName
 	
-	for Key, ProfileName in pairs(vUIProfileData) do
+	for Key, ProfileName in pairs(self.ProfileData) do
 		if (not Temp[ProfileName]) then -- In case we renamed something
 			Temp[ProfileName] = 0
 		end
@@ -233,14 +228,14 @@ function vUI:GetMostUsedProfile() -- Return most used profile as a fallback inst
 		end
 	end
 	
-	return HighestName, vUIProfileData[HighestName]
+	return HighestName, self.ProfileData[HighestName]
 end
 
 function vUI:GetNumServedByProfile(name)
 	local Count = 0
 	local Total = 0
 	
-	for Key, ProfileName in pairs(vUIProfileData) do
+	for Key, ProfileName in pairs(self.ProfileData) do
 		if (ProfileName == name) then
 			Count = Count + 1
 		end
@@ -252,16 +247,16 @@ function vUI:GetNumServedByProfile(name)
 end
 
 function vUI:DeleteProfile(name)
-	if vUIProfiles[name] then
-		vUIProfiles[name] = nil
+	if self.Profiles[name] then
+		self.Profiles[name] = nil
 		self.ProfileList[name] = nil
 		
 		local Default = self:GetMostUsedProfile()
 		
 		-- If we just wiped out a profile that characters were using, reroute them to an existing profile.
-		for Key, ProfileName in pairs(vUIProfileData) do
+		for Key, ProfileName in pairs(self.ProfileData) do
 			if (ProfileName == name) then
-				vUIProfileData[Key] = Default
+				self.ProfileData[Key] = Default
 			end
 		end
 		
@@ -273,8 +268,8 @@ function vUI:DeleteProfile(name)
 	if (self:GetProfileCount() == 0) then
 		self:CreateProfile(Language["Default"]) -- If we just deleted our last profile, make a new default.
 		
-		for Key in pairs(vUIProfileData) do
-			vUIProfileData[Key] = Language["Default"]
+		for Key in pairs(self.ProfileData) do
+			self.ProfileData[Key] = Language["Default"]
 		end
 	end
 end
@@ -305,7 +300,7 @@ function vUI:ApplyProfile(name)
 		Settings[ID] = Value
 	end
 	
-	vUIProfileData[self.UserProfileKey] = name
+	self.ProfileData[self.UserProfileKey] = name
 	
 	Values = nil
 end
@@ -314,7 +309,7 @@ function vUI:DeleteEmptyProfiles()
 	local Count = 0
 	local Deleted = 0
 	
-	for Name, Value in pairs(vUIProfiles) do
+	for Name, Value in pairs(self.Profiles) do
 		Count = 0
 		
 		for ID in pairs(Value) do
@@ -337,7 +332,7 @@ function vUI:CountEmptyProfiles()
 	local Count = 0
 	local Total = 0
 	
-	for Name, Value in pairs(vUIProfiles) do
+	for Name, Value in pairs(self.Profiles) do
 		Count = 0
 		
 		for ID in pairs(Value) do
@@ -364,7 +359,7 @@ function vUI:DeleteUnusedProfiles()
 		Counts[Name] = 0
 	end
 	
-	for Key, ProfileName in pairs(vUIProfileData) do
+	for Key, ProfileName in pairs(self.ProfileData) do
 		if (not Counts[ProfileName]) then -- In case we renamed something
 			Counts[ProfileName] = 0
 		end
@@ -395,7 +390,7 @@ function vUI:CountUnusedProfiles()
 		Counts[Name] = 0
 	end
 	
-	for Key, ProfileName in pairs(vUIProfileData) do
+	for Key, ProfileName in pairs(self.ProfileData) do
 		if (not Counts[ProfileName]) then -- In case we renamed something
 			Counts[ProfileName] = 0
 		end
@@ -415,25 +410,25 @@ function vUI:CountUnusedProfiles()
 end
 
 function vUI:RenameProfile(from, to)
-	if (not vUIProfiles[from]) then
+	if (not self.Profiles[from]) then
 		return
-	elseif vUIProfiles[to] then
+	elseif self.Profiles[to] then
 		self:print(format('A profile already exists with the name "%s".', to))
 		
 		return
 	end
 	
-	vUIProfiles[to] = vUIProfiles[from]
-	vUIProfiles[to]["profile-name"] = to
+	self.Profiles[to] = self.Profiles[from]
+	self.Profiles[to]["profile-name"] = to
 	
-	vUIProfiles[from] = nil
+	self.Profiles[from] = nil
 	self.ProfileList[from] = nil
 	self.ProfileList[to] = to
 	
 	-- Reroute characters who used this profile
-	for Key, ProfileName in pairs(vUIProfileData) do
+	for Key, ProfileName in pairs(self.ProfileData) do
 		if (ProfileName == from) then
-			vUIProfileData[Key] = to
+			self.ProfileData[Key] = to
 		end
 	end
 	
@@ -443,13 +438,13 @@ function vUI:RenameProfile(from, to)
 end
 
 function vUI:CopyProfile(from, to)
-	if (not vUIProfiles[from]) or (not vUIProfiles[to]) then
+	if (not self.Profiles[from]) or (not self.Profiles[to]) then
 		return
 	end
 	
-	local ToProfile = vUIProfiles[to]
+	local ToProfile = self.Profiles[to]
 	
-	for Name, Value in pairs(vUIProfiles[from]) do
+	for Name, Value in pairs(self.Profiles[from]) do
 		for ID in pairs(Value) do
 			if (not self.ProfileMetadata[ID]) then
 				ToProfile[ID] = Value
@@ -467,8 +462,8 @@ function vUI:UpdateProfileLastModified(name)
 end
 
 function vUI:SetProfileMetadata(name, meta, value) -- /run vUIGlobal:get():SetProfileMetadata("ProfileName", "profile-created-by", "Hydra")
-	if (vUIProfiles[name] and self.ProfileMetadata[meta]) then
-		vUIProfiles[name][meta] = value
+	if (self.Profiles[name] and self.ProfileMetadata[meta]) then
+		self.Profiles[name][meta] = value
 		
 		if (name == self:GetActiveProfileName()) then
 			self:UpdateProfileInfo()
@@ -533,12 +528,46 @@ function vUI:MigrateData()
 		end
 	end
 	
-	if ((not vUIProfiles) or (#self.MigrateValues == 0)) then
+	if ((not self.Profiles) or (#self.MigrateValues == 0)) then
 		return
 	end
 	
-	for ProfileName, Profile in pairs(vUIProfiles) do
+	for ProfileName, Profile in pairs(self.Profiles) do
 		vUI:Migrate(Profile)
+	end
+end
+
+function vUI:MigrateMoverData()
+	self:BindSavedVariable("vUIData", "Data")
+	
+	if self.Data.MoversMigrated then
+		return
+	end
+	
+	if self.Profiles then
+		for Key, Profile in pairs(self.Profiles) do
+			if (not Profile.Move) then
+				Profile.Move = {}
+			end
+			
+			if vUIMove then
+				for Frame, Position in pairs(vUIMove) do
+					Profile.Move[Frame] = format("%s:%s:%s:%s:%s", unpack(Position))
+				end
+			end
+		end
+		
+		self.Data.MoversMigrated = 1
+	end
+	
+	vUIMove = nil
+end
+
+function vUI:RemoveData(key)
+	self:BindSavedVariable("vUIData", "Data")
+	
+	if self.Data then
+		self.Data[key] = nil
 	end
 end
 
