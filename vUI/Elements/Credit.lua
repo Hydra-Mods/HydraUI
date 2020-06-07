@@ -46,6 +46,9 @@ GUI:AddOptions(function(self)
 	Right:CreateHeader("|cFFA335EEEpic Patrons|r")
 	Right:CreateLine("Smelly")
 	
-	--Right:CreateHeader("|cFF0070DDRare Patrons|r")
-	--Right:CreateHeader("|cFF1EFF00Uncommon Patrons|r")
+	Right:CreateHeader("|cFF0070DDRare Patrons|r")
+        Right:CreateLine("Euphoria")
+
+	Right:CreateHeader("|cFF1EFF00Uncommon Patrons|r")
+        Right:CreateLine("Ryex")
 end)
