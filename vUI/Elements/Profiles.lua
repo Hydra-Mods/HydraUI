@@ -444,11 +444,9 @@ function vUI:CopyProfile(from, to)
 	
 	local ToProfile = self.Profiles[to]
 	
-	for Name, Value in pairs(self.Profiles[from]) do
-		for ID in pairs(Value) do
-			if (not self.ProfileMetadata[ID]) then
-				ToProfile[ID] = Value
-			end
+	for ID, Value in pairs(self.Profiles[from]) do
+		if (not self.ProfileMetadata[ID]) then
+			ToProfile[ID] = Value
 		end
 	end
 	
