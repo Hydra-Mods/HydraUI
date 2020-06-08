@@ -437,6 +437,10 @@ function vUI:RenameProfile(from, to)
 	self:print(format('Profile "%s" has been renamed to "%s".', from, to))
 end
 
+function vUI:OnCopyAccept()
+	C_UI.Reload()
+end
+
 function vUI:CopyProfile(from, to)
 	if (not self.Profiles[from]) or (not self.Profiles[to]) then
 		return
@@ -451,6 +455,10 @@ function vUI:CopyProfile(from, to)
 	end
 	
 	self:print(format('Profile "%s" has been copied from "%s".', to, from))
+	
+	if (to == self:GetActiveProfileName()) then
+		self:DisplayPopup(Language["Attention"], Language["Would you like to reload the UI to apply changes?"], ACCEPT, self.OnCopyAccept, CANCEL)
+	end
 end
 
 function vUI:UpdateProfileLastModified(name)
