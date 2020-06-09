@@ -271,6 +271,10 @@ function vUI:DeleteProfile(name)
 			self.ProfileData[Key] = Language["Default"]
 		end
 	end
+	
+	if (name == self:GetActiveProfileName()) then
+		C_UI.Reload()
+	end
 end
 
 function vUI:MergeWithDefaults(name)
@@ -433,17 +437,11 @@ function vUI:CopyProfile(from, to)
 		if (not self.ProfileMetadata[ID]) then
 			self.Profiles[to][ID] = Value
 		end
-		
-		if (ID == "Move") then
-			
-		end
 	end
 	
 	self:print(format('Profile "%s" has been copied from "%s".', to, from))
 	
-	print(ReloadUI)
-	
-	ReloadUI()
+	C_UI.Reload()
 end
 
 function vUI:UpdateProfileLastModified(name)
@@ -638,7 +636,7 @@ end
 local AcceptNewProfile = function(value)
 	vUI:SetActiveProfile(value)
 	
-	ReloadUI()
+	C_UI.Reload()
 end
 
 local UpdateActiveProfile = function(value)

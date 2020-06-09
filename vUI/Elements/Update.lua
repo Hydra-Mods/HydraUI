@@ -95,7 +95,6 @@ function Update:VARIABLES_LOADED(event)
 	
 	-- Store a new version if needed.
 	if (StoredVersion ~= AddOnVersion) then
-		print("write", AddOnVersion)
 		vUI.Data.Version = AddOnVersion
 	end
 	
