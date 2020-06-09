@@ -7,8 +7,7 @@ local IsInGuild = IsInGuild
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
 
---local AddOnVersion = tonumber(vUI.UIVersion)
-local AddOnVersion = 1
+local AddOnVersion = tonumber(vUI.UIVersion)
 
 local Update = vUI:NewModule("Update")
 
@@ -79,15 +78,13 @@ function Update:GROUP_ROSTER_UPDATE()
 end
 
 function Update:VARIABLES_LOADED(event)
-	if (not vUIData) then
-		vUIData = {}
+	vUI:BindSavedVariable("vUIData", "Data")
+	
+	if (not vUI.Data.Version) then
+		vUI.Data.Version = AddOnVersion
 	end
 	
-	if (not vUIData.Version) then
-		vUIData.Version = AddOnVersion
-	end
-	
-	local StoredVersion = vUIData.Version
+	local StoredVersion = vUI.Data.Version
 	
 	--[[ You installed a newer version! Yay you. Yes, you.
 	if (AddOnVersion > StoredVersion) then
@@ -98,7 +95,8 @@ function Update:VARIABLES_LOADED(event)
 	
 	-- Store a new version if needed.
 	if (StoredVersion ~= AddOnVersion) then
-		vUIData.Version = AddOnVersion
+		print("write", AddOnVersion)
+		vUI.Data.Version = AddOnVersion
 	end
 	
 	self:UnregisterEvent(event)

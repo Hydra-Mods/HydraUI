@@ -91,7 +91,7 @@ function vUI:ResetAllMovers()
 	if vUIProfiles then
 		for Key, Profile in pairs(vUIProfiles) do
 			if Profile.Move then
-				Profile.Move = {}
+				Profile.Move = nil
 			end
 		end
 	end

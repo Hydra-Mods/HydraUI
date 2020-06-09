@@ -51,6 +51,7 @@ local MAX_WIDGETS_SHOWN = 14
 
 GUI.Ignore = {
 	["ui-profile"] = true,
+	["profile-copy"] = true,
 }
 
 -- Functions

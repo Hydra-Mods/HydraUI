@@ -304,53 +304,10 @@ function vUI:ApplyProfile(name)
 	Values = nil
 end
 
-function vUI:DeleteEmptyProfiles()
-	local Count = 0
-	local Deleted = 0
-	
-	for Name, Value in pairs(self.Profiles) do
-		Count = 0
-		
-		for ID in pairs(Value) do
-			if (not self.ProfileMetadata[ID]) then
-				Count = Count + 1
-			end
-		end
-		
-		if (Count == 0) then
-			self:DeleteProfile(Name)
-			
-			Deleted = Deleted + 1
-		end
-	end
-	
-	self:print(format("Deleted %s empty profiles.", Deleted))
-end
-
-function vUI:CountEmptyProfiles()
-	local Count = 0
-	local Total = 0
-	
-	for Name, Value in pairs(self.Profiles) do
-		Count = 0
-		
-		for ID in pairs(Value) do
-			if (not self.ProfileMetadata[ID]) then
-				Count = Count + 1
-			end
-		end
-		
-		if (Count == 0) then
-			Total = Total + 1
-		end
-	end
-	
-	return Total
-end
-
 function vUI:DeleteUnusedProfiles()
-	local Counts = {}
 	local Deleted = 0
+	local Counts = {}
+	local Count = 0
 	
 	self:UpdateProfileList()
 	
@@ -368,6 +325,22 @@ function vUI:DeleteUnusedProfiles()
 	
 	for Name, Total in pairs(Counts) do
 		if (Total == 0) then
+			self:DeleteProfile(Name)
+			
+			Deleted = Deleted + 1
+		end
+	end
+	
+	for Name, Value in pairs(self.Profiles) do
+		Count = 0
+		
+		for ID in pairs(Value) do
+			if (not self.ProfileMetadata[ID]) then
+				Count = Count + 1
+			end
+		end
+		
+		if (Count == 0) then
 			self:DeleteProfile(Name)
 			
 			Deleted = Deleted + 1
@@ -380,8 +353,9 @@ function vUI:DeleteUnusedProfiles()
 end
 
 function vUI:CountUnusedProfiles()
-	local Counts = {}
 	local Unused = 0
+	local Counts = {}
+	local Count = 0
 	
 	self:UpdateProfileList()
 	
@@ -399,6 +373,20 @@ function vUI:CountUnusedProfiles()
 	
 	for Name, Total in pairs(Counts) do
 		if (Total == 0) then
+			Unused = Unused + 1
+		end
+	end
+	
+	for Name, Value in pairs(self.Profiles) do
+		Count = 0
+		
+		for ID in pairs(Value) do
+			if (not self.ProfileMetadata[ID]) then
+				Count = Count + 1
+			end
+		end
+		
+		if (Count == 0) then
 			Unused = Unused + 1
 		end
 	end
@@ -436,28 +424,26 @@ function vUI:RenameProfile(from, to)
 	self:print(format('Profile "%s" has been renamed to "%s".', from, to))
 end
 
-function vUI:OnCopyAccept()
-	C_UI.Reload()
-end
-
 function vUI:CopyProfile(from, to)
 	if (not self.Profiles[from]) or (not self.Profiles[to]) then
 		return
 	end
 	
-	local ToProfile = self.Profiles[to]
-	
 	for ID, Value in pairs(self.Profiles[from]) do
 		if (not self.ProfileMetadata[ID]) then
-			ToProfile[ID] = Value
+			self.Profiles[to][ID] = Value
+		end
+		
+		if (ID == "Move") then
+			
 		end
 	end
 	
 	self:print(format('Profile "%s" has been copied from "%s".', to, from))
 	
-	if (to == self:GetActiveProfileName()) then
-		self:DisplayPopup(Language["Attention"], Language["Would you like to reload the UI to apply changes?"], ACCEPT, self.OnCopyAccept, CANCEL)
-	end
+	print(ReloadUI)
+	
+	ReloadUI()
 end
 
 function vUI:UpdateProfileLastModified(name)
@@ -646,7 +632,6 @@ function vUI:UpdateProfileInfo()
 	
 	GUI:GetWidgetByWindow(Language["Profiles"], "popular-profile").Right:SetText(format("%s (%d)", MostUsed, MostUsedServed))
 	GUI:GetWidgetByWindow(Language["Profiles"], "stored-profiles").Right:SetText(self:GetProfileCount())
-	GUI:GetWidgetByWindow(Language["Profiles"], "empty-profiles").Right:SetText(self:CountEmptyProfiles())
 	GUI:GetWidgetByWindow(Language["Profiles"], "unused-profiles").Right:SetText(self:CountUnusedProfiles())
 end
 
@@ -693,11 +678,6 @@ local ShowImportWindow = function()
 	GUI:ToggleImportWindow()
 end
 
-local DeleteEmpty = function()
-	vUI:DeleteEmptyProfiles()
-	vUI:UpdateProfileInfo()
-end
-
 local DeleteUnused = function()
 	vUI:DeleteUnusedProfiles()
 	vUI:UpdateProfileInfo()
@@ -720,6 +700,14 @@ local RestoreToDefault = function()
 	ReloadUI() -- Temp
 end
 
+local CopyProfileOnAccept = function(from)
+	vUI:CopyProfile(from, vUI:GetActiveProfileName())
+end
+
+local CopyProfile = function(value)
+	vUI:DisplayPopup(Language["Attention"], format(Language["Are you sure you would like to copy %s to %s?"], value, vUI:GetActiveProfileName()), ACCEPT, CopyProfileOnAccept, CANCEL, nil, value)
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Profiles"])
 	
@@ -733,10 +721,11 @@ GUI:AddOptions(function(self)
 	Left:CreateInput("profile-key", vUI:GetDefaultProfileKey(), Language["Create New Profile"], Language["Create a new profile to store a different collection of settings"], CreateProfile):DisableSaving()
 	Left:CreateInput("profile-delete", vUI:GetDefaultProfileKey(), Language["Delete Profile"], Language["Delete a profile"], DeleteProfile):DisableSaving()
 	Left:CreateInput("profile-rename", "", Language["Rename Profile"], Language["Rename the currently selected profile"], RenameProfile):DisableSaving()
+	--Left:CreateInput("profile-copy", "", Language["Copy From"], Language["Copy the settings from another profile"], CopyProfile):DisableSaving()
+	Left:CreateDropdown("profile-copy", vUI:GetActiveProfileName(), vUI:GetProfileList(), Language["Copy From"], Language["Copy the settings from another profile"], CopyProfile)
 	
 	Left:CreateHeader(Language["Manage"])
 	Left:CreateButton(Language["Restore"], Language["Restore To Default"], Language["Restore the currently selected profile to default settings"], RestoreToDefault):RequiresReload(true)
-	Left:CreateButton(Language["Delete"], Language["Delete Empty Profiles"], Language["Delete any profiles that have no settings that vary from default"], DeleteEmpty)
 	Left:CreateButton(Language["Delete"], Language["Delete Unused Profiles"], Language["Delete any profiles that are not currently in use by any characters"], DeleteUnused)
 	
 	Left:CreateHeader(Language["Sharing is caring"])
