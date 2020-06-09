@@ -2,7 +2,6 @@ local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local AceSerializer = LibStub:GetLibrary("AceSerializer-3.0")
 local LibDeflate = LibStub:GetLibrary("LibDeflate")
-local DeflateLevel = {level = 9}
 local DefaultKey = "%s-%s"
 
 local pairs = pairs
@@ -590,7 +589,7 @@ end
 function vUI:GetEncodedProfile()
 	local Profile = self:CloneProfile(self:GetActiveProfile())
 	local Serialized = AceSerializer:Serialize(Profile)
-	local Compressed = LibDeflate:CompressDeflate(Serialized, DeflateLevel)
+	local Compressed = LibDeflate:CompressDeflate(Serialized, {level = 9})
 	local Encoded = LibDeflate:EncodeForPrint(Compressed)
 	
 	return Encoded
