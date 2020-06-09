@@ -88,26 +88,18 @@ function vUI:ToggleMovers()
 end
 
 function vUI:ResetAllMovers()
-	--[[if vUIProfiles then
-		for Key, Profile in pairs(vUIProfiles) do
-			if Profile.Move then
-				Profile.Move = nil
-			end
-		end
-	end]]
-	
 	local Profile = self:GetActiveProfile()
 	
 	if Profile.Move then
 		Profile.Move = nil
-	end
-	
-	for i = 1, #self.MovingFrames do
-		if self.FrameDefaults[self.MovingFrames[i].Name] then
-			local A1, Parent, A2, X, Y = unpack(self.FrameDefaults[self.MovingFrames[i].Name])
-			
-			self.MovingFrames[i]:ClearAllPoints()
-			self.MovingFrames[i]:SetPoint(A1, _G[Parent], A2, X, Y)
+		
+		for i = 1, #self.MovingFrames do
+			if self.FrameDefaults[self.MovingFrames[i].Name] then
+				local A1, Parent, A2, X, Y = unpack(self.FrameDefaults[self.MovingFrames[i].Name])
+				
+				self.MovingFrames[i]:ClearAllPoints()
+				self.MovingFrames[i]:SetPoint(A1, _G[Parent], A2, X, Y)
+			end
 		end
 	end
 end
