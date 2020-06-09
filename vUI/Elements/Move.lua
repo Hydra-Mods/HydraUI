@@ -88,12 +88,18 @@ function vUI:ToggleMovers()
 end
 
 function vUI:ResetAllMovers()
-	if vUIProfiles then
+	--[[if vUIProfiles then
 		for Key, Profile in pairs(vUIProfiles) do
 			if Profile.Move then
 				Profile.Move = nil
 			end
 		end
+	end]]
+	
+	local Profile = self:GetActiveProfile()
+	
+	if Profile.Move then
+		Profile.Move = nil
 	end
 	
 	for i = 1, #self.MovingFrames do
