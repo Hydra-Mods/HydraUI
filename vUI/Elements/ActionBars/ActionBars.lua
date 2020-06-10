@@ -833,10 +833,6 @@ function AB:CreateMovers()
 	self.ExtraBarMover.PostMove = ExtraBarPostMove
 end
 
-function AB:HideMainMenuBar()
-	self:Disable(MainMenuBar)
-end
-
 function AB:SetCVars()
 	C_CVar.SetCVar("showgrid", 1)
 end
@@ -850,7 +846,7 @@ function AB:Load()
 	self.Hide:Hide()
 	
 	self:SetCVars()
-	self:HideMainMenuBar()
+	self:Disable(MainMenuBar)
 	self:CreateBars()
 	self:CreateMovers()
 

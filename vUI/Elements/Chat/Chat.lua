@@ -798,6 +798,10 @@ end
 Chat.FCF_OpenTemporaryWindow = function()
 	local Frame = FCF_GetCurrentChatFrame()
 	
+	if (_G[Frame:GetName().."Tab"]:GetText() == PET_BATTLE_COMBAT_LOG) then
+		return FCF_Close(Frame)
+	end
+	
 	if (not Frame.Styled) then
 		Chat:StyleChatFrame(Frame)
 	end
