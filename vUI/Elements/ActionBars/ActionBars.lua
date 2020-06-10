@@ -103,14 +103,6 @@ function AB:StyleActionButton(button)
 		self:Disable(_G[button:GetName() .. "FloatingBG"])
 	end
 	
-	if _G[button:GetName() .. "Cooldown"] then
-		local Cooldown = _G[button:GetName() .. "Cooldown"]:GetRegions()
-		
-		if Cooldown then
-			vUI:SetFontInfo(Cooldown, Settings["ab-font"], Settings["ab-cd-size"], Settings["ab-font-flags"])
-		end
-	end
-	
 	if button.HotKey then
 		button.HotKey:ClearAllPoints()
 		button.HotKey:SetPoint("TOPLEFT", button, 2, -2)
@@ -222,6 +214,12 @@ function AB:StyleActionButton(button)
 		button.cooldown:SetDrawEdge(true)
 		button.cooldown:SetEdgeTexture(Assets:GetTexture("Blank"))
 		button.cooldown:SetSwipeColor(0, 0, 0, 1)
+		
+		local FontString = button.cooldown:GetRegions()
+		
+		if FontString then
+			vUI:SetFontInfo(FontString, Settings["ab-font"], Settings["ab-cd-size"], Settings["ab-font-flags"])
+		end
 	end
 	
 	button:SetFrameLevel(15)
@@ -1014,8 +1012,8 @@ function AB:UpdateButtonFont(button)
 		vUI:SetFontInfo(button.Count, Settings["ab-font"], Settings["ab-font-size"], Settings["ab-font-flags"])
 	end
 	
-	if _G[button:GetName() .. "Cooldown"] then
-		local Cooldown = _G[button:GetName() .. "Cooldown"]:GetRegions()
+	if button.cooldown then
+		local Cooldown = button.cooldown:GetRegions()
 		
 		if Cooldown then
 			vUI:SetFontInfo(Cooldown, Settings["ab-font"], Settings["ab-cd-size"], Settings["ab-font-flags"])
