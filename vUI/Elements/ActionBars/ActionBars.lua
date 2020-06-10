@@ -191,7 +191,7 @@ function AB:StyleActionButton(button)
 	Highlight:SetPoint("BOTTOMRIGHT", button, -1, 1)
 	
 	if button.Flash then
-		button.Flash:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
+		--button.Flash:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 		button.Flash:SetVertexColor(0.7, 0.7, 0.1, 0.3)
 		button.Flash:SetPoint("TOPLEFT", button, 1, -1)
 		button.Flash:SetPoint("BOTTOMRIGHT", button, -1, 1)
@@ -378,26 +378,38 @@ function AB:UpdateButtonStatus()
 end
 
 local BarButtonOnEnter = function(self)
-	if self.FadeParent.Fader:IsPlaying() then
-		self.FadeParent.Fader:Stop()
+	if self.ParentBar.Fader:IsPlaying() then
+		self.ParentBar.Fader:Stop()
 	end
 	
-	self.FadeParent.Fader:SetChange(1)
-	self.FadeParent.Fader:Play()
+	for i = 1, #self.ParentBar do
+		self.ParentBar[i].cooldown:SetDrawBling(true)
+	end
+	
+	self.ParentBar.Fader:SetChange(1)
+	self.ParentBar.Fader:Play()
 end
 
 local BarButtonOnLeave = function(self)
-	if self.FadeParent.Fader:IsPlaying() then
-		self.FadeParent.Fader:Stop()
+	if self.ParentBar.Fader:IsPlaying() then
+		self.ParentBar.Fader:Stop()
 	end
 	
-	self.FadeParent.Fader:SetChange(self.FadeParent.ShouldFade and 0 or 1)
-	self.FadeParent.Fader:Play()
+	for i = 1, #self.ParentBar do
+		self.ParentBar[i].cooldown:SetDrawBling(false)
+	end
+	
+	self.ParentBar.Fader:SetChange(self.ParentBar.ShouldFade and 0 or 1)
+	self.ParentBar.Fader:Play()
 end
 
 local BarOnEnter = function(self)
 	if self.Fader:IsPlaying() then
 		self.Fader:Stop()
+	end
+	
+	for i = 1, #self do
+		self[i].cooldown:SetDrawBling(true)
 	end
 	
 	self.Fader:SetChange(1)
@@ -407,6 +419,10 @@ end
 local BarOnLeave = function(self)
 	if self.Fader:IsPlaying() then
 		self.Fader:Stop()
+	end
+	
+	for i = 1, #self do
+		self[i].cooldown:SetDrawBling(false)
 	end
 	
 	self.Fader:SetChange(0)
@@ -435,7 +451,7 @@ function AB:CreateBar1()
 		self:StyleActionButton(Button)
 		
 		Button:SetParent(self.Bar1)
-		Button.FadeParent = self.Bar1
+		Button.ParentBar = self.Bar1
 		
 		Button:HookScript("OnEnter", BarButtonOnEnter)
 		Button:HookScript("OnLeave", BarButtonOnLeave)
@@ -506,7 +522,7 @@ function AB:CreateBar2()
 		
 		self:StyleActionButton(Button)
 		
-		Button.FadeParent = self.Bar2
+		Button.ParentBar = self.Bar2
 		
 		Button:HookScript("OnEnter", BarButtonOnEnter)
 		Button:HookScript("OnLeave", BarButtonOnLeave)
@@ -547,7 +563,7 @@ function AB:CreateBar3()
 		
 		self:StyleActionButton(Button)
 		
-		Button.FadeParent = self.Bar3
+		Button.ParentBar = self.Bar3
 		
 		Button:HookScript("OnEnter", BarButtonOnEnter)
 		Button:HookScript("OnLeave", BarButtonOnLeave)
@@ -588,7 +604,7 @@ function AB:CreateBar4()
 		
 		self:StyleActionButton(Button)
 		
-		Button.FadeParent = self.Bar4
+		Button.ParentBar = self.Bar4
 		
 		Button:HookScript("OnEnter", BarButtonOnEnter)
 		Button:HookScript("OnLeave", BarButtonOnLeave)
@@ -629,7 +645,7 @@ function AB:CreateBar5()
 		
 		self:StyleActionButton(Button)
 		
-		Button.FadeParent = self.Bar5
+		Button.ParentBar = self.Bar5
 		
 		Button:HookScript("OnEnter", BarButtonOnEnter)
 		Button:HookScript("OnLeave", BarButtonOnLeave)
@@ -670,7 +686,7 @@ function AB:CreatePetBar()
 		
 		self:StylePetActionButton(Button)
 		
-		Button.FadeParent = self.PetBar
+		Button.ParentBar = self.PetBar
 		
 		Button:HookScript("OnEnter", BarButtonOnEnter)
 		Button:HookScript("OnLeave", BarButtonOnLeave)
@@ -714,7 +730,7 @@ function AB:CreateStanceBar()
 			
 			self:StyleActionButton(Button)
 			
-			Button.FadeParent = self.StanceBar
+			Button.ParentBar = self.StanceBar
 			
 			Button:HookScript("OnEnter", BarButtonOnEnter)
 			Button:HookScript("OnLeave", BarButtonOnLeave)
