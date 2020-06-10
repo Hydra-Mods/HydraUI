@@ -434,7 +434,7 @@ function vUI:CopyProfile(from, to)
 	end
 	
 	-- This does a full copy, not just an additive copy. Meaning it will even clear out existing values for the sake of precisely matching the copied profile.
-	self.Profiles[to] = self:MergeWithDefaults(from)
+	self.Profiles[to] = self:GetProfile(from)
 	
 	self:print(format('Profile "%s" has been copied from "%s".', to, from))
 	
@@ -643,6 +643,11 @@ local UpdateActiveProfile = function(value)
 end
 
 local CreateProfile = function(value)
+	if vUI.Profiles[value] then
+		vUI:print(format('A profile already exists with the name "%s".', value))
+		return
+	end
+	
 	vUI:CreateProfile(value)
 	vUI:UpdateProfileInfo()
 	
