@@ -473,7 +473,7 @@ function AB:CreateBar1()
 		end
 	]])
 	
-	RegisterStateDriver(self.Bar1, "page", "[vehicleui] 12; [possessbar] 12; [overridebar] 14; [shapeshift] 13; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10; 1")
+	RegisterStateDriver(self.Bar1, "page", "[vehicleui] 12; [possessbar] 12; [overridebar] 14; [shapeshift] 13; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10; [form] 1; 1")
 	
 	self:PositionButtons(self.Bar1, Settings["ab-bar1-button-max"], Settings["ab-bar1-per-row"], Settings["ab-bar1-button-size"], Settings["ab-bar1-button-gap"])
 	
@@ -1041,12 +1041,110 @@ local UpdateActionBarFont = function()
 	end
 end
 
+local UpdateBar1Hover = function(value)
+	AB.Bar1.ShouldFade = value
+
+	if value then
+		AB.Bar1:SetAlpha(0)
+		AB.Bar1:SetScript("OnEnter", BarOnEnter)
+		AB.Bar1:SetScript("OnLeave", BarOnLeave)
+	else
+		AB.Bar1:SetAlpha(1)
+		AB.Bar1:SetScript("OnEnter", nil)
+		AB.Bar1:SetScript("OnLeave", nil)
+	end
+end
+
+local UpdateBar2Hover = function(value)
+	AB.Bar2.ShouldFade = value
+
+	if value then
+		AB.Bar2:SetAlpha(0)
+		AB.Bar2:SetScript("OnEnter", BarOnEnter)
+		AB.Bar2:SetScript("OnLeave", BarOnLeave)
+	else
+		AB.Bar2:SetAlpha(1)
+		AB.Bar2:SetScript("OnEnter", nil)
+		AB.Bar2:SetScript("OnLeave", nil)
+	end
+end
+
+local UpdateBar3Hover = function(value)
+	AB.Bar3.ShouldFade = value
+
+	if value then
+		AB.Bar3:SetAlpha(0)
+		AB.Bar3:SetScript("OnEnter", BarOnEnter)
+		AB.Bar3:SetScript("OnLeave", BarOnLeave)
+	else
+		AB.Bar3:SetAlpha(1)
+		AB.Bar3:SetScript("OnEnter", nil)
+		AB.Bar3:SetScript("OnLeave", nil)
+	end
+end
+
+local UpdateBar4Hover = function(value)
+	AB.Bar4.ShouldFade = value
+
+	if value then
+		AB.Bar4:SetAlpha(0)
+		AB.Bar4:SetScript("OnEnter", BarOnEnter)
+		AB.Bar4:SetScript("OnLeave", BarOnLeave)
+	else
+		AB.Bar4:SetAlpha(1)
+		AB.Bar4:SetScript("OnEnter", nil)
+		AB.Bar4:SetScript("OnLeave", nil)
+	end
+end
+
+local UpdateBar5Hover = function(value)
+	AB.Bar5.ShouldFade = value
+
+	if value then
+		AB.Bar5:SetAlpha(0)
+		AB.Bar5:SetScript("OnEnter", BarOnEnter)
+		AB.Bar5:SetScript("OnLeave", BarOnLeave)
+	else
+		AB.Bar5:SetAlpha(1)
+		AB.Bar5:SetScript("OnEnter", nil)
+		AB.Bar5:SetScript("OnLeave", nil)
+	end
+end
+
+local UpdatePetHover = function(value)
+	AB.PetBar.ShouldFade = value
+
+	if value then
+		AB.PetBar:SetAlpha(0)
+		AB.PetBar:SetScript("OnEnter", BarOnEnter)
+		AB.PetBar:SetScript("OnLeave", BarOnLeave)
+	else
+		AB.PetBar:SetAlpha(1)
+		AB.PetBar:SetScript("OnEnter", nil)
+		AB.PetBar:SetScript("OnLeave", nil)
+	end
+end
+
+local UpdateStanceHover = function(value)
+	AB.StanceBar.ShouldFade = value
+
+	if value then
+		AB.StanceBar:SetAlpha(0)
+		AB.StanceBar:SetScript("OnEnter", BarOnEnter)
+		AB.StanceBar:SetScript("OnLeave", BarOnLeave)
+	else
+		AB.StanceBar:SetAlpha(1)
+		AB.StanceBar:SetScript("OnEnter", nil)
+		AB.StanceBar:SetScript("OnLeave", nil)
+	end
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Action Bars"])
 	
 	Left:CreateHeader(Language["Action Bar 1"])
 	Left:CreateSwitch("ab-bar1-enable", Settings["ab-bar1-enable"], Language["Enable Bar"], Language["Enable action bar 1"], UpdateEnableBar1)
-	Left:CreateSwitch("ab-bar1-hover", Settings["ab-bar1-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"]):RequiresReload()
+	Left:CreateSwitch("ab-bar1-hover", Settings["ab-bar1-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"], UpdateBar1Hover)
 	Left:CreateSlider("ab-bar1-per-row", Settings["ab-bar1-per-row"], 1, 12, 1, Language["Buttons Per Row"], Language["Set the number of buttons per row"], UpdateBar1)
 	Left:CreateSlider("ab-bar1-button-max", Settings["ab-bar1-button-max"], 1, 12, 1, Language["Max Buttons"], Language["Set the number of buttons displayed on the action bar"], UpdateBar1)
 	Left:CreateSlider("ab-bar1-button-size", Settings["ab-bar1-button-size"], 20, 50, 1, Language["Button Size"], Language["Set the action button size"], UpdateBar1)
@@ -1054,7 +1152,7 @@ GUI:AddOptions(function(self)
 	
 	Right:CreateHeader(Language["Action Bar 2"])
 	Right:CreateSwitch("ab-bar2-enable", Settings["ab-bar2-enable"], Language["Enable Bar"], Language["Enable action bar 2"], UpdateEnableBar2)
-	Right:CreateSwitch("ab-bar2-hover", Settings["ab-bar2-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"]):RequiresReload()
+	Right:CreateSwitch("ab-bar2-hover", Settings["ab-bar2-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"], UpdateBar2Hover)
 	Right:CreateSlider("ab-bar2-per-row", Settings["ab-bar2-per-row"], 1, 12, 1, Language["Buttons Per Row"], Language["Set the number of buttons per row"], UpdateBar2)
 	Right:CreateSlider("ab-bar2-button-max", Settings["ab-bar2-button-max"], 1, 12, 1, Language["Max Buttons"], Language["Set the number of buttons displayed on the action bar"], UpdateBar2)
 	Right:CreateSlider("ab-bar2-button-size", Settings["ab-bar2-button-size"], 20, 50, 1, Language["Button Size"], Language["Set the action button size"], UpdateBar2)
@@ -1062,7 +1160,7 @@ GUI:AddOptions(function(self)
 	
 	Left:CreateHeader(Language["Action Bar 3"])
 	Left:CreateSwitch("ab-bar3-enable", Settings["ab-bar3-enable"], Language["Enable Bar"], Language["Enable action bar 3"], UpdateEnableBar3)
-	Left:CreateSwitch("ab-bar3-hover", Settings["ab-bar3-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"]):RequiresReload()
+	Left:CreateSwitch("ab-bar3-hover", Settings["ab-bar3-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"], UpdateBar3Hover)
 	Left:CreateSlider("ab-bar3-per-row", Settings["ab-bar3-per-row"], 1, 12, 1, Language["Buttons Per Row"], Language["Set the number of buttons per row"], UpdateBar3)
 	Left:CreateSlider("ab-bar3-button-max", Settings["ab-bar3-button-max"], 1, 12, 1, Language["Max Buttons"], Language["Set the number of buttons displayed on the action bar"], UpdateBar3)
 	Left:CreateSlider("ab-bar3-button-size", Settings["ab-bar3-button-size"], 20, 50, 1, Language["Button Size"], Language["Set the action button size"], UpdateBar3)
@@ -1070,7 +1168,7 @@ GUI:AddOptions(function(self)
 	
 	Right:CreateHeader(Language["Action Bar 4"])
 	Right:CreateSwitch("ab-bar4-enable", Settings["ab-bar4-enable"], Language["Enable Bar"], Language["Enable action bar 4"], UpdateEnableBar4)
-	Right:CreateSwitch("ab-bar4-hover", Settings["ab-bar4-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"]):RequiresReload()
+	Right:CreateSwitch("ab-bar4-hover", Settings["ab-bar4-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"], UpdateBar4Hover)
 	Right:CreateSlider("ab-bar4-per-row", Settings["ab-bar4-per-row"], 1, 12, 1, Language["Buttons Per Row"], Language["Set the number of buttons per row"], UpdateBar4)
 	Right:CreateSlider("ab-bar4-button-max", Settings["ab-bar4-button-max"], 1, 12, 1, Language["Max Buttons"], Language["Set the number of buttons displayed on the action bar"], UpdateBar4)
 	Right:CreateSlider("ab-bar4-button-size", Settings["ab-bar4-button-size"], 20, 50, 1, Language["Button Size"], Language["Set the action button size"], UpdateBar4)
@@ -1078,7 +1176,7 @@ GUI:AddOptions(function(self)
 	
 	Left:CreateHeader(Language["Action Bar 5"])
 	Left:CreateSwitch("ab-bar5-enable", Settings["ab-bar5-enable"], Language["Enable Bar"], Language["Enable action bar 5"], UpdateEnableBar5)
-	Left:CreateSwitch("ab-bar5-hover", Settings["ab-bar5-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"]):RequiresReload()
+	Left:CreateSwitch("ab-bar5-hover", Settings["ab-bar5-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"], UpdateBar5Hover)
 	Left:CreateSlider("ab-bar5-per-row", Settings["ab-bar5-per-row"], 1, 12, 1, Language["Buttons Per Row"], Language["Set the number of buttons per row"], UpdateBar5)
 	Left:CreateSlider("ab-bar5-button-max", Settings["ab-bar5-button-max"], 1, 12, 1, Language["Max Buttons"], Language["Set the number of buttons displayed on the action bar"], UpdateBar5)
 	Left:CreateSlider("ab-bar5-button-size", Settings["ab-bar5-button-size"], 20, 50, 1, Language["Button Size"], Language["Set the action button size"], UpdateBar5)
@@ -1086,14 +1184,14 @@ GUI:AddOptions(function(self)
 	
 	Right:CreateHeader(Language["Pet Bar"])
 	Right:CreateSwitch("ab-pet-enable", Settings["ab-pet-enable"], Language["Enable Bar"], Language["Enable the pet action bar"], UpdateEnablePetBar)
-	Right:CreateSwitch("ab-pet-hover", Settings["ab-pet-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"]):RequiresReload()
+	Right:CreateSwitch("ab-pet-hover", Settings["ab-pet-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"], UpdatePetHover)
 	Right:CreateSlider("ab-pet-per-row", Settings["ab-pet-per-row"], 1, 10, 1, Language["Buttons Per Row"], Language["Set the number of buttons per row"], UpdatePetBar)
 	Right:CreateSlider("ab-pet-button-size", Settings["ab-pet-button-size"], 20, 50, 1, Language["Button Size"], Language["Set the action button size"], UpdatePetBar)
 	Right:CreateSlider("ab-pet-button-gap", Settings["ab-pet-button-gap"], -1, 8, 1, Language["Button Spacing"], Language["Set the spacing between action buttons"], UpdatePetBar)
 	
 	Left:CreateHeader(Language["Stance Bar"])
 	Left:CreateSwitch("ab-stance-enable", Settings["ab-stance-enable"], Language["Enable Bar"], Language["Enable the stance bar"], UpdateEnablePetBar)
-	Left:CreateSwitch("ab-stance-hover", Settings["ab-stance-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"]):RequiresReload()
+	Left:CreateSwitch("ab-stance-hover", Settings["ab-stance-hover"], Language["Enable Mouseover"], Language["Only display the bar while hovering over it"], UpdateStanceHover)
 	Left:CreateSlider("ab-stance-per-row", Settings["ab-stance-per-row"], 1, 12, 1, Language["Buttons Per Row"], Language["Set the number of buttons per row"], UpdateStanceBar)
 	Left:CreateSlider("ab-stance-button-size", Settings["ab-stance-button-size"], 20, 50, 1, Language["Button Size"], Language["Set the action button size"], UpdateStanceBar)
 	Left:CreateSlider("ab-stance-button-gap", Settings["ab-stance-button-gap"], -1, 8, 1, Language["Button Spacing"], Language["Set the spacing between action buttons"], UpdateStanceBar)
