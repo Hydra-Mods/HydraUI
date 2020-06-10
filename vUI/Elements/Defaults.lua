@@ -134,28 +134,65 @@ Defaults["color-tapped"] = "A6A6A6"
 Defaults["color-disconnected"] = "A6A6A6"
 
 -- Action Bars
-Defaults["action-bars-enable"] = true
-Defaults["action-bars-layout"] = "DEFAULT"
-Defaults["action-bars-show-hotkeys"] = true
-Defaults["action-bars-button-size"] = 32
-Defaults["action-bars-button-spacing"] = 2
-Defaults["action-bars-stance-size"] = 32
-Defaults["action-bars-button-highlight"] = "Blank"
-Defaults["action-bars-show-bottom-bg"] = true
-Defaults["action-bars-show-side-bg"] = true
-Defaults["action-bars-show-stance-bg"] = true
-Defaults["action-bars-show-hotkeys"] = true
-Defaults["action-bars-show-macro-names"] = true
-Defaults["action-bars-show-count"] = true
-Defaults["action-bars-show-grid"] = true
-Defaults["action-bars-font"] = "Roboto"
-Defaults["action-bars-font-size"] = 12
-Defaults["action-bars-font-flags"] = ""
-Defaults["action-bars-show-1"] = true
-Defaults["action-bars-show-2"] = true
-Defaults["action-bars-show-3"] = true
-Defaults["action-bars-show-4"] = true
-Defaults["action-bars-show-5"] = true
+Defaults["ab-enable"] = true
+
+Defaults["ab-show-hotkey"] = true
+Defaults["ab-show-count"] = true
+Defaults["ab-show-macro"] = true
+
+Defaults["ab-font"] = "PT Sans"
+Defaults["ab-font-size"] = 12
+Defaults["ab-cd-size"] = 18
+Defaults["ab-font-flags"] = ""
+
+Defaults["ab-bar1-enable"] = true
+Defaults["ab-bar1-hover"] = false
+Defaults["ab-bar1-button-size"] = 32
+Defaults["ab-bar1-button-gap"] = 2
+Defaults["ab-bar1-button-max"] = 12
+Defaults["ab-bar1-per-row"] = 12
+
+Defaults["ab-bar2-enable"] = true
+Defaults["ab-bar2-hover"] = false
+Defaults["ab-bar2-button-size"] = 32
+Defaults["ab-bar2-button-gap"] = 2
+Defaults["ab-bar2-button-max"] = 12
+Defaults["ab-bar2-per-row"] = 12
+
+Defaults["ab-bar3-enable"] = true
+Defaults["ab-bar3-hover"] = false
+Defaults["ab-bar3-button-size"] = 32
+Defaults["ab-bar3-button-gap"] = 2
+Defaults["ab-bar3-button-max"] = 12
+Defaults["ab-bar3-per-row"] = 12
+
+Defaults["ab-bar4-enable"] = true
+Defaults["ab-bar4-hover"] = false
+Defaults["ab-bar4-button-size"] = 32
+Defaults["ab-bar4-button-gap"] = 2
+Defaults["ab-bar4-button-max"] = 12
+Defaults["ab-bar4-per-row"] = 1
+
+Defaults["ab-bar5-enable"] = true
+Defaults["ab-bar5-hover"] = false
+Defaults["ab-bar5-button-size"] = 32
+Defaults["ab-bar5-button-gap"] = 2
+Defaults["ab-bar5-button-max"] = 12
+Defaults["ab-bar5-per-row"] = 1
+
+Defaults["ab-pet-enable"] = true
+Defaults["ab-pet-hover"] = false
+Defaults["ab-pet-button-size"] = 32
+Defaults["ab-pet-button-gap"] = 2
+Defaults["ab-pet-per-row"] = 1
+
+Defaults["ab-stance-enable"] = true
+Defaults["ab-stance-hover"] = false
+Defaults["ab-stance-button-size"] = 32
+Defaults["ab-stance-button-gap"] = 2
+Defaults["ab-stance-per-row"] = 12
+
+Defaults["ab-extra-button-size"] = 60
 
 -- Chat
 Defaults["chat-enable"] = true

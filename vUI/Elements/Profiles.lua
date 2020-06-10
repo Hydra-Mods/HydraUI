@@ -436,6 +436,8 @@ function vUI:CopyProfile(from, to)
 	-- This does a full copy, not just an additive copy. Meaning it will even clear out existing values for the sake of precisely matching the copied profile.
 	self.Profiles[to] = self:GetProfile(from)
 	
+	self.Profiles[to]["profile-last-modified"] = self:GetCurrentDate()
+	
 	self:print(format('Profile "%s" has been copied from "%s".', to, from))
 	
 	C_UI.Reload()
@@ -644,8 +646,7 @@ end
 
 local CreateProfile = function(value)
 	if vUI.Profiles[value] then
-		vUI:print(format('A profile already exists with the name "%s".', value))
-		return
+		return vUI:print(format('A profile already exists with the name "%s".', value))
 	end
 	
 	vUI:CreateProfile(value)
