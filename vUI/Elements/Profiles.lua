@@ -433,11 +433,8 @@ function vUI:CopyProfile(from, to)
 		return
 	end
 	
-	for ID, Value in pairs(self.Profiles[from]) do
-		if (not self.ProfileMetadata[ID]) then
-			self.Profiles[to][ID] = Value
-		end
-	end
+	-- This does a full copy, not just an additive copy. Meaning it will even clear out existing values for the sake of precisely matching the copied profile.
+	self.Profiles[to] = self:MergeWithDefaults(from)
 	
 	self:print(format('Profile "%s" has been copied from "%s".', to, from))
 	

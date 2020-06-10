@@ -8,8 +8,8 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["Scripting Help & Mentoring"])
 	Left:CreateDoubleLine("Tukz", "Foof")
 	Left:CreateDoubleLine("Eclipse", "nightcracker")
-	Left:CreateDoubleLine("Elv", "Azilroka")
-	Left:CreateDoubleLine("Smelly", "AlleyKat")
+	Left:CreateDoubleLine("Elv", "Smelly")
+	Left:CreateDoubleLine("Azilroka", "AlleyKat")
 	Left:CreateDoubleLine("Zork", "Simpy")
 	
 	Left:CreateHeader("oUF")
@@ -41,14 +41,15 @@ GUI:AddOptions(function(self)
 	Left:CreateDoubleLine("Innie", "Brightsides")
 	Left:CreateDoubleLine("Erthelmi", "Gene")
 	
-	Right:CreateMessage("Thank you to all of these amazing people who have supported the development of this project!")
-	
 	Right:CreateHeader("|cFFA335EEEpic Patrons|r")
 	Right:CreateLine("Smelly")
 	
 	Right:CreateHeader("|cFF0070DDRare Patrons|r")
-        Right:CreateLine("Euphoria")
-
+	Right:CreateLine("Euphoria")
+	
 	Right:CreateHeader("|cFF1EFF00Uncommon Patrons|r")
-        Right:CreateLine("Ryex")
+	Right:CreateLine("Ryex")
+	
+	Left:CreateFooter()
+	Left:CreateMessage("Thank you to all of these amazing people who have supported the development of this project!")
 end)
