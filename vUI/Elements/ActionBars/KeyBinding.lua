@@ -144,8 +144,10 @@ function KeyBinding:Load()
 	self.Hover = CreateFrame("Frame", nil, self)
 	self.Hover:SetFrameLevel(50)
 	self.Hover:SetFrameStrata("DIALOG")
-	self.Hover:SetBackdrop(vUI.Outline)
-	self.Hover:SetBackdropBorderColor(vUI:HexToRGB("388E3C"))
+	self.Hover:SetBackdrop(vUI.BackdropAndBorder)
+	self.Hover:SetBackdropColor(vUI:HexToRGB("FFC44D"))
+	self.Hover:SetBackdropBorderColor(vUI:HexToRGB("FFC44D"))
+	self.Hover:SetAlpha(0.6)
 	self.Hover:Hide()
 end
 
@@ -178,7 +180,7 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:GetWindow(Language["Action Bars"])
 	
 	Right:CreateHeader(Language["Key Binding"])
-	Right:CreateButton(Language["Toggle"], Language["Key Bind Mode"], Language["While toggled, you can hover over action buttons and press a key combination to rebind that action"], ToggleBindingMode)
+	Right:CreateButton(Language["Toggle"], Language["Key Bind Mode"], Language["While toggled, you can hover over action buttons and press a key combination to rebind them"], ToggleBindingMode)
 	Right:CreateButton(Language["Save"], Language["Save Changes"], Language["Save key binding changes"], SaveChanges)
 	Right:CreateButton(Language["Discard"], Language["Discard Changes"], Language["Discard key binding changes"], DiscardChanges)
 	
