@@ -1155,7 +1155,7 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Action Bars"])
 	
 	Left:CreateHeader(Language["Enable"])
-	Left:CreateSwitch("ab-enable", Settings["ab-enable"], Language["Enable Action Bar"], Language["Enable action bars module"], ReloadUI):RequiresReload()
+	Left:CreateSwitch("ab-enable", Settings["ab-enable"], Language["Enable Action Bar"], Language["Enable action bars module"], ReloadUI):RequiresReload(true)
 	
 	Left:CreateHeader(Language["Action Bar 1"])
 	Left:CreateSwitch("ab-bar1-enable", Settings["ab-bar1-enable"], Language["Enable Bar"], Language["Enable action bar 1"], UpdateEnableBar1)
