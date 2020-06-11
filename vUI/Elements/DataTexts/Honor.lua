@@ -20,17 +20,6 @@ local OnEnter = function(self)
 	local Kills = GetPVPLifetimeStats()
 	
 	GameTooltip:AddLine(format(HONOR_LEVEL_TOOLTIP, HonorLevel))
-	
-	if RewardInfo then
-		local RewardText = select(11, GetAchievementInfo(RewardInfo.achievementRewardedID))
-		
-		if RewardText:match("%S") then
-			GameTooltip:AddLine(" ")
-			GameTooltip:AddLine(PVP_PRESTIGE_RANK_UP_NEXT_MAX_LEVEL_REWARD:format(NextRewardLevel))
-			GameTooltip:AddLine(RewardText, 1, 1, 1)
-		end
-	end
-	
 	GameTooltip:AddLine(" ")
 	GameTooltip:AddLine(Language["Current honor"])
 	GameTooltip:AddDoubleLine(format("%s / %s", vUI:Comma(Honor), vUI:Comma(MaxHonor)), format("%s%%", Percent), 1, 1, 1, 1, 1, 1)
@@ -43,6 +32,16 @@ local OnEnter = function(self)
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddLine(HONORABLE_KILLS)
 		GameTooltip:AddLine(vUI:Comma(Kills), 1, 1, 1)
+	end
+	
+	if RewardInfo then
+		local RewardText = select(11, GetAchievementInfo(RewardInfo.achievementRewardedID))
+		
+		if RewardText:match("%S") then
+			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine(PVP_PRESTIGE_RANK_UP_NEXT_MAX_LEVEL_REWARD:format(NextRewardLevel))
+			GameTooltip:AddLine(RewardText, 1, 1, 1)
+		end
 	end
 	
 	GameTooltip:Show()

@@ -845,6 +845,8 @@ function AB:Load()
 	self.Hide = CreateFrame("Frame", nil, UIParent, "SecureHandlerStateTemplate")
 	self.Hide:Hide()
 	
+	SetActionBarToggles(1, 1, 1, 1, 1)
+	
 	self:SetCVars()
 	self:Disable(MainMenuBar)
 	self:CreateBars()
