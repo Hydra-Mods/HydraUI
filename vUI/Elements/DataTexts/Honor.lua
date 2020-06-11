@@ -11,12 +11,26 @@ local OnEnter = function(self)
 	
 	local Honor = UnitHonor("player")
 	local MaxHonor = UnitHonorMax("player")
+	local HonorLevel = UnitHonorLevel("player")
+	local NextRewardLevel = C_PvP.GetNextHonorLevelForReward(HonorLevel)
+	local RewardInfo = C_PvP.GetHonorRewardInfo(NextRewardLevel)
 	local Percent = floor((Honor / MaxHonor * 100 + 0.05) * 10) / 10
 	local Remaining = MaxHonor - Honor
 	local RemainingPercent = floor((Remaining / MaxHonor * 100 + 0.05) * 10) / 10
 	local Kills = GetPVPLifetimeStats()
 	
-	GameTooltip:AddLine(format(HONOR_LEVEL_TOOLTIP, UnitHonorLevel("player")))
+	GameTooltip:AddLine(format(HONOR_LEVEL_TOOLTIP, HonorLevel))
+	
+	if RewardInfo then
+		local RewardText = select(11, GetAchievementInfo(RewardInfo.achievementRewardedID))
+		
+		if RewardText:match("%S") then
+			GameTooltip:AddLine(" ")
+			GameTooltip:AddLine(PVP_PRESTIGE_RANK_UP_NEXT_MAX_LEVEL_REWARD:format(NextRewardLevel))
+			GameTooltip:AddLine(RewardText, 1, 1, 1)
+		end
+	end
+	
 	GameTooltip:AddLine(" ")
 	GameTooltip:AddLine(Language["Current honor"])
 	GameTooltip:AddDoubleLine(format("%s / %s", vUI:Comma(Honor), vUI:Comma(MaxHonor)), format("%s%%", Percent), 1, 1, 1, 1, 1, 1)

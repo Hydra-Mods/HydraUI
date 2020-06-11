@@ -49,7 +49,7 @@ function MicroButtons:UpdateVisibility()
 end
 
 function MicroButtons:Load()
-	if (not Settings["action-bars-enable"]) then
+	if (not Settings["ab-enable"]) then
 		return
 	end
 	
