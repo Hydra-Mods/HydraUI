@@ -333,6 +333,16 @@ GUI.Widgets.CreateSupportHeader = function(self, text)
 	return Anchor.Text
 end
 
+-- Spacer
+GUI.Widgets.CreateSpacer = function(self)
+	local Anchor = CreateFrame("Frame", nil, self)
+	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	
+	tinsert(self.Widgets, Anchor)
+	
+	return Anchor
+end
+
 -- Button
 local BUTTON_WIDTH = 130
 
