@@ -29,9 +29,7 @@ function AB:SetButtonAttributes(button)
 	ActionButton_ShowGrid(button, 1) -- ACTION_BUTTON_SHOW_GRID_REASON_CVAR
 end
 
-function AB:PositionButtons(bar, numbuttons, perrow, size, spacing, scale)
-	scale = scale or 1
-	
+function AB:PositionButtons(bar, numbuttons, perrow, size, spacing)
 	if (numbuttons < perrow) then
 		perrow = numbuttons
 	end
@@ -44,7 +42,7 @@ function AB:PositionButtons(bar, numbuttons, perrow, size, spacing, scale)
 	
 	-- Bar sizing
 	bar:SetWidth((size * perrow) + (spacing * (perrow - 1)))
-	bar:SetHeight((size * (Columns * scale)) + ((spacing * (Columns - 1)) * scale))
+	bar:SetHeight((size * Columns) + ((spacing * (Columns - 1))))
 	
 	-- Actual moving
 	for i = 1, #bar do
