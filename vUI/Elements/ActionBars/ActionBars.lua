@@ -933,6 +933,14 @@ local UpdateEnablePetBar = function(value)
 	end
 end
 
+local UpdateEnableStanceBar = function(value)
+	if value then
+		AB:EnableBar(AB.StanceBar)
+	else
+		AB:DisableBar(AB.StanceBar)
+	end
+end
+
 local UpdateShowHotKey = function(value)
 	if value then
 		for i = 1, 12 do
@@ -1208,7 +1216,7 @@ GUI:AddOptions(function(self)
 	Right:CreateSlider("ab-pet-button-gap", Settings["ab-pet-button-gap"], -1, 8, 1, Language["Button Spacing"], Language["Set the spacing between action buttons"], UpdatePetBar)
 	
 	Left:CreateHeader(Language["Stance Bar"])
-	Left:CreateSwitch("ab-stance-enable", Settings["ab-stance-enable"], Language["Enable Bar"], Language["Enable the stance bar"], UpdateEnablePetBar)
+	Left:CreateSwitch("ab-stance-enable", Settings["ab-stance-enable"], Language["Enable Bar"], Language["Enable the stance bar"], UpdateEnableStanceBar)
 	Left:CreateSwitch("ab-stance-hover", Settings["ab-stance-hover"], Language["Set Mouseover"], Language["Only display the bar while hovering over it"], UpdateStanceHover)
 	Left:CreateSlider("ab-stance-per-row", Settings["ab-stance-per-row"], 1, 12, 1, Language["Buttons Per Row"], Language["Set the number of buttons per row"], UpdateStanceBar)
 	Left:CreateSlider("ab-stance-button-size", Settings["ab-stance-button-size"], 20, 50, 1, Language["Button Size"], Language["Set the action button size"], UpdateStanceBar)
