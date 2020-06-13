@@ -480,8 +480,8 @@ function AB:CreateBar1()
 			newstate = GetActionBarPage()
 		end
 		
-		for i, button in next, Buttons do
-			button:SetAttribute("actionpage", newstate)
+		for i = 1, 12 do
+			Buttons[i]:SetAttribute("actionpage", newstate)
 		end
 	]])
 	
