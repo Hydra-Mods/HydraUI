@@ -334,7 +334,7 @@ end
 
 function AB:PetActionBar_Update()
 	for i = 1, NUM_PET_ACTION_SLOTS do
-		_G["PetActionButton" .. i]:SetNormalTexture("")
+		AB.PetBar[i]:SetNormalTexture("")
 	end
 end
 

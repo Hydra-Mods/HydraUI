@@ -16,9 +16,7 @@ function vUI:PositionToString(frame)
 		Parent = vUI.UIParent
 	end
 	
-	local String = format("%s:%s:%s:%s:%s", A1, Parent:GetName(), A2, X, Y)
-	
-	return String
+	return format("%s:%s:%s:%s:%s", A1, Parent:GetName(), A2, floor(X + 0.5), floor(Y + 0.5))
 end
 
 function vUI:StringToPosition(str)
@@ -28,9 +26,7 @@ function vUI:StringToPosition(str)
 	
 	local A1, Parent, A2, X, Y = match(str, "(.*):(.*):(.*):(.*):(.*)")
 	
-	Parent = _G[Parent]
-	
-	return A1, Parent, A2, tonumber(X), tonumber(Y)
+	return A1, _G[Parent], A2, tonumber(X), tonumber(Y)
 end
 
 local OnDragStart = function(self)
@@ -82,7 +78,7 @@ function vUI:ToggleMovers()
 			self.MovingFrames[i]:SetScript("OnDragStop", OnDragStop)
 			self.MovingFrames[i]:Show()
 		end
-	
+		
 		self.MovingActive = true
 	end
 end
