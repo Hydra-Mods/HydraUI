@@ -99,11 +99,13 @@ local AcceptNewStyle = function(value)
 end
 
 local UpdateStyle = function(value)
+	local Label = value
+	
 	if Assets.Styles[value]["ui-widget-color"] then
-		value = format("|cFF%s%s|r", Assets.Styles[value]["ui-widget-color"], value)
+		Label = format("|cFF%s%s|r", Assets.Styles[value]["ui-widget-color"], value)
 	end
 	
-	vUI:DisplayPopup(Language["Attention"], format(Language['Are you sure you would like to change to the current style to "%s"?'], value), Language["Accept"], AcceptNewStyle, Language["Cancel"], nil, value)
+	vUI:DisplayPopup(Language["Attention"], format(Language['Are you sure you would like to change to the current style to "%s"?'], Label), Language["Accept"], AcceptNewStyle, Language["Cancel"], nil, value)
 end
 
 GUI:AddOptions(function(self)

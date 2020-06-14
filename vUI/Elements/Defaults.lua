@@ -403,6 +403,7 @@ Defaults["party-enable"] = true
 Defaults["party-width"] = 78
 Defaults["party-show-debuffs"] = true
 Defaults["party-show-role"] = true
+Defaults["party-show-aurawatch"] = true
 Defaults["party-in-range"] = 100
 Defaults["party-out-of-range"] = 50
 Defaults["party-health-height"] = 40
@@ -491,6 +492,7 @@ Defaults["tooltips-hide-on-item"] = "NEVER"
 Defaults["tooltips-hide-on-action"] = "NEVER"
 Defaults["tooltips-health-bar-height"] = 15
 Defaults["tooltips-show-health-text"] = true
+Defaults["tooltips-show-target"] = true
 
 -- Bags
 Defaults["bags-loot-from-left"] = false

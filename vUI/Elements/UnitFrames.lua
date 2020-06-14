@@ -2123,13 +2123,7 @@ local StyleParty = function(self, unit)
 		Auras.icons = {}
 		Auras.PostCreateIcon = PostCreateAuraWatchIcon
 		
-		local Buffs = {}
-		
-		for key, value in pairs(BuffIDs[vUI.UserClass]) do
-			tinsert(Buffs, value)
-		end
-		
-		for key, spell in pairs(Buffs) do
+		for key, spell in pairs(BuffIDs[vUI.UserClass]) do
 			local Icon = CreateFrame("Frame", nil, Auras)
 			Icon.spellID = spell[1]
 			Icon.anyUnit = spell[4]

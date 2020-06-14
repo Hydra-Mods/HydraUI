@@ -12,11 +12,7 @@ vUI.MovingActive = false
 function vUI:PositionToString(frame)
 	local A1, Parent, A2, X, Y = frame:GetPoint()
 	
-	if (not Parent) then
-		Parent = vUI.UIParent
-	end
-	
-	return format("%s:%s:%s:%s:%s", A1, Parent:GetName(), A2, floor(X + 0.5), floor(Y + 0.5))
+	return format("%s:%s:%s:%s:%s", A1, Parent and Parent:GetName() or "vUIParent", A2, floor(X + 0.5), floor(Y + 0.5))
 end
 
 function vUI:StringToPosition(str)
@@ -143,16 +139,12 @@ local MoverOnEnter = function(self)
 	
 	local A1, Parent, A2, X, Y = self:GetPoint()
 	
-	if (Parent and Parent.GetName) then
-		Parent = Parent:GetName()
-	end
-	
 	GameTooltip_SetDefaultAnchor(GameTooltip, self)
 	
 	GameTooltip:AddLine(self.Name)
 	GameTooltip:AddLine(" ")
 	GameTooltip:AddDoubleLine(Language["Anchor 1:"], A1, 1, 1, 1, 1, 1, 1)
-	GameTooltip:AddDoubleLine(Language["Parent:"], Parent, 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine(Language["Parent:"], Parent and Parent:GetName() or "vUIParent", 1, 1, 1, 1, 1, 1)
 	GameTooltip:AddDoubleLine(Language["Anchor 2:"], A2, 1, 1, 1, 1, 1, 1)
 	GameTooltip:AddDoubleLine(Language["X offset:"], floor(X), 1, 1, 1, 1, 1, 1)
 	GameTooltip:AddDoubleLine(Language["Y offset:"], floor(Y), 1, 1, 1, 1, 1, 1)
@@ -180,7 +172,7 @@ function vUI:CreateMover(frame, padding)
 	end
 	
 	if (not Parent) then
-		Parent = vUI.UIParent
+		Parent = vUIParent
 	end
 	
 	local ParentName = Parent:GetName()
