@@ -214,6 +214,8 @@ function AB:StyleActionButton(button)
 	
 	self:SetButtonAttributes(button)
 	
+	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
+	
 	button.Styled = true
 end
 
