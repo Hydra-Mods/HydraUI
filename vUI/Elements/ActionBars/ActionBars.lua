@@ -214,8 +214,6 @@ function AB:StyleActionButton(button)
 	
 	self:SetButtonAttributes(button)
 	
-	self:UnregisterEvent("PLAYER_ENTERING_WORLD")
-	
 	button.Styled = true
 end
 
@@ -465,7 +463,7 @@ function AB:CreateBar1()
 			newstate = GetOverrideBarIndex()
 		elseif HasTempShapeshiftActionBar() then
 			newstate = GetTempShapeshiftBarIndex()
-		elseif GetBonusBarOffset() > 0 then
+		elseif (GetBonusBarOffset() > 0) then
 			newstate = GetBonusBarOffset() + 6
 		else
 			newstate = GetActionBarPage()
@@ -476,7 +474,7 @@ function AB:CreateBar1()
 		end
 	]])
 	
-	RegisterStateDriver(self.Bar1, "page", "[vehicleui] 12; [possessbar] 12; [overridebar] 14; [shapeshift] 13; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10; [form] 1; 1")
+	RegisterStateDriver(self.Bar1, "page", "[vehicleui] 12; [possessbar] 12; [shapeshift] 13; [overridebar] 14; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10; [form] 1; 1")
 	
 	self:PositionButtons(self.Bar1, Settings["ab-bar1-button-max"], Settings["ab-bar1-per-row"], Settings["ab-bar1-button-size"], Settings["ab-bar1-button-gap"])
 	
