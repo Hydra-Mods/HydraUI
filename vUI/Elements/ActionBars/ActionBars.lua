@@ -824,6 +824,32 @@ function AB:SetCVars()
 	C_CVar.SetCVar("showgrid", 1)
 end
 
+function AB:UpdateFlyout()
+	if (not self.FlyoutArrow) then
+		return
+	end
+	
+	SpellFlyout.BgEnd:SetTexture()
+	SpellFlyout.HorizBg:SetTexture()
+	SpellFlyout.VertBg:SetTexture()
+	
+	if self.FlyoutBorder then
+		self.FlyoutBorder:SetTexture()
+		self.FlyoutBorderShadow:SetTexture()
+	end
+	
+	for i = 1, 8 do
+		local Button = _G["SpellFlyoutButton" .. i]
+		
+		if Button then
+			AB:StylePetActionButton(Button)
+			
+			Button.GlyphIcon:ClearAllPoints()
+			Button.GlyphIcon:SetPoint("TOPRIGHT", Button, 2, 2)
+		end
+	end
+end
+
 function AB:Load()
 	if (not Settings["ab-enable"]) then
 		return
@@ -838,10 +864,11 @@ function AB:Load()
 	self:Disable(MainMenuBar)
 	self:CreateBars()
 	self:CreateMovers()
-
+	
 	self:Hook("ActionButton_Update", "UpdateButtonStatus")
 	self:Hook("ActionButton_OnUpdate", "UpdateButtonStatus")
 	self:Hook("ActionButton_UpdateUsable", "UpdateButtonStatus")
+	self:Hook("ActionButton_UpdateFlyout", "UpdateFlyout")
 end
 
 local UpdateBar1 = function()
