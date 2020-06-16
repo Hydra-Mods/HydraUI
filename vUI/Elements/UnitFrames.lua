@@ -696,36 +696,38 @@ local StyleNamePlate = function(self, unit)
 	Threat.Bottom:SetAlpha(0.8)
 	
 	-- Buffs
-	local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
-	Buffs:SetSize(30, 30)
-	Buffs:SetPoint("BOTTOM", self, "TOP", 0, 36)
-	Buffs.size = 30
-	Buffs.spacing = 0
-	Buffs.num = 1
-	Buffs.initialAnchor = "TOPLEFT"
-	Buffs["growth-x"] = "RIGHT"
-	Buffs["growth-y"] = "UP"
-	Buffs.PostCreateIcon = PostCreateIcon
-	Buffs.PostUpdateIcon = PostUpdateIcon
-	Buffs.showType = true
-	
-	-- Debuffs
-	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
-	Debuffs:SetSize(Settings["nameplates-width"], 26)
-	Debuffs:SetPoint("BOTTOM", Health, "TOP", 0, 14)
-	Debuffs.size = 26
-	Debuffs.spacing = 2
-	Debuffs.num = 5
-	Debuffs.numRow = 4
-	Debuffs.initialAnchor = "TOPLEFT"
-	Debuffs["growth-x"] = "RIGHT"
-	Debuffs["growth-y"] = "UP"
-	Debuffs.PostCreateIcon = PostCreateIcon
-	Debuffs.PostUpdateIcon = PostUpdateIcon
-	Debuffs.onlyShowPlayer = Settings["nameplates-only-player-debuffs"]
-	Debuffs.showType = true
-	Debuffs.disableMouse = true
-	Debuffs.CustomFilter = CustomFilter
+	if (self.unit ~= "player") then
+		local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
+		Buffs:SetSize(30, 30)
+		Buffs:SetPoint("BOTTOM", self, "TOP", 0, 36)
+		Buffs.size = 30
+		Buffs.spacing = 0
+		Buffs.num = 1
+		Buffs.initialAnchor = "TOPLEFT"
+		Buffs["growth-x"] = "RIGHT"
+		Buffs["growth-y"] = "UP"
+		Buffs.PostCreateIcon = PostCreateIcon
+		Buffs.PostUpdateIcon = PostUpdateIcon
+		Buffs.showType = true
+		
+		-- Debuffs
+		local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
+		Debuffs:SetSize(Settings["nameplates-width"], 26)
+		Debuffs:SetPoint("BOTTOM", Health, "TOP", 0, 14)
+		Debuffs.size = 26
+		Debuffs.spacing = 2
+		Debuffs.num = 5
+		Debuffs.numRow = 4
+		Debuffs.initialAnchor = "TOPLEFT"
+		Debuffs["growth-x"] = "RIGHT"
+		Debuffs["growth-y"] = "UP"
+		Debuffs.PostCreateIcon = PostCreateIcon
+		Debuffs.PostUpdateIcon = PostUpdateIcon
+		Debuffs.onlyShowPlayer = Settings["nameplates-only-player-debuffs"]
+		Debuffs.showType = true
+		Debuffs.disableMouse = true
+		Debuffs.CustomFilter = CustomFilter
+	end
 	
     -- Castbar
     local Castbar = CreateFrame("StatusBar", nil, self)
