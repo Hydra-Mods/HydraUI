@@ -42,7 +42,7 @@ GUI:AddOptions(function(self)
 	Left:CreateDoubleLine("Erthelmi", "Gene")
 	
 	Right:CreateHeader("|cFFA335EEEpic Patrons|r")
-	Right:CreateLine("Smelly")
+	Right:CreateDoubleLine("Smelly", "Trix")
 	
 	Right:CreateHeader("|cFF0070DDRare Patrons|r")
 	Right:CreateLine("Euphoria")
