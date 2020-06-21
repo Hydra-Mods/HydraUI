@@ -40,6 +40,7 @@ GUI:AddOptions(function(self)
 	Left:CreateSupportHeader(Language["Hall of Legends"])
 	Left:CreateDoubleLine("Innie", "Brightsides")
 	Left:CreateDoubleLine("Erthelmi", "Gene")
+	Left:CreateLine("JDoubleU00")
 	
 	Right:CreateHeader("|cFFA335EEEpic Patrons|r")
 	Right:CreateDoubleLine("Smelly", "Trix")
