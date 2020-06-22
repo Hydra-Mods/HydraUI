@@ -341,11 +341,11 @@ local AddProgressBar = function(self, block, line)
 end
 
 local PopupOnEnter = function(self)
-	self.Highlight:Show()
+	self.Backdrop.Highlight:Show()
 end
 
 local PopupOnLeave = function(self)
-	self.Highlight:Hide()
+	self.Backdrop.Highlight:Hide()
 end
 
 local SkinAutoQuestPopup = function()
@@ -378,8 +378,8 @@ local SkinAutoQuestPopup = function()
 					BlockContents.Backdrop:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 					BlockContents.Backdrop:SetBackdropBorderColor(0, 0, 0)
 					BlockContents.Backdrop:SetFrameLevel(BlockContents:GetFrameLevel() - 1)
-					BlockContents.Backdrop:SetScript("OnEnter", PopupOnEnter)
-					BlockContents.Backdrop:SetScript("OnLeave", PopupOnLeave)
+					--BlockContents:HookScript("OnEnter", PopupOnEnter)
+					--BlockContents:HookScript("OnLeave", PopupOnLeave)
 					
 					BlockContents.Backdrop.Highlight = BlockContents.Backdrop:CreateTexture(nil, "BACKGROUND")
 					BlockContents.Backdrop.Highlight:SetPoint("TOPLEFT", BlockContents.Backdrop, 1, -1)
