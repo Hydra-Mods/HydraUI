@@ -67,6 +67,26 @@ Assets:SetStyle("vUI", {
 	
 	["experience-bar-color"] = "4C9900", 
 	["experience-rested-color"] = "00B4FF",
+	
+	["tracker-font"] = "Roboto",
+	["tracker-font-size"] = 12,
+	["tracker-font-flags"] = "",
+	["tracker-header-font"] = "Roboto",
+	["tracker-header-font-size"] = 12,
+	["tracker-header-font-flags"] = "",
+	["tracker-module-font"] = "Roboto",
+	["tracker-module-font-size"] = 12,
+	["tracker-module-font-flags"] = "",
+	["tracker-module-font-color"] = "FFE6C0",
+	["tracker-color-normal"] = "FAFAFA",
+	["tracker-color-normal-highlight"] = "FFFFFF",
+	["tracker-color-header"] = "FFB54F",
+	["tracker-color-header-highlight"] = "FFFFFF",
+	["tracker-color-failed"] = "D32F2F",
+	["tracker-color-failed-highlight"] = "F44336",
+	["tracker-color-timeleft"] = "D32F2F",
+	["tracker-color-timeleft-highlight"] = "F44336",
+	["tracker-color-complete"] = "A0A0A0",
 })
 
 -- vUI 2
@@ -136,6 +156,26 @@ Assets:SetStyle("vUI 2", {
 	
 	["experience-bar-color"] = "4C9900", 
 	["experience-rested-color"] = "00B4FF",
+	
+	["tracker-font"] = "PT Sans",
+	["tracker-font-size"] = 12,
+	["tracker-font-flags"] = "",
+	["tracker-header-font"] = "PT Sans",
+	["tracker-header-font-size"] = 12,
+	["tracker-header-font-flags"] = "",
+	["tracker-module-font"] = "PT Sans",
+	["tracker-module-font-size"] = 12,
+	["tracker-module-font-flags"] = "",
+	["tracker-module-font-color"] = "FFE6C0",
+	["tracker-color-normal"] = "FAFAFA",
+	["tracker-color-normal-highlight"] = "FFFFFF",
+	["tracker-color-header"] = "FFB54F",
+	["tracker-color-header-highlight"] = "FFFFFF",
+	["tracker-color-failed"] = "D32F2F",
+	["tracker-color-failed-highlight"] = "F44336",
+	["tracker-color-timeleft"] = "D32F2F",
+	["tracker-color-timeleft-highlight"] = "F44336",
+	["tracker-color-complete"] = "A0A0A0",
 })
 
 -- Conjured Muffin -- Casting: 2ECC71 - Interrupted: F39C12 - Failed: D35400
@@ -205,6 +245,26 @@ Assets:SetStyle("Conjured Muffin", {
 	
 	["experience-bar-color"] = "27AE60",
 	["experience-rested-color"] = "3EC5E9",
+	
+	["tracker-font"] = "Roboto",
+	["tracker-font-size"] = 12,
+	["tracker-font-flags"] = "",
+	["tracker-header-font"] = "Roboto",
+	["tracker-header-font-size"] = 12,
+	["tracker-header-font-flags"] = "",
+	["tracker-module-font"] = "Roboto",
+	["tracker-module-font-size"] = 12,
+	["tracker-module-font-flags"] = "",
+	["tracker-module-font-color"] = "FFE6C0",
+	["tracker-color-normal"] = "FAFAFA",
+	["tracker-color-normal-highlight"] = "FFFFFF",
+	["tracker-color-header"] = "FFB54F",
+	["tracker-color-header-highlight"] = "FFFFFF",
+	["tracker-color-failed"] = "D32F2F",
+	["tracker-color-failed-highlight"] = "F44336",
+	["tracker-color-timeleft"] = "D32F2F",
+	["tracker-color-timeleft-highlight"] = "F44336",
+	["tracker-color-complete"] = "A0A0A0",
 })
 
 --[[ Zen
@@ -343,4 +403,24 @@ Assets:SetStyle("Sci-Fi", {
 	
 	["experience-bar-color"] = "4C9900", 
 	["experience-rested-color"] = "00B4FF",
+	
+	["tracker-font"] = "Prototype",
+	["tracker-font-size"] = 12,
+	["tracker-font-flags"] = "",
+	["tracker-header-font"] = "Prototype",
+	["tracker-header-font-size"] = 12,
+	["tracker-header-font-flags"] = "",
+	["tracker-module-font"] = "Prototype",
+	["tracker-module-font-size"] = 12,
+	["tracker-module-font-flags"] = "",
+	["tracker-module-font-color"] = "FFE6C0",
+	["tracker-color-normal"] = "FAFAFA",
+	["tracker-color-normal-highlight"] = "FFFFFF",
+	["tracker-color-header"] = "FFB54F",
+	["tracker-color-header-highlight"] = "FFFFFF",
+	["tracker-color-failed"] = "D32F2F",
+	["tracker-color-failed-highlight"] = "F44336",
+	["tracker-color-timeleft"] = "D32F2F",
+	["tracker-color-timeleft-highlight"] = "F44336",
+	["tracker-color-complete"] = "A0A0A0",
 })
