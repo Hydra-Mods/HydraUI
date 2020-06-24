@@ -213,6 +213,7 @@ Defaults["chat-frame-width"] = 392
 Defaults["chat-frame-height"] = 104
 Defaults["chat-enable-fading"] = false
 Defaults["chat-fade-time"] = 15
+Defaults["chat-link-tooltip"] = true
 
 -- Chat Bubbles
 Defaults["chat-bubbles-enable"] = true

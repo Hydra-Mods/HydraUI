@@ -400,7 +400,7 @@ Tooltips.GameTooltip_SetDefaultAnchor = function(self, parent)
 	if (not UnitID) then
 		local MouseFocus = GetMouseFocus()
 		
-		if MouseFocus and MouseFocus:GetAttribute("unit") then
+		if (MouseFocus and MouseFocus.GetAttribute and MouseFocus:GetAttribute("unit")) then
 			UnitID = MouseFocus:GetAttribute("unit")
 		end
 	end

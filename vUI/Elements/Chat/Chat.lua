@@ -590,6 +590,27 @@ local ChatFrameOnLeave = function(self)
 	self.CopyButton:SetAlpha(0)
 end
 
+local IgnoreLinkTypes = {
+	["player"] = true,
+	["command"] = true,
+}
+
+local OnHyperlinkEnter = function(self, link, text, button)
+	local LinkType = match(link, "^(%a+):")
+	
+	if IgnoreLinkTypes[LinkType] then
+		return
+	end
+	
+	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	GameTooltip:SetHyperlink(link)
+	GameTooltip:Show()
+end
+
+local OnHyperlinkLeave = function(self)
+	GameTooltip:Hide()
+end
+
 function Chat:StyleChatFrame(frame)
 	if frame.Styled then
 		return
@@ -651,6 +672,11 @@ function Chat:StyleChatFrame(frame)
 	frame:HookScript("OnEnter", ChatFrameOnEnter)
 	frame:HookScript("OnLeave", ChatFrameOnLeave)
 	frame:Hide()
+	
+	if Settings["chat-link-tooltip"] then
+		frame:SetScript("OnHyperlinkEnter", OnHyperlinkEnter)
+		frame:SetScript("OnHyperlinkLeave", OnHyperlinkLeave)
+	end
 	
 	FCF_SetChatWindowFontSize(nil, frame, 12)
 	
@@ -1196,6 +1222,18 @@ local UpdateFadeTime = function(value)
 	end
 end
 
+local UpdateEnableLinks = function(value)
+	for i = 1, NUM_CHAT_WINDOWS do
+		if value then
+			_G["ChatFrame"..i]:SetScript("OnHyperlinkEnter", OnHyperlinkEnter)
+			_G["ChatFrame"..i]:SetScript("OnHyperlinkLeave", OnHyperlinkLeave)
+		else
+			_G["ChatFrame"..i]:SetScript("OnHyperlinkEnter", nil)
+			_G["ChatFrame"..i]:SetScript("OnHyperlinkLeave", nil)
+		end
+	end
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Chat"])
 	
@@ -1208,6 +1246,7 @@ GUI:AddOptions(function(self)
 	Left:CreateSlider("chat-bg-opacity", Settings["chat-bg-opacity"], 0, 100, 5, "Background Opacity", "Set the opacity of the chat background", UpdateOpacity, nil, "%")
 	Left:CreateSlider("chat-fade-time", Settings["chat-enable-fading"], 0, 60, 5, "Set Fade Time", "Set the duration to display text before fading out", UpdateFadeTime, nil, "s")
 	Left:CreateSwitch("chat-enable-fading", Settings["chat-enable-fading"], "Enable Text Fading", "Set the text to fade after the set amount of time", UpdateEnableFading)
+	Left:CreateSwitch("chat-link-tooltip", Settings["chat-link-tooltip"], "Show Link Tooltips", "Display a tooltip when hovering over links in chat", UpdateEnableLinks)
 	
 	Right:CreateHeader(Language["Install"])
 	Right:CreateButton(Language["Install"], Language["Install Chat Defaults"], "Set default channels and settings related to chat", RunChatInstall):RequiresReload(true)
