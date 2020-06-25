@@ -69,6 +69,11 @@ function KeyBinding:OnKeyDown(key)
 	
 	if (MouseFocus and MouseFocus.GetName) then
 		local Name = MouseFocus:GetName()
+		
+		if (not Name) then
+			return
+		end
+		
 		local ButtonName = match(Name, "%D+")
 		
 		if self.Translate[ButtonName] then
@@ -106,6 +111,19 @@ local PopupOnCancel = function()
 	KeyBinding:Disable()
 end
 
+local OnAccept = function()
+	SaveBindings(GetCurrentBindingSet())
+	
+	GUI:GetWidgetByWindow(Language["Action Bars"], "discard"):Disable()
+	GUI:GetWidgetByWindow(Language["Action Bars"], "save"):Disable()
+	
+	KeyBinding:Disable()
+end
+
+local OnCancel = function()
+	KeyBinding:Disable()
+end
+
 function KeyBinding:Enable()
 	self:EnableKeyboard(true)
 	self:SetScript("OnUpdate", self.OnUpdate)
@@ -113,9 +131,10 @@ function KeyBinding:Enable()
 	self:SetScript("OnKeyUp", self.OnKeyUp)
 	self.Active = true
 	
-	vUI:print("Key binding mode is currently active.")
+	--vUI:print("Key binding mode is currently active.")
 	
-	vUI:DisplayPopup(Language["Attention"], Language["Key binding mode is currently active. Would you like to exit key binding mode?"], Language["Accept"], PopupOnAccept, Language["Cancel"], ReloadUI) -- PopupOnCancel
+	--vUI:DisplayPopup(Language["Attention"], Language["Key binding mode is currently active. Would you like to exit key binding mode?"], Language["Accept"], PopupOnAccept, Language["Cancel"]) -- PopupOnCancel
+	vUI:DisplayPopup(Language["Attention"], Language["Key binding mode is active. Would you like to save your changes?"], Language["Save"], OnAccept, Language["Cancel"], OnCancel) -- PopupOnCancel
 end
 
 function KeyBinding:Disable()
@@ -126,7 +145,7 @@ function KeyBinding:Disable()
 	self.Active = false
 	self.TargetBindingName = nil
 	
-	vUI:print("Key binding mode is currently disabled.")
+	--vUI:print("Key binding mode is currently disabled.")
 	vUI:ClearPopup()
 end
 
@@ -153,19 +172,6 @@ end
 
 local ToggleBindingMode = function()
 	KeyBinding:Toggle()
-end
-
-local OnAccept = function()
-	SaveBindings(GetCurrentBindingSet())
-	
-	GUI:GetWidgetByWindow(Language["Action Bars"], "discard"):Disable()
-	GUI:GetWidgetByWindow(Language["Action Bars"], "save"):Disable()
-	
-	KeyBinding:Disable()
-end
-
-local OnCancel = function()
-	KeyBinding:Disable()
 end
 
 local SaveChanges = function()
