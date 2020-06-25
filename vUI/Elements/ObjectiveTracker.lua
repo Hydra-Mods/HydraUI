@@ -295,7 +295,9 @@ local AddProgressBar = function(self, block, line)
 	line.ProgressBar.Bar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	line.ProgressBar.Bar:SetSize(200, 18)
 	
-	line.ProgressBar.Bar.BarBG:SetTexture()
+	if line.ProgressBar.Bar.BarBG then
+		line.ProgressBar.Bar.BarBG:SetTexture()
+	end
 	
 	line.ProgressBar.Bar.Backdrop = CreateFrame("Frame", nil, line.ProgressBar.Bar)
 	line.ProgressBar.Bar.Backdrop:SetPoint("TOPLEFT", line.ProgressBar.Bar, -1, 1)
