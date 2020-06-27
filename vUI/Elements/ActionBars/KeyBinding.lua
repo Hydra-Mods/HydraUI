@@ -16,6 +16,7 @@ KeyBinding.ValidBindings = {
 }
 
 KeyBinding.Translate = {
+	["ActionButton"] = "ACTIONBUTTON",
 	["MultiBarBottomLeftButton"] = "MULTIACTIONBAR1BUTTON",
 	["MultiBarBottomRightButton"] = "MULTIACTIONBAR2BUTTON",
 	["MultiBarRightButton"] = "MULTIACTIONBAR3BUTTON",
@@ -36,13 +37,7 @@ KeyBinding.Filter = {
 
 function KeyBinding:OnKeyUp(key)
 	if (not IsKeyPressIgnoredForBinding(key) and not self.Filter[key] and self.TargetBindingName) then
-		local Alt = IsAltKeyDown() and "ALT-" or ""
-		local Ctrl = IsControlKeyDown() and "CTRL-" or ""
-		local Shift = IsShiftKeyDown() and "SHIFT-" or ""
-		
-		if (Alt or Ctrl or Shift) then
-			key = Alt .. Ctrl .. Shift .. key
-		end
+		key = format("%s%s%s%s", IsAltKeyDown() and "ALT-" or "", IsControlKeyDown() and "CTRL-" or "", IsShiftKeyDown() and "SHIFT-" or "", key)
 		
 		local OldAction = GetBindingAction(key, true)
 		
@@ -75,11 +70,9 @@ function KeyBinding:OnKeyDown(key)
 		end
 		
 		local ButtonName = match(Name, "%D+")
-		
 		if self.Translate[ButtonName] then
 			if self.ValidBindings[self.Translate[ButtonName]] then
 				self.TargetBindingName = self.Translate[ButtonName] .. match(Name, "(%d+)$")
-				self.TargetName = Name
 			end
 		end
 	end
@@ -131,8 +124,6 @@ function KeyBinding:Enable()
 	self:SetScript("OnKeyUp", self.OnKeyUp)
 	self.Active = true
 	
-	--vUI:print("Key binding mode is currently active.")
-	
 	--vUI:DisplayPopup(Language["Attention"], Language["Key binding mode is currently active. Would you like to exit key binding mode?"], Language["Accept"], PopupOnAccept, Language["Cancel"]) -- PopupOnCancel
 	vUI:DisplayPopup(Language["Attention"], Language["Key binding mode is active. Would you like to save your changes?"], Language["Save"], OnAccept, Language["Cancel"], OnCancel) -- PopupOnCancel
 end
@@ -145,7 +136,6 @@ function KeyBinding:Disable()
 	self.Active = false
 	self.TargetBindingName = nil
 	
-	--vUI:print("Key binding mode is currently disabled.")
 	vUI:ClearPopup()
 end
 
