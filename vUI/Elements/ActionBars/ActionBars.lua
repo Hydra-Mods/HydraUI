@@ -92,7 +92,7 @@ function AB:StyleActionButton(button)
 	
 	if button.HotKey then
 		button.HotKey:ClearAllPoints()
-		button.HotKey:SetPoint("TOPLEFT", button, 2, -2)
+		button.HotKey:SetPoint("TOPLEFT", button, 2, -3)
 		vUI:SetFontInfo(button.HotKey, Settings["ab-font"], Settings["ab-font-size"], Settings["ab-font-flags"])
 		button.HotKey:SetJustifyH("LEFT")
 		button.HotKey:SetDrawLayer("OVERLAY")
@@ -240,7 +240,7 @@ function AB:StylePetActionButton(button)
 	
 	if button.HotKey then
 		button.HotKey:ClearAllPoints()
-		button.HotKey:SetPoint("TOPLEFT", button, 2, -2)
+		button.HotKey:SetPoint("TOPLEFT", button, 2, -3)
 		vUI:SetFontInfo(button.HotKey, Settings["ab-font"], Settings["ab-font-size"], Settings["ab-font-flags"])
 		button.HotKey:SetJustifyH("LEFT")
 		button.HotKey:SetDrawLayer("OVERLAY")
