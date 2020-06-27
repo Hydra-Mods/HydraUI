@@ -313,18 +313,20 @@ local AddProgressBar = function(self, block, line)
 	line.ProgressBar.Bar.BGTexture:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	line.ProgressBar.Bar.BGTexture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	
-	line.ProgressBar.Bar.Icon:ClearAllPoints()
-	line.ProgressBar.Bar.Icon:SetPoint("LEFT", line.ProgressBar.Bar, "RIGHT", 4, 0)
-	line.ProgressBar.Bar.Icon:SetSize(18, 18)
-	line.ProgressBar.Bar.Icon:SetMask("")
-	line.ProgressBar.Bar.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	
-	line.ProgressBar.Bar.Icon.Backdrop = CreateFrame("Frame", nil, line.ProgressBar.Bar)
-	line.ProgressBar.Bar.Icon.Backdrop:SetPoint("TOPLEFT", line.ProgressBar.Bar.Icon, -1, 1)
-	line.ProgressBar.Bar.Icon.Backdrop:SetPoint("BOTTOMRIGHT", line.ProgressBar.Bar.Icon, 1, -1)
-	line.ProgressBar.Bar.Icon.Backdrop:SetBackdrop(vUI.Outline)
-	line.ProgressBar.Bar.Icon.Backdrop:SetBackdropBorderColor(0, 0, 0)
-	line.ProgressBar.Bar.Icon.Backdrop:SetFrameStrata("BACKGROUND")
+	if line.ProgressBar.Bar.Icon then
+		line.ProgressBar.Bar.Icon:ClearAllPoints()
+		line.ProgressBar.Bar.Icon:SetPoint("LEFT", line.ProgressBar.Bar, "RIGHT", 4, 0)
+		line.ProgressBar.Bar.Icon:SetSize(18, 18)
+		line.ProgressBar.Bar.Icon:SetMask("")
+		line.ProgressBar.Bar.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		
+		line.ProgressBar.Bar.Icon.Backdrop = CreateFrame("Frame", nil, line.ProgressBar.Bar)
+		line.ProgressBar.Bar.Icon.Backdrop:SetPoint("TOPLEFT", line.ProgressBar.Bar.Icon, -1, 1)
+		line.ProgressBar.Bar.Icon.Backdrop:SetPoint("BOTTOMRIGHT", line.ProgressBar.Bar.Icon, 1, -1)
+		line.ProgressBar.Bar.Icon.Backdrop:SetBackdrop(vUI.Outline)
+		line.ProgressBar.Bar.Icon.Backdrop:SetBackdropBorderColor(0, 0, 0)
+		line.ProgressBar.Bar.Icon.Backdrop:SetFrameStrata("BACKGROUND")
+	end
 	
 	line.ProgressBar.Bar.BarFrame:Hide()
 	line.ProgressBar.Bar.BarFrame2:Hide()
