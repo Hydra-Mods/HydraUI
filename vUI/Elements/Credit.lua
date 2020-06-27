@@ -49,7 +49,8 @@ GUI:AddOptions(function(self)
 	Right:CreateLine("Euphoria")
 	
 	Right:CreateHeader("|cFF1EFF00Uncommon Patrons|r")
-	Right:CreateLine("Ryex")
+	Right:CreateDoubleLine("Ryex", "sylvester")
+	Right:CreateLine("Maski")
 	
 	Left:CreateFooter()
 	Left:CreateMessage("Thank you to all of these amazing people who have supported the development of this project!")
