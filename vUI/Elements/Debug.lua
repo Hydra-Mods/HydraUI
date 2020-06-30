@@ -23,11 +23,11 @@ end
 
 local GetClient = function()
 	if IsWindowsClient() then
-		return Language["Windows"]
+		return "Windows"
 	elseif IsMacClient() then
-		return Language["Mac"]
+		return "Mac"
 	else -- IsLinuxClient
-		return Language["Linux"]
+		return "Linux"
 	end
 end
 
