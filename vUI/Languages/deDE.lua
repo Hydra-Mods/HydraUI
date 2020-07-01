@@ -358,7 +358,7 @@ Language["Show"] = "Show"
 Language["Set Faded Opacity"] = "Set Faded Opacity"
 Language["Set the opacity of the bags frame when visiblity is set to Mouseover"] = "Set the opacity of the bags frame when visiblity is set to Mouseover"
 Language["Loot Left To Right"] = "Loot Left To Right"
-Language["When looting, new items will be|nplaced into the leftmost bag"] = "When looting, new items will be|nplaced into the leftmost bag"
+Language["When looting, new items will be placed into the leftmost bag"] = "When looting, new items will be placed into the leftmost bag"
 
 Language["Micro Menu Buttons"] = "Micro Menu Buttons"
 Language["Set the visibility of the micro menu buttons"] = "Set the visibility of the micro menu buttons"
