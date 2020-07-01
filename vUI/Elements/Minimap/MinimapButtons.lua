@@ -1,6 +1,4 @@
-if (1 == 1) then
-	return
-end
+if 1 == 1 then return end
 
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
@@ -158,7 +156,7 @@ function MinimapButtons:SkinButtons()
 			end
 
 			Child.Backdrop = CreateFrame("Frame", nil, Child)
-			Child.Backdrop:SetPoint(TOPLEFT", Child, 0, 0)
+			Child.Backdrop:SetPoint("TOPLEFT", Child, 0, 0)
 			Child.Backdrop:SetPoint("BOTTOMRIGHT", Child, 0, 0)
 			Child.Backdrop:SetBackdrop(vUI.Backdrop)
 			Child.Backdrop:SetBackdropColor(0, 0, 0)
@@ -205,23 +203,14 @@ function MinimapButtons:SkinButtons()
 end
 
 function MinimapButtons:CreatePanel()
-  local Frame = CreateFrame("Frame", "vUI Minimap Buttons", vUI.UIParent)
+	local Frame = CreateFrame("Frame", "vUI Minimap Buttons", vUI.UIParent)
 	Frame:SetBackdrop(vUI.BackdropAndBorder)
 	Frame:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	Frame:SetBackdropBorderColor(0, 0, 0)
 	Frame:SetFrameStrata("LOW")
-
-	-- NOTE: we are taking into account zone text panel
-	local minimapHeight = Settings["minimap-size"] + 26
+	Frame:SetPoint("TOPRIGHT", vUI:GetModule("Minimap"), "BOTTOMRIGHT", 0, -2)
 	
-	if (Settings["minimap-show-time"]) then
-		-- NOTE: here be unicorn numbers
-		Frame:SetPoint("TOPRIGHT", vUI.UIParent, "TOPRIGHT", -12, -(minimapHeight + 26 + 13))
-	else
-		Frame:SetPoint("TOPRIGHT", vUI.UIParent, "TOPRIGHT", -12, -(minimapHeight + 6))
-	end
-
-  self.Panel = Frame
+	self.Panel = Frame
 end
 
 function MinimapButtons:Load()
@@ -237,23 +226,12 @@ function MinimapButtons:Load()
   vUI:CreateMover(self.Panel)
 end
 
-local DirectionOptions = { 
-	["Up"] = "UP", 
-	["Down"] = "DOWN", 
-	["Left"] = "LEFT", 
-	["Right"] = "RIGHT"
-}
-
 GUI:AddOptions(function(self)
-	local _, Right = self:GetWindow(Language["Minimap"])
+	local _, Right = self:GetWindow(Language["Mini Map"])
 
 	Right:CreateHeader(Language["Minimap Buttons"])
 
 	Right:CreateSwitch("minimap-buttonbar-enable", Settings["minimap-buttonbar-enable"], "Enable Minimap Button Bar", "", ReloadUI):RequiresReload(true)
-
-	Right:CreateDropdown("minimap-buttonbar-direction", Settings["minimap-buttonbar-direction"], DirectionOptions, "Direction", "", function(value)
-		OnChange(value, nil, nil)
-	end)
 	
 	Right:CreateSlider("minimap-buttonbar-buttonsize", Settings["minimap-buttonbar-buttonsize"], 16, 44, 1, "Button Size", "", function(value)
 		OnChange(nil, value, nil)
@@ -263,4 +241,7 @@ GUI:AddOptions(function(self)
 		OnChange(nil, nil, value)
 	end)
 	
+	Right:CreateDropdown("minimap-buttonbar-direction", Settings["minimap-buttonbar-direction"], {Language["Up"] = "UP", Language["Down"] = "DOWN", Language["Left"] = "LEFT", Language["Right"] = "RIGHT"}, "Direction", "", function(value)
+		OnChange(value, nil, nil)
+	end)
 end)

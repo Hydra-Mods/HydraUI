@@ -49,6 +49,7 @@ Elements\ActionBars\MicroMenu.lua
 Elements\UnitFrames.lua
 Elements\Tooltips.lua
 Elements\MiniMap\MiniMap.lua
+Elements\MiniMap\MiniMapButtons.lua
 Elements\ZoneText.lua
 Elements\Update.lua
 Elements\Auras.lua
