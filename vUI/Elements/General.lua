@@ -82,8 +82,8 @@ GUI:AddOptions(function(self)
 	Left:CreateButton(Language["Get Link"], Language["Join Discord"], Language["Get a link to join the vUI Discord community"], GetDiscordLink)
 	
 	Left:CreateHeader(Language["Move UI"])
-	Left:CreateButton(Language["Toggle"], Language["Move UI"], Language["While toggled, you can drag someelements of vUI around the screen"], ToggleMove)
-	Left:CreateButton(Language["Restore"], Language["Restore To Defaults"], Language["Restore all vUI movable framesto their default locations"], ResetMovers)
+	Left:CreateButton(Language["Toggle"], Language["Move UI"], Language["While toggled, you can drag some elements of vUI around the screen"], ToggleMove)
+	Left:CreateButton(Language["Restore"], Language["Restore To Defaults"], Language["Restore all vUI movable frames to their default locations"], ResetMovers)
 	
 	Right:CreateHeader(Language["Settings Window"])
 	Right:CreateSwitch("gui-hide-in-combat", Settings["gui-hide-in-combat"], Language["Hide In Combat"], Language["Hide the settings window when engaging in combat"])
