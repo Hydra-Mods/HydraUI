@@ -4,13 +4,13 @@ local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local MinimapButtons = vUI:NewModule("Minimap Buttons")
 
-local lower = string.lower
+local strlower = string.lower
 local strfind = string.find
 local tinsert = table.insert
 
-MinimapButtons.Buttons = {}
+MinimapButtons.items = {}
 
-MinimapButtons.Ignored = {
+local MinimapButtonsBlacklist = {
 	-- Blizzard
 	-- TODO: clean this list up
 	["BattlefieldMinimap"] = true,
@@ -38,7 +38,7 @@ MinimapButtons.Ignored = {
 	["ItemRackMinimapFrame"] = true,
 }
 
-MinimapButtons.RemoveTextureID = {
+local MinimapButtonTextureIdsToRemove = {
 	[136430] = true,
 	[136467] = true,
 	[130924] = true,
@@ -47,7 +47,7 @@ MinimapButtons.RemoveTextureID = {
 local OnChange = function(direction, buttonSize, spacing)
 	local lastButton, width, height
   local panelTotalPadding = 6
-  local numButtons = #MinimapButtons.Buttons
+  local numButtons = #MinimapButtons.items
   local spacing = spacing or Settings["minimap-buttonbar-buttonspacing"]
   local buttonSize = buttonSize or Settings["minimap-buttonbar-buttonsize"]
   local direction = direction or Settings["minimap-buttonbar-direction"]
@@ -62,7 +62,7 @@ local OnChange = function(direction, buttonSize, spacing)
 
   MinimapButtons.Panel:SetSize(width, height)
 
-	for _, Button in pairs(MinimapButtons.Buttons) do
+	for _, Button in pairs(MinimapButtons.items) do
 		if (Button:IsShown()) then
 			Button:SetSize(buttonSize, buttonSize)
 			Button:ClearAllPoints()
@@ -107,52 +107,54 @@ local OnChange = function(direction, buttonSize, spacing)
 end
 
 function MinimapButtons:SkinButtons()
-	for i = 1, Minimap:GetNumChildren() do
-		local Child = select(i, Minimap:GetChildren())
-		
-		if (not Child) then
-			return
-		end
-		
-		local Name = Child:GetName()
-		
-		if (Name and not self.Ignored[name] and Child:IsShown()) then
-			local ObjectType = Child:GetObjectType()
-			
+  for _, Child in pairs({Minimap:GetChildren()}) do
+		local name = Child:GetName()
+
+		if (name and not MinimapButtonsBlacklist[name] and Child:IsShown()) then
+			local objectType = Child:GetObjectType()
+
 			Child:SetParent(self.Panel)
-			
-			if Child:HasScript("OnDragStart") then
+
+			if (Child:HasScript("OnDragStart")) then
 				Child:SetScript("OnDragStart", nil)
 			end
-			
-			if Child:HasScript("OnDragStop") then
+
+			if (Child:HasScript("OnDragStop")) then
 				Child:SetScript("OnDragStop", nil)
 			end
-			
-			for j = 1, Child:GetNumRegions() do
-				local Region = select(j, Child:GetRegions())
+
+			for i = 1, Child:GetNumRegions() do
+				local region = select(i, Child:GetRegions())
 				
-				if (Region:GetObjectType() == "Texture") then
-					local Texture = lower(Region:GetTexture() or "")
-					local TextureID = Region:GetTextureFileID()
-					
-					if (TextureID and self.RemoveTextureID[TextureID]) then
-						Region:SetTexture(nil)
+				if (region:GetObjectType() == "Texture") then
+					local t = region:GetTexture() or ""
+					local texture = strlower(t)
+					local textureId = region:GetTextureFileID()
+
+					if (textureId and MinimapButtonTextureIdsToRemove[textureId]) then
+						region:SetTexture(nil)
 					end
-					
-					if (strfind(Texture, [[interface\characterframe]]) or strfind(Texture, [[interface\minimap]]) or strfind(Texture, "border") or  strfind(Texture, "background") or strfind(Texture, "alphamask") or strfind(Texture, "highlight")) then
-						Region:SetTexture(nil)
-						Region:SetAlpha(0)
+
+					if (
+						strfind(texture, [[interface\characterframe]]) or
+						strfind(texture, [[interface\minimap]]) or
+						strfind(texture, 'border') or 
+						strfind(texture, 'background') or 
+						strfind(texture, 'alphamask') or
+						strfind(texture, 'highlight')
+					) then
+						region:SetTexture(nil)
+						region:SetAlpha(0)
 					end
-					
-					Region:ClearAllPoints()
-					Region:SetPoint("TOPLEFT", Child, 1, -1)
-					Region:SetPoint("BOTTOMRIGHT", Child, -1, 1)
-					Region:SetDrawLayer("ARTWORK")
-					Region:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	
+					region:ClearAllPoints()
+					region:SetPoint("TOPLEFT", Child, 1, -1)
+					region:SetPoint("BOTTOMRIGHT", Child, -1, 1)
+					region:SetDrawLayer('ARTWORK')
+					region:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 				end
 			end
-			
+
 			Child.Backdrop = CreateFrame("Frame", nil, Child)
 			Child.Backdrop:SetPoint("TOPLEFT", Child, 0, 0)
 			Child.Backdrop:SetPoint("BOTTOMRIGHT", Child, 0, 0)
@@ -192,8 +194,10 @@ function MinimapButtons:SkinButtons()
 					Child:SetPushedTexture(Pushed)
 				end
 			end
-			
-			tinsert(self.Buttons, Child)
+
+      -- TODO: tooltip styling
+
+			tinsert(self.items, Child)
 		end
 	end
 end
@@ -206,20 +210,20 @@ function MinimapButtons:CreatePanel()
 	Frame:SetFrameStrata("LOW")
 	Frame:SetPoint("TOPRIGHT", vUI:GetModule("Minimap"), "BOTTOMRIGHT", 0, -2)
 	
-	vUI:CreateMover(Frame)
-	
 	self.Panel = Frame
 end
 
 function MinimapButtons:Load()
-	if (not Settings["minimap-buttonbar-enable"]) then
-		return
-	end
-	
+  if (not Settings["minimap-buttonbar-enable"]) then
+    return
+  end
+
 	self:CreatePanel()
-	self:SkinButtons()	
+  self:SkinButtons()	
 	
-	OnChange()
+  OnChange()
+  
+   vUI:CreateMover(self.Panel)
 end
 
 GUI:AddOptions(function(self)
@@ -237,7 +241,7 @@ GUI:AddOptions(function(self)
 		OnChange(nil, nil, value)
 	end)
 	
-	Right:CreateDropdown("minimap-buttonbar-direction", Settings["minimap-buttonbar-direction"], {[Language["Up"]] = "UP", [Language["Down"]] = "DOWN", [Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT"}, Language["Direction"], "", function(value)
+	Right:CreateDropdown("minimap-buttonbar-direction", Settings["minimap-buttonbar-direction"], {[Language["Up"]] = "UP", [Language["Down"]] = "DOWN", [Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT"}, Language["Direction"], "Set the direction of the mini map button bar", function(value)
 		OnChange(value, nil, nil)
 	end)
 end)

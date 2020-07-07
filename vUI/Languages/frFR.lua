@@ -228,6 +228,7 @@ Language["Popular Profile:"] = "Popular Profile:"
 Language["Stored Profiles:"] = "Stored Profiles:"
 Language["Empty Profiles:"] = "Empty Profiles:"
 Language["Unused Profiles:"] = "Unused Profiles:"
+Language["Default"] = "Default"
 
 -- Reputation
 Language["Reputation"] = "Reputation"
