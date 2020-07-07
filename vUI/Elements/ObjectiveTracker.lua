@@ -328,9 +328,17 @@ local AddProgressBar = function(self, block, line)
 		line.ProgressBar.Bar.Icon.Backdrop:SetFrameStrata("BACKGROUND")
 	end
 	
-	line.ProgressBar.Bar.BarFrame:Hide()
-	line.ProgressBar.Bar.BarFrame2:Hide()
-	line.ProgressBar.Bar.BarFrame3:Hide()
+	if line.ProgressBar.Bar.BarFrame then
+		line.ProgressBar.Bar.BarFrame:Hide()
+	end
+	
+	if line.ProgressBar.Bar.BarFrame2 then
+		line.ProgressBar.Bar.BarFrame2:Hide()
+	end
+	
+	if line.ProgressBar.Bar.BarFrame3 then
+		line.ProgressBar.Bar.BarFrame3:Hide()
+	end
 	
 	line.ProgressBar.Bar.BarGlow:Hide()
 	line.ProgressBar.Bar.Sheen:Hide()
