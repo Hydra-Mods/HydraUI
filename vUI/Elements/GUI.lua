@@ -350,7 +350,7 @@ local ButtonOnMouseUp = function(self)
 	self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
 	if self.ReloadFlag then
-		vUI:DisplayPopup(Language["Attention"], Language["You have changed a setting that requires a UI reload. Would you like to reload the UI now?"], "Accept", self.Hook, "Cancel")
+		vUI:DisplayPopup(Language["Attention"], Language["You have changed a setting that requires a UI reload. Would you like to reload the UI now?"], Language["Accept"], self.Hook, Language["Cancel"])
 	elseif self.Hook then
 		self.Hook()
 	end

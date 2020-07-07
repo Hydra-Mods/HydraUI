@@ -79,21 +79,25 @@ function vUI:ToggleMovers()
 	end
 end
 
-function vUI:ResetAllMovers()
-	local Profile = self:GetActiveProfile()
+function vUI:ResetMovers()
+	local Profile = vUI:GetActiveProfile()
 	
 	if Profile.Move then
 		Profile.Move = nil
 		
-		for i = 1, #self.MovingFrames do
-			if self.FrameDefaults[self.MovingFrames[i].Name] then
-				local A1, Parent, A2, X, Y = unpack(self.FrameDefaults[self.MovingFrames[i].Name])
+		for i = 1, #vUI.MovingFrames do
+			if vUI.FrameDefaults[vUI.MovingFrames[i].Name] then
+				local A1, Parent, A2, X, Y = unpack(vUI.FrameDefaults[vUI.MovingFrames[i].Name])
 				
-				self.MovingFrames[i]:ClearAllPoints()
-				self.MovingFrames[i]:SetPoint(A1, _G[Parent], A2, X, Y)
+				vUI.MovingFrames[i]:ClearAllPoints()
+				vUI.MovingFrames[i]:SetPoint(A1, _G[Parent], A2, X, Y)
 			end
 		end
 	end
+end
+
+function vUI:ResetAllMovers()
+	self:DisplayPopup(Language["Attention"], Language["Are you sure you want to reset the position of all moved frames?"], Language["Accept"], self.ResetMovers, Language["Cancel"])
 end
 
 function vUI:IsMoved(frame)
