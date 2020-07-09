@@ -195,15 +195,27 @@ end
 -- Some pre-loaded goodness.
 
 -- Fonts
-Assets:SetFont("PT Sans", "Interface\\Addons\\vUI\\Assets\\Fonts\\PTSans.ttf")
-Assets:SetFont("Roboto", "Interface\\Addons\\vUI\\Assets\\Fonts\\Roboto.ttf")
-Assets:SetFont("Prototype", "Interface\\Addons\\vUI\\Assets\\Fonts\\Prototype.ttf")
-Assets:SetFont("Mosk", "Interface\\Addons\\vUI\\Assets\\Fonts\\MoskBold.ttf")
-Assets:SetFont("Matthan", "Interface\\Addons\\vUI\\Assets\\Fonts\\MatthanSans.ttf")
-Assets:SetFont("Expressway", "Interface\\Addons\\vUI\\Assets\\Fonts\\Expressway.ttf")
-Assets:SetFont("Noto Sans", "Interface\\Addons\\vUI\\Assets\\Fonts\\NotoSansCondensedSemiBold.ttf")
-Assets:SetFont("Visitor", "Interface\\Addons\\vUI\\Assets\\Fonts\\Visitor.ttf", nil, true)
-Assets:SetFont("Pixel Arial", "Interface\\Addons\\vUI\\Assets\\Fonts\\PixelArial.ttf", nil, true)
+if (vUI.UserLocale ~= "zhCN") then
+	Assets:SetFont("PT Sans", "Interface\\Addons\\vUI\\Assets\\Fonts\\PTSans.ttf")
+	Assets:SetFont("Roboto", "Interface\\Addons\\vUI\\Assets\\Fonts\\Roboto.ttf")
+	Assets:SetFont("Prototype", "Interface\\Addons\\vUI\\Assets\\Fonts\\Prototype.ttf")
+	Assets:SetFont("Mosk", "Interface\\Addons\\vUI\\Assets\\Fonts\\MoskBold.ttf")
+	Assets:SetFont("Matthan", "Interface\\Addons\\vUI\\Assets\\Fonts\\MatthanSans.ttf")
+	Assets:SetFont("Expressway", "Interface\\Addons\\vUI\\Assets\\Fonts\\Expressway.ttf")
+	Assets:SetFont("Noto Sans", "Interface\\Addons\\vUI\\Assets\\Fonts\\NotoSansCondensedSemiBold.ttf")
+	Assets:SetFont("Visitor", "Interface\\Addons\\vUI\\Assets\\Fonts\\Visitor.ttf", nil, true)
+	Assets:SetFont("Pixel Arial", "Interface\\Addons\\vUI\\Assets\\Fonts\\PixelArial.ttf", nil, true)
+else
+	Assets:SetFont("PT Sans", [[Fonts\ARKai_T.ttf]])
+	Assets:SetFont("Roboto", [[Fonts\ARKai_T.ttf]])
+	Assets:SetFont("Prototype", [[Fonts\ARKai_T.ttf]])
+	Assets:SetFont("Mosk", [[Fonts\ARKai_T.ttf]])
+	Assets:SetFont("Matthan", [[Fonts\ARKai_T.ttf]])
+	Assets:SetFont("Expressway", [[Fonts\ARKai_T.ttf]])
+	Assets:SetFont("Noto Sans", [[Fonts\ARKai_T.ttf]])
+	Assets:SetFont("Visitor", [[Fonts\ARKai_T.ttf]], nil, true)
+	Assets:SetFont("Pixel Arial", [[Fonts\ARKai_T.ttf]], nil, true)	
+end
 
 for Name, Path in pairs(Fonts) do
 	Assets:SetFont(Name, Path)
