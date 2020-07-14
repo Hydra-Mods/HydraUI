@@ -145,6 +145,13 @@ function Azerite:OnEvent()
 	self.HeaderBG:SetWidth(self.HeaderBG.Text:GetWidth() + 14)
 end
 
+function Azerite:OnMouseUp()
+	if (FindActiveAzeriteItem() and not InCombatLockdown()) then
+		LoadAddOn("Blizzard_AzeriteEssenceUI")
+		ToggleFrame(AzeriteEssenceUI)
+	end
+end
+
 function Azerite:OnEnter()
 	if (Settings["azerite-display-progress"] and Settings["azerite-progress-visibility"] == "MOUSEOVER") then
 		if (not self.Progress:IsShown()) then
@@ -164,31 +171,23 @@ function Azerite:OnEnter()
 	
 	GameTooltip:SetOwner(self, "ANCHOR_BOTTOM", 0, -8)
 	
-	local Name, StandingID, Min, Max, Value, FactionID = GetWatchedFactionInfo()
+	local AzeriteLocation = FindActiveAzeriteItem()
 	
-	if (not Name) then
+	if (not AzeriteLocation) then
 		return
 	end
 	
-	GameTooltip:AddLine(Name)
-	GameTooltip:AddLine(" ")
-	
-	Max = Max - Min
-	Value = Value - Min
-	
-	local Remaining = Max - Value
-	local RemainingPercent = floor((Remaining / Max * 100 + 0.05) * 10) / 10
+	local XP, TotalXP = GetAzeriteItemXPInfo(AzeriteLocation)
+	local Level = GetPowerLevel(AzeriteLocation)
+	local Remaining = TotalXP - XP
+	local RemainingPercent = floor((Remaining / TotalXP * 100 + 0.05) * 10) / 10
 	
 	GameTooltip:AddLine(Language["Current Azerite"])
-	GameTooltip:AddDoubleLine(format("%s / %s", vUI:Comma(Value), vUI:Comma(Max)), format("%s%%", floor((Value / Max * 100 + 0.05) * 10) / 10), 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine(format("%s / %s", vUI:Comma(XP), vUI:Comma(TotalXP)), format("%s%%", floor((XP / TotalXP * 100 + 0.05) * 10) / 10), 1, 1, 1, 1, 1, 1)
 	
 	GameTooltip:AddLine(" ")
 	GameTooltip:AddLine(Language["Remaining Azerite"])
 	GameTooltip:AddDoubleLine(format("%s", vUI:Comma(Remaining)), format("%s%%", RemainingPercent), 1, 1, 1, 1, 1, 1)
-	
-	GameTooltip:AddLine(" ")
-	GameTooltip:AddLine(Language["Faction standing"])
-	GameTooltip:AddLine(_G["FACTION_STANDING_LABEL" .. StandingID], 1, 1, 1)
 	
 	self.TooltipShown = true
 	
@@ -227,7 +226,7 @@ function Azerite:Load()
 	self:SetScript("OnEvent", self.OnEvent)
 	self:SetScript("OnEnter", self.OnEnter)
 	self:SetScript("OnLeave", self.OnLeave)
-	--self:SetScript("OnMouseUp", self.OnMouseUp)
+	self:SetScript("OnMouseUp", self.OnMouseUp)
 end
 
 local UpdateDisplayProgress = function(value)
