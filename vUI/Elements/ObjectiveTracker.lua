@@ -340,8 +340,13 @@ local AddProgressBar = function(self, block, line)
 		line.ProgressBar.Bar.BarFrame3:Hide()
 	end
 	
-	line.ProgressBar.Bar.BarGlow:Hide()
-	line.ProgressBar.Bar.Sheen:Hide()
+	if line.ProgressBar.Bar.BarGlow then
+		line.ProgressBar.Bar.BarGlow:Hide()
+	end
+	
+	if line.ProgressBar.Bar.Sheen then
+		line.ProgressBar.Bar.Sheen:Hide()
+	end
 	
 	line.ProgressBar.Bar.Label:ClearAllPoints()
 	line.ProgressBar.Bar.Label:SetPoint("CENTER", line.ProgressBar.Bar)
