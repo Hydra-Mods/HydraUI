@@ -42,16 +42,12 @@ GUI:AddOptions(function(self)
 	Left:CreateDoubleLine("Erthelmi", "Gene")
 	Left:CreateLine("JDoubleU00")
 	
-	Right:CreateHeader("|cFFA335EEEpic Patrons|r")
-	Right:CreateDoubleLine("Smelly", "Trix")
-	Right:CreateLine("Eerieroot")
+	-- |cFFA335EE |cFF0070DD |cFF1EFF00
 	
-	Right:CreateHeader("|cFF0070DDRare Patrons|r")
-	Right:CreateLine("Euphoria")
-	
-	Right:CreateHeader("|cFF1EFF00Uncommon Patrons|r")
-	Right:CreateDoubleLine("Ryex", "sylvester")
-	Right:CreateLine("Maski")
+	Right:CreateHeader("Patrons")
+	Right:CreateDoubleLine("|cFFA335EESmelly|r", "|cFFA335EETrix|r")
+	Right:CreateDoubleLine("|cFFA335EEEerieroot|r", "|cFF1EFF00Ryex|r")
+	Right:CreateDoubleLine("|cFF1EFF00sylvester|r", "|cFF1EFF00Maski|r")
 	
 	Left:CreateFooter()
 	Left:CreateMessage("Thank you to all of these amazing people who have supported the development of this project!")
