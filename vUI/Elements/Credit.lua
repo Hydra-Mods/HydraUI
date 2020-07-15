@@ -44,6 +44,7 @@ GUI:AddOptions(function(self)
 	
 	Right:CreateHeader("|cFFA335EEEpic Patrons|r")
 	Right:CreateDoubleLine("Smelly", "Trix")
+	Right:CreateLine("Eerieroot")
 	
 	Right:CreateHeader("|cFF0070DDRare Patrons|r")
 	Right:CreateLine("Euphoria")
