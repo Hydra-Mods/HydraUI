@@ -59,13 +59,17 @@ local Update = function(self, elapsed)
 		local MapID = GetBestMapForUnit("player")
 		
 		if MapID then
-			local X, Y = GetPlayerMapPosition(MapID, "player"):GetXY()
+			local Position = GetPlayerMapPosition(MapID, "player")
 			
-			self.Text:SetFormattedText("|cFF%s%.2f|r, |cFF%s%.2f|r", Settings["data-text-value-color"], X * 100, Settings["data-text-value-color"], Y * 100)
-			
-			if self.TooltipShown then
-				GameTooltip:ClearLines()
-				OnEnter(self)
+			if Position then
+				local X, Y = GetPlayerMapPosition(MapID, "player"):GetXY()
+				
+				self.Text:SetFormattedText("|cFF%s%.2f|r, |cFF%s%.2f|r", Settings["data-text-value-color"], X * 100, Settings["data-text-value-color"], Y * 100)
+				
+				if self.TooltipShown then
+					GameTooltip:ClearLines()
+					OnEnter(self)
+				end
 			end
 		end
 		

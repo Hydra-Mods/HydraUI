@@ -42,8 +42,8 @@ local RemoveByID = {
 }
 
 function MinimapButtons:PositionButtons(perrow, size, spacing)
-	local Total = #MinimapButtons.items
-
+	local Total = #self.items
+	
 	if (Total < perrow) then
 		perrow = Total
 	end
@@ -54,76 +54,76 @@ function MinimapButtons:PositionButtons(perrow, size, spacing)
 		Columns = 1
 	end
 	
-	-- Bar sizing
-	MinimapButtons.Panel:SetWidth((size * perrow) + (spacing * (perrow - 1)) + 6)
-	MinimapButtons.Panel:SetHeight((size * Columns) + (spacing * (Columns - 1)) + 6)
+	-- Panel sizing
+	self.Panel:SetWidth((size * perrow) + (spacing * (perrow - 1)) + 6)
+	self.Panel:SetHeight((size * Columns) + (spacing * (Columns - 1)) + 6)
 	
-	-- Actual moving
+	-- Positioning
 	for i = 1, Total do
-		local Button = MinimapButtons.items[i]
+		local Button = self.items[i]
 		
 		Button:ClearAllPoints()
 		Button:SetSize(size, size)
 		
 		if (i == 1) then
-			Button:SetPoint("TOPLEFT", MinimapButtons.Panel, 3, -3)
+			Button:SetPoint("TOPLEFT", self.Panel, 3, -3)
 		elseif ((i - 1) % perrow == 0) then
-			Button:SetPoint("TOP", MinimapButtons.items[i - perrow], "BOTTOM", 0, -spacing)
+			Button:SetPoint("TOP", self.items[i - perrow], "BOTTOM", 0, -spacing)
 		else
-			Button:SetPoint("LEFT", MinimapButtons.items[i - 1], "RIGHT", spacing, 0)
+			Button:SetPoint("LEFT", self.items[i - 1], "RIGHT", spacing, 0)
 		end
 	end
 end
 
 function MinimapButtons:SkinButtons()
-  for _, Child in pairs({Minimap:GetChildren()}) do
-		local name = Child:GetName()
-
-		if (name and not Ignored[name] and Child:IsShown()) then
-			local objectType = Child:GetObjectType()
-
+	for _, Child in pairs({Minimap:GetChildren()}) do
+		local Name = Child:GetName()
+		
+		if (Name and not Ignored[Name] and Child:IsShown()) then
+			local Type = Child:GetObjectType()
+			
 			Child:SetParent(self.Panel)
-
+			
 			if (Child:HasScript("OnDragStart")) then
 				Child:SetScript("OnDragStart", nil)
 			end
-
+			
 			if (Child:HasScript("OnDragStop")) then
 				Child:SetScript("OnDragStop", nil)
 			end
-
+			
 			for i = 1, Child:GetNumRegions() do
-				local region = select(i, Child:GetRegions())
+				local Region = select(i, Child:GetRegions())
 				
-				if (region:GetObjectType() == "Texture") then
-					local t = region:GetTexture() or ""
-					local texture = strlower(t)
-					local textureId = region:GetTextureFileID()
-
-					if (textureId and RemoveByID[textureId]) then
-						region:SetTexture(nil)
+				if (Region:GetObjectType() == "Texture") then
+					local ID = Region:GetTextureFileID()
+					local Texture = Region:GetTexture() or ""
+					Texture = strlower(Texture)
+					
+					if (ID and RemoveByID[ID]) then
+						Region:SetTexture(nil)
 					end
-
+					
 					if (
-						strfind(texture, [[interface\characterframe]]) or
-						strfind(texture, [[interface\minimap]]) or
-						strfind(texture, 'border') or 
-						strfind(texture, 'background') or 
-						strfind(texture, 'alphamask') or
-						strfind(texture, 'highlight')
+						strfind(Texture, [[interface\characterframe]]) or
+						strfind(Texture, [[interface\minimap]]) or
+						strfind(Texture, "border") or 
+						strfind(Texture, "background") or 
+						strfind(Texture, "alphamask") or
+						strfind(Texture, "highlight")
 					) then
-						region:SetTexture(nil)
-						region:SetAlpha(0)
+						Region:SetTexture(nil)
+						Region:SetAlpha(0)
 					end
-	
-					region:ClearAllPoints()
-					region:SetPoint("TOPLEFT", Child, 1, -1)
-					region:SetPoint("BOTTOMRIGHT", Child, -1, 1)
-					region:SetDrawLayer('ARTWORK')
-					region:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+					
+					Region:ClearAllPoints()
+					Region:SetPoint("TOPLEFT", Child, 1, -1)
+					Region:SetPoint("BOTTOMRIGHT", Child, -1, 1)
+					Region:SetDrawLayer('ARTWORK')
+					Region:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 				end
 			end
-
+			
 			Child.Backdrop = CreateFrame("Frame", nil, Child)
 			Child.Backdrop:SetPoint("TOPLEFT", Child, 0, 0)
 			Child.Backdrop:SetPoint("BOTTOMRIGHT", Child, 0, 0)
@@ -136,11 +136,11 @@ function MinimapButtons:SkinButtons()
 			Child.Backdrop.Texture:SetPoint("BOTTOMRIGHT", Child.Backdrop, -1, 1)
 			Child.Backdrop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 			Child.Backdrop.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
-
+			
 			Child:SetFrameLevel(Minimap:GetFrameLevel() + 10)
 			Child:SetFrameStrata(Minimap:GetFrameStrata())
-
-			if (objectType == "Button" or objectType == "Frame") then
+			
+			if (Type == "Button" or Type == "Frame") then
 				if (Child.SetHighlightTexture) then
 					local Highlight = Child:CreateTexture(nil, "ARTWORK", button)
 					Highlight:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
@@ -151,7 +151,7 @@ function MinimapButtons:SkinButtons()
 					Child.Highlight = Highlight
 					Child:SetHighlightTexture(Highlight)
 				end
-
+				
 				if (Child.SetPushedTexture) then
 					local Pushed = Child:CreateTexture(nil, "ARTWORK", button)
 					Pushed:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
@@ -163,9 +163,7 @@ function MinimapButtons:SkinButtons()
 					Child:SetPushedTexture(Pushed)
 				end
 			end
-
-      -- TODO: tooltip styling
-
+			
 			tinsert(self.items, Child)
 		end
 	end
@@ -191,12 +189,12 @@ local UpdateBar = function()
 end
 
 function MinimapButtons:Load()
-  if (not Settings["minimap-buttons-enable"]) then
-    return
-  end
-
+	if (not Settings["minimap-buttons-enable"]) then
+		return
+	end
+	
 	self:CreatePanel()
-  self:SkinButtons()
+	self:SkinButtons()
 	
 	if (#self.items == 0) then
 		self:Hide()
@@ -204,8 +202,8 @@ function MinimapButtons:Load()
 		return
 	end
 	
-  UpdateBar()
-  
+	UpdateBar()
+	
    vUI:CreateMover(self.Panel)
 end
 
