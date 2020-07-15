@@ -272,10 +272,10 @@ Defaults["minimap-size"] = 140
 Defaults["minimap-show-top"] = true
 Defaults["minimap-show-bottom"] = true
 Defaults["minimap-show-tracking"] = true
-Defaults["minimap-buttonbar-enable"] = true
-Defaults["minimap-buttonbar-direction"] = "LEFT"
-Defaults["minimap-buttonbar-buttonspacing"] = 1
-Defaults["minimap-buttonbar-buttonsize"] = 20
+Defaults["minimap-buttons-enable"] = true
+Defaults["minimap-buttons-size"] = 22
+Defaults["minimap-buttons-spacing"] = 2
+Defaults["minimap-buttons-perrow"] = 5
 
 -- Cooldowns
 Defaults["cooldowns-enable"] = true
