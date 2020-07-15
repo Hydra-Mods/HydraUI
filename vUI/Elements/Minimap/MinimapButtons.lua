@@ -182,6 +182,10 @@ function MinimapButtons:CreatePanel()
 	self.Panel = Frame
 end
 
+function MinimapButtons:Hide()
+	self.Panel:Hide()
+end
+
 local UpdateBar = function()
 	MinimapButtons:PositionButtons(Settings["minimap-buttons-perrow"], Settings["minimap-buttons-size"], Settings["minimap-buttons-spacing"])
 end
@@ -192,7 +196,13 @@ function MinimapButtons:Load()
   end
 
 	self:CreatePanel()
-  self:SkinButtons()	
+  self:SkinButtons()
+	
+	if (#self.items == 0) then
+		self:Hide()
+		
+		return
+	end
 	
   UpdateBar()
   
