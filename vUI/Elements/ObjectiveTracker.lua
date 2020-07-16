@@ -348,11 +348,15 @@ local AddProgressBar = function(self, block, line)
 		line.ProgressBar.Bar.Sheen:Hide()
 	end
 	
-	line.ProgressBar.Bar.Label:ClearAllPoints()
-	line.ProgressBar.Bar.Label:SetPoint("CENTER", line.ProgressBar.Bar)
-	line.ProgressBar.Bar.Label:SetFont(Assets:GetFont(Settings["tracker-font"]), Settings["tracker-font-size"], Settings["tracker-font-flags"])
+	if line.ProgressBar.Bar.Label then
+		line.ProgressBar.Bar.Label:ClearAllPoints()
+		line.ProgressBar.Bar.Label:SetPoint("CENTER", line.ProgressBar.Bar)
+		line.ProgressBar.Bar.Label:SetFont(Assets:GetFont(Settings["tracker-font"]), Settings["tracker-font-size"], Settings["tracker-font-flags"])
+	end
 	
-	line.ProgressBar.Bar.IconBG:SetTexture()
+	if line.ProgressBar.Bar.IconBG then
+		line.ProgressBar.Bar.IconBG:SetTexture()
+	end
 	
 	line.ProgressBar.Bar.Handled = true
 end
