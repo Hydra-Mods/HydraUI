@@ -482,7 +482,7 @@ Defaults["nameplates-castbar-enable-icon"] = true
 -- Tooltips
 Defaults["tooltips-enable"] = true
 Defaults["tooltips-on-cursor"] = false
-Defaults["tooltips-cursor-anchor"] = "RIGHT"
+Defaults["tooltips-cursor-anchor"] = "CENTER"
 Defaults["tooltips-cursor-anchor-offset-x"] = 0
 Defaults["tooltips-cursor-anchor-offset-y"] = 8
 Defaults["tooltips-show-id"] = false
