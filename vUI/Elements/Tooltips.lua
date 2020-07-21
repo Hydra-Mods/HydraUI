@@ -390,7 +390,7 @@ end
 
 Tooltips.GameTooltip_SetDefaultAnchor = function(self, parent)
 	if Settings["tooltips-on-cursor"] then
-		self:SetOwner(parent, "ANCHOR_CURSOR", 0, 8)
+		self:SetOwner(parent, Settings["tooltips-cursor-anchor"], Settings["tooltips-cursor-anchor-offset-x"], Settings["tooltips-cursor-anchor-offset-y"])
 		
 		return
 	end
@@ -608,6 +608,9 @@ GUI:AddOptions(function(self)
 	Left:CreateSwitch("tooltips-show-health-text", Settings["tooltips-show-health-text"], Language["Display Health Text"], Language["Dislay health information on the tooltip health bar"], UpdateShowHealthText)
 	Left:CreateSwitch("tooltips-show-target", Settings["tooltips-show-target"], Language["Display Target"], Language["Dislay the units current target"])
 	Left:CreateSwitch("tooltips-on-cursor", Settings["tooltips-on-cursor"], Language["Tooltip On Cursor"], Language["Anchor the tooltip to the mouse cursor"])
+	Left:CreateDropdown("tooltips-cursor-anchor", Settings["tooltips-cursor-anchor"], {[Language["Right"]] = "ANCHOR_CURSOR_RIGHT",[Language["Left"]] = "ANCHOR_CURSOR_LEFT"}, Language["Cursor Anchor"])
+	Left:CreateSlider("tooltips-cursor-anchor-offset-x", Settings["tooltips-cursor-anchor-offset-x"], -64, 64, 1, Language["Cursor Anchor X"], Language["Horizontal offset of tooltip"])
+	Left:CreateSlider("tooltips-cursor-anchor-offset-y", Settings["tooltips-cursor-anchor-offset-y"], -64, 64, 1, Language["Cursor Anchor Y"], Language["Vertical offset of tooltip"])
 	Left:CreateSwitch("tooltips-show-id", Settings["tooltips-show-id"], Language["Display ID's"], Language["Dislay item and spell ID's in the tooltip"])
 	
 	Left:CreateHeader(Language["Font"])
