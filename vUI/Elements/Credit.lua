@@ -46,7 +46,7 @@ GUI:AddOptions(function(self)
 	
 	Right:CreateHeader("Patrons")
 	Right:CreateDoubleLine("|cFFA335EESmelly|r", "|cFFA335EETrix|r")
-	Right:CreateDoubleLine("|cFFA335EEEerieroot|r", "|cFFA335EEwolimazo|r")
+	Right:CreateDoubleLine("|cFFA335EEErieeroot|r", "|cFFA335EEwolimazo|r")
 	Right:CreateDoubleLine("|cFF1EFF00Ryex|r", "|cFF1EFF00sylvester|r")
 	Right:CreateDoubleLine("|cFF1EFF00Maski|r", "|cFF1EFF00Innie|r")
 	
