@@ -4,6 +4,8 @@ local MinimapButtons = vUI:NewModule("Minimap Buttons")
 
 local strlower = string.lower
 local strfind = string.find
+local tinsert = table.insert
+local ceil = math.ceil
 
 MinimapButtons.items = {}
 
