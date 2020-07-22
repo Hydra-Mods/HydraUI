@@ -5,9 +5,10 @@ local Reputation = vUI:NewModule("Reputation")
 local format = format
 local floor = floor
 local GetWatchedFactionInfo = GetWatchedFactionInfo
+local GetFriendshipReputation = GetFriendshipReputation
+local GetFriendshipReputationRanks = GetFriendshipReputationRanks
 local IsFactionParagon = C_Reputation.IsFactionParagon
 local GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
-local GetFriendshipReputation = GetFriendshipReputation
 
 local FadeOnFinished = function(self)
 	self.Parent:Hide()
@@ -141,62 +142,54 @@ end
 
 function Reputation:OnEvent()
 	local Name, StandingID, Min, Max, Value, FactionID = GetWatchedFactionInfo()
-	local FriendID = GetFriendshipReputation(FactionID)
 	
-	if (not Name or not FactionID) then
-		if self:IsShown() then
-			self.FadeOut:Play()
+	if Name then
+		local FriendID = GetFriendshipReputation(FactionID)
+		
+		if FriendID then
+			local FriendID, FriendRep, FriendMaxRep, FriendName, Description, Texture, TextLevel, Threshold = GetFriendshipReputation(FactionID)
+			
+			Min = Threshold
+			Max = FriendMaxRep
+			Value = FriendRep
+		elseif IsFactionParagon(FactionID) then
+			local CurrentValue, Threshold, _, RewardPending = GetFactionParagonInfo(FactionID)
+			
+			Min = 0
+			Max = Threshold
+			Value = CurrentValue % Threshold
+			
+			if RewardPending then
+				value = value + Threshold
+			end
 		end
 		
-		return
-	end
-	
-	if FriendID then
-		local FriendID, FriendValue, FriendMaxRep, FriendName, FriendText, FriendTexture, FriendTextLevel, Threshold, NextThreshold = GetFriendshipReputation(FactionID)
-		--level = GetFriendshipReputationRanks(FactionID)
+		Max = Max - Min
+		Value = Value - Min
 		
-		Name = FriendName
+		self.Bar:SetMinMaxValues(0, Max)
+		self.Bar:SetStatusBarColor(vUI:HexToRGB(Settings["color-reaction-" .. StandingID]))
 		
-		if NextThreshold then
-			Min, Max, Value = Threshold, NextThreshold, FriendValue
+		self.Progress:SetText(format("%s: %s / %s", Name, vUI:Comma(Value), vUI:Comma(Max)))
+		self.Percentage:SetText(floor((Value / Max * 100 + 0.05) * 10) / 10 .. "%")
+		
+		if Settings["reputation-animate"] then
+			self.Change:SetChange(Value)
+			self.Change:Play()
+			
+			if (not self.Flash:IsPlaying()) then
+				self.Flash:Play()
+			end
 		else
-			Min, Max, Value = 0, 1, 1
+			self.Bar:SetValue(Value)
 		end
 		
-		StandingID = 5
-	elseif IsFactionParagon(FactionID) then
-		local ParagonValue, Threshold, _, RewardPending = GetFactionParagonInfo(FactionID)
-		Min, Max = 0, Threshold
-		Value = ParagonValue % Threshold
-		
-		if RewardPending then 
-			Value = Value + Threshold
+		if (not self:IsShown()) then
+			self:Show()
+			self.FadeIn:Play()
 		end
-	end
-	
-	Max = Max - Min
-	Value = Value - Min
-	
-	self.Bar:SetMinMaxValues(0, Max)
-	self.Bar:SetStatusBarColor(vUI:HexToRGB(Settings["color-reaction-" .. StandingID]))
-	
-	self.Progress:SetText(format("%s: %s / %s", Name, vUI:Comma(Value), vUI:Comma(Max)))
-	self.Percentage:SetText(floor((Value / Max * 100 + 0.05) * 10) / 10 .. "%")
-	
-	if Settings["reputation-animate"] then
-		self.Change:SetChange(Value)
-		self.Change:Play()
-		
-		if (not self.Flash:IsPlaying()) then
-			self.Flash:Play()
-		end
-	else
-		self.Bar:SetValue(Value)
-	end
-	
-	if (not self:IsShown()) then
-		self:Show()
-		self.FadeIn:Play()
+	elseif self:IsShown() then
+		self.FadeOut:Play()
 	end
 end
 
@@ -229,6 +222,31 @@ function Reputation:OnEnter()
 		return
 	end
 	
+	local FriendID = GetFriendshipReputation(FactionID)
+	local Level
+	
+	if FriendID then
+		local FriendID, FriendRep, FriendMaxRep, FriendName, Description, Texture, TextLevel, Threshold = GetFriendshipReputation(FactionID)
+		
+		Min = Threshold
+		Max = FriendMaxRep
+		Value = FriendRep
+		Level = TextLevel
+	elseif IsFactionParagon(FactionID) then
+		local CurrentValue, Threshold, _, RewardPending = GetFactionParagonInfo(FactionID)
+		
+		Min = 0
+		Max = Threshold
+		Value = CurrentValue % Threshold
+		Level = _G["FACTION_STANDING_LABEL" .. StandingID]
+		
+		if RewardPending then
+			Value = Value + Threshold
+		end
+	else
+		Level = _G["FACTION_STANDING_LABEL" .. StandingID]
+	end
+	
 	GameTooltip:AddLine(Name)
 	GameTooltip:AddLine(" ")
 	
@@ -247,7 +265,7 @@ function Reputation:OnEnter()
 	
 	GameTooltip:AddLine(" ")
 	GameTooltip:AddLine(Language["Faction standing"])
-	GameTooltip:AddLine(_G["FACTION_STANDING_LABEL" .. StandingID], 1, 1, 1)
+	GameTooltip:AddLine(Level, 1, 1, 1)
 	
 	self.TooltipShown = true
 	
