@@ -4,35 +4,71 @@ local MinimapButtons = vUI:NewModule("Minimap Buttons")
 
 local strlower = string.lower
 local strfind = string.find
+local tinsert = table.insert
+local ceil = math.ceil
 
 MinimapButtons.items = {}
 
-local Ignored = {
-	-- Blizzard
-	-- TODO: clean this list up
+local IgnoredBlizzard = {
 	["BattlefieldMinimap"] = true,
 	["ButtonCollectFrame"] = true,
 	["FeedbackUIButton"] = true,
 	["GameTimeFrame"] = true,
 	["HelpOpenTicketButton"] = true,
 	["HelpOpenWebTicketButton"] = true,
+	["MinimapBackdrop"] = true,
 	["MiniMapBattlefieldFrame"] = true,
 	["MiniMapLFGFrame"] = true,
 	["MiniMapMailFrame"] = true,
 	["MiniMapTracking"] = true,
+	["MiniMapTrackingFrame"] = true,
 	["MiniMapVoiceChatFrame"] = true,
-	["MinimapBackdrop"] = true,
 	["MinimapZoneTextButton"] = true,
 	["MinimapZoomIn"] = true,
 	["MinimapZoomOut"] = true,
 	["QueueStatusMinimapButton"] = true,
 	["TimeManagerClockButton"] = true,
-	["MiniMapTrackingFrame"] = true,
+}
 
-	-- Naughty AddOns
-	["QuestieFrameGroup"] = true,
-	-- NOTE: this one is really tricky as it includes a flyout
-	["ItemRackMinimapFrame"] = true,
+-- List borrowed from MBB AddOn
+local IgnoredAddOn = {
+	'Archy',
+	'BookOfTracksFrame',
+	'CartographerNotesPOI',
+	'Cork',
+	'DA_Minimap',
+	'Dragon',
+	'DugisArrowMinimapPoint',
+	'ElvConfigToggle',
+	'EnhancedFrameMinimapButton',
+	'FishingExtravaganzaMini',
+	'Flower',
+	'FWGMinimapPOI',
+	'GatherArchNote',
+	'GatherMatePin',
+	'GatherNote',
+	'GFW_TrackMenuFrame',
+	'GFW_TrackMenuButton',
+	'GPSArrow',
+	'GuildMap3Mini',
+	'GuildInstance',
+	'HandyNotesPin',
+	'ItemRack',
+	'LibRockConfig-1.0_MinimapButton',
+	'MiniNotePOI',
+	'NauticusMiniIcon',
+	'poiMinimap',
+	'PremadeFilter_MinimapButton',
+	'QuestieFrame',
+	'QuestPointerPOI',
+	'RecipeRadarMinimapIcon',
+	'Spy_MapNoteList_mini',
+	'TDial_TrackingIcon',
+	'TDial_TrackButton',
+	'Tuber',
+	'TukuiMinimapZone',
+	'WestPointer',
+	'ZGVMarker',
 }
 
 local RemoveByID = {
@@ -40,6 +76,22 @@ local RemoveByID = {
 	[136467] = true,
 	[130924] = true,
 }
+
+local IsIgnoredAddOn = function(name)
+	local Ignored = false
+	local N = strlower(name)
+
+	for i = 1, #IgnoredAddOn do
+		local T = strlower(IgnoredAddOn[i])
+
+		if strfind(N, T) then
+			Ignored = true
+			break
+		end
+	end
+
+	return Ignored
+end
 
 function MinimapButtons:PositionButtons(perrow, size, spacing)
 	local Total = #self.items
@@ -79,7 +131,7 @@ function MinimapButtons:SkinButtons()
 	for _, Child in pairs({Minimap:GetChildren()}) do
 		local Name = Child:GetName()
 		
-		if (Name and not Ignored[Name] and Child:IsShown()) then
+		if (Name and not IgnoredBlizzard[Name] and not IsIgnoredAddOn(Name) and Child:IsShown()) then
 			local Type = Child:GetObjectType()
 			
 			Child:SetParent(self.Panel)
