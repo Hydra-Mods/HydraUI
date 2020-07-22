@@ -597,7 +597,7 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["Styling"])
 	Left:CreateSwitch("tracker-enable-backdrop", Settings["tracker-enable-backdrop"], Language["Enable Backdrop"], Language["Enable a backdrop for the objective tracker"], UpdateEnableBackdrop)
 	Left:CreateSlider("tracker-backdrop-opacity", Settings["tracker-backdrop-opacity"], 0, 100, 5, Language["Backdrop Opacity"], Language["Set the backdrop opacity of the objective tracker"], UpdateBackdropOpacity)
-	Left:CreateSlider("tracker-height", Settings["tracker-height"], 100, 500, 1, Language["Set Height"], Language["Set the height of the objective tracker"], UpdateHeight)
+	Left:CreateSlider("tracker-height", Settings["tracker-height"], 100, 600, 1, Language["Set Height"], Language["Set the height of the objective tracker"], UpdateHeight)
 	
 	Left:CreateHeader(Language["Colors"])
 	Left:CreateColorSelection("tracker-color-normal", Settings["tracker-color-normal"], Language["Line Normal"], "", UpdateHeaderFont)
