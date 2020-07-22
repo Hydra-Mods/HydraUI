@@ -2,10 +2,8 @@ local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local MinimapButtons = vUI:NewModule("Minimap Buttons")
 
-local strlower = string.lower
-local strfind = string.find
-local tinsert = table.insert
-local ceil = math.ceil
+local lower = string.lower
+local find = string.find
 
 MinimapButtons.items = {}
 
@@ -31,44 +29,42 @@ local IgnoredBlizzard = {
 }
 
 -- List borrowed from MBB AddOn
-local IgnoredAddOn = {
-	'Archy',
-	'BookOfTracksFrame',
-	'CartographerNotesPOI',
-	'Cork',
-	'DA_Minimap',
-	'Dragon',
-	'DugisArrowMinimapPoint',
-	'ElvConfigToggle',
-	'EnhancedFrameMinimapButton',
-	'FishingExtravaganzaMini',
-	'Flower',
-	'FWGMinimapPOI',
-	'GatherArchNote',
-	'GatherMatePin',
-	'GatherNote',
-	'GFW_TrackMenuFrame',
-	'GFW_TrackMenuButton',
-	'GPSArrow',
-	'GuildMap3Mini',
-	'GuildInstance',
-	'HandyNotesPin',
-	'ItemRack',
-	'LibRockConfig-1.0_MinimapButton',
-	'MiniNotePOI',
-	'NauticusMiniIcon',
-	'poiMinimap',
-	'PremadeFilter_MinimapButton',
-	'QuestieFrame',
-	'QuestPointerPOI',
-	'RecipeRadarMinimapIcon',
-	'Spy_MapNoteList_mini',
-	'TDial_TrackingIcon',
-	'TDial_TrackButton',
-	'Tuber',
-	'TukuiMinimapZone',
-	'WestPointer',
-	'ZGVMarker',
+local IgnoredAddOns = {
+	"archy",
+	"bookoftracksframe",
+	"cartographernotespoi",
+	"cork",
+	"da_minimap",
+	"dragon",
+	"dugisarrowminimappoint",
+	"enhancedframeminimapbutton",
+	"fishingextravaganzamini",
+	"flower",
+	"fwgminimappoi",
+	"gatherarchnote",
+	"gathermatepin",
+	"gathernote",
+	"gfw_trackmenuframe",
+	"gfw_trackmenubutton",
+	"gpsarrow",
+	"guildmap3mini",
+	"guildinstance",
+	"handynotespin",
+	"itemrack",
+	"librockconfig-1.0_minimapbutton",
+	"mininotepoi",
+	"nauticusminiicon",
+	"poiminimap",
+	"premadefilter_minimapbutton",
+	"questieframe",
+	"questpointerpoi",
+	"reciperadarminimapicon",
+	"spy_mapnotelist_mini",
+	"tdial_trackingicon",
+	"tdial_trackButton",
+	"tuber",
+	"westpointer",
+	"zgvmarker",
 }
 
 local RemoveByID = {
@@ -78,19 +74,13 @@ local RemoveByID = {
 }
 
 local IsIgnoredAddOn = function(name)
-	local Ignored = false
-	local N = strlower(name)
-
-	for i = 1, #IgnoredAddOn do
-		local T = strlower(IgnoredAddOn[i])
-
-		if strfind(N, T) then
-			Ignored = true
-			break
+	name = lower(name)
+	
+	for i = 1, #IgnoredAddOns do
+		if find(name, IgnoredAddOns[i]) then
+			return true
 		end
 	end
-
-	return Ignored
 end
 
 function MinimapButtons:PositionButtons(perrow, size, spacing)
@@ -150,19 +140,19 @@ function MinimapButtons:SkinButtons()
 				if (Region:GetObjectType() == "Texture") then
 					local ID = Region:GetTextureFileID()
 					local Texture = Region:GetTexture() or ""
-					Texture = strlower(Texture)
+					Texture = lower(Texture)
 					
 					if (ID and RemoveByID[ID]) then
 						Region:SetTexture(nil)
 					end
 					
 					if (
-						strfind(Texture, [[interface\characterframe]]) or
-						strfind(Texture, [[interface\minimap]]) or
-						strfind(Texture, "border") or 
-						strfind(Texture, "background") or 
-						strfind(Texture, "alphamask") or
-						strfind(Texture, "highlight")
+						find(Texture, [[interface\characterframe]]) or
+						find(Texture, [[interface\minimap]]) or
+						find(Texture, "border") or 
+						find(Texture, "background") or 
+						find(Texture, "alphamask") or
+						find(Texture, "highlight")
 					) then
 						Region:SetTexture(nil)
 						Region:SetAlpha(0)
