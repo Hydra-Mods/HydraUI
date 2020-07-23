@@ -42,11 +42,10 @@ GUI:AddOptions(function(self)
 	Left:CreateDoubleLine("Erthelmi", "Gene")
 	Left:CreateLine("JDoubleU00")
 	
-	-- |cFFA335EE |cFF0070DD |cFF1EFF00
-	
 	Right:CreateHeader("Patrons")
+	Right:CreateLine("|cFFFF8000Erieeroot|r")
 	Right:CreateDoubleLine("|cFFA335EESmelly|r", "|cFFA335EETrix|r")
-	Right:CreateDoubleLine("|cFFA335EEErieeroot|r", "|cFFA335EEwolimazo|r")
+	Right:CreateDoubleLine("|cFFA335EEwolimazo|r", "|cFFA335EEAri|r")
 	Right:CreateDoubleLine("|cFF1EFF00Ryex|r", "|cFF1EFF00sylvester|r")
 	Right:CreateDoubleLine("|cFF1EFF00Maski|r", "|cFF1EFF00Innie|r")
 	

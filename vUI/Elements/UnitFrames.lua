@@ -1122,7 +1122,7 @@ local StylePlayer = function(self, unit)
 		
 		self.ClassPower = SoulShards
 		self.AuraParent = SoulShards
-	elseif vUI.UserClass == "MAGE" then
+	elseif (vUI.UserClass == "MAGE") then
 		local ArcaneCharges = CreateFrame("Frame", self:GetName() .. "ArcaneCharges", self)
 		ArcaneCharges:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 		ArcaneCharges:SetSize(Settings["unitframes-player-width"], 10)
@@ -1164,7 +1164,7 @@ local StylePlayer = function(self, unit)
 		
 		local Width = (Settings["unitframes-player-width"] / 5)
 		
-		for i = 1, 5 do
+		for i = 1, 6 do
 			Chi[i] = CreateFrame("StatusBar", self:GetName() .. "Chi" .. i, Chi)
 			Chi[i]:SetSize(Width, 8)
 			Chi[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
