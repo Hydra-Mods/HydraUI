@@ -124,7 +124,7 @@ local function Update(self, event, unit, powerType)
 				element[i]:SetValue(cur - i + 1)
 			end
 		end
-
+		
 		oldMax = element.__max
 		if(max ~= oldMax) then
 			if(max < oldMax) then
