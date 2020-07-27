@@ -205,6 +205,10 @@ local function Visibility(self, event, unit)
 	elseif(shouldEnable and isEnabled) then
 		Path(self, event, unit, powerType)
 	end
+	
+	if(element.PostUpdateVisibility) then
+		return element:PostUpdateVisibility(unit, isEnabled, powerType)
+	end
 end
 
 local function VisibilityPath(self, ...)

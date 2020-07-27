@@ -55,7 +55,7 @@ local AddObjective = function(self, block, objective)
 		ItemButton.Backdrop:SetPoint("BOTTOMRIGHT", ItemButton, 0, 0)
 		ItemButton.Backdrop:SetBackdrop(vUI.Outline)
 		ItemButton.Backdrop:SetBackdropBorderColor(0, 0, 0)
-		ItemButton.Backdrop:SetFrameStrata("BACKGROUND")
+		ItemButton.Backdrop:SetFrameStrata("MEDIUM")
 		
 		if ItemButton:GetPushedTexture() then
 			local Pushed = ItemButton:GetPushedTexture()

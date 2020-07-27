@@ -1184,6 +1184,28 @@ local StylePlayer = function(self, unit)
 			end
 		end
 		
+		Chi.PostUpdateVisibility = function(self, unit, enabled)
+			local ID, Name, Texture, Selected = GetTalentInfo(3, 1, 1)
+			local Max = (Selected and 6 or 5)
+			local Width = (Settings["unitframes-player-width"] / Max)
+			
+			if Selected then
+				self[6]:Hide()
+				self[6]:SetValue(0)
+				print('?')
+			else
+				--self[6]:Show()
+			end
+			
+			for i = 1, Max do
+				if (i == 1) then
+					self[i]:SetWidth(Width)
+				else
+					self[i]:SetWidth(Width - 2)
+				end
+			end
+		end
+		
 		self.ClassPower = Chi
 		self.AuraParent = Chi
 	elseif (vUI.UserClass == "DEATHKNIGHT") then
