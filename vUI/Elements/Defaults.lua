@@ -485,6 +485,7 @@ Defaults["tooltips-on-cursor"] = false
 Defaults["tooltips-show-id"] = false
 Defaults["tooltips-display-realm"] = true
 Defaults["tooltips-display-title"] = true
+Defaults["tooltips-display-rank"] = false
 Defaults["tooltips-font"] = "Roboto"
 Defaults["tooltips-font-size"] = 12
 Defaults["tooltips-font-flags"] = ""

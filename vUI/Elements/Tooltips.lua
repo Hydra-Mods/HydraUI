@@ -310,9 +310,17 @@ local OnTooltipSetUnit = function(self)
 				Line:SetText(format("|cFFEE4D4D%s|r", PVP))
 			elseif Line and Guild and find(Line:GetText(), Guild) then
 				if (Guild == MyGuild) then
-					Guild = format("|cFF5DADE2<%s>|r", Guild)
+					if Settings["tooltips-display-rank"] then
+						Guild = format("|cFF5DADE2<%s>|r (%s)", Guild, Rank)
+					else
+						Guild = format("|cFF5DADE2<%s>|r", Guild)
+					end
 				else
-					Guild = format("|cFF66BB6A<%s>|r", Guild)
+					if Settings["tooltips-display-rank"] then
+						Guild = format("|cFF66BB6A<%s>|r (%s)", Guild, Rank)
+					else
+						Guild = format("|cFF66BB6A<%s>|r", Guild)
+					end
 				end
 				
 				Line:SetText(Guild)
@@ -618,6 +626,7 @@ GUI:AddOptions(function(self)
 	Right:CreateHeader(Language["Information"])
 	Right:CreateSwitch("tooltips-display-realm", Settings["tooltips-display-realm"], Language["Display Realm"], Language["Display character realms"])
 	Right:CreateSwitch("tooltips-display-title", Settings["tooltips-display-title"], Language["Display Title"], Language["Display character titles"])
+	Right:CreateSwitch("tooltips-display-rank", Settings["tooltips-display-rank"], Language["Display Guild Rank"], Language["Display character guild ranks"])
 	
 	Right:CreateHeader(Language["Disable Tooltips"])
 	Right:CreateDropdown("tooltips-hide-on-unit", Settings["tooltips-hide-on-unit"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Friendly"]] = "FRIENDLY", [Language["Hostile"]] = "HOSTILE", [Language["Combat"]] = "NO_COMBAT"}, Language["Disable Units"], Language["Set the tooltip to not display units"])

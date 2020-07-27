@@ -1238,6 +1238,7 @@ local StylePlayer = function(self, unit)
 				Runes[i]:SetPoint("LEFT", Runes, 1, 0)
 			else
 				Runes[i]:SetPoint("TOPLEFT", Runes[i-1], "TOPRIGHT", 1, 0)
+				Runes[i]:SetWidth(Width - 2)
 			end
 		end
 		
