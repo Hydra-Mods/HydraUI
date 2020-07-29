@@ -48,6 +48,7 @@ local ToggleKeybind = function(arg)
     vUI:GetModule("Key Binding"):Toggle()
 end
 
+
 SLASH_VUI1 = "/vui"
 SlashCmdList["VUI"] = RunCommand
 
@@ -55,7 +56,7 @@ SlashCmdList["VUI"] = RunCommand
 SLASH_KB1 = "/kb"
 SlashCmdList["KB"] = ToggleKeybind
 
-SLASH_KB1 = "/keybind"
+SLASH_KEYBIND1 = "/keybind"
 SlashCmdList["KEYBIND"] = ToggleKeybind
 
 SLASH_RL1 = "/rl"
