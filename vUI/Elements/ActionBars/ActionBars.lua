@@ -178,7 +178,6 @@ function AB:StyleActionButton(button)
 	Highlight:SetPoint("BOTTOMRIGHT", button, -1, 1)
 	
 	if button.Flash then
-		--button.Flash:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 		button.Flash:SetVertexColor(0.7, 0.7, 0.1, 0.3)
 		button.Flash:SetPoint("TOPLEFT", button, 1, -1)
 		button.Flash:SetPoint("BOTTOMRIGHT", button, -1, 1)
@@ -468,7 +467,7 @@ function AB:CreateBar1()
 		end
 	]])
 	
-    RegisterStateDriver(self.Bar1, "page", "[vehicleui] 12; [possessbar] 12; [shapeshift] 13; [overridebar] 14; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10; [form] 1; 1")
+    RegisterStateDriver(self.Bar1, "page", "[possessbar] 12; [vehicleui] 12; [shapeshift] 13; [overridebar] 14; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10; [form] 1; 1")
 	
 	self:PositionButtons(self.Bar1, Settings["ab-bar1-button-max"], Settings["ab-bar1-per-row"], Settings["ab-bar1-button-size"], Settings["ab-bar1-button-gap"])
 	
