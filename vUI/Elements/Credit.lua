@@ -6,33 +6,25 @@ GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Credits"], nil, "zzzCredits")
 	
 	Left:CreateHeader(Language["Scripting Help & Mentoring"])
-	Left:CreateDoubleLine("Tukz", "Foof")
-	Left:CreateDoubleLine("Eclipse", "nightcracker")
-	Left:CreateDoubleLine("Elv", "Smelly")
-	Left:CreateDoubleLine("Azilroka", "AlleyKat")
-	Left:CreateDoubleLine("Zork", "Simpy")
+	Left:CreateMessage("Tukz, Foof, Eclipse, nightcracker, Elv, Smelly, Azilroka, AlleyKat, Zork, Simpy")
 	
 	Left:CreateHeader("oUF")
-	Left:CreateDoubleLine("haste", "lightspark")
-	Left:CreateDoubleLine("p3lim", "Rainrider")
+	Left:CreateLine("haste, lightspark, p3lim, Rainrider")
 	
 	Left:CreateHeader("AceSerializer")
 	Left:CreateLine("Nevcairiel")
 	
 	Right:CreateHeader("LibStub")
-	Right:CreateDoubleLine("Kaelten", "Cladhaire")
-	Right:CreateDoubleLine("ckknight", "Mikk")
-	Right:CreateDoubleLine("Ammo", "Nevcairiel")
-	Right:CreateLine("joshborke")
+	Right:CreateMessage("Kaelten, Cladhaire, ckknight, Mikk, Ammo, Nevcairiel, joshborke")
 	
 	Right:CreateHeader("LibSharedMedia")
-	Right:CreateDoubleLine("Elkano", "funkehdude")
+	Right:CreateLine("Elkano, funkehdude")
 	
 	Right:CreateHeader("LibDeflate")
 	Right:CreateLine("yoursafety")
 	
-	Right:CreateHeader("vUI")
-	Right:CreateLine("Hydra")
+	Left:CreateHeader("vUI")
+	Left:CreateLine("Hydra")
 	
 	-- Supporters
 	local Left, Right = self:CreateWindow(Language["Supporters"], nil, "zzzSupporters")
