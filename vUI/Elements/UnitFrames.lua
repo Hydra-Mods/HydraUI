@@ -999,7 +999,7 @@ local StylePlayer = function(self, unit)
     -- Castbar
 	if Settings["unitframes-player-enable-castbar"] then
 		local Castbar = CreateFrame("StatusBar", "vUI Casting Bar", self)
-		Castbar:SetSize(250, 24)
+		Castbar:SetSize(Settings["unitframes-player-cast-width"], Settings["unitframes-player-cast-height"])
 		Castbar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 		
 		local CastbarBG = Castbar:CreateTexture(nil, "ARTWORK")
@@ -1025,12 +1025,12 @@ local StylePlayer = function(self, unit)
 		local Text = Castbar:CreateFontString(nil, "OVERLAY")
 		vUI:SetFontInfo(Text, Settings["ui-widget-font"], Settings["ui-font-size"])
 		Text:SetPoint("LEFT", Castbar, 3, 0)
-		Text:SetSize(250 * 0.7, Settings["ui-font-size"])
+		Text:SetSize(Settings["unitframes-player-cast-width"] * 0.7, Settings["ui-font-size"])
 		Text:SetJustifyH("LEFT")
 		
 		-- Add spell icon
 		local Icon = Castbar:CreateTexture(nil, "OVERLAY")
-		Icon:SetSize(24, 24)
+		Icon:SetSize(Settings["unitframes-player-cast-height"], Settings["unitframes-player-cast-height"])
 		Icon:SetPoint("TOPRIGHT", Castbar, "TOPLEFT", -4, 0)
 		Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		
@@ -1469,7 +1469,7 @@ local StyleTarget = function(self, unit)
     -- Castbar
 	if Settings["unitframes-target-enable-castbar"] then
 		local Castbar = CreateFrame("StatusBar", "vUI Target Casting Bar", self)
-		Castbar:SetSize(250, 22)
+		Castbar:SetSize(Settings["unitframes-target-cast-width"], Settings["unitframes-target-cast-height"])
 		Castbar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 		
 		local CastbarBG = Castbar:CreateTexture(nil, "ARTWORK")
@@ -1495,12 +1495,12 @@ local StyleTarget = function(self, unit)
 		local Text = Castbar:CreateFontString(nil, "OVERLAY")
 		vUI:SetFontInfo(Text, Settings["ui-widget-font"], Settings["ui-font-size"])
 		Text:SetPoint("LEFT", Castbar, 3, 0)
-		Text:SetSize(250 * 0.7, Settings["ui-font-size"])
+		Text:SetSize(Settings["unitframes-target-cast-width"] * 0.7, Settings["ui-font-size"])
 		Text:SetJustifyH("LEFT")
 		
 		-- Add spell icon
 		local Icon = Castbar:CreateTexture(nil, "OVERLAY")
-		Icon:SetSize(22, 22)
+		Icon:SetSize(Settings["unitframes-target-cast-height"], Settings["unitframes-target-cast-height"])
 		Icon:SetPoint("TOPRIGHT", Castbar, "TOPLEFT", -4, 0)
 		Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		
