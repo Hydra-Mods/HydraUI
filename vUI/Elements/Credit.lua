@@ -40,7 +40,7 @@ GUI:AddOptions(function(self)
 	Right:CreateDoubleLine("|cFFA335EEwolimazo|r", "|cFFA335EEAri|r")
 	Right:CreateDoubleLine("|cFF1EFF00Ryex|r", "|cFF1EFF00sylvester|r")
 	Right:CreateDoubleLine("|cFF1EFF00Maski|r", "|cFF1EFF00Innie|r")
-	Right:CreateDoubleLine("|cFF1EFF00Raze|r", "|cFF1EFF00Aaron B.|r")
+	Right:CreateDoubleLine("|cFF1EFF00Mcbooze|r", "|cFF1EFF00Aaron B.|r")
 	Right:CreateDoubleLine("|cFF1EFF00JDoubleU00|r", "|cFF1EFF00Ingrimmosch|r")
 	Right:CreateDoubleLine("|cFF1EFF00MrPoundsign|r", "|cFF1EFF00Syn|r")
 	
