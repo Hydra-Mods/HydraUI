@@ -286,10 +286,12 @@ Defaults["meters-container-show"] = true
 -- Micro Buttons
 Defaults["micro-buttons-visiblity"] = "SHOW"
 Defaults["micro-buttons-opacity"] = 40
+Defaults["micro-buttons-max"] = 100
 
 -- Bags Frame
 Defaults["bags-frame-visiblity"] = "SHOW"
 Defaults["bags-frame-opacity"] = 40
+Defaults["bags-frame-max"] = 100
 
 -- Auto Repair
 Defaults["auto-repair-enable"] = true

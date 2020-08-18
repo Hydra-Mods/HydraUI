@@ -19,7 +19,7 @@ MicroButtons.Buttons = {
 
 local MicroButtonsButtonOnEnter = function(self)
 	if (Settings["micro-buttons-visiblity"] == "MOUSEOVER") then
-		self:GetParent():SetAlpha(1)
+		self:GetParent():SetAlpha(Settings["micro-buttons-max"] / 100)
 	end
 end
 
@@ -43,7 +43,7 @@ function MicroButtons:UpdateVisibility()
 	elseif (Settings["micro-buttons-visiblity"] == "SHOW") then
 		self.Panel:SetScript("OnEnter", nil)
 		self.Panel:SetScript("OnLeave", nil)
-		self.Panel:SetAlpha(1)
+		self.Panel:SetAlpha(Settings["micro-buttons-max"] / 100)
 		self.Panel:Show()
 	end
 end
@@ -156,4 +156,5 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["Micro Menu Buttons"])
 	Left:CreateDropdown("micro-buttons-visiblity", Settings["micro-buttons-visiblity"], {[Language["Hide"]] = "HIDE", [Language["Mouseover"]] = "MOUSEOVER", [Language["Show"]] = "SHOW"}, Language["Set Visibility"], Language["Set the visibility of the micro menu buttons"], UpdateMicroVisibility)
 	Left:CreateSlider("micro-buttons-opacity", Settings["micro-buttons-opacity"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the micro menu buttons when visiblity is set to Mouseover"], UpdateMicroVisibility, nil, "%")
+	Left:CreateSlider("micro-buttons-max", Settings["micro-buttons-max"], 0, 100, 10, Language["Set Max Opacity"], Language["Set the max opacity of the micro menu buttons when visiblity is set to Mouseover"], UpdateMicroVisibility, nil, "%")
 end)

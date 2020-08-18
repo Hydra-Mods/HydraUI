@@ -12,12 +12,12 @@ BagsFrame.Objects = {
 
 local BagsFrameButtonOnEnter = function(self)
 	if (Settings["bags-frame-visiblity"] == "MOUSEOVER") then
-		self:GetParent():SetAlpha(1)
+		self:GetParent():SetAlpha(Settings["bags-frame-max"] / 100)
 	end
 end
 
 local BagsFrameOnEnter = function(self)
-	self:SetAlpha(1)
+	self:SetAlpha(Settings["bags-frame-max"] / 100)
 end
 
 local BagsFrameButtonOnLeave = function(self)
@@ -44,7 +44,7 @@ function BagsFrame:UpdateVisibility()
 	elseif (Settings["bags-frame-visiblity"] == "SHOW") then
 		self.Panel:SetScript("OnEnter", nil)
 		self.Panel:SetScript("OnLeave", nil)
-		self.Panel:SetAlpha(1)
+		self.Panel:SetAlpha(Settings["bags-frame-max"] / 100)
 		self.Panel:Show()
 	end
 end
@@ -153,6 +153,7 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["Bags Frame"])
 	Left:CreateDropdown("bags-frame-visiblity", Settings["bags-frame-visiblity"], {[Language["Hide"]] = "HIDE", [Language["Mouseover"]] = "MOUSEOVER", [Language["Show"]] = "SHOW"}, Language["Set Visibility"], Language["Set the visibility of the bag frame"], UpdateBagVisibility)
 	Left:CreateSlider("bags-frame-opacity", Settings["bags-frame-opacity"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the bags frame when visiblity is set to Mouseover"], UpdateBagVisibility, nil, "%")
+	Left:CreateSlider("bags-frame-max", Settings["bags-frame-max"], 0, 100, 10, Language["Set Max Opacity"], Language["Set the max opacity of the bags frame when visiblity is set to Mouseover"], UpdateBagVisibility, nil, "%")
 	Left:CreateSwitch("bags-loot-from-left", Settings["bags-loot-from-left"], Language["Loot Left To Right"], Language["When looting, new items will be placed into the leftmost bag"], SetInsertItemsLeftToRight)
 	
 	SetInsertItemsLeftToRight(Settings["bags-loot-from-left"])
