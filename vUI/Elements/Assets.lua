@@ -241,10 +241,13 @@ Assets:SetTexture("Arrow Down", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIAr
 Assets:SetTexture("Arrow Up", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowUp.tga", true)
 Assets:SetTexture("Arrow Left", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowLeft.tga", true)
 Assets:SetTexture("Arrow Left Large", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowLeftLarge.tga", true)
+Assets:SetTexture("Arrow Left Huge", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowLeftHuge.tga", true)
 Assets:SetTexture("Arrow Right", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowRight.tga", true)
 Assets:SetTexture("Arrow Right Large", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowRightLarge.tga", true)
+Assets:SetTexture("Arrow Right Huge", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUIArrowRightHuge.tga", true)
 Assets:SetTexture("Skull", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUISkull.tga", true)
 Assets:SetTexture("Small Star", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUISmallStar.tga", true)
+Assets:SetTexture("Copy", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUICopy.tga", true)
 Assets:SetTexture("Copy", "Interface\\AddOns\\vUI\\Assets\\Textures\\vUICopy.tga", true)
 
 for Name, Path in pairs(Textures) do
