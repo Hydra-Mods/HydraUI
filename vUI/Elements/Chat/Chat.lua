@@ -1095,14 +1095,8 @@ function Chat:SetChatTypeInfo()
 	end
 end
 
-function Chat:UI_SCALE_CHANGED()
-	self:MoveChatFrames()
-end
-
-function Chat:PLAYER_LOGIN(event)
+function Chat:Load()
 	if (not Settings["chat-enable"]) then
-		self:UnregisterEvent(event)
-		
 		return
 	end
 	
@@ -1127,15 +1121,8 @@ function Chat:PLAYER_LOGIN(event)
 	self:Hook("FCF_OpenTemporaryWindow")
 	
 	self:RegisterEvent("UI_SCALE_CHANGED")
-	self:UnregisterEvent(event)
+	self:SetScript("OnEvent", self.MoveChatFrames)
 end
-
-function Chat:OnEvent(event)
-	self[event](self, event)
-end
-
-Chat:RegisterEvent("PLAYER_LOGIN")
-Chat:SetScript("OnEvent", Chat.OnEvent)
 
 vUI.FormatLinks = FormatLinks
 

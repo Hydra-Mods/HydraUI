@@ -1,5 +1,7 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
+if 1 == 1 then return end
+
 local Loot = vUI:NewModule("Loot")
 
 local GetNumLootItems = GetNumLootItems
@@ -18,7 +20,7 @@ function Loot:LOOT_OPENED(autoloot) -- autoloot
 	for i = 1, #LootInfo do
 		Icon, Name, Quantity, CurrencyID, Quality, Locked, QuestItem, QuestID, IsActive = GetLootSlotInfo(i)
 		
-		
+		print(Icon, Name, Quantity, CurrencyID, Quality)
 	end
 end
 
