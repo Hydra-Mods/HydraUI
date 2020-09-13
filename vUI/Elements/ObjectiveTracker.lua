@@ -127,11 +127,11 @@ function Tracker:StyleWindow()
 	self:ReplaceColor("Complete", Settings["tracker-color-complete"])
 	
 	-- Header
-	vUI:SetFontInfo(ObjectiveTrackerFrame.HeaderMenu.Title, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+	vUI:SetFontInfo(ObjectiveTrackerFrame.HeaderMenu.Title, Settings["tracker-module-font"], Settings["tracker-module-font-size"], Settings["tracker-module-font-flags"])
 	
 	-- Quests
 	ObjectiveTrackerBlocksFrame.QuestHeader.Background:Hide()
-	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.QuestHeader.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.QuestHeader.Text, Settings["tracker-module-font"], Settings["tracker-module-font-size"], Settings["tracker-module-font-flags"])
 	ObjectiveTrackerBlocksFrame.QuestHeader.Text:SetTextColor(vUI:HexToRGB(Settings["tracker-module-font-color"]))
 	
 	ObjectiveTrackerBlocksFrame.QuestHeader.BG = ObjectiveTrackerBlocksFrame.QuestHeader:CreateTexture(nil, "BORDER")
@@ -148,7 +148,7 @@ function Tracker:StyleWindow()
 	
 	-- Scenario
 	ObjectiveTrackerBlocksFrame.ScenarioHeader.Background:Hide()
-	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.ScenarioHeader.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.ScenarioHeader.Text, Settings["tracker-module-font"], Settings["tracker-module-font-size"], Settings["tracker-module-font-flags"])
 	ObjectiveTrackerBlocksFrame.ScenarioHeader.Text:SetTextColor(vUI:HexToRGB(Settings["tracker-module-font-color"]))
 	
 	ObjectiveTrackerBlocksFrame.ScenarioHeader.BG = ObjectiveTrackerBlocksFrame.ScenarioHeader:CreateTexture(nil, "BORDER")
@@ -165,7 +165,7 @@ function Tracker:StyleWindow()
 	
 	-- Achievement
 	ObjectiveTrackerBlocksFrame.AchievementHeader.Background:Hide()
-	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.AchievementHeader.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.AchievementHeader.Text, Settings["tracker-module-font"], Settings["tracker-module-font-size"], Settings["tracker-module-font-flags"])
 	ObjectiveTrackerBlocksFrame.AchievementHeader.Text:SetTextColor(vUI:HexToRGB(Settings["tracker-module-font-color"]))
 	
 	ObjectiveTrackerBlocksFrame.AchievementHeader.BG = ObjectiveTrackerBlocksFrame.AchievementHeader:CreateTexture(nil, "BORDER")
@@ -182,7 +182,7 @@ function Tracker:StyleWindow()
 	
 	-- Bonus
 	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Background:Hide()
-	vUI:SetFontInfo(BONUS_OBJECTIVE_TRACKER_MODULE.Header.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+	vUI:SetFontInfo(BONUS_OBJECTIVE_TRACKER_MODULE.Header.Text, Settings["tracker-module-font"], Settings["tracker-module-font-size"], Settings["tracker-module-font-flags"])
 	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Text:SetTextColor(vUI:HexToRGB(Settings["tracker-module-font-color"]))
 	
 	BONUS_OBJECTIVE_TRACKER_MODULE.Header.BG = BONUS_OBJECTIVE_TRACKER_MODULE.Header:CreateTexture(nil, "BORDER")
@@ -199,7 +199,7 @@ function Tracker:StyleWindow()
 	
 	-- World Quests
 	WORLD_QUEST_TRACKER_MODULE.Header.Background:Hide()
-	vUI:SetFontInfo(WORLD_QUEST_TRACKER_MODULE.Header.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+	vUI:SetFontInfo(WORLD_QUEST_TRACKER_MODULE.Header.Text, Settings["tracker-module-font"], Settings["tracker-module-font-size"], Settings["tracker-module-font-flags"])
 	WORLD_QUEST_TRACKER_MODULE.Header.Text:SetTextColor(vUI:HexToRGB(Settings["tracker-module-font-color"]))
 	
 	WORLD_QUEST_TRACKER_MODULE.Header.BG = WORLD_QUEST_TRACKER_MODULE.Header:CreateTexture(nil, "BORDER")
