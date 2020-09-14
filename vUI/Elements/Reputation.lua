@@ -160,7 +160,7 @@ function Reputation:OnEvent()
 			Value = CurrentValue % Threshold
 			
 			if RewardPending then
-				value = value + Threshold
+				Value = Value + Threshold
 			end
 		end
 		
