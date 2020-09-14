@@ -355,6 +355,8 @@ local OnTooltipSetItem = function(self)
 		return
 	end
 	
+	self:SetBackdrop(nil)
+	
 	if Settings["tooltips-show-id"] then
 		local ID = match(Link, ":(%w+)")
 		
