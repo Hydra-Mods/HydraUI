@@ -32,11 +32,22 @@ KeyBinding.Filter = {
 	["LSHIFT"] = true,
 	["RSHIFT"] = true,
 	["ENTER"] = true,
-	["ESCAPE"] = true,
+	["LeftButton"] = true,
+	["RightButton"] = true,
 }
 
 function KeyBinding:OnKeyUp(key)
 	if (not IsKeyPressIgnoredForBinding(key) and not self.Filter[key] and self.TargetBindingName) then
+		if (key == "ESCAPE") then
+			local Binding = GetBindingKey(self.TargetBindingName)
+			
+			if Binding then
+				SetBinding(Binding)
+			end
+			
+			return
+		end
+		
 		key = format("%s%s%s%s", IsAltKeyDown() and "ALT-" or "", IsControlKeyDown() and "CTRL-" or "", IsShiftKeyDown() and "SHIFT-" or "", key)
 		
 		local OldAction = GetBindingAction(key, true)
@@ -75,6 +86,55 @@ function KeyBinding:OnKeyDown(key)
 				self.TargetBindingName = self.Translate[ButtonName] .. match(Name, "(%d+)$")
 			end
 		end
+	end
+end
+
+function KeyBinding:OnEvent(event, button)
+	local MouseFocus = GetMouseFocus()
+	
+	if (MouseFocus and MouseFocus.GetName) then
+		local Name = MouseFocus:GetName()
+		
+		if (not Name) then
+			return
+		end
+		
+		local ButtonName = match(Name, "%D+")
+		if self.Translate[ButtonName] then
+			if self.ValidBindings[self.Translate[ButtonName]] then
+				self.TargetBindingName = self.Translate[ButtonName] .. match(Name, "(%d+)$")
+			end
+		end
+	end
+	
+	if (not self.Filter[button] and self.TargetBindingName) then
+		if (button == "MiddleButton") then
+			button = "BUTTON3"
+		end
+		
+		if match(button, "Button%d+") then
+			button = string.upper(button)
+		end
+		
+		button = format("%s%s%s%s", IsAltKeyDown() and "ALT-" or "", IsControlKeyDown() and "CTRL-" or "", IsShiftKeyDown() and "SHIFT-" or "", button)
+		
+		local OldAction = GetBindingAction(button, true)
+		
+		if OldAction then
+			local OldName = GetBindingName(OldAction)
+			
+			vUI:print(format(Language['Unbound "%s" from %s'], button, OldName))
+		end
+		
+		SetBinding(button, self.TargetBindingName, 1)
+		
+		local NewAction = GetBindingAction(button, true)
+		local NewName = GetBindingName(NewAction)
+		
+		vUI:print(format(Language['Bound "%s" to %s'], button, NewName))
+		
+		GUI:GetWidgetByWindow(Language["Action Bars"], "save"):Enable()
+		GUI:GetWidgetByWindow(Language["Action Bars"], "discard"):Enable()
 	end
 end
 
@@ -118,10 +178,12 @@ local OnCancel = function()
 end
 
 function KeyBinding:Enable()
+	self:RegisterEvent("GLOBAL_MOUSE_UP")
 	self:EnableKeyboard(true)
 	self:SetScript("OnUpdate", self.OnUpdate)
 	self:SetScript("OnKeyDown", self.OnKeyDown)
 	self:SetScript("OnKeyUp", self.OnKeyUp)
+	self:SetScript("OnEvent", self.OnEvent)
 	self.Active = true
 	
 	--vUI:DisplayPopup(Language["Attention"], Language["Key binding mode is currently active. Would you like to exit key binding mode?"], Language["Accept"], PopupOnAccept, Language["Cancel"]) -- PopupOnCancel
@@ -129,10 +191,12 @@ function KeyBinding:Enable()
 end
 
 function KeyBinding:Disable()
+	self:UnregisterEvent("GLOBAL_MOUSE_UP")
 	self:EnableKeyboard(false)
 	self:SetScript("OnUpdate", nil)
 	self:SetScript("OnKeyDown", nil)
 	self:SetScript("OnKeyUp", nil)
+	self:SetScript("OnEvent", nil)
 	self.Active = false
 	self.TargetBindingName = nil
 	
