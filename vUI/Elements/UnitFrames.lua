@@ -2746,22 +2746,33 @@ UF:SetScript("OnEvent", function(self, event)
 			Target:SetSize(Settings["unitframes-target-width"], Settings["unitframes-target-health-height"] + Settings["unitframes-target-power-height"] + 3)
 			Target:SetPoint("LEFT", vUI.UIParent, "CENTER", 68, -304)
 			Target:SetParent(vUI.UIParent)
+		
+			if Settings["unitframes-targettarget-enable"] then		
+				local TargetTarget = oUF:Spawn("targettarget", "vUI Target Target")
+				TargetTarget:SetSize(Settings["unitframes-targettarget-width"], Settings["unitframes-targettarget-health-height"] + Settings["unitframes-targettarget-power-height"] + 3)
+				TargetTarget:SetPoint("TOPRIGHT", Target, "BOTTOMRIGHT", 0, -2)
+				TargetTarget:SetParent(vUI.UIParent)
+				vUI:CreateMover(TargetTarget)
+			end
+				
+			if Settings["unitframes-pet-enable"] then						
+				local Pet = oUF:Spawn("pet", "vUI Pet")
+				Pet:SetSize(Settings["unitframes-pet-width"], Settings["unitframes-pet-health-height"] + Settings["unitframes-pet-power-height"] + 3)
+				Pet:SetPoint("TOPLEFT", Player, "BOTTOMLEFT", 0, -2)
+				Pet:SetParent(vUI.UIParent)
+				vUI:CreateMover(Pet)
+			end
 			
-			local TargetTarget = oUF:Spawn("targettarget", "vUI Target Target")
-			TargetTarget:SetSize(Settings["unitframes-targettarget-width"], Settings["unitframes-targettarget-health-height"] + Settings["unitframes-targettarget-power-height"] + 3)
-			TargetTarget:SetPoint("TOPRIGHT", Target, "BOTTOMRIGHT", 0, -2)
-			TargetTarget:SetParent(vUI.UIParent)
-			
-			local Pet = oUF:Spawn("pet", "vUI Pet")
-			Pet:SetSize(Settings["unitframes-pet-width"], Settings["unitframes-pet-health-height"] + Settings["unitframes-pet-power-height"] + 3)
-			Pet:SetPoint("TOPLEFT", Player, "BOTTOMLEFT", 0, -2)
-			Pet:SetParent(vUI.UIParent)
-			
-			local Focus = oUF:Spawn("focus", "vUI Focus")
-			Focus:SetSize(Settings["unitframes-focus-width"], Settings["unitframes-focus-health-height"] + Settings["unitframes-focus-power-height"] + 3)
-			Focus:SetPoint("RIGHT", vUI.UIParent, "CENTER", -68, 304)
-			Focus:SetParent(vUI.UIParent)
-			
+			if Settings["unitframes-focus-enable"] then	
+				local Focus = oUF:Spawn("focus", "vUI Focus")
+				Focus:SetSize(Settings["unitframes-focus-width"], Settings["unitframes-focus-health-height"] + Settings["unitframes-focus-power-height"] + 3)
+				Focus:SetPoint("RIGHT", vUI.UIParent, "CENTER", -68, 304)
+				Focus:SetParent(vUI.UIParent)
+				vUI:CreateMover(Focus)
+			else
+				local Focus = oUF:Spawn("focus", "vUI Focus")
+			end
+				
 			vUI.UnitFrames["player"] = Player
 			vUI.UnitFrames["target"] = Target
 			vUI.UnitFrames["targettarget"] = TargetTarget
@@ -2772,9 +2783,6 @@ UF:SetScript("OnEvent", function(self, event)
 			
 			vUI:CreateMover(Player)
 			vUI:CreateMover(Target)
-			vUI:CreateMover(TargetTarget)
-			vUI:CreateMover(Pet)
-			vUI:CreateMover(Focus)
 			
 			if Settings["unitframes-player-enable-castbar"] then
 				Player.Castbar:SetPoint("BOTTOM", vUI.UIParent, 0, 118)
@@ -3278,6 +3286,7 @@ GUI:AddOptions(function(self)
 	Right:CreateInput("unitframes-target-power-right", Settings["unitframes-target-power-right"], Language["Right Power Text"], Language["Set the text on the right of the target power bar"], ReloadUI):RequiresReload(true)
 	
 	Left:CreateHeader(Language["Target of Target"])
+	Left:CreateSwitch("unitframes-targettarget-enable", Settings["unitframes-targettarget-enable"], Language["Enable Target of Target Unit Frame"], Language["Enable the target of target unit frames module"], ReloadUI):RequiresReload(true)	
 	Left:CreateSlider("unitframes-targettarget-width", Settings["unitframes-targettarget-width"], 60, 320, 1, "Width", "Set the width of the target's target unit frame", UpdateTargetTargetWidth)
 	Left:CreateSlider("unitframes-targettarget-health-height", Settings["unitframes-targettarget-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the target of target health bar", UpdateTargetTargetHealthHeight)
 	Left:CreateSlider("unitframes-targettarget-power-height", Settings["unitframes-targettarget-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the target of target power bar", UpdateTargetTargetPowerHeight)
@@ -3289,6 +3298,7 @@ GUI:AddOptions(function(self)
 	Left:CreateInput("unitframes-targettarget-health-right", Settings["unitframes-targettarget-health-right"], Language["Right Health Text"], Language["Set the text on the right of the target of target health bar"], ReloadUI):RequiresReload(true)
 	
 	Right:CreateHeader(Language["Pet"])
+	Right:CreateSwitch("unitframes-pet-enable", Settings["unitframes-pet-enable"], Language["Enable Pet Unit Frame"], Language["Enable the pet unit frames module"], ReloadUI):RequiresReload(true)	
 	Right:CreateSlider("unitframes-pet-width", Settings["unitframes-pet-width"], 60, 320, 1, "Width", "Set the width of the pet unit frame", UpdatePetWidth)
 	Right:CreateSlider("unitframes-pet-health-height", Settings["unitframes-pet-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the pet health bar", UpdatePetHealthHeight)
 	Right:CreateSlider("unitframes-pet-power-height", Settings["unitframes-pet-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the pet power bar", UpdatePetPowerHeight)
@@ -3300,6 +3310,7 @@ GUI:AddOptions(function(self)
 	Right:CreateInput("unitframes-pet-health-right", Settings["unitframes-pet-health-right"], Language["Right Health Text"], Language["Set the text on the right of the pet health bar"], ReloadUI):RequiresReload(true)
 	
 	Right:CreateHeader(Language["Focus"])
+	Right:CreateSwitch("unitframes-focus-enable", Settings["unitframes-focus-enable"], Language["Enable Focus Unit Frame"], Language["Enable the focus unit frames module"], ReloadUI):RequiresReload(true)
 	Right:CreateSlider("unitframes-focus-width", Settings["unitframes-focus-width"], 60, 320, 1, "Width", "Set the width of the focus unit frame", UpdateFocusWidth)
 	Right:CreateSlider("unitframes-focus-health-height", Settings["unitframes-focus-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the focus health bar", UpdateFocusHealthHeight)
 	Right:CreateSlider("unitframes-focus-power-height", Settings["unitframes-focus-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the focus power bar", UpdateFocusPowerHeight)
