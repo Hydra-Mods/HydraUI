@@ -1,6 +1,6 @@
 ## Interface: 80300
 ## Author: Hydra
-## Version: 1.0057
+## Version: 1.0058
 ## Title: |cFFFFC44DvUI|r
 ## Notes: An interface replacement for World of Warcraft: Battle for Azeroth
 ## SavedVariables: vUIProfileData, vUIProfiles, vUIData, vUIGold
@@ -30,13 +30,13 @@ Elements\Defaults.lua
 Elements\Profiles.lua
 Elements\GUI.lua
 Elements\Colors.lua
-Elements\Fonts.lua
+Elements\General.lua
 Elements\Throttle.lua
 Elements\Move.lua
 Elements\Alerts.lua
 Elements\Popup.lua
-Elements\General.lua
 Elements\Gold.lua
+Elements\Fonts.lua
 Elements\Chat\Chat.lua
 Elements\Chat\Bubbles.lua
 Elements\Experience.lua

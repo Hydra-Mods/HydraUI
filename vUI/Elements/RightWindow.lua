@@ -12,6 +12,7 @@ local Testing = {
 	["Amnistia:Mal'Ganis"] = 1,
 	["Psyaviah:Sargeras"] = 1,
 	["Dioxin:Sargeras"] = 1,
+	["Distoxia:Mal'Ganis"] = 1,
 }
 
 if (not Testing[vUI.UserProfileKey]) then

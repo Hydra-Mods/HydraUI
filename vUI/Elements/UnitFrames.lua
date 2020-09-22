@@ -1827,7 +1827,8 @@ local StyleFocus = function(self, unit)
 	
     -- Castbar
     local Castbar = CreateFrame("StatusBar", nil, self)
-    Castbar:SetSize(250, 24)
+    Castbar:SetSize(120, 24)
+    Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 1, -3)
     Castbar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	
 	local CastbarBG = Castbar:CreateTexture(nil, "ARTWORK")
@@ -1924,6 +1925,7 @@ local StyleFocus = function(self, unit)
 	self.HealBar = HealBar
 	self.HealthLeft = HealthLeft
 	self.HealthRight = HealthRight
+	self.Castbar = Castbar
 	self.Buffs = Buffs
 	self.Debuffs = Debuffs
 end
@@ -3723,7 +3725,7 @@ GUI:AddOptions(function(self)
 	Right:CreateSlider("raid-column-spacing", Settings["raid-column-spacing"], -10, 10, 1, Language["Column Spacing"], Language["Set the spacing between columns of raid units"], UpdateRaidColumnSpacing)
 	Right:CreateDropdown("raid-sorting-method", Settings["raid-sorting-method"], {[Language["Group"]] = "GROUP", [Language["Name"]] = "NAME", [Language["Class"]] = "CLASS", [Language["Role"]] = "ROLE", [Language["Main Tank"]] = "MTMA"}, Language["Sorting Method"], Language["Set how the raid units are sorted"], UpdateRaidSortingMethod)
 	Right:CreateDropdown("raid-point", Settings["raid-point"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Top"]] = "TOP", [Language["Bottom"]] = "BOTTOM"}, Language["Anchor Point"], Language["Set where new raid frames will connect to previous ones"], UpdateRaidPoint)
-	Right:CreateDropdown("raid-column-anchor", Settings["raid-column-anchor"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Top"]] = "TOP", [Language["Bottom"]] = "BOTTOM"}, Language["New Column Anchor"], Language["Set where new columns should anchor to"], UpdateRaidColumnAnchor)
+	Right:CreateDropdown("raid-column-anchor", Settings["raid-column-anchor"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Top"]] = "TOP", [Language["Bottom"]] = "BOTTOM"}, Language["New Column Anchor"], Language["Set where new columns should anchor to"], ReloadUI):RequiresReload(true)
 end)
 
 local NamePlatesUpdateEnableDebuffs = function(self, value)

@@ -33,6 +33,7 @@ GUI:AddOptions(function(self)
 	Left:CreateDoubleLine("Innie", "Brightsides")
 	Left:CreateDoubleLine("Erthelmi", "Gene")
 	Left:CreateDoubleLine("JDoubleU00", "Duds")
+	Left:CreateLine("Shazlen")
 	
 	Right:CreateHeader("Patrons")
 	Right:CreateDoubleLine("|cFFFF8000Erieeroot|r", "|cFFFF8000SwoopCrown|r")
