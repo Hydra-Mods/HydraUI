@@ -2695,6 +2695,17 @@ local UpdateShowPlayerBuffs = function(value)
 	end
 end
 
+local UpdateShowTargetBuffs = function(value)
+	if vUI.UnitFrames["target"] then
+		if value then
+			vUI.UnitFrames["target"]:EnableElement("Auras")
+			vUI.UnitFrames["target"]:UpdateAllElements("ForceUpdate")
+		else
+			vUI.UnitFrames["target"]:DisableElement("Auras")
+		end
+	end
+end
+
 local UpdateRaidSortingMethod = function(value)
 	if (value == "CLASS") then
 		vUI.UnitFrames["raid"]:SetAttribute("groupingOrder", "DEATHKNIGHT,DEMONHUNTER,DRUID,HUNTER,MAGE,MONK,PALADIN,PRIEST,SHAMAN,WARLOCK,WARRIOR")
@@ -2771,6 +2782,7 @@ UF:SetScript("OnEvent", function(self, event)
 			vUI.UnitFrames["focus"] = Focus
 			
 			UpdateShowPlayerBuffs(Settings["unitframes-show-player-buffs"])
+			UpdateShowTargetBuffs(Settings["unitframes-show-target-buffs"])
 			
 			vUI:CreateMover(Player)
 			vUI:CreateMover(Target)
@@ -2915,6 +2927,7 @@ UF:SetScript("OnEvent", function(self, event)
 		end
 	else
 		UpdateShowPlayerBuffs(Settings["unitframes-show-player-buffs"])
+		UpdateShowTargetBuffs(Settings["unitframes-show-player-buffs"])
 	end
 end)
 
@@ -3271,9 +3284,10 @@ GUI:AddOptions(function(self)
 	Right:CreateDropdown("unitframes-target-health-color", Settings["unitframes-target-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Color"], Language["Set the color of the health bar"], UpdateTargetHealthColor)
 	Right:CreateDropdown("unitframes-target-power-color", Settings["unitframes-target-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateTargetPowerColor)
 	Right:CreateSwitch("unitframes-target-enable-castbar", Settings["unitframes-target-enable-castbar"], Language["Enable Cast Bar"], Language["Enable the target cast bar"], ReloadUI):RequiresReload(true)
+	Right:CreateSwitch("unitframes-show-target-buffs", Settings["unitframes-show-target-buffs"], Language["Show Target Buffs"], Language["Show yauras above the target unit frame"], UpdateShowTargetBuffs)
+	Right:CreateSwitch("unitframes-only-player-debuffs", Settings["unitframes-only-player-debuffs"], Language["Only Display Player Debuffs"], Language["If enabled, only your own debuffs will be displayed on the target"], UpdateOnlyPlayerDebuffs)
 	Right:CreateSwitch("unitframes-target-health-reverse", Settings["unitframes-target-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateTargetHealthFill)
 	Right:CreateSwitch("unitframes-target-power-reverse", Settings["unitframes-target-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateTargetPowerFill)
-	Right:CreateSwitch("unitframes-only-player-debuffs", Settings["unitframes-only-player-debuffs"], Language["Only Display Player Debuffs"], Language["If enabled, only your own debuffs will be displayed on the target"], UpdateOnlyPlayerDebuffs)
 	Right:CreateInput("unitframes-target-health-left", Settings["unitframes-target-health-left"], Language["Left Health Text"], Language["Set the text on the left of the target health bar"], ReloadUI):RequiresReload(true)
 	Right:CreateInput("unitframes-target-health-right", Settings["unitframes-target-health-right"], Language["Right Health Text"], Language["Set the text on the right of the target health bar"], ReloadUI):RequiresReload(true)
 	Right:CreateInput("unitframes-target-power-left", Settings["unitframes-target-power-left"], Language["Left Power Text"], Language["Set the text on the left of the target power bar"], ReloadUI):RequiresReload(true)

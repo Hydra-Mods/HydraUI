@@ -30,9 +30,9 @@ Elements\Defaults.lua
 Elements\Profiles.lua
 Elements\GUI.lua
 Elements\Colors.lua
-Elements\General.lua
 Elements\Throttle.lua
 Elements\Move.lua
+Elements\General.lua
 Elements\Alerts.lua
 Elements\Popup.lua
 Elements\Gold.lua
