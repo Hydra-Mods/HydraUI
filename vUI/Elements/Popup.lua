@@ -34,7 +34,7 @@ end
 
 Popup.CreatePopupFrame = function(self)
 	self:SetSize(POPUP_WIDTH, POPUP_HEIGHT)
-	self:SetPoint("CENTER", vUI.UIParent, 0, 250)
+	self:SetPoint("CENTER", vUI.UIParent, 0, 234)
 	self:SetBackdrop(vUI.BackdropAndBorder)
 	self:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self:SetBackdropBorderColor(0, 0, 0)

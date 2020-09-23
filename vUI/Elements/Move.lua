@@ -49,6 +49,15 @@ local OnDragStop = function(self)
 	Profile.Move[self.Name] = vUI:PositionToString(self)
 end
 
+local OnAccept = function()
+	vUI:ToggleMovers()
+	GUI:Toggle()
+end
+
+local OnCancel = function()
+	vUI:ToggleMovers()
+end
+
 function vUI:ToggleMovers()
 	if InCombatLockdown() then
 		vUI:print(ERR_NOT_IN_COMBAT)
@@ -73,6 +82,11 @@ function vUI:ToggleMovers()
 			self.MovingFrames[i]:SetScript("OnDragStart", OnDragStart)
 			self.MovingFrames[i]:SetScript("OnDragStop", OnDragStop)
 			self.MovingFrames[i]:Show()
+		end
+		
+		if GUI:IsShown() then
+			vUI:DisplayPopup(Language["Attention"], Language["Would you like to reopen the settings window?"], Language["Accept"], OnAccept, Language["Cancel"], OnCancel) -- PopupOnCancel
+			GUI:Toggle()
 		end
 		
 		self.MovingActive = true
