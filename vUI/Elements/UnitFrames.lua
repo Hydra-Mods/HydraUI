@@ -1827,8 +1827,8 @@ local StyleFocus = function(self, unit)
 	
     -- Castbar
     local Castbar = CreateFrame("StatusBar", nil, self)
-    Castbar:SetSize(120, 24)
-    Castbar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 1, -3)
+    Castbar:SetSize(Settings["unitframes-focus-width"] - 30, 24)
+    Castbar:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", -1, -3)
     Castbar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	
 	local CastbarBG = Castbar:CreateTexture(nil, "ARTWORK")
