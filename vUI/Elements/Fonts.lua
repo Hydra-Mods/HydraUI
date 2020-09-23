@@ -8,7 +8,7 @@ _G.UNIT_NAME_FONT = Assets:GetFont(Settings["unit-name-font"])]]
 	
 function Fonts:Load()
 	local Font = Assets:GetFont(Settings["ui-widget-font"])
-
+	
 	UIErrorsFrame:SetFont(Font, 16)
 	
 	RaidWarningFrameSlot1:SetFont(Font, 16)

@@ -51,6 +51,18 @@ local GetDiscordLink = function()
 	end
 end
 
+local GetYouTubeLink = function()
+	if (not Throttle:Exists("yt-request")) then
+		Throttle:Create("yt-request", 10)
+	end
+	
+	if (not Throttle:IsThrottled("yt-request")) then
+		vUI:print(Language["Subscribe to YouTube to see new features https://www.youtube.com/c/HydraMods"])
+		
+		Throttle:Start("yt-request")
+	end
+end
+
 local ToggleMove = function()
 	vUI:ToggleMovers()
 end
@@ -76,10 +88,8 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["Welcome"])
 	Left:CreateSwitch("ui-display-welcome", Settings["ui-display-welcome"], Language["Display Welcome Message"], Language["Display a welcome message on login with UI information"])
 	--Left:CreateSwitch("ui-display-whats-new", Settings["ui-display-whats-new"], Language[ [[Display "What's New" Pop-ups]] ], "")
-	Left:CreateSwitch("ui-display-dev-tools", Settings["ui-display-dev-tools"], Language["Display Developer Chat Tools"], "", UpdateDisplayDevTools)
-	
-	Left:CreateHeader(Language["Discord"])
 	Left:CreateButton(Language["Get Link"], Language["Join Discord"], Language["Get a link to join the vUI Discord community"], GetDiscordLink)
+	Left:CreateButton(Language["Get Link"], Language["Watch YouTube"], Language["Get a link for the vUI YouTube channel"], GetYouTubeLink)
 	
 	Left:CreateHeader(Language["Move UI"])
 	Left:CreateButton(Language["Toggle"], Language["Move UI"], Language["While toggled, you can drag some elements of vUI around the screen"], ToggleMove)
@@ -89,6 +99,9 @@ GUI:AddOptions(function(self)
 	Right:CreateSwitch("gui-hide-in-combat", Settings["gui-hide-in-combat"], Language["Hide In Combat"], Language["Hide the settings window when engaging in combat"])
 	Right:CreateSwitch("gui-enable-fade", Settings["gui-enable-fade"], Language["Fade While Moving"], Language["Fade out the settings window while moving"], UpdateGUIEnableFade)
 	Right:CreateSlider("gui-faded-alpha", Settings["gui-faded-alpha"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the settings window while faded"], nil, nil, "%")
+	
+	Left:CreateHeader(Language["Developer"])
+	Left:CreateSwitch("ui-display-dev-tools", Settings["ui-display-dev-tools"], Language["Display Developer Chat Tools"], "", UpdateDisplayDevTools)
 end)
 
 -- Putting Styles here too

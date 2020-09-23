@@ -9,10 +9,12 @@ Throttle.Active = {}
 
 function Throttle:OnUpdate(ela)
 	for i = 1, #self.Active do
-		self.Active[i].Time = self.Active[i].Time - ela
-		
-		if (self.Active[i].Time <= 0) then
-			tinsert(self.Inactive, tremove(self.Active, i))
+		if self.Active[i] then
+			self.Active[i].Time = self.Active[i].Time - ela
+			
+			if (self.Active[i].Time <= 0) then
+				tinsert(self.Inactive, tremove(self.Active, i))
+			end
 		end
 	end
 	
@@ -23,8 +25,6 @@ end
 
 function Throttle:Create(name, duration)
 	if self:Exists(name) then
-		--vUI:print(format('A throttle already exists with the name "%s".', name))
-		
 		return
 	end
 	
