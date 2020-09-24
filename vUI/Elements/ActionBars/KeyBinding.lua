@@ -156,14 +156,6 @@ function KeyBinding:OnUpdate(elapsed)
 	end
 end
 
-local PopupOnAccept = function()
-	KeyBinding:Disable()
-end
-
-local PopupOnCancel = function()
-	KeyBinding:Disable()
-end
-
 local OnAccept = function()
 	SaveBindings(GetCurrentBindingSet())
 	
@@ -186,8 +178,7 @@ function KeyBinding:Enable()
 	self:SetScript("OnEvent", self.OnEvent)
 	self.Active = true
 	
-	--vUI:DisplayPopup(Language["Attention"], Language["Key binding mode is currently active. Would you like to exit key binding mode?"], Language["Accept"], PopupOnAccept, Language["Cancel"]) -- PopupOnCancel
-	vUI:DisplayPopup(Language["Attention"], Language["Key binding mode is active. Would you like to save your changes?"], Language["Save"], OnAccept, Language["Cancel"], OnCancel) -- PopupOnCancel
+	vUI:DisplayPopup(Language["Attention"], Language["Key binding mode is active. Would you like to save your changes?"], Language["Save"], OnAccept, Language["Cancel"], OnCancel)
 end
 
 function KeyBinding:Disable()
