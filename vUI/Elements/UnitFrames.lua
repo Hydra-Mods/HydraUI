@@ -2927,7 +2927,7 @@ UF:SetScript("OnEvent", function(self, event)
 		end
 	else
 		UpdateShowPlayerBuffs(Settings["unitframes-show-player-buffs"])
-		UpdateShowTargetBuffs(Settings["unitframes-show-player-buffs"])
+		UpdateShowTargetBuffs(Settings["unitframes-show-target-buffs"])
 	end
 end)
 
