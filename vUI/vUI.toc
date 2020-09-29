@@ -1,6 +1,6 @@
 ## Interface: 80300
 ## Author: Hydra
-## Version: 1.00591
+## Version: 1.00592
 ## Title: |cFFFFC44DvUI|r
 ## Notes: An interface replacement for World of Warcraft: Battle for Azeroth
 ## SavedVariables: vUIProfileData, vUIProfiles, vUIData, vUIGold
@@ -82,7 +82,6 @@ Elements\DataTexts\TimeLocal.lua
 Elements\DataTexts\TimeRealm.lua
 Elements\DataTexts\Versatility.lua
 Elements\ObjectiveTracker.lua
-Elements\RightWindow.lua
 Elements\Loot.lua
 Elements\DruidMana.lua
 Elements\MirrorTimers.lua
