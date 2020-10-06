@@ -226,6 +226,8 @@ Defaults["chat-bubbles-font-flags"] = ""
 Defaults["experience-enable"] = true
 Defaults["experience-width"] = 310
 Defaults["experience-height"] = 18
+Defaults["experience-mouseover"] = false
+Defaults["experience-mouseover-opacity"] = 0
 Defaults["experience-display-level"] = false
 Defaults["experience-display-progress"] = true
 Defaults["experience-display-percent"] = true
@@ -241,6 +243,8 @@ Defaults["experience-rested-color"] = "00B4FF"
 Defaults["reputation-enable"] = true
 Defaults["reputation-width"] = 310
 Defaults["reputation-height"] = 18
+Defaults["reputation-mouseover"] = false
+Defaults["reputation-mouseover-opacity"] = 0
 Defaults["reputation-display-progress"] = true
 Defaults["reputation-display-percent"] = true
 Defaults["reputation-show-tooltip"] = true
@@ -252,6 +256,8 @@ Defaults["reputation-percent-visibility"] = "ALWAYS"
 Defaults["azerite-enable"] = true
 Defaults["azerite-width"] = 310
 Defaults["azerite-height"] = 18
+Defaults["azerite-mouseover"] = false
+Defaults["azerite-mouseover-opacity"] = 0
 Defaults["azerite-display-progress"] = true
 Defaults["azerite-display-percent"] = true
 Defaults["azerite-show-tooltip"] = true
@@ -280,8 +286,12 @@ Defaults["minimap-buttons-perrow"] = 5
 -- Cooldowns
 Defaults["cooldowns-enable"] = true
 
--- Meter Container
-Defaults["meters-container-show"] = true
+-- Right Window
+Defaults["right-window-enable"] = true
+Defaults["right-window-size"] = "SINGLE"
+Defaults["right-window-width"] = 392
+Defaults["right-window-height"] = 128
+Defaults["right-window-opacity"] = 70
 
 -- Micro Buttons
 Defaults["micro-buttons-visiblity"] = "SHOW"
@@ -513,6 +523,9 @@ Defaults["data-text-chat-middle"] = "Crit"
 Defaults["data-text-chat-right"] = "Durability"
 Defaults["data-text-minimap-top"] = "Location"
 Defaults["data-text-minimap-bottom"] = "Time - Local"
+Defaults["data-text-extra-left"] = "Bag Slots"
+Defaults["data-text-extra-middle"] = "Friends"
+Defaults["data-text-extra-right"] = "Guild"
 Defaults["data-text-enable-tooltips"] = true
 Defaults["data-text-hover-tooltips"] = true
 Defaults["data-text-24-hour"] = false

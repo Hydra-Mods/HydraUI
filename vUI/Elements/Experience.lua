@@ -145,6 +145,10 @@ local UpdateBarHeight = function(value)
 end
 
 function ExperienceBar:OnEnter()
+	if Settings["experience-mouseover"] then
+		self:SetAlpha(1)
+	end
+	
 	if (Settings["experience-display-progress"] and Settings["experience-progress-visibility"] == "MOUSEOVER") then
 		if (not self.Progress:IsShown()) then
 			self.Progress:Show()
@@ -205,6 +209,10 @@ function ExperienceBar:OnEnter()
 end
 
 function ExperienceBar:OnLeave()
+	if Settings["experience-mouseover"] then
+		self:SetAlpha(Settings["experience-mouseover-opacity"] / 100)
+	end
+	
 	if Settings["experience-show-tooltip"] then
 		GameTooltip:Hide()
 		
@@ -257,6 +265,10 @@ ExperienceBar["PLAYER_ENTERING_WORLD"] = function(self)
 	self:SetFrameStrata("HIGH")
 	self:SetScript("OnEnter", self.OnEnter)
 	self:SetScript("OnLeave", self.OnLeave)
+	
+	if Settings["experience-mouseover"] then
+		self:SetAlpha(Settings["experience-mouseover-opacity"] / 100)
+	end
 	
 	self.LastXP = UnitXP("player")
 	
@@ -414,6 +426,20 @@ local UpdateShowRestedValue = function()
 	UpdateXP(ExperienceBar)
 end
 
+local UpdateMouseover = function(value)
+	if value then
+		ExperienceBar:SetAlpha(Settings["experience-mouseover-opacity"] / 100)
+	else
+		ExperienceBar:SetAlpha(1)
+	end
+end
+
+local UpdateMouseoverOpacity = function(value)
+	if Settings["experience-mouseover"] then
+		ExperienceBar:SetAlpha(value / 100)
+	end
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Experience"])
 	
@@ -439,4 +465,8 @@ GUI:AddOptions(function(self)
 	Right:CreateHeader(Language["Visibility"])
 	Right:CreateDropdown("experience-progress-visibility", Settings["experience-progress-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Progress Text"], Language["Set when to display the progress information"], UpdateProgressVisibility)
 	Right:CreateDropdown("experience-percent-visibility", Settings["experience-percent-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Percent Text"], Language["Set when to display the percent information"], UpdatePercentVisibility)
+	
+	Left:CreateHeader("Mouseover")
+	Left:CreateSwitch("experience-mouseover", Settings["experience-mouseover"], Language["Display On Mouseover"], Language["Only display the experience bar while mousing over it"], UpdateMouseover)
+	Left:CreateSlider("experience-mouseover-opacity", Settings["experience-mouseover-opacity"], 0, 100, 5, Language["Mouseover Opacity"], Language["Set the opacity of the experience bar while not mousing over it"], UpdateMouseoverOpacity, nil, "%")
 end)

@@ -1,7 +1,6 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local MicroButtons = vUI:NewModule("Micro Buttons")
-local BagsFrame = vUI:GetModule("Bags Frame")
 
 MicroButtons.Buttons = {
 	CharacterMicroButton,
@@ -75,11 +74,16 @@ function MicroButtons:Load()
 	
 	self.Panel = CreateFrame("Frame", "vUI Micro Buttons", vUI.UIParent)
 	self.Panel:SetSize(312, 40)
-	self.Panel:SetPoint("BOTTOMRIGHT", BagsFrame.Panel, "BOTTOMLEFT", -2, 0)
 	self.Panel:SetBackdrop(vUI.BackdropAndBorder)
 	self.Panel:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self.Panel:SetBackdropBorderColor(0, 0, 0)
 	self.Panel:SetFrameStrata("LOW")
+	
+	if Settings["right-window-enable"] then
+		self.Panel:SetPoint("BOTTOMRIGHT", vUI:GetModule("Right Window").Top, "TOPRIGHT", 0, 3)
+	else
+		self.Panel:SetPoint("BOTTOMRIGHT", vUI.UIParent, -10, 10)
+	end
 	
 	vUI:CreateMover(self.Panel)
 	

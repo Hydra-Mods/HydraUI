@@ -40,6 +40,10 @@ function Reputation:CreateBar()
 		self:SetPoint("TOP", vUI.UIParent, 0, -13)
 	end
 	
+	if Settings["reputation-mouseover"] then
+		self:SetAlpha(Settings["reputation-mouseover-opacity"] / 100)
+	end
+	
 	self.Fade = CreateAnimationGroup(self)
 	
 	self.FadeIn = self.Fade:CreateAnimation("Fade")
@@ -198,6 +202,10 @@ function Reputation:OnMouseUp()
 end
 
 function Reputation:OnEnter()
+	if Settings["reputation-mouseover"] then
+		self:SetAlpha(1)
+	end
+	
 	if (Settings["reputation-display-progress"] and Settings["reputation-progress-visibility"] == "MOUSEOVER") then
 		if (not self.Progress:IsShown()) then
 			self.Progress:Show()
@@ -273,6 +281,10 @@ function Reputation:OnEnter()
 end
 
 function Reputation:OnLeave()
+	if Settings["reputation-mouseover"] then
+		self:SetAlpha(Settings["reputation-mouseover-opacity"] / 100)
+	end
+
 	if Settings["reputation-show-tooltip"] then
 		GameTooltip:Hide()
 		
@@ -332,6 +344,20 @@ local UpdateBarHeight = function(value)
 	Reputation.Bar.Spark:SetHeight(value)
 end
 
+local UpdateMouseover = function(value)
+	if value then
+		Reputation:SetAlpha(Settings["reputation-mouseover-opacity"] / 100)
+	else
+		Reputation:SetAlpha(1)
+	end
+end
+
+local UpdateMouseoverOpacity = function(value)
+	if Settings["reputation-mouseover"] then
+		Reputation:SetAlpha(value / 100)
+	end
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Reputation"])
 	
@@ -351,4 +377,8 @@ GUI:AddOptions(function(self)
 	Right:CreateHeader(Language["Visibility"])
 	Right:CreateDropdown("reputation-progress-visibility", Settings["reputation-progress-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Progress Text"], Language["Set when to display the progress information"], UpdateProgressVisibility)
 	Right:CreateDropdown("reputation-percent-visibility", Settings["reputation-percent-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Percent Text"], Language["Set when to display the percent information"], UpdatePercentVisibility)
+	
+	Left:CreateHeader("Mouseover")
+	Left:CreateSwitch("reputation-mouseover", Settings["reputation-mouseover"], Language["Display On Mouseover"], Language["Only display the reputation bar while mousing over it"], UpdateMouseover)
+	Left:CreateSlider("reputation-mouseover-opacity", Settings["reputation-mouseover-opacity"], 0, 100, 5, Language["Mouseover Opacity"], Language["Set the opacity of the reputation bar while not mousing over it"], UpdateMouseoverOpacity, nil, "%")
 end)
