@@ -1,6 +1,6 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
-local Popup = CreateFrame("Frame", "vUIPopupFrame", vUI.UIParent)
+local Popup = CreateFrame("Frame", "vUIPopupFrame", vUI.UIParent, "BackdropTemplate")
 
 local POPUP_WIDTH = 320
 local POPUP_HEIGHT = 100
