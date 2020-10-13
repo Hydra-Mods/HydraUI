@@ -474,6 +474,7 @@ end
 local PostCreateIcon = function(unit, button)
 	button:SetBackdrop(vUI.BackdropAndBorder)
 	button:SetBackdropColor(0, 0, 0, 0)
+	button:SetBackdropBorderColor(0, 0, 0, 0)
 	button:SetFrameLevel(6)
 	
 	button.cd.noOCC = true
