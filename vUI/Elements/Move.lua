@@ -198,7 +198,7 @@ function vUI:CreateMover(frame, padding)
 	local Padding = padding or 0
 	local Width, Height = frame:GetSize()
 	
-	local Mover = CreateFrame("Frame", nil, vUI.UIParent, "SecureHandlerStateTemplate")
+	local Mover = CreateFrame("Frame", nil, vUI.UIParent, "SecureHandlerStateTemplate, BackdropTemplate")
 	Mover:SetSize(Width + Padding, Height + Padding)
 	Mover:SetBackdrop(vUI.BackdropAndBorder)
 	Mover:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
@@ -214,7 +214,7 @@ function vUI:CreateMover(frame, padding)
 	Mover.Name = Name
 	Mover:Hide()
 	
-	Mover.BG = CreateFrame("Frame", nil, Mover)
+	Mover.BG = CreateFrame("Frame", nil, Mover, "BackdropTemplate")
 	Mover.BG:SetPoint("TOPLEFT", Mover, 3, -3)
 	Mover.BG:SetPoint("BOTTOMRIGHT", Mover, -3, 3)
 	Mover.BG:SetBackdrop(vUI.BackdropAndBorder)

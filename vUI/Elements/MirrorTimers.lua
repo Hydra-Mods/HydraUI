@@ -86,7 +86,7 @@ function MirrorTimers:Load()
 	self.BarOutline:SetTexture(Assets:GetTexture("Blank"))
 	self.BarOutline:SetVertexColor(0, 0, 0)
 	
-	self.OuterBG = CreateFrame("Frame", nil, self.Bar)
+	self.OuterBG = CreateFrame("Frame", nil, self.Bar, "BackdropTemplate")
 	self.OuterBG:SetPoint("TOPLEFT", self.Bar, -4, 4)
 	self.OuterBG:SetPoint("BOTTOMRIGHT", self.Bar, 4, -4)
 	self.OuterBG:SetBackdrop(vUI.BackdropAndBorder)

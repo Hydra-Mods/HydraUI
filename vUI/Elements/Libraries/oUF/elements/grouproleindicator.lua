@@ -44,7 +44,7 @@ local function Update(self, event)
 	else
 		element:Hide()
 	end
-	
+
 	--[[ Callback: GroupRoleIndicator:PostUpdate(role)
 	Called after the element has been updated.
 

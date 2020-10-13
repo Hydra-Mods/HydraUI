@@ -57,7 +57,7 @@ local GetTexture = function(cd, id)
 	end
 end
 
-local Frame = CreateFrame("Frame", nil, vUI.UIParent)
+local Frame = CreateFrame("Frame", nil, vUI.UIParent, "BackdropTemplate")
 Frame:SetSize(60, 60)
 Frame:SetPoint("CENTER", vUI.UIParent, "CENTER", 0, 100) -- -300
 Frame:SetBackdrop(vUI.Backdrop)

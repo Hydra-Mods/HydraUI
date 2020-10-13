@@ -32,10 +32,10 @@ local GetClient = function()
 end
 
 local GetQuests = function()
-	local NumQuests = select(2, GetNumQuestLogEntries())
+	--local NumQuests = select(2, GetNumQuestLogEntries())
 	local MaxQuests = GetMaxNumQuestsCanAccept()
 	
-	return format("%s / %s", NumQuests, MaxQuests)
+	return format("%s / %s", 0, MaxQuests)
 end
 
 local GetSpecName = function()
@@ -148,7 +148,7 @@ function Debug:Load()
 	GUI:GetWidgetByWindow(Language["Debug"], "fullscreen").Right:SetText(GetCVar("gxMaximize") == "1" and Language["Enabled"] or Language["Disabled"])
 	GUI:GetWidgetByWindow(Language["Debug"], "spec").Right:SetText(GetSpecName())
 	
-	if (UnitLevel("player") < MAX_PLAYER_LEVEL_TABLE[GetAccountExpansionLevel()]) then
+	if (UnitLevel("player") > 59) then
 		self:RegisterEvent("PLAYER_LEVEL_UP")
 	end
 	

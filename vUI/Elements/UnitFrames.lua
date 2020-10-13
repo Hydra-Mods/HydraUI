@@ -175,12 +175,12 @@ Methods["Resting"] = function(unit)
 	end
 end
 
-Events["Health"] = "UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD"
+Events["Health"] = "UNIT_HEALTH PLAYER_ENTERING_WORLD"
 Methods["Health"] = function(unit)
 	return vUI:ShortValue(UnitHealth(unit))
 end
 
-Events["HealthPercent"] = "UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD"
+Events["HealthPercent"] = "UNIT_HEALTH PLAYER_ENTERING_WORLD"
 Methods["HealthPercent"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -192,7 +192,7 @@ Methods["HealthPercent"] = function(unit)
 	end
 end
 
-Events["HealthValues"] = "UNIT_HEALTH_FREQUENT UNIT_CONNECTION PLAYER_ENTERING_WORLD"
+Events["HealthValues"] = "UNIT_HEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD"
 Methods["HealthValues"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -200,7 +200,7 @@ Methods["HealthValues"] = function(unit)
 	return vUI:ShortValue(Current) .. " / " .. vUI:ShortValue(Max)
 end
 
-Events["HealthDeficit"] = "UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD"
+Events["HealthDeficit"] = "UNIT_HEALTH PLAYER_ENTERING_WORLD"
 Methods["HealthDeficit"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. Language["Dead"] .. "|r"
@@ -219,7 +219,7 @@ Methods["HealthDeficit"] = function(unit)
 	end
 end
 
-Events["GroupStatus"] = "UNIT_HEALTH_FREQUENT UNIT_CONNECTION UNIT_FLAGS PLAYER_ENTERING_WORLD"
+Events["GroupStatus"] = "UNIT_HEALTH UNIT_CONNECTION UNIT_FLAGS PLAYER_ENTERING_WORLD"
 Methods["GroupStatus"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. Language["Dead"] .. "|r"
@@ -240,7 +240,7 @@ Methods["GroupStatus"] = function(unit)
 	end
 end
 
-Events["HealthColor"] = "UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD"
+Events["HealthColor"] = "UNIT_HEALTH PLAYER_ENTERING_WORLD"
 Methods["HealthColor"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -888,9 +888,10 @@ local StylePlayer = function(self, unit)
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
 	
-	self:SetBackdrop(vUI.BackdropAndBorder)
-	self:SetBackdropColor(0, 0, 0)
-	self:SetBackdropBorderColor(0, 0, 0)
+	local Backdrop = self:CreateTexture(nil, "BORDER")
+	Backdrop:SetAllPoints()
+	Backdrop:SetTexture(Assets:GetTexture("Blank"))
+	Backdrop:SetVertexColor(0, 0, 0)
 	
 	self.AuraParent = self
 	
@@ -1061,7 +1062,7 @@ local StylePlayer = function(self, unit)
 	end
 	
 	if (vUI.UserClass == "ROGUE" or vUI.UserClass == "DRUID") then
-		local ComboPoints = CreateFrame("Frame", self:GetName() .. "ComboPoints", self)
+		local ComboPoints = CreateFrame("Frame", self:GetName() .. "ComboPoints", self, "BackdropTemplate")
 		ComboPoints:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 		ComboPoints:SetSize(Settings["unitframes-player-width"], 10)
 		ComboPoints:SetBackdrop(vUI.Backdrop)
@@ -1094,7 +1095,7 @@ local StylePlayer = function(self, unit)
 		self.ClassPower = ComboPoints
 		self.AuraParent = ComboPoints
 	elseif (vUI.UserClass == "WARLOCK") then
-		local SoulShards = CreateFrame("Frame", self:GetName() .. "SoulShards", self)
+		local SoulShards = CreateFrame("Frame", self:GetName() .. "SoulShards", self, "BackdropTemplate")
 		SoulShards:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 		SoulShards:SetSize(Settings["unitframes-player-width"], 10)
 		SoulShards:SetBackdrop(vUI.Backdrop)
@@ -1126,7 +1127,7 @@ local StylePlayer = function(self, unit)
 		self.ClassPower = SoulShards
 		self.AuraParent = SoulShards
 	elseif (vUI.UserClass == "MAGE") then
-		local ArcaneCharges = CreateFrame("Frame", self:GetName() .. "ArcaneCharges", self)
+		local ArcaneCharges = CreateFrame("Frame", self:GetName() .. "ArcaneCharges", self, "BackdropTemplate")
 		ArcaneCharges:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 		ArcaneCharges:SetSize(Settings["unitframes-player-width"], 10)
 		ArcaneCharges:SetBackdrop(vUI.Backdrop)
@@ -1158,7 +1159,7 @@ local StylePlayer = function(self, unit)
 		self.ClassPower = ArcaneCharges
 		self.AuraParent = ArcaneCharges
 	elseif (vUI.UserClass == "MONK") then
-		local Chi = CreateFrame("Frame", self:GetName() .. "Chi", self)
+		local Chi = CreateFrame("Frame", self:GetName() .. "Chi", self, "BackdropTemplate")
 		Chi:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 		Chi:SetSize(Settings["unitframes-player-width"], 10)
 		Chi:SetBackdrop(vUI.Backdrop)
@@ -1190,7 +1191,7 @@ local StylePlayer = function(self, unit)
 		self.ClassPower = Chi
 		self.AuraParent = Chi
 	elseif (vUI.UserClass == "DEATHKNIGHT") then
-		local Runes = CreateFrame("Frame", self:GetName() .. "Runes", self)
+		local Runes = CreateFrame("Frame", self:GetName() .. "Runes", self, "BackdropTemplate")
 		Runes:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 		Runes:SetSize(Settings["unitframes-player-width"], 10)
 		Runes:SetBackdrop(vUI.Backdrop)
@@ -1248,7 +1249,7 @@ local StylePlayer = function(self, unit)
 		self.Runes = Runes
 		self.AuraParent = Runes
 	elseif (vUI.UserClass == "PALADIN") then
-		local HolyPower = CreateFrame("Frame", self:GetName() .. "HolyPower", self)
+		local HolyPower = CreateFrame("Frame", self:GetName() .. "HolyPower", self, "BackdropTemplate")
 		HolyPower:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 		HolyPower:SetSize(Settings["unitframes-player-width"], 10)
 		HolyPower:SetBackdrop(vUI.Backdrop)
@@ -1347,9 +1348,11 @@ local StyleTarget = function(self, unit)
 	self:RegisterForClicks("AnyUp")
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
-	self:SetBackdrop(vUI.BackdropAndBorder)
-	self:SetBackdropColor(0, 0, 0)
-	self:SetBackdropBorderColor(0, 0, 0)
+	
+	local Backdrop = self:CreateTexture(nil, "BORDER")
+	Backdrop:SetAllPoints()
+	Backdrop:SetTexture(Assets:GetTexture("Blank"))
+	Backdrop:SetVertexColor(0, 0, 0)
 	
 	self.colors.debuff = vUI.DebuffColors
 	
@@ -1557,9 +1560,10 @@ local StyleTargetTarget = function(self, unit)
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
 	
-	self:SetBackdrop(vUI.BackdropAndBorder)
-	self:SetBackdropColor(0, 0, 0)
-	self:SetBackdropBorderColor(0, 0, 0)
+	local Backdrop = self:CreateTexture(nil, "BORDER")
+	Backdrop:SetAllPoints()
+	Backdrop:SetTexture(Assets:GetTexture("Blank"))
+	Backdrop:SetVertexColor(0, 0, 0)
 	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
@@ -1660,9 +1664,10 @@ local StylePet = function(self, unit)
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
 	
-	self:SetBackdrop(vUI.BackdropAndBorder)
-	self:SetBackdropColor(0, 0, 0)
-	self:SetBackdropBorderColor(0, 0, 0)
+	local Backdrop = self:CreateTexture(nil, "BORDER")
+	Backdrop:SetAllPoints()
+	Backdrop:SetTexture(Assets:GetTexture("Blank"))
+	Backdrop:SetVertexColor(0, 0, 0)
 	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
@@ -1756,9 +1761,10 @@ local StyleFocus = function(self, unit)
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
 	
-	self:SetBackdrop(vUI.BackdropAndBorder)
-	self:SetBackdropColor(0, 0, 0)
-	self:SetBackdropBorderColor(0, 0, 0)
+	local Backdrop = self:CreateTexture(nil, "BORDER")
+	Backdrop:SetAllPoints()
+	Backdrop:SetTexture(Assets:GetTexture("Blank"))
+	Backdrop:SetVertexColor(0, 0, 0)
 	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
@@ -2005,8 +2011,10 @@ local StyleParty = function(self, unit)
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
 	
-	self:SetBackdrop(vUI.Backdrop)
-	self:SetBackdropColor(0, 0, 0)
+	local Backdrop = self:CreateTexture(nil, "BORDER")
+	Backdrop:SetAllPoints()
+	Backdrop:SetTexture(Assets:GetTexture("Blank"))
+	Backdrop:SetVertexColor(0, 0, 0)
 	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
@@ -2201,7 +2209,7 @@ local StyleParty = function(self, unit)
 	RoleIndicator:SetPoint("TOP", self, 0, -2)
 	
 	-- Dispels
-	local Dispel = CreateFrame("Frame", nil, Health)
+	local Dispel = CreateFrame("Frame", nil, Health, "BackdropTemplate")
 	Dispel:SetSize(20, 20)
 	Dispel:SetPoint("CENTER", Health, 0, 0)
 	Dispel:SetFrameLevel(Health:GetFrameLevel() + 20)
@@ -2266,8 +2274,10 @@ local StylePartyPet = function(self, unit)
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
 	
-	self:SetBackdrop(vUI.Backdrop)
-	self:SetBackdropColor(0, 0, 0)
+	local Backdrop = self:CreateTexture(nil, "BORDER")
+	Backdrop:SetAllPoints()
+	Backdrop:SetTexture(Assets:GetTexture("Blank"))
+	Backdrop:SetVertexColor(0, 0, 0)
 	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
@@ -2341,9 +2351,10 @@ local StyleRaid = function(self, unit)
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
 	
-	self:SetBackdrop(vUI.BackdropAndBorder)
-	self:SetBackdropColor(0, 0, 0)
-	self:SetBackdropBorderColor(0, 0, 0)
+	local Backdrop = self:CreateTexture(nil, "BORDER")
+	Backdrop:SetAllPoints()
+	Backdrop:SetTexture(Assets:GetTexture("Blank"))
+	Backdrop:SetVertexColor(0, 0, 0)
 	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
@@ -2413,7 +2424,7 @@ local StyleRaid = function(self, unit)
 	ResurrectIndicator:SetPoint("CENTER", Health, 0, 0)
 	
 	-- Dispels
-	local Dispel = CreateFrame("Frame", nil, self)
+	local Dispel = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	Dispel:SetSize(20, 20)
 	Dispel:SetPoint("CENTER", Health)
 	Dispel:SetFrameLevel(Health:GetFrameLevel() + 20)
@@ -2471,9 +2482,10 @@ local StyleBoss = function(self, unit)
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
 	
-	self:SetBackdrop(vUI.BackdropAndBorder)
-	self:SetBackdropColor(0, 0, 0)
-	self:SetBackdropBorderColor(0, 0, 0)
+	local Backdrop = self:CreateTexture(nil, "BORDER")
+	Backdrop:SetAllPoints()
+	Backdrop:SetTexture(Assets:GetTexture("Blank"))
+	Backdrop:SetVertexColor(0, 0, 0)
 	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)

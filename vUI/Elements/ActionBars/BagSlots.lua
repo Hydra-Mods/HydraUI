@@ -54,7 +54,7 @@ function BagsFrame:Load()
 		return
 	end
 	
-	self.Panel = CreateFrame("Frame", "vUI Bags Window", vUI.UIParent)
+	self.Panel = CreateFrame("Frame", "vUI Bags Window", vUI.UIParent, "BackdropTemplate")
 	self.Panel:SetSize(184, 40)
 	self.Panel:SetPoint("BOTTOMRIGHT", vUI:GetModule("Micro Buttons").Panel, "TOPRIGHT", 0, 3)
 	self.Panel:SetBackdrop(vUI.BackdropAndBorder)

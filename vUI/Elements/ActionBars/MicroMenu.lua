@@ -72,7 +72,7 @@ function MicroButtons:Load()
 		return
 	end
 	
-	self.Panel = CreateFrame("Frame", "vUI Micro Buttons", vUI.UIParent)
+	self.Panel = CreateFrame("Frame", "vUI Micro Buttons", vUI.UIParent, "BackdropTemplate")
 	self.Panel:SetSize(312, 40)
 	self.Panel:SetBackdrop(vUI.BackdropAndBorder)
 	self.Panel:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))

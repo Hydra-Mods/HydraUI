@@ -50,7 +50,7 @@ local AddObjective = function(self, block, objective)
 			ItemButton.Count:SetTextColor(1, 1, 1)
 		end
 		
-		ItemButton.Backdrop = CreateFrame("Frame", nil, ItemButton)
+		ItemButton.Backdrop = CreateFrame("Frame", nil, ItemButton, "BackdropTemplate")
 		ItemButton.Backdrop:SetPoint("TOPLEFT", ItemButton, 0, 0)
 		ItemButton.Backdrop:SetPoint("BOTTOMRIGHT", ItemButton, 0, 0)
 		ItemButton.Backdrop:SetBackdrop(vUI.Outline)
@@ -115,6 +115,31 @@ function Tracker:ReplaceColor(key, value)
 	OBJECTIVE_TRACKER_COLOR[key].b = B
 end
 
+function Tracker:CreateCustomHeader(tracker)
+	if tracker.Background then
+		tracker.Background:Hide()
+	end
+	
+	if tracker.Text then
+		vUI:SetFontInfo(tracker.Text, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
+		tracker.Text:SetTextColor(vUI:HexToRGB(Settings["tracker-module-font-color"]))
+	end
+	
+	if (tracker and tracker.CreateTexture) then
+		tracker.BG = tracker:CreateTexture(nil, "BORDER")
+		tracker.BG:SetPoint("TOPLEFT", tracker, 0, -2)
+		tracker.BG:SetPoint("BOTTOMRIGHT", tracker, 12, -1)
+		tracker.BG:SetTexture(Assets:GetTexture("Blank"))
+		tracker.BG:SetVertexColor(0, 0, 0)
+		
+		tracker.Texture = tracker:CreateTexture(nil, "ARTWORK")
+		tracker.Texture:SetPoint("TOPLEFT", tracker, 1, -3)
+		tracker.Texture:SetPoint("BOTTOMRIGHT", tracker, 11, 0)
+		tracker.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+		tracker.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
+	end
+end
+
 function Tracker:StyleWindow()
 	self:ReplaceColor("Normal", Settings["tracker-color-normal"])
 	self:ReplaceColor("NormalHighlight", Settings["tracker-color-normal-highlight"])
@@ -127,97 +152,19 @@ function Tracker:StyleWindow()
 	self:ReplaceColor("Complete", Settings["tracker-color-complete"])
 	
 	-- Header
-	vUI:SetFontInfo(ObjectiveTrackerFrame.HeaderMenu.Title, Settings["tracker-module-font"], Settings["tracker-module-font-size"], Settings["tracker-module-font-flags"])
+	vUI:SetFontInfo(ObjectiveTrackerFrame.HeaderMenu.Title, Settings["tracker-header-font"], Settings["tracker-header-font-size"], Settings["tracker-header-font-flags"])
 	
-	-- Quests
-	ObjectiveTrackerBlocksFrame.QuestHeader.Background:Hide()
-	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.QuestHeader.Text, Settings["tracker-module-font"], Settings["tracker-module-font-size"], Settings["tracker-module-font-flags"])
-	ObjectiveTrackerBlocksFrame.QuestHeader.Text:SetTextColor(vUI:HexToRGB(Settings["tracker-module-font-color"]))
-	
-	ObjectiveTrackerBlocksFrame.QuestHeader.BG = ObjectiveTrackerBlocksFrame.QuestHeader:CreateTexture(nil, "BORDER")
-	ObjectiveTrackerBlocksFrame.QuestHeader.BG:SetPoint("TOPLEFT", ObjectiveTrackerBlocksFrame.QuestHeader, 0, -2)
-	ObjectiveTrackerBlocksFrame.QuestHeader.BG:SetPoint("BOTTOMRIGHT", ObjectiveTrackerBlocksFrame.QuestHeader, 12, -1)
-	ObjectiveTrackerBlocksFrame.QuestHeader.BG:SetTexture(Assets:GetTexture("Blank"))
-	ObjectiveTrackerBlocksFrame.QuestHeader.BG:SetVertexColor(0, 0, 0)
-	
-	ObjectiveTrackerBlocksFrame.QuestHeader.Texture = ObjectiveTrackerBlocksFrame.QuestHeader:CreateTexture(nil, "ARTWORK")
-	ObjectiveTrackerBlocksFrame.QuestHeader.Texture:SetPoint("TOPLEFT", ObjectiveTrackerBlocksFrame.QuestHeader, 1, -3)
-	ObjectiveTrackerBlocksFrame.QuestHeader.Texture:SetPoint("BOTTOMRIGHT", ObjectiveTrackerBlocksFrame.QuestHeader, 11, 0)
-	ObjectiveTrackerBlocksFrame.QuestHeader.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	ObjectiveTrackerBlocksFrame.QuestHeader.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	-- Scenario
-	ObjectiveTrackerBlocksFrame.ScenarioHeader.Background:Hide()
-	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.ScenarioHeader.Text, Settings["tracker-module-font"], Settings["tracker-module-font-size"], Settings["tracker-module-font-flags"])
-	ObjectiveTrackerBlocksFrame.ScenarioHeader.Text:SetTextColor(vUI:HexToRGB(Settings["tracker-module-font-color"]))
-	
-	ObjectiveTrackerBlocksFrame.ScenarioHeader.BG = ObjectiveTrackerBlocksFrame.ScenarioHeader:CreateTexture(nil, "BORDER")
-	ObjectiveTrackerBlocksFrame.ScenarioHeader.BG:SetPoint("TOPLEFT", ObjectiveTrackerBlocksFrame.ScenarioHeader, 0, -2)
-	ObjectiveTrackerBlocksFrame.ScenarioHeader.BG:SetPoint("BOTTOMRIGHT", ObjectiveTrackerBlocksFrame.ScenarioHeader, 12, -1)
-	ObjectiveTrackerBlocksFrame.ScenarioHeader.BG:SetTexture(Assets:GetTexture("Blank"))
-	ObjectiveTrackerBlocksFrame.ScenarioHeader.BG:SetVertexColor(0, 0, 0)
-	
-	ObjectiveTrackerBlocksFrame.ScenarioHeader.Texture = ObjectiveTrackerBlocksFrame.ScenarioHeader:CreateTexture(nil, "ARTWORK")
-	ObjectiveTrackerBlocksFrame.ScenarioHeader.Texture:SetPoint("TOPLEFT", ObjectiveTrackerBlocksFrame.ScenarioHeader, 1, -3)
-	ObjectiveTrackerBlocksFrame.ScenarioHeader.Texture:SetPoint("BOTTOMRIGHT", ObjectiveTrackerBlocksFrame.ScenarioHeader, 11, 0)
-	ObjectiveTrackerBlocksFrame.ScenarioHeader.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	ObjectiveTrackerBlocksFrame.ScenarioHeader.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	-- Achievement
-	ObjectiveTrackerBlocksFrame.AchievementHeader.Background:Hide()
-	vUI:SetFontInfo(ObjectiveTrackerBlocksFrame.AchievementHeader.Text, Settings["tracker-module-font"], Settings["tracker-module-font-size"], Settings["tracker-module-font-flags"])
-	ObjectiveTrackerBlocksFrame.AchievementHeader.Text:SetTextColor(vUI:HexToRGB(Settings["tracker-module-font-color"]))
-	
-	ObjectiveTrackerBlocksFrame.AchievementHeader.BG = ObjectiveTrackerBlocksFrame.AchievementHeader:CreateTexture(nil, "BORDER")
-	ObjectiveTrackerBlocksFrame.AchievementHeader.BG:SetPoint("TOPLEFT", ObjectiveTrackerBlocksFrame.AchievementHeader, 0, -2)
-	ObjectiveTrackerBlocksFrame.AchievementHeader.BG:SetPoint("BOTTOMRIGHT", ObjectiveTrackerBlocksFrame.AchievementHeader, 12, -1)
-	ObjectiveTrackerBlocksFrame.AchievementHeader.BG:SetTexture(Assets:GetTexture("Blank"))
-	ObjectiveTrackerBlocksFrame.AchievementHeader.BG:SetVertexColor(0, 0, 0)
-	
-	ObjectiveTrackerBlocksFrame.AchievementHeader.Texture = ObjectiveTrackerBlocksFrame.AchievementHeader:CreateTexture(nil, "ARTWORK")
-	ObjectiveTrackerBlocksFrame.AchievementHeader.Texture:SetPoint("TOPLEFT", ObjectiveTrackerBlocksFrame.AchievementHeader, 1, -3)
-	ObjectiveTrackerBlocksFrame.AchievementHeader.Texture:SetPoint("BOTTOMRIGHT", ObjectiveTrackerBlocksFrame.AchievementHeader, 11, 0)
-	ObjectiveTrackerBlocksFrame.AchievementHeader.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	ObjectiveTrackerBlocksFrame.AchievementHeader.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	-- Bonus
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Background:Hide()
-	vUI:SetFontInfo(BONUS_OBJECTIVE_TRACKER_MODULE.Header.Text, Settings["tracker-module-font"], Settings["tracker-module-font-size"], Settings["tracker-module-font-flags"])
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Text:SetTextColor(vUI:HexToRGB(Settings["tracker-module-font-color"]))
-	
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header.BG = BONUS_OBJECTIVE_TRACKER_MODULE.Header:CreateTexture(nil, "BORDER")
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header.BG:SetPoint("TOPLEFT", BONUS_OBJECTIVE_TRACKER_MODULE.Header, 0, -2)
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header.BG:SetPoint("BOTTOMRIGHT", BONUS_OBJECTIVE_TRACKER_MODULE.Header, 12, -1)
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header.BG:SetTexture(Assets:GetTexture("Blank"))
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header.BG:SetVertexColor(0, 0, 0)
-	
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Texture = BONUS_OBJECTIVE_TRACKER_MODULE.Header:CreateTexture(nil, "ARTWORK")
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Texture:SetPoint("TOPLEFT", BONUS_OBJECTIVE_TRACKER_MODULE.Header, 1, -3)
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Texture:SetPoint("BOTTOMRIGHT", BONUS_OBJECTIVE_TRACKER_MODULE.Header, 11, 0)
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	BONUS_OBJECTIVE_TRACKER_MODULE.Header.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	-- World Quests
-	WORLD_QUEST_TRACKER_MODULE.Header.Background:Hide()
-	vUI:SetFontInfo(WORLD_QUEST_TRACKER_MODULE.Header.Text, Settings["tracker-module-font"], Settings["tracker-module-font-size"], Settings["tracker-module-font-flags"])
-	WORLD_QUEST_TRACKER_MODULE.Header.Text:SetTextColor(vUI:HexToRGB(Settings["tracker-module-font-color"]))
-	
-	WORLD_QUEST_TRACKER_MODULE.Header.BG = WORLD_QUEST_TRACKER_MODULE.Header:CreateTexture(nil, "BORDER")
-	WORLD_QUEST_TRACKER_MODULE.Header.BG:SetPoint("TOPLEFT", WORLD_QUEST_TRACKER_MODULE.Header, 0, -2)
-	WORLD_QUEST_TRACKER_MODULE.Header.BG:SetPoint("BOTTOMRIGHT", WORLD_QUEST_TRACKER_MODULE.Header, 12, -1)
-	WORLD_QUEST_TRACKER_MODULE.Header.BG:SetTexture(Assets:GetTexture("Blank"))
-	WORLD_QUEST_TRACKER_MODULE.Header.BG:SetVertexColor(0, 0, 0)
-	
-	WORLD_QUEST_TRACKER_MODULE.Header.Texture = WORLD_QUEST_TRACKER_MODULE.Header:CreateTexture(nil, "ARTWORK")
-	WORLD_QUEST_TRACKER_MODULE.Header.Texture:SetPoint("TOPLEFT", WORLD_QUEST_TRACKER_MODULE.Header, 1, -3)
-	WORLD_QUEST_TRACKER_MODULE.Header.Texture:SetPoint("BOTTOMRIGHT", WORLD_QUEST_TRACKER_MODULE.Header, 11, 0)
-	WORLD_QUEST_TRACKER_MODULE.Header.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	WORLD_QUEST_TRACKER_MODULE.Header.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
+	self:CreateCustomHeader(ObjectiveTrackerBlocksFrame.QuestHeader) -- Quests
+	self:CreateCustomHeader(ObjectiveTrackerBlocksFrame.ScenarioHeader) -- Scenario
+	self:CreateCustomHeader(ObjectiveTrackerBlocksFrame.AchievementHeader) -- Achievement
+	self:CreateCustomHeader(BONUS_OBJECTIVE_TRACKER_MODULE) -- Bonus
+	self:CreateCustomHeader(WORLD_QUEST_TRACKER_MODULE) -- World Quests
+	self:CreateCustomHeader(ObjectiveTrackerFrame.BlocksFrame.CampaignQuestHeader) -- Campaign
 	
 	-- Backdrop
 	local R, G, B = vUI:HexToRGB(Settings["ui-window-main-color"])
 	
-	ObjectiveTrackerFrame.BG = CreateFrame("Frame", nil, ObjectiveTrackerFrame)
+	ObjectiveTrackerFrame.BG = CreateFrame("Frame", nil, ObjectiveTrackerFrame, "BackdropTemplate")
 	ObjectiveTrackerFrame.BG:SetBackdrop(vUI.BackdropAndBorder)
 	ObjectiveTrackerFrame.BG:SetPoint("TOPLEFT", ObjectiveTrackerFrame, -13, 1)
 	ObjectiveTrackerFrame.BG:SetPoint("BOTTOMRIGHT", ObjectiveTrackerFrame, 5, -1)
@@ -252,7 +199,7 @@ function Tracker:StyleWindow()
 	ObjectiveTrackerFrame.BG.Right:SetPoint("BOTTOMRIGHT", ObjectiveTrackerFrame.BG, -1, 1)
 	ObjectiveTrackerFrame.BG.Right:SetPoint("TOPRIGHT", ObjectiveTrackerFrame.BG, -1, -1)
 	
-	ObjectiveTrackerFrame.BG.InnerBorder = CreateFrame("Frame", nil, ObjectiveTrackerFrame.BG)
+	ObjectiveTrackerFrame.BG.InnerBorder = CreateFrame("Frame", nil, ObjectiveTrackerFrame.BG, "BackdropTemplate")
 	ObjectiveTrackerFrame.BG.InnerBorder:SetPoint("TOPLEFT", ObjectiveTrackerFrame.BG, 3, -3)
 	ObjectiveTrackerFrame.BG.InnerBorder:SetPoint("BOTTOMRIGHT", ObjectiveTrackerFrame.BG, -3, 3)
 	ObjectiveTrackerFrame.BG.InnerBorder:SetBackdrop(vUI.Outline)
@@ -269,6 +216,7 @@ function Tracker:StyleWindow()
 	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetDisabledTexture("")
 	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:ClearAllPoints()
 	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetPoint("TOPRIGHT", ObjectiveTrackerFrame, -4, -6)
+	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:SetAlpha(0)
 	
 	--[[ObjectiveTrackerFrame.HeaderMenu.NewMinimize = CreateFrame("Frame", nil, ObjectiveTrackerFrame)
 	ObjectiveTrackerFrame.HeaderMenu.NewMinimize:SetSize(20, 20)
@@ -278,8 +226,9 @@ function Tracker:StyleWindow()
 	ObjectiveTrackerFrame.HeaderMenu.NewMinimize:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	ObjectiveTrackerFrame.HeaderMenu.NewMinimize:SetBackdropBorderColor(0, 0, 0)]]
 	
-	ObjectiveTrackerFrame.HeaderMenu.Texture = ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:CreateTexture(nil, "OVERLAY")
+	ObjectiveTrackerFrame.HeaderMenu.Texture = ObjectiveTrackerFrame.HeaderMenu:CreateTexture(nil, "OVERLAY")
 	ObjectiveTrackerFrame.HeaderMenu.Texture:SetSize(16, 16)
+	ObjectiveTrackerFrame.HeaderMenu.Texture:SetPoint("RIGHT", ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, 0, 0)
 	ObjectiveTrackerFrame.HeaderMenu.Texture:SetPoint("CENTER", ObjectiveTrackerFrame.HeaderMenu.MinimizeButton, 0, 0)
 	ObjectiveTrackerFrame.HeaderMenu.Texture:SetTexture(Assets:GetTexture("Arrow Up"))
 	ObjectiveTrackerFrame.HeaderMenu.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
@@ -299,7 +248,7 @@ local AddProgressBar = function(self, block, line)
 		line.ProgressBar.Bar.BarBG:SetTexture()
 	end
 	
-	line.ProgressBar.Bar.Backdrop = CreateFrame("Frame", nil, line.ProgressBar.Bar)
+	line.ProgressBar.Bar.Backdrop = CreateFrame("Frame", nil, line.ProgressBar.Bar, "BackdropTemplate")
 	line.ProgressBar.Bar.Backdrop:SetPoint("TOPLEFT", line.ProgressBar.Bar, -1, 1)
 	line.ProgressBar.Bar.Backdrop:SetPoint("BOTTOMRIGHT", line.ProgressBar.Bar, 1, -1)
 	line.ProgressBar.Bar.Backdrop:SetBackdrop(vUI.BackdropAndBorder)
@@ -320,7 +269,7 @@ local AddProgressBar = function(self, block, line)
 		line.ProgressBar.Bar.Icon:SetMask("")
 		line.ProgressBar.Bar.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		
-		line.ProgressBar.Bar.Icon.Backdrop = CreateFrame("Frame", nil, line.ProgressBar.Bar)
+		line.ProgressBar.Bar.Icon.Backdrop = CreateFrame("Frame", nil, line.ProgressBar.Bar, "BackdropTemplate")
 		line.ProgressBar.Bar.Icon.Backdrop:SetPoint("TOPLEFT", line.ProgressBar.Bar.Icon, -1, 1)
 		line.ProgressBar.Bar.Icon.Backdrop:SetPoint("BOTTOMRIGHT", line.ProgressBar.Bar.Icon, 1, -1)
 		line.ProgressBar.Bar.Icon.Backdrop:SetBackdrop(vUI.Outline)
@@ -377,7 +326,7 @@ local SkinAutoQuestPopup = function()
 			return
 		end]]
 		
-		local QuestTitle = GetQuestLogTitle(GetQuestLogIndexByID(QuestID))
+		local QuestTitle = C_QuestLog.GetTitleForQuestID(QuestID)
 		
 		if (QuestTitle and QuestTitle ~= "") then
 			local Block = AUTO_QUEST_POPUP_TRACKER_MODULE:GetBlock(QuestID)
@@ -390,7 +339,7 @@ local SkinAutoQuestPopup = function()
 				BlockContents:GetParent():SetWidth(268)
 				
 				if (not BlockContents.Backdrop) then
-					BlockContents.Backdrop = CreateFrame("Frame", nil, BlockContents)
+					BlockContents.Backdrop = CreateFrame("Frame", nil, BlockContents, "BackdropTemplate")
 					--BlockContents.Backdrop:SetPoint("TOPLEFT", BlockContents:GetParent(), 36, -1)
 					--BlockContents.Backdrop:SetPoint("BOTTOMRIGHT", BlockContents:GetParent(), 40, 1)
 					BlockContents.Backdrop:SetPoint("TOPLEFT", BlockContents:GetParent(), 38, 0)
@@ -510,7 +459,7 @@ function Tracker:AddHooks()
 	hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", AddProgressBar)
 	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", AddProgressBar)
 	hooksecurefunc(SCENARIO_TRACKER_MODULE, "AddProgressBar", AddProgressBar)
-	hooksecurefunc(AUTO_QUEST_POPUP_TRACKER_MODULE, "Update", SkinAutoQuestPopup)
+	--hooksecurefunc(AUTO_QUEST_POPUP_TRACKER_MODULE, "Update", SkinAutoQuestPopup)
 	hooksecurefunc("ScenarioBlocksFrame_OnLoad", UpdateScenarioBlock)
 	hooksecurefunc(SCENARIO_CONTENT_TRACKER_MODULE, "Update", UpdateScenarioBlock)
 end
@@ -597,7 +546,7 @@ GUI:AddOptions(function(self)
 	Left:CreateHeader(Language["Styling"])
 	Left:CreateSwitch("tracker-enable-backdrop", Settings["tracker-enable-backdrop"], Language["Enable Backdrop"], Language["Enable a backdrop for the objective tracker"], UpdateEnableBackdrop)
 	Left:CreateSlider("tracker-backdrop-opacity", Settings["tracker-backdrop-opacity"], 0, 100, 5, Language["Backdrop Opacity"], Language["Set the backdrop opacity of the objective tracker"], UpdateBackdropOpacity)
-	Left:CreateSlider("tracker-height", Settings["tracker-height"], 100, 600, 1, Language["Set Height"], Language["Set the height of the objective tracker"], UpdateHeight)
+	Left:CreateSlider("tracker-height", Settings["tracker-height"], 100, 500, 1, Language["Set Height"], Language["Set the height of the objective tracker"], UpdateHeight)
 	
 	Left:CreateHeader(Language["Colors"])
 	Left:CreateColorSelection("tracker-color-normal", Settings["tracker-color-normal"], Language["Line Normal"], "", UpdateHeaderFont)

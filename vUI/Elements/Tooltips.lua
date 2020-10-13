@@ -117,7 +117,7 @@ local SetTooltipStyle = function(self)
 		self:SetFrameLevel(10)
 		self.SetFrameLevel = function() end
 		
-		self.Backdrop = CreateFrame("Frame", nil, self)
+		self.Backdrop = CreateFrame("Frame", nil, self, "BackdropTemplate")
 		self.Backdrop:SetAllPoints(self)
 		self.Backdrop:SetBackdrop(vUI.BackdropAndBorder)
 		self.Backdrop:SetBackdropBorderColor(0, 0, 0)
@@ -125,7 +125,7 @@ local SetTooltipStyle = function(self)
 		self.Backdrop:SetFrameStrata("TOOLTIP")
 		self.Backdrop:SetFrameLevel(2)
 		
-		self.OuterBG = CreateFrame("Frame", nil, self)
+		self.OuterBG = CreateFrame("Frame", nil, self, "BackdropTemplate")
 		self.OuterBG:SetPoint("TOPLEFT", self, -3, 3)
 		self.OuterBG:SetPoint("BOTTOMRIGHT", self, 3, -3)
 		self.OuterBG:SetBackdrop(vUI.BackdropAndBorder)
@@ -501,7 +501,7 @@ function Tooltips:StyleStatusBar()
 	GameTooltipStatusBar.BG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	GameTooltipStatusBar.BG:SetAlpha(0.2)
 	
-	GameTooltipStatusBar.Backdrop = CreateFrame("Frame", nil, GameTooltipStatusBar)
+	GameTooltipStatusBar.Backdrop = CreateFrame("Frame", nil, GameTooltipStatusBar, "BackdropTemplate")
 	GameTooltipStatusBar.Backdrop:SetPoint("TOPLEFT", GameTooltipStatusBar, -1, 1)
 	GameTooltipStatusBar.Backdrop:SetPoint("BOTTOMRIGHT", GameTooltipStatusBar, 1, -1)
 	GameTooltipStatusBar.Backdrop:SetBackdrop(vUI.BackdropAndBorder)
@@ -544,10 +544,10 @@ local ItemRefCloseOnMouseDown = function(self)
 end
 
 function Tooltips:SkinItemRef()
-	ItemRefCloseButton:Hide()
+	--ItemRefCloseButton:Hide()
 	
 	-- Close button
-	local CloseButton = CreateFrame("Frame", nil, ItemRefTooltip)
+	local CloseButton = CreateFrame("Frame", nil, ItemRefTooltip, "BackdropTemplate")
 	CloseButton:SetSize(20, 20)
 	CloseButton:SetPoint("TOPRIGHT", ItemRefTooltip, -3, -3)
 	CloseButton:SetBackdrop(vUI.BackdropAndBorder)

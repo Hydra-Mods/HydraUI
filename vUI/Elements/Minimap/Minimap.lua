@@ -32,7 +32,7 @@ function Map:Style()
 	self:SetBackdropBorderColor(0, 0, 0)
 	
 	-- Top Info
-	self.TopFrame = CreateFrame("Frame", "vUIMinimapTop", self)
+	self.TopFrame = CreateFrame("Frame", "vUIMinimapTop", self, "BackdropTemplate")
 	self.TopFrame:SetHeight(20)
 	self.TopFrame:SetPoint("TOPLEFT", self, 3, -3)
 	self.TopFrame:SetPoint("TOPRIGHT", self, -3, -3)
@@ -47,7 +47,7 @@ function Map:Style()
 	self.TopFrame.Tex:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	-- Bottom Info
-	self.BottomFrame = CreateFrame("Frame", "vUIMinimapBottom", self)
+	self.BottomFrame = CreateFrame("Frame", "vUIMinimapBottom", self, "BackdropTemplate")
 	self.BottomFrame:SetHeight(20)
 	self.BottomFrame:SetPoint("BOTTOMLEFT", self, 3, 3)
 	self.BottomFrame:SetPoint("BOTTOMRIGHT", self, -3, 3)
@@ -98,7 +98,7 @@ function Map:Style()
 	MiniMapTrackingButtonShine:SetTexture(nil)
 	MiniMapTrackingButton:SetHighlightTexture("")
 	
-	self.Tracking = CreateFrame("Frame", nil, Minimap)
+	self.Tracking = CreateFrame("Frame", nil, Minimap, "BackdropTemplate")
 	self.Tracking:SetSize(24, 24)
 	self.Tracking:SetPoint("TOPLEFT", Minimap, 2, -2)
 	self.Tracking:SetBackdrop(vUI.BackdropAndBorder)

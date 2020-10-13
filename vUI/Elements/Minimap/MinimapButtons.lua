@@ -163,7 +163,7 @@ function MinimapButtons:SkinButtons()
 				end
 			end
 			
-			Child.Backdrop = CreateFrame("Frame", nil, Child)
+			Child.Backdrop = CreateFrame("Frame", nil, Child, "BackdropTemplate")
 			Child.Backdrop:SetPoint("TOPLEFT", Child, 0, 0)
 			Child.Backdrop:SetPoint("BOTTOMRIGHT", Child, 0, 0)
 			Child.Backdrop:SetBackdrop(vUI.Backdrop)
@@ -209,7 +209,7 @@ function MinimapButtons:SkinButtons()
 end
 
 function MinimapButtons:CreatePanel()
-	local Frame = CreateFrame("Frame", "vUI Minimap Buttons", vUI.UIParent)
+	local Frame = CreateFrame("Frame", "vUI Minimap Buttons", vUI.UIParent, "BackdropTemplate")
 	Frame:SetBackdrop(vUI.BackdropAndBorder)
 	Frame:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
 	Frame:SetBackdropBorderColor(0, 0, 0)

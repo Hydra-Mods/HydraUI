@@ -18,9 +18,9 @@ local ItemMap = {
 }
 
 local SkinAura = function(button, name, index)
-	button:SetBackdrop(vUI.BackdropAndBorder)
+	--[[button:SetBackdrop(vUI.BackdropAndBorder)
 	button:SetBackdropColor(0, 0, 0, 0)
-	button:SetBackdropBorderColor(0, 0, 0)
+	button:SetBackdropBorderColor(0, 0, 0)]]
 	
 	vUI:SetFontInfo(button.duration, Settings["ui-widget-font"], Settings["ui-font-size"])
 	button.duration:ClearAllPoints()
@@ -79,7 +79,7 @@ local SkinTempEnchants = function()
 		
 		if Enchant then
 			Enchant:SetParent(Auras.Buffs)
-			Enchant:SetBackdrop(vUI.BackdropAndBorder)
+			--[[Enchant:SetBackdrop(vUI.BackdropAndBorder)
 			Enchant:SetBackdropColor(0, 0, 0)
 			
 			local Quality = GetInventoryItemQuality("player", ItemMap[i])
@@ -90,7 +90,7 @@ local SkinTempEnchants = function()
 				Enchant:SetBackdropBorderColor(unpack(Color))
 			else
 				Enchant:SetBackdropBorderColor(0, 0, 0)
-			end
+			end]]
 			
 			vUI:SetFontInfo(Enchant.duration, Settings["ui-widget-font"], Settings["ui-font-size"])
 			Enchant.duration:ClearAllPoints()
@@ -213,11 +213,11 @@ Auras.AuraButton_Update = function(name, index)
 	
 	Name, Texture, Count, DebuffType = UnitAura("player", index, Filter)
 	
-	if (Name and DebuffType and Filter == "HARMFUL") then
+	--[[if (Name and DebuffType and Filter == "HARMFUL") then
 		Button:SetBackdropBorderColor(unpack(vUI.DebuffColors[DebuffType]))
 	else
 		Button:SetBackdropBorderColor(0, 0, 0)
-	end
+	end]]
 end
 
 function Auras:Load()
@@ -228,7 +228,7 @@ function Auras:Load()
 	self:Hook("AuraButton_Update")
 	self:Hook("BuffFrame_UpdateAllBuffAnchors")
 	self:Hook("DebuffButton_UpdateAnchors")
-	self:Hook("TemporaryEnchantFrame_Update")
+	--self:Hook("TemporaryEnchantFrame_Update")
 	
 	local BuffRows = ceil(BUFF_MAX_DISPLAY / Settings["auras-per-row"])
 	local DebuffRows = ceil(DEBUFF_MAX_DISPLAY / Settings["auras-per-row"])

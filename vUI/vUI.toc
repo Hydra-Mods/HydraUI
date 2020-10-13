@@ -1,4 +1,4 @@
-## Interface: 80300
+## Interface: 90001
 ## Author: Hydra
 ## Version: 1.006
 ## Title: |cFFFFC44DvUI|r
@@ -37,8 +37,7 @@ Elements\Alerts.lua
 Elements\Popup.lua
 Elements\Gold.lua
 Elements\Fonts.lua
-Elements\Chat\Chat.lua
-Elements\Chat\Bubbles.lua
+Elements\Chat.lua
 Elements\Experience.lua
 Elements\Reputation.lua
 Elements\Azerite.lua

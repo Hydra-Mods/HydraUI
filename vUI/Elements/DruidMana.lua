@@ -59,7 +59,7 @@ function DruidMana:CreateBar()
 	self.FadeOut:SetChange(0)
 	self.FadeOut:SetScript("OnFinished", FadeOnFinished)
 	
-	self.BarBG = CreateFrame("Frame", nil, self)
+	self.BarBG = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	self.BarBG:SetPoint("TOPLEFT", self, 0, 0)
 	self.BarBG:SetPoint("BOTTOMRIGHT", self, 0, 0)
 	self.BarBG:SetBackdrop(vUI.BackdropAndBorder)

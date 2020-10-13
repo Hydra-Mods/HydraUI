@@ -60,7 +60,7 @@ vUI.Outline = {
 }
 
 -- GUI
-local GUI = CreateFrame("Frame", nil, vUI.UIParent)
+local GUI = CreateFrame("Frame", nil, vUI.UIParent, "BackdropTemplate")
 
 GUI.Queue = {}
 
@@ -101,7 +101,7 @@ function vUI:NewModule(name)
 		return self.Modules[name]
 	end
 	
-	local Module = CreateFrame("Frame", "vUI " .. name, self.UIParent)
+	local Module = CreateFrame("Frame", "vUI " .. name, self.UIParent, "BackdropTemplate")
 	
 	Module.Name = name
 	Module.Loaded = false
@@ -235,13 +235,9 @@ end
 local ScreenWidth, ScreenHeight
 
 function vUI:UpdateScreenSize()
-	if (C_CVar.GetCVar("gxMaximize") == "1") then -- A fullscreen resolution
-		self.ScreenResolution = C_CVar.GetCVar("gxFullscreenResolution")
-	else -- Windowed
-		self.ScreenResolution = C_CVar.GetCVar("gxWindowedResolution")
-	end
+	ScreenWidth, ScreenHeight = GetPhysicalScreenSize()
 	
-	ScreenWidth, ScreenHeight = match(self.ScreenResolution, "(%d+)x(%d+)")
+	self.ScreenResolution = format("%sx%s", ScreenWidth, ScreenHeight)
 	
 	self.UIParent:SetSize(tonumber(ScreenWidth), tonumber(ScreenHeight))
 end

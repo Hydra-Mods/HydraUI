@@ -27,7 +27,7 @@ end
 function AB:SetButtonAttributes(button)
 	button:SetAttribute("showgrid", 1)
 	
-	ActionButton_ShowGrid(button, 1) -- ACTION_BUTTON_SHOW_GRID_REASON_CVAR
+	--ActionButton_ShowGrid(button, 1) -- ACTION_BUTTON_SHOW_GRID_REASON_CVAR
 end
 
 function AB:PositionButtons(bar, numbuttons, perrow, size, spacing)
@@ -144,7 +144,7 @@ function AB:StyleActionButton(button)
 		end
 	end
 	
-	button.Backdrop = CreateFrame("Frame", nil, button)
+	button.Backdrop = CreateFrame("Frame", nil, button, "BackdropTemplate")
 	button.Backdrop:SetPoint("TOPLEFT", button, 0, 0)
 	button.Backdrop:SetPoint("BOTTOMRIGHT", button, 0, 0)
 	button.Backdrop:SetBackdrop(vUI.Backdrop)
@@ -315,7 +315,7 @@ function AB:StylePetActionButton(button)
 	Highlight:SetPoint("TOPLEFT", button, 1, -1)
 	Highlight:SetPoint("BOTTOMRIGHT", button, -1, 1)
 	
-	button.Backdrop = CreateFrame("Frame", nil, button)
+	button.Backdrop = CreateFrame("Frame", nil, button, "BackdropTemplate")
 	button.Backdrop:SetPoint("TOPLEFT", button, 0, 0)
 	button.Backdrop:SetPoint("BOTTOMRIGHT", button, 0, 0)
 	button.Backdrop:SetBackdrop(vUI.Backdrop)

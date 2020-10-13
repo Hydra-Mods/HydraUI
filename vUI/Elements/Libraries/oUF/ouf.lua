@@ -19,7 +19,10 @@ local callback, objects, headers = {}, {}, {}
 local elements = {}
 local activeElements = {}
 
-local GetNamePlates = C_NamePlate.GetNamePlates
+local PetBattleFrameHider = CreateFrame('Frame', (global or parent) .. '_PetBattleFrameHider', UIParent, 'SecureHandlerStateTemplate')
+PetBattleFrameHider:SetAllPoints()
+PetBattleFrameHider:SetFrameStrata('LOW')
+RegisterStateDriver(PetBattleFrameHider, 'visibility', '[petbattle] hide; show')
 
 -- updating of "invalid" units.
 local function enableTargetUpdate(object)
@@ -278,6 +281,9 @@ local function initObject(unit, style, styleFunc, header, ...)
 		end
 
 		if(not (suffix == 'target' or objectUnit and objectUnit:match('target'))) then
+			object:RegisterEvent('UNIT_ENTERED_VEHICLE', updateActiveUnit)
+			object:RegisterEvent('UNIT_EXITED_VEHICLE', updateActiveUnit)
+
 			-- We don't need to register UNIT_PET for the player unit. We register it
 			-- mainly because UNIT_EXITED_VEHICLE and UNIT_ENTERED_VEHICLE doesn't always
 			-- have pet information when they fire for party and raid units.
@@ -632,7 +638,7 @@ do
 
 		local isPetHeader = template:match('PetHeader')
 		local name = overrideName or generateName(nil, ...)
-		local header = CreateFrame('Frame', name, UIParent, template)
+		local header = CreateFrame('Frame', name, PetBattleFrameHider, template)
 
 		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate')
 		for i = 1, select('#', ...), 2 do
@@ -724,7 +730,7 @@ function oUF:Spawn(unit, overrideName)
 	unit = unit:lower()
 
 	local name = overrideName or generateName(unit)
-	local object = CreateFrame('Button', name, UIParent, 'SecureUnitButtonTemplate')
+	local object = CreateFrame('Button', name, PetBattleFrameHider, 'SecureUnitButtonTemplate')
 	Private.UpdateUnits(object, unit)
 
 	self:DisableBlizzard(unit)
@@ -746,32 +752,6 @@ Used to create nameplates and apply the currently active style to them.
               (function?)
 * variables - list of console variable-value pairs to be set when the player logs in (table?)
 --]]
-function oUF:UpdateAllNamePlates()
-	local NamePlates = GetNamePlates()
-	
-	if NamePlates then
-		for i = 1, #NamePlates do
-			NamePlates[i].unitFrame:UpdateAllElements("ForceUpdate")
-		end
-	end
-end
-
-function oUF:RunForAllNamePlates(func, value)
-	if (type(func) ~= "function") then
-		return
-	end
-	
-	local NamePlates = GetNamePlates()
-	
-	if NamePlates then
-		for i = 1, #NamePlates do
-			func(NamePlates[i].unitFrame, value)
-			
-			NamePlates[i].unitFrame:UpdateAllElements("ForceUpdate")
-		end
-	end
-end
-
 function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 	argcheck(nameplateCallback, 3, 'function', 'nil')
 	argcheck(nameplateCVars, 4, 'table', 'nil')
@@ -795,7 +775,6 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 	eventHandler:RegisterEvent('NAME_PLATE_UNIT_ADDED')
 	eventHandler:RegisterEvent('NAME_PLATE_UNIT_REMOVED')
 	eventHandler:RegisterEvent('PLAYER_TARGET_CHANGED')
-	eventHandler:RegisterEvent('UNIT_HEALTH_FREQUENT')
 
 	if(IsLoggedIn()) then
 		if(nameplateCVars) then
@@ -860,13 +839,6 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 
 			if(nameplateCallback) then
 				nameplateCallback(nameplate.unitFrame, event, unit)
-			end
-		elseif (event == "UNIT_HEALTH_FREQUENT" and unit and unit ~= "target") then
-			local nameplate = C_NamePlate.GetNamePlateForUnit(unit)
-			if(not nameplate) then return end
-			
-			if(nameplate.unitFrame) then
-				nameplate.unitFrame:UpdateAllElements(event)
 			end
 		end
 	end)

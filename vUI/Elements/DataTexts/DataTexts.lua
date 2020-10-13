@@ -33,7 +33,7 @@ function DT:NewAnchor(name, parent)
 		parent = vUI.UIParent
 	end
 	
-	local Anchor = CreateFrame("Frame", nil, parent)
+	local Anchor = CreateFrame("Frame", nil, parent, "BackdropTemplate")
 	Anchor:SetSize(120, 20)
 	Anchor:SetFrameLevel(parent:GetFrameLevel() + 1)
 	Anchor:SetFrameStrata(parent:GetFrameStrata())
