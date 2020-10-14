@@ -47,7 +47,7 @@ GUI:AddOptions(function(self)
 	Right:CreateDoubleLine("|cFF1EFF00Chris B.|r", "|cFF1EFF00Suppabad|r")
 	Right:CreateDoubleLine("|cFF1EFF00Steve R.|r", "|cFF1EFF00Angel|r")
 	Right:CreateDoubleLine("|cFF1EFF00Mitooshin|r", "|cFF1EFF00FrankPatten|r")
-	Right:CreateLine("madmaddy")
+	Right:CreateDoubleLine("|cFF1EFF00Dellamaik|r", "madmaddy")
 	
 	Left:CreateFooter()
 	Left:CreateMessage("Thank you to all of these amazing people who have supported the development of this project!")
