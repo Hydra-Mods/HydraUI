@@ -14,6 +14,8 @@
 	<Script file="elements\auras.lua"/>
 	<Script file="elements\castbar.lua"/>
 	<Script file="elements\classpower.lua"/>
+	<Script file="elements\combopoints.lua"/>
+	<Script file="elements\dispel.lua"/>
 	<Script file="elements\combatindicator.lua"/>
 	<Script file="elements\grouproleindicator.lua"/>
 	<Script file="elements\health.lua"/>
@@ -33,6 +35,7 @@
 	<Script file="elements\restingindicator.lua"/>
 	<Script file="elements\resurrectindicator.lua"/>
 	<Script file="elements\runes.lua"/>
+	<Script file="elements\smooth.lua"/>
 	<Script file="elements\stagger.lua"/>
 	<Script file="elements\summonindicator.lua"/>
 	<Script file="elements\tags.lua"/>
