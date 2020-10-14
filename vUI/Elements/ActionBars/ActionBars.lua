@@ -3,7 +3,6 @@ local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 local AB = vUI:NewModule("Action Bars")
 
 local IsUsableAction = IsUsableAction
-local IsActionInRange = IsActionInRange
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS
 
 function AB:Disable(object)
@@ -347,11 +346,15 @@ function AB:StanceBar_UpdateState()
 	end
 end
 
-function AB:UpdateButtonStatus()
+function AB:UpdateButtonStatus(check, inrange)
+	if (not check) then
+		return
+	end
+	
 	local IsUsable, NoMana = IsUsableAction(self.action)
 	
 	if IsUsable then
-		if (IsActionInRange(self.action) == false) then
+		if (inrange == false) then
 			self.icon:SetVertexColor(vUI:HexToRGB("FF4C19"))
 		else
 			self.icon:SetVertexColor(vUI:HexToRGB("FFFFFF"))
@@ -858,9 +861,7 @@ function AB:Load()
 	self:CreateBars()
 	self:CreateMovers()
 	
-	self:Hook("ActionButton_Update", "UpdateButtonStatus")
-	self:Hook("ActionButton_OnUpdate", "UpdateButtonStatus")
-	self:Hook("ActionButton_UpdateUsable", "UpdateButtonStatus")
+	self:Hook("ActionButton_UpdateRangeIndicator", "UpdateButtonStatus")
 	self:Hook("ActionButton_UpdateFlyout", "UpdateFlyout")
 end
 
