@@ -1,6 +1,6 @@
 ## Interface: 90001
 ## Author: Hydra
-## Version: 1.00621
+## Version: 1.00622
 ## Title: |cFFFFC44DvUI|r
 ## Notes: An interface replacement for World of Warcraft: Battle for Azeroth
 ## SavedVariables: vUIProfileData, vUIProfiles, vUIData, vUIGold
@@ -71,7 +71,6 @@ Elements\DataTexts\Location.lua
 Elements\DataTexts\ManaRegen.lua
 Elements\DataTexts\Mastery.lua
 Elements\DataTexts\PrimaryStat.lua
-Elements\DataTexts\Quests.lua
 Elements\DataTexts\Speed.lua
 Elements\DataTexts\SpellPower.lua
 Elements\DataTexts\System.lua

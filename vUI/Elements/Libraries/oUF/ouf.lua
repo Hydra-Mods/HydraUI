@@ -19,6 +19,8 @@ local callback, objects, headers = {}, {}, {}
 local elements = {}
 local activeElements = {}
 
+local GetNamePlates = C_NamePlate.GetNamePlates
+
 local PetBattleFrameHider = CreateFrame('Frame', (global or parent) .. '_PetBattleFrameHider', UIParent, 'SecureHandlerStateTemplate')
 PetBattleFrameHider:SetAllPoints()
 PetBattleFrameHider:SetFrameStrata('LOW')
@@ -752,6 +754,32 @@ Used to create nameplates and apply the currently active style to them.
               (function?)
 * variables - list of console variable-value pairs to be set when the player logs in (table?)
 --]]
+function oUF:UpdateAllNamePlates()
+	local NamePlates = GetNamePlates()
+	
+	if NamePlates then
+		for i = 1, #NamePlates do
+			NamePlates[i].unitFrame:UpdateAllElements("ForceUpdate")
+		end
+	end
+end
+
+function oUF:RunForAllNamePlates(func, value)
+	if (type(func) ~= "function") then
+		return
+	end
+	
+	local NamePlates = GetNamePlates()
+	
+	if NamePlates then
+		for i = 1, #NamePlates do
+			func(NamePlates[i].unitFrame, value)
+			
+			NamePlates[i].unitFrame:UpdateAllElements("ForceUpdate")
+		end
+	end
+end
+
 function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 	argcheck(nameplateCallback, 3, 'function', 'nil')
 	argcheck(nameplateCVars, 4, 'table', 'nil')

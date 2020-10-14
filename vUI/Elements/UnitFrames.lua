@@ -602,9 +602,11 @@ local StyleNamePlate = function(self, unit)
 	self:SetScale(Settings["ui-scale"])
 	self:SetSize(Settings["nameplates-width"], Settings["nameplates-height"])
 	self:SetPoint("CENTER", 0, 0)
-	self:SetBackdrop(vUI.BackdropAndBorder)
-	self:SetBackdropColor(0, 0, 0)
-	self:SetBackdropBorderColor(0, 0, 0)
+	
+	local Backdrop = self:CreateTexture(nil, "BORDER")
+	Backdrop:SetAllPoints()
+	Backdrop:SetTexture(Assets:GetTexture("Blank"))
+	Backdrop:SetVertexColor(0, 0, 0)
 	
 	self.colors.debuff = vUI.DebuffColors
 	
@@ -813,6 +815,9 @@ local StyleNamePlate = function(self, unit)
 	elseif (Settings["nameplates-target-indicator-size"] == "LARGE") then
 		TargetIndicator.Left:SetTexture(Assets:GetTexture("Arrow Left Large"))
 		TargetIndicator.Right:SetTexture(Assets:GetTexture("Arrow Right Large"))
+	elseif (Settings["nameplates-target-indicator-size"] == "HUGE") then
+		TargetIndicator.Left:SetTexture(Assets:GetTexture("Arrow Left Huge"))
+		TargetIndicator.Right:SetTexture(Assets:GetTexture("Arrow Right Huge"))
 	end
 	
 	self:Tag(Top, Settings["nameplates-top-text"])
