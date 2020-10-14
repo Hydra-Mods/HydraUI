@@ -89,6 +89,8 @@ function Map:Style()
 	
 	GarrisonLandingPageMinimapButton:ClearAllPoints()
 	GarrisonLandingPageMinimapButton:SetPoint("BOTTOMRIGHT", Minimap, 2, -3)
+	GarrisonLandingPageMinimapButton.ClearAllPoints = function() end
+	GarrisonLandingPageMinimapButton.SetPoint = function() end
 	
 	MiniMapTrackingIconOverlay:SetTexture(nil)
 	MiniMapTrackingBackground:SetTexture(nil)
