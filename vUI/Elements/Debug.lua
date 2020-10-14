@@ -6,8 +6,6 @@ local format = format
 local select = select
 local GetZoneText = GetZoneText
 local GetMinimapZoneText = GetMinimapZoneText
-local GetNumQuestLogEntries = GetNumQuestLogEntries
-local GetMaxNumQuestsCanAccept = C_QuestLog.GetMaxNumQuestsCanAccept
 
 local GetNumLoadedAddOns = function()
 	local NumLoaded = 0
@@ -32,8 +30,8 @@ local GetClient = function()
 end
 
 local GetQuests = function()
-	--local NumQuests = select(2, GetNumQuestLogEntries())
-	local MaxQuests = GetMaxNumQuestsCanAccept()
+	local NumQuests = select(2, C_QuestLog.GetNumQuestLogEntries())
+	local MaxQuests = C_QuestLog.GetMaxNumQuestsCanAccept()
 	
 	return format("%s / %s", 0, MaxQuests)
 end
