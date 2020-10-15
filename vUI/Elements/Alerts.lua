@@ -1,6 +1,6 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
-local Alerts = CreateFrame("Frame")
+local Alerts = CreateFrame("Frame", nil,)
 
 local ALERT_WIDTH = 170
 local HEADER_HEIGHT = 22
@@ -89,7 +89,7 @@ local CloseOnMouseUp = function(self)
 end
 
 local CreateAlertFrame = function()
-	local AlertFrame = CreateFrame("Frame", nil, vUI.UIParent)
+	local AlertFrame = CreateFrame("Frame", nil, vUI.UIParent, "BackdropTemplate")
 	AlertFrame:SetSize(ALERT_WIDTH, (HEADER_HEIGHT + (LINE_HEIGHT * 2)))
 	AlertFrame:SetBackdrop(vUI.BackdropAndBorder)
 	AlertFrame:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
@@ -119,7 +119,7 @@ local CreateAlertFrame = function()
 	AlertFrame.FadeOut:SetScript("OnFinished", FadeOutOnFinished)
 	
 	-- Header
-	AlertFrame.Header = CreateFrame("Frame", nil, AlertFrame)
+	AlertFrame.Header = CreateFrame("Frame", nil, AlertFrame, "BackdropTemplate")
 	AlertFrame.Header:SetSize(ALERT_WIDTH, HEADER_HEIGHT)
 	AlertFrame.Header:SetPoint("TOP", AlertFrame, 0, 0)
 	AlertFrame.Header:SetBackdrop(vUI.BackdropAndBorder)
@@ -167,7 +167,7 @@ local CreateAlertFrame = function()
 	AlertFrame.Line2.Text:SetTextColor(vUI:HexToRGB(Settings["ui-widget-font-color"]))
 	
 	-- Close button
-	AlertFrame.CloseButton = CreateFrame("Frame", nil, AlertFrame.Header)
+	AlertFrame.CloseButton = CreateFrame("Frame", nil, AlertFrame.Header, "BackdropTemplate")
 	AlertFrame.CloseButton:SetSize(HEADER_HEIGHT - 2, HEADER_HEIGHT - 2)
 	AlertFrame.CloseButton:SetPoint("RIGHT", AlertFrame.Header, -1, 0)
 	AlertFrame.CloseButton:SetBackdrop(vUI.Backdrop)
