@@ -1,6 +1,6 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
-local Alerts = CreateFrame("Frame", nil,)
+local Alerts = CreateFrame("Frame")
 
 local ALERT_WIDTH = 170
 local HEADER_HEIGHT = 22
