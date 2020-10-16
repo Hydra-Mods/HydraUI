@@ -347,7 +347,7 @@ function AB:StanceBar_UpdateState()
 end
 
 function AB:UpdateButtonStatus(check, inrange)
-	if (not check) then
+	if (not check or not self.action) then
 		return
 	end
 	
