@@ -157,8 +157,8 @@ function Tracker:StyleWindow()
 	self:CreateCustomHeader(ObjectiveTrackerBlocksFrame.QuestHeader) -- Quests
 	self:CreateCustomHeader(ObjectiveTrackerBlocksFrame.ScenarioHeader) -- Scenario
 	self:CreateCustomHeader(ObjectiveTrackerBlocksFrame.AchievementHeader) -- Achievement
-	self:CreateCustomHeader(BONUS_OBJECTIVE_TRACKER_MODULE) -- Bonus
-	self:CreateCustomHeader(WORLD_QUEST_TRACKER_MODULE) -- World Quests
+	self:CreateCustomHeader(BONUS_OBJECTIVE_TRACKER_MODULE.Header) -- Bonus
+	self:CreateCustomHeader(WORLD_QUEST_TRACKER_MODULE.Header) -- World Quests
 	self:CreateCustomHeader(ObjectiveTrackerFrame.BlocksFrame.CampaignQuestHeader) -- Campaign
 	
 	-- Backdrop
