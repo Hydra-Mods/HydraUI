@@ -459,6 +459,38 @@ function vUI:VARIABLES_LOADED(event)
 	self:UnregisterEvent(event)
 end
 
+function vUI:ADDON_LOADED(event, addon)
+	if (addon ~= "vUI") then
+		return
+	end
+	
+	Defaults["ui-scale"] = self:GetSuggestedScale()
+	
+	-- Import profile data and load a profile
+	--self:MigrateData()
+	self:CreateProfileData()
+	--self:MigrateMoverData()
+	self:UpdateProfileList()
+	self:ApplyProfile(self:GetActiveProfileName())
+	
+	self:SetScale(Settings["ui-scale"])
+	
+	self:UpdateoUFColors()
+	self:UpdateColors()
+	
+	GUI:Create()
+	GUI:RunQueue()
+	
+	-- Show the default window
+	if GUI.DefaultWindow then
+		GUI:ShowWindow(GUI.DefaultWindow)
+	end
+	
+	self:WelcomeMessage()
+	
+	self:UnregisterEvent(event)
+end
+
 function vUI:PLAYER_ENTERING_WORLD(event)
 	self:LoadModules()
 	self:LoadPlugins()
@@ -472,7 +504,8 @@ function vUI:OnEvent(event, ...)
 	end
 end
 
-vUI:RegisterEvent("VARIABLES_LOADED")
+--vUI:RegisterEvent("VARIABLES_LOADED")
+vUI:RegisterEvent("ADDON_LOADED")
 vUI:RegisterEvent("PLAYER_ENTERING_WORLD")
 vUI:SetScript("OnEvent", vUI.OnEvent)
 

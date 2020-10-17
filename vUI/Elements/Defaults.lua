@@ -139,6 +139,7 @@ Defaults["ab-enable"] = true
 Defaults["ab-show-hotkey"] = true
 Defaults["ab-show-count"] = true
 Defaults["ab-show-macro"] = true
+Defaults["ab-show-empty"] = true
 
 Defaults["ab-font"] = "PT Sans"
 Defaults["ab-font-size"] = 12

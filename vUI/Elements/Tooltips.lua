@@ -420,11 +420,14 @@ Tooltips.GameTooltip_SetDefaultAnchor = function(self, parent)
 	
 	self:ClearAllPoints()
 	
-	if vUIMetersFrame then
+	--[[if vUIMetersFrame then
 		self:SetPoint("BOTTOMLEFT", vUIMetersFrame, "TOPLEFT", 3, 5)
 	else
 		self:SetPoint("BOTTOMRIGHT", Tooltips, -3, 3)
-	end
+	end]]
+	
+	--self:SetPoint("BOTTOMRIGHT", Tooltips, -3, 3)
+	self:SetPoint("BOTTOMLEFT", Tooltips, 3, 3)
 end
 
 function Tooltips:AddHooks()
@@ -579,7 +582,14 @@ function Tooltips:Load()
 	end
 	
 	self:SetSize(200, 26)
-	self:SetPoint("BOTTOMRIGHT", vUI.UIParent, -13, 101)
+	
+	if Settings["right-window-enable"] then
+		local Window = vUI:GetModule("Right Window")
+		
+		self:SetPoint("BOTTOMLEFT", Window.Top, "TOPLEFT", 0, 3)
+	else
+		self:SetPoint("BOTTOMRIGHT", vUI.UIParent, -13, 101)
+	end
 	
 	self:AddHooks()
 	self:StyleStatusBar()

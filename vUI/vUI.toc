@@ -44,7 +44,6 @@ Elements\Azerite.lua
 Elements\ActionBars\ActionBars.lua
 Elements\ActionBars\KeyBinding.lua
 Elements\UnitFrames.lua
-Elements\Tooltips.lua
 Elements\MiniMap\MiniMap.lua
 Elements\MiniMap\MiniMapButtons.lua
 Elements\ZoneText.lua
@@ -79,6 +78,7 @@ Elements\DataTexts\TimeLocal.lua
 Elements\DataTexts\TimeRealm.lua
 Elements\DataTexts\Versatility.lua
 Elements\RightWindow.lua
+Elements\Tooltips.lua
 Elements\ActionBars\MicroMenu.lua
 Elements\ActionBars\BagSlots.lua
 Elements\ObjectiveTracker.lua

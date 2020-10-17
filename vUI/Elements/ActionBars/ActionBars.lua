@@ -23,12 +23,6 @@ function AB:DisableBar(bar)
 	bar:Hide()
 end
 
-function AB:SetButtonAttributes(button)
-	button:SetAttribute("showgrid", 1)
-	
-	--ActionButton_ShowGrid(button, 1) -- ACTION_BUTTON_SHOW_GRID_REASON_CVAR
-end
-
 function AB:PositionButtons(bar, numbuttons, perrow, size, spacing)
 	if (numbuttons < perrow) then
 		perrow = numbuttons
@@ -209,8 +203,6 @@ function AB:StyleActionButton(button)
 	
 	button:SetFrameLevel(15)
 	button:SetFrameStrata("MEDIUM")
-	
-	self:SetButtonAttributes(button)
 	
 	button.Styled = true
 end
@@ -846,6 +838,46 @@ function AB:UpdateFlyout()
 	end
 end
 
+local ActionBars = {
+	"ActionButton",
+	"MultiBarBottomLeftButton",
+	"MultiBarBottomRightButton",
+	"MultiBarLeftButton",
+	"MultiBarRightButton",
+}
+
+function AB:UpdateEmptyButtons()
+	if Settings["ab-show-empty"] then
+		for i = 1, #ActionBars do
+			for j = 1, 12 do
+				local Button = _G[ActionBars[i] .. j]
+				
+				if Button then
+					Button:SetAttribute("showgrid", 1)
+					
+					if Button.ShowGrid then
+						Button:ShowGrid(ACTION_BUTTON_SHOW_GRID_REASON_EVENT)
+					end
+				end
+			end
+		end
+	else
+		for i = 1, #ActionBars do
+			for j = 1, 12 do
+				local Button = _G[ActionBars[i] .. j]
+				
+				if Button then
+					Button:SetAttribute("showgrid", 0)
+					
+					if Button.HideGrid then
+						Button:HideGrid(ACTION_BUTTON_SHOW_GRID_REASON_EVENT)
+					end
+				end
+			end
+		end
+	end
+end
+
 function AB:Load()
 	if (not Settings["ab-enable"]) then
 		return
@@ -860,6 +892,7 @@ function AB:Load()
 	self:Disable(MainMenuBar)
 	self:CreateBars()
 	self:CreateMovers()
+	self:UpdateEmptyButtons()
 	
 	self:Hook("ActionButton_UpdateRangeIndicator", "UpdateButtonStatus")
 	self:Hook("ActionButton_UpdateFlyout", "UpdateFlyout")
@@ -1167,6 +1200,10 @@ local UpdateStanceHover = function(value)
 	end
 end
 
+local UpdateEmptyButtons = function()
+	AB:UpdateEmptyButtons()
+end
+
 GUI:AddOptions(function(self)
 	local Left, Right = self:CreateWindow(Language["Action Bars"])
 	
@@ -1181,8 +1218,8 @@ GUI:AddOptions(function(self)
 	Left:CreateSlider("ab-bar1-button-size", Settings["ab-bar1-button-size"], 20, 50, 1, Language["Button Size"], Language["Set the action button size"], UpdateBar1)
 	Left:CreateSlider("ab-bar1-button-gap", Settings["ab-bar1-button-gap"], -1, 8, 1, Language["Button Spacing"], Language["Set the spacing between action buttons"], UpdateBar1)
 	
-	Right:CreateSpacer()
-	Right:CreateSpacer()
+	Right:CreateHeader(Language["Show Empty Buttons"])
+	Right:CreateSwitch("ab-show-empty", Settings["ab-show-empty"], Language["Show Empty Buttons"], Language["Set whether or not the action bar should display empty buttons"], UpdateEmptyButtons)
 	
 	Right:CreateHeader(Language["Action Bar 2"])
 	Right:CreateSwitch("ab-bar2-enable", Settings["ab-bar2-enable"], Language["Enable Bar"], Language["Enable action bar 2"], UpdateEnableBar2)
