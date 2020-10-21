@@ -3800,8 +3800,6 @@ function GUI:Create()
 	self.CloseButton.Cross:SetSize(16, 16)
 	self.CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
 	self.CloseButton.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
-	
-	vUI:AddPluginInfo() -- MOVE ME!
 end
 
 -- Groups

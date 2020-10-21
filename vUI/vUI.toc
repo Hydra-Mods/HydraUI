@@ -1,6 +1,6 @@
 ## Interface: 90001
 ## Author: Hydra
-## Version: 1.00628
+## Version: 1.00629
 ## Title: |cFFFFC44DvUI|r
 ## Notes: An interface replacement for World of Warcraft: Battle for Azeroth
 ## SavedVariables: vUIProfileData, vUIProfiles, vUIData, vUIGold

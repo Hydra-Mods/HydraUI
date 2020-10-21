@@ -189,6 +189,8 @@ function vUI:LoadPlugins()
 			self.Plugins[i]:Load()
 		end
 	end
+	
+	self:AddPluginInfo()
 end
 
 function vUI:AddPluginInfo()
@@ -213,6 +215,9 @@ function vUI:AddPluginInfo()
 		Anchor:CreateLine(" ")
 		Anchor:CreateMessage(self.Plugins[i].Notes)
 	end
+	
+	Left:CreateFooter()
+	Right:CreateFooter()
 end
 
 -- NYI, Concept list for my preferred CVars, and those important to the UI
