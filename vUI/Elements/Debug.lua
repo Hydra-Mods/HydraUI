@@ -71,7 +71,7 @@ GUI:AddOptions(function(self)
 	Right:CreateHeader(Language["AddOns Information"])
 	Right:CreateDoubleLine(Language["Total AddOns"], GetNumAddOns())
 	Right:CreateDoubleLine(Language["Loaded AddOns"], GetNumLoadedAddOns())
-	Right:CreateDoubleLine(Language["Loaded Plugins"], #vUI.Plugins)
+	Right:CreateDoubleLine(Language["Loaded Plugins"], "")
 end)
 
 function Debug:DISPLAY_SIZE_CHANGED()
@@ -145,6 +145,7 @@ function Debug:Load()
 	GUI:GetWidgetByWindow(Language["Debug"], "display-errors").Right:SetText(GetCVar("scriptErrors") == "1" and Language["Enabled"] or Language["Disabled"])
 	GUI:GetWidgetByWindow(Language["Debug"], "fullscreen").Right:SetText(GetCVar("gxMaximize") == "1" and Language["Enabled"] or Language["Disabled"])
 	GUI:GetWidgetByWindow(Language["Debug"], "spec").Right:SetText(GetSpecName())
+	GUI:GetWidgetByWindow(Language["Debug"], "loaded-plugins").Right:SetText(#vUI.Plugins)
 	
 	if (UnitLevel("player") > 59) then
 		self:RegisterEvent("PLAYER_LEVEL_UP")
