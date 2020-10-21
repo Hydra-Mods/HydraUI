@@ -33,7 +33,7 @@ local GetQuests = function()
 	local NumQuests = select(2, C_QuestLog.GetNumQuestLogEntries())
 	local MaxQuests = C_QuestLog.GetMaxNumQuestsCanAccept()
 	
-	return format("%s / %s", 0, MaxQuests)
+	return format("%s / %s", NumQuests, MaxQuests)
 end
 
 local GetSpecName = function()
