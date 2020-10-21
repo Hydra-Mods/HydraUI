@@ -4,7 +4,7 @@ local select = select
 local Label = QUESTS_LABEL
 
 local OnMouseUp = function()
-	ToggleFrame(QuestLogFrame)
+	ToggleFrame(QuestMapFrame)
 end
 
 local Update = function(self)
