@@ -954,7 +954,7 @@ function GUI:CreateInputWindow()
 	Window.Input:EnableKeyboard(true)
 	Window.Input:EnableMouse(true)
 	Window.Input:SetMultiLine(true)
-	Window.Input:SetMaxLetters(255)
+	Window.Input:SetMaxLetters(9999)
 	Window.Input:SetCursorPosition(0)
 	
 	Window.Input:SetScript("OnEnterPressed", InputWindowOnEnterPressed)
