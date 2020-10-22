@@ -420,14 +420,11 @@ Tooltips.GameTooltip_SetDefaultAnchor = function(self, parent)
 	
 	self:ClearAllPoints()
 	
-	--[[if vUIMetersFrame then
-		self:SetPoint("BOTTOMLEFT", vUIMetersFrame, "TOPLEFT", 3, 5)
+	if Settings["right-window-enable"] then
+		self:SetPoint("BOTTOMLEFT", Tooltips, 3, 3)
 	else
-		self:SetPoint("BOTTOMRIGHT", Tooltips, -3, 3)
-	end]]
-	
-	--self:SetPoint("BOTTOMRIGHT", Tooltips, -3, 3)
-	self:SetPoint("BOTTOMLEFT", Tooltips, 3, 3)
+		self:SetPoint("BOTTOMRIGHT", Tooltips, 3, 3)
+	end
 end
 
 function Tooltips:AddHooks()
