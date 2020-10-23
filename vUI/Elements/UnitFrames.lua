@@ -962,49 +962,59 @@ local StylePlayer = function(self, unit)
 	
 	SetHealthAttributes(Health, Settings["unitframes-player-health-color"])
 	
-	local Power = CreateFrame("StatusBar", nil, self)
-	Power:SetPoint("BOTTOMLEFT", self, 1, 1)
-	Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
-	Power:SetHeight(Settings["unitframes-player-power-height"])
-	Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	Power:SetReverseFill(Settings["unitframes-player-power-reverse"])
-	
-	local PowerBG = Power:CreateTexture(nil, "BORDER")
-	PowerBG:SetPoint("TOPLEFT", Power, 0, 0)
-	PowerBG:SetPoint("BOTTOMRIGHT", Power, 0, 0)
-	PowerBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	PowerBG:SetAlpha(0.2)
-	
-	local PowerRight = Power:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(PowerRight, Settings["ui-widget-font"], Settings["ui-font-size"])
-	PowerRight:SetPoint("RIGHT", Power, -3, 0)
-	PowerRight:SetJustifyH("RIGHT")
-	
-	local PowerLeft = Power:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(PowerLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
-	PowerLeft:SetPoint("LEFT", Power, 3, 0)
-	PowerLeft:SetJustifyH("LEFT")
-	
-	-- Position and size
-    local mainBar = CreateFrame("StatusBar", nil, Power)
-    mainBar:SetReverseFill(true)
-    mainBar:SetPoint("TOP")
-    mainBar:SetPoint("BOTTOM")
-    mainBar:SetPoint("RIGHT", Power:GetStatusBarTexture(), "RIGHT")
-    mainBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-    mainBar:SetStatusBarColor(0.8, 0.1, 0.1)
-    mainBar:SetWidth(200)
-	
-    -- Register with oUF
-    self.PowerPrediction = {
-        mainBar = mainBar,
-    }
-	
-	-- Attributes
-	Power.frequentUpdates = true
-	Power.Smooth = true
-	
-	SetPowerAttributes(Power, Settings["unitframes-player-power-color"])
+	if Settings["unitframes-player-enable-power"] then
+		local Power = CreateFrame("StatusBar", nil, self)
+		Power:SetPoint("BOTTOMLEFT", self, 1, 1)
+		Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
+		Power:SetHeight(Settings["unitframes-player-power-height"])
+		Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		Power:SetReverseFill(Settings["unitframes-player-power-reverse"])
+		
+		local PowerBG = Power:CreateTexture(nil, "BORDER")
+		PowerBG:SetPoint("TOPLEFT", Power, 0, 0)
+		PowerBG:SetPoint("BOTTOMRIGHT", Power, 0, 0)
+		PowerBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		PowerBG:SetAlpha(0.2)
+		
+		local PowerRight = Power:CreateFontString(nil, "OVERLAY")
+		vUI:SetFontInfo(PowerRight, Settings["ui-widget-font"], Settings["ui-font-size"])
+		PowerRight:SetPoint("RIGHT", Power, -3, 0)
+		PowerRight:SetJustifyH("RIGHT")
+		
+		local PowerLeft = Power:CreateFontString(nil, "OVERLAY")
+		vUI:SetFontInfo(PowerLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
+		PowerLeft:SetPoint("LEFT", Power, 3, 0)
+		PowerLeft:SetJustifyH("LEFT")
+		
+		-- Position and size
+		local mainBar = CreateFrame("StatusBar", nil, Power)
+		mainBar:SetReverseFill(true)
+		mainBar:SetPoint("TOP")
+		mainBar:SetPoint("BOTTOM")
+		mainBar:SetPoint("RIGHT", Power:GetStatusBarTexture(), "RIGHT")
+		mainBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		mainBar:SetStatusBarColor(0.8, 0.1, 0.1)
+		mainBar:SetWidth(200)
+		
+		-- Register with oUF
+		self.PowerPrediction = {
+			mainBar = mainBar,
+		}
+		
+		-- Attributes
+		Power.frequentUpdates = true
+		Power.Smooth = true
+		
+		SetPowerAttributes(Power, Settings["unitframes-player-power-color"])
+		
+		self:Tag(PowerLeft, Settings["unitframes-player-power-left"])
+		self:Tag(PowerRight, Settings["unitframes-player-power-right"])
+		
+		self.Power = Power
+		self.Power.bg = PowerBG
+		self.PowerLeft = PowerLeft
+		self.PowerRight = PowerRight
+	end
 	
     -- Castbar
 	if Settings["unitframes-player-enable-castbar"] then
@@ -1067,225 +1077,227 @@ local StylePlayer = function(self, unit)
 		self.Castbar = Castbar
 	end
 	
-	if (vUI.UserClass == "ROGUE" or vUI.UserClass == "DRUID") then
-		local ComboPoints = CreateFrame("Frame", self:GetName() .. "ComboPoints", self, "BackdropTemplate")
-		ComboPoints:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
-		ComboPoints:SetSize(Settings["unitframes-player-width"], 10)
-		ComboPoints:SetBackdrop(vUI.Backdrop)
-		ComboPoints:SetBackdropColor(0, 0, 0)
-		ComboPoints:SetBackdropBorderColor(0, 0, 0)
-		
-		local Max = (vUI.UserClass == "ROGUE" and 6 or 5)
-		local Width = (Settings["unitframes-player-width"] / Max)
-		
-		for i = 1, Max do
-			ComboPoints[i] = CreateFrame("StatusBar", self:GetName() .. "ComboPoint" .. i, ComboPoints)
-			ComboPoints[i]:SetSize(Width, 8)
-			ComboPoints[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-			ComboPoints[i]:SetStatusBarColor(vUI.ComboPoints[i][1], vUI.ComboPoints[i][2], vUI.ComboPoints[i][3])
+	if Settings["unitframes-player-enable-resource"] then
+		if (vUI.UserClass == "ROGUE" or vUI.UserClass == "DRUID") then
+			local ComboPoints = CreateFrame("Frame", self:GetName() .. "ComboPoints", self, "BackdropTemplate")
+			ComboPoints:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+			ComboPoints:SetSize(Settings["unitframes-player-width"], 10)
+			ComboPoints:SetBackdrop(vUI.Backdrop)
+			ComboPoints:SetBackdropColor(0, 0, 0)
+			ComboPoints:SetBackdropBorderColor(0, 0, 0)
 			
-			ComboPoints[i].bg = ComboPoints:CreateTexture(nil, "BORDER")
-			ComboPoints[i].bg:SetAllPoints(ComboPoints[i])
-			ComboPoints[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-			ComboPoints[i].bg:SetVertexColor(vUI.ComboPoints[i][1], vUI.ComboPoints[i][2], vUI.ComboPoints[i][3])
-			ComboPoints[i].bg:SetAlpha(0.3)
+			local Max = (vUI.UserClass == "ROGUE" and 6 or 5)
+			local Width = (Settings["unitframes-player-width"] / Max)
 			
-			if (i == 1) then
-				ComboPoints[i]:SetPoint("LEFT", ComboPoints, 1, 0)
-			else
-				ComboPoints[i]:SetPoint("TOPLEFT", ComboPoints[i-1], "TOPRIGHT", 1, 0)
-				ComboPoints[i]:SetWidth(Width - 2)
+			for i = 1, Max do
+				ComboPoints[i] = CreateFrame("StatusBar", self:GetName() .. "ComboPoint" .. i, ComboPoints)
+				ComboPoints[i]:SetSize(Width, 8)
+				ComboPoints[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				ComboPoints[i]:SetStatusBarColor(vUI.ComboPoints[i][1], vUI.ComboPoints[i][2], vUI.ComboPoints[i][3])
+				
+				ComboPoints[i].bg = ComboPoints:CreateTexture(nil, "BORDER")
+				ComboPoints[i].bg:SetAllPoints(ComboPoints[i])
+				ComboPoints[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				ComboPoints[i].bg:SetVertexColor(vUI.ComboPoints[i][1], vUI.ComboPoints[i][2], vUI.ComboPoints[i][3])
+				ComboPoints[i].bg:SetAlpha(0.3)
+				
+				if (i == 1) then
+					ComboPoints[i]:SetPoint("LEFT", ComboPoints, 1, 0)
+				else
+					ComboPoints[i]:SetPoint("TOPLEFT", ComboPoints[i-1], "TOPRIGHT", 1, 0)
+					ComboPoints[i]:SetWidth(Width - 2)
+				end
 			end
+			
+			self.ClassPower = ComboPoints
+			self.AuraParent = ComboPoints
+		elseif (vUI.UserClass == "WARLOCK") then
+			local SoulShards = CreateFrame("Frame", self:GetName() .. "SoulShards", self, "BackdropTemplate")
+			SoulShards:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+			SoulShards:SetSize(Settings["unitframes-player-width"], 10)
+			SoulShards:SetBackdrop(vUI.Backdrop)
+			SoulShards:SetBackdropColor(0, 0, 0)
+			SoulShards:SetBackdropBorderColor(0, 0, 0)
+			
+			local Width = (Settings["unitframes-player-width"] / 5)
+			
+			for i = 1, 5 do
+				SoulShards[i] = CreateFrame("StatusBar", self:GetName() .. "SoulShard" .. i, SoulShards)
+				SoulShards[i]:SetSize(Width, 8)
+				SoulShards[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				SoulShards[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-soul-shards"]))
+				
+				SoulShards[i].bg = SoulShards:CreateTexture(nil, "BORDER")
+				SoulShards[i].bg:SetAllPoints(SoulShards[i])
+				SoulShards[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				SoulShards[i].bg:SetVertexColor(vUI:HexToRGB(Settings["color-soul-shards"]))
+				SoulShards[i].bg:SetAlpha(0.3)
+				
+				if (i == 1) then
+					SoulShards[i]:SetPoint("LEFT", SoulShards, 1, 0)
+				else
+					SoulShards[i]:SetPoint("TOPLEFT", SoulShards[i-1], "TOPRIGHT", 1, 0)
+					SoulShards[i]:SetWidth(Width - 2)
+				end
+			end
+			
+			self.ClassPower = SoulShards
+			self.AuraParent = SoulShards
+		elseif (vUI.UserClass == "MAGE") then
+			local ArcaneCharges = CreateFrame("Frame", self:GetName() .. "ArcaneCharges", self, "BackdropTemplate")
+			ArcaneCharges:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+			ArcaneCharges:SetSize(Settings["unitframes-player-width"], 10)
+			ArcaneCharges:SetBackdrop(vUI.Backdrop)
+			ArcaneCharges:SetBackdropColor(0, 0, 0)
+			ArcaneCharges:SetBackdropBorderColor(0, 0, 0)
+			
+			local Width = (Settings["unitframes-player-width"] / 4)
+			
+			for i = 1, 4 do
+				ArcaneCharges[i] = CreateFrame("StatusBar", self:GetName() .. "ArcaneCharge" .. i, ArcaneCharges)
+				ArcaneCharges[i]:SetSize(Width, 8)
+				ArcaneCharges[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				ArcaneCharges[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-arcane-charges"]))
+				
+				ArcaneCharges[i].bg = ArcaneCharges:CreateTexture(nil, "BORDER")
+				ArcaneCharges[i].bg:SetAllPoints(ArcaneCharges[i])
+				ArcaneCharges[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				ArcaneCharges[i].bg:SetVertexColor(vUI:HexToRGB(Settings["color-arcane-charges"]))
+				ArcaneCharges[i].bg:SetAlpha(0.3)
+				
+				if (i == 1) then
+					ArcaneCharges[i]:SetPoint("LEFT", ArcaneCharges, 1, 0)
+				else
+					ArcaneCharges[i]:SetPoint("TOPLEFT", ArcaneCharges[i-1], "TOPRIGHT", 1, 0)
+					ArcaneCharges[i]:SetWidth(Width - 2)
+				end
+			end
+			
+			self.ClassPower = ArcaneCharges
+			self.AuraParent = ArcaneCharges
+		elseif (vUI.UserClass == "MONK") then
+			local Chi = CreateFrame("Frame", self:GetName() .. "Chi", self, "BackdropTemplate")
+			Chi:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+			Chi:SetSize(Settings["unitframes-player-width"], 10)
+			Chi:SetBackdrop(vUI.Backdrop)
+			Chi:SetBackdropColor(0, 0, 0)
+			Chi:SetBackdropBorderColor(0, 0, 0)
+			
+			local Width = (Settings["unitframes-player-width"] / 6)
+			
+			for i = 1, 6 do
+				Chi[i] = CreateFrame("StatusBar", self:GetName() .. "Chi" .. i, Chi)
+				Chi[i]:SetSize(Width, 8)
+				Chi[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Chi[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-chi"]))
+				
+				Chi[i].bg = Chi:CreateTexture(nil, "BORDER")
+				Chi[i].bg:SetAllPoints(Chi[i])
+				Chi[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Chi[i].bg:SetVertexColor(vUI:HexToRGB(Settings["color-chi"]))
+				Chi[i].bg:SetAlpha(0.3)
+				
+				if (i == 1) then
+					Chi[i]:SetPoint("LEFT", Chi, 1, 0)
+				else
+					Chi[i]:SetPoint("TOPLEFT", Chi[i-1], "TOPRIGHT", 1, 0)
+					Chi[i]:SetWidth(Width - 2)
+				end
+			end
+			
+			self.ClassPower = Chi
+			self.AuraParent = Chi
+		elseif (vUI.UserClass == "DEATHKNIGHT") then
+			local Runes = CreateFrame("Frame", self:GetName() .. "Runes", self, "BackdropTemplate")
+			Runes:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+			Runes:SetSize(Settings["unitframes-player-width"], 10)
+			Runes:SetBackdrop(vUI.Backdrop)
+			Runes:SetBackdropColor(0, 0, 0)
+			Runes:SetBackdropBorderColor(0, 0, 0)
+			
+			local Width = (Settings["unitframes-player-width"] / 6)
+			
+			for i = 1, 6 do
+				Runes[i] = CreateFrame("StatusBar", self:GetName() .. "Rune" .. i, Runes)
+				Runes[i]:SetSize(Width, 8)
+				Runes[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Runes[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-runes"]))
+				Runes[i].Duration = 0
+				
+				Runes[i].bg = Runes[i]:CreateTexture(nil, "BORDER")
+				Runes[i].bg:SetAllPoints(Runes[i])
+				Runes[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Runes[i].bg:SetVertexColor(vUI:HexToRGB(Settings["color-runes"]))
+				Runes[i].bg:SetAlpha(0.2)
+				
+				Runes[i].Shine = Runes[i]:CreateTexture(nil, "ARTWORK")
+				Runes[i].Shine:SetAllPoints(Runes[i])
+				Runes[i].Shine:SetTexture(Assets:GetTexture("pHishTex28"))
+				Runes[i].Shine:SetVertexColor(0.8, 0.8, 0.8)
+				Runes[i].Shine:SetAlpha(0)
+				Runes[i].Shine:SetDrawLayer("ARTWORK", 7)
+				
+				Runes[i].ReadyAnim = CreateAnimationGroup(Runes[i].Shine)
+				
+				Runes[i].ReadyAnim.In = Runes[i].ReadyAnim:CreateAnimation("Fade")
+				Runes[i].ReadyAnim.In:SetOrder(1)
+				Runes[i].ReadyAnim.In:SetEasing("in")
+				Runes[i].ReadyAnim.In:SetDuration(0.2)
+				Runes[i].ReadyAnim.In:SetChange(0.5)
+				
+				Runes[i].ReadyAnim.Out = Runes[i].ReadyAnim:CreateAnimation("Fade")
+				Runes[i].ReadyAnim.Out:SetOrder(2)
+				Runes[i].ReadyAnim.Out:SetEasing("out")
+				Runes[i].ReadyAnim.Out:SetDuration(0.2)
+				Runes[i].ReadyAnim.Out:SetChange(0)
+				
+				if ((i % 2) == 0) then
+					Runes[i]:SetWidth(Width + 1)
+				end
+				
+				if (i == 1) then
+					Runes[i]:SetPoint("LEFT", Runes, 1, 0)
+				else
+					Runes[i]:SetPoint("TOPLEFT", Runes[i-1], "TOPRIGHT", 1, 0)
+					Runes[i]:SetWidth(Width - 2)
+				end
+			end
+			
+			self.Runes = Runes
+			self.AuraParent = Runes
+		elseif (vUI.UserClass == "PALADIN") then
+			local HolyPower = CreateFrame("Frame", self:GetName() .. "HolyPower", self, "BackdropTemplate")
+			HolyPower:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+			HolyPower:SetSize(Settings["unitframes-player-width"], 10)
+			HolyPower:SetBackdrop(vUI.Backdrop)
+			HolyPower:SetBackdropColor(0, 0, 0)
+			HolyPower:SetBackdropBorderColor(0, 0, 0)
+			
+			local Width = (Settings["unitframes-player-width"] / 5)
+			
+			for i = 1, 5 do
+				HolyPower[i] = CreateFrame("StatusBar", self:GetName() .. "HolyPower" .. i, HolyPower)
+				HolyPower[i]:SetSize(Width, 8)
+				HolyPower[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				HolyPower[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-holy-power"]))
+				
+				HolyPower[i].bg = HolyPower:CreateTexture(nil, "BORDER")
+				HolyPower[i].bg:SetAllPoints(HolyPower[i])
+				HolyPower[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				HolyPower[i].bg:SetVertexColor(vUI:HexToRGB(Settings["color-holy-power"]))
+				HolyPower[i].bg:SetAlpha(0.3)
+				
+				if (i == 1) then
+					HolyPower[i]:SetPoint("LEFT", HolyPower, 1, 0)
+				else
+					HolyPower[i]:SetPoint("TOPLEFT", HolyPower[i-1], "TOPRIGHT", 1, 0)
+					HolyPower[i]:SetWidth(Width - 2)
+				end
+			end
+			
+			self.ClassPower = HolyPower
+			self.AuraParent = HolyPower
 		end
-		
-		self.ClassPower = ComboPoints
-		self.AuraParent = ComboPoints
-	elseif (vUI.UserClass == "WARLOCK") then
-		local SoulShards = CreateFrame("Frame", self:GetName() .. "SoulShards", self, "BackdropTemplate")
-		SoulShards:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
-		SoulShards:SetSize(Settings["unitframes-player-width"], 10)
-		SoulShards:SetBackdrop(vUI.Backdrop)
-		SoulShards:SetBackdropColor(0, 0, 0)
-		SoulShards:SetBackdropBorderColor(0, 0, 0)
-		
-		local Width = (Settings["unitframes-player-width"] / 5)
-		
-		for i = 1, 5 do
-			SoulShards[i] = CreateFrame("StatusBar", self:GetName() .. "SoulShard" .. i, SoulShards)
-			SoulShards[i]:SetSize(Width, 8)
-			SoulShards[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-			SoulShards[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-soul-shards"]))
-			
-			SoulShards[i].bg = SoulShards:CreateTexture(nil, "BORDER")
-			SoulShards[i].bg:SetAllPoints(SoulShards[i])
-			SoulShards[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-			SoulShards[i].bg:SetVertexColor(vUI:HexToRGB(Settings["color-soul-shards"]))
-			SoulShards[i].bg:SetAlpha(0.3)
-			
-			if (i == 1) then
-				SoulShards[i]:SetPoint("LEFT", SoulShards, 1, 0)
-			else
-				SoulShards[i]:SetPoint("TOPLEFT", SoulShards[i-1], "TOPRIGHT", 1, 0)
-				SoulShards[i]:SetWidth(Width - 2)
-			end
-		end
-		
-		self.ClassPower = SoulShards
-		self.AuraParent = SoulShards
-	elseif (vUI.UserClass == "MAGE") then
-		local ArcaneCharges = CreateFrame("Frame", self:GetName() .. "ArcaneCharges", self, "BackdropTemplate")
-		ArcaneCharges:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
-		ArcaneCharges:SetSize(Settings["unitframes-player-width"], 10)
-		ArcaneCharges:SetBackdrop(vUI.Backdrop)
-		ArcaneCharges:SetBackdropColor(0, 0, 0)
-		ArcaneCharges:SetBackdropBorderColor(0, 0, 0)
-		
-		local Width = (Settings["unitframes-player-width"] / 4)
-		
-		for i = 1, 4 do
-			ArcaneCharges[i] = CreateFrame("StatusBar", self:GetName() .. "ArcaneCharge" .. i, ArcaneCharges)
-			ArcaneCharges[i]:SetSize(Width, 8)
-			ArcaneCharges[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-			ArcaneCharges[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-arcane-charges"]))
-			
-			ArcaneCharges[i].bg = ArcaneCharges:CreateTexture(nil, "BORDER")
-			ArcaneCharges[i].bg:SetAllPoints(ArcaneCharges[i])
-			ArcaneCharges[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-			ArcaneCharges[i].bg:SetVertexColor(vUI:HexToRGB(Settings["color-arcane-charges"]))
-			ArcaneCharges[i].bg:SetAlpha(0.3)
-			
-			if (i == 1) then
-				ArcaneCharges[i]:SetPoint("LEFT", ArcaneCharges, 1, 0)
-			else
-				ArcaneCharges[i]:SetPoint("TOPLEFT", ArcaneCharges[i-1], "TOPRIGHT", 1, 0)
-				ArcaneCharges[i]:SetWidth(Width - 2)
-			end
-		end
-		
-		self.ClassPower = ArcaneCharges
-		self.AuraParent = ArcaneCharges
-	elseif (vUI.UserClass == "MONK") then
-		local Chi = CreateFrame("Frame", self:GetName() .. "Chi", self, "BackdropTemplate")
-		Chi:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
-		Chi:SetSize(Settings["unitframes-player-width"], 10)
-		Chi:SetBackdrop(vUI.Backdrop)
-		Chi:SetBackdropColor(0, 0, 0)
-		Chi:SetBackdropBorderColor(0, 0, 0)
-		
-		local Width = (Settings["unitframes-player-width"] / 6)
-		
-		for i = 1, 6 do
-			Chi[i] = CreateFrame("StatusBar", self:GetName() .. "Chi" .. i, Chi)
-			Chi[i]:SetSize(Width, 8)
-			Chi[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-			Chi[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-chi"]))
-			
-			Chi[i].bg = Chi:CreateTexture(nil, "BORDER")
-			Chi[i].bg:SetAllPoints(Chi[i])
-			Chi[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-			Chi[i].bg:SetVertexColor(vUI:HexToRGB(Settings["color-chi"]))
-			Chi[i].bg:SetAlpha(0.3)
-			
-			if (i == 1) then
-				Chi[i]:SetPoint("LEFT", Chi, 1, 0)
-			else
-				Chi[i]:SetPoint("TOPLEFT", Chi[i-1], "TOPRIGHT", 1, 0)
-				Chi[i]:SetWidth(Width - 2)
-			end
-		end
-		
-		self.ClassPower = Chi
-		self.AuraParent = Chi
-	elseif (vUI.UserClass == "DEATHKNIGHT") then
-		local Runes = CreateFrame("Frame", self:GetName() .. "Runes", self, "BackdropTemplate")
-		Runes:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
-		Runes:SetSize(Settings["unitframes-player-width"], 10)
-		Runes:SetBackdrop(vUI.Backdrop)
-		Runes:SetBackdropColor(0, 0, 0)
-		Runes:SetBackdropBorderColor(0, 0, 0)
-		
-		local Width = (Settings["unitframes-player-width"] / 6)
-		
-		for i = 1, 6 do
-			Runes[i] = CreateFrame("StatusBar", self:GetName() .. "Rune" .. i, Runes)
-			Runes[i]:SetSize(Width, 8)
-			Runes[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-			Runes[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-runes"]))
-			Runes[i].Duration = 0
-			
-			Runes[i].bg = Runes[i]:CreateTexture(nil, "BORDER")
-			Runes[i].bg:SetAllPoints(Runes[i])
-			Runes[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-			Runes[i].bg:SetVertexColor(vUI:HexToRGB(Settings["color-runes"]))
-			Runes[i].bg:SetAlpha(0.2)
-			
-			Runes[i].Shine = Runes[i]:CreateTexture(nil, "ARTWORK")
-			Runes[i].Shine:SetAllPoints(Runes[i])
-			Runes[i].Shine:SetTexture(Assets:GetTexture("pHishTex28"))
-			Runes[i].Shine:SetVertexColor(0.8, 0.8, 0.8)
-			Runes[i].Shine:SetAlpha(0)
-			Runes[i].Shine:SetDrawLayer("ARTWORK", 7)
-			
-			Runes[i].ReadyAnim = CreateAnimationGroup(Runes[i].Shine)
-			
-			Runes[i].ReadyAnim.In = Runes[i].ReadyAnim:CreateAnimation("Fade")
-			Runes[i].ReadyAnim.In:SetOrder(1)
-			Runes[i].ReadyAnim.In:SetEasing("in")
-			Runes[i].ReadyAnim.In:SetDuration(0.2)
-			Runes[i].ReadyAnim.In:SetChange(0.5)
-			
-			Runes[i].ReadyAnim.Out = Runes[i].ReadyAnim:CreateAnimation("Fade")
-			Runes[i].ReadyAnim.Out:SetOrder(2)
-			Runes[i].ReadyAnim.Out:SetEasing("out")
-			Runes[i].ReadyAnim.Out:SetDuration(0.2)
-			Runes[i].ReadyAnim.Out:SetChange(0)
-			
-			if ((i % 2) == 0) then
-				Runes[i]:SetWidth(Width + 1)
-			end
-			
-			if (i == 1) then
-				Runes[i]:SetPoint("LEFT", Runes, 1, 0)
-			else
-				Runes[i]:SetPoint("TOPLEFT", Runes[i-1], "TOPRIGHT", 1, 0)
-				Runes[i]:SetWidth(Width - 2)
-			end
-		end
-		
-		self.Runes = Runes
-		self.AuraParent = Runes
-	elseif (vUI.UserClass == "PALADIN") then
-		local HolyPower = CreateFrame("Frame", self:GetName() .. "HolyPower", self, "BackdropTemplate")
-		HolyPower:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
-		HolyPower:SetSize(Settings["unitframes-player-width"], 10)
-		HolyPower:SetBackdrop(vUI.Backdrop)
-		HolyPower:SetBackdropColor(0, 0, 0)
-		HolyPower:SetBackdropBorderColor(0, 0, 0)
-		
-		local Width = (Settings["unitframes-player-width"] / 5)
-		
-		for i = 1, 5 do
-			HolyPower[i] = CreateFrame("StatusBar", self:GetName() .. "HolyPower" .. i, HolyPower)
-			HolyPower[i]:SetSize(Width, 8)
-			HolyPower[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-			HolyPower[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-holy-power"]))
-			
-			HolyPower[i].bg = HolyPower:CreateTexture(nil, "BORDER")
-			HolyPower[i].bg:SetAllPoints(HolyPower[i])
-			HolyPower[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-			HolyPower[i].bg:SetVertexColor(vUI:HexToRGB(Settings["color-holy-power"]))
-			HolyPower[i].bg:SetAlpha(0.3)
-			
-			if (i == 1) then
-				HolyPower[i]:SetPoint("LEFT", HolyPower, 1, 0)
-			else
-				HolyPower[i]:SetPoint("TOPLEFT", HolyPower[i-1], "TOPRIGHT", 1, 0)
-				HolyPower[i]:SetWidth(Width - 2)
-			end
-		end
-		
-		self.ClassPower = HolyPower
-		self.AuraParent = HolyPower
 	end
 	
 	-- Auras
@@ -1327,20 +1339,13 @@ local StylePlayer = function(self, unit)
 	-- Tags
 	self:Tag(HealthLeft, Settings["unitframes-player-health-left"])
 	self:Tag(HealthRight, Settings["unitframes-player-health-right"])
-	self:Tag(PowerLeft, Settings["unitframes-player-power-left"])
-	self:Tag(PowerRight, Settings["unitframes-player-power-right"])
 	
 	self.Health = Health
 	self.Health.bg = HealthBG
-	self.Power = Power
-	self.Power.bg = PowerBG
-	self.PowerValue = PowerValue
 	self.AbsorbsBar = AbsorbsBar
 	self.HealBar = HealBar
 	self.HealthLeft = HealthLeft
 	self.HealthRight = HealthRight
-	self.PowerLeft = PowerLeft
-	self.PowerRight = PowerRight
 	self.CombatIndicator = Combat
 	self.Buffs = Buffs
 	self.Debuffs = Debuffs
@@ -1932,7 +1937,6 @@ local StyleFocus = function(self, unit)
 	self.Health.bg = HealthBG
 	self.Power = Power
 	self.Power.bg = PowerBG
-	self.PowerValue = PowerValue
 	self.AbsorbsBar = AbsorbsBar
 	self.HealBar = HealBar
 	self.HealthLeft = HealthLeft
@@ -2769,13 +2773,19 @@ UF:SetScript("OnEvent", function(self, event)
 	if (event == "PLAYER_LOGIN") then
 		if Settings["unitframes-enable"] then
 			local Player = oUF:Spawn("player", "vUI Player")
-			Player:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-health-height"] + Settings["unitframes-player-power-height"] + 3)
-			Player:SetPoint("RIGHT", vUI.UIParent, "CENTER", -68, -304)
+			
+			if Settings["unitframes-player-enable-power"] then
+				Player:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-health-height"] + Settings["unitframes-player-power-height"] + 3)
+			else
+				Player:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-health-height"] + 2)
+			end
+			
+			Player:SetPoint("TOPRIGHT", vUI.UIParent, "CENTER", -68, -281)
 			Player:SetParent(vUI.UIParent)
 			
 			local Target = oUF:Spawn("target", "vUI Target")
 			Target:SetSize(Settings["unitframes-target-width"], Settings["unitframes-target-health-height"] + Settings["unitframes-target-power-height"] + 3)
-			Target:SetPoint("LEFT", vUI.UIParent, "CENTER", 68, -304)
+			Target:SetPoint("TOPLEFT", vUI.UIParent, "CENTER", 68, -281)
 			Target:SetParent(vUI.UIParent)
 			
 			local TargetTarget = oUF:Spawn("targettarget", "vUI Target Target")
@@ -3285,6 +3295,10 @@ GUI:AddOptions(function(self)
 	Left:CreateDropdown("unitframes-player-health-color", Settings["unitframes-player-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdatePlayerHealthColor)
 	Left:CreateDropdown("unitframes-player-power-color", Settings["unitframes-player-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePlayerPowerColor)
 	Left:CreateSwitch("unitframes-player-enable-castbar", Settings["unitframes-player-enable-castbar"], Language["Enable Cast Bar"], Language["Enable the player cast bar"], ReloadUI):RequiresReload(true)
+	
+	Left:CreateSwitch("unitframes-player-enable-power", Settings["unitframes-player-enable-power"], Language["Enable Power Bar"], Language["Enable the player power bar"], ReloadUI):RequiresReload(true)
+	Left:CreateSwitch("unitframes-player-enable-resource", Settings["unitframes-player-enable-resource"], Language["Enable Resaource Bar"], Language["Enable the player resources such as combo points, runes, etc."], ReloadUI):RequiresReload(true)
+	
 	Left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
 	Left:CreateSwitch("unitframes-player-health-reverse", Settings["unitframes-player-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePlayerHealthFill)
 	Left:CreateSwitch("unitframes-player-power-reverse", Settings["unitframes-player-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePlayerPowerFill)
