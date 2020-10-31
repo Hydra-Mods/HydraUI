@@ -145,7 +145,7 @@ function vUI:NewPlugin(name)
 		return self.Plugins[name]
 	end
 	
-	local Plugin = CreateFrame("Frame", name, self.UIParent)
+	local Plugin = CreateFrame("Frame", name, self.UIParent, "BackdropTemplate")
 	local Name, Title, Notes = GetAddOnInfo(name)
 	local Author = GetAddOnMetadata(name, "Author")
 	local Version = GetAddOnMetadata(name, "Version")
@@ -455,6 +455,12 @@ function vUI:ADDON_LOADED(event, addon)
 	self:UpdateoUFColors()
 	self:UpdateColors()
 	
+	self:WelcomeMessage()
+	
+	self:UnregisterEvent(event)
+end
+
+function vUI:PLAYER_ENTERING_WORLD(event)
 	GUI:Create()
 	GUI:RunQueue()
 	
@@ -463,12 +469,6 @@ function vUI:ADDON_LOADED(event, addon)
 		GUI:ShowWindow(GUI.DefaultWindow)
 	end
 	
-	self:WelcomeMessage()
-	
-	self:UnregisterEvent(event)
-end
-
-function vUI:PLAYER_ENTERING_WORLD(event)
 	self:LoadModules()
 	self:LoadPlugins()
 	
