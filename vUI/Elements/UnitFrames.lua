@@ -1965,6 +1965,7 @@ local BuffIDs = {
 		{33763, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- Lifebloom
 		{48438, "BOTTOMRIGHT", {0.8, 0.4, 0}},  -- Wild Growth
 		{102342, "RIGHT", {0.8, 0.2, 0.2}},     -- Ironbark
+		{102351, "TOP", {0.84, 0.92, 0.77}},     -- Cenarion Ward
 	},
 	
 	["MONK"] = {
