@@ -480,7 +480,7 @@ GUI.Widgets.CreateStatusBar = function(self, value, minvalue, maxvalue, label, t
 	Bar:SetBackdropColor(0, 0, 0, 0)
 	Bar:SetBackdropBorderColor(0, 0, 0, 0)
 	Bar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	Bar:SetStatusBarColo(vUI:HexToRGB(Settings["ui-widget-color"]))
+	Bar:SetStatusBarColor(vUI:HexToRGB(Settings["ui-widget-color"]))
 	Bar:SetMinMaxValues(minvalue, maxvalue)
 	Bar:SetValue(value)
 	Bar.Hook = hook
