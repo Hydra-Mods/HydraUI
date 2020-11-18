@@ -968,52 +968,34 @@ function GUI:Toggle()
 	end
 end
 
-function GUI:GetWidget(category, name, arg1, arg2) -- parent, id
-	if arg2 then
-		for j = 1, #self.CategoryNames[category].Buttons do
-			if self.CategoryNames[category].Buttons[j].Children then
-				for o = 1, #self.CategoryNames[category].Buttons[j].Children do
-					if self.CategoryNames[category].Buttons[j].Children[o].Window then
-						for n = 1, #self.CategoryNames[category].Buttons[j].Children[o].Window.LeftWidgets do
-							if (self.CategoryNames[category].Buttons[j].Children[o].Window.LeftWidgets[n].ID == arg2) then
-								return self.CategoryNames[category].Buttons[j].Children[o].Window.LeftWidgets[n]
-							end
-						end
-						
-						for n = 1, #self.CategoryNames[category].Buttons[j].Children[o].Window.RightWidgets do
-							if (self.CategoryNames[category].Buttons[j].Children[o].Window.RightWidgets[n].ID == arg2) then
-								return self.CategoryNames[category].Buttons[j].Children[o].Window.RightWidgets[n]
-							end
+function GUI:GetWidget(category, name, arg1, arg2)
+	for i = 1, #self.CategoryNames[category].Buttons do
+		if (arg2 and self.CategoryNames[category].Buttons[i].Children) then
+			for o = 1, #self.CategoryNames[category].Buttons[i].Children do
+				if self.CategoryNames[category].Buttons[i].Children[o].Window then
+					for n = 1, #self.CategoryNames[category].Buttons[i].Children[o].Window.LeftWidgets do
+						if (self.CategoryNames[category].Buttons[i].Children[o].Window.LeftWidgets[n].ID == arg2) then
+							return self.CategoryNames[category].Buttons[i].Children[o].Window.LeftWidgets[n]
 						end
 					end
-				end
-			elseif self.CategoryNames[category].Buttons[j].Window then
-				for n = 1, #self.CategoryNames[category].Buttons[j].Window.LeftWidgets do
-					if (self.CategoryNames[category].Buttons[j].Window.LeftWidgets[n].ID == arg1) then
-						return self.CategoryNames[category].Buttons[j].Window.LeftWidgets[n]
-					end
-				end
-				
-				for n = 1, #self.CategoryNames[category].Buttons[j].Window.RightWidgets do
-					if (self.CategoryNames[category].Buttons[j].Window.RightWidgets[n].ID == arg1) then
-						return self.CategoryNames[category].Buttons[j].Window.RightWidgets[n]
+					
+					for n = 1, #self.CategoryNames[category].Buttons[i].Children[o].Window.RightWidgets do
+						if (self.CategoryNames[category].Buttons[i].Children[o].Window.RightWidgets[n].ID == arg2) then
+							return self.CategoryNames[category].Buttons[i].Children[o].Window.RightWidgets[n]
+						end
 					end
 				end
 			end
-		end
-	else
-		for j = 1, #self.CategoryNames[category].Buttons do
-			if self.CategoryNames[category].Buttons[j].Window then
-				for n = 1, #self.CategoryNames[category].Buttons[j].Window.LeftWidgets do
-					if (self.CategoryNames[category].Buttons[j].Window.LeftWidgets[n].ID == arg1) then
-						return self.CategoryNames[category].Buttons[j].Window.LeftWidgets[n]
-					end
+		elseif self.CategoryNames[category].Buttons[i].Window then
+			for n = 1, #self.CategoryNames[category].Buttons[i].Window.LeftWidgets do
+				if (self.CategoryNames[category].Buttons[i].Window.LeftWidgets[n].ID == arg1) then
+					return self.CategoryNames[category].Buttons[i].Window.LeftWidgets[n]
 				end
-				
-				for n = 1, #self.CategoryNames[category].Buttons[j].Window.RightWidgets do
-					if (self.CategoryNames[category].Buttons[j].Window.RightWidgets[n].ID == arg1) then
-						return self.CategoryNames[category].Buttons[j].Window.RightWidgets[n]
-					end
+			end
+			
+			for n = 1, #self.CategoryNames[category].Buttons[i].Window.RightWidgets do
+				if (self.CategoryNames[category].Buttons[i].Window.RightWidgets[n].ID == arg1) then
+					return self.CategoryNames[category].Buttons[i].Window.RightWidgets[n]
 				end
 			end
 		end

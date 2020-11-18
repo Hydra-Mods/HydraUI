@@ -104,7 +104,7 @@ function vUI:AddProfile(profile)
 		self.Profiles[Name] = profile
 		self.ProfileList[Name] = Name
 		
-		local Widget = GUI:GetWidgetByWindow(Language["Profiles"], "ui-profile")
+		local Widget = GUI:GetWidget(Language["General"], Language["Profiles"], "ui-profile")
 		Widget.Dropdown:CreateSelection(Name, Name)
 		Widget.Dropdown:Sort()
 		
@@ -658,7 +658,7 @@ local CreateProfile = function(value)
 	vUI:CreateProfile(value)
 	vUI:UpdateProfileInfo()
 	
-	local Widget = GUI:GetWidgetByWindow(Language["Profiles"], "ui-profile")
+	local Widget = GUI:GetWidget(Language["General"], Language["Profiles"], "ui-profile")
 	Widget.Dropdown:CreateSelection(value, value)
 	Widget.Dropdown:Sort()
 end
@@ -667,7 +667,7 @@ local DeleteProfile = function(value)
 	vUI:DeleteProfile(value)
 	vUI:UpdateProfileInfo()
 	
-	local Widget = GUI:GetWidgetByWindow(Language["Profiles"], "ui-profile")
+	local Widget = GUI:GetWidget(Language["General"], Language["Profiles"], "ui-profile")
 	Widget.Dropdown:RemoveSelection(value)
 	Widget.Dropdown.Current:SetText(vUI:GetActiveProfileName())
 end

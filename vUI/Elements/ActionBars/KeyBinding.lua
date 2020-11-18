@@ -230,8 +230,8 @@ end
 GUI:AddSettings(Language["General"], Language["Action Bars"], function(left, right)
 	right:CreateHeader(Language["Key Binding"])
 	right:CreateButton(Language["Toggle"], Language["Key Bind Mode"], Language["While toggled, you can hover over action buttons and press a key combination to rebind them"], ToggleBindingMode)
-	right:CreateButton(Language["Save"], Language["Save Changes"], Language["Save key binding changes"], SaveChanges):Disable()
-	right:CreateButton(Language["Discard"], Language["Discard Changes"], Language["Discard key binding changes"], DiscardChanges):Disable()
+	right:CreateButton(Language["Save"], Language["Save Changes"], Language["Save key binding changes"], SaveChanges)
+	right:CreateButton(Language["Discard"], Language["Discard Changes"], Language["Discard key binding changes"], DiscardChanges)
 	
 	--GUI:GetWidget(Language["General"], Language["Action Bars"], "save"):Disable()
 	--GUI:GetWidget(Language["General"], Language["Action Bars"], "discard"):Disable()
