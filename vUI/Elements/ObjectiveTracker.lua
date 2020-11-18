@@ -1,6 +1,31 @@
-local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Tracker = vUI:NewModule("Objective Tracker")
+
+-- Default settings values
+Defaults["tracker-enable"] = true
+Defaults["tracker-enable-backdrop"] = false
+Defaults["tracker-backdrop-opacity"] = 70
+Defaults["tracker-height"] = 400
+Defaults["tracker-font"] = "Roboto"
+Defaults["tracker-font-size"] = 12
+Defaults["tracker-font-flags"] = ""
+Defaults["tracker-header-font"] = "Roboto"
+Defaults["tracker-header-font-size"] = 12
+Defaults["tracker-header-font-flags"] = ""
+Defaults["tracker-module-font"] = "Roboto"
+Defaults["tracker-module-font-size"] = 12
+Defaults["tracker-module-font-flags"] = ""
+Defaults["tracker-module-font-color"] = "FFE6C0"
+Defaults["tracker-color-normal"] = "FAFAFA"
+Defaults["tracker-color-normal-highlight"] = "FFFFFF"
+Defaults["tracker-color-header"] = "FFB54F"
+Defaults["tracker-color-header-highlight"] = "FFFFFF"
+Defaults["tracker-color-failed"] = "D32F2F"
+Defaults["tracker-color-failed-highlight"] = "F44336"
+Defaults["tracker-color-timeleft"] = "D32F2F"
+Defaults["tracker-color-timeleft-highlight"] = "F44336"
+Defaults["tracker-color-complete"] = "A0A0A0"
 
 function Tracker:MoveTrackerFrame()
 	self:SetSize(253, Settings["tracker-height"] + 2)
@@ -537,41 +562,39 @@ local UpdateEnableBackdrop = function(value)
 	end
 end
 
-GUI:AddOptions(function(self)
-	local Left, Right = self:CreateWindow(Language["Objectives"])
+GUI:AddSettings(Language["General"], Language["Objectives"], function(left, right)
+	left:CreateHeader(Language["Enable"])
+	left:CreateSwitch("tracker-enable", Settings["tracker-enable"], Language["Enable Tracker Module"], Language["Enable the vUI objective tracker module"], ReloadUI):RequiresReload(true)
 	
-	Left:CreateHeader(Language["Enable"])
-	Left:CreateSwitch("tracker-enable", Settings["tracker-enable"], Language["Enable Tracker Module"], Language["Enable the vUI objective tracker module"], ReloadUI):RequiresReload(true)
+	left:CreateHeader(Language["Styling"])
+	left:CreateSwitch("tracker-enable-backdrop", Settings["tracker-enable-backdrop"], Language["Enable Backdrop"], Language["Enable a backdrop for the objective tracker"], UpdateEnableBackdrop)
+	left:CreateSlider("tracker-backdrop-opacity", Settings["tracker-backdrop-opacity"], 0, 100, 5, Language["Backdrop Opacity"], Language["Set the backdrop opacity of the objective tracker"], UpdateBackdropOpacity)
+	left:CreateSlider("tracker-height", Settings["tracker-height"], 100, 500, 1, Language["Set Height"], Language["Set the height of the objective tracker"], UpdateHeight)
 	
-	Left:CreateHeader(Language["Styling"])
-	Left:CreateSwitch("tracker-enable-backdrop", Settings["tracker-enable-backdrop"], Language["Enable Backdrop"], Language["Enable a backdrop for the objective tracker"], UpdateEnableBackdrop)
-	Left:CreateSlider("tracker-backdrop-opacity", Settings["tracker-backdrop-opacity"], 0, 100, 5, Language["Backdrop Opacity"], Language["Set the backdrop opacity of the objective tracker"], UpdateBackdropOpacity)
-	Left:CreateSlider("tracker-height", Settings["tracker-height"], 100, 500, 1, Language["Set Height"], Language["Set the height of the objective tracker"], UpdateHeight)
+	left:CreateHeader(Language["Colors"])
+	left:CreateColorSelection("tracker-color-normal", Settings["tracker-color-normal"], Language["Line Normal"], "", UpdateHeaderFont)
+	left:CreateColorSelection("tracker-color-normal-highlight", Settings["tracker-color-normal-highlight"], Language["Line Highlight"], "", UpdateHeaderFont)
+	left:CreateColorSelection("tracker-color-header", Settings["tracker-color-header"], Language["Header"], "", UpdateHeaderFont)
+	left:CreateColorSelection("tracker-color-header-highlight", Settings["tracker-color-header-highlight"], Language["Header Highlight"], "", UpdateHeaderFont)
+	left:CreateColorSelection("tracker-color-failed", Settings["tracker-color-failed"], Language["Failed"], "", UpdateHeaderFont)
+	left:CreateColorSelection("tracker-color-failed-highlight", Settings["tracker-color-failed-highlight"], Language["Failed Highlight"], "", UpdateHeaderFont)
+	left:CreateColorSelection("tracker-color-timeleft", Settings["tracker-color-timeleft"], Language["Time left"], "", UpdateHeaderFont)
+	left:CreateColorSelection("tracker-color-timeleft-highlight", Settings["tracker-color-timeleft-highlight"], Language["Time left Highlight"], "", UpdateHeaderFont)
+	left:CreateColorSelection("tracker-color-complete", Settings["tracker-color-complete"], Language["Complete"], "", UpdateHeaderFont)
 	
-	Left:CreateHeader(Language["Colors"])
-	Left:CreateColorSelection("tracker-color-normal", Settings["tracker-color-normal"], Language["Line Normal"], "", UpdateHeaderFont)
-	Left:CreateColorSelection("tracker-color-normal-highlight", Settings["tracker-color-normal-highlight"], Language["Line Highlight"], "", UpdateHeaderFont)
-	Left:CreateColorSelection("tracker-color-header", Settings["tracker-color-header"], Language["Header"], "", UpdateHeaderFont)
-	Left:CreateColorSelection("tracker-color-header-highlight", Settings["tracker-color-header-highlight"], Language["Header Highlight"], "", UpdateHeaderFont)
-	Left:CreateColorSelection("tracker-color-failed", Settings["tracker-color-failed"], Language["Failed"], "", UpdateHeaderFont)
-	Left:CreateColorSelection("tracker-color-failed-highlight", Settings["tracker-color-failed-highlight"], Language["Failed Highlight"], "", UpdateHeaderFont)
-	Left:CreateColorSelection("tracker-color-timeleft", Settings["tracker-color-timeleft"], Language["Time Left"], "", UpdateHeaderFont)
-	Left:CreateColorSelection("tracker-color-timeleft-highlight", Settings["tracker-color-timeleft-highlight"], Language["Time Left Highlight"], "", UpdateHeaderFont)
-	Left:CreateColorSelection("tracker-color-complete", Settings["tracker-color-complete"], Language["Complete"], "", UpdateHeaderFont)
+	right:CreateHeader(Language["Category Font"])
+	right:CreateDropdown("tracker-module-font", Settings["tracker-module-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the objective tracker lines"], UpdateCategoryFont, "Font")
+	right:CreateSlider("tracker-module-font-size", Settings["tracker-module-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the objective tracker lines"], UpdateCategoryFont)
+	right:CreateDropdown("tracker-module-font-flags", Settings["tracker-module-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the objective tracker lines"], UpdateCategoryFont)
+	right:CreateColorSelection("tracker-module-font-color", Settings["tracker-module-font-color"], Language["Font Color"], "", UpdateCategoryFont)
 	
-	Right:CreateHeader(Language["Category Font"])
-	Right:CreateDropdown("tracker-module-font", Settings["tracker-module-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the objective tracker lines"], UpdateCategoryFont, "Font")
-	Right:CreateSlider("tracker-module-font-size", Settings["tracker-module-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the objective tracker lines"], UpdateCategoryFont)
-	Right:CreateDropdown("tracker-module-font-flags", Settings["tracker-module-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the objective tracker lines"], UpdateCategoryFont)
-	Right:CreateColorSelection("tracker-module-font-color", Settings["tracker-module-font-color"], Language["Font Color"], "", UpdateCategoryFont)
+	right:CreateHeader(Language["Header Font"])
+	right:CreateDropdown("tracker-header-font", Settings["tracker-header-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the objective tracker header lines"], UpdateHeaderFont, "Font")
+	right:CreateSlider("tracker-header-font-size", Settings["tracker-header-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the objective tracker header lines"], UpdateHeaderFont)
+	right:CreateDropdown("tracker-header-font-flags", Settings["tracker-header-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the objective tracker header lines"], UpdateHeaderFont)
 	
-	Right:CreateHeader(Language["Header Font"])
-	Right:CreateDropdown("tracker-header-font", Settings["tracker-header-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the objective tracker header lines"], UpdateHeaderFont, "Font")
-	Right:CreateSlider("tracker-header-font-size", Settings["tracker-header-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the objective tracker header lines"], UpdateHeaderFont)
-	Right:CreateDropdown("tracker-header-font-flags", Settings["tracker-header-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the objective tracker header lines"], UpdateHeaderFont)
-	
-	Right:CreateHeader(Language["Line Font"])
-	Right:CreateDropdown("tracker-font", Settings["tracker-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the objective tracker lines"], UpdateLineFont, "Font")
-	Right:CreateSlider("tracker-font-size", Settings["tracker-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the objective tracker lines"], UpdateLineFont)
-	Right:CreateDropdown("tracker-font-flags", Settings["tracker-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the objective tracker lines"], UpdateLineFont)
+	right:CreateHeader(Language["Line Font"])
+	right:CreateDropdown("tracker-font", Settings["tracker-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the objective tracker lines"], UpdateLineFont, "Font")
+	right:CreateSlider("tracker-font-size", Settings["tracker-font-size"], 8, 18, 1, Language["Font Size"], Language["Set the font size of the objective tracker lines"], UpdateLineFont)
+	right:CreateDropdown("tracker-font-flags", Settings["tracker-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the objective tracker lines"], UpdateLineFont)
 end)

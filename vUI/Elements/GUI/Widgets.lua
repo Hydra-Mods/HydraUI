@@ -1,5 +1,6 @@
 local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
+-- Locals
 local type = type
 local pairs = pairs
 local tonumber = tonumber
@@ -17,37 +18,17 @@ local InCombatLockdown = InCombatLockdown
 local IsModifierKeyDown = IsModifierKeyDown
 local GetMouseFocus = GetMouseFocus
 
-GUI.Widgets = {}
-
 -- Constants
-local GUI_WIDTH = 726
-local GUI_HEIGHT = 340
 local SPACING = 3
-
-local HEADER_WIDTH = GUI_WIDTH - (SPACING * 2)
 local HEADER_HEIGHT = 20
 local HEADER_SPACING = 5
-
-local BUTTON_LIST_WIDTH = 126
-local BUTTON_LIST_HEIGHT = (GUI_HEIGHT - HEADER_HEIGHT - (SPACING * 2) - 2)
-
-local PARENT_WIDTH = GUI_WIDTH - BUTTON_LIST_WIDTH - ((SPACING * 2) + 2)
-
 local GROUP_HEIGHT = 80
 local GROUP_WIDTH = 270
-
-local MENU_BUTTON_WIDTH = BUTTON_LIST_WIDTH - (SPACING * 2)
-local MENU_BUTTON_HEIGHT = 20
-
 local WIDGET_HEIGHT = 20
-
 local LABEL_SPACING = 3
-
 local SELECTED_HIGHLIGHT_ALPHA = 0.3
 local MOUSEOVER_HIGHLIGHT_ALPHA = 0.1
 local LAST_ACTIVE_DROPDOWN
-
-local MAX_WIDGETS_SHOWN = 14
 
 GUI.Ignore = {
 	["ui-profile"] = true,
@@ -67,10 +48,6 @@ local SetVariable = function(id, value)
 	end
 	
 	Settings[id] = value
-end
-
-local HexToRGB = function(hex)
-    return tonumber("0x"..sub(hex, 1, 2)) / 255, tonumber("0x"..sub(hex, 3, 4)) / 255, tonumber("0x"..sub(hex, 5, 6)) / 255
 end
 
 local Round = function(num, dec)
@@ -199,7 +176,6 @@ GUI.Widgets.CreateMessage = function(self, text) -- Create as many lines as need
 	self:CreateLine(Line)
 end
 
--- Header
 GUI.Widgets.CreateHeader = function(self, text)
 	local Anchor = CreateFrame("Frame", nil, self)
 	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
@@ -221,11 +197,11 @@ GUI.Widgets.CreateHeader = function(self, text)
 	HeaderLeft:SetBackdropColor(0, 0, 0)
 	HeaderLeft:SetBackdropBorderColor(0, 0, 0)
 	
-	HeaderLeft.NewTexture = HeaderLeft:CreateTexture(nil, "OVERLAY")
-	HeaderLeft.NewTexture:SetPoint("TOPLEFT", HeaderLeft, 1, -1)
-	HeaderLeft.NewTexture:SetPoint("BOTTOMRIGHT", HeaderLeft, -1, 1)
-	HeaderLeft.NewTexture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	HeaderLeft.NewTexture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
+	HeaderLeft.Texture = HeaderLeft:CreateTexture(nil, "OVERLAY")
+	HeaderLeft.Texture:SetPoint("TOPLEFT", HeaderLeft, 1, -1)
+	HeaderLeft.Texture:SetPoint("BOTTOMRIGHT", HeaderLeft, -1, 1)
+	HeaderLeft.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	HeaderLeft.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
 	
 	-- Header Right Line
 	local HeaderRight = CreateFrame("Frame", nil, Anchor, "BackdropTemplate")
@@ -236,11 +212,11 @@ GUI.Widgets.CreateHeader = function(self, text)
 	HeaderRight:SetBackdropColor(0, 0, 0)
 	HeaderRight:SetBackdropBorderColor(0, 0, 0)
 	
-	HeaderRight.NewTexture = HeaderRight:CreateTexture(nil, "OVERLAY")
-	HeaderRight.NewTexture:SetPoint("TOPLEFT", HeaderRight, 1, -1)
-	HeaderRight.NewTexture:SetPoint("BOTTOMRIGHT", HeaderRight, -1, 1)
-	HeaderRight.NewTexture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	HeaderRight.NewTexture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
+	HeaderRight.Texture = HeaderRight:CreateTexture(nil, "OVERLAY")
+	HeaderRight.Texture:SetPoint("TOPLEFT", HeaderRight, 1, -1)
+	HeaderRight.Texture:SetPoint("BOTTOMRIGHT", HeaderRight, -1, 1)
+	HeaderRight.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	HeaderRight.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
 	
 	tinsert(self.Widgets, Anchor)
 	
@@ -262,11 +238,11 @@ GUI.Widgets.CreateFooter = function(self)
 	Line:SetBackdropColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
 	Line:SetBackdropBorderColor(0, 0, 0)
 	
-	Line.NewTexture = Line:CreateTexture(nil, "OVERLAY")
-	Line.NewTexture:SetPoint("TOPLEFT", Line, 1, -1)
-	Line.NewTexture:SetPoint("BOTTOMRIGHT", Line, -1, 1)
-	Line.NewTexture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	Line.NewTexture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
+	Line.Texture = Line:CreateTexture(nil, "OVERLAY")
+	Line.Texture:SetPoint("TOPLEFT", Line, 1, -1)
+	Line.Texture:SetPoint("BOTTOMRIGHT", Line, -1, 1)
+	Line.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	Line.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
 	
 	tinsert(self.Widgets, Anchor)
 	
@@ -295,14 +271,14 @@ GUI.Widgets.CreateSupportHeader = function(self, text)
 	HeaderLeft:SetBackdropColor(0, 0, 0)
 	HeaderLeft:SetBackdropBorderColor(0, 0, 0)
 	
-	HeaderLeft.NewTexture = HeaderLeft:CreateTexture(nil, "OVERLAY")
-	HeaderLeft.NewTexture:SetPoint("TOPLEFT", HeaderLeft, 1, -1)
-	HeaderLeft.NewTexture:SetPoint("BOTTOMRIGHT", HeaderLeft, -1, 1)
-	HeaderLeft.NewTexture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	HeaderLeft.NewTexture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
+	HeaderLeft.Texture = HeaderLeft:CreateTexture(nil, "OVERLAY")
+	HeaderLeft.Texture:SetPoint("TOPLEFT", HeaderLeft, 1, -1)
+	HeaderLeft.Texture:SetPoint("BOTTOMRIGHT", HeaderLeft, -1, 1)
+	HeaderLeft.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	HeaderLeft.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
 	
 	HeaderLeft.Star = HeaderLeft:CreateTexture(nil, "OVERLAY")
-	HeaderLeft.Star:SetPoint("LEFT", HeaderLeft.NewTexture, "RIGHT", 1, -1)
+	HeaderLeft.Star:SetPoint("LEFT", HeaderLeft.Texture, "RIGHT", 1, -1)
 	HeaderLeft.Star:SetSize(16, 16)
 	HeaderLeft.Star:SetTexture(Assets:GetTexture("Small Star"))
 	HeaderLeft.Star:SetVertexColor(vUI:HexToRGB("FFB900"))
@@ -316,14 +292,14 @@ GUI.Widgets.CreateSupportHeader = function(self, text)
 	HeaderRight:SetBackdropColor(0, 0, 0)
 	HeaderRight:SetBackdropBorderColor(0, 0, 0)
 	
-	HeaderRight.NewTexture = HeaderRight:CreateTexture(nil, "OVERLAY")
-	HeaderRight.NewTexture:SetPoint("TOPLEFT", HeaderRight, 1, -1)
-	HeaderRight.NewTexture:SetPoint("BOTTOMRIGHT", HeaderRight, -1, 1)
-	HeaderRight.NewTexture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	HeaderRight.NewTexture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
+	HeaderRight.Texture = HeaderRight:CreateTexture(nil, "OVERLAY")
+	HeaderRight.Texture:SetPoint("TOPLEFT", HeaderRight, 1, -1)
+	HeaderRight.Texture:SetPoint("BOTTOMRIGHT", HeaderRight, -1, 1)
+	HeaderRight.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	HeaderRight.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
 	
 	HeaderRight.Star = HeaderRight:CreateTexture(nil, "OVERLAY")
-	HeaderRight.Star:SetPoint("RIGHT", HeaderRight.NewTexture, "LEFT", -1, -1)
+	HeaderRight.Star:SetPoint("RIGHT", HeaderRight.Texture, "LEFT", -1, -1)
 	HeaderRight.Star:SetSize(16, 16)
 	HeaderRight.Star:SetTexture(Assets:GetTexture("Small Star"))
 	HeaderRight.Star:SetVertexColor(vUI:HexToRGB("FFB900"))
@@ -331,16 +307,6 @@ GUI.Widgets.CreateSupportHeader = function(self, text)
 	tinsert(self.Widgets, Anchor)
 	
 	return Anchor.Text
-end
-
--- Spacer
-GUI.Widgets.CreateSpacer = function(self)
-	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
-	
-	tinsert(self.Widgets, Anchor)
-	
-	return Anchor
 end
 
 -- Button
@@ -357,7 +323,7 @@ local ButtonOnMouseUp = function(self)
 end
 
 local ButtonOnMouseDown = function(self)
-	local R, G, B = HexToRGB(Settings["ui-widget-bright-color"])
+	local R, G, B = vUI:HexToRGB(Settings["ui-widget-bright-color"])
 	
 	self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
 end
@@ -394,6 +360,7 @@ GUI.Widgets.CreateButton = function(self, value, label, tooltip, hook)
 	Anchor.Tooltip = tooltip
 	Anchor.Enable = ButtonEnable
 	Anchor.Disable = ButtonDisable
+	Anchor.RequiresReload = ButtonRequiresReload
 	
 	Anchor:SetScript("OnEnter", AnchorOnEnter)
 	Anchor:SetScript("OnLeave", AnchorOnLeave)
@@ -409,7 +376,6 @@ GUI.Widgets.CreateButton = function(self, value, label, tooltip, hook)
 	Button:SetScript("OnEnter", ButtonWidgetOnEnter)
 	Button:SetScript("OnLeave", ButtonWidgetOnLeave)
 	Button.Hook = hook
-	Button.RequiresReload = ButtonRequiresReload
 	
 	Button.Texture = Button:CreateTexture(nil, "BORDER")
 	Button.Texture:SetPoint("TOPLEFT", Button, 1, -1)
@@ -442,7 +408,7 @@ GUI.Widgets.CreateButton = function(self, value, label, tooltip, hook)
 	
 	tinsert(self.Widgets, Anchor)
 	
-	return Button
+	return Anchor
 end
 
 -- StatusBar
@@ -920,7 +886,7 @@ function GUI:CreateInputWindow()
 	end)
 	
 	Window.CloseButton:SetScript("OnMouseDown", function(self)
-		local R, G, B = HexToRGB(Settings["ui-header-texture-color"])
+		local R, G, B = vUI:HexToRGB(Settings["ui-header-texture-color"])
 		
 		self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
 	end)
@@ -1563,7 +1529,7 @@ local DropdownButtonOnMouseUp = function(self)
 end
 
 local DropdownButtonOnMouseDown = function(self)
-	local R, G, B = HexToRGB(Settings["ui-widget-bright-color"])
+	local R, G, B = vUI:HexToRGB(Settings["ui-widget-bright-color"])
 	
 	self.Parent.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
 end
@@ -1607,7 +1573,7 @@ local MenuItemOnMouseUp = function(self)
 end
 
 local MenuItemOnMouseDown = function(self)
-	local R, G, B = HexToRGB(Settings["ui-widget-bright-color"])
+	local R, G, B = vUI:HexToRGB(Settings["ui-widget-bright-color"])
 	
 	self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
 end
@@ -1751,21 +1717,21 @@ local AddDropdownScrollBar = function(self)
 	Thumb:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Thumb:SetVertexColor(0, 0, 0)
 	
-	ScrollBar.NewTexture = ScrollBar:CreateTexture(nil, "BORDER")
-	ScrollBar.NewTexture:SetPoint("TOPLEFT", Thumb, 0, 0)
-	ScrollBar.NewTexture:SetPoint("BOTTOMRIGHT", Thumb, 0, 0)
-	ScrollBar.NewTexture:SetTexture(Assets:GetTexture("Blank"))
-	ScrollBar.NewTexture:SetVertexColor(0, 0, 0)
+	ScrollBar.NewThumb = ScrollBar:CreateTexture(nil, "BORDER")
+	ScrollBar.NewThumb:SetPoint("TOPLEFT", Thumb, 0, 0)
+	ScrollBar.NewThumb:SetPoint("BOTTOMRIGHT", Thumb, 0, 0)
+	ScrollBar.NewThumb:SetTexture(Assets:GetTexture("Blank"))
+	ScrollBar.NewThumb:SetVertexColor(0, 0, 0)
 	
-	ScrollBar.NewTexture2 = ScrollBar:CreateTexture(nil, "OVERLAY")
-	ScrollBar.NewTexture2:SetPoint("TOPLEFT", ScrollBar.NewTexture, 1, -1)
-	ScrollBar.NewTexture2:SetPoint("BOTTOMRIGHT", ScrollBar.NewTexture, -1, 1)
-	ScrollBar.NewTexture2:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	ScrollBar.NewTexture2:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
+	ScrollBar.NewThumb2 = ScrollBar:CreateTexture(nil, "OVERLAY")
+	ScrollBar.NewThumb2:SetPoint("TOPLEFT", ScrollBar.NewThumb, 1, -1)
+	ScrollBar.NewThumb2:SetPoint("BOTTOMRIGHT", ScrollBar.NewThumb, -1, 1)
+	ScrollBar.NewThumb2:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	ScrollBar.NewThumb2:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
 	ScrollBar.Progress = ScrollBar:CreateTexture(nil, "ARTWORK")
 	ScrollBar.Progress:SetPoint("TOPLEFT", ScrollBar, 1, -1)
-	ScrollBar.Progress:SetPoint("BOTTOMRIGHT", ScrollBar.NewTexture, "TOPRIGHT", -1, 0)
+	ScrollBar.Progress:SetPoint("BOTTOMRIGHT", ScrollBar.NewThumb, "TOPRIGHT", -1, 0)
 	ScrollBar.Progress:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	ScrollBar.Progress:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
 	
@@ -2552,7 +2518,7 @@ local SwatchEditBoxOnMouseDown = function(self)
 end
 
 local SwatchButtonOnMouseDown = function(self)
-	local R, G, B = HexToRGB(Settings["ui-button-texture-color"])
+	local R, G, B = vUI:HexToRGB(Settings["ui-button-texture-color"])
 	
 	self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
 end
@@ -2629,7 +2595,7 @@ local CreateColorPicker = function()
 	end)
 	
 	ColorPicker.CloseButton:SetScript("OnMouseDown", function(self)
-		local R, G, B = HexToRGB(Settings["ui-header-texture-color"])
+		local R, G, B = vUI:HexToRGB(Settings["ui-header-texture-color"])
 		
 		self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
 	end)
@@ -3076,875 +3042,4 @@ GUI.Widgets.CreateColorSelection = function(self, id, value, label, tooltip, hoo
 	tinsert(self.Widgets, Anchor)
 	
 	return Button
-end
-
--- GUI
-local ButtonOnEnter = function(self)
-	self.Text:SetTextColor(1, 1, 0)
-end
-
-local ButtonOnLeave = function(self)
-	self.Text:SetTextColor(1, 1, 1)
-end
-
-local DisableScrolling = function(self)
-	self.ScrollingDisabled = true
-end
-
-local Scroll = function(self)
-	local FirstLeft
-	local FirstRight
-	local Offset = self.LeftWidgetsBG.ScrollingDisabled and 1 or self.Offset
-	
-	for i = 1, self.WidgetCount do
-		if self.LeftWidgets[i] then
-			self.LeftWidgets[i]:ClearAllPoints()
-			
-			if (i >= Offset) and (i <= Offset + MAX_WIDGETS_SHOWN - 1) then
-				if (not FirstLeft) then
-					self.LeftWidgets[i]:SetPoint("TOPLEFT", self.LeftWidgetsBG, SPACING, -SPACING)
-					FirstLeft = i
-				else
-					self.LeftWidgets[i]:SetPoint("TOP", self.LeftWidgets[i-1], "BOTTOM", 0, -2)
-				end
-				
-				self.LeftWidgets[i]:Show()
-			else
-				self.LeftWidgets[i]:Hide()
-			end
-		end
-	end
-	
-	Offset = self.RightWidgetsBG.ScrollingDisabled and 1 or self.Offset
-	
-	for i = 1, self.WidgetCount do
-		if self.RightWidgets[i] then
-			self.RightWidgets[i]:ClearAllPoints()
-			
-			if (i >= Offset) and (i <= Offset + MAX_WIDGETS_SHOWN - 1) then
-				if (not FirstRight) then
-					self.RightWidgets[i]:SetPoint("TOPRIGHT", self.RightWidgetsBG, -SPACING, -SPACING)
-					FirstRight = i
-				else
-					self.RightWidgets[i]:SetPoint("TOP", self.RightWidgets[i-1], "BOTTOM", 0, -2)
-				end
-				
-				self.RightWidgets[i]:Show()
-			else
-				self.RightWidgets[i]:Hide()
-			end
-		end
-	end
-end
-
-local SetOffsetByDelta = function(self, delta)
-	if (delta == 1) then -- Up
-		self.Offset = self.Offset - 1
-		
-		if (self.Offset <= 1) then
-			self.Offset = 1
-		end
-	else -- Down
-		self.Offset = self.Offset + 1
-		
-		if (self.Offset > (self.WidgetCount - (MAX_WIDGETS_SHOWN - 1))) then
-			self.Offset = self.Offset - 1
-		end
-	end
-end
-
-local WindowOnMouseWheel = function(self, delta)
-	self:SetOffsetByDelta(delta)
-	self:Scroll()
-	self.ScrollBar:SetValue(self.Offset)
-end
-
-local SetWindowOffset = function(self, offset)
-	self.Offset = offset
-	
-	if (self.Offset <= 1) then
-		self.Offset = 1
-	elseif (self.Offset > (self.WidgetCount - MAX_WIDGETS_SHOWN - 1)) then
-		self.Offset = self.Offset - 1
-	end
-	
-	self:Scroll()
-end
-
-local WindowScrollBarOnValueChanged = function(self)
-	local Parent = self:GetParent()
-	
-	Parent.Offset = Round(self:GetValue())
-	
-	Parent:Scroll()
-end
-
-local WindowScrollBarOnMouseWheel = function(self, delta)
-	WindowOnMouseWheel(self:GetParent(), delta)
-end
-
-local NoScroll = function() end -- Just to prevent zooming while we're working in the GUI
-
-local AddWindowScrollBar = function(self)
-	local LeftMaxValue = (#self.LeftWidgets - (MAX_WIDGETS_SHOWN - 1))
-	local RightMaxValue = (#self.RightWidgets - (MAX_WIDGETS_SHOWN - 1))
-	
-	self.MaxScroll = max(LeftMaxValue, RightMaxValue, 1)
-	self.WidgetCount = max(#self.LeftWidgets, #self.RightWidgets)
-	
-	self.ScrollParent = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	self.ScrollParent:SetPoint("TOPRIGHT", self, 0, 0)
-	self.ScrollParent:SetPoint("BOTTOMRIGHT", self, 0, 0)
-	self.ScrollParent:SetWidth(WIDGET_HEIGHT)
-	self.ScrollParent:SetBackdrop(vUI.BackdropAndBorder)
-	self.ScrollParent:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
-	self.ScrollParent:SetBackdropBorderColor(0, 0, 0)
-	
-	local ScrollBar = CreateFrame("Slider", nil, self, "BackdropTemplate")
-	ScrollBar:SetPoint("TOPLEFT", self.ScrollParent, 3, -3)
-	ScrollBar:SetPoint("BOTTOMRIGHT", self.ScrollParent, -3, 3)
-	ScrollBar:SetThumbTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	ScrollBar:SetOrientation("VERTICAL")
-	ScrollBar:SetValueStep(1)
-	ScrollBar:SetBackdrop(vUI.BackdropAndBorder)
-	ScrollBar:SetBackdropColor(vUI:HexToRGB(Settings["ui-widget-bg-color"]))
-	ScrollBar:SetBackdropBorderColor(0, 0, 0)
-	ScrollBar:SetMinMaxValues(1, self.MaxScroll)
-	ScrollBar:SetValue(1)
-	ScrollBar:EnableMouseWheel(true)
-	ScrollBar:SetScript("OnMouseWheel", WindowScrollBarOnMouseWheel)
-	ScrollBar:SetScript("OnValueChanged", WindowScrollBarOnValueChanged)
-	
-	ScrollBar.Window = self
-	
-	local Thumb = ScrollBar:GetThumbTexture() 
-	Thumb:SetSize(ScrollBar:GetWidth(), WIDGET_HEIGHT)
-	Thumb:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	Thumb:SetVertexColor(0, 0, 0)
-	
-	ScrollBar.NewTexture = ScrollBar:CreateTexture(nil, "BORDER")
-	ScrollBar.NewTexture:SetPoint("TOPLEFT", Thumb, 0, 0)
-	ScrollBar.NewTexture:SetPoint("BOTTOMRIGHT", Thumb, 0, 0)
-	ScrollBar.NewTexture:SetTexture(Assets:GetTexture("Blank"))
-	ScrollBar.NewTexture:SetVertexColor(0, 0, 0)
-	
-	ScrollBar.NewTexture2 = ScrollBar:CreateTexture(nil, "OVERLAY")
-	ScrollBar.NewTexture2:SetPoint("TOPLEFT", ScrollBar.NewTexture, 1, -1)
-	ScrollBar.NewTexture2:SetPoint("BOTTOMRIGHT", ScrollBar.NewTexture, -1, 1)
-	ScrollBar.NewTexture2:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	ScrollBar.NewTexture2:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
-	
-	ScrollBar.Progress = ScrollBar:CreateTexture(nil, "ARTWORK")
-	ScrollBar.Progress:SetPoint("TOPLEFT", ScrollBar, 1, -1)
-	ScrollBar.Progress:SetPoint("BOTTOMRIGHT", ScrollBar.NewTexture, "TOPRIGHT", -1, 0)
-	ScrollBar.Progress:SetTexture(Assets:GetTexture("Blank"))
-	ScrollBar.Progress:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
-	
-	self:EnableMouseWheel(true)
-	
-	self.Scroll = Scroll
-	self.SetWindowOffset = SetWindowOffset
-	self.SetOffsetByDelta = SetOffsetByDelta
-	self.ScrollBar = ScrollBar
-	
-	self:SetWindowOffset(1)
-	
-	ScrollBar:Show()
-	
-	if (self.MaxScroll == 1) then
-		Thumb:Hide()
-		ScrollBar.NewTexture:Hide()
-		ScrollBar.NewTexture2:Hide()
-		ScrollBar.Progress:Hide()
-		self:SetScript("OnMouseWheel", NoScroll)
-	else
-		self:SetScript("OnMouseWheel", WindowOnMouseWheel)
-	end
-end
-
-local SortWindow = function(self)
-	local NumLeftWidgets = #self.LeftWidgets
-	local NumRightWidgets = #self.RightWidgets
-	
-	if NumLeftWidgets then
-		for i = 1, NumLeftWidgets do
-			self.LeftWidgets[i]:ClearAllPoints()
-		
-			if (i == 1) then
-				self.LeftWidgets[i]:SetPoint("TOPLEFT", self.LeftWidgetsBG, SPACING, -SPACING)
-			else
-				self.LeftWidgets[i]:SetPoint("TOP", self.LeftWidgets[i-1], "BOTTOM", 0, -2)
-			end
-		end
-	end
-	
-	if NumRightWidgets then
-		for i = 1, NumRightWidgets do
-			self.RightWidgets[i]:ClearAllPoints()
-			
-			if (i == 1) then
-				self.RightWidgets[i]:SetPoint("TOPRIGHT", self.RightWidgetsBG, -SPACING, -SPACING)
-			else
-				self.RightWidgets[i]:SetPoint("TOP", self.RightWidgets[i-1], "BOTTOM", 0, -2)
-			end
-		end
-	end
-	
-	AddWindowScrollBar(self)
-end
-
-function GUI:ShowWindow(name)
-	for WindowName, Window in pairs(self.Windows) do
-		if (WindowName ~= name) then
-			Window:Hide()
-			
-			if (Window.Button.Selected:GetAlpha() > 0) then
-				Window.Button.FadeOut:Play()
-			end
-		end
-	end
-	
-	CloseLastDropdown()
-	
-	local Window = self.Windows[name]
-	
-	if (not Window.Sorted) then
-		Window:SortWindow()
-		
-		Window.Sorted = true
-	end
-	
-	Window.Button.FadeIn:Play()
-	Window:Show()
-end
-
-local WindowButtonOnEnter = function(self)
-	self.Highlight:SetAlpha(MOUSEOVER_HIGHLIGHT_ALPHA)
-end
-
-local WindowButtonOnLeave = function(self)
-	self.Highlight:SetAlpha(0)
-end
-
-local WindowButtonOnMouseUp = function(self)
-	self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	self.Parent:ShowWindow(self.Name)
-end
-
-local WindowButtonOnMouseDown = function(self)
-	local R, G, B = HexToRGB(Settings["ui-button-texture-color"])
-	
-	self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
-end
-
--- local Table, Count = Window:GetNonDefault()
-local GetNonDefault = function(self)
-
-end
-
-function GUI:CreateSpacer(name)
-	-- Button
-	local Button = CreateFrame("Frame", nil, self)
-	Button:SetSize(MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT)
-	Button:SetFrameLevel(self:GetFrameLevel() + 2)
-	Button.SortName = override or name
-	Button.Name = name
-	Button.Parent = self
-	
-	Button.LineBG = CreateFrame("Frame", nil, Button, "BackdropTemplate")
-	Button.LineBG:SetHeight(4)
-	Button.LineBG:SetPoint("LEFT", Button, 0, 0)
-	Button.LineBG:SetPoint("RIGHT", Button, 0, 0)
-	Button.LineBG:SetBackdrop(vUI.BackdropAndBorder)
-	Button.LineBG:SetBackdropColor(0, 0, 0)
-	Button.LineBG:SetBackdropBorderColor(0, 0, 0)
-	
-	Button.LineBG.Line = Button.LineBG:CreateTexture(nil, "OVERLAY")
-	Button.LineBG.Line:SetPoint("TOPLEFT", Button.LineBG, 1, -1)
-	Button.LineBG.Line:SetPoint("BOTTOMRIGHT", Button.LineBG, -1, 1)
-	Button.LineBG.Line:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	Button.LineBG.Line:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	tinsert(self.Buttons, Button)
-end
-
-function GUI:CreateWindow(name, default, group)
-	if self.Windows[name] then
-		return self:GetWindow(name)
-	end
-	
-	self.WindowCount = self.WindowCount or 0
-	
-	-- Button
-	local Button = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	Button:SetSize(MENU_BUTTON_WIDTH, MENU_BUTTON_HEIGHT, "BackdropTemplate")
-	Button:SetBackdrop(vUI.BackdropAndBorder)
-	Button:SetBackdropColor(0, 0, 0)
-	Button:SetBackdropBorderColor(0, 0, 0)
-	Button:SetFrameLevel(self:GetFrameLevel() + 2)
-	Button.SortName = group and group .. name or name
-	Button.Name = name
-	Button.Parent = self
-	Button:SetScript("OnEnter", WindowButtonOnEnter)
-	Button:SetScript("OnLeave", WindowButtonOnLeave)
-	Button:SetScript("OnMouseUp", WindowButtonOnMouseUp)
-	Button:SetScript("OnMouseDown", WindowButtonOnMouseDown)
-	
-	Button.Selected = Button:CreateTexture(nil, "OVERLAY")
-	Button.Selected:SetPoint("TOPLEFT", Button, 1, -1)
-	Button.Selected:SetPoint("BOTTOMRIGHT", Button, -1, 1)
-	Button.Selected:SetTexture(Assets:GetTexture("RenHorizonUp"))
-	Button.Selected:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
-	Button.Selected:SetAlpha(0)
-	
-	Button.Highlight = Button:CreateTexture(nil, "OVERLAY")
-	Button.Highlight:SetPoint("TOPLEFT", Button, 1, -1)
-	Button.Highlight:SetPoint("BOTTOMRIGHT", Button, -1, 1)
-	Button.Highlight:SetTexture(Assets:GetTexture("Blank"))
-	Button.Highlight:SetVertexColor(1, 1, 1, 0.4)
-	Button.Highlight:SetAlpha(0)
-	
-	Button.Texture = Button:CreateTexture(nil, "ARTWORK")
-	Button.Texture:SetPoint("TOPLEFT", Button, 1, -1)
-	Button.Texture:SetPoint("BOTTOMRIGHT", Button, -1, 1)
-	Button.Texture:SetTexture(Assets:GetTexture(Settings["ui-button-texture"]))
-	Button.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	Button.Text = Button:CreateFontString(nil, "OVERLAY")
-	Button.Text:SetPoint("CENTER", Button, 0, -1)
-	Button.Text:SetSize(MENU_BUTTON_WIDTH - 6, MENU_BUTTON_HEIGHT)
-	vUI:SetFontInfo(Button.Text, Settings["ui-widget-font"], Settings["ui-header-font-size"])
-	Button.Text:SetJustifyH("CENTER")
-	Button.Text:SetText("|cFF" .. Settings["ui-button-font-color"] .. name .. "|r")
-	
-	Button.Fade = CreateAnimationGroup(Button.Selected)
-	
-	Button.FadeIn = Button.Fade:CreateAnimation("Fade")
-	Button.FadeIn:SetEasing("in")
-	Button.FadeIn:SetDuration(0.15)
-	Button.FadeIn:SetChange(SELECTED_HIGHLIGHT_ALPHA)
-	
-	Button.FadeOut = Button.Fade:CreateAnimation("Fade")
-	Button.FadeOut:SetEasing("out")
-	Button.FadeOut:SetDuration(0.15)
-	Button.FadeOut:SetChange(0)
-	
-	tinsert(self.Buttons, Button)
-	
-	-- Window
-	local Window = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	Window:SetWidth(PARENT_WIDTH)
-	Window:SetPoint("BOTTOMRIGHT", self, -SPACING, SPACING)
-	Window:SetPoint("TOPRIGHT", self.CloseButton, "BOTTOMRIGHT", 0, -2)
-	Window:SetBackdropBorderColor(0, 0, 0)
-	Window:Hide()
-	
-	Window.LeftWidgetsBG = CreateFrame("Frame", nil, Window)
-	Window.LeftWidgetsBG:SetWidth(GROUP_WIDTH + (SPACING * 2))
-	Window.LeftWidgetsBG:SetPoint("TOPLEFT", Window, 16, 0)
-	Window.LeftWidgetsBG:SetPoint("BOTTOMLEFT", Window, 16, 0)
-	
-	Window.LeftWidgetsBG.Backdrop = CreateFrame("Frame", nil, Window, "BackdropTemplate")
-	Window.LeftWidgetsBG.Backdrop:SetWidth(GROUP_WIDTH + (SPACING * 2))
-	Window.LeftWidgetsBG.Backdrop:SetPoint("TOPLEFT", Window.LeftWidgetsBG, 0, 0)
-	Window.LeftWidgetsBG.Backdrop:SetPoint("BOTTOMLEFT", Window.LeftWidgetsBG, 0, 0)
-	Window.LeftWidgetsBG.Backdrop:SetBackdrop(vUI.BackdropAndBorder)
-	Window.LeftWidgetsBG.Backdrop:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
-	Window.LeftWidgetsBG.Backdrop:SetBackdropBorderColor(0, 0, 0)
-	
-	Window.RightWidgetsBG = CreateFrame("Frame", nil, Window)
-	Window.RightWidgetsBG:SetWidth(GROUP_WIDTH + (SPACING * 2))
-	Window.RightWidgetsBG:SetPoint("TOPLEFT", Window.LeftWidgetsBG, "TOPRIGHT", 2, 0)
-	Window.RightWidgetsBG:SetPoint("BOTTOMLEFT", Window.LeftWidgetsBG, "BOTTOMRIGHT", 2, 0)
-	
-	Window.RightWidgetsBG.Backdrop = CreateFrame("Frame", nil, Window, "BackdropTemplate")
-	Window.RightWidgetsBG.Backdrop:SetWidth(GROUP_WIDTH + (SPACING * 2))
-	Window.RightWidgetsBG.Backdrop:SetPoint("TOPLEFT", Window.RightWidgetsBG, 0, 0)
-	Window.RightWidgetsBG.Backdrop:SetPoint("BOTTOMLEFT", Window.RightWidgetsBG, 0, 0)
-	Window.RightWidgetsBG.Backdrop:SetBackdrop(vUI.BackdropAndBorder)
-	Window.RightWidgetsBG.Backdrop:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
-	Window.RightWidgetsBG.Backdrop:SetBackdropBorderColor(0, 0, 0)
-	
-	Window.Parent = self
-	Window.Button = Button
-	Window.SortWindow = SortWindow
-	Window.LeftWidgets = {}
-	Window.RightWidgets = {}
-	
-	Window.LeftWidgetsBG.Widgets = Window.LeftWidgets
-	Window.LeftWidgetsBG.DisableScrolling = DisableScrolling
-	Window.RightWidgetsBG.Widgets = Window.RightWidgets
-	Window.RightWidgetsBG.DisableScrolling = DisableScrolling
-	
-	for Name, Function in pairs(self.Widgets) do
-		Window.LeftWidgetsBG[Name] = Function
-		Window.RightWidgetsBG[Name] = Function
-	end
-	
-	self.Windows[name] = Window
-	
-	self.WindowCount = self.WindowCount + 1
-	
-	if default then
-		self.DefaultWindow = name
-	end
-	
-	return Window.LeftWidgetsBG, Window.RightWidgetsBG
-end
-
-function GUI:GetWindow(name)
-	if self.Windows[name] then
-		return self.Windows[name].LeftWidgetsBG, self.Windows[name].RightWidgetsBG
-	else
-		return self.Windows[self.DefaultWindow].LeftWidgetsBG, self.Windows[self.DefaultWindow].RightWidgetsBG
-	end
-end
-
-GUI.SearchResults = {}
-
-function GUI:ClearSearch()
-	for i = 1, #self.SearchResults do
-		tremove(self.SearchResults, 1)
-	end
-end
-
-function GUI:Search(query)
-	if (#self.SearchResults > 0) then
-		self:ClearSearch()
-	end
-	
-	for key, value in pairs(self.Windows) do
-		for i = 1, #value.LeftWidgets do
-			if value.LeftWidgets[i].ID and find(gsub(value.LeftWidgets[i].ID, "-", " "), query) then
-				self.SearchResults[#self.SearchResults + 1] = value.LeftWidgets[i].ID
-			end
-		end
-		
-		for i = 1, #value.RightWidgets do
-			if value.RightWidgets[i].ID and find(gsub(value.RightWidgets[i].ID, "-", " "), query) then
-				self.SearchResults[#self.SearchResults + 1] = value.RightWidgets[i].ID
-			end
-		end
-	end
-	
-	if (#self.SearchResults > 0) then
-		return self.SearchResults
-	end
-end
-
-function GUI:GetWidgetByWindow(name, id)
-	if self.Windows[name] then
-		local Window = self.Windows[name]
-		
-		for i = 1, #Window.LeftWidgets do
-			if (Window.LeftWidgets[i].ID == id) then
-				return Window.LeftWidgets[i]
-			end
-		end
-		
-		for i = 1, #Window.RightWidgets do
-			if (Window.RightWidgets[i].ID == id) then
-				return Window.RightWidgets[i]
-			end
-		end
-	end
-end
-
-function GUI:GetWidget(id)
-	local Widget
-	
-	for Name in pairs(self.Windows) do
-		Widget = self:GetWidgetByWindow(Name, id)
-	end
-	
-	if Widget then
-		return Widget
-	end
-end
-
-function GUI:UpdateWidget(id, ...)
-	-- Get the widget, add :Update() methods, and pass the vararg through it with the relevant information.
-end
-
--- Selection scrolling
-local ScrollSelections = function(self)
-	local First
-	
-	for i = 1, #self.Buttons do
-		if self.Buttons[i] then
-			self.Buttons[i]:ClearAllPoints()
-			
-			if (i >= self.Offset) and (i <= self.Offset + MAX_WIDGETS_SHOWN - 1) then
-				if (not First) then
-					self.Buttons[i]:SetPoint("TOPLEFT", self.SelectionParent, SPACING, -SPACING)
-					First = i
-				else
-					self.Buttons[i]:SetPoint("TOP", self.Buttons[i-1], "BOTTOM", 0, -2)
-				end
-				
-				self.Buttons[i]:Show()
-			else
-				self.Buttons[i]:Hide()
-			end
-		end
-	end
-end
-
-local SetSelectionOffsetByDelta = function(self, delta)
-	if (delta == 1) then -- Up
-		self.Offset = self.Offset - 1
-		
-		if (self.Offset <= 1) then
-			self.Offset = 1
-		end
-	else -- Down
-		self.Offset = self.Offset + 1
-		
-		if (self.Offset > (#self.Buttons - (MAX_WIDGETS_SHOWN - 1))) then
-			self.Offset = self.Offset - 1
-		end
-	end
-end
-
-local SelectionOnMouseWheel = function(self, delta)
-	self:SetSelectionOffsetByDelta(delta)
-	self:ScrollSelections()
-	self.ScrollBar:SetValue(self.Offset)
-end
-
-local SetSelectionOffset = function(self, offset)
-	self.Offset = offset
-	
-	if (self.Offset <= 1) then
-		self.Offset = 1
-	elseif (self.Offset > (#self.Buttons - MAX_WIDGETS_SHOWN - 1)) then
-		self.Offset = self.Offset - 1
-	end
-	
-	self:ScrollSelections()
-end
-
-local SelectionScrollBarOnValueChanged = function(self)
-	GUI.Offset = Round(self:GetValue())
-	
-	GUI:ScrollSelections()
-end
-
-local SelectionParentOnMouseWheel = function(self, delta)
-	SelectionOnMouseWheel(self:GetParent(), delta)
-end
-
-local SelectionScrollBarOnMouseWheel = function(self, delta)
-	SelectionOnMouseWheel(self:GetParent():GetParent(), delta)
-end
-
--- Frame
-function GUI:Create()
-	-- This just makes the animation look better. That's all. ಠ_ಠ
-	self.BlackTexture = self:CreateTexture(nil, "BACKGROUND")
-	self.BlackTexture:SetPoint("TOPLEFT", self, 0, 0)
-	self.BlackTexture:SetPoint("BOTTOMRIGHT", self, 0, 0)
-	self.BlackTexture:SetTexture(Assets:GetTexture("Blank"))
-	self.BlackTexture:SetVertexColor(0, 0, 0)
-	
-	self:SetFrameStrata("HIGH")
-	self:SetSize(GUI_WIDTH, GUI_HEIGHT)
-	self:SetPoint("CENTER", vUI.UIParent, 0, 0)
-	self:SetBackdrop(vUI.BackdropAndBorder)
-	self:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
-	self:SetBackdropBorderColor(0, 0, 0)
-	self:EnableMouse(true)
-	self:SetMovable(true)
-	self:RegisterForDrag("LeftButton")
-	self:SetScript("OnDragStart", self.StartMoving)
-	self:SetScript("OnDragStop", self.StopMovingOrSizing)
-	self:SetClampedToScreen(true)
-	self:SetScale(0.2)
-	self:Hide()
-	
-	self.Group = CreateAnimationGroup(self)
-	
-	self.ScaleIn = self.Group:CreateAnimation("Scale")
-	self.ScaleIn:SetEasing("in")
-	self.ScaleIn:SetDuration(0.15)
-	self.ScaleIn:SetChange(1)
-	
-	self.FadeIn = self.Group:CreateAnimation("Fade")
-	self.FadeIn:SetEasing("in")
-	self.FadeIn:SetDuration(0.15)
-	self.FadeIn:SetChange(1)
-	
-	self.ScaleOut = self.Group:CreateAnimation("Scale")
-	self.ScaleOut:SetEasing("out")
-	self.ScaleOut:SetDuration(0.15)
-	self.ScaleOut:SetChange(0.2)
-	
-	self.FadeOut = self.Group:CreateAnimation("Fade")
-	self.FadeOut:SetEasing("out")
-	self.FadeOut:SetDuration(0.15)
-	self.FadeOut:SetChange(0)
-	self.FadeOut:SetScript("OnFinished", FadeOnFinished)
-	
-	self.Fader = self.Group:CreateAnimation("Fade")
-	self.Fader:SetDuration(0.15)
-	
-	-- Header
-	self.Header = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	self.Header:SetSize(HEADER_WIDTH - (HEADER_HEIGHT - 2) - SPACING - 1, HEADER_HEIGHT)
-	self.Header:SetPoint("TOPLEFT", self, SPACING, -SPACING)
-	self.Header:SetBackdrop(vUI.BackdropAndBorder)
-	self.Header:SetBackdropColor(0, 0, 0, 0)
-	self.Header:SetBackdropBorderColor(0, 0, 0)
-	
-	self.Header.Texture = self.Header:CreateTexture(nil, "ARTWORK")
-	self.Header.Texture:SetPoint("TOPLEFT", self.Header, 1, -1)
-	self.Header.Texture:SetPoint("BOTTOMRIGHT", self.Header, -1, 1)
-	self.Header.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	self.Header.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
-	
-	self.Header.Text = self.Header:CreateFontString(nil, "OVERLAY")
-	self.Header.Text:SetPoint("CENTER", self.Header, 0, -1)
-	self.Header.Text:SetSize(HEADER_WIDTH - 6, HEADER_HEIGHT)
-	vUI:SetFontInfo(self.Header.Text, Settings["ui-header-font"], Settings["ui-title-font-size"])
-	self.Header.Text:SetJustifyH("CENTER")
-	self.Header.Text:SetTextColor(vUI:HexToRGB(Settings["ui-header-font-color"]))
-	self.Header.Text:SetText(format(Language["- vUI version %s -"], vUI.UIVersion))
-	
-	-- Selection parent
-	self.SelectionParent = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	self.SelectionParent:SetWidth(BUTTON_LIST_WIDTH + 16)
-	self.SelectionParent:SetPoint("BOTTOMLEFT", self, SPACING, SPACING)
-	self.SelectionParent:SetPoint("TOPLEFT", self.Header, "BOTTOMLEFT", 0, -2)
-	self.SelectionParent:SetBackdrop(vUI.BackdropAndBorder)
-	self.SelectionParent:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
-	self.SelectionParent:SetBackdropBorderColor(0, 0, 0)
-	self.SelectionParent:SetScript("OnMouseWheel", SelectionParentOnMouseWheel)
-	
-	-- Selection scrollbar
-	local ScrollBar = CreateFrame("Slider", nil, self.SelectionParent, "BackdropTemplate")
-	ScrollBar:SetWidth(14)
-	ScrollBar:SetPoint("TOPRIGHT", self.SelectionParent, -3, -3)
-	ScrollBar:SetPoint("BOTTOMRIGHT", self.SelectionParent, -3, 3)
-	ScrollBar:SetThumbTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	ScrollBar:SetOrientation("VERTICAL")
-	ScrollBar:SetValueStep(1)
-	ScrollBar:SetBackdrop(vUI.BackdropAndBorder)
-	ScrollBar:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
-	ScrollBar:SetBackdropBorderColor(0, 0, 0)
-	ScrollBar:EnableMouseWheel(true)
-	ScrollBar:SetScript("OnMouseWheel", SelectionScrollBarOnMouseWheel)
-	ScrollBar:SetScript("OnValueChanged", SelectionScrollBarOnValueChanged)
-	
-	self.ScrollSelections = ScrollSelections
-	self.SetSelectionOffset = SetSelectionOffset
-	self.SetSelectionOffsetByDelta = SetSelectionOffsetByDelta
-	self.ScrollBar = ScrollBar
-	
-	local Thumb = ScrollBar:GetThumbTexture() 
-	Thumb:SetSize(ScrollBar:GetWidth(), WIDGET_HEIGHT)
-	Thumb:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	Thumb:SetVertexColor(0, 0, 0)
-	
-	ScrollBar.NewTexture = ScrollBar:CreateTexture(nil, "BORDER")
-	ScrollBar.NewTexture:SetPoint("TOPLEFT", Thumb, 0, 0)
-	ScrollBar.NewTexture:SetPoint("BOTTOMRIGHT", Thumb, 0, 0)
-	ScrollBar.NewTexture:SetTexture(Assets:GetTexture("Blank"))
-	ScrollBar.NewTexture:SetVertexColor(0, 0, 0)
-	
-	ScrollBar.NewTexture2 = ScrollBar:CreateTexture(nil, "OVERLAY")
-	ScrollBar.NewTexture2:SetPoint("TOPLEFT", ScrollBar.NewTexture, 1, -1)
-	ScrollBar.NewTexture2:SetPoint("BOTTOMRIGHT", ScrollBar.NewTexture, -1, 1)
-	ScrollBar.NewTexture2:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	ScrollBar.NewTexture2:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
-	
-	ScrollBar.Progress = ScrollBar:CreateTexture(nil, "ARTWORK")
-	ScrollBar.Progress:SetPoint("TOPLEFT", ScrollBar, 1, -1)
-	ScrollBar.Progress:SetPoint("BOTTOMRIGHT", ScrollBar.NewTexture, "TOPRIGHT", -1, 0)
-	ScrollBar.Progress:SetTexture(Assets:GetTexture("Blank"))
-	ScrollBar.Progress:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
-	
-	-- Close button
-	self.CloseButton = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	self.CloseButton:SetSize(HEADER_HEIGHT, HEADER_HEIGHT)
-	self.CloseButton:SetPoint("TOPRIGHT", self, -SPACING, -SPACING)
-	self.CloseButton:SetBackdrop(vUI.BackdropAndBorder)
-	self.CloseButton:SetBackdropColor(0, 0, 0, 0)
-	self.CloseButton:SetBackdropBorderColor(0, 0, 0)
-	self.CloseButton:SetScript("OnEnter", function(self) self.Cross:SetVertexColor(vUI:HexToRGB("C0392B")) end)
-	self.CloseButton:SetScript("OnLeave", function(self) self.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE")) end)
-	self.CloseButton:SetScript("OnMouseUp", function(self)
-		self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
-		
-		GUI.ScaleOut:Play()
-		GUI.FadeOut:Play()
-		
-		if (GUI.ColorPicker and GUI.ColorPicker:GetAlpha() > 0) then
-			GUI.ColorPicker.FadeOut:Play()
-		end
-	end)
-	
-	self.CloseButton:SetScript("OnMouseDown", function(self)
-		local R, G, B = HexToRGB(Settings["ui-header-texture-color"])
-		
-		self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
-	end)
-	
-	self.CloseButton.Texture = self.CloseButton:CreateTexture(nil, "ARTWORK")
-	self.CloseButton.Texture:SetPoint("TOPLEFT", self.CloseButton, 1, -1)
-	self.CloseButton.Texture:SetPoint("BOTTOMRIGHT", self.CloseButton, -1, 1)
-	self.CloseButton.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	self.CloseButton.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
-	
-	self.CloseButton.Cross = self.CloseButton:CreateTexture(nil, "OVERLAY")
-	self.CloseButton.Cross:SetPoint("CENTER", self.CloseButton, 0, 0)
-	self.CloseButton.Cross:SetSize(16, 16)
-	self.CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
-	self.CloseButton.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
-end
-
--- Groups
-GUI.Buttons = {}
-GUI.Windows = {}
-
-function GUI:AddFooters()
-	local Window
-	
-	for Name in pairs(self.Windows) do
-		Window = self.Windows[Name]
-		
-		if (#Window.LeftWidgets > 0) then
-			Window.LeftWidgetsBG:CreateFooter()
-		end
-		
-		if (#Window.RightWidgets > 0) then
-			Window.RightWidgetsBG:CreateFooter()
-		end
-	end
-end
-
-function GUI:RunQueue()
-	if (#self.Queue > 0) then
-		local Func
-		
-		for i = 1, #self.Queue do
-			Func = tremove(self.Queue, 1)
-			
-			Func(self)
-		end
-	end
-	
-	self:AddFooters()
-end
-
-function GUI:PLAYER_REGEN_DISABLED()
-	if (Settings["gui-hide-in-combat"] and self:IsVisible()) then
-		self:SetAlpha(0)
-		self:Hide()
-		CloseLastDropdown()
-		self.WasCombatClosed = true
-	end
-end
-
-local ReopenWindow = function(self)
-	GUI:SetAlpha(0)
-	GUI:Show()
-	GUI.ScaleIn:Play()
-	GUI.FadeIn:Play()
-end
-
-function GUI:PLAYER_REGEN_ENABLED()
-	if (Settings["gui-hide-in-combat"] and self.WasCombatClosed) then
-		vUI:DisplayPopup(Language["Attention"], Language["The settings window was automatically closed due to combat. Would you like to open it again?"], Language["Accept"], ReopenWindow, Language["Decline"])
-	end
-	
-	self.WasCombatClosed = false
-end
-
--- Enabling the mouse wheel will stop the scrolling if we pass over a widget, but I really want mousewheeling 
-function GUI:MODIFIER_STATE_CHANGED(key, state)
-	local MouseFocus = GetMouseFocus()
-	
-	if (not MouseFocus) then
-		return
-	end
-	
-	if (MouseFocus.OnMouseWheel and state == 1) then
-		MouseFocus:SetScript("OnMouseWheel", MouseFocus.OnMouseWheel)
-	elseif (MouseFocus.HasScript and MouseFocus:HasScript("OnMouseWheel")) then
-		MouseFocus:SetScript("OnMouseWheel", nil)
-	end
-end
-
-function GUI:PLAYER_STARTED_MOVING()
-	if self.Fader:IsPlaying() then
-		self.Fader:Stop()
-	end
-	
-	self.Fader:SetEasing("out")
-	self.Fader:SetChange(Settings["gui-faded-alpha"] / 100)
-	self.Fader:Play()
-end
-
-function GUI:PLAYER_STOPPED_MOVING()
-	if self.Fader:IsPlaying() then
-		self.Fader:Stop()
-	end
-	
-	self.Fader:SetEasing("in")
-	self.Fader:SetChange(1)
-	self.Fader:Play()
-end
-
-GUI:RegisterEvent("PLAYER_REGEN_DISABLED")
-GUI:RegisterEvent("PLAYER_REGEN_ENABLED")
-GUI:SetScript("OnEvent", function(self, event, ...)
-	if self[event] then
-		self[event](self, ...)
-	end
-end)
-
-function GUI:Toggle()
-	if (not self:IsVisible()) then
-		if (Settings["gui-hide-in-combat"] and InCombatLockdown()) then
-			vUI:print(ERR_NOT_IN_COMBAT)
-			
-			return
-		end
-		
-		if Settings["gui-enable-fade"] then
-			self:RegisterEvent("PLAYER_STARTED_MOVING")
-			self:RegisterEvent("PLAYER_STOPPED_MOVING")
-		end
-		
-		tsort(self.Buttons, function(a, b)
-			return a.SortName < b.SortName
-		end)
-		
-		self.ScrollBar:SetMinMaxValues(1, (#self.Buttons - MAX_WIDGETS_SHOWN) + 1)
-		self.ScrollBar:SetValue(1)
-		self:SetSelectionOffset(1)
-		self.ScrollBar:Show()
-		
-		self:RegisterEvent("MODIFIER_STATE_CHANGED")
-		self:SetAlpha(0)
-		self:Show()
-		self.ScaleIn:Play()
-		self.FadeIn:Play()
-	else
-		self.ScaleOut:Play()
-		self.FadeOut:Play()
-		
-		if (self.ColorPicker and self.ColorPicker:GetAlpha() > 0) then
-			self.ColorPicker.FadeOut:Play()
-		end
-		
-		self:UnregisterEvent("MODIFIER_STATE_CHANGED")
-		
-		if Settings["gui-enable-fade"] then
-			self:UnregisterEvent("PLAYER_STARTED_MOVING")
-			self:UnregisterEvent("PLAYER_STOPPED_MOVING")
-		end
-		
-		CloseLastDropdown()
-	end
 end

@@ -1,6 +1,13 @@
-local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Auras = vUI:NewModule("Auras")
+
+-- Default settings values
+Defaults["auras-enable"] = true
+Defaults["auras-size"] = 30
+Defaults["auras-spacing"] = 2
+Defaults["auras-row-spacing"] = 16
+Defaults["auras-per-row"] = 12
 
 local Name, Texture, Count, DebuffType
 local UnitAura = UnitAura
@@ -260,14 +267,13 @@ local UpdateSizes = function()
 	BuffFrame_Update()
 end
 
-GUI:AddOptions(function(self)
-	local Left, Right = self:CreateWindow(Language["Auras"])
+GUI:AddSettings(Language["General"], Language["Auras"], function(left, right)
+	left:CreateHeader(Language["Enable"])
+	left:CreateSwitch("auras-enable", Settings["auras-enable"], Language["Enable Auras Module"], Language["Enable the vUI auras module"], ReloadUI):RequiresReload(true)
 	
-	Left:CreateHeader(Language["Enable"])
-	Left:CreateSwitch("auras-enable", Settings["auras-enable"], Language["Enable Auras Module"], Language["Enable the vUI auras module"], ReloadUI):RequiresReload(true)
-	Right:CreateHeader(Language["Styling"])
-	Right:CreateSlider("auras-size", Settings["auras-size"], 20, 40, 1, Language["Size"], Language["Set the size of auras"], UpdateSizes)
-	Right:CreateSlider("auras-spacing", Settings["auras-spacing"], 0, 10, 1, Language["Spacing"], Language["Set the spacing between auras"], UpdateSizes)
-	Right:CreateSlider("auras-row-spacing", Settings["auras-row-spacing"], 0, 30, 1, Language["Row Spacing"], Language["Set the vertical spacing between aura rows"], UpdateSizes)
-	Right:CreateSlider("auras-per-row", Settings["auras-per-row"], 8, 16, 1, Language["Display Per Row"], Language["Set the number of auras per row"], UpdateSizes)
+	right:CreateHeader(Language["Styling"])
+	right:CreateSlider("auras-size", Settings["auras-size"], 20, 40, 1, Language["Size"], Language["Set the size of auras"], UpdateSizes)
+	right:CreateSlider("auras-spacing", Settings["auras-spacing"], 0, 10, 1, Language["Spacing"], Language["Set the spacing between auras"], UpdateSizes)
+	right:CreateSlider("auras-row-spacing", Settings["auras-row-spacing"], 0, 30, 1, Language["Row Spacing"], Language["Set the vertical spacing between aura rows"], UpdateSizes)
+	right:CreateSlider("auras-per-row", Settings["auras-per-row"], 8, 16, 1, Language["Display Per Row"], Language["Set the number of auras per row"], UpdateSizes)
 end)

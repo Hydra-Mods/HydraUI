@@ -1,6 +1,19 @@
-local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Azerite = vUI:NewModule("Azerite")
+
+-- Default settings values
+Defaults["azerite-enable"] = true
+Defaults["azerite-width"] = 310
+Defaults["azerite-height"] = 18
+Defaults["azerite-mouseover"] = false
+Defaults["azerite-mouseover-opacity"] = 0
+Defaults["azerite-display-progress"] = true
+Defaults["azerite-display-percent"] = true
+Defaults["azerite-show-tooltip"] = true
+Defaults["azerite-animate"] = true
+Defaults["azerite-progress-visibility"] = "ALWAYS"
+Defaults["azerite-percent-visibility"] = "ALWAYS"
 
 local FindActiveAzeriteItem = C_AzeriteItem.FindActiveAzeriteItem
 local GetAzeriteItemXPInfo = C_AzeriteItem.GetAzeriteItemXPInfo
@@ -280,27 +293,25 @@ local UpdateMouseoverOpacity = function(value)
 	end
 end
 
-GUI:AddOptions(function(self)
-	local Left, Right = self:CreateWindow(Language["Azerite"])
+GUI:AddSettings(Language["General"], Language["Azerite"], function(left, right)
+	left:CreateHeader(Language["Enable"])
+	left:CreateSwitch("azerite-enable", true, Language["Enable Azerite Module"], Language["Enable the vUI azerite module"], ReloadUI):RequiresReload(true)
 	
-	Left:CreateHeader(Language["Enable"])
-	Left:CreateSwitch("azerite-enable", true, Language["Enable Azerite Module"], Language["Enable the vUI azerite module"], ReloadUI):RequiresReload(true)
+	left:CreateHeader(Language["Styling"])
+	left:CreateSwitch("azerite-display-progress", Settings["azerite-display-progress"], Language["Display Progress Value"], Language["Display your current progress information in the azerite bar"], UpdateDisplayProgress)
+	left:CreateSwitch("azerite-display-percent", Settings["azerite-display-percent"], Language["Display Percent Value"], Language["Display your current percent information in the azerite bar"], UpdateDisplayPercent)
+	left:CreateSwitch("azerite-show-tooltip", Settings["azerite-show-tooltip"], Language["Enable Tooltip"], Language["Display a tooltip when mousing over the azerite bar"])
+	left:CreateSwitch("azerite-animate", Settings["azerite-animate"], Language["Animate Azerite Changes"], Language["Smoothly animate changes to the azerite bar"])
 	
-	Left:CreateHeader(Language["Styling"])
-	Left:CreateSwitch("azerite-display-progress", Settings["azerite-display-progress"], Language["Display Progress Value"], Language["Display your current progress information in the azerite bar"], UpdateDisplayProgress)
-	Left:CreateSwitch("azerite-display-percent", Settings["azerite-display-percent"], Language["Display Percent Value"], Language["Display your current percent information in the azerite bar"], UpdateDisplayPercent)
-	Left:CreateSwitch("azerite-show-tooltip", Settings["azerite-show-tooltip"], Language["Enable Tooltip"], Language["Display a tooltip when mousing over the azerite bar"])
-	Left:CreateSwitch("azerite-animate", Settings["azerite-animate"], Language["Animate Azerite Changes"], Language["Smoothly animate changes to the azerite bar"])
+	right:CreateHeader(Language["Size"])
+	right:CreateSlider("azerite-width", Settings["azerite-width"], 240, 400, 10, Language["Bar Width"], Language["Set the width of the azerite bar"], UpdateBarWidth)
+	right:CreateSlider("azerite-height", Settings["azerite-height"], 6, 30, 1, Language["Bar Height"], Language["Set the height of the azerite bar"], UpdateBarHeight)
 	
-	Right:CreateHeader(Language["Size"])
-	Right:CreateSlider("azerite-width", Settings["azerite-width"], 240, 400, 10, Language["Bar Width"], Language["Set the width of the azerite bar"], UpdateBarWidth)
-	Right:CreateSlider("azerite-height", Settings["azerite-height"], 6, 30, 1, Language["Bar Height"], Language["Set the height of the azerite bar"], UpdateBarHeight)
+	right:CreateHeader(Language["Visibility"])
+	right:CreateDropdown("azerite-progress-visibility", Settings["azerite-progress-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Progress Text"], Language["Set when to display the progress information"], UpdateProgressVisibility)
+	right:CreateDropdown("azerite-percent-visibility", Settings["azerite-percent-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Percent Text"], Language["Set when to display the percent information"], UpdatePercentVisibility)
 	
-	Right:CreateHeader(Language["Visibility"])
-	Right:CreateDropdown("azerite-progress-visibility", Settings["azerite-progress-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Progress Text"], Language["Set when to display the progress information"], UpdateProgressVisibility)
-	Right:CreateDropdown("azerite-percent-visibility", Settings["azerite-percent-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Percent Text"], Language["Set when to display the percent information"], UpdatePercentVisibility)
-	
-	Left:CreateHeader("Mouseover")
-	Left:CreateSwitch("azerite-mouseover", Settings["azerite-mouseover"], Language["Display On Mouseover"], Language["Only display the azerite bar while mousing over it"], UpdateMouseover)
-	Left:CreateSlider("azerite-mouseover-opacity", Settings["azerite-mouseover-opacity"], 0, 100, 5, Language["Mouseover Opacity"], Language["Set the opacity of the azerite bar while not mousing over it"], UpdateMouseoverOpacity, nil, "%")
+	left:CreateHeader("Mouseover")
+	left:CreateSwitch("azerite-mouseover", Settings["azerite-mouseover"], Language["Display On Mouseover"], Language["Only display the azerite bar while mousing over it"], UpdateMouseover)
+	left:CreateSlider("azerite-mouseover-opacity", Settings["azerite-mouseover-opacity"], 0, 100, 5, Language["Mouseover Opacity"], Language["Set the opacity of the azerite bar while not mousing over it"], UpdateMouseoverOpacity, nil, "%")
 end)

@@ -3,6 +3,13 @@ local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 local Window = vUI:NewModule("Right Window")
 local DT = vUI:GetModule("DataText")
 
+-- Default settings values
+Defaults["right-window-enable"] = true
+Defaults["right-window-size"] = "SINGLE"
+Defaults["right-window-width"] = 392
+Defaults["right-window-height"] = 128
+Defaults["right-window-opacity"] = 70
+
 function Window:CreateSingleWindow()
 	local R, G, B = vUI:HexToRGB(Settings["ui-window-main-color"])
 	
@@ -304,20 +311,18 @@ local UpdateHeight = function(value)
 	Window.Right:SetHeight(value)
 end
 
-GUI:AddOptions(function(self)
-	local Left, Right = self:GetWindow(Language["Data Texts"])
-	
-	Left:CreateHeader(Language["Right Window Texts"])
-	Left:CreateDropdown("data-text-extra-left", Settings["data-text-extra-left"], DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the left data text anchor"], UpdateLeftText)
-	Left:CreateDropdown("data-text-extra-middle", Settings["data-text-extra-middle"], DT.List, Language["Set Middle Text"], Language["Set the information to be displayed in the middle data text anchor"], UpdateMiddleText)
-	Left:CreateDropdown("data-text-extra-right", Settings["data-text-extra-right"], DT.List, Language["Set Right Text"], Language["Set the information to be displayed in the right data text anchor"], UpdateRightText)
-	
-	Left, Right = self:GetWindow("General")
-	
-	Left:CreateHeader(Language["Right Window"])
-	Left:CreateSwitch("right-window-enable", Settings["right-window-enable"], Language["Enable Right Window"], Language["Enable the right side window, for placing chat or addons into"], ReloadUI):RequiresReload(true)
-	Left:CreateDropdown("right-window-size", Settings["right-window-size"], {[Language["Single"]] = "SINGLE", [Language["Double"]] = "DOUBLE"}, Language["Set Window Size"], Language["Set the number of windows to be displayed"], ReloadUI):RequiresReload(true)
-	Left:CreateSlider("right-window-width", Settings["right-window-width"], 300, 650, 1, Language["Window Width"], Language["Set the width of the window"], UpdateWidth)
-	Left:CreateSlider("right-window-height", Settings["right-window-height"], 40, 350, 1, Language["Window Height"], Language["Set the height of the window"], UpdateHeight)
-	Left:CreateSlider("right-window-opacity", Settings["right-window-opacity"], 0, 100, 5, Language["Background Opacity"], Language["Set the opacity of the window background"], UpdateOpacity, nil, "%")
+GUI:AddSettings(Language["General"], Language["Data Texts"], function(left, right)
+	left:CreateHeader(Language["Right Window Texts"])
+	left:CreateDropdown("data-text-extra-left", Settings["data-text-extra-left"], DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the left data text anchor"], UpdateLeftText)
+	left:CreateDropdown("data-text-extra-middle", Settings["data-text-extra-middle"], DT.List, Language["Set Middle Text"], Language["Set the information to be displayed in the middle data text anchor"], UpdateMiddleText)
+	left:CreateDropdown("data-text-extra-right", Settings["data-text-extra-right"], DT.List, Language["Set Right Text"], Language["Set the information to be displayed in the right data text anchor"], UpdateRightText)
+end)
+
+GUI:AddSettings(Language["General"], Language["General"], function(left, right)
+	left:CreateHeader(Language["Right Window"])
+	left:CreateSwitch("right-window-enable", Settings["right-window-enable"], Language["Enable Right Window"], Language["Enable the right side window, for placing chat or addons into"], ReloadUI):RequiresReload(true)
+	left:CreateDropdown("right-window-size", Settings["right-window-size"], {[Language["Single"]] = "SINGLE", [Language["Double"]] = "DOUBLE"}, Language["Set Window Size"], Language["Set the number of windows to be displayed"], ReloadUI):RequiresReload(true)
+	left:CreateSlider("right-window-width", Settings["right-window-width"], 300, 650, 1, Language["Window Width"], Language["Set the width of the window"], UpdateWidth)
+	left:CreateSlider("right-window-height", Settings["right-window-height"], 40, 350, 1, Language["Window Height"], Language["Set the height of the window"], UpdateHeight)
+	left:CreateSlider("right-window-opacity", Settings["right-window-opacity"], 0, 100, 5, Language["Background Opacity"], Language["Set the opacity of the window background"], UpdateOpacity, nil, "%")
 end)

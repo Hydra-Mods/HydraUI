@@ -1,6 +1,13 @@
-local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Map = vUI:NewModule("Minimap")
+
+-- Default settings values
+Defaults["minimap-enable"] = true
+Defaults["minimap-size"] = 140
+Defaults["minimap-show-top"] = true
+Defaults["minimap-show-bottom"] = true
+Defaults["minimap-show-tracking"] = true
 
 function Map:Disable(object)
 	if object.UnregisterAllEvents then
@@ -227,15 +234,13 @@ function Map:Load()
 	end
 end
 
-GUI:AddOptions(function(self)
-	local Left = self:CreateWindow(Language["Mini Map"])
+GUI:AddSettings(Language["General"], Language["Minimap"], function(left, right)
+	left:CreateHeader(Language["Enable"])
+	left:CreateSwitch("minimap-enable", Settings["minimap-enable"], Language["Enable Minimap Module"], Language["Enable the vUI mini map module"], ReloadUI):RequiresReload(true)
 	
-	Left:CreateHeader(Language["Enable"])
-	Left:CreateSwitch("minimap-enable", Settings["minimap-enable"], Language["Enable Mini Map Module"], Language["Enable the vUI mini map module"], ReloadUI):RequiresReload(true)
-	
-	Left:CreateHeader(Language["Styling"])
-	Left:CreateSlider("minimap-size", Settings["minimap-size"], 100, 250, 10, Language["Mini Map Size"], Language["Set the size of the mini map"], UpdateMinimapSize)
-	Left:CreateSwitch("minimap-show-top", Settings["minimap-show-top"], Language["Enable Top Bar"], Language["Enable the data text bar on top of the mini map"], UpdateShowTopBar)
-	Left:CreateSwitch("minimap-show-bottom", Settings["minimap-show-bottom"], Language["Enable Bottom Bar"], Language["Enable the data text bar on the bottom of the mini map"], UpdateShowBottomBar)
-	Left:CreateSwitch("minimap-show-tracking", Settings["minimap-show-tracking"], Language["Enable Tracking"], Language["Enable the tracking button in the top left of the mini map"], UpdateShowTracking)
+	left:CreateHeader(Language["Styling"])
+	left:CreateSlider("minimap-size", Settings["minimap-size"], 100, 250, 10, Language["Minimap Size"], Language["Set the size of the mini map"], UpdateMinimapSize)
+	left:CreateSwitch("minimap-show-top", Settings["minimap-show-top"], Language["Enable Top Bar"], Language["Enable the data text bar on top of the mini map"], UpdateShowTopBar)
+	left:CreateSwitch("minimap-show-bottom", Settings["minimap-show-bottom"], Language["Enable Bottom Bar"], Language["Enable the data text bar on the bottom of the mini map"], UpdateShowBottomBar)
+	left:CreateSwitch("minimap-show-tracking", Settings["minimap-show-tracking"], Language["Enable Tracking"], Language["Enable the tracking button in the top left of the mini map"], UpdateShowTracking)
 end)

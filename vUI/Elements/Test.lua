@@ -44,3 +44,19 @@ Icon.t:SetPoint("TOPLEFT", Icon, 1, -1)
 Icon.t:SetPoint("BOTTOMRIGHT", Icon, -1, 1)
 Icon.t:SetTexture("Interface\\ICONS\\spell_warlock_soulburn")
 Icon.t:SetTexCoord(0.1, 0.9, 0.1 + IconRatio, 0.9 - IconRatio)]]
+
+--[[
+local DEFAULTS = {}
+local SETTINGS = {}
+local SAVED_VARS = {}
+
+DEFAULTS.ShowPlayer = true
+DEFAULTS.ShowHealth = true
+
+local LoadSettings = function()
+	SETTINGS = setmetatable(SAVED_VARS, {__index = DEFAULTS})
+end
+
+LoadSettings()
+
+print(SETTINGS.ShowPlayer)]]

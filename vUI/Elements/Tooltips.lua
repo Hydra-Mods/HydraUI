@@ -1,7 +1,26 @@
-local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Tooltips = vUI:NewModule("Tooltips")
-local MyGuild
+
+-- Default settings values
+Defaults["tooltips-enable"] = true
+Defaults["tooltips-on-cursor"] = false
+Defaults["tooltips-show-id"] = false
+Defaults["tooltips-display-realm"] = true
+Defaults["tooltips-display-title"] = true
+Defaults["tooltips-display-rank"] = false
+Defaults["tooltips-font"] = "Roboto"
+Defaults["tooltips-font-size"] = 12
+Defaults["tooltips-font-flags"] = ""
+Defaults["tooltips-hide-on-unit"] = "NEVER"
+Defaults["tooltips-hide-on-item"] = "NEVER"
+Defaults["tooltips-hide-on-action"] = "NEVER"
+Defaults["tooltips-health-bar-height"] = 15
+Defaults["tooltips-show-health-text"] = true
+Defaults["tooltips-show-target"] = true
+Defaults["tooltips-cursor-anchor"] = "ANCHOR_CURSOR"
+Defaults["tooltips-cursor-anchor-x"] = 0
+Defaults["tooltips-cursor-anchor-y"] = 8
 
 local select = select
 local find = string.find
@@ -31,6 +50,7 @@ local UnitCanAttack = UnitCanAttack
 local UnitIsPVP = UnitIsPVP
 
 local GameTooltipStatusBar = GameTooltipStatusBar
+local MyGuild
 
 Tooltips.Handled = {
 	GameTooltip,
@@ -399,7 +419,7 @@ end
 
 Tooltips.GameTooltip_SetDefaultAnchor = function(self, parent)
 	if Settings["tooltips-on-cursor"] then
-		self:SetOwner(parent, "ANCHOR_CURSOR", 0, 8)
+		self:SetOwner(parent, Settings["tooltips-cursor-anchor"], Settings["tooltips-cursor-anchor-x"], Settings["tooltips-cursor-anchor-y"])
 		
 		return
 	end
@@ -613,31 +633,34 @@ local UpdateShowHealthText = function(value)
 	end
 end
 
-GUI:AddOptions(function(self)
-	local Left, Right = self:CreateWindow(Language["Tooltips"])
+GUI:AddSettings(Language["General"], Language["Tooltips"], function(left, right)
+	left:CreateHeader(Language["Enable"])
+	left:CreateSwitch("tooltips-enable", Settings["tooltips-enable"], Language["Enable Tooltips Module"], Language["Enable the vUI tooltips module"], ReloadUI):RequiresReload(true)
 	
-	Left:CreateHeader(Language["Enable"])
-	Left:CreateSwitch("tooltips-enable", Settings["tooltips-enable"], Language["Enable Tooltips Module"], Language["Enable the vUI tooltips module"], ReloadUI):RequiresReload(true)
+	left:CreateHeader(Language["Health Bar"])
+	left:CreateSwitch("tooltips-show-health-text", Settings["tooltips-show-health-text"], Language["Display Health Text"], Language["Dislay health information on the tooltip health bar"], UpdateShowHealthText)
+	left:CreateSlider("tooltips-health-bar-height", Settings["tooltips-health-bar-height"], 2, 30, 1, Language["Health Bar Height"], Language["Set the height of the tooltip health bar"], UpdateHealthBarHeight)
 	
-	Left:CreateHeader(Language["Styling"])
-	Left:CreateSlider("tooltips-health-bar-height", Settings["tooltips-health-bar-height"], 2, 30, 1, Language["Health Bar Height"], Language["Set the height of the tooltip health bar"], UpdateHealthBarHeight)
-	Left:CreateSwitch("tooltips-show-health-text", Settings["tooltips-show-health-text"], Language["Display Health Text"], Language["Dislay health information on the tooltip health bar"], UpdateShowHealthText)
-	Left:CreateSwitch("tooltips-show-target", Settings["tooltips-show-target"], Language["Display Target"], Language["Dislay the units current target"])
-	Left:CreateSwitch("tooltips-on-cursor", Settings["tooltips-on-cursor"], Language["Tooltip On Cursor"], Language["Anchor the tooltip to the mouse cursor"])
-	Left:CreateSwitch("tooltips-show-id", Settings["tooltips-show-id"], Language["Display ID's"], Language["Dislay item and spell ID's in the tooltip"])
+	left:CreateHeader(Language["Information"])
+	left:CreateSwitch("tooltips-show-target", Settings["tooltips-show-target"], Language["Display Target"], Language["Dislay the units current target"])
+	left:CreateSwitch("tooltips-show-id", Settings["tooltips-show-id"], Language["Display ID's"], Language["Dislay item and spell ID's in the tooltip"])
+	left:CreateSwitch("tooltips-display-realm", Settings["tooltips-display-realm"], Language["Display Realm"], Language["Display character realms"])
+	left:CreateSwitch("tooltips-display-title", Settings["tooltips-display-title"], Language["Display Title"], Language["Display character titles"])
+	left:CreateSwitch("tooltips-display-rank", Settings["tooltips-display-rank"], Language["Display Guild Rank"], Language["Display character guild ranks"])
 	
-	Left:CreateHeader(Language["Font"])
-	Left:CreateDropdown("tooltips-font", Settings["tooltips-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the tooltip text"], nil, "Font")
-	Left:CreateSlider("tooltips-font-size", Settings["tooltips-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the tooltip text"])
-	Left:CreateDropdown("tooltips-font-flags", Settings["tooltips-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the tooltip text"])
+	right:CreateHeader(Language["Font"])
+	right:CreateDropdown("tooltips-font", Settings["tooltips-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the tooltip text"], nil, "Font")
+	right:CreateSlider("tooltips-font-size", Settings["tooltips-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the tooltip text"])
+	right:CreateDropdown("tooltips-font-flags", Settings["tooltips-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the tooltip text"])
 	
-	Right:CreateHeader(Language["Information"])
-	Right:CreateSwitch("tooltips-display-realm", Settings["tooltips-display-realm"], Language["Display Realm"], Language["Display character realms"])
-	Right:CreateSwitch("tooltips-display-title", Settings["tooltips-display-title"], Language["Display Title"], Language["Display character titles"])
-	Right:CreateSwitch("tooltips-display-rank", Settings["tooltips-display-rank"], Language["Display Guild Rank"], Language["Display character guild ranks"])
+	right:CreateHeader(Language["Cursor Anchor"])
+	right:CreateSwitch("tooltips-on-cursor", Settings["tooltips-on-cursor"], Language["Tooltip On Cursor"], Language["Anchor the tooltip to the mouse cursor"])
+	right:CreateDropdown("tooltips-cursor-anchor", Settings["tooltips-cursor-anchor"], {[Language["Right"]] = "ANCHOR_CURSOR_RIGHT", [Language["Center"]] = "ANCHOR_CURSOR", [Language["Left"]] = "ANCHOR_CURSOR_LEFT"}, Language["Anchor Point"])
+	right:CreateSlider("tooltips-cursor-anchor-x", Settings["tooltips-cursor-anchor-x"], -64, 64, 1, Language["X Offset"], Language["Set the horizontal offset of the tooltip. Only works with Left or Right anchor."])
+	right:CreateSlider("tooltips-cursor-anchor-y", Settings["tooltips-cursor-anchor-y"], -64, 64, 1, Language["Y Offset"], Language["Set the vertical offset of the tooltip. Only works with Left or Right anchor."])
 	
-	Right:CreateHeader(Language["Disable Tooltips"])
-	Right:CreateDropdown("tooltips-hide-on-unit", Settings["tooltips-hide-on-unit"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Friendly"]] = "FRIENDLY", [Language["Hostile"]] = "HOSTILE", [Language["Combat"]] = "NO_COMBAT"}, Language["Disable Units"], Language["Set the tooltip to not display units"])
-	Right:CreateDropdown("tooltips-hide-on-item", Settings["tooltips-hide-on-item"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Combat"]] = "NO_COMBAT"}, Language["Disable Items"], Language["Set the tooltip to not display items"])
-	Right:CreateDropdown("tooltips-hide-on-action", Settings["tooltips-hide-on-action"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Combat"]] = "NO_COMBAT"}, Language["Disable Actions"], Language["Set the tooltip to not display actions"])
+	right:CreateHeader(Language["Disable Tooltips"])
+	right:CreateDropdown("tooltips-hide-on-unit", Settings["tooltips-hide-on-unit"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Friendly"]] = "FRIENDLY", [Language["Hostile"]] = "HOSTILE", [Language["Combat"]] = "NO_COMBAT"}, Language["Disable Units"], Language["Set the tooltip to not display units"])
+	right:CreateDropdown("tooltips-hide-on-item", Settings["tooltips-hide-on-item"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Combat"]] = "NO_COMBAT"}, Language["Disable Items"], Language["Set the tooltip to not display items"])
+	right:CreateDropdown("tooltips-hide-on-action", Settings["tooltips-hide-on-action"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Combat"]] = "NO_COMBAT"}, Language["Disable Actions"], Language["Set the tooltip to not display actions"])
 end)

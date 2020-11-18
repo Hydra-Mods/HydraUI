@@ -65,8 +65,8 @@ function KeyBinding:OnKeyUp(key)
 		
 		vUI:print(format(Language['Bound "%s" to %s'], key, NewName))
 		
-		GUI:GetWidgetByWindow(Language["Action Bars"], "save"):Enable()
-		GUI:GetWidgetByWindow(Language["Action Bars"], "discard"):Enable()
+		GUI:GetWidget(Language["General"], Language["Action Bars"], "save"):Enable()
+		GUI:GetWidget(Language["General"], Language["Action Bars"], "discard"):Enable()
 	end
 end
 
@@ -133,8 +133,8 @@ function KeyBinding:OnEvent(event, button)
 		
 		vUI:print(format(Language['Bound "%s" to %s'], button, NewName))
 		
-		GUI:GetWidgetByWindow(Language["Action Bars"], "save"):Enable()
-		GUI:GetWidgetByWindow(Language["Action Bars"], "discard"):Enable()
+		GUI:GetWidget(Language["General"], Language["Action Bars"], "save"):Enable()
+		GUI:GetWidget(Language["General"], Language["Action Bars"], "discard"):Enable()
 	end
 end
 
@@ -159,8 +159,8 @@ end
 local OnAccept = function()
 	SaveBindings(GetCurrentBindingSet())
 	
-	GUI:GetWidgetByWindow(Language["Action Bars"], "discard"):Disable()
-	GUI:GetWidgetByWindow(Language["Action Bars"], "save"):Disable()
+	GUI:GetWidget(Language["General"], Language["Action Bars"], "discard"):Disable()
+	GUI:GetWidget(Language["General"], Language["Action Bars"], "save"):Disable()
 	
 	KeyBinding:Disable()
 end
@@ -227,14 +227,12 @@ local DiscardChanges = function()
 	vUI:DisplayPopup(Language["Attention"], Language["Are you sure you would like to discard these key binding changes?"], Language["Accept"], ReloadUI, Language["Cancel"])
 end
 
-GUI:AddOptions(function(self)
-	local Left, Right = self:GetWindow(Language["Action Bars"])
+GUI:AddSettings(Language["General"], Language["Action Bars"], function(left, right)
+	right:CreateHeader(Language["Key Binding"])
+	right:CreateButton(Language["Toggle"], Language["Key Bind Mode"], Language["While toggled, you can hover over action buttons and press a key combination to rebind them"], ToggleBindingMode)
+	right:CreateButton(Language["Save"], Language["Save Changes"], Language["Save key binding changes"], SaveChanges):Disable()
+	right:CreateButton(Language["Discard"], Language["Discard Changes"], Language["Discard key binding changes"], DiscardChanges):Disable()
 	
-	Right:CreateHeader(Language["Key Binding"])
-	Right:CreateButton(Language["Toggle"], Language["Key Bind Mode"], Language["While toggled, you can hover over action buttons and press a key combination to rebind them"], ToggleBindingMode)
-	Right:CreateButton(Language["Save"], Language["Save Changes"], Language["Save key binding changes"], SaveChanges)
-	Right:CreateButton(Language["Discard"], Language["Discard Changes"], Language["Discard key binding changes"], DiscardChanges)
-	
-	self:GetWidgetByWindow(Language["Action Bars"], "save"):Disable()
-	self:GetWidgetByWindow(Language["Action Bars"], "discard"):Disable()
+	--GUI:GetWidget(Language["General"], Language["Action Bars"], "save"):Disable()
+	--GUI:GetWidget(Language["General"], Language["Action Bars"], "discard"):Disable()
 end)

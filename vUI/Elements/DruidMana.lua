@@ -135,9 +135,7 @@ local UpdateEnableDruidMana = function(value)
 	end
 end
 
-GUI:AddOptions(function(self)
-	local Left, Right = self:GetWindow("Unit Frames")
-	
-	Right:CreateHeader(Language["Druid Mana"])
-	Right:CreateSwitch("unitframes-show-druid-mana", Settings["unitframes-show-druid-mana"], Language["Enable Druid Mana"], Language["Enable a bar displaying your mana while in other forms"], UpdateEnableDruidMana)
+GUI:AddSettings(Language["General"], Language["Unit Frames"], function(left, right)
+	right:CreateHeader(Language["Druid Mana"])
+	right:CreateSwitch("unitframes-show-druid-mana", Settings["unitframes-show-druid-mana"], Language["Enable Druid Mana"], Language["Enable a bar displaying your mana while in other forms"], UpdateEnableDruidMana)
 end)

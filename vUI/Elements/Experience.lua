@@ -1,6 +1,23 @@
-local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Experience = vUI:NewModule("Experience")
+
+-- Default settings values
+Defaults["experience-enable"] = true
+Defaults["experience-width"] = 310
+Defaults["experience-height"] = 18
+Defaults["experience-mouseover"] = false
+Defaults["experience-mouseover-opacity"] = 0
+Defaults["experience-display-level"] = false
+Defaults["experience-display-progress"] = true
+Defaults["experience-display-percent"] = true
+Defaults["experience-display-rested-value"] = true
+Defaults["experience-show-tooltip"] = true
+Defaults["experience-animate"] = true
+Defaults["experience-progress-visibility"] = "ALWAYS"
+Defaults["experience-percent-visibility"] = "ALWAYS"
+Defaults["experience-bar-color"] = "4C9900" -- 1AE045
+Defaults["experience-rested-color"] = "00B4FF"
 
 local format = format
 local floor = floor
@@ -440,33 +457,31 @@ local UpdateMouseoverOpacity = function(value)
 	end
 end
 
-GUI:AddOptions(function(self)
-	local Left, Right = self:CreateWindow(Language["Experience"])
+GUI:AddSettings(Language["General"], Language["Experience"], function(left, right)
+	left:CreateHeader(Language["Enable"])
+	left:CreateSwitch("experience-enable", Settings["experience-enable"], Language["Enable Experience Module"], Language["Enable the vUI experience module"], ReloadUI):RequiresReload(true)
 	
-	Left:CreateHeader(Language["Enable"])
-	Left:CreateSwitch("experience-enable", Settings["experience-enable"], Language["Enable Experience Module"], Language["Enable the vUI experience module"], ReloadUI):RequiresReload(true)
+	left:CreateHeader(Language["Styling"])
+	left:CreateSwitch("experience-display-level", Settings["experience-display-level"], Language["Display Level"], Language["Display your current level in the experience bar"], UpdateDisplayLevel)
+	left:CreateSwitch("experience-display-progress", Settings["experience-display-progress"], Language["Display Progress Value"], Language["Display your current progressinformation in the experience bar"], UpdateDisplayProgress)
+	left:CreateSwitch("experience-display-percent", Settings["experience-display-percent"], Language["Display Percent Value"], Language["Display your current percentinformation in the experience bar"], UpdateDisplayPercent)
+	left:CreateSwitch("experience-display-rested-value", Settings["experience-display-rested-value"], Language["Display Rested Value"], Language["Display your current restedvalue on the experience bar"], UpdateShowRestedValue)
+	left:CreateSwitch("experience-show-tooltip", Settings["experience-show-tooltip"], Language["Enable Tooltip"], Language["Display a tooltip when mousing over the experience bar"])
+	left:CreateSwitch("experience-animate", Settings["experience-animate"], Language["Animate Experience Changes"], Language["Smoothly animate changes to the experience bar"])
 	
-	Left:CreateHeader(Language["Styling"])
-	Left:CreateSwitch("experience-display-level", Settings["experience-display-level"], Language["Display Level"], Language["Display your current level in the experience bar"], UpdateDisplayLevel)
-	Left:CreateSwitch("experience-display-progress", Settings["experience-display-progress"], Language["Display Progress Value"], Language["Display your current progressinformation in the experience bar"], UpdateDisplayProgress)
-	Left:CreateSwitch("experience-display-percent", Settings["experience-display-percent"], Language["Display Percent Value"], Language["Display your current percentinformation in the experience bar"], UpdateDisplayPercent)
-	Left:CreateSwitch("experience-display-rested-value", Settings["experience-display-rested-value"], Language["Display Rested Value"], Language["Display your current restedvalue on the experience bar"], UpdateShowRestedValue)
-	Left:CreateSwitch("experience-show-tooltip", Settings["experience-show-tooltip"], Language["Enable Tooltip"], Language["Display a tooltip when mousing over the experience bar"])
-	Left:CreateSwitch("experience-animate", Settings["experience-animate"], Language["Animate Experience Changes"], Language["Smoothly animate changes to the experience bar"])
+	right:CreateHeader(Language["Size"])
+	right:CreateSlider("experience-width", Settings["experience-width"], 240, 400, 10, Language["Bar Width"], Language["Set the width of the experience bar"], UpdateBarWidth)
+	right:CreateSlider("experience-height", Settings["experience-height"], 6, 30, 1, Language["Bar Height"], Language["Set the height of the experience bar"], UpdateBarHeight)
 	
-	Right:CreateHeader(Language["Size"])
-	Right:CreateSlider("experience-width", Settings["experience-width"], 240, 400, 10, Language["Bar Width"], Language["Set the width of the experience bar"], UpdateBarWidth)
-	Right:CreateSlider("experience-height", Settings["experience-height"], 6, 30, 1, Language["Bar Height"], Language["Set the height of the experience bar"], UpdateBarHeight)
+	right:CreateHeader(Language["Colors"])
+	right:CreateColorSelection("experience-bar-color", Settings["experience-bar-color"], Language["Experience Color"], Language["Set the color of the experience bar"], UpdateBarColor)
+	right:CreateColorSelection("experience-rested-color", Settings["experience-rested-color"], Language["Rested Color"], Language["Set the color of the rested bar"], UpdateRestedColor)
 	
-	Right:CreateHeader(Language["Colors"])
-	Right:CreateColorSelection("experience-bar-color", Settings["experience-bar-color"], Language["Experience Color"], Language["Set the color of the experience bar"], UpdateBarColor)
-	Right:CreateColorSelection("experience-rested-color", Settings["experience-rested-color"], Language["Rested Color"], Language["Set the color of the rested bar"], UpdateRestedColor)
+	right:CreateHeader(Language["Visibility"])
+	right:CreateDropdown("experience-progress-visibility", Settings["experience-progress-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Progress Text"], Language["Set when to display the progress information"], UpdateProgressVisibility)
+	right:CreateDropdown("experience-percent-visibility", Settings["experience-percent-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Percent Text"], Language["Set when to display the percent information"], UpdatePercentVisibility)
 	
-	Right:CreateHeader(Language["Visibility"])
-	Right:CreateDropdown("experience-progress-visibility", Settings["experience-progress-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Progress Text"], Language["Set when to display the progress information"], UpdateProgressVisibility)
-	Right:CreateDropdown("experience-percent-visibility", Settings["experience-percent-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Percent Text"], Language["Set when to display the percent information"], UpdatePercentVisibility)
-	
-	Left:CreateHeader("Mouseover")
-	Left:CreateSwitch("experience-mouseover", Settings["experience-mouseover"], Language["Display On Mouseover"], Language["Only display the experience bar while mousing over it"], UpdateMouseover)
-	Left:CreateSlider("experience-mouseover-opacity", Settings["experience-mouseover-opacity"], 0, 100, 5, Language["Mouseover Opacity"], Language["Set the opacity of the experience bar while not mousing over it"], UpdateMouseoverOpacity, nil, "%")
+	left:CreateHeader("Mouseover")
+	left:CreateSwitch("experience-mouseover", Settings["experience-mouseover"], Language["Display On Mouseover"], Language["Only display the experience bar while mousing over it"], UpdateMouseover)
+	left:CreateSlider("experience-mouseover-opacity", Settings["experience-mouseover-opacity"], 0, 100, 5, Language["Mouseover Opacity"], Language["Set the opacity of the experience bar while not mousing over it"], UpdateMouseoverOpacity, nil, "%")
 end)

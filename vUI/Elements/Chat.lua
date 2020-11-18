@@ -1,4 +1,25 @@
-local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+
+-- Default setting values
+Defaults["chat-enable"] = true
+Defaults["chat-bg-opacity"] = 70
+Defaults["chat-enable-url-links"] = true
+Defaults["chat-enable-discord-links"] = true
+Defaults["chat-enable-email-links"] = true
+Defaults["chat-enable-friend-links"] = true
+Defaults["chat-font"] = "PT Sans"
+Defaults["chat-font-size"] = 12
+Defaults["chat-font-flags"] = ""
+Defaults["chat-tab-font"] = "Roboto"
+Defaults["chat-tab-font-size"] = 12
+Defaults["chat-tab-font-flags"] = ""
+Defaults["chat-tab-font-color"] = "FFFFFF"
+Defaults["chat-tab-font-color-mouseover"] = "FFCE54"
+Defaults["chat-frame-width"] = 392
+Defaults["chat-frame-height"] = 104
+Defaults["chat-enable-fading"] = false
+Defaults["chat-fade-time"] = 15
+Defaults["chat-link-tooltip"] = true
 
 local select = select
 local tostring = tostring
@@ -1221,38 +1242,36 @@ local UpdateEnableLinks = function(value)
 	end
 end
 
-GUI:AddOptions(function(self)
-	local Left, Right = self:CreateWindow(Language["Chat"])
+GUI:AddSettings(Language["General"], Language["Chat"], function(left, right)
+	left:CreateHeader(Language["Enable"])
+	left:CreateSwitch("chat-enable", Settings["chat-enable"], Language["Enable Chat Module"], Language["Enable the vUI chat module"], ReloadUI):RequiresReload(true)
 	
-	Left:CreateHeader(Language["Enable"])
-	Left:CreateSwitch("chat-enable", Settings["chat-enable"], Language["Enable Chat Module"], Language["Enable the vUI chat module"], ReloadUI):RequiresReload(true)
+	left:CreateHeader(Language["General"])
+	left:CreateSlider("chat-frame-width", Settings["chat-frame-width"], 300, 650, 1, Language["Chat Width"], Language["Set the width of the chat frame"], UpdateChatFrameSize)
+	left:CreateSlider("chat-frame-height", Settings["chat-frame-height"], 40, 350, 1, Language["Chat Height"], Language["Set the height of the chat frame"], UpdateChatFrameSize)
+	left:CreateSlider("chat-bg-opacity", Settings["chat-bg-opacity"], 0, 100, 5, Language["Background Opacity"], Language["Set the opacity of the chat background"], UpdateOpacity, nil, "%")
+	left:CreateSlider("chat-fade-time", Settings["chat-enable-fading"], 0, 60, 5, Language["Set Fade Time"], Language["Set the duration to display text before fading out"], UpdateFadeTime, nil, "s")
+	left:CreateSwitch("chat-enable-fading", Settings["chat-enable-fading"], Language["Enable Text Fading"], Language["Set the text to fade after the set amount of time"], UpdateEnableFading)
+	left:CreateSwitch("chat-link-tooltip", Settings["chat-link-tooltip"], Language["Show Link Tooltips"], Language["Display a tooltip when hovering over links in chat"], UpdateEnableLinks)
 	
-	Left:CreateHeader(Language["General"])
-	Left:CreateSlider("chat-frame-width", Settings["chat-frame-width"], 300, 650, 1, Language["Chat Width"], Language["Set the width of the chat frame"], UpdateChatFrameSize)
-	Left:CreateSlider("chat-frame-height", Settings["chat-frame-height"], 40, 350, 1, Language["Chat Height"], Language["Set the height of the chat frame"], UpdateChatFrameSize)
-	Left:CreateSlider("chat-bg-opacity", Settings["chat-bg-opacity"], 0, 100, 5, Language["Background Opacity"], Language["Set the opacity of the chat background"], UpdateOpacity, nil, "%")
-	Left:CreateSlider("chat-fade-time", Settings["chat-enable-fading"], 0, 60, 5, Language["Set Fade Time"], Language["Set the duration to display text before fading out"], UpdateFadeTime, nil, "s")
-	Left:CreateSwitch("chat-enable-fading", Settings["chat-enable-fading"], Language["Enable Text Fading"], Language["Set the text to fade after the set amount of time"], UpdateEnableFading)
-	Left:CreateSwitch("chat-link-tooltip", Settings["chat-link-tooltip"], Language["Show Link Tooltips"], Language["Display a tooltip when hovering over links in chat"], UpdateEnableLinks)
+	right:CreateHeader(Language["Install"])
+	right:CreateButton(Language["Install"], Language["Install Chat Defaults"], Language["Set default channels and settings related to chat"], RunChatInstall):RequiresReload(true)
 	
-	Right:CreateHeader(Language["Install"])
-	Right:CreateButton(Language["Install"], Language["Install Chat Defaults"], Language["Set default channels and settings related to chat"], RunChatInstall):RequiresReload(true)
+	left:CreateHeader(Language["Links"])
+	left:CreateSwitch("chat-enable-url-links", Settings["chat-enable-url-links"], Language["Enable URL Links"], Language["Enable URL links in the chat frame"])
+	left:CreateSwitch("chat-enable-discord-links", Settings["chat-enable-discord-links"], Language["Enable Discord Links"], Language["Enable Discord links in the chat frame"])
+	left:CreateSwitch("chat-enable-email-links", Settings["chat-enable-email-links"], Language["Enable Email Links"], Language["Enable email links in the chat frame"])
+	left:CreateSwitch("chat-enable-friend-links", Settings["chat-enable-friend-links"], Language["Enable Friend Tag Links"], Language["Enable friend tag links in the chat frame"])
 	
-	Left:CreateHeader(Language["Links"])
-	Left:CreateSwitch("chat-enable-url-links", Settings["chat-enable-url-links"], Language["Enable URL Links"], Language["Enable URL links in the chat frame"])
-	Left:CreateSwitch("chat-enable-discord-links", Settings["chat-enable-discord-links"], Language["Enable Discord Links"], Language["Enable Discord links in the chat frame"])
-	Left:CreateSwitch("chat-enable-email-links", Settings["chat-enable-email-links"], Language["Enable Email Links"], Language["Enable email links in the chat frame"])
-	Left:CreateSwitch("chat-enable-friend-links", Settings["chat-enable-friend-links"], Language["Enable Friend Tag Links"], Language["Enable friend tag links in the chat frame"])
+	right:CreateHeader(Language["Chat Frame Font"])
+	right:CreateDropdown("chat-font", Settings["chat-font"], Assets:GetFontList(), Language["Font"], "Set the font of the chat frame", UpdateChatFont, "Font")
+	right:CreateSlider("chat-font-size", Settings["chat-font-size"], 8, 32, 1, "Font Size", "Set the font size of the chat frame", UpdateChatFont)
+	right:CreateDropdown("chat-font-flags", Settings["chat-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], "Set the font flags of the chat frame", UpdateChatFont)
 	
-	Right:CreateHeader(Language["Chat Frame Font"])
-	Right:CreateDropdown("chat-font", Settings["chat-font"], Assets:GetFontList(), Language["Font"], "Set the font of the chat frame", UpdateChatFont, "Font")
-	Right:CreateSlider("chat-font-size", Settings["chat-font-size"], 8, 32, 1, "Font Size", "Set the font size of the chat frame", UpdateChatFont)
-	Right:CreateDropdown("chat-font-flags", Settings["chat-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], "Set the font flags of the chat frame", UpdateChatFont)
-	
-	Right:CreateHeader(Language["Tab Font"])
-	Right:CreateDropdown("chat-tab-font", Settings["chat-tab-font"], Assets:GetFontList(), Language["Font"], "Set the font of the chat frame tabs", UpdateChatTabFont, "Font")
-	Right:CreateSlider("chat-tab-font-size", Settings["chat-tab-font-size"], 8, 32, 1, "Font Size", "Set the font size of the chat frame tabs", UpdateChatTabFont)
-	Right:CreateDropdown("chat-tab-font-flags", Settings["chat-tab-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], "Set the font flags of the chat frame tabs", UpdateChatTabFont)
-	Right:CreateColorSelection("chat-tab-font-color", Settings["chat-tab-font-color"], Language["Font Color"], "Set the color of the chat frame tabs", UpdateChatTabFont)
-	Right:CreateColorSelection("chat-tab-font-color-mouseover", Settings["chat-tab-font-color-mouseover"], Language["Font Color Mouseover"], "Set the color of the chat frame tab while mousing over it")
+	right:CreateHeader(Language["Tab Font"])
+	right:CreateDropdown("chat-tab-font", Settings["chat-tab-font"], Assets:GetFontList(), Language["Font"], "Set the font of the chat frame tabs", UpdateChatTabFont, "Font")
+	right:CreateSlider("chat-tab-font-size", Settings["chat-tab-font-size"], 8, 32, 1, "Font Size", "Set the font size of the chat frame tabs", UpdateChatTabFont)
+	right:CreateDropdown("chat-tab-font-flags", Settings["chat-tab-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], "Set the font flags of the chat frame tabs", UpdateChatTabFont)
+	right:CreateColorSelection("chat-tab-font-color", Settings["chat-tab-font-color"], Language["Font Color"], "Set the color of the chat frame tabs", UpdateChatTabFont)
+	right:CreateColorSelection("chat-tab-font-color-mouseover", Settings["chat-tab-font-color-mouseover"], Language["Font Color Mouseover"], "Set the color of the chat frame tab while mousing over it")
 end)

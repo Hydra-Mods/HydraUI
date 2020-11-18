@@ -22,6 +22,7 @@ local Defaults = {}
 local vUI = CreateFrame("Frame", nil, UIParent)
 vUI.Modules = {}
 vUI.Plugins = {}
+vUI.Databases = {}
 
 vUI.UIParent = CreateFrame("Frame", "vUIParent", UIParent, "SecureHandlerStateTemplate")
 vUI.UIParent:SetAllPoints(UIParent)
@@ -61,14 +62,6 @@ vUI.Outline = {
 
 -- GUI
 local GUI = CreateFrame("Frame", nil, vUI.UIParent, "BackdropTemplate")
-
-GUI.Queue = {}
-
-function GUI:AddOptions(func)
-	if (type(func) == "function") then
-		tinsert(self.Queue, func)
-	end
-end
 
 -- Language
 local Language = {}
@@ -189,35 +182,24 @@ function vUI:LoadPlugins()
 			self.Plugins[i]:Load()
 		end
 	end
-	
-	self:AddPluginInfo()
 end
 
-function vUI:AddPluginInfo()
-	if (#self.Plugins == 0) then
-		return
+function vUI:NewDatabase(name) -- for profiles, languages, settings, assets, etc. instead of creating a module which doesn't fit the bare minimum needs of these
+	if self.Databases[name] then
+		return self.Databases[name]
 	end
 	
-	local Left, Right = GUI:CreateWindow("Plugins", nil, "zzzPlugins")
-	local Anchor
+	local Database = {}
 	
-	for i = 1, #self.Plugins do
-		if ((i % 2) == 0) then
-			Anchor = Right
-		else
-			Anchor = Left
-		end
-		
-		Anchor:CreateHeader(self.Plugins[i].Title)
-		
-		Anchor:CreateDoubleLine(Language["Author"], self.Plugins[i].Author)
-		Anchor:CreateDoubleLine(Language["Version"], self.Plugins[i].Version)
-		Anchor:CreateLine(" ")
-		Anchor:CreateMessage(self.Plugins[i].Notes)
+	self.Databases[name] = Database
+	
+	return Database
+end
+
+function vUI:GetDatabase(name)
+	if self.Databases[name] then
+		return self.Databases[name]
 	end
-	
-	Left:CreateFooter()
-	Right:CreateFooter()
 end
 
 -- NYI, Concept list for my preferred CVars, and those important to the UI
@@ -248,6 +230,15 @@ function vUI:UpdateScreenSize()
 end
 
 vUI:UpdateScreenSize()
+
+local trunc = function(s) return s >= 0 and s-s%01 or s-s%-1 end
+local round = function(s) return s >= 0 and s-s%-1 or s-s%01 end
+
+local scale = function(n)
+	local m = max(0.4, min(1.2, (768 / ScreenHeight) / Settings["ui-scale"]))
+	
+	return (m == 1 or n == 0) and n or ((m < 1 and trunc(n/m) or round(n/m)) * m)
+end
 
 function vUI:SetScale(x)
 	self:UpdateScreenSize()
@@ -460,17 +451,34 @@ function vUI:ADDON_LOADED(event, addon)
 	self:UnregisterEvent(event)
 end
 
+function vUI:CreatePluginWindow()
+	GUI:AddSettings(Language["Info"], Language["Plugins"], function(left, right)
+		local Anchor
+		
+		for i = 1, #self.Plugins do
+			if ((i % 2) == 0) then
+				Anchor = right
+			else
+				Anchor = left
+			end
+			
+			Anchor:CreateHeader(self.Plugins[i].Title)
+			
+			Anchor:CreateDoubleLine(Language["Author"], self.Plugins[i].Author)
+			Anchor:CreateDoubleLine(Language["Version"], self.Plugins[i].Version)
+			Anchor:CreateLine(" ")
+			Anchor:CreateMessage(self.Plugins[i].Notes)
+		end
+	end)
+end
+
 function vUI:PLAYER_ENTERING_WORLD(event)
-	GUI:Create()
-	GUI:RunQueue()
-	
-	-- Show the default window
-	if GUI.DefaultWindow then
-		GUI:ShowWindow(GUI.DefaultWindow)
-	end
-	
 	self:LoadModules()
 	self:LoadPlugins()
+	
+	if (#self.Plugins > 0) then
+		self:CreatePluginWindow()
+	end
 	
 	self:UnregisterEvent(event)
 end

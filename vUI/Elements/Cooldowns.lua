@@ -1,6 +1,9 @@
-local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Cooldowns = vUI:NewModule("Cooldowns")
+
+-- Default settings values
+Defaults["cooldowns-enable"] = true
 
 local GetItemCooldown = GetItemCooldown
 local GetSpellCooldown = GetSpellCooldown
@@ -239,9 +242,7 @@ local UpdateEnableCooldownFlash = function(value)
 	end
 end
 
-GUI:AddOptions(function(self)
-	local Left, Right = self:GetWindow(Language["General"])
-	
-	Left:CreateHeader(Language["Cooldown Flash"])
-	Left:CreateSwitch("cooldowns-enable", Settings["cooldowns-enable"], Language["Enable Cooldown Flash"], Language["When an ability comes off cooldown the icon will flash as an alert"], UpdateEnableCooldownFlash)
+GUI:AddSettings(Language["General"], Language["General"], function(left, right)
+	right:CreateHeader(Language["Cooldown Flash"])
+	right:CreateSwitch("cooldowns-enable", Settings["cooldowns-enable"], Language["Enable Cooldown Flash"], Language["When an ability comes off cooldown the icon will flash as an alert"], UpdateEnableCooldownFlash)
 end)

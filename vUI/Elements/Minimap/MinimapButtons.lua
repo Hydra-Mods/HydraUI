@@ -1,6 +1,12 @@
-local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local MinimapButtons = vUI:NewModule("Minimap Buttons")
+
+-- Default settings values
+Defaults["minimap-buttons-enable"] = true
+Defaults["minimap-buttons-size"] = 22
+Defaults["minimap-buttons-spacing"] = 2
+Defaults["minimap-buttons-perrow"] = 5
 
 local lower = string.lower
 local find = string.find
@@ -246,12 +252,10 @@ function MinimapButtons:Load()
    vUI:CreateMover(self.Panel)
 end
 
-GUI:AddOptions(function(self)
-	local _, Right = self:GetWindow(Language["Mini Map"])
-
-	Right:CreateHeader(Language["Minimap Buttons"])
-	Right:CreateSwitch("minimap-buttons-enable", Settings["minimap-buttons-enable"], "Enable Minimap Button Bar", "", ReloadUI):RequiresReload(true)
-	Right:CreateSlider("minimap-buttons-size", Settings["minimap-buttons-size"], 16, 44, 1, "Button Size", "", UpdateBar)
-	Right:CreateSlider("minimap-buttons-spacing", Settings["minimap-buttons-spacing"], 1, 5, 1, "Button Spacing", "", UpdateBar)
-	Right:CreateSlider("minimap-buttons-perrow", Settings["minimap-buttons-perrow"], 1, 20, 1, "Per Row", "", UpdateBar)
+GUI:AddSettings(Language["General"], Language["Minimap"], function(left, right)
+	right:CreateHeader(Language["Minimap Buttons"])
+	right:CreateSwitch("minimap-buttons-enable", Settings["minimap-buttons-enable"], "Enable Minimap Button Bar", "", ReloadUI):RequiresReload(true)
+	right:CreateSlider("minimap-buttons-size", Settings["minimap-buttons-size"], 16, 44, 1, "Button Size", "", UpdateBar)
+	right:CreateSlider("minimap-buttons-spacing", Settings["minimap-buttons-spacing"], 1, 5, 1, "Button Spacing", "", UpdateBar)
+	right:CreateSlider("minimap-buttons-perrow", Settings["minimap-buttons-perrow"], 1, 20, 1, "Per Row", "", UpdateBar)
 end)
