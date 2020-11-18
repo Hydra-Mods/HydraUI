@@ -75,18 +75,6 @@ GUI:AddSettings(Language["Info"], Language["Supporters"], function(left, right)
 	left:CreateDoubleLine("Shazlen", "Shawna W.")
 	
 	right:CreateSupportHeader("Patrons")
-	--[[Right:CreateDoubleLine("|cFFFF8000Erieeroot|r", "|cFFFF8000SwoopCrown|r")
-	Right:CreateDoubleLine("|cFFFF8000Quivera|r", "|cFFA335EESmelly|r")
-	Right:CreateDoubleLine("|cFFA335EETrix|r", "|cFFA335EEwolimazo|r")
-	Right:CreateDoubleLine("|cFFA335EEAri|r", "|cFFA335EEMrPoundsign|r")
-	Right:CreateDoubleLine("|cFF0070DDMisse Far|r", "|cFF1EFF00Ryex|r")
-	Right:CreateDoubleLine("|cFF1EFF00JDoubleU00|r", "|cFF1EFF00sylvester|r")
-	Right:CreateDoubleLine("|cFF1EFF00Maski|r", "|cFF1EFF00Innie|r")
-	Right:CreateDoubleLine("|cFF1EFF00Mcbooze|r", "|cFF1EFF00Aaron B.|r")
-	Right:CreateDoubleLine("|cFF1EFF00Steve R.|r", "|cFF1EFF00Angel|r")
-	Right:CreateDoubleLine("|cFF1EFF00FrankPatten|r", "|cFF1EFF00Dellamaik|r")
-	Right:CreateDoubleLine("|cFF1EFF00stko|r", "madmaddy")
-	Right:CreateLine("Akab00m")]]
 	right:CreateMessage(GetPatrons())
 	
 	left:CreateFooter()
