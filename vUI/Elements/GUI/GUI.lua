@@ -307,10 +307,12 @@ local DisableScrolling = function(self)
 	self.ScrollingDisabled = true
 end
 
-function GUI:CreateWidget(widget, ...)
-	if self.Widgets[widget] then
-		self.Widgets[widget](...)
-	end
+local WindowOnShow = function(self)
+	GUI:FireHook("onshow", self.Category, self.Name, self.Parent)
+end
+
+local WindowOnHide = function(self)
+	GUI:FireHook("onhide", self.Category, self.Name, self.Parent)
 end
 
 function GUI:CreateWidgetWindow(category, name, parent)
@@ -321,6 +323,9 @@ function GUI:CreateWidgetWindow(category, name, parent)
 	Window:SetPoint("TOPRIGHT", self.CloseButton, "BOTTOMRIGHT", 0, -2)
 	Window:SetBackdropBorderColor(0, 0, 0)
 	Window:Hide()
+	
+	Window:HookScript("OnShow", WindowOnShow)
+	Window:HookScript("OnHide", WindowOnHide)
 	
 	Window.LeftWidgetsBG = CreateFrame("Frame", nil, Window)
 	Window.LeftWidgetsBG:SetWidth(GROUP_WIDTH + (SPACING * 2))
@@ -348,8 +353,10 @@ function GUI:CreateWidgetWindow(category, name, parent)
 	Window.RightWidgetsBG.Backdrop:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	Window.RightWidgetsBG.Backdrop:SetBackdropBorderColor(0, 0, 0)
 	
-	Window.Parent = self
-	Window.Button = Button
+	Window.Category = category
+	Window.Name = name
+	Window.Parent = parent
+	
 	Window.SortWindow = SortWindow
 	Window.LeftWidgets = {}
 	Window.RightWidgets = {}
@@ -660,6 +667,42 @@ function GUI:AddSettings(category, name, arg1, arg2)
 		
 		tinsert(self.OnLoadCalls[category][arg1].Children[name].Calls, arg2)
 		tinsert(self.ButtonQueue, {category, name, arg1})
+	end
+end
+
+function GUI:AddWindowHook(hook, category, name, arg1, arg2)
+	if (not self.WindowHooks[hook][category]) then
+		self.WindowHooks[hook][category] = {}
+	end
+	
+	if (not self.WindowHooks[hook][category][name]) then
+		self.WindowHooks[hook][category][name] = {Hooks = {}}
+	end
+	
+	if (type(arg1) == "function") then
+		tinsert(self.WindowHooks[hook][category][name].Hooks, arg1)
+	elseif (type(arg1) == "string") then
+		if (not self.WindowHooks[hook][category][arg1].Children) then
+			self.WindowHooks[hook][category][arg1].Children = {}
+		end
+		
+		self.WindowHooks[hook][category][arg1].Children[name] = {Hooks = {}}
+		
+		tinsert(self.WindowHooks[hook][category][arg1].Children[name].Hooks, arg2)
+	end
+end
+
+function GUI:FireHook(hook, category, name, parent)
+	if parent then
+		if (self.WindowHooks[hook][category] and self.WindowHooks[hook][category][parent]) then
+			for i = 1, #self.WindowHooks[hook][category][parent].Children[name].Hooks do
+				self.WindowHooks[hook][category][parent].Children[name].Hooks[i]()
+			end
+		end
+	elseif (self.WindowHooks[hook][category] and self.WindowHooks[hook][category][name]) then
+		for i = 1, #self.WindowHooks[hook][category][name].Hooks do
+			self.WindowHooks[hook][category][name].Hooks[i]()
+		end
 	end
 end
 
