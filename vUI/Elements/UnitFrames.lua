@@ -492,13 +492,13 @@ local PostCreateIcon = function(unit, button)
 	
 	button.count:SetPoint("BOTTOMRIGHT", 1, 2)
 	button.count:SetJustifyH("RIGHT")
-	vUI:SetFontInfo(button.count, Settings["ui-widget-font"], Settings["ui-font-size"], "OUTLINE")
+	vUI:SetFontInfo(button.count, Settings["unitframes-font"], Settings["unitframes-font-size"], "OUTLINE")
 	
 	button.overlayFrame = CreateFrame("Frame", nil, button)
 	button.overlayFrame:SetFrameLevel(button.cd:GetFrameLevel() + 1)	 
 	
 	button.Time = button:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(button.Time, Settings["ui-widget-font"], Settings["ui-font-size"], "OUTLINE")
+	vUI:SetFontInfo(button.Time, Settings["unitframes-font"], Settings["unitframes-font-size"], "OUTLINE")
 	button.Time:SetPoint("TOPLEFT", 2, -2)
 	button.Time:SetJustifyH("LEFT")
 	
@@ -929,12 +929,12 @@ local StylePlayer = function(self, unit)
 	HealthBG:SetAlpha(0.2)
 	
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthLeft, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthLeft:SetPoint("LEFT", Health, 3, 0)
 	HealthLeft:SetJustifyH("LEFT")
 	
 	local HealthRight = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthRight, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthRight, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthRight:SetPoint("RIGHT", Health, -3, 0)
 	HealthRight:SetJustifyH("RIGHT")
 	
@@ -977,12 +977,12 @@ local StylePlayer = function(self, unit)
 		PowerBG:SetAlpha(0.2)
 		
 		local PowerRight = Power:CreateFontString(nil, "OVERLAY")
-		vUI:SetFontInfo(PowerRight, Settings["ui-widget-font"], Settings["ui-font-size"])
+		vUI:SetFontInfo(PowerRight, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 		PowerRight:SetPoint("RIGHT", Power, -3, 0)
 		PowerRight:SetJustifyH("RIGHT")
 		
 		local PowerLeft = Power:CreateFontString(nil, "OVERLAY")
-		vUI:SetFontInfo(PowerLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
+		vUI:SetFontInfo(PowerLeft, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 		PowerLeft:SetPoint("LEFT", Power, 3, 0)
 		PowerLeft:SetJustifyH("LEFT")
 		
@@ -1037,15 +1037,15 @@ local StylePlayer = function(self, unit)
 		
 		-- Add a timer
 		local Time = Castbar:CreateFontString(nil, "OVERLAY")
-		vUI:SetFontInfo(Time, Settings["ui-widget-font"], Settings["ui-font-size"])
+		vUI:SetFontInfo(Time, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 		Time:SetPoint("RIGHT", Castbar, -3, 0)
 		Time:SetJustifyH("RIGHT")
 		
 		-- Add spell text
 		local Text = Castbar:CreateFontString(nil, "OVERLAY")
-		vUI:SetFontInfo(Text, Settings["ui-widget-font"], Settings["ui-font-size"])
+		vUI:SetFontInfo(Text, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 		Text:SetPoint("LEFT", Castbar, 3, 0)
-		Text:SetSize(Settings["unitframes-player-cast-width"] * 0.7, Settings["ui-font-size"])
+		Text:SetSize(Settings["unitframes-player-cast-width"] * 0.7, Settings["unitframes-font-size"])
 		Text:SetJustifyH("LEFT")
 		
 		-- Add spell icon
@@ -1397,12 +1397,12 @@ local StyleTarget = function(self, unit)
 	HealthBG:SetAlpha(0.2)
 	
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthLeft, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthLeft:SetPoint("LEFT", Health, 3, 0)
 	HealthLeft:SetJustifyH("LEFT")
 	
 	local HealthRight = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthRight, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthRight, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthRight:SetPoint("RIGHT", Health, -3, 0)
 	HealthRight:SetJustifyH("RIGHT")
 	
@@ -1436,12 +1436,12 @@ local StyleTarget = function(self, unit)
 	PowerBG:SetAlpha(0.2)
 	
 	local PowerLeft = Power:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(PowerLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(PowerLeft, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	PowerLeft:SetPoint("LEFT", Power, 3, 0)
 	PowerLeft:SetJustifyH("LEFT")
 	
 	local PowerRight = Power:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(PowerRight, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(PowerRight, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	PowerRight:SetPoint("RIGHT", Power, -3, 0)
 	PowerRight:SetJustifyH("RIGHT")
 	
@@ -1504,15 +1504,15 @@ local StyleTarget = function(self, unit)
 		
 		-- Add a timer
 		local Time = Castbar:CreateFontString(nil, "OVERLAY")
-		vUI:SetFontInfo(Time, Settings["ui-widget-font"], Settings["ui-font-size"])
+		vUI:SetFontInfo(Time, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 		Time:SetPoint("RIGHT", Castbar, -3, 0)
 		Time:SetJustifyH("RIGHT")
 		
 		-- Add spell text
 		local Text = Castbar:CreateFontString(nil, "OVERLAY")
-		vUI:SetFontInfo(Text, Settings["ui-widget-font"], Settings["ui-font-size"])
+		vUI:SetFontInfo(Text, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 		Text:SetPoint("LEFT", Castbar, 3, 0)
-		Text:SetSize(Settings["unitframes-target-cast-width"] * 0.7, Settings["ui-font-size"])
+		Text:SetSize(Settings["unitframes-target-cast-width"] * 0.7, Settings["unitframes-font-size"])
 		Text:SetJustifyH("LEFT")
 		
 		-- Add spell icon
@@ -1604,12 +1604,12 @@ local StyleTargetTarget = function(self, unit)
 	HealthBG:SetAlpha(0.2)
 	
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthLeft, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthLeft:SetPoint("LEFT", Health, 3, 0)
 	HealthLeft:SetJustifyH("LEFT")
 	
 	local HealthRight = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthRight, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthRight, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthRight:SetPoint("RIGHT", Health, -3, 0)
 	HealthRight:SetJustifyH("RIGHT")
 	
@@ -1708,12 +1708,12 @@ local StylePet = function(self, unit)
 	HealthBG:SetAlpha(0.2)
 	
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthLeft, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthLeft:SetPoint("LEFT", Health, 3, 0)
 	HealthLeft:SetJustifyH("LEFT")
 	
 	local HealthRight = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthRight, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthRight, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthRight:SetPoint("RIGHT", Health, -3, 0)
 	HealthRight:SetJustifyH("RIGHT")
 	
@@ -1805,12 +1805,12 @@ local StyleFocus = function(self, unit)
 	HealthBG:SetAlpha(0.2)
 	
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthLeft, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthLeft:SetPoint("LEFT", Health, 3, 0)
 	HealthLeft:SetJustifyH("LEFT")
 	
 	local HealthRight = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthRight, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthRight, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthRight:SetPoint("RIGHT", Health, -3, 0)
 	HealthRight:SetJustifyH("RIGHT")
 	
@@ -1863,15 +1863,15 @@ local StyleFocus = function(self, unit)
 	
     -- Add a timer
     local Time = Castbar:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(Time, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(Time, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	Time:SetPoint("RIGHT", Castbar, -3, 0)
 	Time:SetJustifyH("RIGHT")
 	
     -- Add spell text
     local Text = Castbar:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(Text, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(Text, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	Text:SetPoint("LEFT", Castbar, 3, 0)
-	Text:SetSize(250 * 0.7, Settings["ui-font-size"])
+	Text:SetSize(250 * 0.7, Settings["unitframes-font-size"])
 	Text:SetJustifyH("LEFT")
 	
     -- Add spell icon
@@ -2077,22 +2077,22 @@ local StyleParty = function(self, unit)
 	Health.DeadAnim.Out:SetChange(0)
 	
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthLeft, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
 	HealthLeft:SetPoint("LEFT", Health, 3, 0)
 	HealthLeft:SetJustifyH("LEFT")
 	
 	local HealthRight = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthRight, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthRight, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
 	HealthRight:SetPoint("RIGHT", Health, -3, 0)
 	HealthRight:SetJustifyH("RIGHT")
 	
 	local HealthMiddle = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthMiddle, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthMiddle, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
 	HealthMiddle:SetPoint("CENTER", Health, 0, -1)
 	HealthMiddle:SetJustifyH("CENTER")
 	
 	local HealthBottom = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthBottom, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthBottom, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
 	HealthBottom:SetPoint("BOTTOM", Health, 0, 1)
 	HealthBottom:SetJustifyH("CENTER")
 	
@@ -2173,7 +2173,7 @@ local StyleParty = function(self, unit)
 			end
 			
 			local Count = Icon:CreateFontString(nil, "OVERLAY")
-			vUI:SetFontInfo(Count, Settings["ui-widget-font"], 10)
+			vUI:SetFontInfo(Count, Settings["party-font"], 10)
 			Count:SetPoint("CENTER", unpack(Offsets[spell[2]]))
 			Icon.count = Count
 			
@@ -2239,7 +2239,7 @@ local StyleParty = function(self, unit)
 	Dispel.cd:SetDrawEdge(false)
 	
 	Dispel.count = Dispel.cd:CreateFontString(nil, "ARTWORK", 7)
-	vUI:SetFontInfo(Dispel.count, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(Dispel.count, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
 	Dispel.count:SetPoint("BOTTOMRIGHT", Dispel, "BOTTOMRIGHT", -3, 3)
 	Dispel.count:SetTextColor(1, 1, 1)
 	Dispel.count:SetJustifyH("RIGHT")
@@ -2313,17 +2313,17 @@ local StylePartyPet = function(self, unit)
 	HealthBG:SetAlpha(0.2)
 	
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthLeft, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
 	HealthLeft:SetPoint("LEFT", Health, 3, 0)
 	HealthLeft:SetJustifyH("LEFT")
 	
 	local HealthRight = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthRight, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthRight, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
 	HealthRight:SetPoint("RIGHT", Health, -3, 0)
 	HealthRight:SetJustifyH("RIGHT")
 	
 	local HealthMiddle = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthMiddle, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthMiddle, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
 	HealthMiddle:SetPoint("CENTER", Health, 0, -1)
 	HealthMiddle:SetJustifyH("CENTER")
 	
@@ -2390,12 +2390,12 @@ local StyleRaid = function(self, unit)
 	HealthBG:SetAlpha(0.2)
 	
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthLeft, Settings["raid-font"], Settings["raid-font-size"], Settings["raid-font-flags"])
 	HealthLeft:SetPoint("LEFT", Health, 3, 0)
 	HealthLeft:SetJustifyH("LEFT")
 	
 	local HealthRight = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthRight, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthRight, Settings["raid-font"], Settings["raid-font-size"], Settings["raid-font-flags"])
 	HealthRight:SetPoint("RIGHT", Health, -3, 0)
 	HealthRight:SetJustifyH("RIGHT")
 	
@@ -2454,7 +2454,7 @@ local StyleRaid = function(self, unit)
 	Dispel.cd:SetDrawEdge(false)
 	
 	Dispel.count = Dispel.cd:CreateFontString(nil, "ARTWORK", 7)
-	vUI:SetFontInfo(Dispel.count, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(Dispel.count, Settings["raid-font"], Settings["raid-font-size"], Settings["raid-font-flags"])
 	Dispel.count:SetPoint("BOTTOMRIGHT", Dispel, "BOTTOMRIGHT", -3, 3)
 	Dispel.count:SetTextColor(1, 1, 1)
 	Dispel.count:SetJustifyH("RIGHT")
@@ -2521,12 +2521,12 @@ local StyleBoss = function(self, unit)
 	HealthBG:SetAlpha(0.2)
 	
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthLeft, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthLeft:SetPoint("LEFT", Health, 3, 0)
 	HealthLeft:SetJustifyH("LEFT")
 	
 	local HealthRight = Health:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(HealthRight, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(HealthRight, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthRight:SetPoint("RIGHT", Health, -3, 0)
 	HealthRight:SetJustifyH("RIGHT")
 	
@@ -2559,12 +2559,12 @@ local StyleBoss = function(self, unit)
 	PowerBG:SetAlpha(0.2)
 	
 	local PowerLeft = Power:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(PowerLeft, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(PowerLeft, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	PowerLeft:SetPoint("LEFT", Power, 3, 0)
 	PowerLeft:SetJustifyH("LEFT")
 	
 	local PowerRight = Power:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(PowerRight, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(PowerRight, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	PowerRight:SetPoint("RIGHT", Power, -3, 0)
 	PowerRight:SetJustifyH("RIGHT")
 	
@@ -2625,15 +2625,15 @@ local StyleBoss = function(self, unit)
 	
     -- Add a timer
     local Time = Castbar:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(Time, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(Time, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	Time:SetPoint("RIGHT", Castbar, -3, 0)
 	Time:SetJustifyH("RIGHT")
 	
     -- Add spell text
     local Text = Castbar:CreateFontString(nil, "OVERLAY")
-	vUI:SetFontInfo(Text, Settings["ui-widget-font"], Settings["ui-font-size"])
+	vUI:SetFontInfo(Text, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	Text:SetPoint("LEFT", Castbar, 3, 0)
-	Text:SetSize(250 * 0.7, Settings["ui-font-size"])
+	Text:SetSize(250 * 0.7, Settings["unitframes-font-size"])
 	Text:SetJustifyH("LEFT")
 	
     -- Add spell icon
@@ -3284,6 +3284,11 @@ end
 GUI:AddSettings(Language["General"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("unitframes-enable", Settings["unitframes-enable"], Language["Enable Unit Frames Module"], Language["Enable the unit frames module"], ReloadUI):RequiresReload(true)
+	
+	left:CreateHeader(Language["Font"])
+	left:CreateDropdown("unitframes-font", Settings["unitframes-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the unit frames"], nil, "Font")
+	left:CreateSlider("unitframes-font-size", Settings["unitframes-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the unit frames"])
+	left:CreateDropdown("unitframes-font-flags", Settings["unitframes-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the unit frames"])
 end)
 
 GUI:AddSettings(Language["General"], Language["Player"], Language["Unit Frames"], function(left, right)
@@ -3571,34 +3576,37 @@ GUI:AddSettings(Language["General"], Language["Party"], function(left, right)
 	left:CreateHeader(Language["Party Size"])
 	left:CreateSlider("party-width", Settings["party-width"], 40, 200, 1, Language["Width"], Language["Set the width of the party unit frame"], UpdatePartyWidth)
 	
-	left:CreateHeader(Language["Health"])
-	left:CreateSlider("party-health-height", Settings["party-health-height"], 12, 60, 1, Language["Health Height"], Language["Set the height of party health bars"], UpdatePartyHealthHeight)
-	left:CreateDropdown("party-health-color", Settings["party-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdatePartyHealthColor)
-	left:CreateDropdown("party-health-orientation", Settings["party-health-orientation"], {[Language["Horizontal"]] = "HORIZONTAL", [Language["Vertical"]] = "VERTICAL"}, Language["Fill Orientation"], Language["Set the fill orientation of the health bar"], UpdatePartyHealthOrientation)
-	left:CreateSwitch("party-health-reverse", Settings["party-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePartyHealthReverseFill)
+	left:CreateHeader(Language["Font"])
+	left:CreateDropdown("unitframes-font", Settings["unitframes-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the unit frames"], nil, "Font")
+	left:CreateSlider("unitframes-font-size", Settings["unitframes-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the unit frames"])
+	left:CreateDropdown("unitframes-font-flags", Settings["unitframes-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the unit frames"])
 	
-	left:CreateHeader(Language["Power"])
-	left:CreateSlider("party-power-height", Settings["party-power-height"], 2, 30, 1, Language["Power Height"], Language["Set the height of party power bars"], UpdatePartyPowerHeight)
-	left:CreateDropdown("party-power-color", Settings["party-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePartyPowerColor)
-	left:CreateSwitch("party-power-reverse", Settings["party-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePartyPowerReverseFill)
+	right:CreateHeader(Language["Health"])
+	right:CreateSlider("party-health-height", Settings["party-health-height"], 12, 60, 1, Language["Health Height"], Language["Set the height of party health bars"], UpdatePartyHealthHeight)
+	right:CreateDropdown("party-health-color", Settings["party-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdatePartyHealthColor)
+	right:CreateDropdown("party-health-orientation", Settings["party-health-orientation"], {[Language["Horizontal"]] = "HORIZONTAL", [Language["Vertical"]] = "VERTICAL"}, Language["Fill Orientation"], Language["Set the fill orientation of the health bar"], UpdatePartyHealthOrientation)
+	right:CreateSwitch("party-health-reverse", Settings["party-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePartyHealthReverseFill)
 	
-	right:CreateHeader(Language["Styling"])
-	right:CreateSwitch("party-show-debuffs", Settings["party-show-debuffs"], Language["Enable Debuffs"], Language["Display debuffs on party members"], UpdatePartyShowDebuffs)
-	right:CreateSwitch("party-show-role", Settings["party-show-role"], Language["Enable Role Icons"], Language["Display role icons on party members"], UpdatePartyShowRole)
+	right:CreateHeader(Language["Power"])
+	right:CreateSlider("party-power-height", Settings["party-power-height"], 2, 30, 1, Language["Power Height"], Language["Set the height of party power bars"], UpdatePartyPowerHeight)
+	right:CreateDropdown("party-power-color", Settings["party-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePartyPowerColor)
+	right:CreateSwitch("party-power-reverse", Settings["party-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePartyPowerReverseFill)
 	
-	right:CreateHeader(Language["Range Opacity"])
-	right:CreateSlider("party-in-range", Settings["party-in-range"], 0, 100, 5, Language["In Range"], Language["Set the opacity of party members within range of you"])
-	right:CreateSlider("party-out-of-range", Settings["party-out-of-range"], 0, 100, 5, Language["Out of Range"], Language["Set the opacity of party members out of your range"])
+	left:CreateHeader(Language["Styling"])
+	left:CreateSwitch("party-show-debuffs", Settings["party-show-debuffs"], Language["Enable Debuffs"], Language["Display debuffs on party members"], UpdatePartyShowDebuffs)
+	left:CreateSwitch("party-show-role", Settings["party-show-role"], Language["Enable Role Icons"], Language["Display role icons on party members"], UpdatePartyShowRole)
 	
-	right:CreateHeader(Language["Attributes"])
-	right:CreateSlider("party-x-offset", Settings["party-x-offset"], -10, 10, 1, Language["X Offset"], Language["Set the x offset of party units from eachother"], UpdatePartyXOffset)
-	right:CreateSlider("party-y-offset", Settings["party-y-offset"], -10, 10, 1, Language["Y Offset"], Language["Set the y offset of party units from eachother"], UpdatePartyYOffset)
-	right:CreateDropdown("party-point", Settings["party-point"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Top"]] = "TOP", [Language["Bottom"]] = "BOTTOM"}, Language["Anchor Point"], Language["Set where new party members will anchor to previous ones"], UpdatePartyAnchor)
+	left:CreateHeader(Language["Range Opacity"])
+	left:CreateSlider("party-in-range", Settings["party-in-range"], 0, 100, 5, Language["In Range"], Language["Set the opacity of party members within range of you"])
+	left:CreateSlider("party-out-of-range", Settings["party-out-of-range"], 0, 100, 5, Language["Out of Range"], Language["Set the opacity of party members out of your range"])
+	
+	left:CreateHeader(Language["Attributes"])
+	left:CreateSlider("party-x-offset", Settings["party-x-offset"], -10, 10, 1, Language["X Offset"], Language["Set the x offset of party units from eachother"], UpdatePartyXOffset)
+	left:CreateSlider("party-y-offset", Settings["party-y-offset"], -10, 10, 1, Language["Y Offset"], Language["Set the y offset of party units from eachother"], UpdatePartyYOffset)
+	left:CreateDropdown("party-point", Settings["party-point"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Top"]] = "TOP", [Language["Bottom"]] = "BOTTOM"}, Language["Anchor Point"], Language["Set where new party members will anchor to previous ones"], UpdatePartyAnchor)
 	
 	right:CreateHeader(Language["Party Pets Size"])
 	right:CreateSlider("party-pets-width", Settings["party-pets-width"], 40, 200, 1, Language["Width"], Language["Set the width of party pet unit frames"], ReloadUI, nil):RequiresReload(true)
-	--Defaults["party-pets-health-height"] = 0 -- NYI
-	--Defaults["party-pets-power-height"] = 22
 end)
 
 local UpdateRaidAnchorSize = function()

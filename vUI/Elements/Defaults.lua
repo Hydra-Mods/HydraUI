@@ -67,6 +67,9 @@ Defaults["unitframes-only-player-debuffs"] = false
 Defaults["unitframes-show-player-buffs"] = true
 Defaults["unitframes-show-target-buffs"] = true
 Defaults["unitframes-show-druid-mana"] = true
+Defaults["unitframes-font"] = "Roboto"
+Defaults["unitframes-font-size"] = 12
+Defaults["unitframes-font-flags"] = ""
 
 -- Unitframes: Player
 Defaults["unitframes-player-width"] = 238
@@ -179,6 +182,9 @@ Defaults["party-power-smooth"] = true
 Defaults["party-x-offset"] = 2
 Defaults["party-y-offset"] = 0
 Defaults["party-point"] = "LEFT"
+Defaults["party-font"] = "Roboto"
+Defaults["party-font-size"] = 12
+Defaults["party-font-flags"] = ""
 
 -- Unitframes: Party Pets
 Defaults["party-pets-enable"] = true
@@ -213,6 +219,9 @@ Defaults["raid-column-spacing"] = 2
 Defaults["raid-point"] = "LEFT"
 Defaults["raid-column-anchor"] = "TOP"
 Defaults["raid-sorting-method"] = "GROUP"
+Defaults["raid-font"] = "Roboto"
+Defaults["raid-font-size"] = 12
+Defaults["raid-font-flags"] = ""
 
 -- Name Plates
 Defaults["nameplates-enable"] = true
