@@ -386,8 +386,7 @@ function GUI:CreateWidgetWindow(category, name, parent)
 	return Window
 end
 
-function GUI:ShowWindow(category, name, parent)
-	-- add hooks here?
+function GUI:ShowWindow(category, name, parent) -- Still need to add hooks
 	for i = 1, #self.Categories do
 		for j = 1, #self.Categories[i].Buttons do
 			if parent then
@@ -765,7 +764,7 @@ function GUI:SetSelectionOffset(offset)
 	self:ScrollSelections()
 end
 
-local SetSelectionOffsetByDelta = function(self, delta)
+function GUI:SetSelectionOffsetByDelta(delta)
 	if (delta == 1) then -- Up
 		self.Offset = self.Offset - 1
 		
@@ -913,9 +912,6 @@ function GUI:CreateGUI()
 	ScrollBar:SetScript("OnMouseWheel", SelectionScrollBarOnMouseWheel)
 	ScrollBar:SetScript("OnValueChanged", SelectionScrollBarOnValueChanged)
 	
-	--self.ScrollSelections = ScrollSelections
-	--self.SetSelectionOffset = SetSelectionOffset
-	self.SetSelectionOffsetByDelta = SetSelectionOffsetByDelta
 	self.ScrollBar = ScrollBar
 	
 	local Thumb = ScrollBar:GetThumbTexture() 
