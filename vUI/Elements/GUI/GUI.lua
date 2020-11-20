@@ -27,7 +27,6 @@ local floor = math.floor
 
 -- Storage
 GUI.Categories = {}
-GUI.CategoryNames = {}
 GUI.Widgets = {}
 GUI.OnLoadCalls = {}
 GUI.Buttons = {}
@@ -265,8 +264,8 @@ function GUI:CreateCategory(name)
 	
 	self.TotalSelections = (self.TotalSelections or 0) + 1
 	
-	tinsert(self.Categories, Category)
-	self.CategoryNames[name] = Category
+	self.Categories[#self.Categories + 1] = Category
+	self.Categories[name] = Category
 end
 
 local SortWindow = function(self)
@@ -306,6 +305,12 @@ end
 
 local DisableScrolling = function(self)
 	self.ScrollingDisabled = true
+end
+
+function GUI:CreateWidget(widget, ...)
+	if self.Widgets[widget] then
+		self.Widgets[widget](...)
+	end
 end
 
 function GUI:CreateWidgetWindow(category, name, parent)
@@ -535,11 +540,11 @@ function GUI:CreateWindow(category, name, parent)
 		return
 	end
 	
-	if (not self.CategoryNames[category]) then
+	if (not self.Categories[category]) then
 		self:CreateCategory(category)
 	end
 	
-	local Category = self.CategoryNames[category]
+	local Category = self.Categories[category]
 	
 	local Button = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	Button:SetSize(MENU_BUTTON_WIDTH, WIDGET_HEIGHT, "BackdropTemplate")
@@ -659,33 +664,33 @@ function GUI:AddSettings(category, name, arg1, arg2)
 end
 
 function GUI:GetWidget(category, name, arg1, arg2)
-	for i = 1, #self.CategoryNames[category].Buttons do
-		if (arg2 and self.CategoryNames[category].Buttons[i].Children) then
-			for o = 1, #self.CategoryNames[category].Buttons[i].Children do
-				if self.CategoryNames[category].Buttons[i].Children[o].Window then
-					for n = 1, #self.CategoryNames[category].Buttons[i].Children[o].Window.LeftWidgets do
-						if (self.CategoryNames[category].Buttons[i].Children[o].Window.LeftWidgets[n].ID == arg2) then
-							return self.CategoryNames[category].Buttons[i].Children[o].Window.LeftWidgets[n]
+	for i = 1, #self.Categories[category].Buttons do
+		if (arg2 and self.Categories[category].Buttons[i].Children) then
+			for o = 1, #self.Categories[category].Buttons[i].Children do
+				if self.Categories[category].Buttons[i].Children[o].Window then
+					for n = 1, #self.Categories[category].Buttons[i].Children[o].Window.LeftWidgets do
+						if (self.Categories[category].Buttons[i].Children[o].Window.LeftWidgets[n].ID == arg2) then
+							return self.Categories[category].Buttons[i].Children[o].Window.LeftWidgets[n]
 						end
 					end
 					
-					for n = 1, #self.CategoryNames[category].Buttons[i].Children[o].Window.RightWidgets do
-						if (self.CategoryNames[category].Buttons[i].Children[o].Window.RightWidgets[n].ID == arg2) then
-							return self.CategoryNames[category].Buttons[i].Children[o].Window.RightWidgets[n]
+					for n = 1, #self.Categories[category].Buttons[i].Children[o].Window.RightWidgets do
+						if (self.Categories[category].Buttons[i].Children[o].Window.RightWidgets[n].ID == arg2) then
+							return self.Categories[category].Buttons[i].Children[o].Window.RightWidgets[n]
 						end
 					end
 				end
 			end
-		elseif self.CategoryNames[category].Buttons[i].Window then
-			for n = 1, #self.CategoryNames[category].Buttons[i].Window.LeftWidgets do
-				if (self.CategoryNames[category].Buttons[i].Window.LeftWidgets[n].ID == arg1) then
-					return self.CategoryNames[category].Buttons[i].Window.LeftWidgets[n]
+		elseif self.Categories[category].Buttons[i].Window then
+			for n = 1, #self.Categories[category].Buttons[i].Window.LeftWidgets do
+				if (self.Categories[category].Buttons[i].Window.LeftWidgets[n].ID == arg1) then
+					return self.Categories[category].Buttons[i].Window.LeftWidgets[n]
 				end
 			end
 			
-			for n = 1, #self.CategoryNames[category].Buttons[i].Window.RightWidgets do
-				if (self.CategoryNames[category].Buttons[i].Window.RightWidgets[n].ID == arg1) then
-					return self.CategoryNames[category].Buttons[i].Window.RightWidgets[n]
+			for n = 1, #self.Categories[category].Buttons[i].Window.RightWidgets do
+				if (self.Categories[category].Buttons[i].Window.RightWidgets[n].ID == arg1) then
+					return self.Categories[category].Buttons[i].Window.RightWidgets[n]
 				end
 			end
 		end

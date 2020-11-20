@@ -2398,7 +2398,7 @@ local MAX_SWATCHES_X = 20
 local MAX_SWATCHES_Y = 10
 
 local ColorSwatchOnMouseUp = function(self)
-	GUI.ColorPicker.Transition:SetChange(HexToRGB(self.Value))
+	GUI.ColorPicker.Transition:SetChange(vUI:HexToRGB(self.Value))
 	GUI.ColorPicker.Transition:Play()
 	GUI.ColorPicker.NewHexText:SetText("#"..self.Value)
 	GUI.ColorPicker.Selected = self.Value
@@ -2418,7 +2418,7 @@ local ColorPickerAccept = function(self)
 	local Active = self:GetParent().Active
 	
 	if GUI.ColorPicker.Selected then
-		Active.Transition:SetChange(HexToRGB(GUI.ColorPicker.Selected))
+		Active.Transition:SetChange(vUI:HexToRGB(GUI.ColorPicker.Selected))
 		Active.Transition:Play()
 		
 		Active.MiddleText:SetText("#"..upper(GUI.ColorPicker.Selected))
@@ -2468,7 +2468,7 @@ local SwatchEditBoxOnEditFocusLost = function(self)
 	if (Value and match(Value, "%x%x%x%x%x%x")) then
 		self:SetText("#"..Value)
 		
-		GUI.ColorPicker.Transition:SetChange(HexToRGB(Value))
+		GUI.ColorPicker.Transition:SetChange(vUI:HexToRGB(Value))
 		GUI.ColorPicker.Selected = Value
 	elseif (Value and Value == "CLASS") then
 		local ClassColor = RAID_CLASS_COLORS[vUI.UserClass]
@@ -2476,14 +2476,14 @@ local SwatchEditBoxOnEditFocusLost = function(self)
 		
 		self:SetText("#"..upper(ClassHex))
 		
-		GUI.ColorPicker.Transition:SetChange(HexToRGB(ClassHex))
+		GUI.ColorPicker.Transition:SetChange(vUI:HexToRGB(ClassHex))
 		GUI.ColorPicker.Selected = ClassHex
 	else
 		vUI:print(format('Invalid hex code "%s".', Value))
 		
 		self:SetText("#" .. GUI.ColorPicker.Active.Value)
 		
-		GUI.ColorPicker.Transition:SetChange(HexToRGB(GUI.ColorPicker.Active.Value))
+		GUI.ColorPicker.Transition:SetChange(vUI:HexToRGB(GUI.ColorPicker.Active.Value))
 		GUI.ColorPicker.Selected = GUI.ColorPicker.Active.Value
 	end
 	
