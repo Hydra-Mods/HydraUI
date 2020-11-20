@@ -82,11 +82,3 @@ GUI:AddSettings(Language["Info"], Language["Supporters"], function(left, right)
 	left:CreateLine("")
 	left:CreateLine(format("- |cFF%sHydra|r", Settings["ui-header-font-color"]))
 end)
-
-GUI:AddWindowHook("onshow", Language["Info"], Language["Credits"], function()
-	print('onshow')
-end)
-
-GUI:AddWindowHook("onhide", Language["Info"], Language["Credits"], function()
-	print('onhide')
-end)
