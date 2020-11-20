@@ -430,21 +430,39 @@ function GUI:ShowWindow(category, name, parent)
 				self.Categories[i].Buttons[j].Window:Show()
 				
 				if self.Categories[i].Buttons[j].Children then
-					self.Categories[i].Buttons[j].Arrow:SetTexture(Assets:GetTexture("Arrow Up"))
-					
-					for o = 1, #self.Categories[i].Buttons[j].Children do
-						if self.Categories[i].Buttons[j].Children[o].Window then
-							self.Categories[i].Buttons[j].Children[o].Window:Hide()
-							
-							if (self.Categories[i].Buttons[j].Children[o].Selected:GetAlpha() > 0) then
-								self.Categories[i].Buttons[j].Children[o].FadeOut:Play()
+					if self.Categories[i].Buttons[j].ChildrenShown then
+						self.Categories[i].Buttons[j].Arrow:SetTexture(Assets:GetTexture("Arrow Down"))
+						
+						for o = 1, #self.Categories[i].Buttons[j].Children do
+							if self.Categories[i].Buttons[j].Children[o].Window then
+								self.Categories[i].Buttons[j].Children[o].Window:Hide()
+								
+								if (self.Categories[i].Buttons[j].Children[o].Selected:GetAlpha() > 0) then
+									self.Categories[i].Buttons[j].Children[o].FadeOut:Play()
+								end
 							end
+							
+							self.Categories[i].Buttons[j].Children[o]:Hide()
 						end
 						
-						self.Categories[i].Buttons[j].Children[o]:Hide()
+						self.Categories[i].Buttons[j].ChildrenShown = false
+					else
+						self.Categories[i].Buttons[j].Arrow:SetTexture(Assets:GetTexture("Arrow Up"))
+						
+						for o = 1, #self.Categories[i].Buttons[j].Children do
+							if self.Categories[i].Buttons[j].Children[o].Window then
+								self.Categories[i].Buttons[j].Children[o].Window:Hide()
+								
+								if (self.Categories[i].Buttons[j].Children[o].Selected:GetAlpha() > 0) then
+									self.Categories[i].Buttons[j].Children[o].FadeOut:Play()
+								end
+							end
+							
+							self.Categories[i].Buttons[j].Children[o]:Hide()
+						end
+						
+						self.Categories[i].Buttons[j].ChildrenShown = true
 					end
-					
-					self.Categories[i].Buttons[j].ChildrenShown = true
 				end
 			else
 				if self.Categories[i].Buttons[j].Window then
@@ -506,7 +524,7 @@ end
 function GUI:HasButton(category, name, parent)
 	if parent then
 		if (self.Buttons[category] and self.Buttons[category][parent]) then
-			return (self.Buttons[category] and self.Buttons[category][parent][name])
+			return self.Buttons[category][parent][name]
 		end
 	else
 		return (self.Buttons[category] and self.Buttons[category][name])
@@ -641,6 +659,40 @@ function GUI:AddSettings(category, name, arg1, arg2)
 	end
 end
 
+function GUI:GetWidget(category, name, arg1, arg2)
+	for i = 1, #self.CategoryNames[category].Buttons do
+		if (arg2 and self.CategoryNames[category].Buttons[i].Children) then
+			for o = 1, #self.CategoryNames[category].Buttons[i].Children do
+				if self.CategoryNames[category].Buttons[i].Children[o].Window then
+					for n = 1, #self.CategoryNames[category].Buttons[i].Children[o].Window.LeftWidgets do
+						if (self.CategoryNames[category].Buttons[i].Children[o].Window.LeftWidgets[n].ID == arg2) then
+							return self.CategoryNames[category].Buttons[i].Children[o].Window.LeftWidgets[n]
+						end
+					end
+					
+					for n = 1, #self.CategoryNames[category].Buttons[i].Children[o].Window.RightWidgets do
+						if (self.CategoryNames[category].Buttons[i].Children[o].Window.RightWidgets[n].ID == arg2) then
+							return self.CategoryNames[category].Buttons[i].Children[o].Window.RightWidgets[n]
+						end
+					end
+				end
+			end
+		elseif self.CategoryNames[category].Buttons[i].Window then
+			for n = 1, #self.CategoryNames[category].Buttons[i].Window.LeftWidgets do
+				if (self.CategoryNames[category].Buttons[i].Window.LeftWidgets[n].ID == arg1) then
+					return self.CategoryNames[category].Buttons[i].Window.LeftWidgets[n]
+				end
+			end
+			
+			for n = 1, #self.CategoryNames[category].Buttons[i].Window.RightWidgets do
+				if (self.CategoryNames[category].Buttons[i].Window.RightWidgets[n].ID == arg1) then
+					return self.CategoryNames[category].Buttons[i].Window.RightWidgets[n]
+				end
+			end
+		end
+	end
+end
+
 function GUI:ScrollSelections()
 	local Count = 0
 	
@@ -759,6 +811,12 @@ local FadeOnFinished = function(self)
 	self.Parent:Hide()
 end
 
+function GUI:OnEvent(event, ...)
+	if self[event] then
+		self[event](self, ...)
+	end
+end
+
 function GUI:CreateGUI()
 	-- This just makes the animation look better. That's all. ಠ_ಠ
 	self.BlackTexture = self:CreateTexture(nil, "BACKGROUND")
@@ -832,7 +890,7 @@ function GUI:CreateGUI()
 	
 	-- Selection parent
 	self.SelectionParent = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	self.SelectionParent:SetWidth(BUTTON_LIST_WIDTH + 16)
+	self.SelectionParent:SetWidth(BUTTON_LIST_WIDTH)
 	self.SelectionParent:SetPoint("BOTTOMLEFT", self, SPACING, SPACING)
 	self.SelectionParent:SetPoint("TOPLEFT", self.Header, "BOTTOMLEFT", 0, -2)
 	self.SelectionParent:SetBackdrop(vUI.BackdropAndBorder)
@@ -843,13 +901,13 @@ function GUI:CreateGUI()
 	-- Selection scrollbar
 	local ScrollBar = CreateFrame("Slider", nil, self.SelectionParent, "BackdropTemplate")
 	ScrollBar:SetWidth(14)
-	ScrollBar:SetPoint("TOPRIGHT", self.SelectionParent, -3, -3)
-	ScrollBar:SetPoint("BOTTOMRIGHT", self.SelectionParent, -3, 3)
+	ScrollBar:SetPoint("TOPLEFT", self.SelectionParent, "TOPRIGHT", 2, 0)
+	ScrollBar:SetPoint("BOTTOMLEFT", self.SelectionParent, "BOTTOMRIGHT", 2, 0)
 	ScrollBar:SetThumbTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	ScrollBar:SetOrientation("VERTICAL")
 	ScrollBar:SetValueStep(1)
 	ScrollBar:SetBackdrop(vUI.BackdropAndBorder)
-	ScrollBar:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
+	ScrollBar:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	ScrollBar:SetBackdropBorderColor(0, 0, 0)
 	ScrollBar:EnableMouseWheel(true)
 	ScrollBar:SetScript("OnMouseWheel", SelectionScrollBarOnMouseWheel)
@@ -942,25 +1000,47 @@ function GUI:CreateGUI()
 	self:SetSelectionOffset(1)
 	self.ScrollBar:Show()
 	
+	self:RegisterEvent("PLAYER_REGEN_DISABLED")
+	self:RegisterEvent("PLAYER_REGEN_ENABLED")
+	self:SetScript("OnEvent", self.OnEvent)
+	
 	self:ShowWindow("General", "General")
 	
 	self.Loaded = true
 end
 
 function GUI:Toggle()
-	if self.Loaded then
-		if self:IsVisible() then
-			self.ScaleOut:Play()
-			self.FadeOut:Play()
-		else
-			self:SetAlpha(0)
-			self:Show()
-			self.ScaleIn:Play()
-			self.FadeIn:Play()
+	if (not self.Loaded) then
+		self:CreateGUI()
+	end
+	
+	if self:IsShown() then
+		self.ScaleOut:Play()
+		self.FadeOut:Play()
+		
+		self:UnregisterEvent("MODIFIER_STATE_CHANGED")
+		
+		if Settings["gui-enable-fade"] then
+			self:UnregisterEvent("PLAYER_STARTED_MOVING")
+			self:UnregisterEvent("PLAYER_STOPPED_MOVING")
 		end
 	else
-		self:CreateGUI()
+		if (not self.Loaded) then
+			self:CreateGUI()
+		end
 		
+		if (Settings["gui-hide-in-combat"] and InCombatLockdown()) then
+			vUI:print(ERR_NOT_IN_COMBAT)
+			
+			return
+		end
+		
+		if Settings["gui-enable-fade"] then
+			self:RegisterEvent("PLAYER_STARTED_MOVING")
+			self:RegisterEvent("PLAYER_STOPPED_MOVING")
+		end
+		
+		self:RegisterEvent("MODIFIER_STATE_CHANGED")
 		self:SetAlpha(0)
 		self:Show()
 		self.ScaleIn:Play()
@@ -968,36 +1048,61 @@ function GUI:Toggle()
 	end
 end
 
-function GUI:GetWidget(category, name, arg1, arg2)
-	for i = 1, #self.CategoryNames[category].Buttons do
-		if (arg2 and self.CategoryNames[category].Buttons[i].Children) then
-			for o = 1, #self.CategoryNames[category].Buttons[i].Children do
-				if self.CategoryNames[category].Buttons[i].Children[o].Window then
-					for n = 1, #self.CategoryNames[category].Buttons[i].Children[o].Window.LeftWidgets do
-						if (self.CategoryNames[category].Buttons[i].Children[o].Window.LeftWidgets[n].ID == arg2) then
-							return self.CategoryNames[category].Buttons[i].Children[o].Window.LeftWidgets[n]
-						end
-					end
-					
-					for n = 1, #self.CategoryNames[category].Buttons[i].Children[o].Window.RightWidgets do
-						if (self.CategoryNames[category].Buttons[i].Children[o].Window.RightWidgets[n].ID == arg2) then
-							return self.CategoryNames[category].Buttons[i].Children[o].Window.RightWidgets[n]
-						end
-					end
-				end
-			end
-		elseif self.CategoryNames[category].Buttons[i].Window then
-			for n = 1, #self.CategoryNames[category].Buttons[i].Window.LeftWidgets do
-				if (self.CategoryNames[category].Buttons[i].Window.LeftWidgets[n].ID == arg1) then
-					return self.CategoryNames[category].Buttons[i].Window.LeftWidgets[n]
-				end
-			end
-			
-			for n = 1, #self.CategoryNames[category].Buttons[i].Window.RightWidgets do
-				if (self.CategoryNames[category].Buttons[i].Window.RightWidgets[n].ID == arg1) then
-					return self.CategoryNames[category].Buttons[i].Window.RightWidgets[n]
-				end
-			end
-		end
+function GUI:PLAYER_REGEN_DISABLED()
+	if (Settings["gui-hide-in-combat"] and self:IsVisible()) then
+		self:SetAlpha(0)
+		self:Hide()
+		--CloseLastDropdown()
+		self.WasCombatClosed = true
 	end
+end
+
+local ReopenWindow = function(self)
+	GUI:SetAlpha(0)
+	GUI:Show()
+	GUI.ScaleIn:Play()
+	GUI.FadeIn:Play()
+end
+
+function GUI:PLAYER_REGEN_ENABLED()
+	if (Settings["gui-hide-in-combat"] and self.WasCombatClosed) then
+		vUI:DisplayPopup(Language["Attention"], Language["The settings window was automatically closed due to combat. Would you like to open it again?"], Language["Accept"], ReopenWindow, Language["Decline"])
+	end
+	
+	self.WasCombatClosed = false
+end
+
+-- Enabling the mouse wheel will stop the scrolling if we pass over a widget, but I really want mousewheeling 
+function GUI:MODIFIER_STATE_CHANGED(key, state)
+	local MouseFocus = GetMouseFocus()
+	
+	if (not MouseFocus) then
+		return
+	end
+	
+	if (MouseFocus.OnMouseWheel and state == 1) then
+		MouseFocus:SetScript("OnMouseWheel", MouseFocus.OnMouseWheel)
+	elseif (MouseFocus.HasScript and MouseFocus:HasScript("OnMouseWheel")) then
+		MouseFocus:SetScript("OnMouseWheel", nil)
+	end
+end
+
+function GUI:PLAYER_STARTED_MOVING()
+	if self.Fader:IsPlaying() then
+		self.Fader:Stop()
+	end
+	
+	self.Fader:SetEasing("out")
+	self.Fader:SetChange(Settings["gui-faded-alpha"] / 100)
+	self.Fader:Play()
+end
+
+function GUI:PLAYER_STOPPED_MOVING()
+	if self.Fader:IsPlaying() then
+		self.Fader:Stop()
+	end
+	
+	self.Fader:SetEasing("in")
+	self.Fader:SetChange(1)
+	self.Fader:Play()
 end
