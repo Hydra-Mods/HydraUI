@@ -6,7 +6,7 @@ local WIDGET_HEIGHT = 20
 local LABEL_SPACING = 3
 local GROUP_WIDTH = 270
 local BUTTON_LIST_WIDTH = 112 -- 126
-local GUI_WIDTH = 712
+local GUI_WIDTH = 710
 local GUI_HEIGHT = 340
 local HEADER_WIDTH = GUI_WIDTH - (SPACING * 2)
 local HEADER_HEIGHT = 20
@@ -129,14 +129,90 @@ end
 local AddWindowScrollBar = function(self)
 	self.WidgetCount = max(#self.LeftWidgets, #self.RightWidgets)
 	
+	-- Scroll up
+	self.ScrollUp = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	self.ScrollUp:SetSize(16, WIDGET_HEIGHT)
+	self.ScrollUp:SetPoint("TOPRIGHT", GUI, -SPACING, -((SPACING * 2) + HEADER_HEIGHT - 1))
+	self.ScrollUp:SetBackdrop(vUI.BackdropAndBorder)
+	self.ScrollUp:SetBackdropColor(0, 0, 0, 0)
+	self.ScrollUp:SetBackdropBorderColor(0, 0, 0)
+	self.ScrollUp:SetScript("OnMouseUp", function(self)
+		self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
+		
+		WindowOnMouseWheel(self:GetParent(), 1)
+	end)
+	
+	self.ScrollUp:SetScript("OnMouseDown", function(self)
+		local R, G, B = vUI:HexToRGB(Settings["ui-widget-bright-color"])
+		
+		self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
+	end)
+	
+	self.ScrollUp.Texture = self.ScrollUp:CreateTexture(nil, "ARTWORK")
+	self.ScrollUp.Texture:SetPoint("TOPLEFT", self.ScrollUp, 1, -1)
+	self.ScrollUp.Texture:SetPoint("BOTTOMRIGHT", self.ScrollUp, -1, 1)
+	self.ScrollUp.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	self.ScrollUp.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
+	
+	self.ScrollUp.Highlight = self.ScrollUp:CreateTexture(nil, "HIGHLIGHT")
+	self.ScrollUp.Highlight:SetPoint("TOPLEFT", self.ScrollUp, 1, -1)
+	self.ScrollUp.Highlight:SetPoint("BOTTOMRIGHT", self.ScrollUp, -1, 1)
+	self.ScrollUp.Highlight:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	self.ScrollUp.Highlight:SetVertexColor(1, 1, 1)
+	self.ScrollUp.Highlight:SetAlpha(0.3)
+	
+	self.ScrollUp.Arrow = self.ScrollUp:CreateTexture(nil, "OVERLAY")
+	self.ScrollUp.Arrow:SetPoint("CENTER", self.ScrollUp, 0, 0)
+	self.ScrollUp.Arrow:SetSize(16, 16)
+	self.ScrollUp.Arrow:SetTexture(Assets:GetTexture("Arrow Up"))
+	self.ScrollUp.Arrow:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
+	
+	-- Scroll down
+	self.ScrollDown = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	self.ScrollDown:SetSize(16, WIDGET_HEIGHT)
+	self.ScrollDown:SetPoint("BOTTOMRIGHT", GUI, -SPACING, SPACING)
+	self.ScrollDown:SetBackdrop(vUI.BackdropAndBorder)
+	self.ScrollDown:SetBackdropColor(0, 0, 0, 0)
+	self.ScrollDown:SetBackdropBorderColor(0, 0, 0)
+	self.ScrollDown:SetScript("OnMouseUp", function(self)
+		self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
+		
+		WindowOnMouseWheel(self:GetParent(), -1)
+	end)
+	
+	self.ScrollDown:SetScript("OnMouseDown", function(self)
+		local R, G, B = vUI:HexToRGB(Settings["ui-widget-bright-color"])
+		
+		self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
+	end)
+	
+	self.ScrollDown.Texture = self.ScrollDown:CreateTexture(nil, "ARTWORK")
+	self.ScrollDown.Texture:SetPoint("TOPLEFT", self.ScrollDown, 1, -1)
+	self.ScrollDown.Texture:SetPoint("BOTTOMRIGHT", self.ScrollDown, -1, 1)
+	self.ScrollDown.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	self.ScrollDown.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
+	
+	self.ScrollDown.Highlight = self.ScrollDown:CreateTexture(nil, "HIGHLIGHT")
+	self.ScrollDown.Highlight:SetPoint("TOPLEFT", self.ScrollDown, 1, -1)
+	self.ScrollDown.Highlight:SetPoint("BOTTOMRIGHT", self.ScrollDown, -1, 1)
+	self.ScrollDown.Highlight:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	self.ScrollDown.Highlight:SetVertexColor(1, 1, 1)
+	self.ScrollDown.Highlight:SetAlpha(0.3)
+	
+	self.ScrollDown.Arrow = self.ScrollDown:CreateTexture(nil, "OVERLAY")
+	self.ScrollDown.Arrow:SetPoint("CENTER", self.ScrollDown, 0, 0)
+	self.ScrollDown.Arrow:SetSize(16, 16)
+	self.ScrollDown.Arrow:SetTexture(Assets:GetTexture("Arrow Down"))
+	self.ScrollDown.Arrow:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
+	
 	local ScrollBar = CreateFrame("Slider", nil, self, "BackdropTemplate")
-	ScrollBar:SetPoint("TOPLEFT", GUI.ScrollParent, 3, -3)
-	ScrollBar:SetPoint("BOTTOMRIGHT", GUI.ScrollParent, -3, 3)
+	ScrollBar:SetPoint("TOPLEFT", self.ScrollUp, "BOTTOMLEFT", 0, -2)
+	ScrollBar:SetPoint("BOTTOMRIGHT", self.ScrollDown, "TOPRIGHT", 0, 2)
 	ScrollBar:SetThumbTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	ScrollBar:SetOrientation("VERTICAL")
 	ScrollBar:SetValueStep(1)
 	ScrollBar:SetBackdrop(vUI.BackdropAndBorder)
-	ScrollBar:SetBackdropColor(vUI:HexToRGB(Settings["ui-widget-bg-color"]))
+	ScrollBar:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	ScrollBar:SetBackdropBorderColor(0, 0, 0)
 	ScrollBar:SetMinMaxValues(1, self.MaxScroll)
 	ScrollBar:SetValue(1)
@@ -162,6 +238,13 @@ local AddWindowScrollBar = function(self)
 	ScrollBar.NewThumb2:SetPoint("BOTTOMRIGHT", ScrollBar.NewThumb, -1, 1)
 	ScrollBar.NewThumb2:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	ScrollBar.NewThumb2:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
+	
+	ScrollBar.Highlight = ScrollBar:CreateTexture(nil, "HIGHLIGHT")
+	ScrollBar.Highlight:SetPoint("TOPLEFT", ScrollBar.NewThumb, 1, -1)
+	ScrollBar.Highlight:SetPoint("BOTTOMRIGHT", ScrollBar.NewThumb, -1, 1)
+	ScrollBar.Highlight:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	ScrollBar.Highlight:SetVertexColor(1, 1, 1)
+	ScrollBar.Highlight:SetAlpha(0.3)
 	
 	ScrollBar.Progress = ScrollBar:CreateTexture(nil, "ARTWORK")
 	ScrollBar.Progress:SetPoint("TOPLEFT", ScrollBar, 1, -1)
@@ -207,7 +290,7 @@ function GUI:SortButtons()
 		end
 		
 		if (i == 1) then
-			self.Categories[i]:SetPoint("TOPLEFT", self.SelectionParent, "TOPLEFT", SPACING, -SPACING)
+			self.Categories[i]:SetPoint("TOPLEFT", self.MenuParent, "TOPLEFT", SPACING, -SPACING)
 		elseif #self.Categories[i-1].Buttons then
 			self.Categories[i]:SetPoint("TOPLEFT", self.Categories[i-1].Buttons[#self.Categories[i-1].Buttons], "BOTTOMLEFT", 0, -2)
 		else
@@ -300,6 +383,14 @@ local SortWindow = function(self)
 	
 	if (self.MaxScroll > 1) then
 		AddWindowScrollBar(self)
+	else
+		self.ScrollFiller = CreateFrame("Frame", nil, self, "BackdropTemplate")
+		self.ScrollFiller:SetPoint("TOPRIGHT", self, 0, 0)
+		self.ScrollFiller:SetPoint("BOTTOMRIGHT", self, 0, 0)
+		self.ScrollFiller:SetWidth(16)
+		self.ScrollFiller:SetBackdrop(vUI.BackdropAndBorder)
+		self.ScrollFiller:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
+		self.ScrollFiller:SetBackdropBorderColor(0, 0, 0)
 	end
 end
 
@@ -319,18 +410,18 @@ function GUI:CreateWidgetWindow(category, name, parent)
 	-- Window
 	local Window = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	Window:SetWidth(PARENT_WIDTH)
-	Window:SetPoint("BOTTOMRIGHT", self, -SPACING, SPACING)
+	Window:SetPoint("TOPLEFT", self.ScrollUp, "TOPRIGHT", 2, 0)
 	Window:SetPoint("TOPRIGHT", self.CloseButton, "BOTTOMRIGHT", 0, -2)
+	Window:SetPoint("BOTTOMRIGHT", self, -SPACING, SPACING)
 	Window:SetBackdropBorderColor(0, 0, 0)
-	Window:Hide()
-	
 	Window:HookScript("OnShow", WindowOnShow)
 	Window:HookScript("OnHide", WindowOnHide)
+	Window:Hide()
 	
 	Window.LeftWidgetsBG = CreateFrame("Frame", nil, Window)
 	Window.LeftWidgetsBG:SetWidth(GROUP_WIDTH + (SPACING * 2))
-	Window.LeftWidgetsBG:SetPoint("TOPLEFT", Window, 16, 0)
-	Window.LeftWidgetsBG:SetPoint("BOTTOMLEFT", Window, 16, 0)
+	Window.LeftWidgetsBG:SetPoint("TOPLEFT", Window, 0, 0)
+	Window.LeftWidgetsBG:SetPoint("BOTTOMLEFT", Window, 0, 0)
 	
 	Window.LeftWidgetsBG.Backdrop = CreateFrame("Frame", nil, Window, "BackdropTemplate")
 	Window.LeftWidgetsBG.Backdrop:SetWidth(GROUP_WIDTH + (SPACING * 2))
@@ -398,7 +489,7 @@ function GUI:CreateWidgetWindow(category, name, parent)
 	return Window
 end
 
-function GUI:ShowWindow(category, name, parent) -- Still need to add hooks
+function GUI:ShowWindow(category, name, parent)
 	for i = 1, #self.Categories do
 		for j = 1, #self.Categories[i].Buttons do
 			if parent then
@@ -790,7 +881,7 @@ function GUI:ScrollSelections()
 			self.ScrollButtons[i]:ClearAllPoints()
 			
 			if (i == 1) then
-				self.ScrollButtons[i]:SetPoint("TOPLEFT", self.SelectionParent, SPACING, -SPACING)
+				self.ScrollButtons[i]:SetPoint("TOPLEFT", self.MenuParent, SPACING, -SPACING)
 			else
 				self.ScrollButtons[i]:SetPoint("TOP", self.ScrollButtons[i-1], "BOTTOM", 0, -2)
 			end
@@ -846,7 +937,7 @@ local SelectionScrollBarOnValueChanged = function(self)
 	GUI:ScrollSelections()
 end
 
-local SelectionParentOnMouseWheel = function(self, delta)
+local MenuParentOnMouseWheel = function(self, delta)
 	SelectionOnMouseWheel(self:GetParent(), delta)
 end
 
@@ -915,7 +1006,8 @@ function GUI:CreateGUI()
 	
 	-- Header
 	self.Header = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	self.Header:SetSize(HEADER_WIDTH - (HEADER_HEIGHT - 2) - SPACING - 1, HEADER_HEIGHT)
+	--self.Header:SetSize(HEADER_WIDTH - (HEADER_HEIGHT - 2) - SPACING - 1, HEADER_HEIGHT)
+	self.Header:SetSize(HEADER_WIDTH, HEADER_HEIGHT)
 	self.Header:SetPoint("TOPLEFT", self, SPACING, -SPACING)
 	self.Header:SetBackdrop(vUI.BackdropAndBorder)
 	self.Header:SetBackdropColor(0, 0, 0, 0)
@@ -935,21 +1027,96 @@ function GUI:CreateGUI()
 	self.Header.Text:SetTextColor(vUI:HexToRGB(Settings["ui-widget-color"]))
 	self.Header.Text:SetText(format(Language["- vUI version %s -"], vUI.UIVersion))
 	
-	-- Selection parent
-	self.SelectionParent = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	self.SelectionParent:SetWidth(BUTTON_LIST_WIDTH)
-	self.SelectionParent:SetPoint("BOTTOMLEFT", self, SPACING, SPACING)
-	self.SelectionParent:SetPoint("TOPLEFT", self.Header, "BOTTOMLEFT", 0, -2)
-	self.SelectionParent:SetBackdrop(vUI.BackdropAndBorder)
-	self.SelectionParent:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
-	self.SelectionParent:SetBackdropBorderColor(0, 0, 0)
-	self.SelectionParent:SetScript("OnMouseWheel", SelectionParentOnMouseWheel)
+	-- Menu parent
+	self.MenuParent = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	self.MenuParent:SetWidth(BUTTON_LIST_WIDTH)
+	self.MenuParent:SetPoint("BOTTOMLEFT", self, SPACING, SPACING)
+	self.MenuParent:SetPoint("TOPLEFT", self.Header, "BOTTOMLEFT", 0, -2)
+	self.MenuParent:SetBackdrop(vUI.BackdropAndBorder)
+	self.MenuParent:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
+	self.MenuParent:SetBackdropBorderColor(0, 0, 0)
+	self.MenuParent:SetScript("OnMouseWheel", MenuParentOnMouseWheel)
+	
+	-- Scroll up
+	self.ScrollUp = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	self.ScrollUp:SetSize(16, WIDGET_HEIGHT)
+	self.ScrollUp:SetPoint("TOPLEFT", self.MenuParent, "TOPRIGHT", 2, 0)
+	self.ScrollUp:SetBackdrop(vUI.BackdropAndBorder)
+	self.ScrollUp:SetBackdropColor(0, 0, 0, 0)
+	self.ScrollUp:SetBackdropBorderColor(0, 0, 0)
+	self.ScrollUp:SetScript("OnMouseUp", function(self)
+		self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
+		
+		SelectionOnMouseWheel(self:GetParent(), 1)
+	end)
+	
+	self.ScrollUp:SetScript("OnMouseDown", function(self)
+		local R, G, B = vUI:HexToRGB(Settings["ui-widget-bright-color"])
+		
+		self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
+	end)
+	
+	self.ScrollUp.Texture = self.ScrollUp:CreateTexture(nil, "ARTWORK")
+	self.ScrollUp.Texture:SetPoint("TOPLEFT", self.ScrollUp, 1, -1)
+	self.ScrollUp.Texture:SetPoint("BOTTOMRIGHT", self.ScrollUp, -1, 1)
+	self.ScrollUp.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	self.ScrollUp.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
+	
+	self.ScrollUp.Highlight = self.ScrollUp:CreateTexture(nil, "HIGHLIGHT")
+	self.ScrollUp.Highlight:SetPoint("TOPLEFT", self.ScrollUp, 1, -1)
+	self.ScrollUp.Highlight:SetPoint("BOTTOMRIGHT", self.ScrollUp, -1, 1)
+	self.ScrollUp.Highlight:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	self.ScrollUp.Highlight:SetVertexColor(1, 1, 1)
+	self.ScrollUp.Highlight:SetAlpha(0.1)
+	
+	self.ScrollUp.Arrow = self.ScrollUp:CreateTexture(nil, "OVERLAY")
+	self.ScrollUp.Arrow:SetPoint("CENTER", self.ScrollUp, 0, 0)
+	self.ScrollUp.Arrow:SetSize(16, 16)
+	self.ScrollUp.Arrow:SetTexture(Assets:GetTexture("Arrow Up"))
+	self.ScrollUp.Arrow:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
+	
+	-- Scroll down
+	self.ScrollDown = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	self.ScrollDown:SetSize(16, WIDGET_HEIGHT)
+	self.ScrollDown:SetPoint("BOTTOMLEFT", self.MenuParent, "BOTTOMRIGHT", 2, 0)
+	self.ScrollDown:SetBackdrop(vUI.BackdropAndBorder)
+	self.ScrollDown:SetBackdropColor(0, 0, 0, 0)
+	self.ScrollDown:SetBackdropBorderColor(0, 0, 0)
+	self.ScrollDown:SetScript("OnMouseUp", function(self)
+		self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
+		
+		SelectionOnMouseWheel(self:GetParent(), -1)
+	end)
+	
+	self.ScrollDown:SetScript("OnMouseDown", function(self)
+		local R, G, B = vUI:HexToRGB(Settings["ui-widget-bright-color"])
+		
+		self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
+	end)
+	
+	self.ScrollDown.Texture = self.ScrollDown:CreateTexture(nil, "ARTWORK")
+	self.ScrollDown.Texture:SetPoint("TOPLEFT", self.ScrollDown, 1, -1)
+	self.ScrollDown.Texture:SetPoint("BOTTOMRIGHT", self.ScrollDown, -1, 1)
+	self.ScrollDown.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	self.ScrollDown.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
+	
+	self.ScrollDown.Highlight = self.ScrollDown:CreateTexture(nil, "HIGHLIGHT")
+	self.ScrollDown.Highlight:SetPoint("TOPLEFT", self.ScrollDown, 1, -1)
+	self.ScrollDown.Highlight:SetPoint("BOTTOMRIGHT", self.ScrollDown, -1, 1)
+	self.ScrollDown.Highlight:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	self.ScrollDown.Highlight:SetVertexColor(1, 1, 1)
+	self.ScrollDown.Highlight:SetAlpha(0.1)
+	
+	self.ScrollDown.Arrow = self.ScrollDown:CreateTexture(nil, "OVERLAY")
+	self.ScrollDown.Arrow:SetPoint("CENTER", self.ScrollDown, 0, 0)
+	self.ScrollDown.Arrow:SetSize(16, 16)
+	self.ScrollDown.Arrow:SetTexture(Assets:GetTexture("Arrow Down"))
+	self.ScrollDown.Arrow:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
 	
 	-- Selection scrollbar
-	local ScrollBar = CreateFrame("Slider", nil, self.SelectionParent, "BackdropTemplate")
-	ScrollBar:SetWidth(14)
-	ScrollBar:SetPoint("TOPLEFT", self.SelectionParent, "TOPRIGHT", 2, 0)
-	ScrollBar:SetPoint("BOTTOMLEFT", self.SelectionParent, "BOTTOMRIGHT", 2, 0)
+	local ScrollBar = CreateFrame("Slider", nil, self.MenuParent, "BackdropTemplate")
+	ScrollBar:SetPoint("TOPLEFT", self.ScrollUp, "BOTTOMLEFT", 0, -2)
+	ScrollBar:SetPoint("BOTTOMRIGHT", self.ScrollDown, "TOPRIGHT", 0, 2)
 	ScrollBar:SetThumbTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	ScrollBar:SetOrientation("VERTICAL")
 	ScrollBar:SetValueStep(1)
@@ -986,18 +1153,31 @@ function GUI:CreateGUI()
 	ScrollBar.Progress:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	ScrollBar.Progress:SetAlpha(0.3)
 	
+	ScrollBar.BlackLine1 = ScrollBar:CreateTexture(nil, "OVERLAY")
+	ScrollBar.BlackLine1:SetSize(4, 1)
+	ScrollBar.BlackLine1:SetPoint("CENTER", ScrollBar.NewThumb, 0, 0)
+	ScrollBar.BlackLine1:SetTexture(Assets:GetTexture("Blank"))
+	ScrollBar.BlackLine1:SetVertexColor(0, 0, 0)
+	
+	ScrollBar.BlackLine2 = ScrollBar:CreateTexture(nil, "OVERLAY")
+	ScrollBar.BlackLine2:SetSize(4, 1)
+	ScrollBar.BlackLine2:SetPoint("CENTER", ScrollBar.NewThumb, 0, 3)
+	ScrollBar.BlackLine2:SetTexture(Assets:GetTexture("Blank"))
+	ScrollBar.BlackLine2:SetVertexColor(0, 0, 0)
+	
+	ScrollBar.BlackLine3 = ScrollBar:CreateTexture(nil, "OVERLAY")
+	ScrollBar.BlackLine3:SetSize(4, 1)
+	ScrollBar.BlackLine3:SetPoint("CENTER", ScrollBar.NewThumb, 0, -3)
+	ScrollBar.BlackLine3:SetTexture(Assets:GetTexture("Blank"))
+	ScrollBar.BlackLine3:SetVertexColor(0, 0, 0)
+	
 	-- Close button
-	self.CloseButton = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	self.CloseButton = CreateFrame("Frame", nil, self)
 	self.CloseButton:SetSize(HEADER_HEIGHT, HEADER_HEIGHT)
-	self.CloseButton:SetPoint("TOPRIGHT", self, -SPACING, -SPACING)
-	self.CloseButton:SetBackdrop(vUI.BackdropAndBorder)
-	self.CloseButton:SetBackdropColor(0, 0, 0, 0)
-	self.CloseButton:SetBackdropBorderColor(0, 0, 0)
+	self.CloseButton:SetPoint("RIGHT", self.Header, 0, -1)
 	self.CloseButton:SetScript("OnEnter", function(self) self.Cross:SetVertexColor(vUI:HexToRGB("C0392B")) end)
 	self.CloseButton:SetScript("OnLeave", function(self) self.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE")) end)
 	self.CloseButton:SetScript("OnMouseUp", function(self)
-		self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
-		
 		GUI.ScaleOut:Play()
 		GUI.FadeOut:Play()
 		
@@ -1006,32 +1186,11 @@ function GUI:CreateGUI()
 		end
 	end)
 	
-	self.CloseButton:SetScript("OnMouseDown", function(self)
-		local R, G, B = vUI:HexToRGB(Settings["ui-header-texture-color"])
-		
-		self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
-	end)
-	
-	self.CloseButton.Texture = self.CloseButton:CreateTexture(nil, "ARTWORK")
-	self.CloseButton.Texture:SetPoint("TOPLEFT", self.CloseButton, 1, -1)
-	self.CloseButton.Texture:SetPoint("BOTTOMRIGHT", self.CloseButton, -1, 1)
-	self.CloseButton.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	self.CloseButton.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
-	
 	self.CloseButton.Cross = self.CloseButton:CreateTexture(nil, "OVERLAY")
 	self.CloseButton.Cross:SetPoint("CENTER", self.CloseButton, 0, 0)
 	self.CloseButton.Cross:SetSize(16, 16)
 	self.CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
 	self.CloseButton.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
-	
-	-- Right side scroll bar
-	self.ScrollParent = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	self.ScrollParent:SetPoint("TOPRIGHT", self.CloseButton, "BOTTOMRIGHT", 0, -2)
-	self.ScrollParent:SetPoint("BOTTOMRIGHT", self, 0, SPACING)
-	self.ScrollParent:SetWidth(WIDGET_HEIGHT)
-	self.ScrollParent:SetBackdrop(vUI.BackdropAndBorder)
-	self.ScrollParent:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
-	self.ScrollParent:SetBackdropBorderColor(0, 0, 0)
 	
 	for i = 1, #self.ButtonQueue do
 		self:CreateWindow(unpack(tremove(self.ButtonQueue, 1)))

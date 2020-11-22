@@ -22,6 +22,7 @@ local UnitClass = UnitClass
 local UnitLevel = UnitLevel
 local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitReaction = UnitReaction
+local UnitIsEnemy = UnitIsEnemy
 local IsResting = IsResting
 local UnitAura = UnitAura
 local GetTime = GetTime
@@ -457,7 +458,7 @@ local PostUpdateIcon = function(self, unit, button, index, position, duration, e
 		end
 	end
 	
-	if (button.filter == "HARMFUL") then
+	if (button.filter == "HARMFUL" and UnitIsEnemy("player", unit)) then
 		button.icon:SetDesaturated(not button.isPlayer)
 	end
 	
@@ -1969,15 +1970,15 @@ local BuffIDs = {
 		{33763, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- Lifebloom
 		{48438, "BOTTOMRIGHT", {0.8, 0.4, 0}},  -- Wild Growth
 		{102342, "RIGHT", {0.8, 0.2, 0.2}},     -- Ironbark
-		{102351, "TOP", {0.84, 0.92, 0.77}},     -- Cenarion Ward
+		{102351, "TOP", {0.84, 0.92, 0.77}},    -- Cenarion Ward
 	},
 	
 	["MONK"] = {
-		{119611, "TOPLEFT", {0.32, 0.89, 0.74}},	 -- Renewing Mist
-		{116849, "TOPRIGHT", {0.2, 0.8, 0.2}},	 -- Life Cocoon
+		{119611, "TOPLEFT", {0.32, 0.89, 0.74}},  -- Renewing Mist
+		{116849, "TOPRIGHT", {0.2, 0.8, 0.2}},	  -- Life Cocoon
 		{124682, "BOTTOMLEFT", {0.9, 0.8, 0.48}}, -- Enveloping Mist
-		{124081, "BOTTOMRIGHT", {0.7, 0.4, 0}},  -- Zen Sphere
-		{115175, "LEFT", {0.24, 0.87, 0.49}},  -- Soothing Mist
+		{124081, "BOTTOMRIGHT", {0.7, 0.4, 0}},   -- Zen Sphere
+		{115175, "LEFT", {0.24, 0.87, 0.49}},     -- Soothing Mist
 	},
 	
 	["PALADIN"] = {
@@ -1988,7 +1989,7 @@ local BuffIDs = {
 		{1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true},	-- Blessing of Freedom
 		--{1038, "BOTTOMRIGHT", {0.93, 0.75, 0}, true},	-- Blessing of Salvation
 		{6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},	-- Blessing of Sacrifice
-		--{223306, "TOPLEFT", {0.81, 0.85, 0.1}},	        -- Bestow Faith
+		--{223306, "TOPLEFT", {0.81, 0.85, 0.1}},	    -- Bestow Faith
 	},
 	
 	["PRIEST"] = {
@@ -1997,12 +1998,13 @@ local BuffIDs = {
 		{17, "TOPLEFT", {0.81, 0.85, 0.1}, true}, -- Power Word: Shield
 		{194384, "TOPRIGHT", {1, 0, 0}},          -- Atonement
 		
-		{33206, "BOTTOMLEFT", {237/255, 233/255, 221/255}},        -- Pain Suppression
-		{121536, "BOTTOMRIGHT", {251/255, 193/255, 8/255}},        -- Angelic Feather
+		{33206, "BOTTOMLEFT", {237/255, 233/255, 221/255}}, -- Pain Suppression
+		{121536, "BOTTOMRIGHT", {251/255, 193/255, 8/255}}, -- Angelic Feather
 	},
 	
 	["SHAMAN"] = {
-		{61295, "TOPLEFT", {0.7, 0.3, 0.7}},       -- Riptide
+		{61295, "TOPLEFT", {0.7, 0.3, 0.7}},      -- Riptide
+		{204288, "TOPRIGHT", {0.73, 0.61, 0.33}}, -- Earth Shield
 	},
 }
 

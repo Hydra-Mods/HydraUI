@@ -223,6 +223,52 @@ GUI.Widgets.CreateHeader = function(self, text)
 	return Anchor.Text
 end
 
+--[[GUI.Widgets.CreateHeader = function(self, text)
+	local Anchor = CreateFrame("Frame", nil, self)
+	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	Anchor.IsHeader = true
+	
+	Anchor.Text = Anchor:CreateFontString(nil, "OVERLAY")
+	Anchor.Text:SetPoint("LEFT", Anchor, SPACING * 3, 0)
+	Anchor.Text:SetHeight(WIDGET_HEIGHT)
+	vUI:SetFontInfo(Anchor.Text, Settings["ui-header-font"], 14)
+	Anchor.Text:SetText("|cFF"..Settings["ui-header-font-color"]..text.."|r")
+	
+	-- Header Left Line
+	local HeaderLeft = CreateFrame("Frame", nil, Anchor, "BackdropTemplate")
+	HeaderLeft:SetHeight(4)
+	HeaderLeft:SetPoint("LEFT", Anchor, 0, 0)
+	HeaderLeft:SetPoint("RIGHT", Anchor.Text, "LEFT", -SPACING * 2, 0)
+	HeaderLeft:SetBackdrop(vUI.BackdropAndBorder)
+	HeaderLeft:SetBackdropColor(0, 0, 0)
+	HeaderLeft:SetBackdropBorderColor(0, 0, 0)
+	
+	HeaderLeft.Texture = HeaderLeft:CreateTexture(nil, "OVERLAY")
+	HeaderLeft.Texture:SetPoint("TOPLEFT", HeaderLeft, 1, -1)
+	HeaderLeft.Texture:SetPoint("BOTTOMRIGHT", HeaderLeft, -1, 1)
+	HeaderLeft.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	HeaderLeft.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
+	
+	-- Header Right Line
+	local HeaderRight = CreateFrame("Frame", nil, Anchor, "BackdropTemplate")
+	HeaderRight:SetHeight(4)
+	HeaderRight:SetPoint("RIGHT", Anchor, 0, 0)
+	HeaderRight:SetPoint("LEFT", Anchor.Text, "RIGHT", SPACING * 2, 0)
+	HeaderRight:SetBackdrop(vUI.BackdropAndBorder)
+	HeaderRight:SetBackdropColor(0, 0, 0)
+	HeaderRight:SetBackdropBorderColor(0, 0, 0)
+	
+	HeaderRight.Texture = HeaderRight:CreateTexture(nil, "OVERLAY")
+	HeaderRight.Texture:SetPoint("TOPLEFT", HeaderRight, 1, -1)
+	HeaderRight.Texture:SetPoint("BOTTOMRIGHT", HeaderRight, -1, 1)
+	HeaderRight.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	HeaderRight.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
+	
+	tinsert(self.Widgets, Anchor)
+	
+	return Anchor.Text
+end]]
+
 -- Footer
 GUI.Widgets.CreateFooter = function(self)
 	local Anchor = CreateFrame("Frame", nil, self)
@@ -430,7 +476,6 @@ GUI.Widgets.CreateStatusBar = function(self, value, minvalue, maxvalue, label, t
 	Backdrop:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	Backdrop:SetBackdropBorderColor(0, 0, 0)
 	Backdrop.Value = value
-	--Backdrop.Hook = hook
 	
 	Backdrop.BG = Backdrop:CreateTexture(nil, "ARTWORK")
 	Backdrop.BG:SetPoint("TOPLEFT", Backdrop, 1, -1)
