@@ -80,6 +80,8 @@ local Scroll = function(self)
 	end
 end
 
+local NoScroll = function() end
+
 local SetOffsetByDelta = function(self, delta)
 	if (delta == 1) then -- Up
 		self.Offset = self.Offset - 1
@@ -391,6 +393,8 @@ local SortWindow = function(self)
 		self.ScrollFiller:SetBackdrop(vUI.BackdropAndBorder)
 		self.ScrollFiller:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 		self.ScrollFiller:SetBackdropBorderColor(0, 0, 0)
+		
+		self:SetScript("OnMouseWheel", NoScroll)
 	end
 end
 

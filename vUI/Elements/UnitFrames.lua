@@ -458,14 +458,17 @@ local PostUpdateIcon = function(self, unit, button, index, position, duration, e
 		end
 	end
 	
-	if (button.filter == "HARMFUL" and UnitIsEnemy("player", unit)) then
-		button.icon:SetDesaturated(not button.isPlayer)
-	end
-	
-	if (vUI.DebuffColors[debuffType] and button.filter == "HARMFUL") then
-		button:SetBackdropColor(unpack(vUI.DebuffColors[debuffType]))
+	if ((button.filter == "HARMFUL") and (not button.isPlayer) and debuffType) then
+		button.icon:SetDesaturated(true)
+		button:SetBackdropColor(0, 0, 0)
+	elseif (button.filter == "HELPFUL") then
+		button.icon:SetDesaturated(false)
+		button:SetBackdropColor(0, 0, 0)
 	else
-		button:SetBackdropColor(unpack(vUI.DebuffColors["none"]))
+		local color = vUI.DebuffColors[debuffType] or vUI.DebuffColors.none
+	
+		button.icon:SetDesaturated(false)
+		button:SetBackdropColor(unpack(color))
 	end
 	
 	if (Expiration and Expiration ~= 0) then
