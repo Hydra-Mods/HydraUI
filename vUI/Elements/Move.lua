@@ -84,7 +84,7 @@ function vUI:ToggleMovers()
 			self.MovingFrames[i]:Show()
 		end
 		
-		if GUI:IsShown() then
+		if (GUI.Loaded and GUI:IsShown()) then
 			vUI:DisplayPopup(Language["Attention"], Language["Would you like to reopen the settings window?"], Language["Accept"], OnAccept, Language["Cancel"], OnCancel) -- PopupOnCancel
 			GUI:Toggle()
 		end
