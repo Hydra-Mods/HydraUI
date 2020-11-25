@@ -41,7 +41,6 @@ Elements\Fonts.lua
 Elements\Chat.lua
 Elements\Experience.lua
 Elements\Reputation.lua
-Elements\Azerite.lua
 Elements\ActionBars\ActionBars.lua
 Elements\ActionBars\KeyBinding.lua
 Elements\UnitFrames.lua
