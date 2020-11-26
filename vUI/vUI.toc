@@ -1,6 +1,6 @@
 ## Interface: 90002
 ## Author: Hydra
-## Version: 1.0064
+## Version: 1.00641
 ## Title: |cFFFFC44DvUI|r
 ## Notes: An interface replacement for World of Warcraft: Shadowlands
 ## SavedVariables: vUIProfileData, vUIProfiles, vUIData, vUIGold
@@ -92,4 +92,3 @@ Elements\Announcements.lua
 Elements\Cooldowns.lua
 Elements\Commands.lua
 Elements\Credit.lua
-Elements\Test.lua
