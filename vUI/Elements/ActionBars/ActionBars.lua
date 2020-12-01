@@ -789,7 +789,7 @@ end
 
 -- Extra Bar
 function AB:CreateExtraBar()
-	self.ExtraBar = CreateFrame("Frame", "vUI Extra Action", vUI.UIParent)
+	self.ExtraBar = CreateFrame("Frame", "vUI Extra Action", vUI.UIParent, "SecureHandlerStateTemplate")
 	self.ExtraBar:SetSize(Settings["ab-extra-button-size"], Settings["ab-extra-button-size"])
 	self.ExtraBar:SetPoint("CENTER", vUI.UIParent, 0, -220)
 	
@@ -857,8 +857,7 @@ local ExtraBarPostMove = function(self)
 	self:ClearAllPoints()
 	
 	AB.ExtraBar:ClearAllPoints()
-	AB.ExtraBar:SetPoint("CENTER", self, 0, 0)
-	AB.ExtraBar:Show()
+	AB.ExtraBar:SetPoint("CENTER", self, 0, 0) 
 	
 	self:SetPoint(A1, vUI.UIParent, A2, X, Y)]]
 	

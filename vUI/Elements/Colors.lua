@@ -26,7 +26,6 @@ Defaults["color-fuel"] = "008C7F"
 Defaults["color-insanity"] = "6600CC"
 Defaults["color-holy-power"] = "F2E599"
 Defaults["color-fury"] = "C842FC"
-Defaults["color-pain"] = "FF9C00"
 Defaults["color-runic-power"] = "00D1FF"
 Defaults["color-chi"] = "B5FFEA"
 Defaults["color-maelstrom"] = "007FFF"
@@ -215,7 +214,6 @@ GUI:AddSettings(Language["General"], Language["Colors"], function(left, right)
 	right:CreateColorSelection("color-soul-shards", Settings["color-soul-shards"], Language["Soul Shards"], "")
 	right:CreateColorSelection("color-insanity", Settings["color-insanity"], Language["Insanity"], "")
 	right:CreateColorSelection("color-fury", Settings["color-fury"], Language["Fury"], "")
-	right:CreateColorSelection("color-pain", Settings["color-pain"], Language["Pain"], "")
 	right:CreateColorSelection("color-chi", Settings["color-chi"], Language["Chi"], "")
 	right:CreateColorSelection("color-maelstrom", Settings["color-maelstrom"], Language["Maelstrom"], "")
 	right:CreateColorSelection("color-arcane-charges", Settings["color-arcane-charges"], Language["Arcane Charges"], "")

@@ -94,7 +94,7 @@ local Disable = function(self)
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Path)
 		self:UnregisterEvent("UNIT_POWER_UPDATE", Path)
 		
-		if self:IsEventRegistered("UPDATE_SHAPESHIFT_FORMS") then
+		if self:IsEventRegistered("UPDATE_SHAPESHIFT_FORM") then
 			self:UnregisterEvent("UPDATE_SHAPESHIFT_FORM", UpdateScratchyBoi)
 			self:UnregisterEvent("PLAYER_ENTERING_WORLD", UpdateScratchyBoi)
 		end

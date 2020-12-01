@@ -99,8 +99,8 @@ local SetOffsetByDelta = function(self, delta)
 end
 
 local WindowOnMouseWheel = function(self, delta)
-	self:SetOffsetByDelta(delta)
-	self:Scroll()
+	SetOffsetByDelta(self, delta)
+	Scroll(self)
 	self.ScrollBar:SetValue(self.Offset)
 end
 
@@ -113,7 +113,7 @@ local SetWindowOffset = function(self, offset)
 		self.Offset = self.Offset - 1
 	end
 	
-	self:Scroll()
+	Scroll(self)
 end
 
 local WindowScrollBarOnValueChanged = function(self)
@@ -121,16 +121,26 @@ local WindowScrollBarOnValueChanged = function(self)
 	
 	Parent.Offset = Round(self:GetValue())
 	
-	Parent:Scroll()
+	Scroll(Parent)
 end
 
 local WindowScrollBarOnMouseWheel = function(self, delta)
 	WindowOnMouseWheel(self:GetParent(), delta)
 end
 
-local AddWindowScrollBar = function(self)
-	self.WidgetCount = max(#self.LeftWidgets, #self.RightWidgets)
+local WindowScrollBarOnMouseUp = function(self)
+	self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
+	WindowOnMouseWheel(self:GetParent(), 1)
+end
+
+local WindowScrollBarOnMouseDown = function(self)
+	local R, G, B = vUI:HexToRGB(Settings["ui-widget-bright-color"])
+	
+	self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
+end
+
+local AddWindowScrollBar = function(self)
 	-- Scroll up
 	self.ScrollUp = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	self.ScrollUp:SetSize(16, WIDGET_HEIGHT)
@@ -138,17 +148,8 @@ local AddWindowScrollBar = function(self)
 	self.ScrollUp:SetBackdrop(vUI.BackdropAndBorder)
 	self.ScrollUp:SetBackdropColor(0, 0, 0, 0)
 	self.ScrollUp:SetBackdropBorderColor(0, 0, 0)
-	self.ScrollUp:SetScript("OnMouseUp", function(self)
-		self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-bright-color"]))
-		
-		WindowOnMouseWheel(self:GetParent(), 1)
-	end)
-	
-	self.ScrollUp:SetScript("OnMouseDown", function(self)
-		local R, G, B = vUI:HexToRGB(Settings["ui-widget-bright-color"])
-		
-		self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
-	end)
+	self.ScrollUp:SetScript("OnMouseUp", WindowScrollBarOnMouseUp)
+	self.ScrollUp:SetScript("OnMouseDown", WindowScrollBarOnMouseDown)
 	
 	self.ScrollUp.Texture = self.ScrollUp:CreateTexture(nil, "ARTWORK")
 	self.ScrollUp.Texture:SetPoint("TOPLEFT", self.ScrollUp, 1, -1)
@@ -256,17 +257,11 @@ local AddWindowScrollBar = function(self)
 	ScrollBar.Progress:SetAlpha(SELECTED_HIGHLIGHT_ALPHA)
 	
 	self:EnableMouseWheel(true)
+	self:SetScript("OnMouseWheel", WindowOnMouseWheel)
 	
-	self.Scroll = Scroll
-	self.SetWindowOffset = SetWindowOffset
-	self.SetOffsetByDelta = SetOffsetByDelta
 	self.ScrollBar = ScrollBar
 	
-	self:SetWindowOffset(1)
-	
 	ScrollBar:Show()
-	
-	self:SetScript("OnMouseWheel", WindowOnMouseWheel)
 end
 
 function GUI:SortButtons()
@@ -353,51 +348,6 @@ function GUI:CreateCategory(name)
 	self.Categories[name] = Category
 end
 
-local SortWindow = function(self)
-	local NumLeftWidgets = #self.LeftWidgets
-	local NumRightWidgets = #self.RightWidgets
-	
-	if NumLeftWidgets then
-		for i = 1, NumLeftWidgets do
-			self.LeftWidgets[i]:ClearAllPoints()
-		
-			if (i == 1) then
-				self.LeftWidgets[i]:SetPoint("TOPLEFT", self.LeftWidgetsBG, SPACING, -SPACING)
-			else
-				self.LeftWidgets[i]:SetPoint("TOP", self.LeftWidgets[i-1], "BOTTOM", 0, -2)
-			end
-		end
-	end
-	
-	if NumRightWidgets then
-		for i = 1, NumRightWidgets do
-			self.RightWidgets[i]:ClearAllPoints()
-			
-			if (i == 1) then
-				self.RightWidgets[i]:SetPoint("TOPRIGHT", self.RightWidgetsBG, -SPACING, -SPACING)
-			else
-				self.RightWidgets[i]:SetPoint("TOP", self.RightWidgets[i-1], "BOTTOM", 0, -2)
-			end
-		end
-	end
-	
-	self.MaxScroll = max((#self.LeftWidgets - (MAX_WIDGETS_SHOWN - 1)), (#self.RightWidgets - (MAX_WIDGETS_SHOWN - 1)), 1)
-	
-	if (self.MaxScroll > 1) then
-		AddWindowScrollBar(self)
-	else
-		self.ScrollFiller = CreateFrame("Frame", nil, self, "BackdropTemplate")
-		self.ScrollFiller:SetPoint("TOPRIGHT", self, 0, 0)
-		self.ScrollFiller:SetPoint("BOTTOMRIGHT", self, 0, 0)
-		self.ScrollFiller:SetWidth(16)
-		self.ScrollFiller:SetBackdrop(vUI.BackdropAndBorder)
-		self.ScrollFiller:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
-		self.ScrollFiller:SetBackdropBorderColor(0, 0, 0)
-		
-		self:SetScript("OnMouseWheel", NoScroll)
-	end
-end
-
 local DisableScrolling = function(self)
 	self.ScrollingDisabled = true
 end
@@ -412,12 +362,11 @@ end
 
 function GUI:CreateWidgetWindow(category, name, parent)
 	-- Window
-	local Window = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	local Window = CreateFrame("Frame", nil, self)
 	Window:SetWidth(PARENT_WIDTH)
 	Window:SetPoint("TOPLEFT", self.ScrollUp, "TOPRIGHT", 2, 0)
 	Window:SetPoint("TOPRIGHT", self.CloseButton, "BOTTOMRIGHT", 0, -2)
 	Window:SetPoint("BOTTOMRIGHT", self, -SPACING, SPACING)
-	Window:SetBackdropBorderColor(0, 0, 0)
 	Window:HookScript("OnShow", WindowOnShow)
 	Window:HookScript("OnHide", WindowOnHide)
 	Window:Hide()
@@ -451,8 +400,6 @@ function GUI:CreateWidgetWindow(category, name, parent)
 	Window.Category = category
 	Window.Name = name
 	Window.Parent = parent
-	
-	Window.SortWindow = SortWindow
 	Window.LeftWidgets = {}
 	Window.RightWidgets = {}
 	
@@ -488,7 +435,24 @@ function GUI:CreateWidgetWindow(category, name, parent)
 		Window.RightWidgetsBG:CreateFooter()
 	end
 	
-	Window:SortWindow()
+	Window.MaxScroll = max((#Window.LeftWidgets - (MAX_WIDGETS_SHOWN - 1)), (#Window.RightWidgets - (MAX_WIDGETS_SHOWN - 1)), 1)
+	Window.WidgetCount = max(#Window.LeftWidgets, #Window.RightWidgets)
+	
+	if (Window.MaxScroll > 1) then
+		AddWindowScrollBar(Window)
+	else
+		Window.ScrollFiller = CreateFrame("Frame", nil, Window, "BackdropTemplate")
+		Window.ScrollFiller:SetPoint("TOPRIGHT", Window, 0, 0)
+		Window.ScrollFiller:SetPoint("BOTTOMRIGHT", Window, 0, 0)
+		Window.ScrollFiller:SetWidth(16)
+		Window.ScrollFiller:SetBackdrop(vUI.BackdropAndBorder)
+		Window.ScrollFiller:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
+		Window.ScrollFiller:SetBackdropBorderColor(0, 0, 0)
+		
+		Window:SetScript("OnMouseWheel", NoScroll)
+	end
+	
+	SetWindowOffset(Window, 1)
 	
 	return Window
 end
@@ -610,21 +574,21 @@ local WindowButtonOnLeave = function(self)
 end
 
 local WindowButtonOnMouseUp = function(self)
-	if self.Texture then
+	--[[if self.Texture then
 		self.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	end
+	end]]
 	
 	GUI:ShowWindow(self.Category, self.Name, self.Parent)
 end
 
 local WindowButtonOnMouseDown = function(self)
-	if (not self.Texture) then
+	--[[if (not self.Texture) then
 		return
 	end
 
 	local R, G, B = vUI:HexToRGB(Settings["ui-button-texture-color"])
 	
-	self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
+	self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)]]
 end
 
 function GUI:HasButton(category, name, parent)
@@ -648,8 +612,8 @@ function GUI:CreateWindow(category, name, parent)
 	
 	local Category = self.Categories[category]
 	
-	local Button = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	Button:SetSize(MENU_BUTTON_WIDTH, WIDGET_HEIGHT, "BackdropTemplate")
+	local Button = CreateFrame("Frame", nil, self)
+	Button:SetSize(MENU_BUTTON_WIDTH, WIDGET_HEIGHT)
 	Button:SetFrameLevel(self:GetFrameLevel() + 2)
 	Button.Name = name
 	Button.Category = category
@@ -753,7 +717,7 @@ function GUI:AddSettings(category, name, arg1, arg2)
 	if (type(arg1) == "function") then
 		tinsert(self.OnLoadCalls[category][name].Calls, arg1)
 		tinsert(self.ButtonQueue, {category, name})
-	elseif (type(arg1) == "string") then
+	else -- string
 		if (not self.OnLoadCalls[category][arg1].Children) then
 			self.OnLoadCalls[category][arg1].Children = {}
 		end
@@ -776,7 +740,7 @@ function GUI:AddWindowHook(hook, category, name, arg1, arg2)
 	
 	if (type(arg1) == "function") then
 		tinsert(self.WindowHooks[hook][category][name].Hooks, arg1)
-	elseif (type(arg1) == "string") then
+	else -- string
 		if (not self.WindowHooks[hook][category][arg1].Children) then
 			self.WindowHooks[hook][category][arg1].Children = {}
 		end
@@ -1010,7 +974,6 @@ function GUI:CreateGUI()
 	
 	-- Header
 	self.Header = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	--self.Header:SetSize(HEADER_WIDTH - (HEADER_HEIGHT - 2) - SPACING - 1, HEADER_HEIGHT)
 	self.Header:SetSize(HEADER_WIDTH, HEADER_HEIGHT)
 	self.Header:SetPoint("TOPLEFT", self, SPACING, -SPACING)
 	self.Header:SetBackdrop(vUI.BackdropAndBorder)

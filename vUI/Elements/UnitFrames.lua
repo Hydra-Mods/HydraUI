@@ -406,7 +406,6 @@ Methods["LevelColor"] = function(unit)
 	local Color = GetQuestDifficultyColor(Level)
 	
 	return "|cFF" .. vUI:RGBToHex(Color.r, Color.g, Color.b)
-	--return vUI:UnitDifficultyColor(unit)
 end
 
 local ComboPointsUpdateShapeshiftForm = function(self, form)
@@ -431,7 +430,7 @@ local AuraOnUpdate = function(self, ela)
 			self.Time:SetText(vUI:FormatTime(Now))
 		else
 			self:SetScript("OnUpdate", nil)
-			--self.Time:Hide()
+			self.Time:Hide()
 		end
 		
 		if (Now <= 0) then
@@ -492,6 +491,7 @@ local PostCreateIcon = function(unit, button)
 	button.cd:SetPoint("TOPLEFT", button, 1, -1)
 	button.cd:SetPoint("BOTTOMRIGHT", button, -1, 1)
 	button.cd:SetHideCountdownNumbers(true)
+	button.cd:SetReverse(true)
 	
 	button.icon:SetPoint("TOPLEFT", 1, -1)
 	button.icon:SetPoint("BOTTOMRIGHT", -1, 1)
@@ -2961,6 +2961,10 @@ UF:SetScript("OnEvent", function(self, event)
 		end
 		
 		if Settings["nameplates-enable"] then
+			NamePlateCVars.nameplateSelectedAlpha = (Settings["nameplates-selected-alpha"] / 100)
+			NamePlateCVars.nameplateMinAlpha = (Settings["nameplates-unselected-alpha"] / 100)
+			NamePlateCVars.nameplateMaxAlpha = (Settings["nameplates-unselected-alpha"] / 100)
+			
 			oUF:SpawnNamePlates(nil, NamePlateCallback, NamePlateCVars)
 		end
 	else
@@ -3937,6 +3941,14 @@ local UpdateNamePlatesTargetIndicatorSize = function(value)
 	oUF:RunForAllNamePlates(NamePlateSetTargetIndicatorSize, value)
 end
 
+local UpdateNamePlateSelectedAlpha = function(value)
+	C_CVar.SetCVar("nameplateSelectedAlpha", value / 100)
+end
+	
+local UpdateNamePlateUnselectedAlpha = function(value)
+	C_CVar.SetCVar("nameplateMinAlpha", value / 100)
+end
+	
 GUI:AddSettings(Language["General"], Language["Name Plates"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("nameplates-enable", Settings["nameplates-enable"], Language["Enable Name Plates"], Language["Enable the vUI name plates module"], ReloadUI):RequiresReload(true)
@@ -3971,6 +3983,10 @@ GUI:AddSettings(Language["General"], Language["Name Plates"], function(left, rig
 	right:CreateHeader(Language["Target Indicator"])
 	right:CreateSwitch("nameplates-enable-target-indicator", Settings["nameplates-enable-target-indicator"], Language["Enable Target Indicator"], Language["Display an indication on the targetted unit name plate"], UpdateNamePlatesTargetHighlight)
 	right:CreateDropdown("nameplates-target-indicator-size", Settings["nameplates-target-indicator-size"], {[Language["Small"]] = "SMALL", [Language["Large"]] = "LARGE", [Language["Huge"]] = "HUGE"}, Language["Indicator Size"], Language["Select the size of the target indicator"], UpdateNamePlatesTargetIndicatorSize)
+	
+	right:CreateHeader(Language["Opacity"])
+	right:CreateSlider("nameplates-selected-alpha", Settings["nameplates-selected-alpha"], 1, 100, 5, Language["Selected Opacity"], Language["Set the opacity of the selected name plate"], UpdateNamePlateSelectedAlpha)
+	right:CreateSlider("nameplates-unselected-alpha", Settings["nameplates-unselected-alpha"], 0, 100, 5, Language["Unselected Opacity"], Language["Set the opacity of unselected name plates"], UpdateNamePlateUnselectedAlpha)
 end)
 
 --/run vUIFakeRaid()

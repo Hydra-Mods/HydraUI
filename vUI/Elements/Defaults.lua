@@ -247,3 +247,5 @@ Defaults["nameplates-target-indicator-size"] = "SMALL"
 Defaults["nameplates-enable-castbar"] = true
 Defaults["nameplates-castbar-height"] = 12
 Defaults["nameplates-castbar-enable-icon"] = true
+Defaults["nameplates-selected-alpha"] = 100
+Defaults["nameplates-unselected-alpha"] = 40
