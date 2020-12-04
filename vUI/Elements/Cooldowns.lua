@@ -4,6 +4,9 @@ local Cooldowns = vUI:NewModule("Cooldowns")
 
 -- Default settings values
 Defaults["cooldowns-enable"] = true
+Defaults["cooldowns-size"] = 60
+Defaults["cooldowns-hold"] = 1.4
+Defaults["cooldowns-text"] = false
 
 local GetItemCooldown = GetItemCooldown
 local GetSpellCooldown = GetSpellCooldown
@@ -14,23 +17,22 @@ local tinsert = table.insert
 local tremove = table.remove
 local pairs = pairs
 
-local CD = CreateFrame("Frame")
-local ActiveCount = 0
-local MinTreshold = 14
-local Running = false
+Cooldowns.Spells = {}
+Cooldowns.ActiveCount = 0
+Cooldowns.MinTreshold = 14
+Cooldowns.Running = false
+Cooldowns.Elapsed = 0
+
 local CurrentTime
 local Remaining
-local GetCD
-local Spells = {}
-local Elapsed = 0
 local Delay = 0.5
 
-local ActiveCDs = {
+Cooldowns.ActiveCDs = {
 	["item"] = {},
 	["player"] = {},
 }
 
-local Blacklist = {
+Cooldowns.Blacklist = {
 	["item"] = {
 		[6948] = true, -- Hearthstone
 		[140192] = true, -- Dalaran Hearthstone
@@ -42,11 +44,11 @@ local Blacklist = {
 	},
 }
 
-local TextureFilter = {
+Cooldowns.TextureFilter = {
 	[136235] = true
 }
 
-local GetTexture = function(cd, id)
+function Cooldowns:GetTexture(cd, id)
 	local Texture
 	
 	if (cd == "item") then
@@ -55,130 +57,100 @@ local GetTexture = function(cd, id)
 		Texture = GetSpellTexture(id)
 	end
 	
-	if (not TextureFilter[Texture]) then
+	if (not Cooldowns.TextureFilter[Texture]) then
 		return Texture
 	end
 end
 
-local Frame = CreateFrame("Frame", nil, vUI.UIParent, "BackdropTemplate")
-Frame:SetSize(60, 60)
-Frame:SetPoint("CENTER", vUI.UIParent, "CENTER", 0, 100) -- -300
-Frame:SetBackdrop(vUI.Backdrop)
-Frame:SetBackdropColor(0, 0, 0)
-Frame:SetAlpha(0)
-
-Frame.Icon = Frame:CreateTexture(nil, "OVERLAY")
-Frame.Icon:SetPoint("TOPLEFT", Frame, 1, -1)
-Frame.Icon:SetPoint("BOTTOMRIGHT", Frame, -1, 1)
-Frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-
-Frame.Anim = CreateAnimationGroup(Frame)
-
-Frame.AnimIn = Frame.Anim:CreateAnimation("Fade")
-Frame.AnimIn:SetChange(1)
-Frame.AnimIn:SetDuration(0.2) -- 0.3
-Frame.AnimIn:SetEasing("in")
-
-Frame.AnimOut = Frame.Anim:CreateAnimation("Fade")
-Frame.AnimOut:SetChange(0)
-Frame.AnimOut:SetDuration(0.6)
-Frame.AnimOut:SetEasing("out")
-
-Frame.Sleep = Frame.Anim:CreateAnimation("Sleep")
-Frame.Sleep:SetDuration(1.4)
-Frame.Sleep:SetScript("OnFinished", function(self)
-	Frame.AnimOut:Play()
-end)
-
-local PlayAnimation = function()
-	Frame.AnimIn:Play()
-	Frame.Sleep:Play()
-end
-
-local OnUpdate = function(self, ela)
-	Elapsed = Elapsed + ela
+function Cooldowns:OnUpdate(ela)
+	self.Elapsed = self.Elapsed + ela
 	
-	if (Elapsed < Delay) then
+	if (self.Elapsed < Delay) then
 		return
 	end
 	
 	CurrentTime = GetTime()
 	
-	for CDType, Data in pairs(ActiveCDs) do
-		GetCD = (CDType == "item") and GetItemCooldown or GetSpellCooldown
-		
+	for CDType, Data in pairs(self.ActiveCDs) do
 		for Position, ID in pairs(Data) do
-			local Start, Duration = GetCD(ID)
+			local Start, Duration = ((CDType == "item") and GetItemCooldown or GetSpellCooldown)(ID)
 			
 			if (Start ~= nil) then
-				local Remaining = Start + Duration - CurrentTime
+				Remaining = Start + Duration - CurrentTime
 				
 				if (Remaining <= 0) then
-					local Texture = GetTexture(CDType, ID)
+					local Texture = self:GetTexture(CDType, ID)
 					
 					if Texture then
-						Frame.Icon:SetTexture(Texture)
-						PlayAnimation()
+						self.Icon:SetTexture(Texture)
+						self.AnimIn:Play()
+						self.Hold:Play()
+						
+						if Settings["cooldowns-text"] then
+							self.Text:SetText(format(Language["|cff%s%s|r is ready!"], Settings["ui-widget-color"], GetSpellInfo(ID)))
+						else
+							self.Text:SetText("")
+						end
 					end
-					--PlaySound("MapPing", "master")
+					
 					tremove(Data, Position)
-					ActiveCount = ActiveCount - 1
+					self.ActiveCount = self.ActiveCount - 1
 				end
 			end
 		end
 	end
 	
-	if (ActiveCount <= 0) then
+	if (self.ActiveCount <= 0) then
 		self:SetScript("OnUpdate", nil)
-		Running = false
+		self.Running = false
 	end
 	
-	Elapsed = 0
+	self.Elapsed = 0
 end
 
 -- UNIT_SPELLCAST_SUCCEEDED fetches casts, and then SPELL_UPDATE_COOLDOWN checks them after the GCD is done (Otherwise GetSpellCooldown detects GCD)
 function Cooldowns:SPELL_UPDATE_COOLDOWN()
-	for i = #Spells, 1, -1 do
-		local Start, Duration = GetSpellCooldown(Spells[i])
+	for i = #self.Spells, 1, -1 do
+		local Start, Duration = GetSpellCooldown(self.Spells[i])
 		
-		if (Duration >= MinTreshold) then
-			tinsert(ActiveCDs.player, Spells[i])
-			ActiveCount = ActiveCount + 1
+		if (Duration >= self.MinTreshold) then
+			tinsert(self.ActiveCDs.player, self.Spells[i])
+			self.ActiveCount = self.ActiveCount + 1
 			
-			if (ActiveCount > 0 and not Running) then
-				self:SetScript("OnUpdate", OnUpdate)
-				Running = true
+			if (self.ActiveCount > 0 and not self.Running) then
+				self:SetScript("OnUpdate", self.OnUpdate)
+				self.Running = true
 			end
 		end
 		
-		tremove(Spells, i)
+		tremove(self.Spells, i)
 	end
 end
 
 function Cooldowns:UNIT_SPELLCAST_SUCCEEDED(unit, guid, id)
 	if (unit == "player") then
-		if Blacklist["player"][id] then
+		if self.Blacklist["player"][id] then
 			return
 		end
 		
-		tinsert(Spells, id)
+		tinsert(self.Spells, id)
 	end
 end
 
 local StartItem = function(id)
-	if Blacklist["item"][id] then
+	if Cooldowns.Blacklist["item"][id] then
 		return
 	end
 	
 	local Start, Duration = GetItemCooldown(id)
 	
-	if (Duration and Duration > MinTreshold) then
-		tinsert(ActiveCDs.item, id)
-		ActiveCount = ActiveCount + 1
+	if (Duration and Duration > Cooldowns.MinTreshold) then
+		tinsert(Cooldowns.ActiveCDs.item, id)
+		Cooldowns.ActiveCount = Cooldowns.ActiveCount + 1
 		
-		if (ActiveCount > 0 and not Running) then
-			Cooldowns:SetScript("OnUpdate", OnUpdate)
-			Running = true
+		if (Cooldowns.ActiveCount > 0 and not Cooldowns.Running) then
+			Cooldowns:SetScript("OnUpdate", Cooldowns.OnUpdate)
+			Cooldowns.Running = true
 		end
 	end
 end
@@ -207,25 +179,61 @@ local UseContainerItem = function(bag, slot)
 	end
 end
 
+local OnFinished = function(self)
+	self.Parent.AnimOut:Play()
+end
+
+function Cooldowns:OnEvent(event, ...)
+	self[event](self, ...)
+end
+
 function Cooldowns:Load()
 	if (not Settings["cooldowns-enable"]) then
 		return
 	end
 	
-	local Anchor = CreateFrame("Frame", "vUI Cooldown Flash", vUI.UIParent)
-	Anchor:SetSize(60, 60)
-	Anchor:SetPoint("CENTER", vUI.UIParent, "CENTER", 0, 100)
+	self.Anchor = CreateFrame("Frame", "vUI Cooldown Flash", vUI.UIParent)
+	self.Anchor:SetSize(Settings["cooldowns-size"], Settings["cooldowns-size"])
+	self.Anchor:SetPoint("CENTER", vUI.UIParent, "CENTER", 0, 100)
 	
-	Frame:SetSize(60, 60)
-	Frame:SetPoint("CENTER", Anchor, "CENTER", 0, 0)
+	self:SetSize(Settings["cooldowns-size"], Settings["cooldowns-size"])
+	self:SetPoint("CENTER", self.Anchor, "CENTER", 0, 0)
+	self:SetBackdrop(vUI.Backdrop)
+	self:SetBackdropColor(0, 0, 0)
+	self:SetAlpha(0)
 	
-	vUI:CreateMover(Anchor)
+	self.Icon = self:CreateTexture(nil, "OVERLAY")
+	self.Icon:SetPoint("TOPLEFT", self, 1, -1)
+	self.Icon:SetPoint("BOTTOMRIGHT", self, -1, 1)
+	self.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	
+	self.Text = self:CreateFontString(nil, "OVERLAY")
+	self.Text:SetPoint("TOP", self, "BOTTOM", 0, -5)
+	vUI:SetFontInfo(self.Text, Settings["ui-widget-font"], 16)
+	self.Text:SetWidth(Settings["cooldowns-size"] * 2.5)
+	self.Text:SetJustifyH("CENTER")
+	
+	self.Anim = CreateAnimationGroup(self)
+	
+	self.AnimIn = self.Anim:CreateAnimation("Fade")
+	self.AnimIn:SetChange(1)
+	self.AnimIn:SetDuration(0.2)
+	self.AnimIn:SetEasing("in")
+	
+	self.AnimOut = self.Anim:CreateAnimation("Fade")
+	self.AnimOut:SetChange(0)
+	self.AnimOut:SetDuration(0.6)
+	self.AnimOut:SetEasing("out")
+	
+	self.Hold = self.Anim:CreateAnimation("Sleep")
+	self.Hold:SetDuration(Settings["cooldowns-hold"] + 0.2)
+	self.Hold:SetScript("OnFinished", OnFinished)
+	
+	vUI:CreateMover(self.Anchor)
 	
 	self:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
-	self:SetScript("OnEvent", function(self, event, ...)
-		self[event](self, ...)
-	end)
+	self:SetScript("OnEvent", self.OnEvent)
 	
 	hooksecurefunc("UseAction", UseAction)
 	hooksecurefunc("UseInventoryItem", UseInventoryItem)
@@ -242,7 +250,19 @@ local UpdateEnableCooldownFlash = function(value)
 	end
 end
 
+local UpdateCooldownSize = function(value)
+	Cooldowns:SetSize(value, value)
+	Cooldowns.Anchor:SetSize(value, value)
+end
+
+local UpdateCooldownHold = function(value)
+	Cooldowns.Hold:SetDuration(value + 0.2)
+end
+
 GUI:AddSettings(Language["General"], Language["General"], function(left, right)
-	right:CreateHeader(Language["Cooldown Flash"])
-	right:CreateSwitch("cooldowns-enable", Settings["cooldowns-enable"], Language["Enable Cooldown Flash"], Language["When an ability comes off cooldown the icon will flash as an alert"], UpdateEnableCooldownFlash)
+	right:CreateHeader(Language["Cooldown Alert"])
+	right:CreateSwitch("cooldowns-enable", Settings["cooldowns-enable"], Language["Enable Cooldown Alert"], Language["When an ability comes off cooldown the icon will flash as an alert"], UpdateEnableCooldownFlash)
+	right:CreateSwitch("cooldowns-text", Settings["cooldowns-text"], Language["Enable Cooldown Text"], Language["Display text on the cooldown alert"])
+	right:CreateSlider("cooldowns-size", Settings["cooldowns-size"], 18, 100, 2, Language["Set Size"], Language["Set the size of the cooldown alert"], UpdateCooldownSize)
+	right:CreateSlider("cooldowns-hold", Settings["cooldowns-hold"], 0.2, 3, 0.1, Language["Set Hold Time"], Language["Set how long the alert will display before fading away"], UpdateCooldownHold, nil, "s")
 end)
