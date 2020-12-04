@@ -51,20 +51,19 @@ function DT:NewAnchor(name, parent)
 		parent = vUI.UIParent
 	end
 	
-	local Anchor = CreateFrame("Frame", nil, parent, "BackdropTemplate")
-	Anchor:SetSize(120, 20)
+	local Anchor = CreateFrame("Frame", nil, parent)
 	Anchor:SetFrameLevel(parent:GetFrameLevel() + 1)
 	Anchor:SetFrameStrata(parent:GetFrameStrata())
-	Anchor:SetBackdrop(vUI.Backdrop)
-	Anchor:SetBackdropColor(0, 0, 0, 0)
 	
 	Anchor.Name = name
 	Anchor.SetTooltip = SetTooltip
 	
 	Anchor.Text = Anchor:CreateFontString(nil, "ARTWORK")
 	vUI:SetFontInfo(Anchor.Text, Settings["data-text-font"], Settings["data-text-font-size"], Settings["data-text-font-flags"])
-	Anchor.Text:SetPoint("CENTER", Anchor, "CENTER", 0, 0)
+	Anchor.Text:SetPoint("LEFT", Anchor, 2, 0)
+	Anchor.Text:SetPoint("RIGHT", Anchor, -2, 0)
 	Anchor.Text:SetJustifyH("CENTER")
+	Anchor.Text:SetHeight(Settings["data-text-font-size"])
 	
 	self.Anchors[name] = Anchor
 	
