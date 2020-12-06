@@ -3947,6 +3947,7 @@ end
 	
 local UpdateNamePlateUnselectedAlpha = function(value)
 	C_CVar.SetCVar("nameplateMinAlpha", value / 100)
+	C_CVar.SetCVar("nameplateMaxAlpha", value / 100)
 end
 	
 GUI:AddSettings(Language["General"], Language["Name Plates"], function(left, right)
