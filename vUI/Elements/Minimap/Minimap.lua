@@ -94,10 +94,12 @@ function Map:Style()
 	QueueStatusMinimapButton:ClearAllPoints()
 	QueueStatusMinimapButton:SetPoint("BOTTOMLEFT", Minimap, -1, 1)
 	
+	GarrisonLandingPageMinimapButton:SetSize(40, 40)
 	GarrisonLandingPageMinimapButton:ClearAllPoints()
-	GarrisonLandingPageMinimapButton:SetPoint("BOTTOMRIGHT", Minimap, 2, -3)
+	GarrisonLandingPageMinimapButton:SetPoint("BOTTOMRIGHT", Minimap, 3, -4)
 	GarrisonLandingPageMinimapButton.ClearAllPoints = function() end
 	GarrisonLandingPageMinimapButton.SetPoint = function() end
+	GarrisonLandingPageMinimapButton.SetSize = function() end
 	
 	MiniMapTrackingIconOverlay:SetTexture(nil)
 	MiniMapTrackingBackground:SetTexture(nil)
