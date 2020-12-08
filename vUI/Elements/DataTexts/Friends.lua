@@ -30,8 +30,8 @@ local ClientToName = {
 }
 
 local ProjectIDToName = {
-	[1] = Language["Battle for Azeroth"],
-	[2] = Language["Classic"],
+	[1] = EXPANSION_NAME8,
+	[2] = EXPANSION_NAME0,
 }
 
 local GetClass = function(class)
