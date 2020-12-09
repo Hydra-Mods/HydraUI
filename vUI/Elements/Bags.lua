@@ -1,23 +1,15 @@
-if 1 == 1 then
+if (1 == 1) then
 	return
 end
 
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
-
-local temp = {
-	--["Hydrazine:Whitemane"] = 1,
-	["Fruitloops:Whitemane"] = 1,
-}
-
-if (not temp[vUI.UserProfileKey]) then
-	return
-end
 
 local GetContainerNumSlots = ContainerFrame_GetContainerNumSlots
 local GetContainerNumFreeSlots = GetContainerNumFreeSlots
 local GetContainerItemInfo = GetContainerItemInfo
 local GetCoinTextureString = GetCoinTextureString
 local GetMoney = GetMoney
+local GetTime = GetTime
 
 local Bags = vUI:NewModule("Bags")
 
@@ -128,10 +120,8 @@ function Bags:UpdateBagSize()
 	self.Frame:SetHeight((NumRows * BUTTON_SIZE + 4) + (NumRows * 4) + 6 + (HEADER_HEIGHT * 2 + 4))
 end
 
-local GetTime = GetTime
-
 function Bags:UpdateSlot(bag, slot)
-	local Texture, ItemCount, Locked, Quality, Readable, _, _, IsFiltered, NoValue, ItemID = GetContainerItemInfo(bag, slot:GetID())
+	local Texture, ItemCount, Locked, Quality, Readable, _, _, IsFiltered, NoValue, ItemID = GetContainerItemInfo(bag - 1, slot:GetID())
 	local Name = slot:GetName()
 	
 	if Texture then
@@ -161,12 +151,12 @@ function Bags:UpdateSlots()
 	local Slot
 	
 	for Bag = 1, 5 do
-		NumSlots = GetContainerNumSlots(Bag)
+		NumSlots = GetContainerNumSlots((Bag - 1))
 		
 		for SlotID = 1, NumSlots do
-			Slot = _G["ContainerFrame" .. Bag - 1 .. "Item" .. SlotID]
+			Slot = _G["ContainerFrame" .. Bag .. "Item" .. SlotID]
 			
-			self:UpdateSlot(Bag - 1, Slot)
+			self:UpdateSlot(Bag, Slot)
 		end
 	end
 end
@@ -238,7 +228,7 @@ local BagFadeOnFinished = function(self)
 end
 
 function Bags:CreateBagFrame()
-	local Frame = CreateFrame("Frame", "vUI Bags", vUI.UIParent)
+	local Frame = CreateFrame("Frame", "vUI Bags", vUI.UIParent, "BackdropTemplate")
 	Frame:SetSize(390, 300)
 	--Frame:SetPoint("BOTTOMRIGHT", vUI.UIParent, -13, 13)
 	Frame:SetPoint("BOTTOMLEFT", vUI.UIParent, "LEFT", 60, -130)
@@ -276,7 +266,7 @@ function Bags:CreateBagFrame()
 	Frame.FadeOut:SetScript("OnFinished", BagFadeOnFinished)
 	
 	-- Close button
-	local CloseButton = CreateFrame("Frame", nil, Frame)
+	local CloseButton = CreateFrame("Frame", nil, Frame, "BackdropTemplate")
 	CloseButton:SetSize(22, 22)
 	CloseButton:SetPoint("TOPRIGHT", Frame, -3, -3)
 	CloseButton:SetBackdrop(vUI.BackdropAndBorder)
@@ -300,7 +290,7 @@ function Bags:CreateBagFrame()
 	CloseButton.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
 	
 	-- Header
-	local Header = CreateFrame("Frame", nil, Frame)
+	local Header = CreateFrame("Frame", nil, Frame, "BackdropTemplate")
 	Header:SetHeight(22)
 	Header:SetPoint("TOPLEFT", Frame, 3, -3)
 	Header:SetPoint("TOPRIGHT", CloseButton, "TOPLEFT", -2, -3)
@@ -321,7 +311,7 @@ function Bags:CreateBagFrame()
 	Header.Text:SetText("Inventory")
 	
 	-- Footer
-	local Footer = CreateFrame("Frame", nil, Frame)
+	local Footer = CreateFrame("Frame", nil, Frame, "BackdropTemplate")
 	Footer:SetHeight(22)
 	Footer:SetPoint("BOTTOMLEFT", Frame, 3, 3)
 	Footer:SetPoint("BOTTOMRIGHT", Frame, -3, 3)
@@ -346,7 +336,7 @@ function Bags:CreateBagFrame()
 	Footer.RightText:SetJustifyH("RIGHT")
 	
 	-- Slots
-	local SlotContainer = CreateFrame("Frame", nil, Frame)
+	local SlotContainer = CreateFrame("Frame", nil, Frame, "BackdropTemplate")
 	SlotContainer:SetPoint("TOPLEFT", Header, "BOTTOMLEFT", 0, -2)
 	SlotContainer:SetPoint("BOTTOMRIGHT", Footer, "TOPRIGHT", 0, 2)
 	SlotContainer:SetBackdrop(vUI.BackdropAndBorder)
@@ -403,23 +393,23 @@ end
 
 function Bags:ReplaceFunctions()
 	OpenBag = function()
-		Bags:Open()
+		self:Open()
 	end
 	
 	OpenAllBags = function()
-		Bags:Open()
+		self:Open()
 	end
 	
 	CloseAllBags = function()
-		Bags:Close()
+		self:Close()
 	end
 	
 	ToggleBag = function()
-		Bags:Toggle()
+		self:Toggle()
 	end
 	
 	ToggleBackpack = function()
-		Bags:Toggle()
+		self:Toggle()
 	end
 end
 

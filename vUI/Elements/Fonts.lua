@@ -2,9 +2,9 @@ local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Fonts = vUI:NewModule("Fonts")
 
-Defaults["raid-font"] = "Roboto"
-Defaults["raid-font-size"] = 16
-Defaults["raid-font-flags"] = ""
+Defaults["warning-font"] = "Roboto"
+Defaults["warning-font-size"] = 16
+Defaults["warning-font-flags"] = ""
 
 Defaults["status-font"] = "Roboto"
 Defaults["status-font-size"] = 18
@@ -21,15 +21,15 @@ _G.UNIT_NAME_FONT = Assets:GetFont(Settings["unit-name-font"])]]
 function Fonts:Load()
 	vUI:SetFontInfo(UIErrorsFrame, Settings["error-font"], Settings["error-font-size"], Settings["error-font-flags"])
 	
-	vUI:SetFontInfo(RaidWarningFrameSlot1, Settings["raid-font"], Settings["raid-font-size"], Settings["raid-font-flags"])
-	vUI:SetFontInfo(RaidWarningFrameSlot2, Settings["raid-font"], Settings["raid-font-size"], Settings["raid-font-flags"])
+	vUI:SetFontInfo(RaidWarningFrameSlot1, Settings["warning-font"], Settings["warning-font-size"], Settings["warning-font-flags"])
+	vUI:SetFontInfo(RaidWarningFrameSlot2, Settings["warning-font"], Settings["warning-font-size"], Settings["warning-font-flags"])
 	
 	vUI:SetFontInfo(AutoFollowStatusText, Settings["status-font"], Settings["status-font-size"], Settings["status-font-flags"])
 end
 
 local UpdateRaidFont = function()
-	vUI:SetFontInfo(RaidWarningFrameSlot1, Settings["raid-font"], Settings["raid-font-size"], Settings["raid-font-flags"])
-	vUI:SetFontInfo(RaidWarningFrameSlot2, Settings["raid-font"], Settings["raid-font-size"], Settings["raid-font-flags"])
+	vUI:SetFontInfo(RaidWarningFrameSlot1, Settings["warning-font"], Settings["warning-font-size"], Settings["warning-font-flags"])
+	vUI:SetFontInfo(RaidWarningFrameSlot2, Settings["warning-font"], Settings["warning-font-size"], Settings["warning-font-flags"])
 end
 
 local UpdateStatusFont = function()
@@ -42,9 +42,9 @@ end
 
 GUI:AddSettings(Language["General"], Language["General"], function(left, right)
 	left:CreateHeader(Language["Raid Warnings"])
-	left:CreateDropdown("raid-font", Settings["raid-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of raid warnings"], UpdateRaidFont, "Font")
-	left:CreateSlider("raid-font-size", Settings["raid-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of raid warnings"], UpdateRaidFont)
-	left:CreateDropdown("raid-font-flags", Settings["raid-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of raid warnings"], UpdateRaidFont)
+	left:CreateDropdown("warning-font", Settings["warning-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of raid warnings"], UpdateRaidFont, "Font")
+	left:CreateSlider("warning-font-size", Settings["warning-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of raid warnings"], UpdateRaidFont)
+	left:CreateDropdown("warning-font-flags", Settings["warning-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of raid warnings"], UpdateRaidFont)
 	
 	left:CreateHeader(Language["Status Font"])
 	left:CreateDropdown("status-font", Settings["status-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the status text"], UpdateStatusFont, "Font")

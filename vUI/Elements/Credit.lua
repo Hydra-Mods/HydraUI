@@ -1,11 +1,11 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local Patrons = {
-	[1] = {"Erieeroot", "Quivera"},
-	[2] = {"Ari", "MrPoundsign"},
-	--[3] = {},
-	[4] = {"Ryex", "JDoubleU00", "sylvester", "Innie", "Mcbooze", "Aaron B.", "Steve R.", "Angel", "FrankPatten", "Dellamaik", "stko"},
-	[5] = {"madmaddy", "Dustin S."},
+	[1] = {"Erieeroot", "Quivera"}, -- 20
+	[2] = {"Ari", "MrPoundsign"}, -- 15
+	[3] = {"Dillan"}, -- 10
+	[4] = {"Ryex", "JDoubleU00", "sylvester", "Innie", "Mcbooze", "Aaron B.", "Steve R.", "Angel", "FrankPatten", "Dellamaik", "stko", "Jeor"}, -- 5
+	[5] = {"madmaddy", "Dustin S."}, -- 3
 }
 
 local Tiers = {
@@ -45,12 +45,13 @@ GUI:AddSettings(Language["Info"], Language["Supporters"], function(left, right)
 	left:CreateDoubleLine("Erthelmi", "Gene")
 	left:CreateDoubleLine("JDoubleU00", "Duds")
 	left:CreateDoubleLine("Shazlen", "Shawna W.")
+	left:CreateLine("Dillan")
 	
 	for i = 1, #Patrons do
-		if Patrons[i] then
-			table.sort(Patrons[i], function(a, b)
+		if Patrons[i][1] then
+			--[[table.sort(Patrons[i], function(a, b)
 				return a < b
-			end)
+			end)]]
 			
 			local Message = ""
 			local First
