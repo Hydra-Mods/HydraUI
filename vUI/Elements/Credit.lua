@@ -47,16 +47,15 @@ GUI:AddSettings(Language["Info"], Language["Supporters"], function(left, right)
 	left:CreateDoubleLine("Shazlen", "Shawna W.")
 	left:CreateLine("Dillan")
 	
+	right:CreateHeader("Patrons")
+	
 	for i = 1, #Patrons do
 		if Patrons[i][1] then
 			--[[table.sort(Patrons[i], function(a, b)
 				return a < b
 			end)]]
 			
-			local Message = ""
-			local First
-			
-			right:CreateHeader(Tiers[i][2])
+			--right:CreateHeader(Tiers[i][2])
 			
 			for n = 1, #Patrons[i], 2 do
 				if Patrons[i][n+1] then
@@ -71,5 +70,5 @@ GUI:AddSettings(Language["Info"], Language["Supporters"], function(left, right)
 	left:CreateFooter()
 	left:CreateMessage("Thank you to all of these amazing people for their support, through donations and Patreon pledges! This generosity allows me to spend so much of my time developing the interface for everyone.")
 	left:CreateLine("")
-	left:CreateLine(format("- |cFF%sHydra|r", Settings["ui-header-font-color"]))
+	left:CreateLine(format("|cFF%s- Hydra|r", Settings["ui-widget-color"]))
 end)
