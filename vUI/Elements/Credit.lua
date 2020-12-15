@@ -71,4 +71,7 @@ GUI:AddSettings(Language["Info"], Language["Supporters"], function(left, right)
 	left:CreateMessage("Thank you to all of these amazing people for their support, through donations and Patreon pledges! This generosity allows me to spend so much of my time developing the interface for everyone.")
 	left:CreateLine("")
 	left:CreateLine(format("|cFF%s- Hydra|r", Settings["ui-widget-color"]))
+	
+	right:CreateHeader("Testing")
+	right:CreateAnimatedLine("|cFFFF8000Erieeroot|r", vUI:HexToRGB("FF8000"))
 end)

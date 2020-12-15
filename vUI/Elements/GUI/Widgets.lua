@@ -111,6 +111,69 @@ GUI.Widgets.CreateLine = function(self, text)
 	return Anchor.Text
 end
 
+local AnimOnShow = function(self)
+	if (not self.Fade:IsPlaying()) then
+		self.Fade:Play()
+	end
+end
+
+local AnimOnHide = function(self)
+	if self.Fade:IsPlaying() then
+		self.Fade:Stop()
+	end
+end
+
+GUI.Widgets.CreateAnimatedLine = function(self, text, r, g, b)
+	local Anchor = CreateFrame("Frame", nil, self)
+	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	Anchor.ID = CreateID(text)
+	
+	Anchor.Text = Anchor:CreateFontString(nil, "OVERLAY")
+	Anchor.Text:SetPoint("LEFT", Anchor, HEADER_SPACING, 0)
+	Anchor.Text:SetSize(GROUP_WIDTH - 6, WIDGET_HEIGHT)
+	vUI:SetFontInfo(Anchor.Text, Settings["ui-widget-font"], 14)
+	Anchor.Text:SetJustifyH("LEFT")
+	Anchor.Text:SetText(format("|cFF%s%s|r", Settings["ui-widget-font-color"], text))
+	
+	Anchor.Parent = CreateFrame("Frame", nil, Anchor)
+	Anchor.Parent:SetSize(Anchor.Text:GetStringWidth() + 6, WIDGET_HEIGHT - 4)
+	Anchor.Parent:SetPoint("LEFT", Anchor.Text, 0, 0)
+	Anchor.Parent:SetAlpha(0)
+	Anchor.Parent:SetScript("OnShow", AnimOnShow)
+	Anchor.Parent:SetScript("OnHide", AnimOnHide)
+	Anchor.Parent:SetFrameLevel(Anchor:GetFrameLevel() - 1)
+	
+	Anchor.Top = Anchor.Parent:CreateTexture(nil, "ARTWORK")
+	Anchor.Top:SetSize(Anchor.Parent:GetWidth(), WIDGET_HEIGHT / 2 - 2)
+	Anchor.Top:SetPoint("TOP", Anchor.Parent, -3, 0)
+	Anchor.Top:SetTexture(Assets:GetHighlight("RenHorizonUp"))
+	Anchor.Top:SetVertexColor(r, g, b)
+	
+	Anchor.Bottom = Anchor.Parent:CreateTexture(nil, "ARTWORK")
+	Anchor.Bottom:SetSize(Anchor.Parent:GetWidth(), WIDGET_HEIGHT / 2 - 2)
+	Anchor.Bottom:SetPoint("BOTTOM", Anchor.Parent, -3, 0)
+	Anchor.Bottom:SetTexture(Assets:GetHighlight("RenHorizonDown"))
+	Anchor.Bottom:SetVertexColor(r, g, b)
+	
+	Anchor.Parent.Fade = CreateAnimationGroup(Anchor.Parent)
+	Anchor.Parent.Fade:SetLooping(true)
+	
+	Anchor.Parent.FadeIn = Anchor.Parent.Fade:CreateAnimation("Fade")
+	Anchor.Parent.FadeIn:SetEasing("in")
+	Anchor.Parent.FadeIn:SetDuration(1.2)
+	Anchor.Parent.FadeIn:SetChange(0.7)
+	
+	Anchor.Parent.FadeOut = Anchor.Parent.Fade:CreateAnimation("Fade")
+	Anchor.Parent.FadeOut:SetEasing("out")
+	Anchor.Parent.FadeOut:SetDuration(1.2)
+	Anchor.Parent.FadeOut:SetChange(0)
+	Anchor.Parent.FadeOut:SetOrder(2)
+	
+	tinsert(self.Widgets, Anchor)
+	
+	return Anchor.Text
+end
+
 -- Double Line
 GUI.Widgets.CreateDoubleLine = function(self, left, right)
 	local Anchor = CreateFrame("Frame", nil, self)

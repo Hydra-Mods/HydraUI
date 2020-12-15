@@ -1,15 +1,16 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local tonumber = tonumber
-local match = string.match
 local SendAddonMessage = C_ChatInfo.SendAddonMessage
 local IsInGuild = IsInGuild
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
 
 local AddOnVersion = tonumber(vUI.UIVersion)
+local User = vUI.UserName .. "-" .. vUI.UserRealm
 
 local Update = vUI:NewModule("Update")
+
 
 --[[local WhatsNew = {
 	[1.01] = {
@@ -102,9 +103,7 @@ function Update:VARIABLES_LOADED(event)
 end
 
 function Update:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
-	sender = match(sender, "(%S+)-%S+")
-	
-	if (sender == vUI.UserName or prefix ~= "vUI-Version") then
+	if (sender == User or prefix ~= "vUI-Version") then
 		return
 	end
 	

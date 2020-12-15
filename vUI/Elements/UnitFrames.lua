@@ -2587,11 +2587,11 @@ local StyleBoss = function(self, unit)
 	-- Auras
 	local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
 	Buffs:SetSize(Settings["unitframes-player-width"], 28)
-	Buffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
+	Buffs:SetPoint("RIGHT", self, "LEFT", -2, 2)
 	Buffs.size = 28
-	Buffs.spacing = 2
-	Buffs.num = 8
-	Buffs.initialAnchor = "TOPLEFT"
+	Buffs.spacing = -2
+	Buffs.num = 3
+	Buffs.initialAnchor = "RIGHT"
 	Buffs.tooltipAnchor = "ANCHOR_TOP"
 	Buffs["growth-x"] = "RIGHT"
 	Buffs["growth-y"] = "UP"
@@ -2601,11 +2601,11 @@ local StyleBoss = function(self, unit)
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetSize(Settings["unitframes-player-width"], 28)
-	Debuffs:SetPoint("BOTTOM", Buffs, "TOP", 0, 2)
+	Debuffs:SetPoint("LEFT", Buffs, "RIGHT", 2, 2)
 	Debuffs.size = 28
 	Debuffs.spacing = 2
-	Debuffs.num = 8
-	Debuffs.initialAnchor = "TOPRIGHT"
+	Debuffs.num = 4
+	Debuffs.initialAnchor = "RIGHT"
 	Debuffs.tooltipAnchor = "ANCHOR_TOP"
 	Debuffs["growth-x"] = "LEFT"
 	Debuffs["growth-y"] = "UP"
