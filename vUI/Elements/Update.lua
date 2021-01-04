@@ -42,20 +42,14 @@ function Update:PLAYER_ENTERING_WORLD()
 		SendAddonMessage("vUI-Version", AddOnVersion, "GUILD")
 	end
 	
-	if IsInGroup(LE_PARTY_CATEGORY_HOME) then
-		if IsInRaid() then
-			SendAddonMessage("vUI-Version", AddOnVersion, "RAID")
-		elseif IsInGroup() then
-			SendAddonMessage("vUI-Version", AddOnVersion, "PARTY")
-		end
+	if IsInRaid() then
+		SendAddonMessage("vUI-Version", AddOnVersion, IsInRaid(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE" or "RAID")
+	elseif IsInGroup() then
+		SendAddonMessage("vUI-Version", AddOnVersion, IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE" or "PARTY")
 	end
 	
-	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
-		SendAddonMessage("vUI-Version", AddOnVersion, "INSTANCE_CHAT")
-	end
-	
-	SendAddonMessage("vUI-Version", AddOnVersion, "CHANNEL", 1)
-	SendAddonMessage("vUI-Version", AddOnVersion, "CHANNEL", 2)
+	--SendAddonMessage("vUI-Version", AddOnVersion, "CHANNEL", 1)
+	--SendAddonMessage("vUI-Version", AddOnVersion, "CHANNEL", 2)
 end
 
 function Update:GUILD_ROSTER_UPDATE()

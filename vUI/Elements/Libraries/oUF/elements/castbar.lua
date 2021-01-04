@@ -315,7 +315,7 @@ local function CastInterruptible(self, event, unit)
 	if(not element:IsShown()) then return end
 
 	element.notInterruptible = event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE'
-
+	
 	if(element.Shield) then element.Shield:SetShown(element.notInterruptible) end
 
 	--[[ Callback: Castbar:PostCastInterruptible(unit)

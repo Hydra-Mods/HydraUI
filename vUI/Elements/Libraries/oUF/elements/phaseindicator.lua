@@ -53,7 +53,7 @@ end
 local function onEnter(element)
 	if(not element:IsVisible()) then return end
 
-	GameTooltip:SetOwner(element, 'ANCHOR_BOTTOMRIGHT')
+	GameTooltip:SetOwner(element, 'ANCHOR_TOPLEFT')
 	element:UpdateTooltip()
 end
 

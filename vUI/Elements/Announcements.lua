@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Announcements = vUI:NewModule("Announcements")
 local EventType, SourceGUID, DestName, SpellID, SpellName
@@ -24,6 +24,9 @@ local PetGUID = ""
 local _
 
 local Channel
+
+Defaults["announcements-enable"] = true
+Defaults["announcements-channel"] = "SELF"
 
 Announcements.Spells = {
 	

@@ -1,6 +1,6 @@
 ## Interface: 90002
 ## Author: Hydra
-## Version: 1.00651
+## Version: 1.007
 ## Title: |cFFFFC44DvUI|r
 ## Notes: An interface replacement for World of Warcraft: Shadowlands
 ## SavedVariables: vUIProfileData, vUIProfiles, vUIData, vUIGold
@@ -39,11 +39,21 @@ Elements\Popup.lua
 Elements\Gold.lua
 Elements\Fonts.lua
 Elements\Chat.lua
+Elements\ChatBubbles.lua
 Elements\Experience.lua
 Elements\Reputation.lua
 Elements\ActionBars\ActionBars.lua
 Elements\ActionBars\KeyBinding.lua
-Elements\UnitFrames.lua
+Elements\UnitFrames\UnitFrames.lua
+Elements\UnitFrames\Player.lua
+Elements\UnitFrames\Target.lua
+Elements\UnitFrames\TargetTarget.lua
+Elements\UnitFrames\Pet.lua
+Elements\UnitFrames\Focus.lua
+Elements\UnitFrames\Boss.lua
+Elements\UnitFrames\Party.lua
+Elements\UnitFrames\Raid.lua
+Elements\UnitFrames\NamePlates.lua
 Elements\MiniMap\MiniMap.lua
 Elements\MiniMap\MiniMapButtons.lua
 Elements\ZoneText.lua

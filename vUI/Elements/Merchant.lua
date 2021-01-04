@@ -1,4 +1,4 @@
-local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local AutoVendor = vUI:NewModule("Auto Vendor") -- Automatically sell useless items
 
@@ -13,6 +13,9 @@ local PickupMerchantItem = PickupMerchantItem
 local GetCoinTextureString = GetCoinTextureString
 local CanGuildBankRepair = CanGuildBankRepair
 local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
+
+Defaults["auto-vendor-enable"] = true
+Defaults["auto-vendor-report"] = true
 
 AutoVendor.Filter = {
 	[6196] = true,
@@ -89,6 +92,10 @@ function AutoVendor:Load()
 end
 
 local AutoRepair = vUI:NewModule("Auto Repair")
+
+Defaults["auto-repair-enable"] = true
+Defaults["auto-repair-use-guild"] = true
+Defaults["auto-repair-report"] = true
 
 function AutoRepair:OnEvent()
 	local Money = GetMoney()

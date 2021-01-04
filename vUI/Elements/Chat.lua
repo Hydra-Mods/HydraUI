@@ -334,15 +334,18 @@ end
 local OnMouseWheel = function(self, delta)
 	if (delta < 0) then
 		if IsShiftKeyDown() then
-			self:ScrollToBottom()
+			--self:ScrollToBottom()
+			ChatFrame_ScrollToBottom()
 		else
 			self:ScrollDown()
+			ChatFrame_ScrollDown()
 		end
 	elseif (delta > 0) then
 		if IsShiftKeyDown() then
 			self:ScrollToTop()
 		else
-			self:ScrollUp()
+			--self:ScrollUp()
+			ChatFrame_ScrollUp()
 		end
 	end
 end

@@ -106,13 +106,21 @@ local Update = function(self, event)
 	end
 end
 
+local OnMouseUp = function()
+	if InCombatLockdown() then
+		return print(ERR_NOT_IN_COMBAT)
+	end
+	
+	ToggleCommunitiesFrame()
+end
+
 local OnEnable = function(self)
 	self:RegisterEvent("GUILD_ROSTER_UPDATE")
 	self:RegisterEvent("PLAYER_GUILD_UPDATE")
 	self:SetScript("OnEvent", Update)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
-	self:SetScript("OnMouseUp", ToggleCommunitiesFrame)
+	self:SetScript("OnMouseUp", OnMouseUp)
 	
 	self:Update()
 end

@@ -1,19 +1,21 @@
 local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
+local Tiers = {"FF8000", "A335EE", "0070DD", "1EFF00", "FFFFFF"}
+
 local Patrons = {
-	[1] = {"Erieeroot", "Quivera"}, -- 20
-	[2] = {"Ari", "MrPoundsign"}, -- 15
-	[3] = {"Dillan"}, -- 10
-	[4] = {"Ryex", "JDoubleU00", "sylvester", "Innie", "Mcbooze", "Aaron B.", "Steve R.", "Angel", "FrankPatten", "Dellamaik", "stko", "Jeor"}, -- 5
-	[5] = {"madmaddy", "Dustin S."}, -- 3
+	{"Erieeroot", "Dragonhawk"}, -- 20
+	{"Ari", "MrPoundsign"}, -- 15
+	{"Dillan", "FrankPatten", "deck"}, -- 10
+	{"Ryex", "JDoubleU00", "sylvester", "Innie", "Mcbooze", "Aaron B.", "Angel", "Dellamaik", "stko", "Jeor"}, -- 5
+	{"madmaddy", "Dustin S."}, -- 3
 }
 
-local Tiers = {
-	[1] = {"|cFFFF8000", Language["Legendary Patrons"]},
-	[2] = {"|cFFA335EE", Language["Epic Patrons"]},
-	[3] = {"|cFF0070DD", Language["Rare Patrons"]},
-	[4] = {"|cFF1EFF00", Language["Uncommon Patrons"]},
-	[5] = {"", Language["Common Patrons"]},
+local Previous = {
+	{"SwoopCrown"},
+	{"Smelly", "Trix", "wolimazo"},
+	{"Euphoria", "Mitooshin"},
+	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Steve R."},
+	{"Akab00m", "OzzFreak"},
 }
 
 GUI:AddSettings(Language["Info"], Language["Credits"], function(left, right)
@@ -40,38 +42,54 @@ GUI:AddSettings(Language["Info"], Language["Credits"], function(left, right)
 end)
 
 GUI:AddSettings(Language["Info"], Language["Supporters"], function(left, right)
-	left:CreateHeader(Language["Hall of Legends"])
-	left:CreateDoubleLine("Innie", "Brightsides")
-	left:CreateDoubleLine("Erthelmi", "Gene")
-	left:CreateDoubleLine("JDoubleU00", "Duds")
-	left:CreateDoubleLine("Shazlen", "Shawna W.")
-	left:CreateLine("Dillan")
+	left:CreateHeader("Patreon Supporters")
 	
-	right:CreateHeader("Patrons")
+	local r, g, b = vUI:HexToRGB("FF8000")
 	
-	for i = 1, #Patrons do
-		if Patrons[i][1] then
-			--[[table.sort(Patrons[i], function(a, b)
-				return a < b
-			end)]]
-			
-			--right:CreateHeader(Tiers[i][2])
-			
-			for n = 1, #Patrons[i], 2 do
-				if Patrons[i][n+1] then
-					right:CreateDoubleLine(Tiers[i][1] .. Patrons[i][n] .. "|r", Tiers[i][1] .. Patrons[i][n+1] .. "|r")
-				else
-					right:CreateLine(Tiers[i][1] .. Patrons[i][n] .. "|r")
-				end
-			end
+	for n = 1, #Patrons[1], 2 do
+		if Patrons[1][n+1] then
+			left:CreateAnimatedDoubleLine("|cFF" .. Tiers[1] .. Patrons[1][n] .. "|r", "|cFF" .. Tiers[1] .. Patrons[1][n+1] .. "|r", r, g, b)
+		else
+			left:CreateAnimatedLine("|cFF" .. Tiers[1] .. Patrons[1][n] .. "|r", r, g, b)
 		end
 	end
 	
-	left:CreateFooter()
-	left:CreateMessage("Thank you to all of these amazing people for their support, through donations and Patreon pledges! This generosity allows me to spend so much of my time developing the interface for everyone.")
-	left:CreateLine("")
-	left:CreateLine(format("|cFF%s- Hydra|r", Settings["ui-widget-color"]))
+	local List = {}
 	
-	right:CreateHeader("Testing")
-	right:CreateAnimatedLine("|cFFFF8000Erieeroot|r", vUI:HexToRGB("FF8000"))
+	for i = 2, #Patrons do
+		for n = 1, #Patrons[i] do
+			List[#List + 1] = "|cFF" .. Tiers[i] .. Patrons[i][n] .. "|r"
+		end
+	end
+	
+	for i = 1, #List, 2 do
+		if List[i+1] then
+			left:CreateDoubleLine(List[i], List[i+1])
+		else
+			left:CreateLine(List[i])
+		end
+	end
+	
+	local ExPatrons = ""
+	
+	for i = 1, #Previous do
+		for n = 1, #Previous[i] do
+			ExPatrons = ExPatrons .. "|cFF" .. Tiers[i] .. Previous[i][n] .. "|r "
+		end
+	end
+	
+	left:CreateHeader("Former Patreon Supporters")
+	left:CreateMessage(ExPatrons)
+	
+	right:CreateHeader(Language["Hall of Legends"])
+	right:CreateDoubleLine("Innie", "Brightsides")
+	right:CreateDoubleLine("Erthelmi", "Gene")
+	right:CreateDoubleLine("JDoubleU00", "Duds")
+	right:CreateDoubleLine("Shazlen", "Shawna W.")
+	right:CreateDoubleLine("Dillan", "Bruce N.")
+	
+	right:CreateFooter()
+	right:CreateMessage("Thank you to all of these amazing people for their support, through donations and Patreon pledges! This generosity allows me to spend so much of my time developing the interface for everyone.")
+	right:CreateLine("")
+	right:CreateLine(format("|cFF%s- Hydra|r", Settings["ui-widget-color"]))
 end)

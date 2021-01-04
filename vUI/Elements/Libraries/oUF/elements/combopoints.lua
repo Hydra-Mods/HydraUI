@@ -1,10 +1,12 @@
 local _, ns = ...
 local oUF = ns.oUF
-local vUI = ns:get()
+local vUI, GUI, Language, Assets, Settings = ns:get()
 
 local GetShapeshiftForm = GetShapeshiftForm
 local GetComboPoints = GetComboPoints
-local ShapeshiftForm
+local GetUnitChargedPowerPoints =GetUnitChargedPowerPoints
+local UnitPowerMax = UnitPowerMax
+local Index = Enum.PowerType.ComboPoints
 
 local Update = function(self, event, unit, power)
 	if ((unit ~= self.unit) or (unit == "player" and power ~= "COMBO_POINTS")) then
@@ -19,7 +21,7 @@ local Update = function(self, event, unit, power)
 	
 	local Points = GetComboPoints("player", "target")
 	
-	for i = 1, 5 do
+	for i = 1, UnitPowerMax("player", Index) do
 		if (i > Points) then
 			if (element[i]:GetAlpha() > 0.3) then
 				element[i]:SetAlpha(0.3)
@@ -44,17 +46,45 @@ local ForceUpdate = function(element)
 	return Path(element.__owner, "ForceUpdate")
 end
 
-local UpdateScratchyBoi = function(self)
-	ShapeshiftForm = GetShapeshiftForm()
-	
-	if (ShapeshiftForm == 3) then
+local UpdateForm = function(self)
+	if (GetShapeshiftForm() == 2) then
 		self.ComboPoints:Show()
 	else
 		self.ComboPoints:Hide()
 	end
+end
+
+local UpdateMaxPoints = function(self)
+	local Points = self.ComboPoints
+	local Max = UnitPowerMax("player", Index)
+	local Width = (Settings["unitframes-player-width"] / Max) - 1
 	
-	if self.ComboPoints.UpdateShapeshiftForm then
-		self.ComboPoints:UpdateShapeshiftForm(ShapeshiftForm)
+	if (UnitPowerMax("player", Index) == 6) then
+		if (not Points[6]:IsShown()) then
+			Points[6]:Show()
+			Points[6]:SetAlpha(0.3)
+		end
+	else
+		if Points[6]:IsShown() then
+			Points[6]:Hide()
+		end
+	end
+	
+	for i = 1, Max do
+		Points[i]:SetWidth(i == 1 and Width - 1 or Width)
+	end
+end
+
+local UpdateChargedPoint = function(self)
+	local Charged = GetUnitChargedPowerPoints("player")
+	local Point = Charged and Charged[1]
+	
+	for i = 1, UnitPowerMax("player", Index) do
+		if (i == Point) then
+			self.ComboPoints[i].Charged:Show()
+		elseif self.ComboPoints[i].Charged:IsShown() then
+			self.ComboPoints[i].Charged:Hide()
+		end
 	end
 end
 
@@ -69,11 +99,14 @@ local Enable = function(self)
 		self:RegisterEvent("UNIT_POWER_UPDATE", Path, true)
 
 		if (vUI.UserClass == "DRUID") then
-			self:RegisterEvent("UPDATE_SHAPESHIFT_FORM", UpdateScratchyBoi, true)
-			self:RegisterEvent("PLAYER_ENTERING_WORLD", UpdateScratchyBoi, true)
+			self:RegisterEvent("UPDATE_SHAPESHIFT_FORM", UpdateForm, true)
+			self:RegisterEvent("PLAYER_ENTERING_WORLD", UpdateForm, true)
+		else
+			self:RegisterEvent("SPELLS_CHANGED", UpdateMaxPoints, true)
+			self:RegisterEvent("UNIT_POWER_POINT_CHARGE", UpdateChargedPoint)
 		end
 		
-		for i = 1, 5 do
+		for i = 1, UnitPowerMax("player", Index) do
 			if (element[i]:IsObjectType("Texture") and not element[i]:GetTexture()) then
 				element[i]:SetTexture("Interface\\TargetingFrame\\UI-StatusBar")
 			end
@@ -94,9 +127,12 @@ local Disable = function(self)
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Path)
 		self:UnregisterEvent("UNIT_POWER_UPDATE", Path)
 		
-		if self:IsEventRegistered("UPDATE_SHAPESHIFT_FORM") then
-			self:UnregisterEvent("UPDATE_SHAPESHIFT_FORM", UpdateScratchyBoi)
-			self:UnregisterEvent("PLAYER_ENTERING_WORLD", UpdateScratchyBoi)
+		if (vUI.UserClass == "DRUID") then
+			self:UnregisterEvent("UPDATE_SHAPESHIFT_FORM", UpdateForm)
+			self:UnregisterEvent("PLAYER_ENTERING_WORLD", UpdateForm)
+		else
+			self:UnregisterEvent("SPELLS_CHANGED", UpdateMaxPoints)
+			self:UnregisterEvent("UNIT_POWER_POINT_CHARGE", UpdateChargedPoint)
 		end
 	end
 end

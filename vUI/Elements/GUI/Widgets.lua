@@ -111,69 +111,6 @@ GUI.Widgets.CreateLine = function(self, text)
 	return Anchor.Text
 end
 
-local AnimOnShow = function(self)
-	if (not self.Fade:IsPlaying()) then
-		self.Fade:Play()
-	end
-end
-
-local AnimOnHide = function(self)
-	if self.Fade:IsPlaying() then
-		self.Fade:Stop()
-	end
-end
-
-GUI.Widgets.CreateAnimatedLine = function(self, text, r, g, b)
-	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
-	Anchor.ID = CreateID(text)
-	
-	Anchor.Text = Anchor:CreateFontString(nil, "OVERLAY")
-	Anchor.Text:SetPoint("LEFT", Anchor, HEADER_SPACING, 0)
-	Anchor.Text:SetSize(GROUP_WIDTH - 6, WIDGET_HEIGHT)
-	vUI:SetFontInfo(Anchor.Text, Settings["ui-widget-font"], 14)
-	Anchor.Text:SetJustifyH("LEFT")
-	Anchor.Text:SetText(format("|cFF%s%s|r", Settings["ui-widget-font-color"], text))
-	
-	Anchor.Parent = CreateFrame("Frame", nil, Anchor)
-	Anchor.Parent:SetSize(Anchor.Text:GetStringWidth() + 6, WIDGET_HEIGHT - 4)
-	Anchor.Parent:SetPoint("LEFT", Anchor.Text, 0, 0)
-	Anchor.Parent:SetAlpha(0)
-	Anchor.Parent:SetScript("OnShow", AnimOnShow)
-	Anchor.Parent:SetScript("OnHide", AnimOnHide)
-	Anchor.Parent:SetFrameLevel(Anchor:GetFrameLevel() - 1)
-	
-	Anchor.Top = Anchor.Parent:CreateTexture(nil, "ARTWORK")
-	Anchor.Top:SetSize(Anchor.Parent:GetWidth(), WIDGET_HEIGHT / 2 - 2)
-	Anchor.Top:SetPoint("TOP", Anchor.Parent, -3, 0)
-	Anchor.Top:SetTexture(Assets:GetHighlight("RenHorizonUp"))
-	Anchor.Top:SetVertexColor(r, g, b)
-	
-	Anchor.Bottom = Anchor.Parent:CreateTexture(nil, "ARTWORK")
-	Anchor.Bottom:SetSize(Anchor.Parent:GetWidth(), WIDGET_HEIGHT / 2 - 2)
-	Anchor.Bottom:SetPoint("BOTTOM", Anchor.Parent, -3, 0)
-	Anchor.Bottom:SetTexture(Assets:GetHighlight("RenHorizonDown"))
-	Anchor.Bottom:SetVertexColor(r, g, b)
-	
-	Anchor.Parent.Fade = CreateAnimationGroup(Anchor.Parent)
-	Anchor.Parent.Fade:SetLooping(true)
-	
-	Anchor.Parent.FadeIn = Anchor.Parent.Fade:CreateAnimation("Fade")
-	Anchor.Parent.FadeIn:SetEasing("in")
-	Anchor.Parent.FadeIn:SetDuration(1.2)
-	Anchor.Parent.FadeIn:SetChange(0.7)
-	
-	Anchor.Parent.FadeOut = Anchor.Parent.Fade:CreateAnimation("Fade")
-	Anchor.Parent.FadeOut:SetEasing("out")
-	Anchor.Parent.FadeOut:SetDuration(1.2)
-	Anchor.Parent.FadeOut:SetChange(0)
-	Anchor.Parent.FadeOut:SetOrder(2)
-	
-	tinsert(self.Widgets, Anchor)
-	
-	return Anchor.Text
-end
-
 -- Double Line
 GUI.Widgets.CreateDoubleLine = function(self, left, right)
 	local Anchor = CreateFrame("Frame", nil, self)
@@ -237,6 +174,185 @@ GUI.Widgets.CreateMessage = function(self, text) -- Create as many lines as need
 	end
 	
 	self:CreateLine(Line)
+end
+
+local AnimatedLineOnShow = function(self)
+	if (not self.Fade:IsPlaying()) then
+		self.Fade:Play()
+	end
+end
+
+local AnimatedLineOnHide = function(self)
+	if self.Fade:IsPlaying() then
+		self.Fade:Stop()
+	end
+end
+
+GUI.Widgets.CreateAnimatedLine = function(self, text, r, g, b)
+	local Anchor = CreateFrame("Frame", nil, self)
+	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	Anchor.ID = CreateID(text)
+	
+	Anchor.Text = Anchor:CreateFontString(nil, "OVERLAY")
+	Anchor.Text:SetPoint("LEFT", Anchor, HEADER_SPACING, 0)
+	Anchor.Text:SetSize(GROUP_WIDTH - 8, WIDGET_HEIGHT)
+	vUI:SetFontInfo(Anchor.Text, Settings["ui-widget-font"], 14)
+	Anchor.Text:SetJustifyH("LEFT")
+	Anchor.Text:SetText(format("|cFF%s%s|r", Settings["ui-widget-font-color"], text))
+	
+	Anchor.Parent = CreateFrame("Frame", nil, Anchor)
+	Anchor.Parent:SetSize(Anchor.Text:GetStringWidth() + 8, WIDGET_HEIGHT + 4)
+	Anchor.Parent:SetPoint("LEFT", Anchor.Text, 0, 0)
+	Anchor.Parent:SetAlpha(0.2)
+	Anchor.Parent:SetScript("OnShow", AnimatedLineOnShow)
+	Anchor.Parent:SetScript("OnHide", AnimatedLineOnHide)
+	Anchor.Parent:SetFrameLevel(Anchor:GetFrameLevel() - 1)
+	
+	Anchor.Top = Anchor.Parent:CreateTexture(nil, "ARTWORK")
+	Anchor.Top:SetSize(Anchor.Parent:GetWidth(), WIDGET_HEIGHT / 2 + 2)
+	Anchor.Top:SetPoint("TOP", Anchor.Parent, -3, 0)
+	Anchor.Top:SetTexture(Assets:GetHighlight("RenHorizonUp"))
+	Anchor.Top:SetVertexColor(r * 1.7, g * 1.7, b * 1.7)
+	
+	Anchor.Bottom = Anchor.Parent:CreateTexture(nil, "ARTWORK")
+	Anchor.Bottom:SetSize(Anchor.Parent:GetWidth(), WIDGET_HEIGHT / 2 + 2)
+	Anchor.Bottom:SetPoint("BOTTOM", Anchor.Parent, -3, 0)
+	Anchor.Bottom:SetTexture(Assets:GetHighlight("RenHorizonDown"))
+	Anchor.Bottom:SetVertexColor(r * 1.7, g * 1.7, b * 1.7)
+	
+	Anchor.Parent.Fade = CreateAnimationGroup(Anchor.Parent)
+	Anchor.Parent.Fade:SetLooping(true)
+	
+	Anchor.Parent.In = Anchor.Parent.Fade:CreateAnimation("Fade")
+	Anchor.Parent.In:SetEasing("in")
+	Anchor.Parent.In:SetDuration(1)
+	Anchor.Parent.In:SetChange(0.5)
+	
+	Anchor.Parent.Out = Anchor.Parent.Fade:CreateAnimation("Fade")
+	Anchor.Parent.Out:SetEasing("out")
+	Anchor.Parent.Out:SetDuration(1)
+	Anchor.Parent.Out:SetChange(0.2)
+	Anchor.Parent.Out:SetOrder(2)
+	
+	tinsert(self.Widgets, Anchor)
+	
+	return Anchor.Text
+end
+
+GUI.Widgets.CreateAnimatedDoubleLine = function(self, left, right, r, g, b)
+	local Anchor = CreateFrame("Frame", nil, self)
+	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	Anchor.ID = CreateID(left)
+	
+	Anchor.Left = Anchor:CreateFontString(nil, "OVERLAY")
+	Anchor.Left:SetPoint("LEFT", Anchor, HEADER_SPACING, 0)
+	Anchor.Left:SetSize(GROUP_WIDTH - 8, WIDGET_HEIGHT)
+	vUI:SetFontInfo(Anchor.Left, Settings["ui-widget-font"], 14)
+	Anchor.Left:SetJustifyH("LEFT")
+	Anchor.Left:SetText(left)
+	
+	Anchor.LeftParent = CreateFrame("Frame", nil, Anchor)
+	Anchor.LeftParent:SetSize(Anchor.Left:GetStringWidth() + 8, WIDGET_HEIGHT + 4)
+	Anchor.LeftParent:SetPoint("LEFT", Anchor.Left, 0, -1)
+	Anchor.LeftParent:SetAlpha(0.2)
+	Anchor.LeftParent:SetScript("OnShow", AnimatedLineOnShow)
+	Anchor.LeftParent:SetScript("OnHide", AnimatedLineOnHide)
+	Anchor.LeftParent:SetFrameLevel(Anchor:GetFrameLevel() - 1)
+	
+	Anchor.TopLeft = Anchor.LeftParent:CreateTexture(nil, "ARTWORK")
+	Anchor.TopLeft:SetSize(Anchor.LeftParent:GetWidth(), WIDGET_HEIGHT / 2 + 2)
+	Anchor.TopLeft:SetPoint("TOP", Anchor.LeftParent, -3, 0)
+	Anchor.TopLeft:SetTexture(Assets:GetHighlight("RenHorizonUp"))
+	Anchor.TopLeft:SetVertexColor(r * 1.7, g * 1.7, b * 1.7)
+	
+	Anchor.BottomLeft = Anchor.LeftParent:CreateTexture(nil, "ARTWORK")
+	Anchor.BottomLeft:SetSize(Anchor.LeftParent:GetWidth(), WIDGET_HEIGHT / 2 + 2)
+	Anchor.BottomLeft:SetPoint("BOTTOM", Anchor.LeftParent, -3, 0)
+	Anchor.BottomLeft:SetTexture(Assets:GetHighlight("RenHorizonDown"))
+	Anchor.BottomLeft:SetVertexColor(r * 1.7, g * 1.7, b * 1.7)
+	
+	Anchor.LeftParent.Fade = CreateAnimationGroup(Anchor.LeftParent)
+	Anchor.LeftParent.Fade:SetLooping(true)
+	
+	Anchor.LeftParent.In = Anchor.LeftParent.Fade:CreateAnimation("Fade")
+	Anchor.LeftParent.In:SetEasing("in")
+	Anchor.LeftParent.In:SetDuration(1)
+	Anchor.LeftParent.In:SetChange(0.5)
+	
+	Anchor.LeftParent.Out = Anchor.LeftParent.Fade:CreateAnimation("Fade")
+	Anchor.LeftParent.Out:SetEasing("out")
+	Anchor.LeftParent.Out:SetDuration(1)
+	Anchor.LeftParent.Out:SetChange(0.2)
+	Anchor.LeftParent.Out:SetOrder(2)
+	
+	Anchor.LeftParent.SIn = Anchor.LeftParent.Fade:CreateAnimation("Scale")
+	Anchor.LeftParent.SIn:SetEasing("in")
+	Anchor.LeftParent.SIn:SetDuration(0.5)
+	Anchor.LeftParent.SIn:SetChange(0.8)
+	
+	Anchor.LeftParent.SOut = Anchor.LeftParent.Fade:CreateAnimation("Scale")
+	Anchor.LeftParent.SOut:SetEasing("out")
+	Anchor.LeftParent.SOut:SetDuration(0.5)
+	Anchor.LeftParent.SOut:SetChange(1)
+	Anchor.LeftParent.SOut:SetOrder(2)
+	
+	if right then
+		Anchor.Right = Anchor:CreateFontString(nil, "OVERLAY")
+		Anchor.Right:SetPoint("RIGHT", Anchor, -HEADER_SPACING, 0)
+		Anchor.Right:SetSize(GROUP_WIDTH - 8, WIDGET_HEIGHT)
+		vUI:SetFontInfo(Anchor.Right, Settings["ui-widget-font"], 14)
+		Anchor.Right:SetJustifyH("RIGHT")
+		Anchor.Right:SetText(right)
+		
+		Anchor.RightParent = CreateFrame("Frame", nil, Anchor)
+		Anchor.RightParent:SetSize(Anchor.Right:GetStringWidth() + 8, WIDGET_HEIGHT + 4)
+		Anchor.RightParent:SetPoint("RIGHT", Anchor.Right, 0, -1)
+		Anchor.RightParent:SetAlpha(0.2)
+		Anchor.RightParent:SetScript("OnShow", AnimatedLineOnShow)
+		Anchor.RightParent:SetScript("OnHide", AnimatedLineOnHide)
+		Anchor.RightParent:SetFrameLevel(Anchor:GetFrameLevel() - 1)
+		
+		Anchor.TopRight = Anchor.RightParent:CreateTexture(nil, "ARTWORK")
+		Anchor.TopRight:SetSize(Anchor.RightParent:GetWidth(), WIDGET_HEIGHT / 2 + 2)
+		Anchor.TopRight:SetPoint("TOP", Anchor.RightParent, 3, 0)
+		Anchor.TopRight:SetTexture(Assets:GetHighlight("RenHorizonUp"))
+		Anchor.TopRight:SetVertexColor(r * 1.7, g * 1.7, b * 1.7)
+		
+		Anchor.BottomRight = Anchor.RightParent:CreateTexture(nil, "ARTWORK")
+		Anchor.BottomRight:SetSize(Anchor.RightParent:GetWidth(), WIDGET_HEIGHT / 2 + 2)
+		Anchor.BottomRight:SetPoint("BOTTOM", Anchor.RightParent, 3, 0)
+		Anchor.BottomRight:SetTexture(Assets:GetHighlight("RenHorizonDown"))
+		Anchor.BottomRight:SetVertexColor(r * 1.7, g * 1.7, b * 1.7)
+		
+		Anchor.RightParent.Fade = CreateAnimationGroup(Anchor.RightParent)
+		Anchor.RightParent.Fade:SetLooping(true)
+		
+		Anchor.RightParent.In = Anchor.RightParent.Fade:CreateAnimation("Fade")
+		Anchor.RightParent.In:SetEasing("in")
+		Anchor.RightParent.In:SetDuration(1)
+		Anchor.RightParent.In:SetChange(0.5)
+		
+		Anchor.RightParent.Out = Anchor.RightParent.Fade:CreateAnimation("Fade")
+		Anchor.RightParent.Out:SetEasing("out")
+		Anchor.RightParent.Out:SetDuration(1)
+		Anchor.RightParent.Out:SetChange(0.2)
+		Anchor.RightParent.Out:SetOrder(2)
+		
+		Anchor.RightParent.SIn = Anchor.RightParent.Fade:CreateAnimation("Scale")
+		Anchor.RightParent.SIn:SetEasing("in")
+		Anchor.RightParent.SIn:SetDuration(0.5)
+		Anchor.RightParent.SIn:SetChange(0.8)
+		
+		Anchor.RightParent.SOut = Anchor.RightParent.Fade:CreateAnimation("Scale")
+		Anchor.RightParent.SOut:SetEasing("out")
+		Anchor.RightParent.SOut:SetDuration(0.5)
+		Anchor.RightParent.SOut:SetChange(1)
+		Anchor.RightParent.SOut:SetOrder(2)
+	end
+	
+	tinsert(self.Widgets, Anchor)
+	
+	return Anchor.Left, Anchor.Right
 end
 
 GUI.Widgets.CreateHeader = function(self, text)

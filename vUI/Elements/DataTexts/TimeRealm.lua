@@ -5,6 +5,10 @@ local format = format
 local GameTime_GetGameTime = GameTime_GetGameTime
 
 local OnMouseUp = function(self, button)
+	if InCombatLockdown() then
+		return print(ERR_NOT_IN_COMBAT)
+	end
+	
 	if (button == "LeftButton") then
 		TimeManager_Toggle()
 	else

@@ -127,8 +127,9 @@ end
 
 function vUI:LoadModules()
 	for i = 1, #self.Modules do
-		if self.Modules[i].Load then
+		if (self.Modules[i].Load and not self.Modules[i].Loaded) then
 			self.Modules[i]:Load()
+			self.Modules[i].Loaded = true
 		end
 	end
 end
@@ -307,6 +308,20 @@ function vUI:FormatTime(seconds)
 	return format("%.1fs", seconds)
 end
 
+function vUI:AuraFormatTime(seconds)
+	if (seconds > 86399) then
+		return format("%d", ceil(seconds / 86400))
+	elseif (seconds > 3599) then
+		return format("%d", ceil(seconds / 3600))
+	elseif (seconds > 59) then
+		return format("%d", ceil(seconds / 60))
+	elseif (seconds > 5) then
+		return format("%d", floor(seconds))
+	end
+	
+	return format("%.1f", seconds)
+end
+
 function vUI:ShortValue(num)
 	if (num > 999999) then
 		return format("%.2fm", num / 1000000)
@@ -325,6 +340,38 @@ function vUI:Comma(number)
    	local Left, Number = match(floor(number + 0.5), "^([^%d]*%d)(%d+)(.-)$")
 	
 	return Left and Left .. reverse(gsub(reverse(Number), "(%d%d%d)", "%1,")) or number
+end
+
+function vUI:CopperToGold(copper)
+	local Gold = floor(copper / (100 * 100))
+	local Silver = floor((copper - (Gold * 100 * 100)) / 100)
+	local Copper = floor(copper % 100)
+	local Separator = ""
+	local String = ""
+	
+	if (Gold > 0) then
+		String = self:Comma(Gold) .. "|cffffe02eg|r"
+		Separator = " "
+	end
+	
+	if (Silver > 0) then
+		if (Silver < 10) then
+			Silver = "0" .. Silver
+		end
+		
+		String = String .. Separator .. Silver .. "|cffd6d6d6s|r"
+		Separator = " "
+	end
+	
+	if (Copper > 0 or String == "") then
+		if (Copper < 10) then
+			Copper = "0" .. Copper
+		end
+		
+		String = String .. Separator .. Copper .. "|cfffc8d2bc|r"
+	end
+	
+	return String
 end
 
 function vUI:GetCurrentDate()

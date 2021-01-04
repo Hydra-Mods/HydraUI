@@ -205,6 +205,22 @@ local UpdateTimeFormat = function(value)
 	DT:UpdateAllAnchors()
 end
 
+local DeleteGoldData = function(value)
+	if vUI.GoldData[vUI.UserRealm] then
+		for name, money in pairs(vUI.GoldData[vUI.UserRealm]) do
+			if (string.match(name, "|cff%x%x%x%x%x%x(.*)|r") == value) then
+				vUI.GoldData[vUI.UserRealm][name] = nil
+				
+				vUI:print(format(Language["Deleted stored gold data for %s."], name))
+				
+				return
+			end
+		end
+		
+		vUI:print(format(Language["No character data found for %s."], value))
+	end
+end
+
 GUI:AddSettings(Language["General"], Language["Data Texts"], function(left, right)
 	left:CreateHeader(Language["Chat Frame Texts"])
 	left:CreateDropdown("data-text-chat-left", Settings["data-text-chat-left"], DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the left data text anchor"], UpdateLeftText)
@@ -231,6 +247,7 @@ GUI:AddSettings(Language["General"], Language["Data Texts"], function(left, righ
 	
 	right:CreateHeader(Language["Gold"])
 	right:CreateButton(Language["Reset"], Language["Reset Gold"], Language["Reset stored information for each characters gold"], ResetGold)
+	right:CreateInput("gold-reset", vUI.UserName, Language["Delete Character Data"], Language["Remove the stored data for a character. Enter the character name and hit enter."], DeleteGoldData):DisableSaving()
 	
 	--left:CreateHeader(Language["Misc."])
 	--left:CreateSlider("data-text-max-lines", Settings["data-text-max-lines"], 5, 50, 1, "Max Lines", "Set the maximum number of players shown in the guild or friends data text tooltips")

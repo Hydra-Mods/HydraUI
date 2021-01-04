@@ -110,6 +110,19 @@ function vUI:ResetMovers()
 	end
 end
 
+function vUI:ResetMover(name)
+	for i = 1, #vUI.MovingFrames do
+		if (vUI.MovingFrames[i].Name == name) then
+			local A1, Parent, A2, X, Y = unpack(vUI.FrameDefaults[vUI.MovingFrames[i].Name])
+			
+			vUI.MovingFrames[i]:ClearAllPoints()
+			vUI.MovingFrames[i]:SetPoint(A1, _G[Parent], A2, X, Y)
+			
+			break
+		end
+	end
+end
+
 function vUI:ResetAllMovers()
 	self:DisplayPopup(Language["Attention"], Language["Are you sure you want to reset the position of all moved frames?"], Language["Accept"], self.ResetMovers, Language["Cancel"])
 end

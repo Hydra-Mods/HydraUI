@@ -1292,6 +1292,9 @@ GUI:AddSettings(Language["General"], Language["Action Bars"], function(left, rig
 	left:CreateSlider("ab-font-size", Settings["ab-font-size"], 8, 42, 1, Language["Font Size"], Language["Set the font size of the action bar buttons"], UpdateActionBarFont)
 	left:CreateSlider("ab-cd-size", Settings["ab-cd-size"], 8, 42, 1, Language["Cooldown Font Size"], Language["Set the font size of the action bar cooldowns"], UpdateActionBarFont)
 	left:CreateDropdown("ab-font-flags", Settings["ab-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the action bar buttons"], UpdateActionBarFont)
+	
+	left:CreateHeader(Language["Show Empty Buttons"])
+	left:CreateSwitch("ab-show-empty", Settings["ab-show-empty"], Language["Show Empty Buttons"], Language["Set whether or not the action bar should display empty buttons"], UpdateEmptyButtons)
 end)
 
 GUI:AddSettings(Language["General"], Language["Bar 1"], Language["Action Bars"], function(left, right)

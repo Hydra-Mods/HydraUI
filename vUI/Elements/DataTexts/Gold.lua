@@ -3,7 +3,6 @@ local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
 local Gold = vUI:GetModule("Gold")
 
 local GetMoney = GetMoney
-local GetCoinTextureString = GetCoinTextureString
 
 local OnEnter = function(self)
 	self:SetTooltip()
@@ -16,26 +15,27 @@ local OnEnter = function(self)
 	GameTooltip:AddLine(" ")
 	
 	if (#ServerInfo > 1) then
-		GameTooltip:AddDoubleLine(Language["Total"], GetCoinTextureString(ServerTotalGold), 1, 0.82, 0, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["Total"], vUI:CopperToGold(ServerTotalGold), 1, 0.82, 0, 1, 1, 1)
+		GameTooltip:AddLine(" ")
 	end
 	
 	for i = 1, #ServerInfo do
-		GameTooltip:AddDoubleLine(ServerInfo[i][1], GetCoinTextureString(ServerInfo[i][2]), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(ServerInfo[i][1], vUI:CopperToGold(ServerInfo[i][2]), 1, 1, 1, 1, 1, 1)
 	end
 	
 	if (Change ~= 0) then
 		GameTooltip:AddLine(" ")
 		
 		if (Change > 0) then
-			GameTooltip:AddDoubleLine(Language["Session:"], GetCoinTextureString(Change), 1, 1, 1, 0.4, 1, 0.4)
+			GameTooltip:AddDoubleLine(Language["Session:"], vUI:CopperToGold(Change), 1, 1, 1, 0.4, 1, 0.4)
 		else
-			GameTooltip:AddDoubleLine(Language["Session:"], GetCoinTextureString(Change * -1), 1, 1, 1, 1, 0.4, 0.4)
+			GameTooltip:AddDoubleLine(Language["Session:"], vUI:CopperToGold(Change * -1), 1, 1, 1, 1, 0.4, 0.4)
 		end
 	end
 	
 	if (TrashValue > 0) then
 		GameTooltip:AddLine(" ")
-		GameTooltip:AddDoubleLine(Language["|cFF9D9D9D[Poor quality]|r item value:"], GetCoinTextureString(TrashValue), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["|cFF9D9D9D[Poor quality]|r item value:"], vUI:CopperToGold(TrashValue), 1, 1, 1, 1, 1, 1)
 	end
 	
 	GameTooltip:Show()
@@ -46,7 +46,7 @@ local OnLeave = function()
 end
 
 local Update = function(self)
-	self.Text:SetFormattedText("|cFF%s%s|r", Settings["data-text-value-color"], GetCoinTextureString(GetMoney()))
+	self.Text:SetFormattedText("|cFF%s%s|r", Settings["data-text-label-color"], vUI:CopperToGold(GetMoney()))
 end
 
 local OnEnable = function(self)

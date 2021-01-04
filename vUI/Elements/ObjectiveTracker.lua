@@ -478,8 +478,8 @@ function Tracker:AddHooks()
 	
 	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:HookScript("OnClick", UpdateMinimizeButton)
 	
-	hooksecurefunc("QuestPOI_GetButton", QuestPOI_HideAllButtons) -- Choosing to hide POI buttons, They're very ugly, and you can just click on the quest. I can always make this a setting if requested.
-	hooksecurefunc(QuestUtil, "SetupWorldQuestButton", HideWorldQuestPOI)
+	--hooksecurefunc("QuestPOI_GetButton", QuestPOI_HideAllButtons) -- Choosing to hide POI buttons, They're very ugly, and you can just click on the quest. I can always make this a setting if requested.
+	--hooksecurefunc(QuestUtil, "SetupWorldQuestButton", HideWorldQuestPOI)
 	hooksecurefunc(DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", AddProgressBar)
 	hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", AddProgressBar)
 	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", AddProgressBar)

@@ -99,32 +99,6 @@ for power, color in next, PowerBarColor do
 	end
 end
 
--- sourced from FrameXML/Constants.lua
-colors.power[0] = colors.power.MANA
-colors.power[1] = colors.power.RAGE
-colors.power[2] = colors.power.FOCUS
-colors.power[3] = colors.power.ENERGY
-colors.power[4] = colors.power.COMBO_POINTS
-colors.power[5] = colors.power.RUNES
-colors.power[6] = colors.power.RUNIC_POWER
-colors.power[7] = colors.power.SOUL_SHARDS
-colors.power[8] = colors.power.LUNAR_POWER
-colors.power[9] = colors.power.HOLY_POWER
-colors.power[11] = colors.power.MAELSTROM
-colors.power[12] = colors.power.CHI
-colors.power[13] = colors.power.INSANITY
-colors.power[16] = colors.power.ARCANE_CHARGES
-colors.power[17] = colors.power.FURY
-colors.power[18] = colors.power.PAIN
-
--- alternate power, sourced from FrameXML/CompactUnitFrame.lua
-colors.power.ALTERNATE = {0.7, 0.7, 0.6}
-colors.power[10] = colors.power.ALTERNATE
-
-for i = 0, 3 do
-	colors.threat[i] = {GetThreatStatusColor(i)}
-end
-
 function vUI:UpdateoUFColors()
 	colors.class = vUI.ClassColors
 	colors.reaction = vUI.ReactionColors
@@ -147,10 +121,23 @@ function vUI:UpdateoUFColors()
 	colors.power[17] = colors.power.FURY
 	colors.power[18] = colors.power.PAIN
 	
+	colors.power.STAGGER = {}
+	colors.power.STAGGER[1] = {vUI:HexToRGB(Settings["color-stagger-1"])}
+	colors.power.STAGGER[2] = {vUI:HexToRGB(Settings["color-stagger-2"])}
+	colors.power.STAGGER[3] = {vUI:HexToRGB(Settings["color-stagger-3"])}
+	
 	colors.tapped = {vUI:HexToRGB(Settings["color-tapped"])}
 	colors.disconnected = {vUI:HexToRGB(Settings["color-disconnected"])}
 	
 	colors.health = {vUI:HexToRGB(Settings["ui-header-texture-color"])}
+	
+	-- alternate power, sourced from FrameXML/CompactUnitFrame.lua
+	colors.power.ALTERNATE = {0.7, 0.7, 0.6}
+	colors.power[10] = colors.power.ALTERNATE
+
+	for i = 0, 3 do
+		colors.threat[i] = {GetThreatStatusColor(i)}
+	end
 	
 	oUF.colors = colors
 	

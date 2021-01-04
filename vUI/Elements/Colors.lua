@@ -70,6 +70,11 @@ Defaults["color-combo-4"] = "B2FF66"
 Defaults["color-combo-5"] = "66FF66"
 Defaults["color-combo-6"] = "66FF66"
 
+-- Stagger
+Defaults["color-stagger-1"] = "66FF66"
+Defaults["color-stagger-2"] = "FFFF66"
+Defaults["color-stagger-3"] = "FF6666"
+
 -- Casting
 Defaults["color-casting-start"] = "4C9900"
 Defaults["color-casting-stopped"] = "F39C12"
