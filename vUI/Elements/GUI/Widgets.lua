@@ -2179,6 +2179,7 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	
 	Dropdown.Menu = CreateFrame("Frame", nil, Dropdown, "BackdropTemplate")
 	Dropdown.Menu:SetPoint("TOPLEFT", Dropdown, "BOTTOMLEFT", SPACING, -2)
+	Dropdown.Menu:SetPoint("TOPRIGHT", Dropdown, "BOTTOMRIGHT", -SPACING, -2)
 	Dropdown.Menu:SetSize(DROPDOWN_WIDTH - (SPACING * 2), 1)
 	Dropdown.Menu:SetBackdrop(vUI.BackdropAndBorder)
 	Dropdown.Menu:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
@@ -2195,14 +2196,14 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	Dropdown.Button.Menu = Dropdown.Menu
 	Dropdown.Button.Parent = Dropdown
 	
-	Dropdown.Menu.Fade = CreateAnimationGroup(Dropdown.Menu)
+	Dropdown.Menu.Group = CreateAnimationGroup(Dropdown.Menu)
 	
-	Dropdown.Menu.FadeIn = Dropdown.Menu.Fade:CreateAnimation("Fade")
+	Dropdown.Menu.FadeIn = Dropdown.Menu.Group:CreateAnimation("Fade")
 	Dropdown.Menu.FadeIn:SetEasing("in")
 	Dropdown.Menu.FadeIn:SetDuration(0.15)
 	Dropdown.Menu.FadeIn:SetChange(1)
 	
-	Dropdown.Menu.FadeOut = Dropdown.Menu.Fade:CreateAnimation("Fade")
+	Dropdown.Menu.FadeOut = Dropdown.Menu.Group:CreateAnimation("Fade")
 	Dropdown.Menu.FadeOut:SetEasing("out")
 	Dropdown.Menu.FadeOut:SetDuration(0.15)
 	Dropdown.Menu.FadeOut:SetChange(0)

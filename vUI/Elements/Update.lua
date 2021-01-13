@@ -48,8 +48,11 @@ function Update:PLAYER_ENTERING_WORLD()
 		SendAddonMessage("vUI-Version", AddOnVersion, IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE" or "PARTY")
 	end
 	
-	--SendAddonMessage("vUI-Version", AddOnVersion, "CHANNEL", 1)
-	--SendAddonMessage("vUI-Version", AddOnVersion, "CHANNEL", 2)
+	local Channels = {GetChannelList()}
+	
+	for i = 1, #Channels, 3 do -- Channels[i], Channels[i+1], Channels[i+2] = ID, Name, Disabled
+		SendAddonMessage("vUI-Version", AddOnVersion, "CHANNEL", Channels[i])
+	end
 end
 
 function Update:GUILD_ROSTER_UPDATE()
@@ -59,7 +62,7 @@ function Update:GUILD_ROSTER_UPDATE()
 end
 
 function Update:GROUP_ROSTER_UPDATE()
-	if IsInGroup(LE_PARTY_CATEGORY_HOME) then
+	--[[if IsInGroup(LE_PARTY_CATEGORY_HOME) then
 		if IsInRaid() then
 			SendAddonMessage("vUI-Version", AddOnVersion, "RAID")
 		elseif IsInGroup() then
@@ -69,6 +72,12 @@ function Update:GROUP_ROSTER_UPDATE()
 	
 	if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
 		SendAddonMessage("vUI-Version", AddOnVersion, "INSTANCE_CHAT")
+	end]]
+	
+	if IsInRaid() then
+		SendAddonMessage("vUI-Version", AddOnVersion, IsInRaid(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE" or "RAID")
+	elseif IsInGroup() then
+		SendAddonMessage("vUI-Version", AddOnVersion, IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE" or "PARTY")
 	end
 end
 

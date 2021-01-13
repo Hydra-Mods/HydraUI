@@ -227,7 +227,7 @@ local DiscardChanges = function()
 	vUI:DisplayPopup(Language["Attention"], Language["Are you sure you would like to discard these key binding changes?"], Language["Accept"], ReloadUI, Language["Cancel"])
 end
 
-GUI:AddSettings(Language["General"], Language["Action Bars"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Action Bars"], function(left, right)
 	right:CreateHeader(Language["Key Binding"])
 	right:CreateButton(Language["Toggle"], Language["Key Bind Mode"], Language["While toggled, you can hover over action buttons and press a key combination to rebind them"], ToggleBindingMode)
 	right:CreateButton(Language["Save"], Language["Save Changes"], Language["Save key binding changes"], SaveChanges)

@@ -159,7 +159,7 @@ local UpdateMicroVisibility = function(value)
 	MicroButtons:UpdateVisibility()
 end
 
-GUI:AddSettings(Language["General"], Language["Action Bars"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Action Bars"], function(left, right)
 	right:CreateHeader(Language["Micro Menu Buttons"])
 	right:CreateDropdown("micro-buttons-visiblity", Settings["micro-buttons-visiblity"], {[Language["Hide"]] = "HIDE", [Language["Mouseover"]] = "MOUSEOVER", [Language["Show"]] = "SHOW"}, Language["Set Visibility"], Language["Set the visibility of the micro menu buttons"], UpdateMicroVisibility)
 	right:CreateSlider("micro-buttons-opacity", Settings["micro-buttons-opacity"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the micro menu buttons when visiblity is set to Mouseover"], UpdateMicroVisibility, nil, "%")

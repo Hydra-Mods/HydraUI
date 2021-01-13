@@ -633,7 +633,7 @@ local UpdateShowHealthText = function(value)
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Tooltips"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Tooltips"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("tooltips-enable", Settings["tooltips-enable"], Language["Enable Tooltips Module"], Language["Enable the vUI tooltips module"], ReloadUI):RequiresReload(true)
 	

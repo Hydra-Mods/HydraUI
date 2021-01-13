@@ -267,7 +267,7 @@ local UpdateSizes = function()
 	BuffFrame_Update()
 end
 
-GUI:AddSettings(Language["General"], Language["Auras"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Auras"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("auras-enable", Settings["auras-enable"], Language["Enable Auras Module"], Language["Enable the vUI auras module"], ReloadUI):RequiresReload(true)
 	

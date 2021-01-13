@@ -371,7 +371,7 @@ local UpdateMouseoverOpacity = function(value)
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Reputation"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Reputation"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("reputation-enable", true, Language["Enable Reputation Module"], Language["Enable the vUI reputation module"], ReloadUI):RequiresReload(true)
 	

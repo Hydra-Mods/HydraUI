@@ -6,21 +6,23 @@ local Patrons = {
 	{"Erieeroot", "Dragonhawk"}, -- 20
 	{"Ari", "MrPoundsign"}, -- 15
 	{"Dillan", "FrankPatten", "deck"}, -- 10
-	{"Ryex", "JDoubleU00", "sylvester", "Innie", "Mcbooze", "Aaron B.", "Angel", "Dellamaik", "stko", "Jeor"}, -- 5
+	{"Ryex", "JDoubleU00", "Syn", "sylvester", "Innie", "Mcbooze", "Aaron B.", "Angel", "Dellamaik", "stko", "Jeor"}, -- 5
 	{"madmaddy", "Dustin S."}, -- 3
 }
 
 local Previous = {
 	{"SwoopCrown"},
 	{"Smelly", "Trix", "wolimazo"},
-	{"Euphoria", "Mitooshin"},
+	{"Euphoria", "Mitooshin", "MisseFar"},
 	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Steve R."},
 	{"Akab00m", "OzzFreak"},
 }
 
-GUI:AddSettings(Language["Info"], Language["Credits"], function(left, right)
-	left:CreateHeader(Language["Scripting Help & Mentoring"])
-	left:CreateMessage("Tukz, Foof, Eclipse, nightcracker, Elv, Smelly, Azilroka, AlleyKat, Zork, Simpy")
+local Donors = {"Innie", "Brightsides", "Erthelmi", "Gene", "JDoubleU00", "Duds", "Shazlen", "Shawna W.", "Dillan", "Bruce N."}
+
+GUI:AddWidgets(Language["Info"], Language["Credits"], function(left, right)
+	left:CreateHeader(Language["Scripting Help & Inspiration"])
+	left:CreateMessage("Tukz, Foof, Eclipse, nightcracker, Elv, Smelly, Azilroka, AlleyKat, Zork, Simpy, Safturento, Dandruff")
 	
 	left:CreateHeader("oUF")
 	left:CreateLine("haste, lightspark, p3lim, Rainrider")
@@ -41,7 +43,7 @@ GUI:AddSettings(Language["Info"], Language["Credits"], function(left, right)
 	left:CreateLine("Hydra")
 end)
 
-GUI:AddSettings(Language["Info"], Language["Supporters"], function(left, right)
+GUI:AddWidgets(Language["Info"], Language["Supporters"], function(left, right)
 	left:CreateHeader("Patreon Supporters")
 	
 	local r, g, b = vUI:HexToRGB("FF8000")
@@ -82,14 +84,41 @@ GUI:AddSettings(Language["Info"], Language["Supporters"], function(left, right)
 	left:CreateMessage(ExPatrons)
 	
 	right:CreateHeader(Language["Hall of Legends"])
-	right:CreateDoubleLine("Innie", "Brightsides")
-	right:CreateDoubleLine("Erthelmi", "Gene")
-	right:CreateDoubleLine("JDoubleU00", "Duds")
-	right:CreateDoubleLine("Shazlen", "Shawna W.")
-	right:CreateDoubleLine("Dillan", "Bruce N.")
+	
+	for i = 1, #Donors, 2 do
+		if Donors[i+1] then
+			right:CreateDoubleLine(Donors[i], Donors[i+1])
+		else
+			right:CreateLine(Donors[i])
+		end
+	end
 	
 	right:CreateFooter()
 	right:CreateMessage("Thank you to all of these amazing people for their support, through donations and Patreon pledges! This generosity allows me to spend so much of my time developing the interface for everyone.")
 	right:CreateLine("")
-	right:CreateLine(format("|cFF%s- Hydra|r", Settings["ui-widget-color"]))
+	
+	local Patreon = right:CreateLine("|cFFF96854www.patreon.com/hydramods|r")
+	local PayPal = right:CreateLine("|cFF009CDEwww.paypal.me/vuiaddon|r")
+	
+	Patreon = Patreon:GetParent()
+	PayPal = PayPal:GetParent()
+	
+	Patreon:SetScript("OnEnter", function(self)
+		self.Text:SetText("|cFFEEEEEEwww.patreon.com/hydramods|r")
+	end)
+	
+	Patreon:SetScript("OnLeave", function(self) 
+		self.Text:SetText("|cFFF96854www.patreon.com/hydramods|r")
+	end)
+	
+	PayPal:SetScript("OnEnter", function(self)
+		self.Text:SetText("|cFFEEEEEEwww.paypal.me/vuiaddon|r")
+	end)
+	
+	PayPal:SetScript("OnLeave", function(self) 
+		self.Text:SetText("|cFF009CDEwww.paypal.me/vuiaddon|r")
+	end)
+	
+	Patreon:SetScript("OnMouseUp", function() print("https://www.patreon.com/hydramods") end)
+	PayPal:SetScript("OnMouseUp", function() print("https://www.paypal.me/vuiaddon") end)
 end)

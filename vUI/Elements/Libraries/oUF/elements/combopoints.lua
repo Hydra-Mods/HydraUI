@@ -82,8 +82,9 @@ local UpdateChargedPoint = function(self)
 	for i = 1, UnitPowerMax("player", Index) do
 		if (i == Point) then
 			self.ComboPoints[i].Charged:Show()
+			self.ComboPoints[i].Charged.In:Play()
 		elseif self.ComboPoints[i].Charged:IsShown() then
-			self.ComboPoints[i].Charged:Hide()
+			self.ComboPoints[i].Charged.Out:Play()
 		end
 	end
 end

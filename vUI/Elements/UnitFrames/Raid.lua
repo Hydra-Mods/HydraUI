@@ -505,7 +505,7 @@ local TestRaid = function()
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Raid"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Raid"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("raid-enable", Settings["raid-enable"], Language["Enable Raid Module"], Language["Enable the raid frames module"], ReloadUI):RequiresReload(true)
 	

@@ -28,7 +28,7 @@ local floor = math.floor
 -- Storage
 GUI.Categories = {}
 GUI.Widgets = {}
-GUI.OnLoadCalls = {}
+GUI.LoadCalls = {}
 GUI.Buttons = {}
 GUI.ButtonQueue = {}
 GUI.ScrollButtons = {}
@@ -413,17 +413,17 @@ function GUI:CreateWidgetWindow(category, name, parent)
 		Window.RightWidgetsBG[Name] = Function
 	end
 	
-	if (parent and self.OnLoadCalls[category][parent].Children) then
-		for i = 1, #self.OnLoadCalls[category][parent].Children[name].Calls do
-			self.OnLoadCalls[category][parent].Children[name].Calls[1](Window.LeftWidgetsBG, Window.RightWidgetsBG)
+	if (parent and self.LoadCalls[category][parent].Children) then
+		for i = 1, #self.LoadCalls[category][parent].Children[name].Calls do
+			self.LoadCalls[category][parent].Children[name].Calls[1](Window.LeftWidgetsBG, Window.RightWidgetsBG)
 			
-			tremove(self.OnLoadCalls[category][parent].Children[name].Calls, 1)
+			tremove(self.LoadCalls[category][parent].Children[name].Calls, 1)
 		end
 	else
-		for i = 1, #self.OnLoadCalls[category][name].Calls do
-			self.OnLoadCalls[category][name].Calls[1](Window.LeftWidgetsBG, Window.RightWidgetsBG)
+		for i = 1, #self.LoadCalls[category][name].Calls do
+			self.LoadCalls[category][name].Calls[1](Window.LeftWidgetsBG, Window.RightWidgetsBG)
 			
-			tremove(self.OnLoadCalls[category][name].Calls, 1)
+			tremove(self.LoadCalls[category][name].Calls, 1)
 		end
 	end
 	
@@ -705,26 +705,26 @@ function GUI:CreateWindow(category, name, parent)
 	end
 end
 
-function GUI:AddSettings(category, name, arg1, arg2)
-	if (not self.OnLoadCalls[category]) then
-		self.OnLoadCalls[category] = {}
+function GUI:AddWidgets(category, name, arg1, arg2)
+	if (not self.LoadCalls[category]) then
+		self.LoadCalls[category] = {}
 	end
 	
-	if (not self.OnLoadCalls[category][name]) then
-		self.OnLoadCalls[category][name] = {Calls = {}}
+	if (not self.LoadCalls[category][name]) then
+		self.LoadCalls[category][name] = {Calls = {}}
 	end
 	
 	if (type(arg1) == "function") then
-		tinsert(self.OnLoadCalls[category][name].Calls, arg1)
+		tinsert(self.LoadCalls[category][name].Calls, arg1)
 		tinsert(self.ButtonQueue, {category, name})
 	else -- string
-		if (not self.OnLoadCalls[category][arg1].Children) then
-			self.OnLoadCalls[category][arg1].Children = {}
+		if (not self.LoadCalls[category][arg1].Children) then
+			self.LoadCalls[category][arg1].Children = {}
 		end
 		
-		self.OnLoadCalls[category][arg1].Children[name] = {Calls = {}}
+		self.LoadCalls[category][arg1].Children[name] = {Calls = {}}
 		
-		tinsert(self.OnLoadCalls[category][arg1].Children[name].Calls, arg2)
+		tinsert(self.LoadCalls[category][arg1].Children[name].Calls, arg2)
 		tinsert(self.ButtonQueue, {category, name, arg1})
 	end
 end

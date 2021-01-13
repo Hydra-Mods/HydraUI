@@ -251,7 +251,7 @@ local UpdateFocusPowerFill = function(value)
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Focus"], Language["Unit Frames"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Focus"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSlider("unitframes-focus-width", Settings["unitframes-focus-width"], 60, 320, 1, "Width", "Set the width of the focus unit frame", UpdateFocusWidth)
 	

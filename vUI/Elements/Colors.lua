@@ -69,6 +69,7 @@ Defaults["color-combo-3"] = "FFFF66"
 Defaults["color-combo-4"] = "B2FF66"
 Defaults["color-combo-5"] = "66FF66"
 Defaults["color-combo-6"] = "66FF66"
+Defaults["color-combo-charged"] = "64B5F6"
 
 -- Stagger
 Defaults["color-stagger-1"] = "66FF66"
@@ -195,7 +196,7 @@ function vUI:UpdateColors()
 	self:UpdateComboColors()
 end
 
-GUI:AddSettings(Language["General"], Language["Colors"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Colors"], function(left, right)
 	left:CreateHeader(Language["Class Colors"])
 	left:CreateColorSelection("color-death-knight", Settings["color-death-knight"], Language["Death Knight"], "")
 	left:CreateColorSelection("color-demon-hunter", Settings["color-demon-hunter"], Language["Demon Hunter"], "")
@@ -256,12 +257,13 @@ GUI:AddSettings(Language["General"], Language["Colors"], function(left, right)
 	right:CreateColorSelection("color-none", Settings["color-none"], Language["None"], "")
 	
 	left:CreateHeader(Language["Combo Points Colors"])
-	left:CreateColorSelection("color-combo-1", Settings["color-combo-1"], Language["Combo Point 1"], "")
-	left:CreateColorSelection("color-combo-2", Settings["color-combo-2"], Language["Combo Point 2"], "")
-	left:CreateColorSelection("color-combo-3", Settings["color-combo-3"], Language["Combo Point 3"], "")
-	left:CreateColorSelection("color-combo-4", Settings["color-combo-4"], Language["Combo Point 4"], "")
-	left:CreateColorSelection("color-combo-5", Settings["color-combo-5"], Language["Combo Point 5"], "")
-	left:CreateColorSelection("color-combo-6", Settings["color-combo-6"], Language["Combo Point 6"], "")
+	left:CreateColorSelection("color-combo-1", Settings["color-combo-1"], Language["Combo Point 1"], Language["Set the color of combo point 1"], ReloadUI):RequiresReload(true)
+	left:CreateColorSelection("color-combo-2", Settings["color-combo-2"], Language["Combo Point 2"], Language["Set the color of combo point 2"], ReloadUI):RequiresReload(true)
+	left:CreateColorSelection("color-combo-3", Settings["color-combo-3"], Language["Combo Point 3"], Language["Set the color of combo point 3"], ReloadUI):RequiresReload(true)
+	left:CreateColorSelection("color-combo-4", Settings["color-combo-4"], Language["Combo Point 4"], Language["Set the color of combo point 4"], ReloadUI):RequiresReload(true)
+	left:CreateColorSelection("color-combo-5", Settings["color-combo-5"], Language["Combo Point 5"], Language["Set the color of combo point 5"], ReloadUI):RequiresReload(true)
+	left:CreateColorSelection("color-combo-6", Settings["color-combo-6"], Language["Combo Point 6"], Language["Set the color of combo point 6"], ReloadUI):RequiresReload(true)
+	left:CreateColorSelection("color-combo-charged", Settings["color-combo-charged"], Language["Charged Combo Point"], Language["Set the color of the charged combo point provided from the Kyrian Covenant"], ReloadUI):RequiresReload(true)
 	
 	right:CreateHeader(Language["Misc Colors"])
 	right:CreateColorSelection("color-tapped", Settings["color-tapped"], Language["Tagged"], "")

@@ -134,7 +134,7 @@ function Announcements:Load()
 	self:SetScript("OnEvent", self.OnEvent)
 end
 
-GUI:AddSettings(Language["General"], Language["General"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["General"], function(left, right)
 	left:CreateHeader(Language["Interrupt Announcements"])
 	left:CreateSwitch("announcements-enable", Settings["announcements-enable"], Language["Enable Announcements"], Language["Announce to the selected channel when you successfully perform an interrupt spell"], ReloadUI):RequiresReload(true)
 	left:CreateDropdown("announcements-channel", Settings["announcements-channel"], {[Language["Self"]] = "SELF", [Language["Say"]] = "SAY", [Language["Group"]] = "GROUP", [Language["Emote"]] = "EMOTE"}, Language["Set Channel"], Language["Set the channel to announce to"])

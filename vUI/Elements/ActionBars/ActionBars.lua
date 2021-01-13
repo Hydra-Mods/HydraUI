@@ -1278,7 +1278,7 @@ local UpdateEmptyButtons = function()
 	AB:UpdateEmptyButtons()
 end
 
-GUI:AddSettings(Language["General"], Language["Action Bars"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Action Bars"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("ab-enable", Settings["ab-enable"], Language["Enable Action Bar"], Language["Enable action bars module"], ReloadUI):RequiresReload(true)
 	
@@ -1297,7 +1297,7 @@ GUI:AddSettings(Language["General"], Language["Action Bars"], function(left, rig
 	left:CreateSwitch("ab-show-empty", Settings["ab-show-empty"], Language["Show Empty Buttons"], Language["Set whether or not the action bar should display empty buttons"], UpdateEmptyButtons)
 end)
 
-GUI:AddSettings(Language["General"], Language["Bar 1"], Language["Action Bars"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Bar 1"], Language["Action Bars"], function(left, right)
 	left:CreateHeader(Language["Action Bar 1"])
 	left:CreateSwitch("ab-bar1-enable", Settings["ab-bar1-enable"], Language["Enable Bar"], Language["Enable action bar 1"], UpdateEnableBar1)
 	left:CreateSwitch("ab-bar1-hover", Settings["ab-bar1-hover"], Language["Set Mouseover"], Language["Only display the bar while hovering over it"], UpdateBar1Hover)
@@ -1307,7 +1307,7 @@ GUI:AddSettings(Language["General"], Language["Bar 1"], Language["Action Bars"],
 	left:CreateSlider("ab-bar1-button-gap", Settings["ab-bar1-button-gap"], -1, 8, 1, Language["Button Spacing"], Language["Set the spacing between action buttons"], UpdateBar1)
 end)
 
-GUI:AddSettings(Language["General"], Language["Bar 2"], Language["Action Bars"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Bar 2"], Language["Action Bars"], function(left, right)
 	left:CreateHeader(Language["Action Bar 2"])
 	left:CreateSwitch("ab-bar2-enable", Settings["ab-bar2-enable"], Language["Enable Bar"], Language["Enable action bar 2"], UpdateEnableBar2)
 	left:CreateSwitch("ab-bar2-hover", Settings["ab-bar2-hover"], Language["Set Mouseover"], Language["Only display the bar while hovering over it"], UpdateBar2Hover)
@@ -1317,7 +1317,7 @@ GUI:AddSettings(Language["General"], Language["Bar 2"], Language["Action Bars"],
 	left:CreateSlider("ab-bar2-button-gap", Settings["ab-bar2-button-gap"], -1, 8, 1, Language["Button Spacing"], Language["Set the spacing between action buttons"], UpdateBar2)
 end)
 
-GUI:AddSettings(Language["General"], Language["Bar 3"], Language["Action Bars"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Bar 3"], Language["Action Bars"], function(left, right)
 	left:CreateHeader(Language["Action Bar 3"])
 	left:CreateSwitch("ab-bar3-enable", Settings["ab-bar3-enable"], Language["Enable Bar"], Language["Enable action bar 3"], UpdateEnableBar3)
 	left:CreateSwitch("ab-bar3-hover", Settings["ab-bar3-hover"], Language["Set Mouseover"], Language["Only display the bar while hovering over it"], UpdateBar3Hover)
@@ -1327,7 +1327,7 @@ GUI:AddSettings(Language["General"], Language["Bar 3"], Language["Action Bars"],
 	left:CreateSlider("ab-bar3-button-gap", Settings["ab-bar3-button-gap"], -1, 8, 1, Language["Button Spacing"], Language["Set the spacing between action buttons"], UpdateBar3)
 end)
 
-GUI:AddSettings(Language["General"], Language["Bar 4"], Language["Action Bars"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Bar 4"], Language["Action Bars"], function(left, right)
 	left:CreateHeader(Language["Action Bar 4"])
 	left:CreateSwitch("ab-bar4-enable", Settings["ab-bar4-enable"], Language["Enable Bar"], Language["Enable action bar 4"], UpdateEnableBar4)
 	left:CreateSwitch("ab-bar4-hover", Settings["ab-bar4-hover"], Language["Set Mouseover"], Language["Only display the bar while hovering over it"], UpdateBar4Hover)
@@ -1337,7 +1337,7 @@ GUI:AddSettings(Language["General"], Language["Bar 4"], Language["Action Bars"],
 	left:CreateSlider("ab-bar4-button-gap", Settings["ab-bar4-button-gap"], -1, 8, 1, Language["Button Spacing"], Language["Set the spacing between action buttons"], UpdateBar4)
 end)
 
-GUI:AddSettings(Language["General"], Language["Bar 5"], Language["Action Bars"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Bar 5"], Language["Action Bars"], function(left, right)
 	left:CreateHeader(Language["Action Bar 5"])
 	left:CreateSwitch("ab-bar5-enable", Settings["ab-bar5-enable"], Language["Enable Bar"], Language["Enable action bar 5"], UpdateEnableBar5)
 	left:CreateSwitch("ab-bar5-hover", Settings["ab-bar5-hover"], Language["Set Mouseover"], Language["Only display the bar while hovering over it"], UpdateBar5Hover)
@@ -1347,7 +1347,7 @@ GUI:AddSettings(Language["General"], Language["Bar 5"], Language["Action Bars"],
 	left:CreateSlider("ab-bar5-button-gap", Settings["ab-bar5-button-gap"], -1, 8, 1, Language["Button Spacing"], Language["Set the spacing between action buttons"], UpdateBar5)
 end)
 
-GUI:AddSettings(Language["General"], Language["Pet Bar"], Language["Action Bars"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Pet Bar"], Language["Action Bars"], function(left, right)
 	left:CreateHeader(Language["Pet Bar"])
 	left:CreateSwitch("ab-pet-enable", Settings["ab-pet-enable"], Language["Enable Bar"], Language["Enable the pet action bar"], UpdateEnablePetBar)
 	left:CreateSwitch("ab-pet-hover", Settings["ab-pet-hover"], Language["Set Mouseover"], Language["Only display the bar while hovering over it"], UpdatePetHover)
@@ -1356,7 +1356,7 @@ GUI:AddSettings(Language["General"], Language["Pet Bar"], Language["Action Bars"
 	left:CreateSlider("ab-pet-button-gap", Settings["ab-pet-button-gap"], -1, 8, 1, Language["Button Spacing"], Language["Set the spacing between action buttons"], UpdatePetBar)
 end)
 
-GUI:AddSettings(Language["General"], Language["Stance Bar"], Language["Action Bars"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Stance Bar"], Language["Action Bars"], function(left, right)
 	left:CreateHeader(Language["Stance Bar"])
 	left:CreateSwitch("ab-stance-enable", Settings["ab-stance-enable"], Language["Enable Bar"], Language["Enable the stance bar"], UpdateEnableStanceBar)
 	left:CreateSwitch("ab-stance-hover", Settings["ab-stance-hover"], Language["Set Mouseover"], Language["Only display the bar while hovering over it"], UpdateStanceHover)

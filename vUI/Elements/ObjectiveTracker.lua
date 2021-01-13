@@ -562,7 +562,7 @@ local UpdateEnableBackdrop = function(value)
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Objectives"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Objectives"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("tracker-enable", Settings["tracker-enable"], Language["Enable Tracker Module"], Language["Enable the vUI objective tracker module"], ReloadUI):RequiresReload(true)
 	

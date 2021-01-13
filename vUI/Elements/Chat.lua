@@ -278,7 +278,7 @@ function Chat:CreateChatWindow()
 	self.TopBar.Texture:SetPoint("TOPLEFT", self.TopBar, 1, -1)
 	self.TopBar.Texture:SetPoint("BOTTOMRIGHT", self.TopBar, -1, 1)
 	self.TopBar.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	self.TopBar.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
+	self.TopBar.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	self.BottomBar = CreateFrame("Frame", "vUIChatFrameBottom", vUI.UIParent, "BackdropTemplate")
 	self.BottomBar:SetHeight(BAR_HEIGHT)
@@ -686,7 +686,7 @@ function Chat:StyleChatFrame(frame)
 	frame:SetClampRectInsets(0, 0, 0, 0)
 	frame:SetClampedToScreen(false)
 	frame:SetFading(false)
-	frame:SetScript("OnMouseWheel", OnMouseWheel)
+	--frame:SetScript("OnMouseWheel", OnMouseWheel)
 	frame:SetSize(self:GetWidth() - 8, self:GetHeight() - 8)
 	frame:SetFrameLevel(self:GetFrameLevel() + 1)
 	frame:SetFrameStrata("MEDIUM")
@@ -1245,7 +1245,7 @@ local UpdateEnableLinks = function(value)
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Chat"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Chat"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("chat-enable", Settings["chat-enable"], Language["Enable Chat Module"], Language["Enable the vUI chat module"], ReloadUI):RequiresReload(true)
 	

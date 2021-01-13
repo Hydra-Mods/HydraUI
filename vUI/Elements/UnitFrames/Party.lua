@@ -165,7 +165,7 @@ vUI.StyleFuncs["party"] = function(self, unit)
 		Debuffs.tooltipAnchor = "ANCHOR_TOP"
 		Debuffs["growth-x"] = "RIGHT"
 	else
-		Debuffs:SetSize(24 * 2 + 2, 24)
+		Debuffs:SetSize(24 * 3 + (2 * 2), 24)
 		Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
 		Debuffs.size = 24
 		Debuffs.num = 3
@@ -650,7 +650,7 @@ local TestParty = function()
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Party"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Party"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("party-enable", Settings["party-enable"], Language["Enable Party Module"], Language["Enable the party frames module"], ReloadUI):RequiresReload(true)
 	left:CreateSwitch("party-pets-enable", Settings["party-pets-enable"], Language["Enable Party Pet Frames"], Language["Enable the party pet frames module"], ReloadUI):RequiresReload(true)

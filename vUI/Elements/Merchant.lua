@@ -156,7 +156,7 @@ local UpdateAutoRepair = function(value)
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["General"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["General"], function(left, right)
 	right:CreateHeader(Language["Merchant"])
 	right:CreateSwitch("auto-repair-enable", Settings["auto-repair-enable"], Language["Auto Repair Equipment"], Language["Automatically repair damaged items when visiting a repair merchant"], UpdateAutoRepair)
 	right:CreateSwitch("auto-repair-use-guild", Settings["auto-repair-use-guild"], Language["Use Guild Funds"], Language["Use guild funds if available for automatic repairs"])

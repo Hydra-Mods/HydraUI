@@ -166,7 +166,7 @@ local UpdatePetPowerFill = function(value)
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Pet"], Language["Unit Frames"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Pet"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSlider("unitframes-pet-width", Settings["unitframes-pet-width"], 60, 320, 1, "Width", "Set the width of the pet unit frame", UpdatePetWidth)
 	

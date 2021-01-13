@@ -499,7 +499,7 @@ function vUI:ADDON_LOADED(event, addon)
 end
 
 function vUI:CreatePluginWindow()
-	GUI:AddSettings(Language["Info"], Language["Plugins"], function(left, right)
+	GUI:AddWidgets(Language["Info"], Language["Plugins"], function(left, right)
 		local Anchor
 		
 		for i = 1, #self.Plugins do

@@ -158,7 +158,7 @@ local SetZoneText = function(show)
 	if (PVPInfoText:GetText() == "") then
 		SubZoneText:SetPoint("CENTER", CustomSubZoneTextFrame, 0, 0)
 	else
-		SubZoneText:SetPoint("TOP", PVPInfoText, "BOTTOM", 0, 0)
+		SubZoneText:SetPoint("TOP", PVPInfoText, "BOTTOM", 0, -14)
 	end
 end
 

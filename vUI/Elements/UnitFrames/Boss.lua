@@ -213,7 +213,7 @@ vUI.StyleFuncs["boss"] = function(self, unit)
 	self.RaidTargetIndicator = RaidTarget
 end
 
-GUI:AddSettings(Language["General"], Language["Bosses"], Language["Unit Frames"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Bosses"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Bosses"])
 	left:CreateSwitch("unitframes-boss-enable", Settings["unitframes-boss-enable"], Language["Enable Boss Frames"], Language["Enable the boss unit frames"], ReloadUI):RequiresReload(true)
 end)

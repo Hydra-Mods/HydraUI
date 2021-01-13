@@ -173,7 +173,7 @@ local UpdateTargetTargetPowerFill = function(value)
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Target of Target"], Language["Unit Frames"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Target of Target"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSlider("unitframes-targettarget-width", Settings["unitframes-targettarget-width"], 60, 320, 1, "Width", "Set the width of the target's target unit frame", UpdateTargetTargetWidth)
 	

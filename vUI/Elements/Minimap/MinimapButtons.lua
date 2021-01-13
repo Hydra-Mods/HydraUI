@@ -252,7 +252,7 @@ function MinimapButtons:Load()
    vUI:CreateMover(self.Panel)
 end
 
-GUI:AddSettings(Language["General"], Language["Minimap"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Minimap"], function(left, right)
 	right:CreateHeader(Language["Minimap Buttons"])
 	right:CreateSwitch("minimap-buttons-enable", Settings["minimap-buttons-enable"], "Enable Minimap Button Bar", "", ReloadUI):RequiresReload(true)
 	right:CreateSlider("minimap-buttons-size", Settings["minimap-buttons-size"], 16, 44, 1, "Button Size", "", UpdateBar)

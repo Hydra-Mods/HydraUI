@@ -259,7 +259,7 @@ local UpdateCooldownHold = function(value)
 	Cooldowns.Hold:SetDuration(value + 0.2)
 end
 
-GUI:AddSettings(Language["General"], Language["General"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["General"], function(left, right)
 	right:CreateHeader(Language["Cooldown Alert"])
 	right:CreateSwitch("cooldowns-enable", Settings["cooldowns-enable"], Language["Enable Cooldown Alert"], Language["When an ability comes off cooldown the icon will flash as an alert"], UpdateEnableCooldownFlash)
 	right:CreateSwitch("cooldowns-text", Settings["cooldowns-text"], Language["Enable Cooldown Text"], Language["Display text on the cooldown alert"])

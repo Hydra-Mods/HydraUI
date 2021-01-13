@@ -457,7 +457,7 @@ local UpdateMouseoverOpacity = function(value)
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Experience"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Experience"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("experience-enable", Settings["experience-enable"], Language["Enable Experience Module"], Language["Enable the vUI experience module"], ReloadUI):RequiresReload(true)
 	

@@ -247,6 +247,7 @@ vUI.StyleFuncs["player"] = function(self, unit)
 				ComboPoints[i]:SetSize(Width, 8)
 				ComboPoints[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 				ComboPoints[i]:SetStatusBarColor(vUI.ComboPoints[i][1], vUI.ComboPoints[i][2], vUI.ComboPoints[i][3])
+				ComboPoints[i]:SetWidth(i == 1 and Width - 1 or Width)
 				
 				ComboPoints[i].bg = ComboPoints[i]:CreateTexture(nil, "BORDER")
 				ComboPoints[i].bg:SetAllPoints(ComboPoints[i])
@@ -254,17 +255,38 @@ vUI.StyleFuncs["player"] = function(self, unit)
 				ComboPoints[i].bg:SetVertexColor(vUI.ComboPoints[i][1], vUI.ComboPoints[i][2], vUI.ComboPoints[i][3])
 				ComboPoints[i].bg:SetAlpha(0.3)
 				
-				ComboPoints[i].Charged = ComboPoints[i]:CreateTexture(nil, "OVERLAY")
-				ComboPoints[i].Charged:SetAllPoints(ComboPoints[i])
-				ComboPoints[i].Charged:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-				ComboPoints[i].Charged:SetVertexColor(0.99, 0.99, 0.99)
+				ComboPoints[i].Charged = CreateFrame("Frame", nil, ComboPoints[i], "BackdropTemplate")
+				ComboPoints[i].Charged:SetPoint("TOPLEFT", 0, 0)
+				ComboPoints[i].Charged:SetPoint("BOTTOMRIGHT", 0, 0)
+				ComboPoints[i].Charged:SetBackdrop(vUI.Outline)
+				ComboPoints[i].Charged:SetBackdropBorderColor(vUI:HexToRGB("F5F5F5"))
 				ComboPoints[i].Charged:Hide()
+				
+				ComboPoints[i].ChargedInside = ComboPoints[i].Charged:CreateTexture(nil, "ARTWORK")
+				ComboPoints[i].ChargedInside:SetPoint("TOPLEFT", ComboPoints[i], 1, -1)
+				ComboPoints[i].ChargedInside:SetPoint("BOTTOMRIGHT", ComboPoints[i], -1, 1)
+				ComboPoints[i].ChargedInside:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				ComboPoints[i].ChargedInside:SetVertexColor(vUI:HexToRGB(Settings["color-combo-charged"]))
+				
+				ComboPoints[i].Charged.Anim = CreateAnimationGroup(ComboPoints[i].Charged)
+				
+				ComboPoints[i].Charged.In = ComboPoints[i].Charged.Anim:CreateAnimation("Fade")
+				ComboPoints[i].Charged.In:SetEasing("in")
+				ComboPoints[i].Charged.In:SetDuration(0.2)
+				ComboPoints[i].Charged.In:SetChange(1)
+				
+				ComboPoints[i].Charged.Out = ComboPoints[i].Charged.Anim:CreateAnimation("Fade")
+				ComboPoints[i].Charged.Out:SetEasing("out")
+				ComboPoints[i].Charged.Out:SetDuration(0.2)
+				ComboPoints[i].Charged.Out:SetChange(0)
+				ComboPoints[i].Charged.Out:SetScript("OnFinished", function(self)
+					self.Parent:Hide()
+				end)
 				
 				if (i == 1) then
 					ComboPoints[i]:SetPoint("LEFT", ComboPoints, 1, 0)
 				else
 					ComboPoints[i]:SetPoint("TOPLEFT", ComboPoints[i-1], "TOPRIGHT", 1, 0)
-					ComboPoints[i]:SetWidth(Width - 2)
 				end
 			end
 			
@@ -301,6 +323,7 @@ vUI.StyleFuncs["player"] = function(self, unit)
 			end
 			
 			self.ClassPower = SoulShards
+			self.SoulShards = SoulShards
 			self.AuraParent = SoulShards
 		elseif (vUI.UserClass == "MAGE") then
 			local ArcaneCharges = CreateFrame("Frame", self:GetName() .. "ArcaneCharges", self, "BackdropTemplate")
@@ -317,6 +340,7 @@ vUI.StyleFuncs["player"] = function(self, unit)
 				ArcaneCharges[i]:SetSize(Width, 8)
 				ArcaneCharges[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 				ArcaneCharges[i]:SetStatusBarColor(vUI:HexToRGB(Settings["color-arcane-charges"]))
+				ArcaneCharges[i]:SetWidth(i == 1 and Width - 1 or Width)
 				
 				ArcaneCharges[i].bg = ArcaneCharges:CreateTexture(nil, "BORDER")
 				ArcaneCharges[i].bg:SetAllPoints(ArcaneCharges[i])
@@ -328,11 +352,11 @@ vUI.StyleFuncs["player"] = function(self, unit)
 					ArcaneCharges[i]:SetPoint("LEFT", ArcaneCharges, 1, 0)
 				else
 					ArcaneCharges[i]:SetPoint("TOPLEFT", ArcaneCharges[i-1], "TOPRIGHT", 1, 0)
-					ArcaneCharges[i]:SetWidth(Width - 2)
 				end
 			end
 			
 			self.ClassPower = ArcaneCharges
+			self.ArcaneCharges = ArcaneCharges
 			self.AuraParent = ArcaneCharges
 		elseif (vUI.UserClass == "MONK") then
 			local Chi = CreateFrame("Frame", self:GetName() .. "Chi", self, "BackdropTemplate")
@@ -382,6 +406,7 @@ vUI.StyleFuncs["player"] = function(self, unit)
 			
 			self.Stagger = Stagger
 			self.ClassPower = Chi
+			self.Chi = Chi
 			self.AuraParent = Chi
 		elseif (vUI.UserClass == "DEATHKNIGHT") then
 			local Runes = CreateFrame("Frame", self:GetName() .. "Runes", self, "BackdropTemplate")
@@ -390,6 +415,7 @@ vUI.StyleFuncs["player"] = function(self, unit)
 			Runes:SetBackdrop(vUI.Backdrop)
 			Runes:SetBackdropColor(0, 0, 0)
 			Runes:SetBackdropBorderColor(0, 0, 0)
+			Runes.sortOrder = "asc" -- desc
 			
 			local Width = (Settings["unitframes-player-width"] / 6) - 1
 			
@@ -468,6 +494,7 @@ vUI.StyleFuncs["player"] = function(self, unit)
 			end
 			
 			self.ClassPower = HolyPower
+			self.HolyPower = HolyPower
 			self.AuraParent = HolyPower
 		end
 	end
@@ -546,14 +573,52 @@ local UpdatePlayerWidth = function(value)
 		if Frame.ComboPoints then
 			Frame.ComboPoints:SetWidth(value)
 			
-			local Width = (value / 5)
+			local Max = UnitPowerMax("player", Enum.PowerType.ComboPoints)
+			local Width = (Settings["unitframes-player-width"] / Max) - 1
+			
+			for i = 1, Max do
+				Frame.ComboPoints[i]:SetWidth(i == 1 and Width - 1 or Width)
+			end
+		elseif Frame.SoulShards then
+			Frame.SoulShards:SetWidth(value)
+			
+			local Width = (Settings["unitframes-player-width"] / 5) - 1
 			
 			for i = 1, 5 do
-				Frame.ComboPoints[i]:SetWidth(Width)
-				
-				if (i ~= 1) then
-					Frame.ComboPoints[i]:SetWidth(Width - 2)
-				end
+				Frame.SoulShards[i]:SetWidth(i == 1 and Width - 1 or Width)
+			end
+		elseif Frame.ArcanePower then
+			Frame.ArcanePower:SetWidth(value)
+			
+			local Width = (Settings["unitframes-player-width"] / 4) - 1
+			
+			for i = 1, 4 do
+				Frame.ArcanePower[i]:SetWidth(i == 1 and Width - 1 or Width)
+			end
+		elseif Frame.Chi then
+			Frame.Chi:SetWidth(value)
+			Frame.Stagger:SetWidth(value)
+			
+			local Width = (Settings["unitframes-player-width"] / 6) - 1
+			
+			for i = 1, 6 do
+				Frame.Chi[i]:SetWidth(i == 1 and Width - 1 or Width)
+			end
+		elseif Frame.Runes then
+			Frame.Runes:SetWidth(value)
+			
+			local Width = (Settings["unitframes-player-width"] / 6) - 1
+			
+			for i = 1, 6 do
+				Frame.Runes[i]:SetWidth(i == 1 and Width - 1 or Width)
+			end
+		elseif Frame.HolyPower then
+			Frame.HolyPower:SetWidth(value)
+			
+			local Width = (Settings["unitframes-player-width"] / 5) - 1
+			
+			for i = 1, 5 do
+				Frame.HolyPower[i]:SetWidth(i == 1 and Width - 1 or Width)
 			end
 		end
 	end
@@ -628,7 +693,7 @@ local UpdatePlayerEnablePortrait = function(value)
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Player"], Language["Unit Frames"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSlider("unitframes-player-width", Settings["unitframes-player-width"], 120, 320, 1, "Width", "Set the width of the player unit frame", UpdatePlayerWidth)
 	left:CreateSwitch("unitframes-player-enable-resource", Settings["unitframes-player-enable-resource"], Language["Enable Resource Bar"], Language["Enable the player resources such as combo points, runes, etc."], ReloadUI):RequiresReload(true)

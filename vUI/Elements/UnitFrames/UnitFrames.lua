@@ -112,7 +112,7 @@ function UF:SetPowerAttributes(power, value)
 end
 
 -- Tags
-Events["Status"] = "UNIT_HEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD"
+Events["Status"] = "UNIT_HEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD UNIT_FLAGS"
 Methods["Status"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. Language["Dead"] .. "|r"
@@ -123,6 +123,8 @@ Methods["Status"] = function(unit)
 	elseif UnitIsAFK(unit) then
 		return "|cFFEEEEEE" .. DEFAULT_AFK_MESSAGE .. "|r"
 	end
+	
+	return ""
 end
 
 Events["Level"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED PLAYER_ENTERING_WORLD"
@@ -217,7 +219,7 @@ Methods["HealthValues"] = function(unit)
 	return vUI:ShortValue(Current) .. " / " .. vUI:ShortValue(Max)
 end
 
-Events["HealthDeficit"] = "UNIT_HEALTH PLAYER_ENTERING_WORLD"
+Events["HealthDeficit"] = "UNIT_HEALTH PLAYER_ENTERING_WORLD UNIT_FLAGS UNIT_CONNECTION"
 Methods["HealthDeficit"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. Language["Dead"] .. "|r"
@@ -225,6 +227,8 @@ Methods["HealthDeficit"] = function(unit)
 		return "|cFFEEEEEE" .. Language["Ghost"] .. "|r"
 	elseif (not UnitIsConnected(unit)) then
 		return "|cFFEEEEEE" .. Language["Offline"] .. "|r"
+	elseif UnitIsAFK(unit) then
+		return "|cFFEEEEEE" .. DEFAULT_AFK_MESSAGE .. "|r"
 	end
 	
 	local Current = UnitHealth(unit)
@@ -244,6 +248,8 @@ Methods["GroupStatus"] = function(unit)
 		return "|cFFEEEEEE" .. Language["Ghost"] .. "|r"
 	elseif (not UnitIsConnected(unit)) then
 		return "|cFFEEEEEE" .. Language["Offline"] .. "|r"
+	elseif UnitIsAFK(unit) then
+		return "|cFFEEEEEE" .. DEFAULT_AFK_MESSAGE .. "|r"
 	end
 	
 	local Current = UnitHealth(unit)
@@ -963,7 +969,7 @@ UF:SetScript("OnEvent", function(self, event)
 	end
 end)
 
-GUI:AddSettings(Language["General"], Language["Unit Frames"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("unitframes-enable", Settings["unitframes-enable"], Language["Enable Unit Frames Module"], Language["Enable the unit frames module"], ReloadUI):RequiresReload(true)
 	

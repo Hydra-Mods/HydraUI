@@ -711,7 +711,7 @@ local CopyProfile = function(value)
 	vUI:DisplayPopup(Language["Attention"], format(Language["Are you sure you would like to copy %s to %s?"], value, vUI:GetActiveProfileName()), ACCEPT, CopyProfileOnAccept, CANCEL, nil, value)
 end
 
-GUI:AddSettings(Language["General"], Language["Profiles"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Profiles"], function(left, right)
 	left:DisableScrolling()
 	
 	left:CreateHeader(Language["Profiles"])

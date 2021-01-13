@@ -82,7 +82,7 @@ local UpdateGUIEnableFade = function(value)
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["General"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["General"], function(left, right)
 	left:CreateHeader(Language["Welcome"])
 	left:CreateSwitch("ui-display-welcome", Settings["ui-display-welcome"], Language["Display Welcome Message"], Language["Display a welcome message on login with UI information"])
 	--left:CreateSwitch("ui-display-whats-new", Settings["ui-display-whats-new"], Language[ [[Display "What's New" Pop-ups]] ], "")
@@ -119,7 +119,7 @@ local UpdateStyle = function(value)
 	vUI:DisplayPopup(Language["Attention"], format(Language['Are you sure you would like to change to the current style to "%s"?'], Label), Language["Accept"], AcceptNewStyle, Language["Cancel"], nil, value)
 end
 
-GUI:AddSettings(Language["General"], Language["Styles"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Styles"], function(left, right)
 	left:CreateHeader(Language["Styles"])
 	left:CreateDropdown("ui-style", Settings["ui-style"], Assets:GetStyleList(), Language["Select Style"], Language["Select a style to load"], UpdateStyle)
 	

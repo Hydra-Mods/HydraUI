@@ -462,7 +462,7 @@ local UpdateNamePlateUnselectedAlpha = function(value)
 	C_CVar.SetCVar("nameplateMaxAlpha", value / 100)
 end
 	
-GUI:AddSettings(Language["General"], Language["Name Plates"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Name Plates"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("nameplates-enable", Settings["nameplates-enable"], Language["Enable Name Plates"], Language["Enable the vUI name plates module"], ReloadUI):RequiresReload(true)
 	

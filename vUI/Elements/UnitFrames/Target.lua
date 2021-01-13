@@ -332,7 +332,7 @@ local UpdateTargetEnablePortrait = function(value)
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Target"], Language["Unit Frames"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Target"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSlider("unitframes-target-width", Settings["unitframes-target-width"], 120, 320, 1, "Width", "Set the width of the target unit frame", UpdateTargetWidth)
 	left:CreateSwitch("unitframes-show-target-buffs", Settings["unitframes-show-target-buffs"], Language["Show Target Buffs"], Language["Show yauras above the target unit frame"], UpdateShowTargetBuffs)

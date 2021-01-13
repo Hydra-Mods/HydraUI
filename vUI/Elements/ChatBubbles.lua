@@ -2,6 +2,7 @@ local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Bubbles = vUI:NewModule("Chat Bubbles")
 
+local pairs = pairs
 local select = select
 local GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
 
@@ -117,7 +118,7 @@ local UpdateShowBubbles = function(value)
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Chat"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Chat"], function(left, right)
 	right:CreateHeader(Language["Chat Bubbles"])
 	right:CreateSwitch("chat-bubbles-enable", Settings["chat-bubbles-enable"], Language["Enable Chat Bubbles"], Language["Enable the vUI chat bubbles module"], ReloadUI):RequiresReload(true)
 	right:CreateSlider("chat-bubbles-opacity", Settings["chat-bubbles-opacity"], 0, 100, 5, Language["Background Opacity"], Language["Set the opacity of the chat bubbles background"], SetToRefresh, nil, "%")

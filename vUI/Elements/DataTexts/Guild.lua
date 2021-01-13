@@ -9,13 +9,13 @@ local GetQuestDifficultyColor = GetQuestDifficultyColor
 local select = select
 local format = format
 local match = string.match
-local Label = Language["Guild"]
+local Label = GUILD
 
 local MaxCharacters = 30
 
 local StatusLabels = {
-	[1] = Language["|cFFFFFF33AFK|r"],
-	[2] = Language["|cFFFF6666DND|r"],
+	[1] = "|cFFFFFF33" .. DEFAULT_AFK_MESSAGE .. "|r",
+	[2] = "|cFFFF6666" .. DEFAULT_DND_MESSAGE .. "|r",
 }
 
 local OnEnter = function(self)
@@ -31,17 +31,18 @@ local OnEnter = function(self)
 	
 	local GuildName = GetGuildInfo("player")
 	local NumTotal, NumOnline, NumOnlineAndMobile = GetNumGuildMembers()
-	--local GuildMessage = GetGuildRosterMOTD()
+	local GuildMessage = GetGuildRosterMOTD()
 	local Name, Rank, RankIndex, Level, ClassName, Zone, Note, OfficerNote, Online, Status, Class
 	local Color, LevelColor
 	
 	GameTooltip:AddDoubleLine(GuildName, format("%s/%s", NumOnlineAndMobile, NumTotal))
 	GameTooltip:AddLine(" ")
 	
-	--[[if (GuildMessage and GuildMessage ~= "") then
-		GameTooltip:AddLine(GuildMessage)
+	if (GuildMessage and GuildMessage ~= "") then
+		GameTooltip:AddLine(GUILD_MOTD_LABEL2)
+		GameTooltip:AddLine(GuildMessage, 1, 1, 1, true)
 		GameTooltip:AddLine(" ")
-	end]]
+	end
 	
 	local Limit = NumOnlineAndMobile > MaxCharacters and MaxCharacters or NumOnlineAndMobile
 	

@@ -51,7 +51,7 @@ function Map:Style()
 	self.TopFrame.Tex:SetPoint("TOPLEFT", self.TopFrame, 1, -1)
 	self.TopFrame.Tex:SetPoint("BOTTOMRIGHT", self.TopFrame, -1, 1)
 	self.TopFrame.Tex:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	self.TopFrame.Tex:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
+	self.TopFrame.Tex:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	-- Bottom Info
 	self.BottomFrame = CreateFrame("Frame", "vUIMinimapBottom", self, "BackdropTemplate")
@@ -66,7 +66,7 @@ function Map:Style()
 	self.BottomFrame.Tex:SetPoint("TOPLEFT", self.BottomFrame, 1, -1)
 	self.BottomFrame.Tex:SetPoint("BOTTOMRIGHT", self.BottomFrame, -1, 1)
 	self.BottomFrame.Tex:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	self.BottomFrame.Tex:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
+	self.BottomFrame.Tex:SetVertexColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	
 	-- Style minimap
 	Minimap:SetMaskTexture(Assets:GetTexture("Blank"))
@@ -236,7 +236,7 @@ function Map:Load()
 	end
 end
 
-GUI:AddSettings(Language["General"], Language["Minimap"], function(left, right)
+GUI:AddWidgets(Language["General"], Language["Minimap"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("minimap-enable", Settings["minimap-enable"], Language["Enable Minimap Module"], Language["Enable the vUI mini map module"], ReloadUI):RequiresReload(true)
 	
