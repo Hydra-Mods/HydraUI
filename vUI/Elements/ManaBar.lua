@@ -1,8 +1,17 @@
-local vUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
-if (vUI.UserClass ~= "DRUID") then
+local Load = {["DRUID"] = 1, ["PRIEST"] = 1, ["SHAMAN"] = 1}
+
+if (not Load[vUI.UserClass]) then
 	return
 end
+
+local Visibility = {
+	["SHAMAN"] = 2, -- Show for Enhance
+	["PRIEST"] = 3, -- Show for Shadow
+}
+
+Defaults["unitframes-show-mana-bar"] = true
 
 local floor = floor
 local format = format
@@ -10,10 +19,10 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 
-local DruidMana = vUI:NewModule("Druid Mana")
+local ManaBar = vUI:NewModule("Mana Bar")
 local ManaID = Enum.PowerType.Mana
 
-function DruidMana:UNIT_POWER_UPDATE()
+function ManaBar:UNIT_POWER_UPDATE()
 	local Mana = UnitPower("player", ManaID)
 	local MaxMana = UnitPowerMax("player", ManaID)
 	
@@ -24,7 +33,7 @@ function DruidMana:UNIT_POWER_UPDATE()
 	self.Percentage:SetText(floor((Mana / MaxMana * 100 + 0.05) * 10) / 10 .. "%")
 end
 
-function DruidMana:UNIT_POWER_FREQUENT()
+function ManaBar:UNIT_POWER_FREQUENT()
 	local Mana = UnitPower("player", ManaID)
 	local MaxMana = UnitPowerMax("player", ManaID)
 	
@@ -34,15 +43,23 @@ function DruidMana:UNIT_POWER_FREQUENT()
 	self.Percentage:SetText(floor((Mana / MaxMana * 100 + 0.05) * 10) / 10 .. "%")
 end
 
-function DruidMana:UPDATE_SHAPESHIFT_FORM()
-	if (GetShapeshiftForm() == 0) then
-		self:Hide()
-	else
+function ManaBar:UPDATE_SHAPESHIFT_FORM()
+	if (GetShapeshiftForm() == 2 or GetShapeshiftForm() == 1) then
 		self:Show()
+	else
+		self:Hide()
 	end
 end
 
-function DruidMana:CreateBar()
+function ManaBar:ACTIVE_TALENT_GROUP_CHANGED()
+	if (GetSpecialization() == Visibility[vUI.UserClass]) then
+		self:Show()
+	else
+		self:Hide()
+	end
+end
+
+function ManaBar:CreateBar()
 	self:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-power-height"] + 2)
 	self:SetPoint("CENTER", vUI.UIParent, 0, -180)
 	
@@ -94,48 +111,54 @@ function DruidMana:CreateBar()
 	vUI:CreateMover(self)
 end
 
-function DruidMana:Enable()
+function ManaBar:Enable()
 	self:RegisterEvent("UNIT_POWER_UPDATE")
 	self:RegisterEvent("UNIT_POWER_FREQUENT")
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
 	self:SetScript("OnEvent", self.OnEvent)
+	
+	if (vUI.UserClass == "DRUID") then
+		self:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+	end
 	
 	self:UNIT_POWER_UPDATE()
 	self:Show()
 end
 
-function DruidMana:Disable()
+function ManaBar:Disable()
 	self:UnregisterAllEvents("UNIT_POWER_UPDATE")
 	self:SetScript("OnEvent", nil)
 	self:Hide()
 end
 
-function DruidMana:OnEvent(event)
+function ManaBar:OnEvent(event)
 	if self[event] then
 		self[event](self)
 	end
 end
 
-function DruidMana:Load()
-	if Settings["unitframes-show-druid-mana"] then
+function ManaBar:Load()
+	if Settings["unitframes-show-mana-bar"] then
 		self:CreateBar()
 		self:Enable()
+		self:ACTIVE_TALENT_GROUP_CHANGED()
 	end
 end
 
-local UpdateEnableDruidMana = function(value)
+local UpdateEnableManaBar = function(value)
 	if value then
-		if (not DruidMana.Bar) then
-			DruidMana:CreateBar()
+		if (not ManaBar.Bar) then
+			ManaBar:CreateBar()
 		end
 	
-		DruidMana:Enable()
+		ManaBar:Enable()
 	else
-		DruidMana:Disable()
+		ManaBar:Disable()
 	end
 end
 
 GUI:AddWidgets(Language["General"], Language["Unit Frames"], function(left, right)
-	right:CreateHeader(Language["Druid Mana"])
-	right:CreateSwitch("unitframes-show-druid-mana", Settings["unitframes-show-druid-mana"], Language["Enable Druid Mana"], Language["Enable a bar displaying your mana while in other forms"], UpdateEnableDruidMana)
+	right:CreateHeader(Language["Mana Bar"])
+	right:CreateSwitch("unitframes-show-mana-bar", Settings["unitframes-show-mana-bar"], Language["Enable Mana Bar"], Language["Enable a mana bar for Druids/Priests/Shaman"], UpdateEnableManaBar)
 end)

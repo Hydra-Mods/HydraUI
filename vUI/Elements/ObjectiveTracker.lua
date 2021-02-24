@@ -182,6 +182,7 @@ function Tracker:StyleWindow()
 	self:CreateCustomHeader(ObjectiveTrackerBlocksFrame.QuestHeader) -- Quests
 	self:CreateCustomHeader(ObjectiveTrackerBlocksFrame.ScenarioHeader) -- Scenario
 	self:CreateCustomHeader(ObjectiveTrackerBlocksFrame.AchievementHeader) -- Achievement
+	self:CreateCustomHeader(CAMPAIGN_QUEST_TRACKER_MODULE.Header) -- Bonus
 	self:CreateCustomHeader(BONUS_OBJECTIVE_TRACKER_MODULE.Header) -- Bonus
 	self:CreateCustomHeader(WORLD_QUEST_TRACKER_MODULE.Header) -- World Quests
 	self:CreateCustomHeader(ObjectiveTrackerFrame.BlocksFrame.CampaignQuestHeader) -- Campaign
@@ -475,13 +476,14 @@ function Tracker:AddHooks()
 	end
 	
 	hooksecurefunc(SCENARIO_TRACKER_MODULE, "AddObjective", AddObjective)
+	hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddObjective", AddObjective)
 	
 	ObjectiveTrackerFrame.HeaderMenu.MinimizeButton:HookScript("OnClick", UpdateMinimizeButton)
 	
 	--hooksecurefunc("QuestPOI_GetButton", QuestPOI_HideAllButtons) -- Choosing to hide POI buttons, They're very ugly, and you can just click on the quest. I can always make this a setting if requested.
 	--hooksecurefunc(QuestUtil, "SetupWorldQuestButton", HideWorldQuestPOI)
 	hooksecurefunc(DEFAULT_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", AddProgressBar)
-	hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", AddProgressBar)
+	--hooksecurefunc(BONUS_OBJECTIVE_TRACKER_MODULE, "AddProgressBar", AddProgressBar)
 	hooksecurefunc(WORLD_QUEST_TRACKER_MODULE, "AddProgressBar", AddProgressBar)
 	hooksecurefunc(SCENARIO_TRACKER_MODULE, "AddProgressBar", AddProgressBar)
 	--hooksecurefunc(AUTO_QUEST_POPUP_TRACKER_MODULE, "Update", SkinAutoQuestPopup)

@@ -13,7 +13,6 @@ local Update = function(self, event, unit)
 	end
 	
 	local IncomingHeals = UnitGetIncomingHeals(unit) or 0
-	local TotalAbsorbs = UnitGetTotalAbsorbs(unit) or 0
 	local Health = UnitHealth(unit)
 	local MaxHealth = UnitHealthMax(unit)
 	
@@ -23,21 +22,23 @@ local Update = function(self, event, unit)
 		if (IncomingHeals == 0) then
 			self.HealBar:SetValue(0)
 		elseif (Health + IncomingHeals >= MaxHealth) then
-			self.HealBar:SetValue(MaxHealth)
+			self.HealBar:SetValue(MaxHealth - Health)
 		else
-			self.HealBar:SetValue(Health + IncomingHeals)
+			self.HealBar:SetValue(IncomingHeals)
 		end
 	end
 	
 	if self.AbsorbsBar then
+		local TotalAbsorbs = UnitGetTotalAbsorbs(unit) or 0
+		
 		self.AbsorbsBar:SetMinMaxValues(0, MaxHealth)
 		
 		if (TotalAbsorbs == 0) then
 			self.AbsorbsBar:SetValue(0)
 		elseif (Health + TotalAbsorbs >= MaxHealth) then
-			self.AbsorbsBar:SetValue(MaxHealth)
+			self.AbsorbsBar:SetValue(MaxHealth - Health)
 		else
-			self.AbsorbsBar:SetValue(Health + TotalAbsorbs)
+			self.AbsorbsBar:SetValue(TotalAbsorbs)
 		end
 	end
 end
@@ -47,7 +48,7 @@ local ForceUpdate = function(element)
 end
 
 local Enable = function(self)
-	if(self.HealBar) then
+	if self.HealBar then
 		self:RegisterEvent("UNIT_HEAL_PREDICTION", Update)
 		self:RegisterEvent("UNIT_MAXHEALTH", Update)
 		self:RegisterEvent("UNIT_HEALTH", Update)

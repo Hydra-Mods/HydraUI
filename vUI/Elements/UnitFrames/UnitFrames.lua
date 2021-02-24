@@ -604,8 +604,8 @@ UF.BuffIDs = {
 	},
 	
 	["SHAMAN"] = {
-		{61295, "TOPLEFT", {0.7, 0.3, 0.7}},      -- Riptide
-		{204288, "TOPRIGHT", {0.73, 0.61, 0.33}}, -- Earth Shield
+		{61295, "TOPLEFT", {0.7, 0.3, 0.7}},   -- Riptide
+		{974, "TOPRIGHT", {0.73, 0.61, 0.33}}, -- Earth Shield
 	},
 }
 
@@ -771,6 +771,11 @@ UF:SetScript("OnEvent", function(self, event)
 				Player:DisableElement("Portrait")
 			end
 			
+			if (not Settings["player-enable-pvp-indicator"]) then
+				Player:DisableElement("PvPIndicator")
+				Player.PvPIndicator:Hide()
+			end
+			
 			local Target = oUF:Spawn("target", "vUI Target")
 			Target:SetSize(Settings["unitframes-target-width"], Settings["unitframes-target-health-height"] + Settings["unitframes-target-power-height"] + 3)
 			Target:SetPoint("TOPLEFT", vUI.UIParent, "CENTER", 68, -281)
@@ -891,9 +896,9 @@ UF:SetScript("OnEvent", function(self, event)
 					"showPlayer", false,
 					"showParty", true,
 					"showRaid", false,
-					"xoffset", Settings["party-x-offset"],
-					"yOffset", Settings["party-y-offset"],
-					"point", Settings["party-point"],
+					"xoffset", X,
+					"yOffset", Y,
+					"point", Point,
 					"oUF-initialConfigFunction", [[
 						local Header = self:GetParent()
 						
@@ -902,7 +907,7 @@ UF:SetScript("OnEvent", function(self, event)
 					]]
 				)
 				
-				PartyPet:SetPoint("BOTTOMLEFT", Party, "TOPLEFT", 0, 2)
+				PartyPet:SetPoint("TOPLEFT", Party, "BOTTOMLEFT", 0, -2)
 				PartyPet:SetParent(vUI.UIParent)
 			end
 		end

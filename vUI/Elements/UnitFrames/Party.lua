@@ -81,13 +81,17 @@ vUI.StyleFuncs["party"] = function(self, unit)
 	HealthBG:SetAlpha(0.2)
 	
 	local AbsorbsBar = CreateFrame("StatusBar", nil, self)
-	AbsorbsBar:SetAllPoints(Health)
+	AbsorbsBar:SetWidth(Settings["party-width"])
+	AbsorbsBar:SetHeight(Settings["party-health-height"])
+	AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 	AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
 	
 	local HealBar = CreateFrame("StatusBar", nil, self)
-	HealBar:SetAllPoints(Health)
+	HealBar:SetWidth(Settings["party-width"])
+	HealBar:SetHeight(Settings["party-health-height"])
+	HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
@@ -164,6 +168,7 @@ vUI.StyleFuncs["party"] = function(self, unit)
 		Debuffs.initialAnchor = "TOPLEFT"
 		Debuffs.tooltipAnchor = "ANCHOR_TOP"
 		Debuffs["growth-x"] = "RIGHT"
+		Debuffs["growth-y"] = "DOWN"
 	else
 		Debuffs:SetSize(24 * 3 + (2 * 2), 24)
 		Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)

@@ -6,19 +6,19 @@ local Patrons = {
 	{"Erieeroot", "Dragonhawk"}, -- 20
 	{"Ari", "MrPoundsign"}, -- 15
 	{"Dillan", "FrankPatten", "deck"}, -- 10
-	{"Ryex", "JDoubleU00", "Syn", "sylvester", "Innie", "Mcbooze", "Aaron B.", "Angel", "Dellamaik", "stko", "Jeor"}, -- 5
-	{"madmaddy", "Dustin S."}, -- 3
+	{"Ryex", "JDoubleU00", "Syn", "sylvester", "Innie", "Mcbooze", "Aaron B.", "Dellamaik", "stko"}, -- 5
+	{"Dustin S.", "Uzify"}, -- 3
 }
 
 local Previous = {
 	{"SwoopCrown"},
 	{"Smelly", "Trix", "wolimazo"},
 	{"Euphoria", "Mitooshin", "MisseFar"},
-	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Steve R."},
-	{"Akab00m", "OzzFreak"},
+	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Steve R.", "Angel", "Jeor"},
+	{"Akab00m", "OzzFreak", "madmaddy"},
 }
 
-local Donors = {"Innie", "Brightsides", "Erthelmi", "Gene", "JDoubleU00", "Duds", "Shazlen", "Shawna W.", "Dillan", "Bruce N."}
+local Donors = {"Innie", "Brightsides", "Erthelmi", "Gene", "JDoubleU00", "Duds", "Shazlen", "Shawna W.", "Dillan", "Bruce N.", "linux"}
 
 GUI:AddWidgets(Language["Info"], Language["Credits"], function(left, right)
 	left:CreateHeader(Language["Scripting Help & Inspiration"])
@@ -95,30 +95,4 @@ GUI:AddWidgets(Language["Info"], Language["Supporters"], function(left, right)
 	
 	right:CreateFooter()
 	right:CreateMessage("Thank you to all of these amazing people for their support, through donations and Patreon pledges! This generosity allows me to spend so much of my time developing the interface for everyone.")
-	right:CreateLine("")
-	
-	local Patreon = right:CreateLine("|cFFF96854www.patreon.com/hydramods|r")
-	local PayPal = right:CreateLine("|cFF009CDEwww.paypal.me/vuiaddon|r")
-	
-	Patreon = Patreon:GetParent()
-	PayPal = PayPal:GetParent()
-	
-	Patreon:SetScript("OnEnter", function(self)
-		self.Text:SetText("|cFFEEEEEEwww.patreon.com/hydramods|r")
-	end)
-	
-	Patreon:SetScript("OnLeave", function(self) 
-		self.Text:SetText("|cFFF96854www.patreon.com/hydramods|r")
-	end)
-	
-	PayPal:SetScript("OnEnter", function(self)
-		self.Text:SetText("|cFFEEEEEEwww.paypal.me/vuiaddon|r")
-	end)
-	
-	PayPal:SetScript("OnLeave", function(self) 
-		self.Text:SetText("|cFF009CDEwww.paypal.me/vuiaddon|r")
-	end)
-	
-	Patreon:SetScript("OnMouseUp", function() print("https://www.patreon.com/hydramods") end)
-	PayPal:SetScript("OnMouseUp", function() print("https://www.paypal.me/vuiaddon") end)
 end)

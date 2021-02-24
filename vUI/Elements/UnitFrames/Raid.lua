@@ -30,6 +30,12 @@ Defaults["raid-font-flags"] = ""
 
 local UF = vUI:GetModule("Unit Frames")
 
+local RaidDebuffFilter = function(self, unit, icon, name, texture, count, dtype, duration, timeLeft, caster, stealable, nameplateshow, id, canapply, boss, player)
+	if boss then
+		return true
+	end
+end
+
 vUI.StyleFuncs["raid"] = function(self, unit)
 	-- General
 	self:RegisterForClicks("AnyUp")
@@ -58,13 +64,17 @@ vUI.StyleFuncs["raid"] = function(self, unit)
 	HealthBG:SetAlpha(0.2)
 	
 	local AbsorbsBar = CreateFrame("StatusBar", nil, self)
-	AbsorbsBar:SetAllPoints(Health)
+	AbsorbsBar:SetWidth(Settings["raid-width"])
+	AbsorbsBar:SetHeight(Settings["raid-health-height"])
+	AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 	AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
 	
 	local HealBar = CreateFrame("StatusBar", nil, self)
-	HealBar:SetAllPoints(Health)
+	HealBar:SetWidth(Settings["raid-width"])
+	HealBar:SetHeight(Settings["raid-health-height"])
+	HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
@@ -171,6 +181,23 @@ vUI.StyleFuncs["raid"] = function(self, unit)
 		
 		self.AuraWatch = Auras
 	end
+	
+	-- Debuffs
+	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", Health)
+	Debuffs:SetSize(24, 24)
+	Debuffs:SetPoint("BOTTOM", self, 0, 2)
+	Debuffs.size = 24
+	Debuffs.num = 1
+	Debuffs.spacing = 0
+	Debuffs.initialAnchor = "TOPLEFT"
+	Debuffs.tooltipAnchor = "ANCHOR_TOP"
+	Debuffs["growth-x"] = "RIGHT"
+	Debuffs["growth-y"] = "DOWN"
+	Debuffs.PostCreateIcon = UF.PostCreateIcon
+	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
+	Debuffs.CustomFilter = RaidDebuffFilter
+	Debuffs.showType = true
+	self.Debuffs = Debuffs
 	
 	-- Leader
     local Leader = Health:CreateTexture(nil, "OVERLAY")

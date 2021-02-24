@@ -37,17 +37,17 @@ ExperienceBar.Elapsed = 0
 local Gained = 0
 local Seconds = 0
 
-local UpdateXP = function(self, first)
-	if (UnitLevel("player") == MAX_PLAYER_LEVEL) then
+local UpdateLevel = function(self, level)
+	if (level == MAX_PLAYER_LEVEL) then
 		self:UnregisterAllEvents()
 		self:SetScript("OnEnter", nil)
 		self:SetScript("OnLeave", nil)
 		self:SetScript("OnEvent", nil)
 		self:Hide()
-		
-		return
 	end
-	
+end
+
+local UpdateXP = function(self, first)
 	Rested = GetXPExhaustion()
     XP = UnitXP("player")
     MaxXP = UnitXPMax("player")
@@ -265,13 +265,13 @@ local UpdatePercentVisibility = function(value)
 	end
 end
 
-ExperienceBar["PLAYER_LEVEL_UP"] = UpdateXP
+ExperienceBar["PLAYER_LEVEL_UP"] = UpdateLevel
 ExperienceBar["PLAYER_XP_UPDATE"] = UpdateXP
 ExperienceBar["PLAYER_UPDATE_RESTING"] = UpdateXP
 ExperienceBar["UPDATE_EXHAUSTION"] = UpdateXP
 
 ExperienceBar["PLAYER_ENTERING_WORLD"] = function(self)
-	if (not Settings["experience-enable"]) then
+	if (not Settings["experience-enable"]) or (UnitLevel("player") == MAX_PLAYER_LEVEL) then
 		self:UnregisterAllEvents()
 		
 		return

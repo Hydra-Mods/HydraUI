@@ -16,11 +16,11 @@ local Priorities = {
 }
 
 local Classes = {
-	["DRUID"] = {["Custom"] = true, ["Magic"] = true, ["Poison"] = true, ["Disease"] = false, ["Curse"] = true},
-	["MONK"] = {["Custom"] = true, ["Magic"] = false, ["Poison"] = true, ["Disease"] = true},
-	["PALADIN"] = {["Custom"] = true, ["Magic"] = false, ["Poison"] = true, ["Disease"] = true},
-	["PRIEST"] = {["Custom"] = true, ["Magic"] = true, ["Disease"] = true},
-	["SHAMAN"] = {["Custom"] = true, ["Magic"] = false, ["Poison"] = true, ["Disease"] = true},
+	["DRUID"] = {["Magic"] = true, ["Poison"] = true, ["Disease"] = false, ["Curse"] = true},
+	["MONK"] = {["Magic"] = false, ["Poison"] = true, ["Disease"] = true},
+	["PALADIN"] = {["Magic"] = false, ["Poison"] = true, ["Disease"] = true},
+	["PRIEST"] = {["Magic"] = true, ["Disease"] = true},
+	["SHAMAN"] = {["Magic"] = false, ["Poison"] = true, ["Disease"] = true},
 }
 
 local Filter = {
@@ -36,7 +36,7 @@ local Debuffs = {
 	["Sanguine Ichor"] = true,
 	
 	-- Test, remove me
-	["Weakened Soul"] = true,
+	--["Weakened Soul"] = true,
 }
 
 local Valid = Classes[Class]
@@ -67,7 +67,7 @@ local Update = function(self, event, unit)
 			break
 		end
 		
-		if ((not DispelType) and Debuffs[Name]) then -- We found something we might be interested in! (not DispelType) Should prevent overwriting actual debuffs if any were put into the Debuffs table that are actually dispellable.
+		if ((not DispelType) and Debuffs[Name]) then
 			DispelType = "Custom"
 		end
 		

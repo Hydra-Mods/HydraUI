@@ -19,6 +19,7 @@ Defaults["unitframes-player-cast-width"] = 250
 Defaults["unitframes-player-cast-height"] = 24
 Defaults["unitframes-player-enable-castbar"] = true
 Defaults["player-enable-portrait"] = false
+Defaults["player-enable-pvp-indicator"] = true
 
 local UF = vUI:GetModule("Unit Frames")
 
@@ -45,13 +46,17 @@ vUI.StyleFuncs["player"] = function(self, unit)
 	Health:SetReverseFill(Settings["unitframes-player-health-reverse"])
 	
 	local AbsorbsBar = CreateFrame("StatusBar", nil, self)
-	AbsorbsBar:SetAllPoints(Health)
+	AbsorbsBar:SetWidth(Settings["unitframes-player-width"])
+	AbsorbsBar:SetHeight(Settings["unitframes-player-health-height"])
+	AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 	AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
 	
 	local HealBar = CreateFrame("StatusBar", nil, self)
-	HealBar:SetAllPoints(Health)
+	HealBar:SetWidth(Settings["unitframes-player-width"])
+	HealBar:SetHeight(Settings["unitframes-player-health-height"])
+	HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
@@ -101,6 +106,15 @@ vUI.StyleFuncs["player"] = function(self, unit)
     Leader:SetTexture(Assets:GetTexture("Leader"))
     Leader:SetVertexColor(vUI:HexToRGB("FFEB3B"))
     Leader:Hide()
+	
+    -- PVP indicator
+    local PvPIndicator = Health:CreateTexture(nil, "ARTWORK", nil, 1)
+    PvPIndicator:SetSize(30, 30)
+    PvPIndicator:SetPoint("RIGHT", Health, "LEFT", -4, -2)
+	
+	PvPIndicator.Badge = Health:CreateTexture(nil, "ARTWORK")
+	PvPIndicator.Badge:SetSize(50, 52)
+    PvPIndicator.Badge:SetPoint("CENTER", PvPIndicator, "CENTER")
 	
 	local RaidTarget = Health:CreateTexture(nil, "OVERLAY")
 	RaidTarget:SetSize(16, 16)
@@ -549,6 +563,7 @@ vUI.StyleFuncs["player"] = function(self, unit)
 	self.Buffs = Buffs
 	self.Debuffs = Debuffs
 	--self.RaidTargetIndicator = RaidTarget
+	self.PvPIndicator = PvPIndicator
 	self.ResurrectIndicator = Resurrect
 	self.LeaderIndicator = Leader
 end
@@ -693,12 +708,25 @@ local UpdatePlayerEnablePortrait = function(value)
 	end
 end
 
+local UpdatePlayerEnablePVPIndicator = function(value)
+	if vUI.UnitFrames["player"] then
+		if value then
+			vUI.UnitFrames["player"]:EnableElement("PvPIndicator")
+			vUI.UnitFrames["player"].PvPIndicator:ForceUpdate()
+		else
+			vUI.UnitFrames["player"]:DisableElement("PvPIndicator")
+			vUI.UnitFrames["player"].PvPIndicator:Hide()
+		end
+	end
+end
+
 GUI:AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSlider("unitframes-player-width", Settings["unitframes-player-width"], 120, 320, 1, "Width", "Set the width of the player unit frame", UpdatePlayerWidth)
 	left:CreateSwitch("unitframes-player-enable-resource", Settings["unitframes-player-enable-resource"], Language["Enable Resource Bar"], Language["Enable the player resources such as combo points, runes, etc."], ReloadUI):RequiresReload(true)
 	left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
 	left:CreateSwitch("player-enable-portrait", Settings["player-enable-portrait"], Language["Enable Portrait"], Language["Display the player unit portrait"], UpdatePlayerEnablePortrait)
+	left:CreateSwitch("player-enable-pvp-indicator", Settings["player-enable-pvp-indicator"], Language["Enable PVP Indicator"], Language["Display the pvp indicator"], UpdatePlayerEnablePVPIndicator)
 	
 	left:CreateHeader(Language["Health"])
 	left:CreateSwitch("unitframes-player-health-reverse", Settings["unitframes-player-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePlayerHealthFill)

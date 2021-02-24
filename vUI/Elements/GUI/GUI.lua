@@ -766,6 +766,10 @@ function GUI:FireHook(hook, category, name, parent)
 end
 
 function GUI:GetWidget(category, name, arg1, arg2)
+	if (not self.Categories[category]) then
+		return
+	end
+	
 	for i = 1, #self.Categories[category].Buttons do
 		if (arg2 and self.Categories[category].Buttons[i].Children) then
 			for o = 1, #self.Categories[category].Buttons[i].Children do

@@ -64,7 +64,11 @@ local OnEnter = function(self)
 			if IsModifierKeyDown() then
 				GameTooltip:AddDoubleLine(Name, Rank)
 			else
-				GameTooltip:AddDoubleLine(Name, Zone)
+				if (Zone == GetZoneText()) then
+					GameTooltip:AddDoubleLine(Name, "|cff00FF00" .. Zone .. "|r")
+				else
+					GameTooltip:AddDoubleLine(Name, Zone)
+				end
 			end
 		end
 	end

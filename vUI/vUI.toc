@@ -1,6 +1,6 @@
 ## Interface: 90002
 ## Author: Hydra
-## Version: 1.01
+## Version: 1.03
 ## Title: |cFFFFC44DvUI|r
 ## Notes: An interface replacement for World of Warcraft: Shadowlands
 ## SavedVariables: vUIProfileData, vUIProfiles, vUIData, vUIGold
@@ -93,7 +93,7 @@ Elements\ActionBars\MicroMenu.lua
 Elements\ActionBars\BagSlots.lua
 Elements\ObjectiveTracker.lua
 Elements\Loot.lua
-Elements\DruidMana.lua
+Elements\ManaBar.lua
 Elements\MirrorTimers.lua
 Elements\ToastFrame.lua
 Elements\Vehicle.lua

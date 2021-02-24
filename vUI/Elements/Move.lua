@@ -4,6 +4,7 @@ local unpack = unpack
 local find = string.find
 local gsub = string.gsub
 local match = string.match
+local Round = Round
 
 vUI.MovingFrames = {}
 vUI.FrameDefaults = {}
@@ -12,7 +13,7 @@ vUI.MovingActive = false
 function vUI:PositionToString(frame)
 	local A1, Parent, A2, X, Y = frame:GetPoint()
 	
-	return format("%s:%s:%s:%s:%s", A1, Parent and Parent:GetName() or "vUIParent", A2, floor(X + 0.5), floor(Y + 0.5))
+	return format("%s:%s:%s:%s:%s", A1, Parent and Parent:GetName() or "vUIParent", A2, Round(X), Round(Y))
 end
 
 function vUI:StringToPosition(str)
@@ -162,6 +163,27 @@ local MoverOnMouseUp = function(self, button)
 			
 			Profile.Move[self.Name] = nil -- We're back to default, so don't save the value
 		end
+	else
+		local F = vUI:GetModule("m")
+		
+		if (not F.Loaded) then
+			F:LoadFrame()
+		end
+		
+		F.CurrentFrame = self
+		
+		local A1, P, A2, X, Y = self:GetPoint()
+		
+		F.Lines[1].Text:SetText(self.Name)
+		F.Lines[2].EditBox:SetText(P:GetName())
+		F.Lines[3].EditBox:SetText(A1)
+		F.Lines[4].EditBox:SetText(A2)
+		F.Lines[5].EditBox:SetText(Round(X))
+		F.Lines[6].EditBox:SetText(Round(Y))
+		
+		if (not F:IsShown()) then
+			F:Show()
+		end
 	end
 end
 
@@ -177,8 +199,8 @@ local MoverOnEnter = function(self)
 	GameTooltip:AddDoubleLine(Language["Anchor 1:"], A1, 1, 1, 1, 1, 1, 1)
 	GameTooltip:AddDoubleLine(Language["Parent:"], Parent and Parent:GetName() or "vUIParent", 1, 1, 1, 1, 1, 1)
 	GameTooltip:AddDoubleLine(Language["Anchor 2:"], A2, 1, 1, 1, 1, 1, 1)
-	GameTooltip:AddDoubleLine(Language["X offset:"], floor(X), 1, 1, 1, 1, 1, 1)
-	GameTooltip:AddDoubleLine(Language["Y offset:"], floor(Y), 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine(Language["X offset:"], Round(X), 1, 1, 1, 1, 1, 1)
+	GameTooltip:AddDoubleLine(Language["Y offset:"], Round(Y), 1, 1, 1, 1, 1, 1)
 	GameTooltip:Show()
 end
 

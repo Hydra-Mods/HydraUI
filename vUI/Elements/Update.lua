@@ -51,7 +51,13 @@ function Update:PLAYER_ENTERING_WORLD()
 	local Channels = {GetChannelList()}
 	
 	for i = 1, #Channels, 3 do -- Channels[i], Channels[i+1], Channels[i+2] = ID, Name, Disabled
-		SendAddonMessage("vUI-Version", AddOnVersion, "CHANNEL", Channels[i])
+		--[[if Channels[i+2] then
+			print("Diabled channel:", Channels[i], Channels[i+1], Channels[i+2])
+		end]]
+		
+		if (not Channels[i+2]) then
+			SendAddonMessage("vUI-Version", AddOnVersion, "CHANNEL", Channels[i])
+		end
 	end
 end
 

@@ -34,8 +34,18 @@ vUI.StyleFuncs["boss"] = function(self, unit)
 	Health:SetValue(1)
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	
+	local AbsorbsBar = CreateFrame("StatusBar", nil, self)
+	AbsorbsBar:SetWidth(Settings["unitframes-boss-width"])
+	AbsorbsBar:SetHeight(Settings["unitframes-boss-health-height"])
+	AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+	AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
+	AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
+	
 	local HealBar = CreateFrame("StatusBar", nil, self)
-	HealBar:SetAllPoints(Health)
+	HealBar:SetWidth(Settings["unitframes-boss-width"])
+	HealBar:SetHeight(Settings["unitframes-boss-health-height"])
+	HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
@@ -200,6 +210,7 @@ vUI.StyleFuncs["boss"] = function(self, unit)
 	
 	self.Health = Health
 	self.Health.bg = HealthBG
+	self.AbsorbsBar = AbsorbsBar
 	self.HealBar = HealBar
 	self.HealthLeft = HealthLeft
 	self.HealthRight = HealthRight
