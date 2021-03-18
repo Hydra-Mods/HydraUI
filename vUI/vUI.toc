@@ -1,6 +1,6 @@
 ## Interface: 90005
 ## Author: Hydra
-## Version: 1.04
+## Version: 1.05
 ## Title: |cFFFFC44DvUI|r
 ## Notes: An interface replacement for World of Warcraft: Shadowlands
 ## SavedVariables: vUIProfileData, vUIProfiles, vUIData, vUIGold
