@@ -65,8 +65,8 @@ function KeyBinding:OnKeyUp(key)
 		
 		vUI:print(format(Language['Bound "%s" to %s'], key, NewName))
 		
-		GUI:GetWidget(Language["General"], Language["Action Bars"], "save"):Enable()
-		GUI:GetWidget(Language["General"], Language["Action Bars"], "discard"):Enable()
+		--GUI:GetWidget(Language["General"], Language["Action Bars"], "save"):Enable()
+		--GUI:GetWidget(Language["General"], Language["Action Bars"], "discard"):Enable()
 	end
 end
 
@@ -133,8 +133,8 @@ function KeyBinding:OnEvent(event, button)
 		
 		vUI:print(format(Language['Bound "%s" to %s'], button, NewName))
 		
-		GUI:GetWidget(Language["General"], Language["Action Bars"], "save"):Enable()
-		GUI:GetWidget(Language["General"], Language["Action Bars"], "discard"):Enable()
+		--GUI:GetWidget(Language["General"], Language["Action Bars"], "save"):Enable()
+		--GUI:GetWidget(Language["General"], Language["Action Bars"], "discard"):Enable()
 	end
 end
 
@@ -159,8 +159,8 @@ end
 local OnAccept = function()
 	SaveBindings(GetCurrentBindingSet())
 	
-	GUI:GetWidget(Language["General"], Language["Action Bars"], "discard"):Disable()
-	GUI:GetWidget(Language["General"], Language["Action Bars"], "save"):Disable()
+	--GUI:GetWidget(Language["General"], Language["Action Bars"], "discard"):Disable()
+	--GUI:GetWidget(Language["General"], Language["Action Bars"], "save"):Disable()
 	
 	KeyBinding:Disable()
 end

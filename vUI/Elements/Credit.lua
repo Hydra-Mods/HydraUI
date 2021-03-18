@@ -5,17 +5,17 @@ local Tiers = {"FF8000", "A335EE", "0070DD", "1EFF00", "FFFFFF"}
 local Patrons = {
 	{"Erieeroot", "Dragonhawk"}, -- 20
 	{"Ari", "MrPoundsign"}, -- 15
-	{"Dillan", "FrankPatten", "deck"}, -- 10
+	{"Dillan", "deck"}, -- 10
 	{"Ryex", "JDoubleU00", "Syn", "sylvester", "Innie", "Mcbooze", "Aaron B.", "Dellamaik", "stko"}, -- 5
-	{"Dustin S.", "Uzify"}, -- 3
+	{"Dustin S."}, -- 3
 }
 
 local Previous = {
 	{"SwoopCrown"},
 	{"Smelly", "Trix", "wolimazo"},
-	{"Euphoria", "Mitooshin", "MisseFar"},
+	{"Euphoria", "Mitooshin", "MisseFar", "FrankPatten"},
 	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Steve R.", "Angel", "Jeor"},
-	{"Akab00m", "OzzFreak", "madmaddy"},
+	{"Akab00m", "OzzFreak", "madmaddy", "Uzify"},
 }
 
 local Donors = {"Innie", "Brightsides", "Erthelmi", "Gene", "JDoubleU00", "Duds", "Shazlen", "Shawna W.", "Dillan", "Bruce N.", "linux"}

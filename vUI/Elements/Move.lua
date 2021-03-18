@@ -163,27 +163,6 @@ local MoverOnMouseUp = function(self, button)
 			
 			Profile.Move[self.Name] = nil -- We're back to default, so don't save the value
 		end
-	else
-		local F = vUI:GetModule("m")
-		
-		if (not F.Loaded) then
-			F:LoadFrame()
-		end
-		
-		F.CurrentFrame = self
-		
-		local A1, P, A2, X, Y = self:GetPoint()
-		
-		F.Lines[1].Text:SetText(self.Name)
-		F.Lines[2].EditBox:SetText(P:GetName())
-		F.Lines[3].EditBox:SetText(A1)
-		F.Lines[4].EditBox:SetText(A2)
-		F.Lines[5].EditBox:SetText(Round(X))
-		F.Lines[6].EditBox:SetText(Round(Y))
-		
-		if (not F:IsShown()) then
-			F:Show()
-		end
 	end
 end
 
