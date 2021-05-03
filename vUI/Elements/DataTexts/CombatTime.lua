@@ -23,11 +23,11 @@ local Update = function(self, event)
 		self.Elapsed = 0
 		self.Throttle = 0
 		self:SetScript("OnUpdate", OnUpdate)
+		self.Text:SetText(SecondsToTime(0))
 		self.Text:SetTextColor(vUI:HexToRGB(Settings["data-text-value-color"]))
 	elseif (event == "PLAYER_REGEN_ENABLED") then
 		self:SetScript("OnUpdate", nil)
 		self.Text:SetTextColor(1, 1, 1)
-		self.Text:SetText(SecondsToTime(0))
 	end
 end
 

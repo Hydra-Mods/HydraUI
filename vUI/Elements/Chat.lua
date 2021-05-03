@@ -20,6 +20,7 @@ Defaults["chat-frame-height"] = 104
 Defaults["chat-enable-fading"] = false
 Defaults["chat-fade-time"] = 15
 Defaults["chat-link-tooltip"] = true
+Defaults["chat-shorten-channels"] = true
 
 local select = select
 local tostring = tostring
@@ -635,9 +636,20 @@ local OnHyperlinkLeave = function(self)
 	GameTooltip:Hide()
 end
 
+function Chat:OverrideAddMessage(msg, ...)
+	msg = gsub(msg, "|h%[(%d+)%.%s.-%]|h", "|h[%1]|h")
+	
+	self.OldAddMessage(self, msg, ...)
+end
+
 function Chat:StyleChatFrame(frame)
 	if frame.Styled then
 		return
+	end
+	
+	if Settings["chat-shorten-channels"] then
+		frame.OldAddMessage = frame.AddMessage
+		frame.AddMessage = Chat.OverrideAddMessage
 	end
 	
 	local FrameName = frame:GetName()
@@ -686,6 +698,8 @@ function Chat:StyleChatFrame(frame)
 	frame:SetClampRectInsets(0, 0, 0, 0)
 	frame:SetClampedToScreen(false)
 	frame:SetFading(false)
+	frame:SetMovable(true)
+	frame:SetUserPlaced(true)
 	--frame:SetScript("OnMouseWheel", OnMouseWheel)
 	frame:SetSize(self:GetWidth() - 8, self:GetHeight() - 8)
 	frame:SetFrameLevel(self:GetFrameLevel() + 1)
@@ -898,7 +912,7 @@ function Chat:MoveChatFrames()
 	GeneralDockManagerOverflowButton:ClearAllPoints()
 	GeneralDockManagerOverflowButton:SetPoint("RIGHT", self.TopBar, -2, 0)
 	
-	DEFAULT_CHAT_FRAME:SetUserPlaced(true)
+	--DEFAULT_CHAT_FRAME:SetUserPlaced(true)
 end
 
 function Chat:StyleChatFrames()
@@ -1029,7 +1043,7 @@ function Chat:Install()
 	ChatFrame_AddMessageGroup(ChatFrame5, "MONEY")
 	ChatFrame_AddMessageGroup(ChatFrame5, "SKILL")
 	
-	DEFAULT_CHAT_FRAME:SetUserPlaced(true)
+	--DEFAULT_CHAT_FRAME:SetUserPlaced(true)
 	
 	C_CVar.SetCVar("chatMouseScroll", 1)
 	C_CVar.SetCVar("chatStyle", "im")
@@ -1245,6 +1259,25 @@ local UpdateEnableLinks = function(value)
 	end
 end
 
+local UpdateShortenChannels = function(value)
+	local Frame
+	
+	if value then
+		for i = 1, NUM_CHAT_WINDOWS do
+			Frame = _G["ChatFrame"..i]
+			
+			Frame.OldAddMessage = Frame.AddMessage
+			Frame.AddMessage = Chat.OverrideAddMessage
+		end
+	else
+		for i = 1, NUM_CHAT_WINDOWS do
+			Frame = _G["ChatFrame"..i]
+			
+			Frame.AddMessage = Frame.OldAddMessage
+		end
+	end
+end
+
 GUI:AddWidgets(Language["General"], Language["Chat"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("chat-enable", Settings["chat-enable"], Language["Enable Chat Module"], Language["Enable the vUI chat module"], ReloadUI):RequiresReload(true)
@@ -1256,6 +1289,7 @@ GUI:AddWidgets(Language["General"], Language["Chat"], function(left, right)
 	left:CreateSlider("chat-fade-time", Settings["chat-enable-fading"], 0, 60, 5, Language["Set Fade Time"], Language["Set the duration to display text before fading out"], UpdateFadeTime, nil, "s")
 	left:CreateSwitch("chat-enable-fading", Settings["chat-enable-fading"], Language["Enable Text Fading"], Language["Set the text to fade after the set amount of time"], UpdateEnableFading)
 	left:CreateSwitch("chat-link-tooltip", Settings["chat-link-tooltip"], Language["Show Link Tooltips"], Language["Display a tooltip when hovering over links in chat"], UpdateEnableLinks)
+	left:CreateSwitch("chat-shorten-channels", Settings["chat-shorten-channels"], Language["Shorten Channel Names"], Language["Shorten chat channel names to their channel number"], UpdateShortenChannels)
 	
 	right:CreateHeader(Language["Install"])
 	right:CreateButton(Language["Install"], Language["Install Chat Defaults"], Language["Set default channels and settings related to chat"], RunChatInstall):RequiresReload(true)

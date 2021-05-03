@@ -21,6 +21,7 @@ Defaults["tooltips-show-target"] = true
 Defaults["tooltips-cursor-anchor"] = "ANCHOR_CURSOR"
 Defaults["tooltips-cursor-anchor-x"] = 0
 Defaults["tooltips-cursor-anchor-y"] = 8
+Defaults["tooltips-show-health"] = true
 
 local select = select
 local find = string.find
@@ -126,7 +127,10 @@ local SetTooltipStyle = function(self)
 	self:SetBackdrop(nil) -- To stop blue tooltips
 
 	if self.Styled then
-		if (self.GetUnit and self:GetUnit()) then
+		self.OuterBG:ClearAllPoints()
+		self.OuterBG:SetPoint("BOTTOMRIGHT", self, 3, -3)
+	
+		if (self.GetUnit and self:GetUnit() and Settings["tooltips-show-health"]) then
 			self.OuterBG:SetPoint("TOPLEFT", GameTooltipStatusBar, -4, 4)
 		else
 			self.OuterBG:SetPoint("TOPLEFT", self, -3, 3)
@@ -146,13 +150,19 @@ local SetTooltipStyle = function(self)
 		self.Backdrop:SetFrameLevel(2)
 		
 		self.OuterBG = CreateFrame("Frame", nil, self, "BackdropTemplate")
-		self.OuterBG:SetPoint("TOPLEFT", self, -3, 3)
+		--self.OuterBG:SetPoint("TOPLEFT", self, -3, 3)
 		self.OuterBG:SetPoint("BOTTOMRIGHT", self, 3, -3)
 		self.OuterBG:SetBackdrop(vUI.BackdropAndBorder)
 		self.OuterBG:SetBackdropBorderColor(0, 0, 0)
 		self.OuterBG:SetFrameStrata("TOOLTIP")
 		self.OuterBG:SetFrameLevel(1)
 		self.OuterBG:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
+		
+		if (self.GetUnit and self:GetUnit() and Settings["tooltips-show-health"]) then
+			self.OuterBG:SetPoint("TOPLEFT", GameTooltipStatusBar, -4, 4)
+		else
+			self.OuterBG:SetPoint("TOPLEFT", self, -3, 3)
+		end
 		
 		if (self == AutoCompleteBox) then
 			for i = 1, AUTOCOMPLETE_MAX_BUTTONS do
@@ -298,6 +308,17 @@ local OnTooltipSetUnit = function(self)
 			Level = format("|cFF%s%s|r", Hex, Level)
 		end
 		
+		if CanInspect(UnitID) then
+			if self.GUID then
+				if UnitGUID(UnitID) == self.GUID then
+					print(UnitName())
+				end
+			else
+				Tooltips.Unit = UnitID
+				NotifyInspect(UnitID)
+			end
+		end
+		
 		if UnitIsAFK(UnitID) then
 			Flag = "|cFFFDD835" .. CHAT_FLAG_AFK .. "|r "
 		elseif UnitIsDND(UnitID) then 
@@ -350,10 +371,6 @@ local OnTooltipSetUnit = function(self)
 			local TargetColor = GetUnitColor(UnitID .. "target")
 			
 			self:AddLine(Language["Targeting: |cFF"] .. TargetColor .. UnitName(UnitID .. "target") .. "|r", 1, 1, 1)
-		end
-		
-		if self.OuterBG then
-			self.OuterBG:SetPoint("TOPLEFT", GameTooltipStatusBar, -4, 4)
 		end
 	end
 end
@@ -503,6 +520,16 @@ local OnValueChanged = function(self)
 	self.BG:SetVertexColor(vUI:HexToRGB(Color))
 end
 
+local OnShow = function(self)
+	if (not Settings["tooltips-show-health"]) then
+		GameTooltipStatusBar:Hide()
+		
+		return
+	end
+	
+	OnValueChanged(self)
+end
+
 function Tooltips:UpdateStatusBarFonts()
 	vUI:SetFontInfo(GameTooltipStatusBar.HealthValue, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 	vUI:SetFontInfo(GameTooltipStatusBar.HealthPercent, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
@@ -540,7 +567,7 @@ function Tooltips:StyleStatusBar()
 	GameTooltipStatusBar.HealthPercent:SetJustifyH("RIGHT")
 	
 	GameTooltipStatusBar:HookScript("OnValueChanged", OnValueChanged)
-	GameTooltipStatusBar:HookScript("OnShow", OnValueChanged)
+	GameTooltipStatusBar:HookScript("OnShow", OnShow)
 end
 
 local ItemRefCloseOnEnter = function(self)
@@ -593,6 +620,20 @@ function Tooltips:SkinItemRef()
 	ItemRefTooltip.NewCloseButton = CloseButton
 end
 
+function Tooltips:OnEvent(event, guid)
+	self.GUID = guid
+	
+	if self.Unit and UnitGUID(self.Unit) == guid then
+		--local Level = CalculateAverageItemLevel(self.Unit)
+		
+		--print(format("[%s] Item Level: %.2f", UnitName(self.Unit), Level))
+		
+		ClearInspectPlayer()
+		
+		self.Unit = nil
+	end
+end
+
 function Tooltips:Load()
 	if (not Settings["tooltips-enable"]) then
 		return
@@ -611,6 +652,8 @@ function Tooltips:Load()
 	self:AddHooks()
 	self:StyleStatusBar()
 	self:SkinItemRef()
+	--self:RegisterEvent("INSPECT_READY")
+	--self:SetScript("OnEvent", self.OnEvent)
 	
 	self.Mover = vUI:CreateMover(self)
 	
@@ -638,6 +681,7 @@ GUI:AddWidgets(Language["General"], Language["Tooltips"], function(left, right)
 	left:CreateSwitch("tooltips-enable", Settings["tooltips-enable"], Language["Enable Tooltips Module"], Language["Enable the vUI tooltips module"], ReloadUI):RequiresReload(true)
 	
 	left:CreateHeader(Language["Health Bar"])
+	left:CreateSwitch("tooltips-show-health", Settings["tooltips-show-health"], Language["Display Health Bar"], Language["Dislay the tooltip health bar"])
 	left:CreateSwitch("tooltips-show-health-text", Settings["tooltips-show-health-text"], Language["Display Health Text"], Language["Dislay health information on the tooltip health bar"], UpdateShowHealthText)
 	left:CreateSlider("tooltips-health-bar-height", Settings["tooltips-health-bar-height"], 2, 30, 1, Language["Health Bar Height"], Language["Set the height of the tooltip health bar"], UpdateHealthBarHeight)
 	

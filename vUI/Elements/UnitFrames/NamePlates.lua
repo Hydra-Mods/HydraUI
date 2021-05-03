@@ -1,7 +1,8 @@
-local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local addon, ns = ...
+local vUI, GUI, Language, Assets, Settings, Defaults = ns:get()
 
 Defaults["nameplates-enable"] = true
-Defaults["nameplates-width"] = 134
+Defaults["nameplates-width"] = 138
 Defaults["nameplates-height"] = 14
 Defaults["nameplates-font"] = "Roboto"
 Defaults["nameplates-font-size"] = 12
@@ -26,7 +27,10 @@ Defaults["nameplates-castbar-enable-icon"] = true
 Defaults["nameplates-selected-alpha"] = 100
 Defaults["nameplates-unselected-alpha"] = 40
 Defaults["nameplates-enable-auras"] = true
+Defaults["nameplates-buffs-direction"] = "LTR"
+Defaults["nameplates-debuffs-direction"] = "RTL"
 
+local oUF = ns.oUF or oUF
 local UF = vUI:GetModule("Unit Frames")
 
 vUI.StyleFuncs["nameplate"] = function(self, unit)
@@ -139,17 +143,24 @@ vUI.StyleFuncs["nameplate"] = function(self, unit)
 	-- Buffs
 	if Settings["nameplates-enable-auras"] then
 		local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
-		Buffs:SetSize(30, 30)
-		Buffs:SetPoint("BOTTOM", self, "TOP", 0, 36)
-		Buffs.size = 30
-		Buffs.spacing = 0
-		Buffs.num = 1
-		Buffs.initialAnchor = "TOPLEFT"
-		Buffs["growth-x"] = "RIGHT"
-		Buffs["growth-y"] = "UP"
+		Buffs:SetSize(Settings["nameplates-width"], 26)
+		Buffs:SetPoint("BOTTOM", self, "TOP", 0, 10)
+		Buffs.size = 26
+		Buffs.spacing = 2
+		Buffs.num = 5
 		Buffs.PostCreateIcon = UF.PostCreateIcon
 		Buffs.PostUpdateIcon = UF.PostUpdateIcon
 		Buffs.showType = true
+		
+		if (Settings["nameplates-buffs-direction"] == "LTR") then
+			Buffs.initialAnchor = "TOPLEFT"
+			Buffs["growth-x"] = "RIGHT"
+			Buffs["growth-y"] = "UP"
+		else
+			Buffs.initialAnchor = "TOPRIGHT"
+			Buffs["growth-x"] = "LEFT"
+			Buffs["growth-y"] = "UP"
+		end
 		
 		self.Buffs = Buffs
 	end
@@ -157,20 +168,31 @@ vUI.StyleFuncs["nameplate"] = function(self, unit)
 	-- Debuffs
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetSize(Settings["nameplates-width"], 26)
-	Debuffs:SetPoint("BOTTOM", Health, "TOP", 0, 14)
 	Debuffs.size = 26
 	Debuffs.spacing = 2
 	Debuffs.num = 5
 	Debuffs.numRow = 4
-	Debuffs.initialAnchor = "TOPLEFT"
-	Debuffs["growth-x"] = "RIGHT"
-	Debuffs["growth-y"] = "UP"
 	Debuffs.PostCreateIcon = UF.PostCreateIcon
 	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["nameplates-only-player-debuffs"]
 	Debuffs.showType = true
 	Debuffs.disableMouse = true
-	Debuffs.CustomFilter = CustomFilter
+	
+	if (Settings["nameplates-debuffs-direction"] == "LTR") then
+		Debuffs.initialAnchor = "TOPLEFT"
+		Debuffs["growth-x"] = "RIGHT"
+		Debuffs["growth-y"] = "UP"
+	else
+		Debuffs.initialAnchor = "TOPRIGHT"
+		Debuffs["growth-x"] = "LEFT"
+		Debuffs["growth-y"] = "UP"
+	end
+	
+	if Settings["nameplates-enable-auras"] then
+		Debuffs:SetPoint("BOTTOM", self.Buffs, "TOP", 0, 2)
+	else
+		Debuffs:SetPoint("BOTTOM", self, "TOP", 0, 10)
+	end
 	
     -- Castbar
     local Castbar = CreateFrame("StatusBar", nil, self)
@@ -330,8 +352,30 @@ UF.NamePlateCallback = function(plate)
 		plate:DisableElement("Castbar")
 	end
 	
+	if plate.Buffs then
+		if (Settings["nameplates-buffs-direction"] == "LTR") then
+			plate.Buffs.initialAnchor = "TOPLEFT"
+			plate.Buffs["growth-x"] = "RIGHT"
+			plate.Buffs["growth-y"] = "UP"
+		else
+			plate.Buffs.initialAnchor = "TOPRIGHT"
+			plate.Buffs["growth-x"] = "LEFT"
+			plate.Buffs["growth-y"] = "UP"
+		end
+	end
+	
 	if plate.Debuffs then
 		plate.Debuffs.onlyShowPlayer = Settings["nameplates-only-player-debuffs"]
+		
+		if (Settings["nameplates-debuffs-direction"] == "LTR") then
+			plate.Debuffs.initialAnchor = "TOPLEFT"
+			plate.Debuffs["growth-x"] = "RIGHT"
+			plate.Debuffs["growth-y"] = "UP"
+		else
+			plate.Debuffs.initialAnchor = "TOPRIGHT"
+			plate.Debuffs["growth-x"] = "LEFT"
+			plate.Debuffs["growth-y"] = "UP"
+		end
 	end
 	
 	plate:SetSize(Settings["nameplates-width"], Settings["nameplates-height"])
@@ -465,7 +509,39 @@ local UpdateNamePlateUnselectedAlpha = function(value)
 	C_CVar.SetCVar("nameplateMinAlpha", value / 100)
 	C_CVar.SetCVar("nameplateMaxAlpha", value / 100)
 end
-	
+
+local NamePlateSetBuffDirection = function(self, value)
+	if (Settings["nameplates-buffs-direction"] == "LTR") then
+		self.Buffs.initialAnchor = "TOPLEFT"
+		self.Buffs["growth-x"] = "RIGHT"
+		self.Buffs["growth-y"] = "UP"
+	else
+		self.Buffs.initialAnchor = "TOPRIGHT"
+		self.Buffs["growth-x"] = "LEFT"
+		self.Buffs["growth-y"] = "UP"
+	end
+end
+
+local UpdateNamePlatesBuffDirection = function(value)
+	oUF:RunForAllNamePlates(NamePlateSetBuffDirection, value)
+end
+
+local NamePlateSetDebuffDirection = function(self, value)
+	if (Settings["nameplates-debuffs-direction"] == "LTR") then
+		self.Debuffs.initialAnchor = "TOPLEFT"
+		self.Debuffs["growth-x"] = "RIGHT"
+		self.Debuffs["growth-y"] = "UP"
+	else
+		self.Debuffs.initialAnchor = "TOPRIGHT"
+		self.Debuffs["growth-x"] = "LEFT"
+		self.Debuffs["growth-y"] = "UP"
+	end
+end
+
+local UpdateNamePlatesDebuffDirection = function(value)
+	oUF:RunForAllNamePlates(NamePlateSetDebuffDirection, value)
+end
+
 GUI:AddWidgets(Language["General"], Language["Name Plates"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("nameplates-enable", Settings["nameplates-enable"], Language["Enable Name Plates"], Language["Enable the vUI name plates module"], ReloadUI):RequiresReload(true)
@@ -483,10 +559,12 @@ GUI:AddWidgets(Language["General"], Language["Name Plates"], function(left, righ
 	
 	left:CreateHeader(Language["Buffs"])
 	left:CreateSwitch("nameplates-enable-auras", Settings["nameplates-enable-auras"], Language["Enable Buffs"], Language["Display buffs above nameplates"], ReloadUI):RequiresReload(true)
+	left:CreateDropdown("nameplates-buffs-direction", Settings["nameplates-buffs-direction"], {[Language["Left to Right"]] = "LTR", [Language["Right to Left"]] = "RTL"}, Language["Buff Direction"], Language["Set which direction the buffs will grow towards"], UpdateNamePlatesBuffDirection)
 	
 	left:CreateHeader(Language["Debuffs"])
 	left:CreateSwitch("nameplates-display-debuffs", Settings["nameplates-display-debuffs"], Language["Enable Debuffs"], Language["Display your debuffs above enemy name plates"], UpdateNamePlatesEnableDebuffs)
 	left:CreateSwitch("nameplates-only-player-debuffs", Settings["nameplates-only-player-debuffs"], Language["Only Display Player Debuffs"], Language["If enabled, only your own debuffs will be displayed"], UpdateNamePlatesShowPlayerDebuffs)
+	left:CreateDropdown("nameplates-debuffs-direction", Settings["nameplates-debuffs-direction"], {[Language["Left to Right"]] = "LTR", [Language["Right to Left"]] = "RTL"}, Language["Debuff Direction"], Language["Set which direction the debuffs will grow towards"], UpdateNamePlatesDebuffDirection)
 	
 	right:CreateHeader(Language["Information"])
 	right:CreateInput("nameplates-top-text", Settings["nameplates-top-text"], Language["Top Text"], "")

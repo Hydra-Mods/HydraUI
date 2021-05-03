@@ -158,7 +158,6 @@ vUI.StyleFuncs["target"] = function(self, unit)
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetSize(Settings["unitframes-player-width"], 28)
-	--vUI:SetPoint(Debuffs, "BOTTOMRIGHT", self, "TOPRIGHT", 0, 31)
 	Debuffs:SetPoint("BOTTOM", Buffs, "TOP", 0, 2)
 	Debuffs.size = 28
 	Debuffs.spacing = 2

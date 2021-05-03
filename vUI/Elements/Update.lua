@@ -48,17 +48,13 @@ function Update:PLAYER_ENTERING_WORLD()
 		SendAddonMessage("vUI-Version", AddOnVersion, IsInGroup(LE_PARTY_CATEGORY_INSTANCE) and "INSTANCE" or "PARTY")
 	end
 	
-	local Channels = {GetChannelList()}
+	--[[local Channels = {GetChannelList()}
 	
 	for i = 1, #Channels, 3 do -- Channels[i], Channels[i+1], Channels[i+2] = ID, Name, Disabled
-		--[[if Channels[i+2] then
-			print("Diabled channel:", Channels[i], Channels[i+1], Channels[i+2])
-		end]]
-		
 		if (not Channels[i+2]) then
 			SendAddonMessage("vUI-Version", AddOnVersion, "CHANNEL", Channels[i])
 		end
-	end
+	end]]
 end
 
 function Update:GUILD_ROSTER_UPDATE()

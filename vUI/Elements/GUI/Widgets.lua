@@ -355,7 +355,7 @@ GUI.Widgets.CreateAnimatedDoubleLine = function(self, left, right, r, g, b)
 	return Anchor.Left, Anchor.Right
 end
 
-GUI.Widgets.CreateHeader = function(self, text)
+--[[GUI.Widgets.CreateHeader = function(self, text)
 	local Anchor = CreateFrame("Frame", nil, self)
 	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.IsHeader = true
@@ -397,6 +397,29 @@ GUI.Widgets.CreateHeader = function(self, text)
 	HeaderRight.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	HeaderRight.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
 	
+	tinsert(self.Widgets, Anchor)
+	
+	return Anchor.Text
+end]]
+
+GUI.Widgets.CreateHeader = function(self, text)
+	local Anchor = CreateFrame("Frame", nil, self)
+	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
+	Anchor.IsHeader = true
+	
+	Anchor.Text = Anchor:CreateFontString(nil, "OVERLAY")
+	Anchor.Text:SetPoint("CENTER", Anchor, 0, 0)
+	Anchor.Text:SetHeight(WIDGET_HEIGHT)
+	vUI:SetFontInfo(Anchor.Text, Settings["ui-header-font"], 12)
+	Anchor.Text:SetJustifyH("CENTER")
+	Anchor.Text:SetText("|cFF"..Settings["ui-header-font-color"]..text.."|r")
+	
+	Anchor.Texture = Anchor:CreateTexture(nil, "OVERLAY")
+	Anchor.Texture:SetPoint("TOPLEFT", Anchor, 1, -1)
+	Anchor.Texture:SetPoint("BOTTOMRIGHT", Anchor, -1, 1)
+	Anchor.Texture:SetTexture(Assets:GetTexture("Blank"))
+	Anchor.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
+
 	tinsert(self.Widgets, Anchor)
 	
 	return Anchor.Text
@@ -454,8 +477,7 @@ GUI.Widgets.CreateFooter = function(self)
 	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.IsHeader = true
 	
-	-- Header Left Line
-	local Line = CreateFrame("Frame", nil, Anchor, "BackdropTemplate")
+	--[[local Line = CreateFrame("Frame", nil, Anchor)
 	Line:SetHeight(4)
 	Line:SetPoint("LEFT", Anchor, 0, 0)
 	Line:SetPoint("RIGHT", Anchor, 0, 0)
@@ -467,11 +489,15 @@ GUI.Widgets.CreateFooter = function(self)
 	Line.Texture:SetPoint("TOPLEFT", Line, 1, -1)
 	Line.Texture:SetPoint("BOTTOMRIGHT", Line, -1, 1)
 	Line.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	Line.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
+	Line.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))]]
+	
+	Anchor.Texture = Anchor:CreateTexture(nil, "BACKGROUND")
+	Anchor.Texture:SetPoint("TOPLEFT", Anchor, 1, -1)
+	Anchor.Texture:SetPoint("BOTTOMRIGHT", Anchor, -1, 1)
+	Anchor.Texture:SetTexture(Assets:GetTexture("Blank"))
+	Anchor.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	tinsert(self.Widgets, Anchor)
-	
-	return Header
 end
 
 -- Header
