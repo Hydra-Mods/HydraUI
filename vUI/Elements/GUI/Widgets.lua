@@ -104,7 +104,7 @@ GUI.Widgets.CreateLine = function(self, text)
 	Anchor.Text:SetSize(GROUP_WIDTH - 6, WIDGET_HEIGHT)
 	vUI:SetFontInfo(Anchor.Text, Settings["ui-widget-font"], Settings["ui-font-size"])
 	Anchor.Text:SetJustifyH("LEFT")
-	Anchor.Text:SetText(format("|cFF%s%s|r", Settings["ui-widget-font-color"], text))
+	Anchor.Text:SetText(format("|cFF%s%s|r", Settings["ui-widget-font-color"], tostring(text)))
 	
 	tinsert(self.Widgets, Anchor)
 	
@@ -117,22 +117,19 @@ GUI.Widgets.CreateDoubleLine = function(self, left, right)
 	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.ID = CreateID(left)
 	
-	left = tostring(left)
-	right = tostring(right)
-	
 	Anchor.Left = Anchor:CreateFontString(nil, "OVERLAY")
 	Anchor.Left:SetPoint("LEFT", Anchor, HEADER_SPACING, 0)
 	Anchor.Left:SetSize((GROUP_WIDTH / 2) - 6, WIDGET_HEIGHT)
 	vUI:SetFontInfo(Anchor.Left, Settings["ui-widget-font"], Settings["ui-font-size"])
 	Anchor.Left:SetJustifyH("LEFT")
-	Anchor.Left:SetText(format("|cFF%s%s|r", Settings["ui-widget-font-color"], left))
+	Anchor.Left:SetText(format("|cFF%s%s|r", Settings["ui-widget-font-color"], tostring(left)))
 	
 	Anchor.Right = Anchor:CreateFontString(nil, "OVERLAY")
 	Anchor.Right:SetPoint("RIGHT", Anchor, -HEADER_SPACING, 0)
 	Anchor.Right:SetSize((GROUP_WIDTH / 2) - 6, WIDGET_HEIGHT)
 	vUI:SetFontInfo(Anchor.Right, Settings["ui-widget-font"], Settings["ui-font-size"])
 	Anchor.Right:SetJustifyH("RIGHT")
-	Anchor.Right:SetText(format("|cFF%s%s|r", Settings["ui-widget-font-color"], right))
+	Anchor.Right:SetText(format("|cFF%s%s|r", Settings["ui-widget-font-color"], tostring(right)))
 	
 	tinsert(self.Widgets, Anchor)
 	
@@ -355,53 +352,6 @@ GUI.Widgets.CreateAnimatedDoubleLine = function(self, left, right, r, g, b)
 	return Anchor.Left, Anchor.Right
 end
 
---[[GUI.Widgets.CreateHeader = function(self, text)
-	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
-	Anchor.IsHeader = true
-	
-	Anchor.Text = Anchor:CreateFontString(nil, "OVERLAY")
-	Anchor.Text:SetPoint("CENTER", Anchor, 0, 0)
-	Anchor.Text:SetHeight(WIDGET_HEIGHT)
-	vUI:SetFontInfo(Anchor.Text, Settings["ui-header-font"], Settings["ui-font-size"]) -- 14
-	Anchor.Text:SetJustifyH("CENTER")
-	Anchor.Text:SetText("|cFF"..Settings["ui-header-font-color"]..text.."|r")
-	
-	-- Header Left Line
-	local HeaderLeft = CreateFrame("Frame", nil, Anchor, "BackdropTemplate")
-	HeaderLeft:SetHeight(4)
-	HeaderLeft:SetPoint("LEFT", Anchor, 0, 0)
-	HeaderLeft:SetPoint("RIGHT", Anchor.Text, "LEFT", -SPACING * 2, 0)
-	HeaderLeft:SetBackdrop(vUI.BackdropAndBorder)
-	HeaderLeft:SetBackdropColor(0, 0, 0)
-	HeaderLeft:SetBackdropBorderColor(0, 0, 0)
-	
-	HeaderLeft.Texture = HeaderLeft:CreateTexture(nil, "OVERLAY")
-	HeaderLeft.Texture:SetPoint("TOPLEFT", HeaderLeft, 1, -1)
-	HeaderLeft.Texture:SetPoint("BOTTOMRIGHT", HeaderLeft, -1, 1)
-	HeaderLeft.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	HeaderLeft.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	-- Header Right Line
-	local HeaderRight = CreateFrame("Frame", nil, Anchor, "BackdropTemplate")
-	HeaderRight:SetHeight(4)
-	HeaderRight:SetPoint("RIGHT", Anchor, 0, 0)
-	HeaderRight:SetPoint("LEFT", Anchor.Text, "RIGHT", SPACING * 2, 0)
-	HeaderRight:SetBackdrop(vUI.BackdropAndBorder)
-	HeaderRight:SetBackdropColor(0, 0, 0)
-	HeaderRight:SetBackdropBorderColor(0, 0, 0)
-	
-	HeaderRight.Texture = HeaderRight:CreateTexture(nil, "OVERLAY")
-	HeaderRight.Texture:SetPoint("TOPLEFT", HeaderRight, 1, -1)
-	HeaderRight.Texture:SetPoint("BOTTOMRIGHT", HeaderRight, -1, 1)
-	HeaderRight.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	HeaderRight.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	tinsert(self.Widgets, Anchor)
-	
-	return Anchor.Text
-end]]
-
 GUI.Widgets.CreateHeader = function(self, text)
 	local Anchor = CreateFrame("Frame", nil, self)
 	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
@@ -425,71 +375,11 @@ GUI.Widgets.CreateHeader = function(self, text)
 	return Anchor.Text
 end
 
---[[GUI.Widgets.CreateHeader = function(self, text)
-	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
-	Anchor.IsHeader = true
-	
-	Anchor.Text = Anchor:CreateFontString(nil, "OVERLAY")
-	Anchor.Text:SetPoint("LEFT", Anchor, SPACING * 3, 0)
-	Anchor.Text:SetHeight(WIDGET_HEIGHT)
-	vUI:SetFontInfo(Anchor.Text, Settings["ui-header-font"], 14)
-	Anchor.Text:SetText("|cFF"..Settings["ui-header-font-color"]..text.."|r")
-	
-	-- Header Left Line
-	local HeaderLeft = CreateFrame("Frame", nil, Anchor, "BackdropTemplate")
-	HeaderLeft:SetHeight(4)
-	HeaderLeft:SetPoint("LEFT", Anchor, 0, 0)
-	HeaderLeft:SetPoint("RIGHT", Anchor.Text, "LEFT", -SPACING * 2, 0)
-	HeaderLeft:SetBackdrop(vUI.BackdropAndBorder)
-	HeaderLeft:SetBackdropColor(0, 0, 0)
-	HeaderLeft:SetBackdropBorderColor(0, 0, 0)
-	
-	HeaderLeft.Texture = HeaderLeft:CreateTexture(nil, "OVERLAY")
-	HeaderLeft.Texture:SetPoint("TOPLEFT", HeaderLeft, 1, -1)
-	HeaderLeft.Texture:SetPoint("BOTTOMRIGHT", HeaderLeft, -1, 1)
-	HeaderLeft.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	HeaderLeft.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	-- Header Right Line
-	local HeaderRight = CreateFrame("Frame", nil, Anchor, "BackdropTemplate")
-	HeaderRight:SetHeight(4)
-	HeaderRight:SetPoint("RIGHT", Anchor, 0, 0)
-	HeaderRight:SetPoint("LEFT", Anchor.Text, "RIGHT", SPACING * 2, 0)
-	HeaderRight:SetBackdrop(vUI.BackdropAndBorder)
-	HeaderRight:SetBackdropColor(0, 0, 0)
-	HeaderRight:SetBackdropBorderColor(0, 0, 0)
-	
-	HeaderRight.Texture = HeaderRight:CreateTexture(nil, "OVERLAY")
-	HeaderRight.Texture:SetPoint("TOPLEFT", HeaderRight, 1, -1)
-	HeaderRight.Texture:SetPoint("BOTTOMRIGHT", HeaderRight, -1, 1)
-	HeaderRight.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	HeaderRight.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	tinsert(self.Widgets, Anchor)
-	
-	return Anchor.Text
-end]]
-
 -- Footer
 GUI.Widgets.CreateFooter = function(self)
 	local Anchor = CreateFrame("Frame", nil, self)
 	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.IsHeader = true
-	
-	--[[local Line = CreateFrame("Frame", nil, Anchor)
-	Line:SetHeight(4)
-	Line:SetPoint("LEFT", Anchor, 0, 0)
-	Line:SetPoint("RIGHT", Anchor, 0, 0)
-	Line:SetBackdrop(vUI.BackdropAndBorder)
-	Line:SetBackdropColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	Line:SetBackdropBorderColor(0, 0, 0)
-	
-	Line.Texture = Line:CreateTexture(nil, "OVERLAY")
-	Line.Texture:SetPoint("TOPLEFT", Line, 1, -1)
-	Line.Texture:SetPoint("BOTTOMRIGHT", Line, -1, 1)
-	Line.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	Line.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))]]
 	
 	Anchor.Texture = Anchor:CreateTexture(nil, "BACKGROUND")
 	Anchor.Texture:SetPoint("TOPLEFT", Anchor, 1, -1)
@@ -1530,7 +1420,7 @@ GUI.CreateExportWindow = function(self)
 	Window.Header.Text:SetPoint("LEFT", Window.Header, HEADER_SPACING, -1)
 	vUI:SetFontInfo(Window.Header.Text, Settings["ui-header-font"], Settings["ui-header-font-size"])
 	Window.Header.Text:SetJustifyH("LEFT")
-	Window.Header.Text:SetText("|cFF"..Settings["ui-header-font-color"].."Export string".."|r")
+	Window.Header.Text:SetText("|cFF"..Settings["ui-header-font-color"]..Language["Export string"].."|r")
 	
 	-- Close button
 	Window.Header.CloseButton = CreateFrame("Frame", nil, Window.Header)
@@ -1940,12 +1830,13 @@ local DropdownScrollBarOnMouseWheel = function(self, delta)
 end
 
 local AddDropdownScrollBar = function(self)
-	local MaxValue = (#self - (DROPDOWN_MAX_SHOWN - 1))
 	local ScrollWidth = (WIDGET_HEIGHT / 2)
 	
 	local ScrollBar = CreateFrame("Slider", nil, self, "BackdropTemplate")
-	ScrollBar:SetPoint("TOPLEFT", self, "TOPRIGHT", 2, 0)
-	ScrollBar:SetPoint("BOTTOMLEFT", self, "BOTTOMRIGHT", 2, 0)
+	ScrollBar:SetPoint("TOPRIGHT", self, 0, 0)
+	ScrollBar:SetPoint("BOTTOMRIGHT", self, 0, 0)
+	--ScrollBar:SetPoint("TOPLEFT", self, "TOPRIGHT", -2, 0)
+	--ScrollBar:SetPoint("BOTTOMLEFT", self, "BOTTOMRIGHT", -2, 0)
 	ScrollBar:SetWidth(ScrollWidth)
 	ScrollBar:SetThumbTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	ScrollBar:SetOrientation("VERTICAL")
@@ -1953,7 +1844,7 @@ local AddDropdownScrollBar = function(self)
 	ScrollBar:SetBackdrop(vUI.BackdropAndBorder)
 	ScrollBar:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
 	ScrollBar:SetBackdropBorderColor(0, 0, 0)
-	ScrollBar:SetMinMaxValues(1, MaxValue)
+	ScrollBar:SetMinMaxValues(1, (#self - (DROPDOWN_MAX_SHOWN - 1)))
 	ScrollBar:SetValue(1)
 	--ScrollBar:SetObeyStepOnDrag(true)
 	ScrollBar:EnableMouseWheel(true)
@@ -2203,13 +2094,10 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	ArrowBottom.Anim:SetEasing("in")
 	ArrowBottom.Anim:SetDuration(0.15)
 	
-	Dropdown.Menu = CreateFrame("Frame", nil, Dropdown, "BackdropTemplate")
+	Dropdown.Menu = CreateFrame("Frame", nil, Dropdown)
 	Dropdown.Menu:SetPoint("TOPLEFT", Dropdown, "BOTTOMLEFT", SPACING, -2)
 	Dropdown.Menu:SetPoint("TOPRIGHT", Dropdown, "BOTTOMRIGHT", -SPACING, -2)
 	Dropdown.Menu:SetSize(DROPDOWN_WIDTH - (SPACING * 2), 1)
-	Dropdown.Menu:SetBackdrop(vUI.BackdropAndBorder)
-	Dropdown.Menu:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-main-color"]))
-	Dropdown.Menu:SetBackdropBorderColor(0, 0, 0)
 	Dropdown.Menu:SetFrameStrata("DIALOG")
 	Dropdown.Menu:EnableMouse(true)
 	Dropdown.Menu:EnableMouseWheel(true)

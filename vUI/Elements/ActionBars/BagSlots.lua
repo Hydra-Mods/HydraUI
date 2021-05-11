@@ -7,6 +7,7 @@ Defaults["bags-loot-from-left"] = false
 Defaults["bags-frame-visiblity"] = "SHOW"
 Defaults["bags-frame-opacity"] = 40
 Defaults["bags-frame-max"] = 100
+Defaults["bags-frame-size"] = 32
 
 BagsFrame.Objects = {
 	CharacterBag3Slot,
@@ -61,7 +62,7 @@ function BagsFrame:Load()
 	end
 	
 	self.Panel = CreateFrame("Frame", "vUI Bags Window", vUI.UIParent, "BackdropTemplate")
-	self.Panel:SetSize(184, 40)
+	self.Panel:SetSize(((Settings["bags-frame-size"] + 4) * #self.Objects) + 4, Settings["bags-frame-size"] + 8)
 	self.Panel:SetPoint("BOTTOMRIGHT", vUI:GetModule("Micro Buttons").Panel, "TOPRIGHT", 0, 3)
 	self.Panel:SetBackdrop(vUI.BackdropAndBorder)
 	self.Panel:SetBackdropColor(vUI:HexToRGB(Settings["ui-window-bg-color"]))
@@ -77,7 +78,7 @@ function BagsFrame:Load()
 		
 		Object:SetParent(self.Panel)
 		Object:ClearAllPoints()
-		Object:SetSize(32, 32)
+		Object:SetSize(Settings["bags-frame-size"], Settings["bags-frame-size"])
 		Object:HookScript("OnEnter", BagsFrameButtonOnEnter)
 		Object:HookScript("OnLeave", BagsFrameButtonOnLeave)
 		
@@ -155,10 +156,26 @@ local UpdateBagVisibility = function()
 	BagsFrame:UpdateVisibility()
 end
 
---GUI:AddOptions(function(self)
+local UpdateBagFrameSize = function(value)
+	BagsFrame.Panel:SetSize(((value + 4) * #BagsFrame.Objects) + 4, value + 8)
+	
+	for i = 1, #BagsFrame.Objects do
+		BagsFrame.Objects[i]:SetSize(value, value)
+		
+		BagsFrame.Objects[i]:ClearAllPoints()
+		
+		if (i == 1) then
+			BagsFrame.Objects[i]:SetPoint("LEFT", BagsFrame.Panel, 4, 0)
+		else
+			BagsFrame.Objects[i]:SetPoint("LEFT", BagsFrame.Objects[i-1], "RIGHT", 4, 0)
+		end
+	end
+end
+
 GUI:AddWidgets(Language["General"], Language["Action Bars"], function(left, right)
 	right:CreateHeader(Language["Bags Frame"])
 	right:CreateDropdown("bags-frame-visiblity", Settings["bags-frame-visiblity"], {[Language["Hide"]] = "HIDE", [Language["Mouseover"]] = "MOUSEOVER", [Language["Show"]] = "SHOW"}, Language["Set Visibility"], Language["Set the visibility of the bag frame"], UpdateBagVisibility)
+	right:CreateSlider("bags-frame-size", Settings["bags-frame-size"], 12, 60, 2, Language["Set Bag Size"], Language["Set the size of the bag frame slots"], UpdateBagFrameSize)
 	right:CreateSlider("bags-frame-opacity", Settings["bags-frame-opacity"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the bags frame when visiblity is set to Mouseover"], UpdateBagVisibility, nil, "%")
 	right:CreateSlider("bags-frame-max", Settings["bags-frame-max"], 0, 100, 10, Language["Set Max Opacity"], Language["Set the max opacity of the bags frame when visiblity is set to Mouseover"], UpdateBagVisibility, nil, "%")
 	right:CreateSwitch("bags-loot-from-left", Settings["bags-loot-from-left"], Language["Loot Left To Right"], Language["When looting, new items will be placed into the leftmost bag"], SetInsertItemsLeftToRight)

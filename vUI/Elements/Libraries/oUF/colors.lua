@@ -10,7 +10,7 @@ local colors = {
 		1, 1, 0,
 		0, 1, 0
 	},
-	health = {49 / 255, 207 / 255, 37 / 255},
+	--health = {49 / 255, 207 / 255, 37 / 255},
 	disconnected = {0.6, 0.6, 0.6},
 	tapped = {0.6, 0.6, 0.6},
 	runes = {
@@ -129,7 +129,7 @@ function vUI:UpdateoUFColors()
 	colors.tapped = {vUI:HexToRGB(Settings["color-tapped"])}
 	colors.disconnected = {vUI:HexToRGB(Settings["color-disconnected"])}
 	
-	colors.health = {vUI:HexToRGB(Settings["ui-header-texture-color"])}
+	--colors.health = {vUI:HexToRGB(Settings["ui-header-texture-color"])}
 	
 	-- alternate power, sourced from FrameXML/CompactUnitFrame.lua
 	colors.power.ALTERNATE = {0.7, 0.7, 0.6}

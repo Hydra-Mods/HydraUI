@@ -126,7 +126,6 @@ vUI.StyleFuncs["player"] = function(self, unit)
 	Health.frequentUpdates = true
 	Health.Smooth = true
 	self.colors.health = {R, G, B}
-	
 	UF:SetHealthAttributes(Health, Settings["unitframes-player-health-color"])
 	
 	if Settings["unitframes-player-enable-power"] then

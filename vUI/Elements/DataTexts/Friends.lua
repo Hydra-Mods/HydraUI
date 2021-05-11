@@ -237,14 +237,14 @@ local OnEnter = function(self)
 		end
 	end
 	
-	--[[ Regular friends
+	-- Regular friends
 	for i = 1, NumFriends do
 		local FriendInfo = GetFriendInfoByIndex(i)
 		
 		if FriendInfo.connected then
 			GameTooltip:AddDoubleLine(FriendInfo.name, FriendInfo.level)
 		end
-	end]]
+	end
 	
 	GameTooltip:Show()
 	GameTooltip:Show()

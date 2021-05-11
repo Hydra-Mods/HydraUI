@@ -4,6 +4,7 @@
 ## Title: |cFFFFC44DvUI|r
 ## Notes: An interface replacement for World of Warcraft: Shadowlands
 ## SavedVariables: vUIProfileData, vUIProfiles, vUIData, vUIGold
+## OptionalDeps: HydraUI
 
 Initialize.lua
 Elements\Libraries\LibStub.lua

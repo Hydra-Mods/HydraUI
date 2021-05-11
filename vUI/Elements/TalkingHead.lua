@@ -154,5 +154,5 @@ end
 
 GUI:AddWidgets(Language["General"], Language["General"], function(left, right)
 	right:CreateHeader(Language["Talking Head"])
-	right:CreateSwitch("hide-th", Settings["hide-th"], Language["Hide Talking Head Frame"], Language["Hide the talking head frame, and stopping it from showing."], ReloadUI):RequiresReload(true)
+	right:CreateSwitch("hide-th", Settings["hide-th"], Language["Hide Talking Head Frame"], Language["Hide the talking head frame, and stop it from showing."], ReloadUI):RequiresReload(true)
 end)

@@ -3,7 +3,6 @@ local vUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 -- Constants
 local SPACING = 3
 local WIDGET_HEIGHT = 20
-local LABEL_SPACING = 3
 local GROUP_WIDTH = 270
 local BUTTON_LIST_WIDTH = 112 -- 126
 local GUI_WIDTH = 710
@@ -30,9 +29,8 @@ GUI.Categories = {}
 GUI.Widgets = {}
 GUI.LoadCalls = {}
 GUI.Buttons = {}
-GUI.ButtonQueue = {}
-GUI.ScrollButtons = {}
-GUI.WindowHooks = {onshow = {}, onhide = {}}
+GUI.WidgetQueue = {}
+GUI.Scrolling = {}
 
 local Scroll = function(self)
 	local FirstLeft
@@ -102,6 +100,18 @@ local WindowOnMouseWheel = function(self, delta)
 	SetOffsetByDelta(self, delta)
 	Scroll(self)
 	self.ScrollBar:SetValue(self.Offset)
+	
+	if (self.Offset == 1) then
+		self.ScrollUp.Arrow:SetVertexColor(0.65, 0.65, 0.65)
+	else
+		self.ScrollUp.Arrow:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
+	end
+	
+	if (self.Offset == self.MaxScroll) then
+		self.ScrollDown.Arrow:SetVertexColor(0.65, 0.65, 0.65)
+	else
+		self.ScrollDown.Arrow:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
+	end
 end
 
 local SetWindowOffset = function(self, offset)
@@ -168,7 +178,7 @@ local AddWindowScrollBar = function(self)
 	self.ScrollUp.Arrow:SetPoint("CENTER", self.ScrollUp, 0, 0)
 	self.ScrollUp.Arrow:SetSize(16, 16)
 	self.ScrollUp.Arrow:SetTexture(Assets:GetTexture("Arrow Up"))
-	self.ScrollUp.Arrow:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
+	self.ScrollUp.Arrow:SetVertexColor(0.65, 0.65, 0.65)
 	
 	-- Scroll down
 	self.ScrollDown = CreateFrame("Frame", nil, self, "BackdropTemplate")
@@ -312,35 +322,11 @@ function GUI:CreateCategory(name)
 	Category.Text:SetJustifyH("CENTER")
 	Category.Text:SetText(format("|cFF%s%s|r", Settings["ui-header-font-color"], name))
 	
-	-- Header Left Line
-	Category.Left = CreateFrame("Frame", nil, Category, "BackdropTemplate")
-	Category.Left:SetHeight(4)
-	Category.Left:SetPoint("LEFT", Category, 0, 0)
-	Category.Left:SetPoint("RIGHT", Category.Text, "LEFT", -SPACING, 0)
-	Category.Left:SetBackdrop(vUI.BackdropAndBorder)
-	Category.Left:SetBackdropColor(0, 0, 0)
-	Category.Left:SetBackdropBorderColor(0, 0, 0)
-	
-	Category.Left.Texture = Category.Left:CreateTexture(nil, "OVERLAY")
-	Category.Left.Texture:SetPoint("TOPLEFT", Category.Left, 1, -1)
-	Category.Left.Texture:SetPoint("BOTTOMRIGHT", Category.Left, -1, 1)
-	Category.Left.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	Category.Left.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	-- Header Right Line
-	Category.Right = CreateFrame("Frame", nil, Category, "BackdropTemplate")
-	Category.Right:SetHeight(4)
-	Category.Right:SetPoint("RIGHT", Category, 0, 0)
-	Category.Right:SetPoint("LEFT", Category.Text, "RIGHT", SPACING, 0)
-	Category.Right:SetBackdrop(vUI.BackdropAndBorder)
-	Category.Right:SetBackdropColor(0, 0, 0)
-	Category.Right:SetBackdropBorderColor(0, 0, 0)
-	
-	Category.Right.Texture = Category.Right:CreateTexture(nil, "OVERLAY")
-	Category.Right.Texture:SetPoint("TOPLEFT", Category.Right, 1, -1)
-	Category.Right.Texture:SetPoint("BOTTOMRIGHT", Category.Right, -1, 1)
-	Category.Right.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	Category.Right.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-button-texture-color"]))
+	Category.Texture = Category:CreateTexture(nil, "OVERLAY")
+	Category.Texture:SetPoint("TOPLEFT", Category, 1, -1)
+	Category.Texture:SetPoint("BOTTOMRIGHT", Category, -1, 1)
+	Category.Texture:SetTexture(Assets:GetTexture("Blank"))
+	Category.Texture:SetVertexColor(vUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	self.TotalSelections = (self.TotalSelections or 0) + 1
 	
@@ -407,7 +393,7 @@ function GUI:CreateWidgetWindow(category, name, parent)
 	Window.LeftWidgetsBG.DisableScrolling = DisableScrolling
 	Window.RightWidgetsBG.Widgets = Window.RightWidgets
 	Window.RightWidgetsBG.DisableScrolling = DisableScrolling
-	
+
 	for Name, Function in pairs(self.Widgets) do
 		Window.LeftWidgetsBG[Name] = Function
 		Window.RightWidgetsBG[Name] = Function
@@ -465,9 +451,7 @@ function GUI:ShowWindow(category, name, parent)
 					for o = 1, #self.Categories[i].Buttons[j].Children do
 						if (self.Categories[i].Buttons[j].Children[o].Name == name) then
 							if (not self.Categories[i].Buttons[j].Children[o].Window) then
-								local Window = self:CreateWidgetWindow(category, name, parent)
-								
-								self.Categories[i].Buttons[j].Children[o].Window = Window
+								self.Categories[i].Buttons[j].Children[o].Window = self:CreateWidgetWindow(category, name, parent)
 							end
 							
 							self.Categories[i].Buttons[j].Window:Hide()
@@ -491,9 +475,7 @@ function GUI:ShowWindow(category, name, parent)
 				end
 			elseif (self.Categories[i].Name == category) and (self.Categories[i].Buttons[j].Name == name) then
 				if (not self.Categories[i].Buttons[j].Window) then
-					local Window = self:CreateWidgetWindow(category, name, parent)
-					
-					self.Categories[i].Buttons[j].Window = Window
+					self.Categories[i].Buttons[j].Window = self:CreateWidgetWindow(category, name, parent)
 				end
 				
 				self.Categories[i].Buttons[j].FadeIn:Play()
@@ -655,7 +637,7 @@ function GUI:CreateWindow(category, name, parent)
 		
 		Button.Selected:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
 		
-		Button.Text:SetPoint("LEFT", Button, LABEL_SPACING * 3, 0)
+		Button.Text:SetPoint("LEFT", Button, SPACING * 3, 0)
 		Button.Text:SetJustifyH("LEFT")
 		vUI:SetFontInfo(Button.Text, Settings["ui-widget-font"], 12)
 		Button.Text:SetText("|cFF" .. Settings["ui-widget-font-color"] .. name .. "|r")
@@ -716,7 +698,7 @@ function GUI:AddWidgets(category, name, arg1, arg2)
 	
 	if (type(arg1) == "function") then
 		tinsert(self.LoadCalls[category][name].Calls, arg1)
-		tinsert(self.ButtonQueue, {category, name})
+		tinsert(self.WidgetQueue, {category, name})
 	else -- string
 		if (not self.LoadCalls[category][arg1].Children) then
 			self.LoadCalls[category][arg1].Children = {}
@@ -725,11 +707,15 @@ function GUI:AddWidgets(category, name, arg1, arg2)
 		self.LoadCalls[category][arg1].Children[name] = {Calls = {}}
 		
 		tinsert(self.LoadCalls[category][arg1].Children[name].Calls, arg2)
-		tinsert(self.ButtonQueue, {category, name, arg1})
+		tinsert(self.WidgetQueue, {category, name, arg1})
 	end
 end
 
 function GUI:AddWindowHook(hook, category, name, arg1, arg2)
+	if (not self.WindowHooks) then
+		self.WindowHooks = {onshow = {}, onhide = {}}
+	end
+	
 	if (not self.WindowHooks[hook][category]) then
 		self.WindowHooks[hook][category] = {}
 	end
@@ -752,6 +738,10 @@ function GUI:AddWindowHook(hook, category, name, arg1, arg2)
 end
 
 function GUI:FireHook(hook, category, name, parent)
+	if (not self.WindowHooks) then
+		return
+	end
+	
 	if parent then
 		if (self.WindowHooks[hook][category] and self.WindowHooks[hook][category][parent]) then
 			for i = 1, #self.WindowHooks[hook][category][parent].Children[name].Hooks do
@@ -764,6 +754,14 @@ function GUI:FireHook(hook, category, name, parent)
 		end
 	end
 end
+
+--[[
+function GUI:GetWidget(id)
+	if self.WidgetID[id] then
+		return self.WidgetID[id]
+	end
+end
+--]]
 
 function GUI:GetWidget(category, name, arg1, arg2)
 	if (not self.Categories[category]) then
@@ -807,32 +805,32 @@ function GUI:ScrollSelections()
 	local Count = 0
 	
 	-- Collect buttons
-	for i = 1, #self.ScrollButtons do
-		tremove(self.ScrollButtons, 1)
+	for i = 1, #self.Scrolling do
+		tremove(self.Scrolling, 1)
 	end
 	
 	for i = 1, #self.Categories do
 		Count = Count + 1
 		
 		if (Count >= self.Offset) and (Count <= self.Offset + MAX_WIDGETS_SHOWN - 1) then
-			tinsert(self.ScrollButtons, self.Categories[i])
+			tinsert(self.Scrolling, self.Categories[i])
 		end
 		
 		self.Categories[i]:Hide()
 		
 		for j = 1, #self.Categories[i].Buttons do
 			Count = Count + 1
-				
+			
 			if (Count >= self.Offset) and (Count <= self.Offset + MAX_WIDGETS_SHOWN - 1) then
-				tinsert(self.ScrollButtons, self.Categories[i].Buttons[j])
+				tinsert(self.Scrolling, self.Categories[i].Buttons[j])
 			end
-		
+			
 			if self.Categories[i].Buttons[j].ChildrenShown then
 				for o = 1, #self.Categories[i].Buttons[j].Children do
 					Count = Count + 1
-				
+					
 					if (Count >= self.Offset) and (Count <= self.Offset + MAX_WIDGETS_SHOWN - 1) then
-						tinsert(self.ScrollButtons, self.Categories[i].Buttons[j].Children[o])
+						tinsert(self.Scrolling, self.Categories[i].Buttons[j].Children[o])
 						self.Categories[i].Buttons[j].Children[o]:Show()
 					else
 						self.Categories[i].Buttons[j].Children[o]:Hide()
@@ -848,18 +846,32 @@ function GUI:ScrollSelections()
 	
 	self.ScrollBar:SetMinMaxValues(1, (Count - MAX_WIDGETS_SHOWN) + 1)
 	
-	for i = 1, #self.ScrollButtons do
-		if self.ScrollButtons[i] then
-			self.ScrollButtons[i]:ClearAllPoints()
+	for i = 1, #self.Scrolling do
+		if self.Scrolling[i] then
+			self.Scrolling[i]:ClearAllPoints()
 			
 			if (i == 1) then
-				self.ScrollButtons[i]:SetPoint("TOPLEFT", self.MenuParent, SPACING, -SPACING)
+				self.Scrolling[i]:SetPoint("TOPLEFT", self.MenuParent, SPACING, -SPACING)
 			else
-				self.ScrollButtons[i]:SetPoint("TOP", self.ScrollButtons[i-1], "BOTTOM", 0, -2)
+				self.Scrolling[i]:SetPoint("TOP", self.Scrolling[i-1], "BOTTOM", 0, -2)
 			end
 			
-			self.ScrollButtons[i]:Show()
+			self.Scrolling[i]:Show()
 		end
+	end
+	
+	if (self.Offset == 1) then
+		self.ScrollUp.Arrow:SetVertexColor(0.65, 0.65, 0.65)
+	else
+		self.ScrollUp.Arrow:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
+	end
+	
+	local _, Max = self.ScrollBar:GetMinMaxValues()
+	
+	if (self.Offset == Max) then
+		self.ScrollDown.Arrow:SetVertexColor(0.65, 0.65, 0.65)
+	else
+		self.ScrollDown.Arrow:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
 	end
 end
 
@@ -1044,7 +1056,7 @@ function GUI:CreateGUI()
 	self.ScrollUp.Arrow:SetPoint("CENTER", self.ScrollUp, 0, 0)
 	self.ScrollUp.Arrow:SetSize(16, 16)
 	self.ScrollUp.Arrow:SetTexture(Assets:GetTexture("Arrow Up"))
-	self.ScrollUp.Arrow:SetVertexColor(vUI:HexToRGB(Settings["ui-widget-color"]))
+	self.ScrollUp.Arrow:SetVertexColor(0.65, 0.65, 0.65)
 	
 	-- Scroll down
 	self.ScrollDown = CreateFrame("Frame", nil, self, "BackdropTemplate")
@@ -1145,8 +1157,8 @@ function GUI:CreateGUI()
 	self.CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
 	self.CloseButton.Cross:SetVertexColor(vUI:HexToRGB("EEEEEE"))
 	
-	for i = 1, #self.ButtonQueue do
-		self:CreateWindow(unpack(tremove(self.ButtonQueue, 1)))
+	for i = 1, #self.WidgetQueue do
+		self:CreateWindow(unpack(tremove(self.WidgetQueue, 1)))
 	end
 	
 	self:SortButtons()
@@ -1213,7 +1225,7 @@ function GUI:PLAYER_REGEN_DISABLED()
 	end
 end
 
-local ReopenWindow = function(self)
+local ReopenWindow = function()
 	GUI:SetAlpha(0)
 	GUI:Show()
 	GUI.ScaleIn:Play()

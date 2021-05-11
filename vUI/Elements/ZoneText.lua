@@ -12,7 +12,7 @@ local FADE_IN_TIME = 0.4
 local FADE_OUT_TIME = 1.4
 local HOLD_TIME = 1.6
 
-local CustomZoneText = CreateFrame("Frame")
+local CustomZoneText = vUI:NewModule("Zone Text")
 
 local CustomZoneTextFrame = CreateFrame("Frame", nil, vUI.UIParent)
 CustomZoneTextFrame:SetSize(200, ZoneTextSize)
@@ -230,7 +230,13 @@ local UpdateZoneTextFont = function(value)
 	--ZoneText:SetFont(Assets:GetFont(Settings["ui-header-font"]), 32)
 end
 
-CustomZoneText["PLAYER_ENTERING_WORLD"] = function(self, event)
+function CustomZoneText:OnEvent(event, arg)
+	if self[event] then
+		self[event](self, event, arg)
+	end
+end
+
+function CustomZoneText:Load()
 	ZoneText:SetFont(Assets:GetFont(Settings["ui-header-font"]), ZoneTextSize)
 	PVPInfoText:SetFont(Assets:GetFont(Settings["ui-header-font"]), SubZoneTextSize)
 	SubZoneText:SetFont(Assets:GetFont(Settings["ui-header-font"]), SubZoneTextSize)
@@ -245,19 +251,11 @@ CustomZoneText["PLAYER_ENTERING_WORLD"] = function(self, event)
 	
 	SetZoneText()
 	
-	self:UnregisterEvent(event)
+	self:RegisterEvent("ZONE_CHANGED")
+	self:RegisterEvent("ZONE_CHANGED_INDOORS")
+	self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+	self:SetScript("OnEvent", self.OnEvent)
 end
-
-CustomZoneText:RegisterEvent("PLAYER_ENTERING_WORLD")
-CustomZoneText:RegisterEvent("ZONE_CHANGED")
-CustomZoneText:RegisterEvent("ZONE_CHANGED_INDOORS")
-CustomZoneText:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-
-CustomZoneText:SetScript("OnEvent", function(self, event, arg)
-	if self[event] then
-		self[event](self, event, arg)
-	end
-end)
 
 ZoneText_Clear = function()
 	ZoneText:SetText("")

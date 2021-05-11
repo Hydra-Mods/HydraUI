@@ -4,21 +4,21 @@ local Tiers = {"FF8000", "A335EE", "0070DD", "1EFF00", "FFFFFF"}
 
 local Patrons = {
 	{"Erieeroot", "Dragonhawk"},
-	{"Ari", "MrPoundsign"},
+	{},
 	{"Dillan", "deck"},
-	{"JDoubleU00", "Syn", "sylvester", "Innie", "Mcbooze", "Aaron B.", "Dellamaik", "stko"},
-	{"Dustin S."},
+	{"JDoubleU00", "sylvester", "Innie", "Dellamaik", "Blom"},
+	{},
 }
 
 local Previous = {
 	{"SwoopCrown"},
-	{"Smelly", "Trix", "wolimazo"},
+	{"Smelly", "Trix", "wolimazo", "Ari", "MrPoundsign"},
 	{"Euphoria", "Mitooshin", "MisseFar", "FrankPatten"},
-	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Steve R.", "Angel", "Jeor", "Ryex"},
-	{"Akab00m", "OzzFreak", "madmaddy", "Uzify"},
+	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Aaron B.", "Steve R.", "Angel", "Jeor", "Mcbooze", "Ryex", "stko", "Syn"},
+	{"Akab00m", "OzzFreak", "madmaddy", "Uzify", "Erthelmi"},
 }
 
-local Donors = {"Innie", "Brightsides", "Erthelmi", "Gene", "JDoubleU00", "Duds", "Shazlen", "Shawna W.", "Dillan", "Bruce N.", "linux"}
+local Donors = {"Innie", "Brightsides", "Erthelmi", "Gene", "JDoubleU00", "Duds", "Shazlen", "Shawna W.", "Dillan", "Bruce N.", "linux", "last", "Wrynn", "Ryxân"}
 
 GUI:AddWidgets(Language["Info"], Language["Credits"], function(left, right)
 	left:CreateHeader(Language["Scripting Help & Inspiration"])
@@ -44,15 +44,15 @@ GUI:AddWidgets(Language["Info"], Language["Credits"], function(left, right)
 end)
 
 GUI:AddWidgets(Language["Info"], Language["Supporters"], function(left, right)
-	left:CreateHeader("Patreon Supporters")
+	left:CreateHeader(Language["Patreon Supporters"])
 	
-	local r, g, b = vUI:HexToRGB("FF8000")
+	local R, G, B = vUI:HexToRGB("FF8000")
 	
 	for n = 1, #Patrons[1], 2 do
 		if Patrons[1][n+1] then
-			left:CreateAnimatedDoubleLine("|cFF" .. Tiers[1] .. Patrons[1][n] .. "|r", "|cFF" .. Tiers[1] .. Patrons[1][n+1] .. "|r", r, g, b)
+			left:CreateAnimatedDoubleLine("|cFF" .. Tiers[1] .. Patrons[1][n] .. "|r", "|cFF" .. Tiers[1] .. Patrons[1][n+1] .. "|r", R, G, B)
 		else
-			left:CreateAnimatedLine("|cFF" .. Tiers[1] .. Patrons[1][n] .. "|r", r, g, b)
+			left:CreateAnimatedLine("|cFF" .. Tiers[1] .. Patrons[1][n] .. "|r", R, G, B)
 		end
 	end
 	
@@ -72,6 +72,33 @@ GUI:AddWidgets(Language["Info"], Language["Supporters"], function(left, right)
 		end
 	end
 	
+	left:CreateHeader(Language["Links"])
+	
+	local Patreon = left:CreateLine("|cFFF96854www.patreon.com/hydramods|r")
+	local PayPal = left:CreateLine("|cFF009CDEwww.paypal.me/vuiaddon|r")
+	
+	Patreon = Patreon:GetParent()
+	PayPal = PayPal:GetParent()
+	
+	Patreon:SetScript("OnEnter", function(self)
+		self.Text:SetText("|cFFEEEEEEwww.patreon.com/hydramods|r")
+	end)
+	
+	Patreon:SetScript("OnLeave", function(self) 
+		self.Text:SetText("|cFFF96854www.patreon.com/hydramods|r")
+	end)
+	
+	PayPal:SetScript("OnEnter", function(self)
+		self.Text:SetText("|cFFEEEEEEwww.paypal.me/vuiaddon|r")
+	end)
+	
+	PayPal:SetScript("OnLeave", function(self) 
+		self.Text:SetText("|cFF009CDEwww.paypal.me/vuiaddon|r")
+	end)
+	
+	Patreon:SetScript("OnMouseUp", function() print("https://www.patreon.com/hydramods") end)
+	PayPal:SetScript("OnMouseUp", function() print("https://www.paypal.me/vuiaddon") end)
+	
 	local ExPatrons = ""
 	
 	for i = 1, #Previous do
@@ -80,10 +107,10 @@ GUI:AddWidgets(Language["Info"], Language["Supporters"], function(left, right)
 		end
 	end
 	
-	left:CreateHeader("Former Patreon Supporters")
+	left:CreateHeader(Language["Former Patreon Supporters"])
 	left:CreateMessage(ExPatrons)
 	
-	right:CreateHeader(Language["Hall of Legends"])
+	right:CreateHeader(Language["Donors"])
 	
 	for i = 1, #Donors, 2 do
 		if Donors[i+1] then

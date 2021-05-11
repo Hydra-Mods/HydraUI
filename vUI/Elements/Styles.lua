@@ -314,13 +314,13 @@ Assets:SetStyle("Sci-Fi", {
 	["ui-button-texture"] = "Ferous",
 	
 	["ui-header-font-color"] = "FFB54F",
-	["ui-header-texture-color"] = "212121",
+	["ui-header-texture-color"] = "263238",
 	
 	["ui-window-bg-color"] = "37474F",
 	["ui-window-main-color"] = "212121",
 	
 	["ui-widget-color"] = "4FBBFF",
-	["ui-widget-bright-color"] = "8E8E8E",
+	["ui-widget-bright-color"] = "616A6B",
 	["ui-widget-bg-color"] = "263238",
 	["ui-widget-font-color"] = "FAFAFA",
 	

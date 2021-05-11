@@ -232,15 +232,6 @@ end
 
 vUI:UpdateScreenSize()
 
-local trunc = function(s) return s >= 0 and s-s%01 or s-s%-1 end
-local round = function(s) return s >= 0 and s-s%-1 or s-s%01 end
-
-local scale = function(n)
-	local m = max(0.4, min(1.2, (768 / ScreenHeight) / Settings["ui-scale"]))
-	
-	return (m == 1 or n == 0) and n or ((m < 1 and trunc(n/m) or round(n/m)) * m)
-end
-
 function vUI:SetScale(x)
 	self:UpdateScreenSize()
 	self.UIParent:SetScale((768 / ScreenHeight) / min(1.2, max(0.4, x)))
@@ -479,6 +470,29 @@ function vUI:ADDON_LOADED(event, addon)
 		return
 	end
 	
+	if IsAddOnLoaded("HydraUI") then -- if HydraUI is found, copy all vUI data to it and stop running vUI
+		if (vUIProfileData and not HydraUIProfileData) then
+			HydraUIProfileData = vUIProfileData
+		end
+		
+		if (vUIProfiles and not HydraUIProfiles) then
+			HydraUIProfiles = vUIProfiles
+		end
+		
+		if (vUIData and not HydraUIData) then
+			HydraUIData = vUIData
+		end
+		
+		if (vUIGold and not HydraUIGold) then
+			HydraUIGold = vUIGold
+		end
+		
+		DisableAddOn("vUI") -- Prevent us loading any further while HydraUI is found. Requires a reload, and now HydraUI will take the data and run without issue
+		self:UnregisterAllEvents()
+		
+		return
+	end
+	
 	Defaults["ui-scale"] = self:GetSuggestedScale()
 	
 	-- Import profile data and load a profile
@@ -486,6 +500,7 @@ function vUI:ADDON_LOADED(event, addon)
 	self:CreateProfileData()
 	--self:MigrateMoverData()
 	self:UpdateProfileList()
+	
 	self:ApplyProfile(self:GetActiveProfileName())
 	
 	self:SetScale(Settings["ui-scale"])
