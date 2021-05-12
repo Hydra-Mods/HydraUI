@@ -116,23 +116,21 @@ function Assets:GetHighlightList()
 end
 
 -- Style templates
-function Assets:SetStyle(name, info, silent)
+function Assets:SetStyle(name, info)
 	if self.Styles[name] then
 		return
 	end
 	
 	self.Styles[name] = info
 	
-	if (not silent) then
-		local Key = name
-		
-		-- Just sprinkling on some flavor. Really rub it in.
-		if info["ui-widget-color"] then
-			Key = format("|cFF%s%s|r", info["ui-widget-color"], name)
-		end
-		
-		self.StyleList[Key] = name
+	local Key = name
+	
+	-- Just sprinkling on some flavor. Really rub it in.
+	if info["ui-widget-color"] then
+		Key = format("|cFF%s%s|r", info["ui-widget-color"], name)
 	end
+	
+	self.StyleList[Key] = name
 end
 
 function Assets:GetStyle(name)

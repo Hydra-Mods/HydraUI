@@ -489,6 +489,7 @@ function vUI:ADDON_LOADED(event, addon)
 		
 		DisableAddOn("vUI") -- Prevent us loading any further while HydraUI is found. Requires a reload, and now HydraUI will take the data and run without issue
 		self:UnregisterAllEvents()
+		ReloadUI()
 		
 		return
 	end
@@ -500,7 +501,6 @@ function vUI:ADDON_LOADED(event, addon)
 	self:CreateProfileData()
 	--self:MigrateMoverData()
 	self:UpdateProfileList()
-	
 	self:ApplyProfile(self:GetActiveProfileName())
 	
 	self:SetScale(Settings["ui-scale"])
