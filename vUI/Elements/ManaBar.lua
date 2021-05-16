@@ -151,7 +151,7 @@ local UpdateEnableManaBar = function(value)
 		if (not ManaBar.Bar) then
 			ManaBar:CreateBar()
 		end
-	
+		
 		ManaBar:Enable()
 	else
 		ManaBar:Disable()
