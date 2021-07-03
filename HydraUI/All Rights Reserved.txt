@@ -1,0 +1,16 @@
+Copyright 2021 All Rights Reserved HydraUI (https://github.com/Hydra-Mods)
+
+I reserve all rights to the software provided, unless direct authorization is given.
+Otherwise licensed material included within this software (libraries, fonts, and images) falls under the rights of their own individual copyright holders.
+
+ - You may not make changes to the name or contents of this software.
+ - You may not use contents from this software (in portion or entirety) without being granted explicit authorization.
+ - You may not redistribute this software.
+ - You may make changes that affect this software externally, via plugins.
+
+Any rights not stated here are reserved by the author.
+
+If you would like to contact me about granting permissions you can use one of the following provided means of communication.
+
+Email: hydraaddons@gmail.com
+Discord: Hydra#4485
