@@ -10,6 +10,16 @@ local OnMouseUp = function()
 	ToggleCharacter("PaperDollFrame")
 end
 
+local GetHighestSpellPower = function()
+	local Power = 0
+	
+	for i = 2, 7 do
+		Power = max(Power, GetSpellBonusDamage(i))
+	end
+	
+	return Power
+end
+
 local Update = function(self, event, unit)
 	if (unit and unit ~= "player") then
 		return
@@ -18,7 +28,7 @@ local Update = function(self, event, unit)
 	local Rating
 	local Label
 	
-	local Spell = GetSpellBonusDamage(7)
+	local Spell = GetHighestSpellPower()
 	local Healing = GetSpellBonusHealing()
 	
 	if (Spell > 0 or Healing > 0) then
