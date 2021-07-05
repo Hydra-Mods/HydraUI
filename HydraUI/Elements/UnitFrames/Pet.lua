@@ -12,6 +12,7 @@ Defaults["unitframes-pet-power-color"] = "POWER"
 Defaults["unitframes-pet-power-smooth"] = true
 Defaults["unitframes-pet-health-left"] = "[HappinessColor][Name10]"
 Defaults["unitframes-pet-health-right"] = "[HealthPercent]"
+Defaults["pet-enable"] = true
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -180,6 +181,7 @@ end
 
 GUI:AddWidgets(Language["General"], Language["Pet"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
+	left:CreateSwitch("pet-enable", Settings["pet-enable"], Language["Enable Pet"], Language["Enable the pet unit frame"], ReloadUI):RequiresReload(true)
 	left:CreateSlider("unitframes-pet-width", Settings["unitframes-pet-width"], 60, 320, 1, "Width", "Set the width of the pet unit frame", UpdatePetWidth)
 	
 	left:CreateHeader(Language["Health"])

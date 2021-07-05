@@ -18,6 +18,7 @@ Defaults["unitframes-target-cast-height"] = 22
 Defaults["unitframes-target-enable-castbar"] = true
 Defaults["target-enable-portrait"] = false
 Defaults["target-enable-pvp"] = true
+Defaults["target-enable"] = true
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -365,6 +366,7 @@ end
 
 GUI:AddWidgets(Language["General"], Language["Target"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
+	left:CreateSwitch("target-enable", Settings["target-enable"], Language["Enable Target"], Language["Enable the target unit frame"], ReloadUI):RequiresReload(true)
 	left:CreateSlider("unitframes-target-width", Settings["unitframes-target-width"], 120, 320, 1, "Width", "Set the width of the target unit frame", UpdateTargetWidth)
 	left:CreateSwitch("unitframes-show-target-buffs", Settings["unitframes-show-target-buffs"], Language["Show Target Buffs"], Language["Show yauras above the target unit frame"], UpdateShowTargetBuffs)
 	left:CreateSwitch("unitframes-only-player-debuffs", Settings["unitframes-only-player-debuffs"], Language["Only Display Player Debuffs"], Language["If enabled, only your own debuffs will be displayed on the target"], UpdateOnlyPlayerDebuffs)

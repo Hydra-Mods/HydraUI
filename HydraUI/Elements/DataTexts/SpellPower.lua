@@ -6,10 +6,6 @@ local GetSpellBonusHealing = GetSpellBonusHealing
 local HealingLabel = Language["Spell Healing"]
 local SpellLabel = Language["Spell Damage"]
 
-local OnMouseUp = function()
-	ToggleCharacter("PaperDollFrame")
-end
-
 local GetHighestSpellPower = function()
 	local Power = 0
 	
@@ -18,6 +14,10 @@ local GetHighestSpellPower = function()
 	end
 	
 	return Power
+end
+
+local OnMouseUp = function()
+	ToggleCharacter("PaperDollFrame")
 end
 
 local Update = function(self, event, unit)

@@ -11,6 +11,7 @@ Defaults["unitframes-focus-power-color"] = "POWER"
 Defaults["unitframes-focus-power-smooth"] = true
 Defaults["unitframes-focus-health-left"] = "[Name10]"
 Defaults["unitframes-focus-health-right"] = "[HealthPercent]"
+Defaults["focus-enable"] = true
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -265,6 +266,7 @@ end
 
 GUI:AddWidgets(Language["General"], Language["Focus"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
+	left:CreateSwitch("focus-enable", Settings["focus-enable"], Language["Enable Focus"], Language["Enable the focus unit frame"], ReloadUI):RequiresReload(true)
 	left:CreateSlider("unitframes-focus-width", Settings["unitframes-focus-width"], 60, 320, 1, "Width", "Set the width of the focus unit frame", UpdateFocusWidth)
 	
 	left:CreateHeader(Language["Health"])

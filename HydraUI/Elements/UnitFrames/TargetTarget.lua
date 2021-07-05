@@ -12,6 +12,7 @@ Defaults["unitframes-targettarget-power-color"] = "POWER"
 Defaults["unitframes-targettarget-power-smooth"] = true
 Defaults["unitframes-targettarget-health-left"] = "[Name10]"
 Defaults["unitframes-targettarget-health-right"] = "[HealthPercent]"
+Defaults["tot-enable"] = true
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -187,6 +188,7 @@ end
 
 GUI:AddWidgets(Language["General"], Language["Target of Target"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
+	left:CreateSwitch("tot-enable", Settings["tot-enable"], Language["Enable Target Target"], Language["Enable the target of target unit frame"], ReloadUI):RequiresReload(true)
 	left:CreateSlider("unitframes-targettarget-width", Settings["unitframes-targettarget-width"], 60, 320, 1, "Width", "Set the width of the target's target unit frame", UpdateTargetTargetWidth)
 	
 	left:CreateHeader(Language["Health"])
