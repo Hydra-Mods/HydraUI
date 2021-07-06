@@ -824,7 +824,6 @@ function UF:Load()
 	if Settings["tot-enable"] then
 		local TargetTarget = oUF:Spawn("targettarget", "HydraUI Target Target")
 		TargetTarget:SetSize(Settings["unitframes-targettarget-width"], Settings["unitframes-targettarget-health-height"] + Settings["unitframes-targettarget-power-height"] + 3)
-		TargetTarget:SetPoint("TOPRIGHT", Target, "BOTTOMRIGHT", 0, -2)
 		TargetTarget:SetParent(HydraUI.UIParent)
 		
 		if Settings["target-enable"] then
