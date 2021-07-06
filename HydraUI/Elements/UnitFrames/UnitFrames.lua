@@ -827,6 +827,12 @@ function UF:Load()
 		TargetTarget:SetPoint("TOPRIGHT", Target, "BOTTOMRIGHT", 0, -2)
 		TargetTarget:SetParent(HydraUI.UIParent)
 		
+		if Settings["target-enable"] then
+			TargetTarget:SetPoint("TOPRIGHT", HydraUI.UnitFrames["target"], "BOTTOMRIGHT", 0, -2)
+		else
+			TargetTarget:SetPoint("TOPRIGHT", HydraUI.UIParent, "CENTER", 68, -341)
+		end
+		
 		HydraUI.UnitFrames["targettarget"] = TargetTarget
 		HydraUI:CreateMover(TargetTarget)
 	end
@@ -834,8 +840,13 @@ function UF:Load()
 	if Settings["pet-enable"] then
 		local Pet = oUF:Spawn("pet", "HydraUI Pet")
 		Pet:SetSize(Settings["unitframes-pet-width"], Settings["unitframes-pet-health-height"] + Settings["unitframes-pet-power-height"] + 3)
-		Pet:SetPoint("TOPLEFT", Player, "BOTTOMLEFT", 0, -2)
 		Pet:SetParent(HydraUI.UIParent)
+		
+		if Settings["player-enable"] then
+			Pet:SetPoint("TOPLEFT", HydraUI.UnitFrames["player"], "BOTTOMLEFT", 0, -2)
+		else
+			Pet:SetPoint("TOPLEFT", HydraUI.UIParent, "CENTER", -68, -341)
+		end
 		
 		HydraUI.UnitFrames["pet"] = Pet
 		HydraUI:CreateMover(Pet)

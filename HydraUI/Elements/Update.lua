@@ -33,16 +33,15 @@ end
 
 function Update:FRIENDLIST_UPDATE()
 	local Info, PresenceID, AccountName, BattleTag, IsBattleTagPresence, CharacterName, BNetIDGameAccount, Client, IsOnline, RealmName, Faction, WoWProjectID, _
-	local NumFriends = BNGetNumFriends()
 	
-	for i = 1, NumFriends do
+	for i = 1, BNGetNumFriends() do
 		local PresenceID, AccountName, BattleTag, IsBattleTagPresence, CharacterName, BNetIDGameAccount, Client, IsOnline = BNGetFriendInfo(i)
 		
 		if (Client == "WoW") then
 			_, CharacterName, Client, RealmName, _, Faction, _, _, _, _, _, _, _, _, IsOnline, _, _, _, _, _, WoWProjectID = BNGetGameAccountInfo((BNetIDGameAccount or PresenceID))
 			
-			if (WoWProjectID == 5) and IsOnline and (RealmName == HydraUI.UserRealm) and Faction == UnitFactionGroup("player") then
-				SendAddonMessage("HydraUI-Version", AddOnVersion, "WHISPER", CharacterName)
+			if (WoWProjectID == 5) and IsOnline then
+				BNSendGameData(BNetIDGameAccount, "HydraUI-Version", AddOnVersion)
 			end
 		end
 	end
@@ -128,6 +127,26 @@ function Update:VARIABLES_LOADED(event)
 	end
 	
 	self:UnregisterEvent(event)
+end
+
+function Update:BN_CHAT_MSG_ADDON(event, prefix, message, channel, sender)
+	if (prefix ~= "HydraUI-Version") then
+		return
+	end
+	
+	message = tonumber(message)
+	
+	if (AddOnVersion > message) then -- We have a higher version, share it
+		BNSendGameData(sender, "HydraUI-Version", AddOnVersion)
+	elseif (message > AddOnVersion) then -- We're behind!
+		HydraUI:SendAlert(Language["New Version!"], format(Language["Update to version |cFF%s%s|r"], Settings["ui-header-font-color"], message), nil, UpdateOnMouseUp, true)
+		
+		-- Store this higher version and tell anyone else who asks
+		AddOnVersion = message
+		
+		self:RegisterEvent("FRIENDLIST_UPDATE")
+		self:PLAYER_ENTERING_WORLD() -- Tell others that we found a new version
+	end
 end
 
 function Update:CHAT_MSG_ADDON(event, prefix, message, channel, sender)
