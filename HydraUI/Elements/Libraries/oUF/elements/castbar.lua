@@ -87,27 +87,8 @@ local _, ns = ...
 local oUF = ns.oUF
 local HydraUI, GUI, Language, Media, Settings = ns:get()
 
-local isClassic = select(4,GetBuildInfo()) <= 19999
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
-
-if isClassic then
-    UnitCastingInfo = CastingInfo
-    UnitChannelInfo = ChannelInfo
-end
-
-local LibCC = isClassic and LibStub("LibClassicCasterino", true)
-
-if LibCC then
-    UnitCastingInfo = function(unit)
-        return LibCC:UnitCastingInfo(unit)
-    end
-	
-    UnitChannelInfo = function(unit)
-        return LibCC:UnitChannelInfo(unit)
-    end
-end
-
 local GetNetStats = GetNetStats
 local GetTime = GetTime
 
@@ -618,34 +599,14 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 
 		if(not (unit and unit:match'%wtarget$')) then
-			if (LibCC and (unit ~= "player")) then
-				self["UNIT_SPELLCAST_START"] = UNIT_SPELLCAST_START
-				self["UNIT_SPELLCAST_DELAYED"] = UNIT_SPELLCAST_DELAYED
-				self["UNIT_SPELLCAST_STOP"] = UNIT_SPELLCAST_STOP
-				self["UNIT_SPELLCAST_FAILED"] = UNIT_SPELLCAST_FAILED
-				self["UNIT_SPELLCAST_INTERRUPTED"] = UNIT_SPELLCAST_INTERRUPTED
-				self["UNIT_SPELLCAST_CHANNEL_START"] = UNIT_SPELLCAST_CHANNEL_START
-				self["UNIT_SPELLCAST_CHANNEL_UPDATE"] = UNIT_SPELLCAST_CHANNEL_UPDATE
-				self["UNIT_SPELLCAST_CHANNEL_STOP"] = UNIT_SPELLCAST_CHANNEL_STOP
-				
-				LibCC.RegisterCallback(self, "UNIT_SPELLCAST_START")
-				LibCC.RegisterCallback(self, "UNIT_SPELLCAST_DELAYED") -- only for player
-				LibCC.RegisterCallback(self, "UNIT_SPELLCAST_STOP")
-				LibCC.RegisterCallback(self, "UNIT_SPELLCAST_FAILED")
-				LibCC.RegisterCallback(self, "UNIT_SPELLCAST_INTERRUPTED")
-				LibCC.RegisterCallback(self, "UNIT_SPELLCAST_CHANNEL_START")
-				LibCC.RegisterCallback(self, "UNIT_SPELLCAST_CHANNEL_UPDATE") -- only for player
-				LibCC.RegisterCallback(self, "UNIT_SPELLCAST_CHANNEL_STOP")
-			else
-				self:RegisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
-				self:RegisterEvent("UNIT_SPELLCAST_DELAYED", UNIT_SPELLCAST_DELAYED)
-				self:RegisterEvent("UNIT_SPELLCAST_STOP", UNIT_SPELLCAST_STOP)
-				self:RegisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
-				self:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED", UNIT_SPELLCAST_INTERRUPTED)
-				self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START", UNIT_SPELLCAST_CHANNEL_START)
-				self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE", UNIT_SPELLCAST_CHANNEL_UPDATE)
-				self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP", UNIT_SPELLCAST_CHANNEL_STOP)
-			end
+			self:RegisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
+			self:RegisterEvent("UNIT_SPELLCAST_DELAYED", UNIT_SPELLCAST_DELAYED)
+			self:RegisterEvent("UNIT_SPELLCAST_STOP", UNIT_SPELLCAST_STOP)
+			self:RegisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
+			self:RegisterEvent("UNIT_SPELLCAST_INTERRUPTED", UNIT_SPELLCAST_INTERRUPTED)
+			self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_START", UNIT_SPELLCAST_CHANNEL_START)
+			self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE", UNIT_SPELLCAST_CHANNEL_UPDATE)
+			self:RegisterEvent("UNIT_SPELLCAST_CHANNEL_STOP", UNIT_SPELLCAST_CHANNEL_STOP)
 		end
 
 		element.horizontal = element:GetOrientation() == 'HORIZONTAL'
@@ -690,25 +651,14 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 		
-		if LibCC then
-			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_START")
-			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_DELAYED") -- only for player
-			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_STOP")
-			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_FAILED")
-			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_INTERRUPTED")
-			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_CHANNEL_START")
-			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_CHANNEL_UPDATE") -- only for player
-			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_CHANNEL_STOP")
-		else
-			self:UnregisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
-			self:UnregisterEvent("UNIT_SPELLCAST_DELAYED", UNIT_SPELLCAST_DELAYED)
-			self:UnregisterEvent("UNIT_SPELLCAST_STOP", UNIT_SPELLCAST_STOP)
-			self:UnregisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
-			self:UnregisterEvent("UNIT_SPELLCAST_INTERRUPTED", UNIT_SPELLCAST_INTERRUPTED)
-			self:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_START", UNIT_SPELLCAST_CHANNEL_START)
-			self:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE", UNIT_SPELLCAST_CHANNEL_UPDATE)
-			self:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_STOP", UNIT_SPELLCAST_CHANNEL_STOP)
-		end
+		self:UnregisterEvent("UNIT_SPELLCAST_START", UNIT_SPELLCAST_START)
+		self:UnregisterEvent("UNIT_SPELLCAST_DELAYED", UNIT_SPELLCAST_DELAYED)
+		self:UnregisterEvent("UNIT_SPELLCAST_STOP", UNIT_SPELLCAST_STOP)
+		self:UnregisterEvent("UNIT_SPELLCAST_FAILED", UNIT_SPELLCAST_FAILED)
+		self:UnregisterEvent("UNIT_SPELLCAST_INTERRUPTED", UNIT_SPELLCAST_INTERRUPTED)
+		self:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_START", UNIT_SPELLCAST_CHANNEL_START)
+		self:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_UPDATE", UNIT_SPELLCAST_CHANNEL_UPDATE)
+		self:UnregisterEvent("UNIT_SPELLCAST_CHANNEL_STOP", UNIT_SPELLCAST_CHANNEL_STOP)
 		
 		--[[self:UnregisterEvent('UNIT_SPELLCAST_START', UNIT_SPELLCAST_START)
 		self:UnregisterEvent('UNIT_SPELLCAST_FAILED', UNIT_SPELLCAST_FAILED)
