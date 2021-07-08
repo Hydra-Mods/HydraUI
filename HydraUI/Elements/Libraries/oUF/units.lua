@@ -9,6 +9,8 @@ function oUF:HandleUnit(object, unit)
 	local unit = object.unit or unit
 	if(unit == 'target') then
 		object:RegisterEvent('PLAYER_TARGET_CHANGED', object.UpdateAllElements, true)
+	elseif(unit == 'focus') then
+		object:RegisterEvent('PLAYER_FOCUS_CHANGED', object.UpdateAllElements, true)
 	elseif(unit == 'mouseover') then
 		object:RegisterEvent('UPDATE_MOUSEOVER_UNIT', object.UpdateAllElements, true)
 	elseif unit:find("pet") then
