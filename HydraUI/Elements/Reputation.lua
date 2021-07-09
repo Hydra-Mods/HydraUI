@@ -320,7 +320,7 @@ GUI:AddWidgets(Language["General"], Language["Reputation"], function(left, right
 	left:CreateSwitch("reputation-animate", Settings["reputation-animate"], Language["Animate Reputation Changes"], Language["Smoothly animate changes to the reputation bar"])
 	
 	right:CreateHeader(Language["Size"])
-	right:CreateSlider("reputation-width", Settings["reputation-width"], 240, 400, 10, Language["Bar Width"], Language["Set the width of the reputation bar"], UpdateBarWidth)
+	right:CreateSlider("reputation-width", Settings["reputation-width"], 180, 400, 10, Language["Bar Width"], Language["Set the width of the reputation bar"], UpdateBarWidth)
 	right:CreateSlider("reputation-height", Settings["reputation-height"], 6, 30, 1, Language["Bar Height"], Language["Set the height of the reputation bar"], UpdateBarHeight)
 	
 	right:CreateHeader(Language["Visibility"])

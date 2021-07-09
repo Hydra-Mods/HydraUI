@@ -453,7 +453,7 @@ GUI:AddWidgets(Language["General"], Language["Experience"], function(left, right
 	left:CreateSwitch("experience-animate", Settings["experience-animate"], Language["Animate Experience Changes"], Language["Smoothly animate changes to the experience bar"])
 	
 	right:CreateHeader(Language["Size"])
-	right:CreateSlider("experience-width", Settings["experience-width"], 240, 400, 10, Language["Bar Width"], Language["Set the width of the experience bar"], UpdateBarWidth)
+	right:CreateSlider("experience-width", Settings["experience-width"], 180, 400, 10, Language["Bar Width"], Language["Set the width of the experience bar"], UpdateBarWidth)
 	right:CreateSlider("experience-height", Settings["experience-height"], 6, 30, 1, Language["Bar Height"], Language["Set the height of the experience bar"], UpdateBarHeight)
 	
 	right:CreateHeader(Language["Colors"])
