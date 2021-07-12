@@ -30,6 +30,7 @@ local gsub = string.gsub
 local match = string.match
 
 local BarHeight = 22 -- Potential setting
+local NoCall = function() end
 
 local SetHyperlink = ItemRefTooltip.SetHyperlink
 local ChatEdit_ChooseBoxForSend = ChatEdit_ChooseBoxForSend
@@ -326,7 +327,7 @@ local Disable = function(object)
 		object:SetScript("OnUpdate", nil)
 	end
 	
-	object.Show = function() end
+	object.Show = NoCall
 	object:Hide()
 end
 
@@ -681,11 +682,12 @@ function Chat:StyleChatFrame(frame)
 	Tab:HookScript("OnLeave", TabOnLeave)
 	
 	HydraUI:SetFontInfo(TabText, Settings["chat-tab-font"], Settings["chat-tab-font-size"], Settings["chat-tab-font-flags"])
-	--TabText.SetFont = function() end
+	TabText._SetFont = TabText.SetFont
+	TabText.SetFont = NoCall
 	
 	TabText:SetTextColor(HydraUI:HexToRGB(Settings["chat-tab-font-color"]))
 	TabText._SetTextColor = TabText.SetTextColor
-	TabText.SetTextColor = function() end
+	TabText.SetTextColor = NoCall
 	
 	if Tab.glow then
 		Tab.glow:SetPoint("CENTER", Tab, 0, 1)
@@ -1218,10 +1220,10 @@ local UpdateChatTabFont = function()
 		TabText:_SetTextColor(R, G, B)
 		
 		if IsPixel then
-			TabText:SetFont(Font, Settings["chat-tab-font-size"], "MONOCHROME, OUTLINE")
+			TabText:_SetFont(Font, Settings["chat-tab-font-size"], "MONOCHROME, OUTLINE")
 			TabText:SetShadowColor(0, 0, 0, 0)
 		else
-			TabText:SetFont(Font, Settings["chat-tab-font-size"], Settings["chat-tab-font-flags"])
+			TabText:_SetFont(Font, Settings["chat-tab-font-size"], Settings["chat-tab-font-flags"])
 			TabText:SetShadowColor(0, 0, 0)
 			TabText:SetShadowOffset(1, -1)
 		end
