@@ -209,11 +209,6 @@ Defaults["right-window-width"] = 392
 Defaults["right-window-height"] = 128
 Defaults["right-window-opacity"] = 70
 
--- Micro Buttons
-Defaults["micro-buttons-visiblity"] = "SHOW"
-Defaults["micro-buttons-opacity"] = 40
-Defaults["micro-buttons-max"] = 100
-
 -- Bags Frame
 Defaults["bags-frame-visiblity"] = "SHOW"
 Defaults["bags-frame-opacity"] = 40

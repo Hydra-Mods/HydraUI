@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local MicroButtons = HydraUI:NewModule("Micro Buttons")
 
@@ -12,6 +12,12 @@ MicroButtons.Buttons = {
 	MainMenuMicroButton,
 	HelpMicroButton,
 }
+
+Defaults["micro-buttons-visiblity"] = "SHOW"
+Defaults["micro-buttons-opacity"] = 40
+Defaults["micro-buttons-max"] = 100
+Defaults["micro-buttons-per-row"] = #MicroButtons.Buttons
+Defaults["micro-buttons-gap"] = 2
 
 local MicroButtonsButtonOnEnter = function(self)
 	if (Settings["micro-buttons-visiblity"] == "MOUSEOVER") then
@@ -50,18 +56,41 @@ function MicroButtons:UpdateMicroButtonsParent()
 	end
 end
 
-function MicroButtons:MoveMicroButtons()
+function MicroButtons:PositionButtons(bar, numbuttons, perrow, spacing)
+	if (numbuttons < perrow) then
+		perrow = numbuttons
+	end
+	
+	local Columns = ceil(numbuttons / perrow)
+	
+	if (Columns < 1) then
+		Columns = 1
+	end
+	
+	local Width, Height = MicroButtons.Buttons[1]:GetSize()
+	
+	-- Bar sizing
+	bar:SetWidth((Width * perrow) + (spacing * (perrow + 1)))
+	bar:SetHeight((Height * Columns) + (spacing * (Columns + 1)))
+	
+	-- Actual moving
 	for i = 1, #MicroButtons.Buttons do
-		MicroButtons.Buttons[i]:ClearAllPoints()
-		MicroButtons.Buttons[i]:HookScript("OnEnter", MicroButtonsButtonOnEnter)
-		MicroButtons.Buttons[i]:HookScript("OnLeave", MicroButtonsButtonOnLeave)
+		local Button = MicroButtons.Buttons[i]
+		
+		Button:ClearAllPoints()
 		
 		if (i == 1) then
-			MicroButtons.Buttons[i]:SetPoint("LEFT", MicroButtons.Panel, 2, 0)
+			Button:SetPoint("TOPLEFT", MicroButtons.Panel, spacing, -spacing)
+		elseif ((i - 1) % perrow == 0) then
+			Button:SetPoint("TOP", MicroButtons.Buttons[i - perrow], "BOTTOM", 0, -spacing)
 		else
-			MicroButtons.Buttons[i]:SetPoint("LEFT", MicroButtons.Buttons[i-1], "RIGHT", 0, 0)
+			Button:SetPoint("LEFT", MicroButtons.Buttons[i - 1], "RIGHT", spacing, 0)
 		end
 	end
+end
+
+function MicroButtons:MoveMicroButtons()
+	self:PositionButtons(self.Panel, #self.Buttons, Settings["micro-buttons-per-row"], Settings["micro-buttons-gap"])
 end
 
 function MicroButtons:Load()
@@ -126,11 +155,7 @@ function MicroButtons:Load()
 		Highlight:SetTexture(Assets:GetTexture("Blank"))
 		Highlight:SetVertexColor(1, 1, 1, 0.2)
 		
-		if (i == 1) then
-			self.Buttons[i]:SetPoint("LEFT", self.Panel, 2, 0)
-		else
-			self.Buttons[i]:SetPoint("LEFT", self.Buttons[i-1], "RIGHT", 0, 0)
-		end
+		self:MoveMicroButtons()
 	end
 	
 	MicroButtonPortrait:ClearAllPoints()
@@ -151,9 +176,15 @@ local UpdateMicroVisibility = function(value)
 	MicroButtons:UpdateVisibility()
 end
 
+local UpdateMicroPositions = function()
+	MicroButtons:MoveMicroButtons()
+end
+
 GUI:AddWidgets(Language["General"], Language["Action Bars"], function(left, right)
 	right:CreateHeader(Language["Micro Menu Buttons"])
 	right:CreateDropdown("micro-buttons-visiblity", Settings["micro-buttons-visiblity"], {[Language["Hide"]] = "HIDE", [Language["Mouseover"]] = "MOUSEOVER", [Language["Show"]] = "SHOW"}, Language["Set Visibility"], Language["Set the visibility of the micro menu buttons"], UpdateMicroVisibility)
 	right:CreateSlider("micro-buttons-opacity", Settings["micro-buttons-opacity"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the micro menu buttons when visiblity is set to Mouseover"], UpdateMicroVisibility, nil, "%")
 	right:CreateSlider("micro-buttons-max", Settings["micro-buttons-max"], 0, 100, 10, Language["Set Max Opacity"], Language["Set the max opacity of the micro menu buttons when visiblity is set to Mouseover"], UpdateMicroVisibility, nil, "%")
+	right:CreateSlider("micro-buttons-per-row", Settings["micro-buttons-per-row"], 1, #MicroButtons.Buttons, 1, Language["Buttons Per Row"], Language["Set the number of buttons per row"], UpdateMicroPositions)
+	right:CreateSlider("micro-buttons-gap", Settings["micro-buttons-gap"], -1, 10, 1, Language["Button Spacing"], Language["Set the spacing between micro buttons"], UpdateMicroPositions)
 end)
