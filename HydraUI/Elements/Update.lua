@@ -136,16 +136,28 @@ function Update:BN_CHAT_MSG_ADDON(event, prefix, message, channel, sender)
 	
 	message = tonumber(message)
 	
-	if (AddOnVersion > message) then -- We have a higher version, share it
-		BNSendGameData(sender, "HydraUI-Version", AddOnVersion)
-	elseif (message > AddOnVersion) then -- We're behind!
-		HydraUI:SendAlert(Language["New Version!"], format(Language["Update to version |cFF%s%s|r"], Settings["ui-header-font-color"], message), nil, UpdateOnMouseUp, true)
-		
-		-- Store this higher version and tell anyone else who asks
-		AddOnVersion = message
-		
-		self:RegisterEvent("FRIENDLIST_UPDATE")
-		self:PLAYER_ENTERING_WORLD() -- Tell others that we found a new version
+	if (channel == "WHISPER") then
+		if (message > AddOnVersion) then
+			HydraUI:SendAlert(Language["New Version!"], format(Language["Update to version |cFF%s%s|r"], Settings["ui-header-font-color"], message), nil, UpdateOnMouseUp, true)
+			
+			-- Store this higher version and tell anyone else who asks
+			AddOnVersion = message
+			
+			self:RegisterEvent("FRIENDLIST_UPDATE")
+			self:PLAYER_ENTERING_WORLD() -- Tell others that we found a new version
+		end
+	else
+		if (AddOnVersion > message) then -- We have a higher version, share it
+			SendAddonMessage("HydraUI-Version", AddOnVersion, "WHISPER", sender)
+		elseif (message > AddOnVersion) then -- We're behind!
+			HydraUI:SendAlert(Language["New Version!"], format(Language["Update to version |cFF%s%s|r"], Settings["ui-header-font-color"], message), nil, UpdateOnMouseUp, true)
+			
+			-- Store this higher version and tell anyone else who asks
+			AddOnVersion = message
+			
+			self:RegisterEvent("FRIENDLIST_UPDATE")
+			self:PLAYER_ENTERING_WORLD() -- Tell others that we found a new version
+		end
 	end
 end
 
