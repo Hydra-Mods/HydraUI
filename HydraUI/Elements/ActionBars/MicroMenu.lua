@@ -90,7 +90,7 @@ function MicroButtons:PositionButtons(bar, numbuttons, perrow, spacing)
 end
 
 function MicroButtons:MoveMicroButtons()
-	self:PositionButtons(self.Panel, #self.Buttons, Settings["micro-buttons-per-row"], Settings["micro-buttons-gap"])
+	MicroButtons:PositionButtons(MicroButtons.Panel, #MicroButtons.Buttons, Settings["micro-buttons-per-row"], Settings["micro-buttons-gap"])
 end
 
 function MicroButtons:Load()
