@@ -3,17 +3,17 @@ local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
 local GetRangedCritChance = GetRangedCritChance
 local GetSpellCritChance = GetSpellCritChance
 local GetCritChance = GetCritChance
-local min = min
+local max = max
 local Label = Language["Crit"]
 
 local GetSpellCrit = function()
-	local Min = GetSpellCritChance(2)
+	local Max = GetSpellCritChance(2)
 	
 	for i = 3, 7 do
-		Min = min(Min, GetSpellCritChance(i))
+		Max = max(Max, GetSpellCritChance(i))
 	end
 	
-	return Min
+	return Max
 end
 
 local OnEnter = function(self)
