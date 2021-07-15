@@ -195,6 +195,7 @@ Update:RegisterEvent("PLAYER_ENTERING_WORLD")
 Update:RegisterEvent("GUILD_ROSTER_UPDATE")
 Update:RegisterEvent("GROUP_ROSTER_UPDATE")
 Update:RegisterEvent("CHAT_MSG_ADDON")
+Update:RegisterEvent("BN_CHAT_MSG_ADDON")
 Update:RegisterEvent("CHAT_MSG_CHANNEL_NOTICE")
 Update:SetScript("OnEvent", Update.OnEvent)
 

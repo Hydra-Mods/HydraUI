@@ -6,9 +6,34 @@ local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local Quest = HydraUI:NewModule("Quest Watch")
 
+local Premove = function()
+	QuestWatchFrame:ClearAllPoints()
+	QuestWatchFrame:SetPoint("TOP", UIParent, "BOTTOM", 0, -100)
+	
+	QuestTimerFrame:ClearAllPoints()
+	QuestTimerFrame:SetPoint("TOP", UIParent, "BOTTOM", 0, -100)
+end
+
+local Postmove = function()
+	QuestWatchFrame:ClearAllPoints()
+	QuestWatchFrame:SetPoint("TOPLEFT", Quest.Mover, "TOPLEFT", 0, 0)
+	
+	QuestTimerFrame:ClearAllPoints()
+	QuestTimerFrame:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 60)
+	QuestTimerFrame:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, 60)
+end
+
 function Quest:StyleFrame()
 	self:SetSize(156, 40)
 	self:SetPoint("TOPRIGHT", HydraUI.UIParent, "TOPRIGHT", -300, -400)
+	
+	local Mover = HydraUI:CreateMover(self)
+	
+	Mover.PreMove = Premove
+	Mover.PostMove = Postmove
+	
+	QuestWatchFrame:ClearAllPoints()
+	QuestWatchFrame:SetPoint("TOPLEFT", Mover, "TOPLEFT", 0, 0)
 	
 	local Title = QuestWatchFrame:CreateFontString(nil, "OVERLAY")
 	Title:SetPoint("BOTTOMLEFT", QuestWatchFrame, "TOPLEFT", 0, 0)
@@ -28,10 +53,6 @@ function Quest:StyleFrame()
 	TitleDiv.Texture:SetPoint("BOTTOMRIGHT", TitleDiv, -1, 1)
 	TitleDiv.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	TitleDiv.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	QuestWatchFrame:ClearAllPoints()
-	QuestWatchFrame:SetPoint("TOPLEFT", self, "TOPLEFT", 0, 0)
-	QuestWatchFrame:Show()
 	
 	local Region
 	local Child
@@ -59,9 +80,15 @@ function Quest:StyleFrame()
 	QuestTimerFrame:SetPoint("TOPRIGHT", self, "TOPRIGHT", 0, 60)
 	QuestTimerFrame:SetHeight(30)
 	
-	HydraUI:CreateMover(self)
+	self.Mover = Mover
+end
+
+local UpdateQuestWatch = function()
+	QuestWatchFrame:ClearAllPoints()
+	QuestWatchFrame:SetPoint("TOPLEFT", Quest.Mover, "TOPLEFT", 0, 0)
 end
 
 function Quest:Load()
 	self:StyleFrame()
+	hooksecurefunc("QuestWatch_Update", UpdateQuestWatch)
 end
