@@ -32,12 +32,12 @@ local Update = function(self, event, unit)
 	local Healing = GetSpellBonusHealing()
 	
 	if (Spell > 0 or Healing > 0) then
-		if (Healing > Spell) then
-			Rating = Healing
-			Label = HealingLabel
-		else
+		if (Spell > Healing) then
 			Rating = Spell
 			Label = SpellLabel
+		else
+			Rating = Healing
+			Label = HealingLabel
 		end
 	else
 		Label = SpellLabel
