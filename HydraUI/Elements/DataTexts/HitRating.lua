@@ -10,7 +10,6 @@ end
 local OnEnter = function(self)
 	self:SetTooltip()
 	
-	local Rating = 0
 	local Melee = GetCombatRatingBonus(CR_HIT_MELEE)
 	local Spell = GetCombatRatingBonus(CR_HIT_SPELL)
 	
@@ -72,4 +71,4 @@ local OnDisable = function(self)
 	self.Text:SetText("")
 end
 
-HydraUI:AddDataText("Hit", OnEnable, OnDisable, Update)
+HydraUI:AddDataText(Label, OnEnable, OnDisable, Update)

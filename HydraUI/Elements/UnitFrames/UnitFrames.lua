@@ -111,6 +111,11 @@ function UF:SetPowerAttributes(power, value)
 	end
 end
 
+Events["Stop"] = "PLAYER_ENTERING_WORLD"
+Methods["Stop"] = function()
+	return "|r"
+end
+
 -- Tags
 Events["Status"] = "UNIT_HEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED"
 Methods["Status"] = function(unit)
