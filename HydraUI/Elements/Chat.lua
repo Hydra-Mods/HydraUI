@@ -932,8 +932,8 @@ function Chat:StyleChatFrames()
 	-- Restyle Combat Log objects
 	CombatLogQuickButtonFrame_Custom:ClearAllPoints()
 	CombatLogQuickButtonFrame_Custom:SetHeight(26)
-	CombatLogQuickButtonFrame_Custom:SetPoint("TOPLEFT", Chat.TopBar, "BOTTOMLEFT", 0, -2)
-	CombatLogQuickButtonFrame_Custom:SetPoint("TOPRIGHT", Chat.TopBar, "BOTTOMRIGHT", 0, -2)
+	CombatLogQuickButtonFrame_Custom:SetPoint("TOPLEFT", ChatFrame2, -4, 29)
+	CombatLogQuickButtonFrame_Custom:SetPoint("TOPRIGHT", ChatFrame2, 4, 29)
 	
 	CombatLogQuickButtonFrame_CustomProgressBar:ClearAllPoints()
 	CombatLogQuickButtonFrame_CustomProgressBar:SetPoint("BOTTOMLEFT", CombatLogQuickButtonFrame_Custom, 1, 1)
