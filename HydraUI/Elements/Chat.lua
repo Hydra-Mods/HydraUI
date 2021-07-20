@@ -379,16 +379,19 @@ Chat.ChatEdit_UpdateHeader = function(editbox)
 	end
 	
 	local HeaderText = editbox.header:GetText()
-	local Subs = 0
 	
-	HeaderText, Subs = gsub(HeaderText, "%s$", "")
-	
-	if Subs then
-		editbox.header:SetText(HeaderText)
-	end
-	
-	if editbox.HeaderBackdrop then
-		editbox.HeaderBackdrop:SetWidth(editbox.header:GetWidth() + 14)
+	if HeaderText then
+		local Subs = 0
+		
+		HeaderText, Subs = gsub(HeaderText, "%s$", "")
+		
+		if Subs then
+			editbox.header:SetText(HeaderText)
+		end
+		
+		if editbox.HeaderBackdrop then
+			editbox.HeaderBackdrop:SetWidth(editbox.header:GetWidth() + 14)
+		end
 	end
 end
 
