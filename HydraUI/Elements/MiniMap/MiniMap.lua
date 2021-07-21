@@ -84,8 +84,10 @@ function Map:Style()
 	
 	MinimapNorthTag:SetTexture(nil)
 	
-	MiniMapBattlefieldFrame:ClearAllPoints()
-	MiniMapBattlefieldFrame:SetPoint("BOTTOMLEFT", Minimap, 0, -2)
+	--[[local MinimapBGFrame = MiniMapBattlefieldFrame
+	MinimapBGFrame:ClearAllPoints()
+	MinimapBGFrame:SetPoint("BOTTOMLEFT", Minimap, 0, -2)
+	MiniMapBattlefieldBorder:Hide()]]
 	
 	MiniMapTrackingBackground:SetTexture(nil)
 	MiniMapTrackingBorder:SetTexture(nil)
