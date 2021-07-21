@@ -1,6 +1,6 @@
 ## Interface: 20501
 ## Author: Hydra
-## Version: 1.22
+## Version: 1.23
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: An interface replacement for Burning Crusade
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
