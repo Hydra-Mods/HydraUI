@@ -3,7 +3,7 @@ local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 local Fonts = HydraUI:NewModule("Fonts")
 
 local Locale = GetLocale()
-local Font = "Interface\\Addons\\HydraUI\\Assets\\Fonts\\Roboto.ttf"
+local Font
 
 if (Locale == "koKR") then
 	Font = "Fonts\\2002.TTF"
