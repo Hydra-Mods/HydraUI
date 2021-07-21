@@ -111,8 +111,8 @@ function UF:SetPowerAttributes(power, value)
 	end
 end
 
-Events["Stop"] = "PLAYER_ENTERING_WORLD"
-Methods["Stop"] = function()
+Events["ColorStop"] = "PLAYER_ENTERING_WORLD"
+Methods["ColorStop"] = function()
 	return "|r"
 end
 
