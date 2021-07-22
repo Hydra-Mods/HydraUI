@@ -3,15 +3,15 @@ local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
 local Tiers = {"FF8000", "A335EE", "0070DD", "1EFF00", "FFFFFF"}
 
 local Patrons = {
-	{"Erieeroot", "Dragonhawk", "last", "Halven", "Cheeso_76"},
+	{"Erieeroot", "Dragonhawk", "Halven"},
 	{},
 	{"Dillan", "deck"},
-	{"JDoubleU00", "sylvester", "Innie", "Dellamaik", "Blom", "Oxymorphone", "Ryex", "Rytok"},
+	{"JDoubleU00", "sylvester", "Innie", "Dellamaik", "Blom", "Oxymorphone", "Ryex", "Rytok", "protocol7"},
 	{},
 }
 
 local Previous = {
-	{"SwoopCrown"},
+	{"SwoopCrown", "Cheeso_76", "last"},
 	{"Smelly", "Trix", "wolimazo", "Ari", "MrPoundsign"},
 	{"Euphoria", "Mitooshin", "MisseFar", "FrankPatten"},
 	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Aaron B.", "Steve R.", "Angel", "Jeor", "Mcbooze", "stko", "Syn"},
@@ -72,33 +72,6 @@ GUI:AddWidgets(Language["Info"], Language["Supporters"], function(left, right)
 			left:CreateLine("", List[i])
 		end
 	end
-	
-	left:CreateHeader(Language["Links"])
-	
-	local Patreon = left:CreateLine("", "|cFFF96854www.patreon.com/hydramods|r")
-	local PayPal = left:CreateLine("", "|cFF009CDEwww.paypal.me/vuiaddon|r")
-	
-	Patreon = Patreon:GetParent()
-	PayPal = PayPal:GetParent()
-	
-	Patreon:SetScript("OnEnter", function(self)
-		self.Text:SetText("|cFFEEEEEEwww.patreon.com/hydramods|r")
-	end)
-	
-	Patreon:SetScript("OnLeave", function(self) 
-		self.Text:SetText("|cFFF96854www.patreon.com/hydramods|r")
-	end)
-	
-	PayPal:SetScript("OnEnter", function(self)
-		self.Text:SetText("|cFFEEEEEEwww.paypal.me/vuiaddon|r")
-	end)
-	
-	PayPal:SetScript("OnLeave", function(self) 
-		self.Text:SetText("|cFF009CDEwww.paypal.me/vuiaddon|r")
-	end)
-	
-	Patreon:SetScript("OnMouseUp", function() print("https://www.patreon.com/hydramods") end)
-	PayPal:SetScript("OnMouseUp", function() print("https://www.paypal.me/vuiaddon") end)
 	
 	local ExPatrons = ""
 	
