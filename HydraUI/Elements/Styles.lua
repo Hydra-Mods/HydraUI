@@ -260,7 +260,7 @@ Assets:SetStyle("Sci-Fi", {
 	["ui-button-texture"] = "Ferous",
 	
 	["ui-header-font-color"] = "FFB54F",
-	["ui-header-texture-color"] = "212121",
+	["ui-header-texture-color"] = "37474F",
 	
 	["ui-window-bg-color"] = "37474F",
 	["ui-window-main-color"] = "212121",
