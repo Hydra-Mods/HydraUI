@@ -512,18 +512,18 @@ end
 
 Events["RaidGroup"] = "GROUP_ROSTER_UPDATE PLAYER_ENTERING_WORLD"
 Methods["RaidGroup"] = function(unit)
-	local name = UnitName(unit)
-	local gname, grank, group
+	local Name = UnitName(unit)
+	local Unit, Rank, Group
 	
 	for i = 1, MAX_RAID_MEMBERS do
-		gname, grank, group = GetRaidRosterInfo(i)
+		Unit, Rank, Group = GetRaidRosterInfo(i)
 		
-		if (not gname) then
+		if (not Unit) then
 			break
 		end
 		
-		if (gname == name) then
-			return group
+		if (Unit == Name) then
+			return Group
 		end
 	end
 end
