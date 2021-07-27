@@ -558,10 +558,25 @@ UF.PostUpdateIcon = function(self, unit, button, index, position, duration, expi
 	end
 end
 
+local CancelAuraOnMouseUp = function(aura, button)
+	if ((button ~= "RightButton") or InCombatLockdown()) then
+		return
+	end
+	
+	CancelUnitBuff("player", aura.ID)
+end
+
 UF.PostCreateIcon = function(unit, button)
 	button:SetBackdrop(HydraUI.BackdropAndBorder)
 	button:SetBackdropColor(0, 0, 0, 0)
 	button:SetFrameLevel(6)
+
+	local ID = button:GetName():match("%d+")
+	
+	if ID then
+		button.ID = tonumber(ID)
+		button:SetScript("OnMouseUp", CancelAuraOnMouseUp)
+	end
 	
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
