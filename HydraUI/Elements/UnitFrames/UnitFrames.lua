@@ -4,7 +4,6 @@ local HydraUI, GUI, Language, Assets, Settings, Defaults = ns:get()
 local unpack = unpack
 local select = select
 local format = string.format
-local match = string.match
 local floor = math.floor
 local sub = string.sub
 local find = string.find
@@ -576,16 +575,16 @@ local CancelAuraOnMouseUp = function(aura, button)
 end
 
 UF.PostCreateIcon = function(unit, button)
-	button:SetBackdrop(HydraUI.BackdropAndBorder)
-	button:SetBackdropColor(0, 0, 0, 0)
-	button:SetFrameLevel(6)
-	
 	local ID = button:GetName():match("%d+")
 	
 	if ID then
 		button.ID = tonumber(ID)
 		button:SetScript("OnMouseUp", CancelAuraOnMouseUp)
 	end
+	
+	button:SetBackdrop(HydraUI.BackdropAndBorder)
+	button:SetBackdropColor(0, 0, 0, 0)
+	button:SetFrameLevel(6)
 	
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
