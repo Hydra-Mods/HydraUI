@@ -631,6 +631,8 @@ local TestParty = function()
 	
 	if Testing then
 		if Header then
+			Header:SetAttribute("isTesting", false)
+
 			if (Header:GetAttribute("startingIndex") ~= -4) then
 				Header:SetAttribute("startingIndex", -4)
 			end
@@ -646,6 +648,8 @@ local TestParty = function()
 		Testing = false
 	else
 		if Header then
+			Header:SetAttribute("isTesting", true)
+
 			if (Header:GetAttribute("startingIndex") ~= -4) then
 				Header:SetAttribute("startingIndex", -4)
 			end
