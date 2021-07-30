@@ -510,6 +510,24 @@ Methods["LevelColor"] = function(unit)
 	return "|cFF" .. HydraUI:RGBToHex(Color.r, Color.g, Color.b)
 end
 
+Events["PartyIndex"] = "GROUP_ROSTER_UPDATE PLAYER_ENTERING_WORLD"
+Methods["PartyIndex"] = function(unit)
+	if unit == "player" then
+		return 1
+	end
+	if sub(unit, 1, 5) == "party" then
+		return tonumber(sub(unit, 6, 6)) + 1
+	end
+end
+
+Events["RaidIndex"] = "GROUP_ROSTER_UPDATE PLAYER_ENTERING_WORLD"
+Methods["RaidIndex"] = function(unit)
+	if unit == "player" then
+		return 1
+	end
+	return UnitInRaid(unit)
+end
+
 Events["RaidGroup"] = "GROUP_ROSTER_UPDATE PLAYER_ENTERING_WORLD"
 Methods["RaidGroup"] = function(unit)
 	local Name = UnitName(unit)
