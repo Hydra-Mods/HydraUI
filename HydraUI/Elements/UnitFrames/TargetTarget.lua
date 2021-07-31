@@ -228,6 +228,7 @@ end
 local UpdateDebuffSize = function(value)
 	if HydraUI.UnitFrames["targettarget"] then
 		HydraUI.UnitFrames["targettarget"].Debuffs.size = value
+		HydraUI.UnitFrames["targettarget"].Debuffs:SetSize(Settings["unitframes-targettarget-width"], value)
 		HydraUI.UnitFrames["targettarget"].Debuffs:ForceUpdate()
 	end
 end
@@ -237,7 +238,6 @@ local UpdateDebuffPosition = function(value)
 		local Unit = HydraUI.UnitFrames["targettarget"]
 		
 		Unit.Debuffs:ClearAllPoints()
-		Unit.Debuffs:SetSize(Settings["unitframes-targettarget-width"], value)
 		
 		if (value == "TOP") then
 			Unit.Debuffs:SetPoint("BOTTOM", self, "TOP", 0, 2)
