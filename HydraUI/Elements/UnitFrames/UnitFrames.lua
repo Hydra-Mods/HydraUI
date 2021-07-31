@@ -35,6 +35,8 @@ local oUF = ns.oUF or oUF
 local Events = oUF.Tags.Events
 local Methods = oUF.Tags.Methods
 local Name, Duration, Expiration, Caster, SpellID, _
+local TestPartyIndex = 0
+local TestRaidIndex = 0
 
 Defaults["unitframes-only-player-debuffs"] = false
 Defaults["unitframes-show-player-buffs"] = true
@@ -508,6 +510,41 @@ Methods["LevelColor"] = function(unit)
 	local Color = GetQuestDifficultyColor(Level)
 	
 	return "|cFF" .. HydraUI:RGBToHex(Color.r, Color.g, Color.b)
+end
+
+Events["PartyIndex"] = "GROUP_ROSTER_UPDATE PLAYER_ENTERING_WORLD"
+Methods["PartyIndex"] = function(unit)
+	local Header = _G["HydraUI Party"]
+
+	if Header and Header:GetAttribute("isTesting") then
+		if TestPartyIndex >= 5 then
+			TestPartyIndex = 0
+		end
+		TestPartyIndex = TestPartyIndex + 1
+		return TestPartyIndex
+	end
+
+	if unit == "player" then
+		return 1
+	end
+	if sub(unit, 1, 5) == "party" then
+		return tonumber(sub(unit, 6, 6)) + 1
+	end
+end
+
+Events["RaidIndex"] = "GROUP_ROSTER_UPDATE PLAYER_ENTERING_WORLD"
+Methods["RaidIndex"] = function(unit)
+	local Header = _G["HydraUI Raid"]
+
+	if Header and Header:GetAttribute("isTesting") then
+		if TestRaidIndex >= 25 then
+			TestRaidIndex = 0
+		end
+		TestRaidIndex = TestRaidIndex + 1
+		return TestRaidIndex
+	end
+
+	return UnitInRaid(unit)
 end
 
 Events["RaidGroup"] = "GROUP_ROSTER_UPDATE PLAYER_ENTERING_WORLD"
@@ -1044,6 +1081,7 @@ function UF:Load()
 		local Party = oUF:SpawnHeader("HydraUI Party", nil, "party,solo",
 			"initial-width", Settings["party-width"],
 			"initial-height", (Settings["party-health-height"] + Settings["party-power-height"] + 3),
+			"isTesting", false,
 			"showSolo", false,
 			"showPlayer", true,
 			"showParty", true,
@@ -1100,6 +1138,7 @@ function UF:Load()
 		local Raid = oUF:SpawnHeader("HydraUI Raid", nil, "raid,solo",
 			"initial-width", Settings["raid-width"],
 			"initial-height", (Settings["raid-health-height"] + Settings["raid-power-height"] + 3),
+			"isTesting", false,
 			"showSolo", false,
 			"showPlayer", true,
 			"showParty", false,

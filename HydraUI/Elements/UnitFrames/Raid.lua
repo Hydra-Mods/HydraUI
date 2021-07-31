@@ -484,6 +484,8 @@ local TestRaid = function()
 	
 	if Testing then
 		if Header then
+			Header:SetAttribute("isTesting", false)
+
 			if (Header:GetAttribute("startingIndex") ~= -24) then
 				Header:SetAttribute("startingIndex", -24)
 			end
@@ -499,6 +501,8 @@ local TestRaid = function()
 		Testing = false
 	else
 		if Header then
+			Header:SetAttribute("isTesting", true)
+
 			if (Header:GetAttribute("startingIndex") ~= -24) then
 				Header:SetAttribute("startingIndex", -24)
 			end
