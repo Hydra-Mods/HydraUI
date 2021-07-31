@@ -706,45 +706,88 @@ UF.AuraOffsets = {
 
 UF.BuffIDs = {
 	["DRUID"] = {
-		{774, "TOPLEFT", {0.8, 0.4, 0.8}},      -- Rejuvenation
-		{155777, "LEFT", {0.8, 0.4, 0.8}},      -- Germination
-		{8936, "TOPRIGHT", {0.2, 0.8, 0.2}},    -- Regrowth
-		{33763, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- Lifebloom
-		{48438, "BOTTOMRIGHT", {0.8, 0.4, 0}},  -- Wild Growth
-		{102342, "RIGHT", {0.8, 0.2, 0.2}},     -- Ironbark
-	},
-	
-	["MONK"] = {
-		{119611, "TOPLEFT", {0.32, 0.89, 0.74}},	 -- Renewing Mist
-		{116849, "TOPRIGHT", {0.2, 0.8, 0.2}},	 -- Life Cocoon
-		{124682, "BOTTOMLEFT", {0.9, 0.8, 0.48}}, -- Enveloping Mist
-		{124081, "BOTTOMRIGHT", {0.7, 0.4, 0}},  -- Zen Sphere
-		{115175, "LEFT", {0.24, 0.87, 0.49}},  -- Soothing Mist
+		-- Regrowth
+		{8936, "TOPRIGHT", {0.2, 0.8, 0.2}},
+		{8938, "TOPRIGHT", {0.2, 0.8, 0.2}},
+		{8939, "TOPRIGHT", {0.2, 0.8, 0.2}},
+		{8940, "TOPRIGHT", {0.2, 0.8, 0.2}},
+		{8941, "TOPRIGHT", {0.2, 0.8, 0.2}},
+		{9750, "TOPRIGHT", {0.2, 0.8, 0.2}},
+		{9856, "TOPRIGHT", {0.2, 0.8, 0.2}},
+		{9857, "TOPRIGHT", {0.2, 0.8, 0.2}},
+		{9858, "TOPRIGHT", {0.2, 0.8, 0.2}},
+		{26980, "TOPRIGHT", {0.2, 0.8, 0.2}},
+		
+		-- Rejuvenation
+		{774, "TOPLEFT", {0.8, 0.4, 0.8}},
+		{1058, "TOPLEFT", {0.8, 0.4, 0.8}},
+		{1430, "TOPLEFT", {0.8, 0.4, 0.8}},
+		{2090, "TOPLEFT", {0.8, 0.4, 0.8}},
+		{2091, "TOPLEFT", {0.8, 0.4, 0.8}},
+		{3627, "TOPLEFT", {0.8, 0.4, 0.8}},
+		{8910, "TOPLEFT", {0.8, 0.4, 0.8}},
+		{9839, "TOPLEFT", {0.8, 0.4, 0.8}},
+		{9840, "TOPLEFT", {0.8, 0.4, 0.8}},
+		{9841, "TOPLEFT", {0.8, 0.4, 0.8}},
+		{25299, "TOPLEFT", {0.8, 0.4, 0.8}},
+		{26981, "TOPLEFT", {0.8, 0.4, 0.8}},
+		{26982, "TOPLEFT", {0.8, 0.4, 0.8}},
+		
+		-- Lifebloom
+		{33763, "BOTTOMLEFT", {0.4, 0.8, 0.2}},
 	},
 	
 	["PALADIN"] = {
-		{53563, "TOPRIGHT", {0.7, 0.3, 0.7}},	        -- Beacon of Light
-		{156910, "TOPRIGHT", {0.7, 0.3, 0.7}},	        -- Beacon of Faith
-		{200025, "TOPRIGHT", {0.7, 0.3, 0.7}},	        -- Beacon of Virtue
-		{1022, "BOTTOMRIGHT", {0.29, 0.45, 0.73}, true},-- Blessing of Protection
-		{1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true},	-- Blessing of Freedom
-		--{1038, "BOTTOMRIGHT", {0.93, 0.75, 0}, true},	-- Blessing of Salvation
-		{6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},	-- Blessing of Sacrifice
-		--{223306, "TOPLEFT", {0.81, 0.85, 0.1}},	        -- Bestow Faith
+		-- Blessing of Freedom
+		{1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true},
+		
+		-- Blessing of Protection
+		{1022, "BOTTOMRIGHT", {0.29, 0.45, 0.73}, true},
+		{5599, "BOTTOMRIGHT", {0.29, 0.45, 0.73}, true},
+		{10278, "BOTTOMRIGHT", {0.29, 0.45, 0.73}, true},
+		
+		-- Blessing of Sacrifice
+		{6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},
+		{20729, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},
+		{27147, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},
+		{27148, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},
 	},
 	
 	["PRIEST"] = {
-		{41635, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},  -- Prayer of Mending
-		{139, "BOTTOMLEFT", {0.4, 0.7, 0.2}},     -- Renew
-		{17, "TOPLEFT", {0.81, 0.85, 0.1}, true}, -- Power Word: Shield
-		{194384, "TOPRIGHT", {1, 0, 0}},          -- Atonement
+		-- Power Word: Shield
+		{17, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+		{592, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+		{600, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+		{3747, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+		{6065, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+		{6066, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+		{10898, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+		{10899, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+		{10900, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+		{10901, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+		{25217, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+		{25218, "TOPLEFT", {0.81, 0.85, 0.1}, true},
 		
-		{33206, "BOTTOMLEFT", {237/255, 233/255, 221/255}},        -- Pain Suppression
-		{121536, "BOTTOMRIGHT", {251/255, 193/255, 8/255}},        -- Angelic Feather
+		-- Renew
+		{139, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+		{6074, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+		{6075, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+		{6076, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+		{6077, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+		{6078, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+		{10927, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+		{10928, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+		{10929, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+		{25315, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+		{25221, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+		{25222, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
 	},
 	
 	["SHAMAN"] = {
-		{61295, "TOPLEFT", {0.7, 0.3, 0.7}},       -- Riptide
+		-- Earth Shield
+		{974, "TOPRIGHT", {0.73, 0.61, 0.33}},
+		{32593, "TOPRIGHT", {0.73, 0.61, 0.33}},
+		{32594, "TOPRIGHT", {0.73, 0.61, 0.33}},
 	},
 }
 

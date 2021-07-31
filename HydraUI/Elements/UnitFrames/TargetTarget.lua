@@ -12,6 +12,9 @@ Defaults["unitframes-targettarget-power-color"] = "POWER"
 Defaults["unitframes-targettarget-power-smooth"] = true
 Defaults["unitframes-targettarget-health-left"] = "[Name10]"
 Defaults["unitframes-targettarget-health-right"] = "[HealthPercent]"
+Defaults["unitframes-targettarget-debuffs"] = true
+Defaults["unitframes-targettarget-debuff-size"] = 20
+Defaults["unitframes-targettarget-debuff-pos"] = "BOTTOM"
 Defaults["tot-enable"] = true
 
 local UF = HydraUI:GetModule("Unit Frames")
@@ -103,6 +106,32 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 	
 	UF:SetPowerAttributes(Power, Settings["unitframes-targettarget-power-color"])
 	
+	if Settings["unitframes-targettarget-debuffs"] then
+		local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
+		Debuffs:SetSize(Settings["unitframes-targettarget-width"], Settings["unitframes-targettarget-debuff-size"])
+		Debuffs.size = Settings["unitframes-targettarget-debuff-size"]
+		Debuffs.spacing = 2
+		Debuffs.num = 5
+		Debuffs.tooltipAnchor = "ANCHOR_TOP"
+		Debuffs.PostCreateIcon = UF.PostCreateIcon
+		Debuffs.PostUpdateIcon = UF.PostUpdateIcon
+		Debuffs.showType = true
+		
+		if (Settings["unitframes-targettarget-debuff-pos"] == "TOP") then
+			Debuffs:SetPoint("BOTTOM", self, "TOP", 0, 2)
+			Debuffs.initialAnchor = "TOPRIGHT"
+			Debuffs["growth-x"] = "LEFT"
+			Debuffs["growth-y"] = "DOWN"
+		else
+			Debuffs:SetPoint("TOP", self, "BOTTOM", 0, -2)
+			Debuffs.initialAnchor = "TOPRIGHT"
+			Debuffs["growth-x"] = "LEFT"
+			Debuffs["growth-y"] = "DOWN"
+		end
+		
+		self.Debuffs = Debuffs
+	end
+	
 	self:Tag(HealthLeft, Settings["unitframes-targettarget-health-left"])
 	self:Tag(HealthRight, Settings["unitframes-targettarget-health-right"])
 	
@@ -186,6 +215,42 @@ local UpdateTargetTargetPowerFill = function(value)
 	end
 end
 
+local UpdateEnableDebuffs = function(value)
+	if HydraUI.UnitFrames["targettarget"] then
+		if value then
+			HydraUI.UnitFrames["targettarget"]:EnableElement("Debuffs")
+		else
+			HydraUI.UnitFrames["targettarget"]:DisableElement("Debuffs")
+		end
+	end
+end
+
+local UpdateDebuffSize = function(value)
+	if HydraUI.UnitFrames["targettarget"] then
+		HydraUI.UnitFrames["targettarget"].Debuffs.size = value
+		HydraUI.UnitFrames["targettarget"].Debuffs:ForceUpdate()
+	end
+end
+
+local UpdateDebuffPosition = function(value)
+	if HydraUI.UnitFrames["targettarget"] then
+		local Unit = HydraUI.UnitFrames["targettarget"]
+		
+		Unit.Debuffs:ClearAllPoints()
+		Unit.Debuffs:SetSize(Settings["unitframes-targettarget-width"], value)
+		
+		if (value == "TOP") then
+			Unit.Debuffs:SetPoint("BOTTOM", self, "TOP", 0, 2)
+			Unit.Debuffs["growth-x"] = "LEFT"
+			Unit.Debuffs["growth-y"] = "UP"
+		else
+			Unit.Debuffs:SetPoint("TOP", self, "BOTTOM", 0, -2)
+			Unit.Debuffs["growth-x"] = "LEFT"
+			Unit.Debuffs["growth-y"] = "DOWN"
+		end
+	end
+end
+
 GUI:AddWidgets(Language["General"], Language["Target of Target"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("tot-enable", Settings["tot-enable"], Language["Enable Target Target"], Language["Enable the target of target unit frame"], ReloadUI):RequiresReload(true)
@@ -202,4 +267,9 @@ GUI:AddWidgets(Language["General"], Language["Target of Target"], Language["Unit
 	right:CreateSwitch("unitframes-targettarget-power-reverse", Settings["unitframes-targettarget-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateTargetTargetPowerFill)
 	right:CreateSlider("unitframes-targettarget-power-height", Settings["unitframes-targettarget-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the target of target power bar", UpdateTargetTargetPowerHeight)
 	right:CreateDropdown("unitframes-targettarget-power-color", Settings["unitframes-targettarget-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateTargetTargetPowerColor)
+	
+	right:CreateHeader(Language["Debuffs"])
+	right:CreateSwitch("unitframes-targettarget-debuffs", Settings["unitframes-targettarget-debuffs"], Language["Enable Debuffs"], Language["Enable debuffs on the unit frame"], UpdateEnableDebuffs)
+	right:CreateSlider("unitframes-targettarget-debuff-size", Settings["unitframes-targettarget-debuff-size"], 10, 30, 1, "Debuff Size", "Set the size of the debuff icons", UpdateDebuffSize)
+	right:CreateDropdown("unitframes-targettarget-debuff-pos", Settings["unitframes-targettarget-debuff-pos"], {[Language["Bottom"]] = "BOTTOM", [Language["Top"]] = "TOP"}, Language["Set Position"], Language["Set the position of the debuffs"], UpdateDebuffPosition)
 end)

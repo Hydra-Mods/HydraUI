@@ -36,7 +36,7 @@ function Fonts:UpdateFont(object)
 	if (Size < 12) then
 		Size = 12
 	end
-	
+
 	object:SetFont(Font, Size, Outline)
 end
 

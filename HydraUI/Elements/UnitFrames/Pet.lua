@@ -12,6 +12,9 @@ Defaults["unitframes-pet-power-color"] = "POWER"
 Defaults["unitframes-pet-power-smooth"] = true
 Defaults["unitframes-pet-health-left"] = "[HappinessColor][Name10]"
 Defaults["unitframes-pet-health-right"] = "[HealthPercent]"
+Defaults["unitframes-pet-debuffs"] = true
+Defaults["unitframes-pet-debuff-size"] = 20
+Defaults["unitframes-pet-debuff-pos"] = "BOTTOM"
 Defaults["pet-enable"] = true
 
 local UF = HydraUI:GetModule("Unit Frames")
@@ -97,6 +100,32 @@ HydraUI.StyleFuncs["pet"] = function(self, unit)
 	Power.Smooth = true
 	
 	UF:SetPowerAttributes(Power, Settings["unitframes-pet-power-color"])
+	
+	if Settings["unitframes-pet-debuffs"] then
+		local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
+		Debuffs:SetSize(Settings["unitframes-pet-width"], Settings["unitframes-pet-debuff-size"])
+		Debuffs.size = Settings["unitframes-pet-debuff-size"]
+		Debuffs.spacing = 2
+		Debuffs.num = 5
+		Debuffs.tooltipAnchor = "ANCHOR_TOP"
+		Debuffs.PostCreateIcon = UF.PostCreateIcon
+		Debuffs.PostUpdateIcon = UF.PostUpdateIcon
+		Debuffs.showType = true
+		
+		if (Settings["unitframes-pet-debuff-pos"] == "TOP") then
+			Debuffs:SetPoint("BOTTOM", self, "TOP", 0, 2)
+			Debuffs.initialAnchor = "TOPRIGHT"
+			Debuffs["growth-x"] = "LEFT"
+			Debuffs["growth-y"] = "DOWN"
+		else
+			Debuffs:SetPoint("TOP", self, "BOTTOM", 0, -2)
+			Debuffs.initialAnchor = "TOPRIGHT"
+			Debuffs["growth-x"] = "LEFT"
+			Debuffs["growth-y"] = "DOWN"
+		end
+		
+		self.Debuffs = Debuffs
+	end
 	
 	self:Tag(HealthLeft, Settings["unitframes-pet-health-left"])
 	self:Tag(HealthRight, Settings["unitframes-pet-health-right"])
@@ -195,4 +224,9 @@ GUI:AddWidgets(Language["General"], Language["Pet"], Language["Unit Frames"], fu
 	right:CreateSwitch("unitframes-pet-power-reverse", Settings["unitframes-pet-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePetPowerFill)
 	right:CreateSlider("unitframes-pet-power-height", Settings["unitframes-pet-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the pet power bar", UpdatePetPowerHeight)
 	right:CreateDropdown("unitframes-pet-power-color", Settings["unitframes-pet-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePetPowerColor)
+	
+	right:CreateHeader(Language["Debuffs"])
+	right:CreateSwitch("unitframes-pet-debuffs", Settings["unitframes-pet-debuffs"], Language["Enable Debuffs"], Language["Enable debuffs on the unit frame"], UpdateEnableDebuffs)
+	right:CreateSlider("unitframes-pet-debuff-size", Settings["unitframes-pet-debuff-size"], 10, 30, 1, "Debuff Size", "Set the size of the debuff icons", UpdateDebuffSize)
+	right:CreateDropdown("unitframes-pet-debuff-pos", Settings["unitframes-pet-debuff-pos"], {[Language["Bottom"]] = "BOTTOM", [Language["Top"]] = "TOP"}, Language["Set Position"], Language["Set the position of the debuffs"], UpdateDebuffPosition)
 end)

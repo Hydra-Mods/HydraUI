@@ -1,23 +1,49 @@
 local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
---[[
-	ERR_NOT_WHILE_MOUNTED
-	ERR_MOUNT_ALREADYMOUNTED
-	SPELL_FAILED_NOT_STANDING - DoEmote("STAND")
---]]
-
 local AutoDismount = HydraUI:NewModule("Dismount")
 
-AutoDismount.Errors = {
-	[50] = SPELL_FAILED_NOT_MOUNTED,
-	[198] = ERR_ATTACK_MOUNTED,
-	[213] = ERR_TAXIPLAYERALREADYMOUNTED,
+AutoDismount.Mount = {
+	[SPELL_FAILED_NOT_MOUNTED] = true,
+	[ERR_ATTACK_MOUNTED] = true,
+	[ERR_NOT_WHILE_MOUNTED] = true,
+	[ERR_TAXIPLAYERALREADYMOUNTED] = true,
 }
 
-function AutoDismount:UI_ERROR_MESSAGE(id)
-	if self.Errors[id] then
+AutoDismount.Shapeshift = {
+    [ERR_CANT_INTERACT_SHAPESHIFTED] = true,
+    [ERR_EMBLEMERROR_NOTABARDGEOSET] = true,
+    [ERR_MOUNT_SHAPESHIFTED] = true,
+    [ERR_NO_ITEMS_WHILE_SHAPESHIFTED] = true,
+    [ERR_NOT_WHILE_SHAPESHIFTED] = true,
+    [ERR_TAXIPLAYERSHAPESHIFTED] = true,
+    [SPELL_FAILED_NO_ITEMS_WHILE_SHAPESHIFTED] = true,
+    [SPELL_FAILED_NOT_SHAPESHIFT] = true,
+    [SPELL_NOT_SHAPESHIFTED] = true,
+    [SPELL_NOT_SHAPESHIFTED_NOSPACE] = true,
+}
+
+AutoDismount.Stand = {
+	[SPELL_FAILED_NOT_STANDING] = true
+}
+
+function AutoDismount:UI_ERROR_MESSAGE(id, message)
+	if self.Mount[message] then
 		Dismount()
+	elseif self.Shapeshift[message] then
+		for i = 1, 40 do
+			local ID = select(10, UnitBuff("player", i))
+			
+			if (ID == 2645) then
+				CancelUnitBuff("player", i)
+				
+				break
+			end
+		end
+	elseif self.Stand[message] then
+		DoEmote("STAND")
 	end
+	
+	UIErrorsFrame:Clear()
 end
 
 function AutoDismount:TAXIMAP_OPENED()

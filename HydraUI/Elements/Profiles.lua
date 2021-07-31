@@ -90,7 +90,7 @@ end
 function HydraUI:CreateProfileNameID(name)
 	local ID = 0
 	local Found
-
+	
 	repeat
 		ID = ID + 1
 		
@@ -756,7 +756,6 @@ GUI:AddWidgets(Language["General"], Language["Profiles"], function(left, right)
 	left:CreateInput("profile-key", HydraUI:GetDefaultProfileKey(), Language["Create New Profile"], Language["Create a new profile to store a different collection of settings"], CreateProfile):DisableSaving()
 	left:CreateInput("profile-delete", HydraUI:GetDefaultProfileKey(), Language["Delete Profile"], Language["Delete a profile"], DeleteProfile):DisableSaving()
 	left:CreateInput("profile-rename", "", Language["Rename Profile"], Language["Rename the currently selected profile"], RenameProfile):DisableSaving()
-	--left:CreateInput("profile-copy", "", Language["Copy From"], Language["Copy the settings from another profile"], CopyProfile):DisableSaving()
 	left:CreateDropdown("profile-copy", HydraUI:GetActiveProfileName(), HydraUI:GetProfileList(), Language["Copy From"], Language["Copy the settings from another profile"], CopyProfile)
 	
 	left:CreateHeader(Language["Manage"])
