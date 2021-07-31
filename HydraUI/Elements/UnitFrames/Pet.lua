@@ -208,6 +208,42 @@ local UpdatePetPowerFill = function(value)
 	end
 end
 
+local UpdateEnableDebuffs = function(value)
+	if HydraUI.UnitFrames["targettarget"] then
+		if value then
+			HydraUI.UnitFrames["targettarget"]:EnableElement("Debuffs")
+		else
+			HydraUI.UnitFrames["targettarget"]:DisableElement("Debuffs")
+		end
+	end
+end
+
+local UpdateDebuffSize = function(value)
+	if HydraUI.UnitFrames["targettarget"] then
+		HydraUI.UnitFrames["targettarget"].Debuffs.size = value
+		HydraUI.UnitFrames["targettarget"].Debuffs:ForceUpdate()
+	end
+end
+
+local UpdateDebuffPosition = function(value)
+	if HydraUI.UnitFrames["targettarget"] then
+		local Unit = HydraUI.UnitFrames["targettarget"]
+
+		Unit.Debuffs:ClearAllPoints()
+		Unit.Debuffs:SetSize(Settings["unitframes-targettarget-width"], value)
+
+		if (value == "TOP") then
+			Unit.Debuffs:SetPoint("BOTTOM", self, "TOP", 0, 2)
+			Unit.Debuffs["growth-x"] = "LEFT"
+			Unit.Debuffs["growth-y"] = "UP"
+		else
+			Unit.Debuffs:SetPoint("TOP", self, "BOTTOM", 0, -2)
+			Unit.Debuffs["growth-x"] = "LEFT"
+			Unit.Debuffs["growth-y"] = "DOWN"
+		end
+	end
+end
+
 GUI:AddWidgets(Language["General"], Language["Pet"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("pet-enable", Settings["pet-enable"], Language["Enable Pet"], Language["Enable the pet unit frame"], ReloadUI):RequiresReload(true)
