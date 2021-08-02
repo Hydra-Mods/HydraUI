@@ -20,6 +20,9 @@ Defaults["unitframes-player-cast-height"] = 24
 Defaults["unitframes-player-enable-castbar"] = true
 Defaults["player-enable-portrait"] = false
 Defaults["player-enable-pvp"] = true
+Defaults["player-resource-height"] = 8
+Defaults["player-move-resource"] = false
+Defaults["player-move-power"] = false
 Defaults["player-enable"] = true
 
 local UF = HydraUI:GetModule("Unit Frames")
@@ -122,8 +125,27 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	
 	if Settings["unitframes-player-enable-power"] then
 		local Power = CreateFrame("StatusBar", nil, self)
-		Power:SetPoint("BOTTOMLEFT", self, 1, 1)
-		Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
+		local PowerAnchor
+			
+		if Settings["player-move-power"] then
+			PowerAnchor = CreateFrame("Frame", "HydraUI Player Power", HydraUI.UIParent)
+			PowerAnchor:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-power-height"])
+			PowerAnchor:SetPoint("CENTER", HydraUI.UIParent, 0, -133)
+			HydraUI:CreateMover(PowerAnchor)
+			
+			Power:SetPoint("BOTTOMLEFT", PowerAnchor, 1, 1)
+			Power:SetPoint("BOTTOMRIGHT", PowerAnchor, -1, 1)
+			
+			local Backdrop = Power:CreateTexture(nil, "BACKGROUND")
+			Backdrop:SetPoint("TOPLEFT", -1, 1)
+			Backdrop:SetPoint("BOTTOMRIGHT", 1, -1)
+			Backdrop:SetTexture(Assets:GetTexture("Blank"))
+			Backdrop:SetVertexColor(0, 0, 0)
+		else
+			Power:SetPoint("BOTTOMLEFT", self, 1, 1)
+			Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
+		end
+		
 		Power:SetHeight(Settings["unitframes-player-power-height"])
 		Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 		Power:SetReverseFill(Settings["unitframes-player-power-reverse"])
@@ -267,13 +289,27 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	end
 	
 	if Settings["unitframes-player-enable-resource"] then
+		local ResourceAnchor
+		
+		if Settings["player-move-resources"] then
+			ResourceAnchor = CreateFrame("Frame", "HydraUI Resources", HydraUI.UIParent)
+			ResourceAnchor:SetSize(Settings["unitframes-player-width"], 10)
+			ResourceAnchor:SetPoint("CENTER", HydraUI.UIParent, 0, -120)
+			HydraUI:CreateMover(ResourceAnchor)
+		end
+		
 		if (HydraUI.UserClass == "ROGUE" or HydraUI.UserClass == "DRUID") then
 			local ComboPoints = CreateFrame("Frame", self:GetName() .. "ComboPoints", self, "BackdropTemplate")
-			ComboPoints:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 			ComboPoints:SetSize(Settings["unitframes-player-width"], 10)
 			ComboPoints:SetBackdrop(HydraUI.Backdrop)
 			ComboPoints:SetBackdropColor(0, 0, 0)
 			ComboPoints:SetBackdropBorderColor(0, 0, 0)
+			
+			if ResourceAnchor then
+				ComboPoints:SetPoint("CENTER", ResourceAnchor, 0, 0)
+			else
+				ComboPoints:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+			end
 			
 			local Width = (Settings["unitframes-player-width"] / 5) - 1
 			
@@ -311,7 +347,6 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	-- Auras
 	local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
 	Buffs:SetSize(Settings["unitframes-player-width"], 28)
-	Buffs:SetPoint("BOTTOMLEFT", self.AuraParent, "TOPLEFT", 0, 2)
 	Buffs.size = 28
 	Buffs.spacing = 2
 	Buffs.num = 40
@@ -322,6 +357,12 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	Buffs.PostCreateIcon = UF.PostCreateIcon
 	Buffs.PostUpdateIcon = UF.PostUpdateIcon
 	Buffs.showType = true
+	
+	if Settings["player-move-resources"] then
+		Buffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
+	else
+		Buffs:SetPoint("BOTTOMLEFT", self.AuraParent, "TOPLEFT", 0, 2)
+	end
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetSize(Settings["unitframes-player-width"], 28)
@@ -513,6 +554,7 @@ GUI:AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"],
 	right:CreateHeader(Language["Power"])
 	right:CreateSwitch("unitframes-player-enable-power", Settings["unitframes-player-enable-power"], Language["Enable Power Bar"], Language["Enable the player power bar"], ReloadUI):RequiresReload(true)
 	right:CreateSwitch("unitframes-player-power-reverse", Settings["unitframes-player-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePlayerPowerFill)
+	right:CreateSwitch("player-move-power", Settings["player-move-power"], Language["Detach Power"], Language["Detach the power bar from the unit frame"], ReloadUI):RequiresReload(true)
 	right:CreateSlider("unitframes-player-power-height", Settings["unitframes-player-power-height"], 2, 30, 1, "Power Bar Height", "Set the height of the player power bar", UpdatePlayerPowerHeight)
 	right:CreateDropdown("unitframes-player-power-color", Settings["unitframes-player-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePlayerPowerColor)
 	right:CreateInput("unitframes-player-power-left", Settings["unitframes-player-power-left"], Language["Left Power Text"], Language["Set the text on the left of the player power bar"], ReloadUI):RequiresReload(true)
@@ -522,4 +564,7 @@ GUI:AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"],
 	right:CreateSwitch("unitframes-player-enable-castbar", Settings["unitframes-player-enable-castbar"], Language["Enable Cast Bar"], Language["Enable the player cast bar"], ReloadUI):RequiresReload(true)
 	right:CreateSlider("unitframes-player-cast-width", Settings["unitframes-player-cast-width"], 80, 360, 1, Language["Cast Bar Width"], Language["Set the width of the player cast bar"], UpdatePlayerCastBarSize)
 	right:CreateSlider("unitframes-player-cast-height", Settings["unitframes-player-cast-height"], 8, 50, 1, Language["Cast Bar Height"], Language["Set the height of the player cast bar"], UpdatePlayerCastBarSize)
+	
+	right:CreateHeader(Language["Class Resources"])
+	right:CreateSwitch("player-move-resources", Settings["player-move-resources"], Language["Detach Class Bar"], Language["Detach the class resources from the unit frame, to be moved by the UI"], ReloadUI):RequiresReload(true)
 end)

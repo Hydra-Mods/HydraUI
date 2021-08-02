@@ -950,7 +950,7 @@ function UF:Load()
 	if Settings["player-enable"] then
 		local Player = oUF:Spawn("player", "HydraUI Player")
 		
-		if Settings["unitframes-player-enable-power"] then
+		if Settings["unitframes-player-enable-power"] and (not Settings["player-move-power"]) then
 			Player:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-health-height"] + Settings["unitframes-player-power-height"] + 3)
 		else
 			Player:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-health-height"] + 2)
