@@ -473,7 +473,10 @@ local UpdatePlayerPowerHeight = function(value)
 		local Frame = HydraUI.UnitFrames["player"]
 		
 		Frame.Power:SetHeight(value)
-		Frame:SetHeight(Settings["unitframes-player-health-height"] + value + 3)
+		
+		if (not Settings["player-move-power"]) then
+			Frame:SetHeight(Settings["unitframes-player-health-height"] + value + 3)
+		end
 	end
 end
 
