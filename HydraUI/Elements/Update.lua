@@ -28,7 +28,7 @@ end
 
 local UpdateOnMouseUp = function()
 	HydraUI:print(Language["You can get an updated version of HydraUI at https://www.curseforge.com/wow/addons/hydraui"])
-	print(Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"])
+	print(Language["Join the Discord community for support and feedback https://discord.gg/XefDFa6nJR"])
 end
 
 function Update:FRIENDLIST_UPDATE()

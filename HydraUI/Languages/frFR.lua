@@ -308,7 +308,7 @@ Language["Set when the tooltip should hide actions"] = "Set when the tooltip sho
 Language["New Version"] = "New Version"
 Language["Update to version |cFF%s%s|r!"] = "Update to version |cFF%s%s|r!"
 Language["You can get an updated version of HydraUI here at https://www.curseforge.com/wow/addons/HydraUI or by using the Twitch desktop app"] = "You can get an updated version of HydraUI here at https://www.curseforge.com/wow/addons/HydraUI or by using the Twitch desktop app"
-Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"] = "Join the Discord community for support and feedback https://discord.gg/XGYDaBF"
+Language["Join the Discord community for support and feedback https://discord.gg/XefDFa6nJR"] = "Join the Discord community for support and feedback https://discord.gg/XefDFa6nJR"
 Language["Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/HydraUI"] = "Update to version |cFF%s%s|r! www.curseforge.com/wow/addons/HydraUI"
 
 -- Action Bars

@@ -5,7 +5,7 @@ local MinimapButtons = HydraUI:NewModule("Minimap Buttons")
 local lower = string.lower
 local find = string.find
 
-MinimapButtons.items = {}
+MinimapButtons.Items = {}
 
 local IgnoredBlizzard = {
 	["BattlefieldMinimap"] = true,
@@ -50,7 +50,6 @@ local IgnoredAddOns = {
 	"guildmap3mini",
 	"guildinstance",
 	"handynotespin",
-	"itemrack",
 	"librockconfig-1.0_minimapbutton",
 	"mininotepoi",
 	"nauticusminiicon",
@@ -84,7 +83,7 @@ local IsIgnoredAddOn = function(name)
 end
 
 function MinimapButtons:PositionButtons(perrow, size, spacing)
-	local Total = #self.items
+	local Total = #self.Items
 	
 	if (Total < perrow) then
 		perrow = Total
@@ -102,7 +101,7 @@ function MinimapButtons:PositionButtons(perrow, size, spacing)
 	
 	-- Positioning
 	for i = 1, Total do
-		local Button = self.items[i]
+		local Button = self.Items[i]
 		
 		Button:ClearAllPoints()
 		Button:SetSize(size, size)
@@ -110,18 +109,18 @@ function MinimapButtons:PositionButtons(perrow, size, spacing)
 		if (i == 1) then
 			Button:SetPoint("TOPLEFT", self.Panel, 3, -3)
 		elseif ((i - 1) % perrow == 0) then
-			Button:SetPoint("TOP", self.items[i - perrow], "BOTTOM", 0, -spacing)
+			Button:SetPoint("TOP", self.Items[i - perrow], "BOTTOM", 0, -spacing)
 		else
-			Button:SetPoint("LEFT", self.items[i - 1], "RIGHT", spacing, 0)
+			Button:SetPoint("LEFT", self.Items[i - 1], "RIGHT", spacing, 0)
 		end
 	end
 end
 
 function MinimapButtons:SkinButtons()
-	for _, Child in pairs({Minimap:GetChildren()}) do
+	for _, Child in next, {Minimap:GetChildren()} do
 		local Name = Child:GetName()
 		
-		if (Name and not IgnoredBlizzard[Name] and not IsIgnoredAddOn(Name) and Child:IsShown()) then
+		if (Name and not IgnoredBlizzard[Name] and not IsIgnoredAddOn(Name) and Child:IsShown()) or (not Name) then
 			local Type = Child:GetObjectType()
 			
 			Child:SetParent(self.Panel)
@@ -206,7 +205,7 @@ function MinimapButtons:SkinButtons()
 				end
 			end
 			
-			tinsert(self.items, Child)
+			tinsert(self.Items, Child)
 		end
 	end
 end
@@ -238,7 +237,7 @@ function MinimapButtons:Load()
 	self:CreatePanel()
 	self:SkinButtons()
 	
-	if (#self.items == 0) then
+	if (#self.Items == 0) then
 		self:Hide()
 		
 		return

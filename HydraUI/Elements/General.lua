@@ -22,7 +22,7 @@ function HydraUI:WelcomeMessage()
 		local Color2 = Settings["ui-header-font-color"]
 		
 		--print(format(Language["Welcome to |cFF%sHydra|r|cFFEFFFFFUI|r Burning Crusade version |cFF%s%s|r."], Color1, Color2, HydraUI.UIVersion))
-		print(format(Language["Welcome to |cFF%sHydra|r|cFFEFFFFFUI|r Burning Crusade version |cFF%s%s|r - https://discord.gg/XGYDaBF"], Color1, Color2, HydraUI.UIVersion))
+		print(format(Language["Welcome to |cFF%sHydra|r|cFFEFFFFFUI|r Burning Crusade version |cFF%s%s|r - https://discord.gg/XefDFa6nJR"], Color1, Color2, HydraUI.UIVersion))
 		print(format(Language["Type |cFF%s/hui|r to access the settings window, or click |cFF%s|Hcommand:/hui|h[here]|h|r."], Color1, Color1))
 		
 		-- May as well put this here for now too.
@@ -46,7 +46,7 @@ local GetDiscordLink = function()
 	end
 	
 	if (not Throttle:IsThrottled("discord-request")) then
-		HydraUI:print(Language["Join the Discord community for support and feedback https://discord.gg/XGYDaBF"])
+		HydraUI:print(Language["Join the Discord community for support and feedback https://discord.gg/XefDFa6nJR"])
 		
 		Throttle:Start("discord-request")
 	end
