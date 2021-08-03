@@ -45,11 +45,15 @@ Defaults["unitframes-show-druid-mana"] = true
 Defaults["unitframes-font"] = "Roboto"
 Defaults["unitframes-font-size"] = 12
 Defaults["unitframes-font-flags"] = ""
+Defaults["unitframes-display-aura-timers"] = true
 
 local UF = HydraUI:NewModule("Unit Frames")
 
 HydraUI.UnitFrames = {}
 HydraUI.StyleFuncs = {}
+
+local Hider = CreateFrame("Frame", nil, HydraUI.UIParent, "SecureHandlerStateTemplate")
+Hider:Hide()
 
 local HappinessLevels = {
 	[1] = Language["Unhappy"],
@@ -717,7 +721,12 @@ UF.PostCreateIcon = function(unit, button)
 	button.Time:SetJustifyH("LEFT")
 	
 	button.count:SetParent(button.overlayFrame)
-	button.Time:SetParent(button.overlayFrame)
+	
+	if Settings["unitframes-display-aura-timers"] then
+		button.Time:SetParent(button.overlayFrame)
+	else
+		button.Time:SetParent(Hider)
+	end
 	
 	button.ela = 0
 end
@@ -1163,9 +1172,6 @@ function UF:Load()
 		self.RaidAnchor:SetHeight((Settings["raid-health-height"] + Settings["raid-power-height"]) * (Settings["raid-max-columns"] + (Settings["raid-y-offset"])) - 1)
 		self.RaidAnchor:SetPoint("BOTTOMLEFT", HydraUIChatFrameTop, "TOPLEFT", -3, 5)
 		
-		local Hider = CreateFrame("Frame", nil, HydraUI.UIParent, "SecureHandlerStateTemplate")
-		Hider:Hide()
-		
 		if CompactRaidFrameContainer then
 			CompactRaidFrameContainer:UnregisterAllEvents()
 			CompactRaidFrameContainer:SetParent(Hider)
@@ -1199,6 +1205,9 @@ GUI:AddWidgets(Language["General"], Language["Unit Frames"], function(left, righ
 	left:CreateDropdown("unitframes-font", Settings["unitframes-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the unit frames"], nil, "Font")
 	left:CreateSlider("unitframes-font-size", Settings["unitframes-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the unit frames"])
 	left:CreateDropdown("unitframes-font-flags", Settings["unitframes-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the unit frames"])
+	
+	right:CreateHeader(Language["Auras"])
+	right:CreateSwitch("unitframes-display-aura-timers", Settings["unitframes-display-aura-timers"], Language["Display Aura Timers"], Language["Display the timer on unit frame auras"], ReloadUI):RequiresReload(true)
 end)
 
 --/run HydraUIFakeBosses()
