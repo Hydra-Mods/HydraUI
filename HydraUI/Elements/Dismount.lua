@@ -29,21 +29,22 @@ AutoDismount.Stand = {
 function AutoDismount:UI_ERROR_MESSAGE(id, message)
 	if self.Mount[message] then
 		Dismount()
+		UIErrorsFrame:Clear()
 	elseif self.Shapeshift[message] then
 		for i = 1, 40 do
 			local ID = select(10, UnitBuff("player", i))
 			
 			if (ID == 2645) then
 				CancelUnitBuff("player", i)
+				UIErrorsFrame:Clear()
 				
 				break
 			end
 		end
 	elseif self.Stand[message] then
 		DoEmote("STAND")
+		UIErrorsFrame:Clear()
 	end
-	
-	UIErrorsFrame:Clear()
 end
 
 function AutoDismount:TAXIMAP_OPENED()
