@@ -174,6 +174,22 @@ function AB:StyleActionButton(button)
 			HotKeyText = HotKeyText:gsub(MiddleButton, "MMB")
 			
 			button.HotKey:SetText("|cFFFFFFFF" .. HotKeyText .. "|r")
+		else
+			local ID = button:GetName():match("%d+")
+			local Bind = GetBindingKey("SHAPESHIFTBUTTON" .. ID)
+			
+			if (Bind and Bind ~= "") then
+				Bind = Bind:gsub(NumPad, "N")
+				Bind = Bind:gsub(WheelUp, "MWU")
+				Bind = Bind:gsub(WheelDown, "MWD")
+				Bind = Bind:gsub(MouseButton, "MB")
+				Bind = Bind:gsub(MiddleButton, "MMB")
+				Bind = Bind:gsub(CTRL_KEY_TEXT, "c")
+				Bind = Bind:gsub(SHIFT_KEY_TEXT, "s")
+				Bind = Bind:gsub(ALT_KEY_TEXT, "a")
+				
+				button.HotKey:SetText("|cFFFFFFFF" .. Bind .. "|r")
+			end
 		end
 		
 		button.HotKey.OST = button.HotKey.SetText

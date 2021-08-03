@@ -21,6 +21,7 @@ KeyBinding.Translate = {
 	["MultiBarBottomRightButton"] = "MULTIACTIONBAR2BUTTON",
 	["MultiBarRightButton"] = "MULTIACTIONBAR3BUTTON",
 	["MultiBarLeftButton"] = "MULTIACTIONBAR4BUTTON",
+	["StanceButton"] = "SHAPESHIFTBUTTON",
 }
 
 KeyBinding.Filter = {
