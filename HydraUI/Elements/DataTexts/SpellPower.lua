@@ -2,6 +2,7 @@ local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local GetSpellBonusDamage = GetSpellBonusDamage
 local GetSpellBonusHealing = GetSpellBonusHealing
+local GetTalentTabInfo = GetTalentTabInfo
 
 local HealingLabel = Language["Spell Healing"]
 local SpellLabel = Language["Spell Damage"]
@@ -14,6 +15,25 @@ local GetHighestSpellPower = function()
 	end
 	
 	return Power
+end
+
+local GetSpecInfo = function()
+	local MainSpecID
+	local HighestPoints = 0
+	local Name, PointsSpent, _
+	
+	for i = 1, 3 do
+		Name, _, PointsSpent = GetTalentTabInfo(i)
+		
+		if Name then
+			if (PointsSpent > HighestPoints) then
+				MainSpecID = i
+				HighestPoints = PointsSpent
+			end
+		end
+	end
+	
+	return MainSpecID
 end
 
 local OnMouseUp = function()
@@ -32,7 +52,7 @@ local Update = function(self, event, unit)
 	local Healing = GetSpellBonusHealing()
 	
 	if (Spell > 0 or Healing > 0) then
-		if (Spell > Healing) then
+		if (Spell > Healing) or (HydraUI.UserClass == "SHAMAN" and GetSpecInfo() ~= 3) then
 			Rating = Spell
 			Label = SpellLabel
 		else
