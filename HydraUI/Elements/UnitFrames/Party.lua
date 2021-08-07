@@ -611,6 +611,22 @@ local UpdatePartySpacing = function(value)
 			HydraUI.UnitFrames["party"]:SetAttribute("xOffset", 0)
 			HydraUI.UnitFrames["party"]:SetAttribute("yOffset", value)
 		end
+
+		if HydraUI.UnitFrames["party-pets"] then
+			if (Point == "LEFT") then
+				HydraUI.UnitFrames["party-pets"]:SetAttribute("xOffset", value)
+				HydraUI.UnitFrames["party-pets"]:SetAttribute("yOffset", 0)
+			elseif (Point == "RIGHT") then
+				HydraUI.UnitFrames["party-pets"]:SetAttribute("xOffset", - value)
+				HydraUI.UnitFrames["party-pets"]:SetAttribute("yOffset", 0)
+			elseif (Point == "TOP") then
+				HydraUI.UnitFrames["party-pets"]:SetAttribute("xOffset", 0)
+				HydraUI.UnitFrames["party-pets"]:SetAttribute("yOffset", - value)
+			elseif (Point == "BOTTOM") then
+				HydraUI.UnitFrames["party-pets"]:SetAttribute("xOffset", 0)
+				HydraUI.UnitFrames["party-pets"]:SetAttribute("yOffset", value)
+			end
+		end
 	end
 end
 

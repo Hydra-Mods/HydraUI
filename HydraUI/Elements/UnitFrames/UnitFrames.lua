@@ -1127,6 +1127,23 @@ function UF:Load()
 		HydraUI:CreateMover(self.PartyAnchor)
 		
 		if Settings["party-pets-enable"] then
+			local XOffset = 0
+			local YOffset = 0
+			
+			if (Settings["party-point"] == "LEFT") then
+				XOffset = Settings["party-spacing"]
+				YOffset = 0
+			elseif (Settings["party-point"] == "RIGHT") then
+				XOffset = - Settings["party-spacing"]
+				YOffset = 0
+			elseif (Settings["party-point"] == "TOP") then
+				XOffset = 0
+				YOffset = - Settings["party-spacing"]
+			elseif (Settings["party-point"] == "BOTTOM") then
+				XOffset = 0
+				YOffset = Settings["party-spacing"]
+			end
+
 			local PartyPet = oUF:SpawnHeader("HydraUI Party Pets", "SecureGroupPetHeaderTemplate", "party,solo",
 				"initial-width", Settings["party-pets-width"],
 				"initial-height", (Settings["party-pets-health-height"] + Settings["party-pets-power-height"] + 3),
@@ -1134,8 +1151,8 @@ function UF:Load()
 				"showPlayer", false,
 				"showParty", true,
 				"showRaid", false,
-				"xOffset", Settings["party-x-offset"],
-				"yOffset", Settings["party-y-offset"],
+				"xOffset", XOffset,
+				"yOffset", YOffset,
 				"point", Settings["party-point"],
 				"oUF-initialConfigFunction", [[
 					local Header = self:GetParent()
@@ -1144,9 +1161,20 @@ function UF:Load()
 					self:SetHeight(Header:GetAttribute("initial-height"))
 				]]
 			)
-			
-			PartyPet:SetPoint("BOTTOMLEFT", Party, "TOPLEFT", 0, 2)
+
+			if (Settings["party-point"] == "LEFT") then
+				PartyPet:SetPoint("TOPLEFT", Party, "BOTTOMLEFT", 0, - Settings["party-spacing"])
+			elseif (Settings["party-point"] == "RIGHT") then
+				PartyPet:SetPoint("TOPRIGHT", Party, "BOTTOMRIGHT", 0, - Settings["party-spacing"])
+			elseif (Settings["party-point"] == "TOP") then
+				PartyPet:SetPoint("TOPLEFT", Party, "BOTTOMLEFT", 0, - Settings["party-spacing"])
+			elseif (Settings["party-point"] == "BOTTOM") then
+				PartyPet:SetPoint("BOTTOMLEFT", Party, "TOPLEFT", 0, Settings["party-spacing"])
+			end
+
 			PartyPet:SetParent(HydraUI.UIParent)
+
+			HydraUI.UnitFrames["party-pets"] = PartyPet
 		end
 	end
 	
