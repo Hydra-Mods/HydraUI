@@ -607,23 +607,6 @@ local UpdatePartySpacing = function(value)
 	end
 end
 
-local UpdatePartyAnchor = function(value)
-	HydraUI.UnitFrames["party"]:SetAttribute("point", value)
-	C_UI.Reload()
-end
-
-local UpdateSetPartyOrientation = function(value)
-	if value == "VERTICAL" then
-		HydraUI.UnitFrames["party"]:SetAttribute("point", "TOP")
-		HydraUI.UnitFrames["party"]:SetAttribute("xoffset", 0)
-		HydraUI.UnitFrames["party"]:SetAttribute("yoffset", Settings["party-spacing"])
-	else
-		HydraUI.UnitFrames["party"]:SetAttribute("point", "LEFT")
-		HydraUI.UnitFrames["party"]:SetAttribute("xoffset", Settings["party-spacing"])
-		HydraUI.UnitFrames["party"]:SetAttribute("yoffset", 0)
-	end
-end
-
 local Testing = false
 
 local TestParty = function()
