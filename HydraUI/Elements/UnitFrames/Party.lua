@@ -20,7 +20,6 @@ Defaults["party-power-reverse"] = false
 Defaults["party-power-color"] = "POWER"
 Defaults["party-power-smooth"] = true
 Defaults["party-point"] = "LEFT"
-Defaults["party-orientation"] = "HORIZONTAL"
 Defaults["party-spacing"] = 2
 Defaults["party-font"] = "Roboto"
 Defaults["party-font-size"] = 12
@@ -158,7 +157,7 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	Debuffs.CustomFilter = PartyDebuffFilter
 	Debuffs.showType = true
 	
-	if (Settings["party-orientation"] == "VERTICAL") then
+	if (Settings["party-point"] == "LEFT") or (Settings["party-point"] == "RIGHT") then
 		Debuffs:SetSize(24 * 3 + (2 * 2), 24 * 2 + 2)
 		Debuffs:SetPoint("TOPLEFT", self, "TOPRIGHT", 2, 0)
 		Debuffs.size = 24
@@ -596,14 +595,22 @@ local UpdatePartyShowRole = function(value)
 end
 
 local UpdatePartySpacing = function(value)
-	if (Settings["party-orientation"] == "VERTICAL") then
-		HydraUI.UnitFrames["party"]:SetAttribute("point", "BOTTOM")
-		HydraUI.UnitFrames["party"]:SetAttribute("xoffset", 0)
-		HydraUI.UnitFrames["party"]:SetAttribute("yoffset", value)
-	else
-		HydraUI.UnitFrames["party"]:SetAttribute("point", "LEFT")
-		HydraUI.UnitFrames["party"]:SetAttribute("xoffset", value)
-		HydraUI.UnitFrames["party"]:SetAttribute("yoffset", 0)
+	if HydraUI.UnitFrames["party"] then
+		local Point = HydraUI.UnitFrames["party"]:GetAttribute("point")
+
+		if (Point == "LEFT") then
+			HydraUI.UnitFrames["party"]:SetAttribute("xOffset", value)
+			HydraUI.UnitFrames["party"]:SetAttribute("yOffset", 0)
+		elseif (Point == "RIGHT") then
+			HydraUI.UnitFrames["party"]:SetAttribute("xOffset", - value)
+			HydraUI.UnitFrames["party"]:SetAttribute("yOffset", 0)
+		elseif (Point == "TOP") then
+			HydraUI.UnitFrames["party"]:SetAttribute("xOffset", 0)
+			HydraUI.UnitFrames["party"]:SetAttribute("yOffset", - value)
+		elseif (Point == "BOTTOM") then
+			HydraUI.UnitFrames["party"]:SetAttribute("xOffset", 0)
+			HydraUI.UnitFrames["party"]:SetAttribute("yOffset", value)
+		end
 	end
 end
 
@@ -692,7 +699,7 @@ GUI:AddWidgets(Language["General"], Language["Party"], function(left, right)
 	left:CreateSlider("party-out-of-range", Settings["party-out-of-range"], 0, 100, 5, Language["Out of Range"], Language["Set the opacity of party members out of your range"])
 	
 	left:CreateHeader(Language["Attributes"])
-	left:CreateDropdown("party-orientation", Settings["party-orientation"], {[Language["Horizontal"]] = "HORIZONTAL", [Language["Vertical"]] = "VERTICAL"}, Language["Set Orientation"], Language["Set the orientation of the party frames"], ReloadUI):RequiresReload(true)
+	left:CreateDropdown("party-point", Settings["party-point"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Top"]] = "TOP", [Language["Bottom"]] = "BOTTOM"}, Language["Anchor Point"], Language["Set the anchor point for the party frames"], ReloadUI):RequiresReload(true)
 	left:CreateSlider("party-spacing", Settings["party-spacing"], -10, 10, 1, Language["Set Spacing"], Language["Set the spacing of party units from eachother"], UpdatePartySpacing)
 	
 	right:CreateHeader(Language["Party Pets Size"])
