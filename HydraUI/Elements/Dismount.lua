@@ -31,14 +31,16 @@ function AutoDismount:UI_ERROR_MESSAGE(id, message)
 		Dismount()
 		UIErrorsFrame:Clear()
 	elseif self.Shapeshift[message] then
+		local ID
+		
 		for i = 1, 40 do
-			local ID = select(10, UnitBuff("player", i))
+			ID = select(10, UnitBuff("player", i))
 			
-			if (ID == 2645) then
+			if (ID and ID == 2645) then
 				CancelUnitBuff("player", i)
 				UIErrorsFrame:Clear()
 				
-				break
+				return
 			end
 		end
 	elseif self.Stand[message] then

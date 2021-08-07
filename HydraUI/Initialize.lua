@@ -194,7 +194,6 @@ function HydraUI:GetDB(name)
 	end
 end
 
--- Events
 function HydraUI:CreatePluginWindow()
 	GUI:AddWidgets(Language["Info"], Language["Plugins"], function(left, right)
 		local Anchor
@@ -214,6 +213,7 @@ function HydraUI:CreatePluginWindow()
 	end)
 end
 
+-- Events
 function HydraUI:OnEvent(event)
 	Defaults["ui-scale"] = self:GetSuggestedScale()
 	

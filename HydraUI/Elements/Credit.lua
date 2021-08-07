@@ -3,22 +3,22 @@ local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
 local Tiers = {"FF8000", "A335EE", "0070DD", "1EFF00", "FFFFFF"}
 
 local Patrons = {
-	{"Erieeroot", "Dragonhawk"},
+	{"Erieeroot", "Dragonhawk", "Halven"},
 	{},
 	{"Dillan", "deck"},
-	{"JDoubleU00", "sylvester", "Innie", "Dellamaik", "Blom", "Ryex", "protocol7"},
+	{"JDoubleU00", "sylvester", "Innie", "Dellamaik", "Blom", "Ryex", "protocol7", "Cyber"},
 	{},
 }
 
 local Previous = {
-	{"SwoopCrown", "Cheeso_76", "last", "Halven"},
+	{"SwoopCrown", "Cheeso_76", "last"},
 	{"Smelly", "Trix", "wolimazo", "Ari", "MrPoundsign"},
 	{"Euphoria", "Mitooshin", "MisseFar", "FrankPatten"},
 	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Aaron B.", "Steve R.", "Angel", "Jeor", "Mcbooze", "stko", "Syn", "Oxymorphone", "Rytok"},
 	{"Akab00m", "OzzFreak", "madmaddy", "Uzify", "Erthelmi"},
 }
 
-local Donors = {"Innie", "Brightsides", "Erthelmi", "Gene", "JDoubleU00", "Duds", "Shazlen", "Shawna W.", "Dillan", "Bruce N.", "last", "Wrynn", "Ryxân", "Andrei B.", "Anthony M.", "AtticaOnline", "Hawksworth"}
+local Donors = {"Innie", "Brightsides", "Erthelmi", "Gene", "JDoubleU00", "Duds", "Shazlen", "Shawna W.", "Dillan", "Bruce N.", "last", "Wrynn", "Ryxân", "Andrei B.", "Anthony M.", "AtticaOnline", "Hawksworth", "WingZero"}
 
 GUI:AddWidgets(Language["Info"], Language["Credits"], function(left, right)
 	left:CreateHeader(Language["Scripting Help & Inspiration"])

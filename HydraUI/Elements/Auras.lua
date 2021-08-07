@@ -2,6 +2,17 @@ local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Auras = HydraUI:NewModule("Auras")
 
+local select = select
+local unpack = unpack
+local UnitAura = UnitAura
+local GetTime = GetTime
+local GetWeaponEnchantInfo = GetWeaponEnchantInfo
+local GetInventoryItemTexture = GetInventoryItemTexture
+local GetInventoryItemQuality = GetInventoryItemQuality
+local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
+
+local DebuffColors = HydraUI.DebuffColors
+
 -- Default settings values
 Defaults["auras-enable"] = true
 Defaults["auras-size"] = 30
@@ -9,222 +20,184 @@ Defaults["auras-spacing"] = 2
 Defaults["auras-row-spacing"] = 16
 Defaults["auras-per-row"] = 12
 
-local Name, Texture, Count, DebuffType
-local UnitAura = UnitAura
-local ceil = math.ceil
-local unpack = unpack
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
-local GetInventoryItemQuality = GetInventoryItemQuality
+Defaults["auras-orienation"] = "HORIZONTAL"
+Defaults["auras-font"] = "Roboto"
+Defaults["auras-font-size"] = 12
+Defaults["auras-font-flags"] = ""
 
---BUFF_MIN_ALPHA = 0.5
+Defaults["auras-count-color"] = "FFFFFF"
+Defaults["auras-count-xoffset"] = 10
+Defaults["auras-count-yoffset"] = -8
+Defaults["auras-count-align"] = "RIGHT"
 
-local ItemMap = {
-	[0] = 16, -- Main hand
-	[1] = 17, -- Off-hand
-	[2] = 18, -- Ranged
-}
+Defaults["auras-duration-color"] = "FFFFFF"
+Defaults["auras-duration-xoffset"] = 0
+Defaults["auras-duration-yoffset"] = -24
+Defaults["auras-duration-align"] = "CENTER"
 
-local SkinAura = function(button, name, index)
-	--[[button:SetBackdrop(HydraUI.BackdropAndBorder)
-	button:SetBackdropColor(0, 0, 0, 0)
-	button:SetBackdropBorderColor(0, 0, 0)]]
+Auras.Headers = {}
+
+local OnUpdate = function(button, elapsed)
+	local TimeLeft
 	
-	HydraUI:SetFontInfo(button.duration, Settings["ui-widget-font"], Settings["ui-font-size"])
-	button.duration:ClearAllPoints()
-	button.duration:SetPoint("TOP", button, "BOTTOM", 0, -3)
-	button.duration.SetFontObject = function() end
-	button.duration.ClearAllPoints = function() end
+	if button.Enchant then
+		local Expiration = select(button.Enchant, GetWeaponEnchantInfo())
+		
+		if Expiration then
+			TimeLeft = Expiration / 1e3
+		else
+			TimeLeft = 0
+		end
+	else
+		TimeLeft = button.TimeLeft - elapsed
+	end
 	
-	HydraUI:SetFontInfo(button.count, Settings["ui-widget-font"], Settings["ui-font-size"])
-	button.count.SetFontObject = function() end
+	button.TimeLeft = TimeLeft
 	
-	local Icon = _G[name .. index .. "Icon"]
-	local Border = _G[name .. index .. "Border"]
+	if (TimeLeft <= 0) then
+		button.TimeLeft = nil
+		button.Duration:SetText("")
+		
+		if button.Enchant then
+			button.Dur = nil
+		end
+		
+		button:SetScript("OnUpdate", nil)
+	else
+		button.Duration:SetText(HydraUI:FormatTime(TimeLeft))
+	end
+end
+
+local UpdateTempEnchant = function(button, slot)
+	local Enchant = (slot == 16 and 2) or 6
+	local Expiration = select(Enchant, GetWeaponEnchantInfo())
+	local Icon = GetInventoryItemTexture("player", slot)
+	local Quality = GetInventoryItemQuality("player", slot)
+	
+	if Quality then
+		local Color = ITEM_QUALITY_COLORS[Quality]
+		
+		button.Backdrop:SetBackdropBorderColor(Color.r, Color.g, Color.b)
+	else
+		button.Backdrop:SetBackdropBorderColor(0, 0, 0)
+	end
+	
+	if Expiration then
+		if (not button.Dur) then
+			button.Dur = Expiration / 1e3
+		end
+		
+		button.Enchant = Enchant
+		button:SetScript("OnUpdate", OnUpdate)
+	else
+		button.Dur = nil
+		button.Enchant = nil
+		button.TimeLeft = nil
+		button:SetScript("OnUpdate", nil)
+	end
 	
 	if Icon then
-		Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	end
-	
-	if Border then
-		Border:SetTexture(nil)
-	end
-	
-	button.Handled = true
-end
-
-Auras.TemporaryEnchantFrame_Update = function()
-	local Enchant
-	local Index
-	
-	for i = 1, NUM_TEMP_ENCHANT_FRAMES do
-		Index = i - 1
-		Enchant = _G["TempEnchant" .. Index]
-		
-		if Enchant then
-			local Quality = GetInventoryItemQuality("player", ItemMap[i])
-			
-			if Quality then
-				local Color = ITEM_QUALITY_COLORS[Quality]
-				
-				Enchant:SetBackdropBorderColor(Color.r, Color.g, Color.b)
-			else
-				Enchant:SetBackdropBorderColor(0, 0, 0)
-			end
-		end
-	end
-	
-	Auras.BuffFrame_UpdateAllBuffAnchors()
-end
-
-local SkinTempEnchants = function()
-	local Enchant
-	local Index
-	
-	for i = 1, NUM_TEMP_ENCHANT_FRAMES do
-		Index = i - 1
-		Enchant = _G["TempEnchant" .. Index]
-		
-		if Enchant then
-			Enchant:SetParent(Auras.Buffs)
-			--[[Enchant:SetBackdrop(HydraUI.BackdropAndBorder)
-			Enchant:SetBackdropColor(0, 0, 0)
-			
-			local Quality = GetInventoryItemQuality("player", ItemMap[i])
-			
-			if Quality then
-				local Color = ITEM_QUALITY_COLORS[Quality]
-				
-				Enchant:SetBackdropBorderColor(unpack(Color))
-			else
-				Enchant:SetBackdropBorderColor(0, 0, 0)
-			end]]
-			
-			HydraUI:SetFontInfo(Enchant.duration, Settings["ui-widget-font"], Settings["ui-font-size"])
-			Enchant.duration:ClearAllPoints()
-			Enchant.duration:SetPoint("TOP", Enchant, "BOTTOM", 0, -4)
-			Enchant.duration.SetFontObject = function() end
-			
-			HydraUI:SetFontInfo(Enchant.count, Settings["ui-widget-font"], Settings["ui-font-size"])
-			Enchant.count.SetFontObject = function() end
-			
-			local Icon = _G["TempEnchant" .. Index .. "Icon"]
-			local Border = _G["TempEnchant" .. Index .. "Border"]
-			
-			if Icon then
-				Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-			end
-			
-			if Border then
-				Border:SetTexture(nil)
-			end
-		end
-	end
-end
-
-Auras.BuffFrame_UpdateAllBuffAnchors = function()
-	local Aura
-	local PreviousAura
-	local NumEnchants = BuffFrame.numEnchants
-	local NumAuras = 0
-	local NumRows = 0
-	local RowAnchor
-	local Index
-	
-	-- Position Temp Enchants
-	for i = 1, NUM_TEMP_ENCHANT_FRAMES do
-		Aura = _G["TempEnchant" .. (i - 1)]
-		
-		if Aura then
-			Aura:ClearAllPoints()
-			
-			if PreviousAura then
-				Aura:SetPoint("TOPRIGHT", PreviousAura, "TOPLEFT", -2, 0)
-			else
-				Aura:SetPoint("TOPRIGHT", Auras.Buffs, "TOPRIGHT", 0, 0)
-			end
-			
-			PreviousAura = Aura
-		end
-	end
-	
-	-- Position Buffs
-	for i = 1, BUFF_ACTUAL_DISPLAY do
-		Aura = _G["BuffButton" .. i]
-		
-		NumAuras = NumAuras + 1
-		Index = NumAuras + NumEnchants
-		
-		Aura:ClearAllPoints()
-		
-		if (Index > 1 and (Index % Settings["auras-per-row"] == 1)) then
-			Aura:SetPoint("TOP", RowAnchor, "BOTTOM", 0, -Settings["auras-row-spacing"])
-			
-			RowAnchor = Aura
-			NumRows = NumRows + 1
-		elseif (Index == 1) then
-			Aura:SetPoint("TOPRIGHT", Auras.Buffs, "TOPRIGHT", 0, 0)
-			
-			RowAnchor = Aura
-			NumRows = 1
-		else
-			if (NumAuras == 1) then
-				if PreviousAura then
-					Aura:SetPoint("TOPRIGHT", PreviousAura, "TOPLEFT", -2, 0)
-				else
-					Aura:SetPoint("TOPRIGHT", Auras.Buffs, "TOPRIGHT", 0, 0)
-				end
-			else
-				Aura:SetPoint("RIGHT", PreviousAura, "LEFT", -2, 0)
-			end
-		end
-		
-		PreviousAura = Aura
-	end
-end
-
-Auras.DebuffButton_UpdateAnchors = function(name, index)
-	local NumAuras = BUFF_ACTUAL_DISPLAY + BuffFrame.numEnchants
-	local Rows = ceil(NumAuras / BUFFS_PER_ROW)
-	local Aura = _G[name .. index]
-	
-	Aura:ClearAllPoints()
-	
-	if ((index > 1) and (index % Settings["auras-per-row"] == 1)) then
-		Aura:SetPoint("TOP", _G[name .. (index - Settings["auras-per-row"])], "BOTTOM", 0, -Settings["auras-row-spacing"])
-	elseif (index == 1) then
-		if (Rows < 2) then
-			Aura.offsetY = 1 * ((2 * Settings["auras-spacing"]) + Settings["auras-size"]) -- Make the default UI happy
-		else
-			Aura.offsetY = Rows * (Settings["auras-spacing"] + Settings["auras-size"])
-		end
-		
-		Aura:SetPoint("TOPRIGHT", Auras.Debuffs, "TOPRIGHT", 0, 0)
+		button:SetAlpha(1)
+		button.Icon:SetTexture(Icon)
 	else
-		Aura:SetPoint("RIGHT", _G[name..(index - 1)], "LEFT", -5, 0)
+		button:SetAlpha(0)
 	end
 end
 
-Auras.AuraButton_Update = function(name, index)
-	local Button = _G[name .. index]
-	local Filter = name == "BuffButton" and "HELPFUL" or "HARMFUL"
+local OnAttributeChanged = function(button, attribute, index)
+	if (attribute == "index") then
+		Auras:UpdateAura(button, index)
+	elseif (attribute == "target-slot") then
+		UpdateTempEnchant(button, index)
+	end
+end
+
+HydraUIAuraOnEnter = function(self)
+	GameTooltip:SetOwner(self, "ANCHOR_BOTTOMLEFT")
+	GameTooltip:SetFrameLevel(self:GetFrameLevel() + 2)
 	
-	if (not Button) then
+	if self:GetAttribute("index") then
+		GameTooltip:SetUnitAura(PlayerFrame.unit, self:GetID(), self.Filter)
+	elseif self:GetAttribute("target-slot") then
+		GameTooltip:SetInventoryItem("player", self:GetID())
+	end
+end
+
+HydraUISkinAura = function(button)
+	button:RegisterForClicks("RightButtonUp")
+	
+	local Backdrop = CreateFrame("Frame", nil, button, "BackdropTemplate")
+	Backdrop:SetAllPoints(button)
+	Backdrop:SetFrameLevel(button:GetFrameLevel() - 2)
+	Backdrop:SetBackdrop(HydraUI.BackdropAndBorder)
+	Backdrop:SetBackdropColor(0, 0, 0, 0)
+	Backdrop:SetBackdropBorderColor(0, 0, 0)
+	
+	local Icon = button:CreateTexture(nil, "BORDER")
+	Icon:SetTexCoord(0.08, 0.92, 0.08, 0.92)
+	Icon:ClearAllPoints()
+	Icon:SetPoint("TOPLEFT", button, 1, -1)
+	Icon:SetPoint("BOTTOMRIGHT", button, -1, 1)
+	
+	local Count = button:CreateFontString(nil, "OVERLAY")
+	HydraUI:SetFontInfo(Count, Settings["auras-font"], Settings["auras-font-size"], Settings["auras-font-flags"])
+	Count:SetTextColor(HydraUI:HexToRGB(Settings["auras-count-color"]))
+	Count:SetPoint("CENTER", button, Settings["auras-count-xoffset"], Settings["auras-count-yoffset"])
+	Count:SetJustifyH(Settings["auras-count-align"])
+	
+	local Duration = button:CreateFontString(nil, "OVERLAY")
+	HydraUI:SetFontInfo(Duration, Settings["auras-font"], Settings["auras-font-size"], Settings["auras-font-flags"])
+	Duration:SetTextColor(HydraUI:HexToRGB(Settings["auras-duration-color"]))
+	Duration:SetPoint("CENTER", button, Settings["auras-duration-xoffset"], Settings["auras-duration-yoffset"])
+	Duration:SetJustifyH(Settings["auras-duration-align"])
+	
+	button:SetScript("OnAttributeChanged", OnAttributeChanged)
+	
+	button.Icon = Icon
+	button.Count = Count
+	button.Duration = Duration
+	button.Backdrop = Backdrop
+	button.Filter = button:GetParent():GetAttribute("filter")
+end
+
+function Auras:UpdateAura(button, index)
+	local Name, Texture, Count, DType, Duration, ExpirationTime, Caster, IsStealable, ShouldConsolidate, SpellID, CanApplyAura, IsBossDebuff = UnitAura(button:GetParent():GetAttribute("unit"), index, button.Filter) -- button:GetID()
+	
+	if (not Name) then
 		return
 	end
 	
-	if (not Button.Handled) then
-		SkinAura(Button, name, index)
+	if (Duration > 0 and ExpirationTime) then
+		local TimeLeft = ExpirationTime - GetTime()
+		
+		if (not button.TimeLeft) then
+			button.TimeLeft = TimeLeft
+			button:SetScript("OnUpdate", OnUpdate)
+		else
+			button.TimeLeft = TimeLeft
+		end
+		
+		button.Dur = Duration
+	else
+		button.TimeLeft = nil
+		button.Dur = nil
+		button.Duration:SetText("")
+		button:SetScript("OnUpdate", nil)
 	end
 	
-	Button:SetSize(Settings["auras-size"], Settings["auras-size"])
-	
-	Name, Texture, Count, DebuffType = UnitAura("player", index, Filter)
-	
-	--[[if (Name and DebuffType and Filter == "HARMFUL") then
-		Button:SetBackdropBorderColor(unpack(HydraUI.DebuffColors[DebuffType]))
+	if (Count > 1) then
+		button.Count:SetText(Count)
 	else
-		Button:SetBackdropBorderColor(0, 0, 0)
-	end]]
+		button.Count:SetText("")
+	end
+	
+	if (button.Filter == "HARMFUL" and DType) then
+		local Color = DebuffColors[DType] or DebuffColors.none
+		
+		button.Backdrop:SetBackdropBorderColor(unpack(Color))
+	end
+	
+	button.Icon:SetTexture(Texture)
 end
 
 function Auras:Load()
@@ -232,48 +205,227 @@ function Auras:Load()
 		return
 	end
 	
-	self:Hook("AuraButton_Update")
-	self:Hook("BuffFrame_UpdateAllBuffAnchors")
-	self:Hook("DebuffButton_UpdateAnchors")
-	--self:Hook("TemporaryEnchantFrame_Update")
-	
-	local BuffRows = ceil(BUFF_MAX_DISPLAY / Settings["auras-per-row"])
-	local DebuffRows = ceil(DEBUFF_MAX_DISPLAY / Settings["auras-per-row"])
+	local Header
 	
 	self.Buffs = CreateFrame("Frame", "HydraUI Buffs", HydraUI.UIParent)
-	self.Buffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * BuffRows) + (Settings["auras-row-spacing"] * (BuffRows - 1))))
+	self.Buffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * 3) + (Settings["auras-row-spacing"] * (3 - 1))))
 	self.Buffs:SetPoint("TOPRIGHT", HydraUI.UIParent, "TOPRIGHT", -(Settings["minimap-size"] + 22), -12)
 	
 	self.Debuffs = CreateFrame("Frame", "HydraUI Debuffs", HydraUI.UIParent)
-	self.Debuffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * DebuffRows) + Settings["auras-row-spacing"]))
+	self.Debuffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * 2) + Settings["auras-row-spacing"]))
 	self.Debuffs:SetPoint("TOPRIGHT", self.Buffs, "BOTTOMRIGHT", 0, -2)
+	
+	local Template = format("HydraUIAuraTemplate%s", Settings["auras-size"])
+	
+	for i = 1, 2 do
+		Header = CreateFrame("Frame", (i == 1 and "HydraUI Buffs" or "HydraUI Debuffs"), HydraUI.UIParent, "SecureAuraHeaderTemplate")
+		Header:SetClampedToScreen(true)
+		Header:SetMovable(true)
+		Header:SetAttribute("minWidth", Settings["auras-per-row"] * (Settings["auras-size"] + Settings["auras-spacing"]))
+		Header:SetAttribute("minHeight", Settings["auras-size"])
+		Header:SetAttribute("wrapAfter", Settings["auras-per-row"])
+		Header:SetAttribute("wrapYOffset", -(Settings["auras-size"] + Settings["auras-row-spacing"])) -- -51
+		Header:SetAttribute("xOffset", -(Settings["auras-size"] + Settings["auras-spacing"]))
+		Header:SetAttribute("template", Template)
+		Header:SetAttribute("weaponTemplate", Template)
+		Header:SetAttribute("filter", i == 1 and "HELPFUL" or "HARMFUL")
+		Header:SetSize(Settings["auras-size"], Settings["auras-size"])
+		Header:SetFrameStrata("BACKGROUND")
+		
+		RegisterAttributeDriver(Header, "unit", "[vehicleui] vehicle; player")
+		
+		table.insert(self.Headers, Header)
+	end
+	
+	local Buffs = self.Headers[1]
+	Buffs:SetAttribute("includeWeapons", 1)
+	Buffs:SetPoint("TOPRIGHT", self.Buffs, 0, 0)
+	Buffs:Show()
+	
+	local Debuffs = self.Headers[2]
+	Debuffs:SetPoint("TOPRIGHT", self.Buffs, 0, 0)
+	Debuffs:Show()
+	
+	-- Update auras
+	for i = 1, 2 do
+		local Child = self.Headers[i]:GetAttribute("child1")
+		local Index = 1
+		
+		while Child  do
+			self:UpdateAura(Child, Child:GetID())
+			
+			Index = Index + 1
+			Child = Header:GetAttribute("child" .. Index)
+		end
+	end
+	
+	-- Hide Blizzard auras
+	BuffFrame:Hide()
+	BuffFrame:UnregisterAllEvents()
+	BuffFrame:SetScript("OnUpdate", nil)
+	
+	TemporaryEnchantFrame:Hide()
+	TemporaryEnchantFrame:UnregisterAllEvents()
+	TemporaryEnchantFrame:SetScript("OnUpdate", nil)
 	
 	HydraUI:CreateMover(self.Buffs)
 	HydraUI:CreateMover(self.Debuffs)
-	
-	SkinTempEnchants()
-	
-	BuffFrame_Update()
 end
 
-local UpdateSizes = function()
-	-- Resize movers
-	local BuffRows = ceil(BUFF_MAX_DISPLAY / Settings["auras-per-row"])
-	local DebuffRows = ceil(DEBUFF_MAX_DISPLAY / Settings["auras-per-row"])
+local UpdateAuraSpacing = function(value)
+	Auras.Buffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * value), ((Settings["auras-size"] * 3) + (Settings["auras-row-spacing"] * (3 - 1))))
+	Auras.Debuffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * value), ((Settings["auras-size"] * 2) + Settings["auras-row-spacing"]))
 	
-	Auras.Buffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * BuffRows) + (Settings["auras-row-spacing"] * (BuffRows - 1))))
-	Auras.Debuffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * DebuffRows) + Settings["auras-row-spacing"]))
+	for i = 1, 2 do
+		Auras.Headers[i]:SetAttribute("minWidth", Settings["auras-per-row"] * (Settings["auras-size"] + value))
+		Auras.Headers[i]:SetAttribute("xOffset", -(Settings["auras-size"] + value))
+	end
+end
+
+local UpdateAuraRowSpacing = function(value)
+	Auras.Buffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * 3) + (value * (3 - 1))))
+	Auras.Debuffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * Settings["auras-spacing"]), ((Settings["auras-size"] * 2) + value))
 	
-	BuffFrame_Update()
+	for i = 1, 2 do
+		Auras.Headers[i]:SetAttribute("wrapYOffset", -(Settings["auras-size"] + value))
+	end
+end
+
+local UpdateAurasPerRow = function(value)
+	Auras.Buffs:SetSize((value * Settings["auras-size"] + value * Settings["auras-spacing"]), ((Settings["auras-size"] * 3) + (Settings["auras-row-spacing"] * (3 - 1))))
+	Auras.Debuffs:SetSize((value * Settings["auras-size"] + value * Settings["auras-spacing"]), ((Settings["auras-size"] * 2) + Settings["auras-row-spacing"]))
+	
+	for i = 1, 2 do
+		Auras.Headers[i]:SetAttribute("minWidth", value * (Settings["auras-size"] + Settings["auras-spacing"]))
+		Auras.Headers[i]:SetAttribute("wrapAfter", value)
+	end
+end
+
+local UpdateAuraFont = function()
+	for i = 1, 2 do
+		local Child = Auras.Headers[i]:GetAttribute("child1")
+		local Index = 1
+		
+		while Child  do
+			HydraUI:SetFontInfo(Child.Count, Settings["auras-font"], Settings["auras-font-size"], Settings["auras-font-flags"])
+			HydraUI:SetFontInfo(Child.Duration, Settings["auras-font"], Settings["auras-font-size"], Settings["auras-font-flags"])
+			
+			Index = Index + 1
+			Child = Auras.Headers[i]:GetAttribute("child" .. Index)
+		end
+	end
+end
+
+local UpdateCountColor = function(value)
+	for i = 1, 2 do
+		local Child = Auras.Headers[i]:GetAttribute("child1")
+		local Index = 1
+		
+		while Child  do
+			Child.Count:SetTextColor(HydraUI:HexToRGB(value))
+			
+			Index = Index + 1
+			Child = Auras.Headers[i]:GetAttribute("child" .. Index)
+		end
+	end
+end
+
+local UpdateDurationColor = function(value)
+	for i = 1, 2 do
+		local Child = Auras.Headers[i]:GetAttribute("child1")
+		local Index = 1
+		
+		while Child  do
+			Child.Duration:SetTextColor(HydraUI:HexToRGB(value))
+			
+			Index = Index + 1
+			Child = Auras.Headers[i]:GetAttribute("child" .. Index)
+		end
+	end
+end
+
+local UpdateCountPosition = function()
+	for i = 1, 2 do
+		local Child = Auras.Headers[i]:GetAttribute("child1")
+		local Index = 1
+		
+		while Child  do
+			Child.Count:ClearAllPoints()
+			Child.Count:SetPoint("CENTER", Child, Settings["auras-count-xoffset"], Settings["auras-count-yoffset"])
+			
+			Index = Index + 1
+			Child = Auras.Headers[i]:GetAttribute("child" .. Index)
+		end
+	end
+end
+
+local UpdateDurationPosition = function()
+	for i = 1, 2 do
+		local Child = Auras.Headers[i]:GetAttribute("child1")
+		local Index = 1
+		
+		while Child  do
+			Child.Duration:ClearAllPoints()
+			Child.Duration:SetPoint("CENTER", Child, Settings["auras-duration-xoffset"], Settings["auras-duration-yoffset"])
+			
+			Index = Index + 1
+			Child = Auras.Headers[i]:GetAttribute("child" .. Index)
+		end
+	end
+end
+
+local UpdateDurationAlignment = function(value)
+	for i = 1, 2 do
+		local Child = Auras.Headers[i]:GetAttribute("child1")
+		local Index = 1
+		
+		while Child  do
+			Child.Duration:SetJustifyH(value)
+			
+			Index = Index + 1
+			Child = Auras.Headers[i]:GetAttribute("child" .. Index)
+		end
+	end
+end
+
+local UpdateCountAlignment = function(value)
+	for i = 1, 2 do
+		local Child = Auras.Headers[i]:GetAttribute("child1")
+		local Index = 1
+		
+		while Child  do
+			Child.Count:SetJustifyH(value)
+			
+			Index = Index + 1
+			Child = Auras.Headers[i]:GetAttribute("child" .. Index)
+		end
+	end
 end
 
 GUI:AddWidgets(Language["General"], Language["Auras"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("auras-enable", Settings["auras-enable"], Language["Enable Auras Module"], Language["Enable the HydraUI auras module"], ReloadUI):RequiresReload(true)
 	
-	right:CreateHeader(Language["Styling"])
-	right:CreateSlider("auras-size", Settings["auras-size"], 20, 40, 1, Language["Size"], Language["Set the size of auras"], UpdateSizes)
-	right:CreateSlider("auras-spacing", Settings["auras-spacing"], 0, 10, 1, Language["Spacing"], Language["Set the spacing between auras"], UpdateSizes)
-	right:CreateSlider("auras-row-spacing", Settings["auras-row-spacing"], 0, 30, 1, Language["Row Spacing"], Language["Set the vertical spacing between aura rows"], UpdateSizes)
-	right:CreateSlider("auras-per-row", Settings["auras-per-row"], 8, 16, 1, Language["Display Per Row"], Language["Set the number of auras per row"], UpdateSizes)
+	left:CreateHeader(Language["Styling"])
+	left:CreateSlider("auras-size", Settings["auras-size"], 20, 50, 2, Language["Size"], Language["Set the size of auras"], ReloadUI):RequiresReload(true)
+	left:CreateSlider("auras-spacing", Settings["auras-spacing"], 0, 10, 1, Language["Spacing"], Language["Set the spacing between auras"], UpdateAuraSpacing)
+	left:CreateSlider("auras-row-spacing", Settings["auras-row-spacing"], 0, 30, 1, Language["Row Spacing"], Language["Set the vertical spacing between aura rows"], UpdateAuraRowSpacing)
+	left:CreateSlider("auras-per-row", Settings["auras-per-row"], 8, 16, 1, Language["Auras Per Row"], Language["Set the number of auras per row"], UpdateAurasPerRow)
+	
+	left:CreateHeader(Language["Font"])
+	left:CreateDropdown("auras-font", Settings["auras-font"], Assets:GetFontList(), Language["Font"], "Set the font of the auras", UpdateAuraFont, "Font")
+	left:CreateSlider("auras-font-size", Settings["auras-font-size"], 8, 32, 1, "Font Size", "Set the font size of the auras", UpdateAuraFont)
+	left:CreateDropdown("auras-font-flags", Settings["auras-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], "Set the font flags of the auras", UpdateAuraFont)
+	
+	right:CreateHeader(Language["Duration Font"])
+	right:CreateSlider("auras-duration-xoffset", Settings["auras-duration-xoffset"], -30, 30, 1, Language["X Offset"], Language["Set the x-axis offset of the duration text"], UpdateDurationPosition)
+	right:CreateSlider("auras-duration-yoffset", Settings["auras-duration-yoffset"], -30, 30, 1, Language["Y Offset"], Language["Set the y-axis offset of the duration text"], UpdateDurationPosition)
+	right:CreateDropdown("auras-duration-align", Settings["auras-duration-align"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Center"]] = "CENTER"}, Language["Font Alignment"], Language["Set the alignment direction of the font"], UpdateDurationAlignment)
+	right:CreateColorSelection("auras-duration-color", Settings["auras-duration-color"], Language["Color"], Language["Set the color of the aura duration"], UpdateDurationColor)
+	
+	right:CreateHeader(Language["Count Font"])
+	right:CreateSlider("auras-count-xoffset", Settings["auras-count-xoffset"], -30, 30, 1, Language["X Offset"], Language["Set the x-axis offset of the count text"], UpdateCountPosition)
+	right:CreateSlider("auras-count-yoffset", Settings["auras-count-yoffset"], -30, 30, 1, Language["Y Offset"], Language["Set the y-axis offset of the count text"], UpdateCountPosition)
+	right:CreateDropdown("auras-count-align", Settings["auras-count-align"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Center"]] = "CENTER"}, Language["Font Alignment"], Language["Set the alignment direction of the font"], UpdateCountAlignment)
+	right:CreateColorSelection("auras-count-color", Settings["auras-count-color"], Language["Color"], Language["Set the color of the aura count"], UpdateCountColor)
 end)

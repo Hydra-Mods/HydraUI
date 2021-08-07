@@ -21,10 +21,6 @@ Loot.Grouped = false
 
 function Loot:LOOT_READY()
 	if (GetCVar("autoLootDefault") == "1" and not IsModifiedClick("AUTOLOOTTOGGLE")) or (GetCVar("autoLootDefault") ~= "1" and IsModifiedClick("AUTOLOOTTOGGLE")) then
-		if (GetLootMethod() == "master") then
-			return
-		end
-		
 		if (IsInGroup() and GetLootMethod() == "master") then
 			self.Grouped = true
 		end
