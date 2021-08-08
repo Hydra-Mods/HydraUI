@@ -243,7 +243,7 @@ function Auras:Load()
 	Buffs:Show()
 	
 	local Debuffs = self.Headers[2]
-	Debuffs:SetPoint("TOPRIGHT", self.Buffs, 0, 0)
+	Debuffs:SetPoint("TOPRIGHT", self.Debuffs, 0, 0)
 	Debuffs:Show()
 	
 	-- Update auras
