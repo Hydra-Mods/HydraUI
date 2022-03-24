@@ -736,9 +736,12 @@ UF.PostCreateIcon = function(unit, button)
 		button:SetScript("OnMouseUp", CancelAuraOnMouseUp)
 	end
 	
-	button:SetBackdrop(HydraUI.BackdropAndBorder)
-	button:SetBackdropColor(0, 0, 0, 0)
 	button:SetFrameLevel(6)
+	
+	button.bg = button:CreateTexture(nil, "BACKGROUND")
+	button.bg:SetPoint("TOPLEFT", button, 0, 0)
+	button.bg:SetPoint("BOTTOMRIGHT", button, 0, 0)
+	button.bg:SetColorTexture(0, 0, 0)
 	
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
