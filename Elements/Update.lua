@@ -1,5 +1,7 @@
 local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
+if 1 == 1 then return end
+
 local tonumber = tonumber
 local SendAddonMessage = C_ChatInfo.SendAddonMessage
 local IsInGuild = IsInGuild

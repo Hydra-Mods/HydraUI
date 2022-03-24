@@ -16,7 +16,7 @@
 	<Script file="elements\castbar_Classic.lua"/>
 	<Script file="elements\classpower.lua"/>
 	<Script file="elements\combatindicator.lua"/>
-	<Script file="elements\combopoints.lua"/>
+	<Script file="elements\combopoints_Classic.lua"/>
 	<Script file="elements\dispel.lua"/>
 	<Script file="elements\eliteindicator.lua"/>
 	<Script file="elements\energytick.lua"/>
