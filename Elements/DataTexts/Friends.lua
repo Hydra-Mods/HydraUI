@@ -4,20 +4,13 @@ local GetNumFriends = C_FriendList.GetNumFriends
 local GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
 local BNGetNumFriends = BNGetNumFriends
 local GetFriendInfoByIndex = C_FriendList.GetFriendInfoByIndex
+local GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
 local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local next = next
 local Label = TUTORIAL_TITLE22
 
 local PresenceID, AccountName, BattleTag, IsBattleTagPresence, CharacterName, BNetIDGameAccount, Client, IsOnline, LastOnline, IsAFK, IsDND
-
-local BNGetFriendInfo
-
-if HydraUI.IsMainline then
-	BNGetFriendInfo = C_BattleNet.GetFriendAccountInfo
-else
-	BNGetFriendInfo = BNGetFriendInfo
-end
 
 local ClientToName = {
 	["App"] = Language["B.Net"],
@@ -243,24 +236,11 @@ local OnEnter = function(self)
 	GameTooltip:AddLine(" ")
 	
 	-- B.Net friends
-	if HydraUI.IsMainline then
-		for i = 1, NumBNFriends do
-			local Info = BNGetFriendInfo(i)
-			
-			if Info then
-				local Left, Right = GetClientInformation(Info.gameAccountInfo.clientProgram, Info.accountName, Info)
-				
-				if Right then
-					GameTooltip:AddDoubleLine(Left, Right, nil, nil, nil, 1, 1, 1)
-				else
-					GameTooltip:AddLine(Left)
-				end
-			end
-		end
-	else
-		for i = 1, NumBNFriends do
-			local PresenceID, AccountName, BattleTag, IsBattleTagPresence, CharacterName, BNetIDGameAccount, Client, IsOnline, LastOnline, IsAFK, IsDND = BNGetFriendInfo(i)
-			local Left, Right = GetClientInformation(Client, AccountName, (BNetIDGameAccount or PresenceID))
+	for i = 1, NumBNFriends do
+		local Info = GetFriendAccountInfo(i)
+		
+		if Info then
+			local Left, Right = GetClientInformation(Info.gameAccountInfo.clientProgram, Info.accountName, Info)
 			
 			if Right then
 				GameTooltip:AddDoubleLine(Left, Right, nil, nil, nil, 1, 1, 1)

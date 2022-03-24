@@ -82,7 +82,7 @@ Elements\DataTexts\Expertise.lua
 Elements\DataTexts\AttackPower.lua
 Elements\DataTexts\SpellPower.lua
 Elements\DataTexts\Guild.lua
-Elements\DataTexts\Friends.lua
+Elements\DataTexts\FriendsClassic.lua
 Elements\DataTexts\PrimaryStat.lua
 Elements\DataTexts\PVP.lua
 Elements\DataTexts\Quests.lua
