@@ -116,23 +116,39 @@ function Map:Style()
 		MiniMapTrackingBackground:SetTexture(nil)
 	end
 	
-	self.Tracking = CreateFrame("Frame", nil, Minimap, "BackdropTemplate")
-	self.Tracking:SetSize(24, 24)
-	self.Tracking:SetPoint("TOPLEFT", Minimap, 2, -2)
-	self.Tracking:SetBackdrop(HydraUI.BackdropAndBorder)
-	self.Tracking:SetBackdropColor(0, 0, 0)
-	self.Tracking:SetBackdropBorderColor(0, 0, 0)
-	
-	self.Tracking.Tex = self.Tracking:CreateTexture(nil, "ARTWORK")
-	self.Tracking.Tex:SetPoint("TOPLEFT", self.Tracking, 1, -1)
-	self.Tracking.Tex:SetPoint("BOTTOMRIGHT", self.Tracking, -1, 1)
-	self.Tracking.Tex:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	self.Tracking.Tex:SetVertexColor(HydraUI:HexToRGB(Settings["ui-header-texture-color"]))
-	
 	if MiniMapTracking then
+		self.Tracking = CreateFrame("Frame", nil, Minimap, "BackdropTemplate")
+		self.Tracking:SetSize(24, 24)
+		self.Tracking:SetPoint("TOPLEFT", Minimap, 2, -2)
+		self.Tracking:SetBackdrop(HydraUI.BackdropAndBorder)
+		self.Tracking:SetBackdropColor(0, 0, 0)
+		self.Tracking:SetBackdropBorderColor(0, 0, 0)
+		
+		self.Tracking.Tex = self.Tracking:CreateTexture(nil, "ARTWORK")
+		self.Tracking.Tex:SetPoint("TOPLEFT", self.Tracking, 1, -1)
+		self.Tracking.Tex:SetPoint("BOTTOMRIGHT", self.Tracking, -1, 1)
+		self.Tracking.Tex:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+		self.Tracking.Tex:SetVertexColor(HydraUI:HexToRGB(Settings["ui-header-texture-color"]))
+	
 		MiniMapTracking:SetParent(self.Tracking)
 		MiniMapTracking:ClearAllPoints()
 		MiniMapTracking:SetPoint("CENTER", self.Tracking, 0, 0)
+	end
+	
+	if MiniMapTrackingFrame then
+		MiniMapTrackingFrame:ClearAllPoints()
+		MiniMapTrackingFrame:SetSize(24, 24)
+		MiniMapTrackingFrame:SetPoint("TOPLEFT", Minimap, 1, -1)
+		MiniMapTrackingFrame:SetFrameLevel(Minimap:GetFrameLevel() + 1)
+		
+		MiniMapTrackingIcon:SetSize(18, 18)
+		MiniMapTrackingIcon:ClearAllPoints()
+		MiniMapTrackingIcon:SetPoint("TOPLEFT", MiniMapTrackingFrame, 1, -1)
+		MiniMapTrackingIcon:SetPoint("BOTTOMRIGHT", MiniMapTrackingFrame, -1, 1)
+		MiniMapTrackingIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		
+		MiniMapTrackingBorder:Hide()
+		MiniMapTrackingBorder.Show = function() end
 	end
 	
 	self:Disable(MinimapCluster)

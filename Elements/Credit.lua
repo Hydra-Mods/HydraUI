@@ -18,7 +18,10 @@ local Previous = {
 	{"Akab00m", "OzzFreak", "madmaddy", "Uzify", "Erthelmi", "silence", "momzzze"},
 }
 
-local Donors = {"Innie", "Brightsides", "Erthelmi", "Gene", "JDoubleU00", "Duds", "Shazlen", "Shawna W.", "Dillan", "Bruce N.", "last", "Wrynn", "Ryxân", "Andrei B.", "Anthony M.", "AtticaOnline", "Hawksworth", "WingZero", "Elizabeth T.", "Sehoon K."}
+local Donors = {
+	"Innie", "Brightsides", "Erthelmi", "Gene", "JDoubleU00", "Duds", "Shazlen", "Shawna W.", "Dillan", "Bruce N.", "last", "Wrynn", "Ryxân", "Andrei B.", "Anthony M.", "AtticaOnline", "Hawksworth", "WingZero",
+	"Elizabeth T.", "Sehoon K.", "Brandon W.",
+}
 
 GUI:AddWidgets(Language["Info"], Language["Credits"], function(left, right)
 	left:CreateHeader(Language["Scripting Help & Inspiration"])

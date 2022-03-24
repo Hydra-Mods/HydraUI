@@ -16,7 +16,7 @@ if HydraUI.IsMainline then
 		StoreMicroButton,
 		MainMenuMicroButton,
 	}
-else
+elseif HydraUI.IsTBC then
 	MicroButtons.Buttons = {
 		CharacterMicroButton,
 		SpellbookMicroButton,
@@ -24,6 +24,17 @@ else
 		QuestLogMicroButton,
 		SocialsMicroButton,
 		LFGMicroButton,
+		MainMenuMicroButton,
+		HelpMicroButton,
+	}
+else
+	MicroButtons.Buttons = {
+		CharacterMicroButton,
+		SpellbookMicroButton,
+		TalentMicroButton,
+		QuestLogMicroButton,
+		SocialsMicroButton,
+		WorldMapMicroButton,
 		MainMenuMicroButton,
 		HelpMicroButton,
 	}
@@ -138,6 +149,8 @@ function MicroButtons:Load()
 	for i = 1, #self.Buttons do
 		self.Buttons[i]:SetParent(self.Panel)
 		self.Buttons[i]:ClearAllPoints()
+		self.Buttons[i]:SetHitRectInsets(0, 0, 0, 0)
+		self.Buttons[i]:SetSize(28, 36)
 		self.Buttons[i]:HookScript("OnEnter", MicroButtonsButtonOnEnter)
 		self.Buttons[i]:HookScript("OnLeave", MicroButtonsButtonOnLeave)
 		
@@ -152,21 +165,34 @@ function MicroButtons:Load()
 		local Disabled = self.Buttons[i]:GetDisabledTexture()
 		local Highlight = self.Buttons[i]:GetHighlightTexture()
 		
-		Normal:SetTexCoord(0.22, 0.82, 0.22, 0.82)
 		Normal:ClearAllPoints()
 		Normal:SetPoint("TOPLEFT", self.Buttons[i], 2, -2)
 		Normal:SetPoint("BOTTOMRIGHT", self.Buttons[i], -2, 2)
 		
-		Pushed:SetTexCoord(0.22, 0.82, 0.22, 0.82)
 		Pushed:ClearAllPoints()
 		Pushed:SetPoint("TOPLEFT", self.Buttons[i], 2, -2)
 		Pushed:SetPoint("BOTTOMRIGHT", self.Buttons[i], -2, 2)
 		
 		if Disabled then
-			Disabled:SetTexCoord(0.22, 0.82, 0.22, 0.82)
 			Disabled:ClearAllPoints()
 			Disabled:SetPoint("TOPLEFT", self.Buttons[i], 2, -2)
 			Disabled:SetPoint("BOTTOMRIGHT", self.Buttons[i], -2, 2)
+		end
+		
+		if HydraUI.IsClassic then
+			Normal:SetTexCoord(0.2, 0.85, 0.5, 0.9)
+			Pushed:SetTexCoord(0.2, 0.85, 0.5, 0.9)
+			
+			if Disabled then
+				Disabled:SetTexCoord(0.2, 0.85, 0.5, 0.9)
+			end
+		else
+			Normal:SetTexCoord(0.22, 0.82, 0.22, 0.82)
+			Pushed:SetTexCoord(0.22, 0.82, 0.22, 0.82)
+			
+			if Disabled then
+				Disabled:SetTexCoord(0.22, 0.82, 0.22, 0.82)
+			end
 		end
 		
 		Highlight:ClearAllPoints()
