@@ -212,16 +212,39 @@ function Experience:OnEvent()
 	local ZoneName
 	local Level = Settings["experience-display-level"] and (format("%s %d - ", LEVEL, UnitLevel("player"))) or ""
 	
-	for i = 1, GetNumQuests() do
-		local Info = GetQuestInfo(i)
-		
-		if (Info.isHeader and not Info.isHidden) then
-			ZoneName = Info.title
-		else
-			if (ZoneName and Zone == ZoneName and ReadyForTurnIn(Info.questID)) then
-				QuestLogXP = QuestLogXP + GetQuestLogRewardXP(Info.questID)
+	if HydraUI.IsMainline then
+		for i = 1, GetNumQuests() do
+			local Info = GetQuestInfo(i)
+			
+			if (Info.isHeader and not Info.isHidden) then
+				ZoneName = Info.title
+			else
+				if (ZoneName and Zone == ZoneName and ReadyForTurnIn(Info.questID)) then
+					QuestLogXP = QuestLogXP + GetQuestLogRewardXP(Info.questID)
+				end
 			end
 		end
+	else
+		for i = 1, GetNumQuestLogEntries() do
+			local TitleText, _, _, IsHeader, _, IsComplete, _, QuestID = GetQuestLogTitle(i)
+			
+			if IsHeader then
+				ZoneName = TitleText
+				--if (ZoneName and Zone == ZoneName) and IsComplete then
+				--end
+			else
+				if (ZoneName and Zone == ZoneName and IsComplete) then
+					QuestLogXP = QuestLogXP + GetQuestLogRewardXP(QuestID)
+				end
+			end
+		end
+	end
+	
+	if (QuestLogXP > 0) then
+		self.Bar.Quest:SetValue(min(XP + QuestLogXP, MaxXP))
+		self.Bar.Quest:Show()
+	else
+		self.Bar.Quest:Hide()
 	end
 	
 	if (QuestLogXP > 0) then
