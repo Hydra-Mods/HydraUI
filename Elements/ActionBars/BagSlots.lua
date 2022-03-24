@@ -150,13 +150,15 @@ function BagsFrame:Load()
 		
 		Object:SetHighlightTexture(Highlight)
 		
-		local Pushed = Object:CreateTexture(nil, "ARTWORK", 7)
-		Pushed:SetPoint("TOPLEFT", Object, 0, 0)
-		Pushed:SetPoint("BOTTOMRIGHT", Object, 0, 0)
-		Pushed:SetColorTexture(0.2, 0.9, 0.2)
-		Pushed:SetAlpha(0.4)
-		
-		Object:SetPushedTexture(Pushed)
+		if (KeyRingButton and i ~= 1) or (not KeyRingButton) then
+			local Pushed = Object:CreateTexture(nil, "ARTWORK", 7)
+			Pushed:SetPoint("TOPLEFT", Object, 0, 0)
+			Pushed:SetPoint("BOTTOMRIGHT", Object, 0, 0)
+			Pushed:SetColorTexture(0.2, 0.9, 0.2)
+			Pushed:SetAlpha(0.4)
+			
+			Object:SetPushedTexture(Pushed)
+		end
 		
 		if (i == 1) then
 			Object:SetPoint("LEFT", self.Panel, 4, 0)
