@@ -1,0 +1,30 @@
+<Ui>
+	<Button name="HydraUIAuraTemplate" virtual="true" inherits="SecureActionButtonTemplate">
+		<Attributes>
+			<Attribute name="type" value="cancelaura"/>
+		</Attributes>
+		
+		<Scripts>
+			<OnLoad function="HydraUISkinAura"/>
+			<OnEnter function="HydraUIAuraOnEnter"/>
+			<OnLeave function="GameTooltip_Hide"/>
+		</Scripts>
+	</Button>
+	
+	<Button name="HydraUIAuraTemplate20" virtual="true" inherits="HydraUIAuraTemplate"><Size x="20" y="20"/></Button>
+	<Button name="HydraUIAuraTemplate22" virtual="true" inherits="HydraUIAuraTemplate"><Size x="22" y="22"/></Button>
+	<Button name="HydraUIAuraTemplate24" virtual="true" inherits="HydraUIAuraTemplate"><Size x="24" y="24"/></Button>
+	<Button name="HydraUIAuraTemplate26" virtual="true" inherits="HydraUIAuraTemplate"><Size x="26" y="26"/></Button>
+	<Button name="HydraUIAuraTemplate28" virtual="true" inherits="HydraUIAuraTemplate"><Size x="28" y="28"/></Button>
+	<Button name="HydraUIAuraTemplate30" virtual="true" inherits="HydraUIAuraTemplate"><Size x="30" y="30"/></Button>
+	<Button name="HydraUIAuraTemplate32" virtual="true" inherits="HydraUIAuraTemplate"><Size x="32" y="32"/></Button>
+	<Button name="HydraUIAuraTemplate34" virtual="true" inherits="HydraUIAuraTemplate"><Size x="34" y="34"/></Button>
+	<Button name="HydraUIAuraTemplate36" virtual="true" inherits="HydraUIAuraTemplate"><Size x="36" y="36"/></Button>
+	<Button name="HydraUIAuraTemplate38" virtual="true" inherits="HydraUIAuraTemplate"><Size x="38" y="38"/></Button>
+	<Button name="HydraUIAuraTemplate40" virtual="true" inherits="HydraUIAuraTemplate"><Size x="40" y="40"/></Button>
+	<Button name="HydraUIAuraTemplate42" virtual="true" inherits="HydraUIAuraTemplate"><Size x="42" y="42"/></Button>
+	<Button name="HydraUIAuraTemplate44" virtual="true" inherits="HydraUIAuraTemplate"><Size x="44" y="44"/></Button>
+	<Button name="HydraUIAuraTemplate46" virtual="true" inherits="HydraUIAuraTemplate"><Size x="46" y="46"/></Button>
+	<Button name="HydraUIAuraTemplate48" virtual="true" inherits="HydraUIAuraTemplate"><Size x="48" y="48"/></Button>
+	<Button name="HydraUIAuraTemplate50" virtual="true" inherits="HydraUIAuraTemplate"><Size x="50" y="50"/></Button>
+</Ui>
