@@ -93,11 +93,14 @@ function Map:Style()
 		MiniMapTrackingButtonShine:SetTexture(nil)
 		MiniMapTrackingButton:SetHighlightTexture("")
 	else
-		MiniMapTrackingBorder:SetTexture(nil)
-		MiniMapTrackingShine:SetTexture(nil)
-		
 		MiniMapBattlefieldFrame:ClearAllPoints()
 		MiniMapBattlefieldFrame:SetPoint("BOTTOMLEFT", Minimap, 0, -3)
+		
+		MiniMapTrackingBorder:SetTexture(nil)
+		
+		if MiniMapTrackingShine then
+			MiniMapTrackingShine:SetTexture(nil)
+		end
 	end
 	
 	MiniMapMailFrame:ClearAllPoints()
@@ -109,7 +112,9 @@ function Map:Style()
 	
 	MinimapNorthTag:SetTexture(nil)
 	
-	MiniMapTrackingBackground:SetTexture(nil)
+	if MiniMapTrackingBackground then
+		MiniMapTrackingBackground:SetTexture(nil)
+	end
 	
 	self.Tracking = CreateFrame("Frame", nil, Minimap, "BackdropTemplate")
 	self.Tracking:SetSize(24, 24)
@@ -124,9 +129,11 @@ function Map:Style()
 	self.Tracking.Tex:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	self.Tracking.Tex:SetVertexColor(HydraUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
-	MiniMapTracking:SetParent(self.Tracking)
-	MiniMapTracking:ClearAllPoints()
-	MiniMapTracking:SetPoint("CENTER", self.Tracking, 0, 0)
+	if MiniMapTracking then
+		MiniMapTracking:SetParent(self.Tracking)
+		MiniMapTracking:ClearAllPoints()
+		MiniMapTracking:SetPoint("CENTER", self.Tracking, 0, 0)
+	end
 	
 	self:Disable(MinimapCluster)
 	self:Disable(MinimapBorder)

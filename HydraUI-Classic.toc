@@ -9,6 +9,8 @@ Initialize.lua
 Elements\Libraries\LibStub.lua
 Elements\Libraries\CallbackHandler-1.0.lua
 Elements\Libraries\ChatThrottleLib.lua
+Elements\Libraries\LibClassicMobHealth-1.0.lua
+Elements\Libraries\LibClassicCasterino.lua
 Elements\Libraries\LibHealComm-4.0.lua
 Elements\Libraries\LibSharedMedia-3.0.lua
 Elements\Libraries\AceSerializer-3.0.lua
@@ -17,6 +19,7 @@ Elements\Libraries\LibAnim.lua
 Elements\Libraries\oUF\oUF_Classic.xml
 Elements\Libraries\LibQuestXP\LibQuestXPDB.lua
 Elements\Libraries\LibQuestXP\LibQuestXP.lua
+Elements\Libraries\LibClassicDurations\LibClassicDurations.xml
 Elements\Assets.lua
 Elements\Tools.lua
 Languages\deDE.lua
@@ -36,9 +39,9 @@ Elements\GUI\Widgets.lua
 Elements\Profiles.lua
 Elements\Colors.lua
 Elements\Throttle.lua
+Elements\Move.lua
 Elements\General.lua
 Elements\Fonts.lua
-Elements\Move.lua
 Elements\Alerts.lua
 Elements\Popup.lua
 Elements\Gold.lua
@@ -53,7 +56,6 @@ Elements\UnitFrames\Classic\Player.lua
 Elements\UnitFrames\Classic\Target.lua
 Elements\UnitFrames\Classic\TargetTarget.lua
 Elements\UnitFrames\Classic\Pet.lua
-Elements\UnitFrames\Classic\Focus.lua
 Elements\UnitFrames\Classic\Boss.lua
 Elements\UnitFrames\Classic\Party.lua
 Elements\UnitFrames\Classic\Raid.lua
@@ -71,14 +73,13 @@ Elements\DataTexts\Gold.lua
 Elements\DataTexts\TimeLocal.lua
 Elements\DataTexts\TimeRealm.lua
 Elements\DataTexts\Armor.lua
-Elements\DataTexts\HitRating.lua
-Elements\DataTexts\CritRating.lua
+Elements\DataTexts\HitRatingClassic.lua
+Elements\DataTexts\CritRatingClassic.lua
 Elements\DataTexts\ManaRegen.lua
 Elements\DataTexts\BagSlots.lua
 Elements\DataTexts\CombatTime.lua
 Elements\DataTexts\Durability.lua
 Elements\DataTexts\Empty.lua
-Elements\DataTexts\Expertise.lua
 Elements\DataTexts\AttackPower.lua
 Elements\DataTexts\SpellPower.lua
 Elements\DataTexts\Guild.lua
