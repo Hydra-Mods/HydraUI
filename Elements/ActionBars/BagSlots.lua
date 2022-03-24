@@ -9,13 +9,24 @@ Defaults["bags-frame-opacity"] = 40
 Defaults["bags-frame-max"] = 100
 Defaults["bags-frame-size"] = 32
 
-BagsFrame.Objects = {
-	CharacterBag3Slot,
-	CharacterBag2Slot,
-	CharacterBag1Slot,
-	CharacterBag0Slot,
-	MainMenuBarBackpackButton,
-}
+if HydraUI.IsMainline then
+	BagsFrame.Objects = {
+		CharacterBag3Slot,
+		CharacterBag2Slot,
+		CharacterBag1Slot,
+		CharacterBag0Slot,
+		MainMenuBarBackpackButton,
+	}
+else
+	BagsFrame.Objects = {
+		KeyRingButton,
+		CharacterBag3Slot,
+		CharacterBag2Slot,
+		CharacterBag1Slot,
+		CharacterBag0Slot,
+		MainMenuBarBackpackButton,
+	}
+end
 
 local BagsFrameButtonOnEnter = function(self)
 	if (Settings["bags-frame-visiblity"] == "MOUSEOVER") then
@@ -62,12 +73,17 @@ function BagsFrame:Load()
 	end
 	
 	self.Panel = CreateFrame("Frame", "HydraUI Bags Window", HydraUI.UIParent, "BackdropTemplate")
-	self.Panel:SetSize(((Settings["bags-frame-size"] + 4) * #self.Objects) + 4, Settings["bags-frame-size"] + 8)
 	self.Panel:SetPoint("BOTTOMRIGHT", HydraUI:GetModule("Micro Buttons").Panel, "TOPRIGHT", 0, 3)
 	self.Panel:SetBackdrop(HydraUI.BackdropAndBorder)
 	self.Panel:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self.Panel:SetBackdropBorderColor(0, 0, 0)
 	self.Panel:SetFrameStrata("LOW")
+	
+	if HydraUI.IsMainline then
+		self.Panel:SetSize(((Settings["bags-frame-size"] + 4) * #self.Objects) + 4, Settings["bags-frame-size"] + 8)
+	else
+		self.Panel:SetSize(((Settings["bags-frame-size"] + 4) * (#self.Objects - 1)) + 8 + (Settings["bags-frame-size"] / 2), Settings["bags-frame-size"] + 8)
+	end
 	
 	HydraUI:CreateMover(self.Panel)
 	
@@ -87,7 +103,9 @@ function BagsFrame:Load()
 		local Count = _G[Name .. "Count"]
 		local Stock = _G[Name .. "Stock"]
 		
-		Object.IconBorder:SetAlpha(0)
+		if Object.IconBorder then
+			Object.IconBorder:SetAlpha(0)
+		end
 		
 		if Normal then
 			Normal:SetTexture(nil)
@@ -142,6 +160,10 @@ function BagsFrame:Load()
 		
 		if (i == 1) then
 			Object:SetPoint("LEFT", self.Panel, 4, 0)
+			
+			if (not HydraUI.IsMainline) then
+				Object:SetSize(Settings["bags-frame-size"] / 2, Settings["bags-frame-size"])
+			end
 		else
 			Object:SetPoint("LEFT", self.Objects[i-1], "RIGHT", 4, 0)
 		end
@@ -157,16 +179,23 @@ local UpdateBagVisibility = function()
 end
 
 local UpdateBagFrameSize = function(value)
-	BagsFrame.Panel:SetSize(((value + 4) * #BagsFrame.Objects) + 4, value + 8)
+	if HydraUI.IsMainline then
+		BagsFrame.Panel:SetSize(((value + 4) * #BagsFrame.Objects) + 4, value + 8)
+	else
+		BagsFrame.Panel:SetSize(((value + 4) * (#BagsFrame.Objects - 1)) + 8 + (value / 2), value + 8)
+	end
 	
 	for i = 1, #BagsFrame.Objects do
-		BagsFrame.Objects[i]:SetSize(value, value)
-		
 		BagsFrame.Objects[i]:ClearAllPoints()
 		
 		if (i == 1) then
-			BagsFrame.Objects[i]:SetPoint("LEFT", BagsFrame.Panel, 4, 0)
+			if (not HydraUI.IsMainline) then
+				BagsFrame.Objects[i]:SetSize(Settings["bags-frame-size"] / 2, Settings["bags-frame-size"])
+			else
+				BagsFrame.Objects[i]:SetPoint("LEFT", BagsFrame.Panel, 4, 0)
+			end
 		else
+			BagsFrame.Objects[i]:SetSize(value, value)
 			BagsFrame.Objects[i]:SetPoint("LEFT", BagsFrame.Objects[i-1], "RIGHT", 4, 0)
 		end
 	end
