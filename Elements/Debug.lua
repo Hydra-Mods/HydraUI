@@ -29,17 +29,50 @@ local GetClient = function()
 	end
 end
 
-local GetQuests = function()
-	local NumQuests = select(2, C_QuestLog.GetNumQuestLogEntries())
-	local MaxQuests = C_QuestLog.GetMaxNumQuestsCanAccept()
-	
-	return format("%s / %s", NumQuests, MaxQuests)
-end
+local GetQuests, GetSpecInfo
 
-local GetSpecName = function()
-	local Name = select(2, GetSpecializationInfo(GetSpecialization()))
+if HydraUI.IsMainline then
+	GetQuests = function()
+		local NumQuests = select(2, C_QuestLog.GetNumQuestLogEntries())
+		local MaxQuests = C_QuestLog.GetMaxNumQuestsCanAccept()
+		
+		return format("%s / %s", NumQuests, MaxQuests)
+	end
 	
-	return Name
+	GetSpecInfo = function()
+		local Name = select(2, GetSpecializationInfo(GetSpecialization()))
+		
+		return Name
+	end
+else
+	GetQuests = function()
+		local NumQuests = select(2, GetNumQuestLogEntries())
+		local MaxQuests = C_QuestLog.GetMaxNumQuestsCanAccept()
+		
+		return format("%s / %s", NumQuests, MaxQuests)
+	end
+	
+	GetSpecInfo = function()
+		local MainSpec
+		local PointsTotal = ""
+		local HighestPoints = 0
+		local Name, PointsSpent, _
+		
+		for i = 1, 5 do -- Default UI uses 5 here for some reason? Just going to roll with it right now even though it makes no sense to me
+			Name, _, PointsSpent = GetTalentTabInfo(i)
+			
+			if Name then
+				if (PointsSpent > HighestPoints) then
+					MainSpec = Name
+					HighestPoints = PointsSpent
+				end
+				
+				PointsTotal = PointsTotal == "" and PointsSpent or PointsTotal .. "/" .. PointsSpent
+			end
+		end
+		
+		return MainSpec and format("%s (%s)", MainSpec, PointsTotal) or NOT_APPLICABLE
+	end
 end
 
 local OnShow = function()
@@ -85,7 +118,7 @@ GUI:AddWidgets(Language["Info"], Language["Debug"], function(left, right)
 	right:CreateDoubleLine("dgb-level", Language["Level"], UnitLevel("player"))
 	right:CreateDoubleLine("dgb-race", Language["Race"], HydraUI.UserRace)
 	right:CreateDoubleLine("dgb-class", Language["Class"], UnitClass("player"))
-	right:CreateDoubleLine("dgb-spec", Language["Spec"], GetSpecName())
+	right:CreateDoubleLine("dgb-spec", Language["Spec"], GetSpecInfo())
 	right:CreateDoubleLine("dgb-realm", Language["Realm"], HydraUI.UserRealm)
 	right:CreateDoubleLine("dgb-zone", Language["Zone"], GetZoneText())
 	right:CreateDoubleLine("dgb-subzone", Language["Sub Zone"], GetMinimapZoneText())
