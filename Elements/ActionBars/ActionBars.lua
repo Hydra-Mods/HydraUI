@@ -1047,10 +1047,15 @@ function AB:UpdateEmptyButtons()
 				local Button = _G[ActionBars[i] .. j]
 				
 				if Button then
-					Button:SetAttribute("showgrid", 1)
-					
 					if Button.ShowGrid then
 						Button:ShowGrid(ACTION_BUTTON_SHOW_GRID_REASON_EVENT)
+					end
+					
+					if HydraUI.IsMainline then
+						Button:SetAttribute("showgrid", 1)
+					else
+						Button:SetAttribute("showgrid", 2)
+						ActionButton_ShowGrid(Button)
 					end
 				end
 			end
