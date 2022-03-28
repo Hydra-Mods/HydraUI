@@ -142,7 +142,11 @@ local OnMouseUp = function()
 		return print(ERR_NOT_IN_COMBAT)
 	end
 	
-	ToggleCommunitiesFrame()
+	if HydraUI.IsMainline then
+		ToggleCommunitiesFrame()
+	else
+		ToggleFriendsFrame(3)
+	end
 end
 
 local OnEnable = function(self)

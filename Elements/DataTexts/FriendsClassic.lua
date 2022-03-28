@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Media, Settings = select(2, ...):get()
+local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
 local GetNumFriends = C_FriendList.GetNumFriends
 local GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
@@ -188,7 +188,7 @@ end
 
 ClientInfo["OSI"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
-
+	
 	if IsAFK then
 		name = format("|cFF9E9E9E%s|r", name)
 	elseif IsBusy then
@@ -196,7 +196,7 @@ ClientInfo["OSI"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-
+	
 	return name, ClientToName[Client]
 end
 
@@ -260,7 +260,7 @@ local OnEnter = function(self)
 	local FriendInfo
 	local Name
 	
-	GameTooltip:AddDoubleLine(Label, format("%s/%s", NumBNOnline + NumFriendsOnline, NumFriends + NumBNFriends))
+	GameTooltip:AddDoubleLine(Label, format("%s/%s", NumBNOnline + NumFriendsOnline, NumFriends + NumBNFriends), nil, nil, nil, 1, 1, 1)
 	GameTooltip:AddLine(" ")
 	
 	-- B.Net friends
@@ -280,7 +280,32 @@ local OnEnter = function(self)
 		FriendInfo = GetFriendInfoByIndex(i)
 		
 		if FriendInfo.connected then
-			GameTooltip:AddDoubleLine(FriendInfo.name, FriendInfo.level)
+			--GameTooltip:AddDoubleLine(FriendInfo.name, FriendInfo.level)
+			
+			local Class = GetClass(FriendInfo.className)
+			
+			if (Class == "Unknown") then
+				Class = "PRIEST"
+			end
+			
+			local ClassColor = HydraUI.ClassColors[Class]
+			
+			ClassColor = HydraUI:RGBToHex(ClassColor[1], ClassColor[2], ClassColor[3])
+			
+			local LevelColor = GetQuestDifficultyColor(FriendInfo.level)
+			LevelColor = HydraUI:RGBToHex(LevelColor.r, LevelColor.g, LevelColor.b)
+			
+			if FriendInfo.afk then
+				Name = format("|cFF9E9E9E%s|r", FriendInfo.name)
+			elseif FriendInfo.dnd then
+				Name = format("|cFFF44336%s|r", FriendInfo.name)
+			else
+				Name = FriendInfo.name
+			end
+			
+			local NameInfo = format("|cFFFFFFFF|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF|r", LevelColor, FriendInfo.level, ClassColor, Name)
+			
+			GameTooltip:AddDoubleLine(NameInfo, FriendInfo.area)
 		end
 	end
 	
