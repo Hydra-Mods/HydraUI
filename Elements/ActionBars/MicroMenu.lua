@@ -179,19 +179,20 @@ function MicroButtons:Load()
 			Disabled:SetPoint("BOTTOMRIGHT", self.Buttons[i], -2, 2)
 		end
 		
-		if HydraUI.IsClassic then
-			Normal:SetTexCoord(0.2, 0.85, 0.5, 0.9)
-			Pushed:SetTexCoord(0.2, 0.85, 0.5, 0.9)
-			
-			if Disabled then
-				Disabled:SetTexCoord(0.2, 0.85, 0.5, 0.9)
-			end
-		else
+		if HydraUI.IsMainline then
 			Normal:SetTexCoord(0.22, 0.82, 0.22, 0.82)
 			Pushed:SetTexCoord(0.22, 0.82, 0.22, 0.82)
 			
 			if Disabled then
 				Disabled:SetTexCoord(0.22, 0.82, 0.22, 0.82)
+			end
+		else
+		
+			Normal:SetTexCoord(0.2, 0.85, 0.5, 0.9)
+			Pushed:SetTexCoord(0.2, 0.85, 0.5, 0.9)
+			
+			if Disabled then
+				Disabled:SetTexCoord(0.2, 0.85, 0.5, 0.9)
 			end
 		end
 		
