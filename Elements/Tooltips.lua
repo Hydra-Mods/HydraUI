@@ -600,6 +600,8 @@ end
 function Tooltips:SkinItemRef()
 	if HydraUI.IsMainline then
 		ItemRefTooltip.CloseButton:Hide()
+	else
+		ItemRefCloseButton:Hide()
 	end
 	
 	-- Close button

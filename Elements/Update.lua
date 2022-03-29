@@ -1,7 +1,5 @@
 local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
 
-if 1 == 1 then return end
-
 local tonumber = tonumber
 local SendAddonMessage = C_ChatInfo.SendAddonMessage
 local IsInGuild = IsInGuild
@@ -57,6 +55,8 @@ end
 function Update:PLAYER_ENTERING_WORLD()
 	if IsInGuild() then
 		SendAddonMessage("HydraUI-Version", AddOnVersion, "GUILD")
+	else
+		self:RegisterEvent("GUILD_ROSTER_UPDATE")
 	end
 	
 	if IsInRaid() then
@@ -76,18 +76,16 @@ function Update:PLAYER_ENTERING_WORLD()
 	end
 	
 	C_FriendList.ShowFriends()
-	
-	self:GUILD_ROSTER_UPDATE(true)
 end
 
 function Update:GUILD_ROSTER_UPDATE(update)
-	if (not update) then
+	if (not update and not IsInGuild()) then
 		return
 	end
-
-	if IsInGuild() then
-		SendAddonMessage("HydraUI-Version", AddOnVersion, "GUILD")
-	end
+	
+	SendAddonMessage("HydraUI-Version", AddOnVersion, "GUILD")
+	
+	self:UnregisterEvent("GUILD_ROSTER_UPDATE")
 end
 
 function Update:GROUP_ROSTER_UPDATE()
@@ -160,7 +158,7 @@ function Update:BN_CHAT_MSG_ADDON(prefix, message, channel, sender)
 end
 
 function Update:CHAT_MSG_ADDON(prefix, message, channel, sender)
-	if (sender == HydraUI.UserName or prefix ~= "HydraUI-Version") then
+	if (sender == User or prefix ~= "HydraUI-Version") then
 		return
 	end
 	
@@ -188,7 +186,6 @@ end
 Update:RegisterEvent("FRIENDLIST_UPDATE")
 Update:RegisterEvent("VARIABLES_LOADED")
 Update:RegisterEvent("PLAYER_ENTERING_WORLD")
-Update:RegisterEvent("GUILD_ROSTER_UPDATE")
 Update:RegisterEvent("GROUP_ROSTER_UPDATE")
 Update:RegisterEvent("CHAT_MSG_ADDON")
 Update:RegisterEvent("BN_CHAT_MSG_ADDON")
