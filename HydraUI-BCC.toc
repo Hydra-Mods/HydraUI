@@ -72,7 +72,7 @@ Elements\DataTexts\TimeLocal.lua
 Elements\DataTexts\TimeRealm.lua
 Elements\DataTexts\Armor.lua
 Elements\DataTexts\HitRating.lua
-Elements\DataTexts\CritRating.lua
+Elements\DataTexts\CritRatingClassic.lua
 Elements\DataTexts\ManaRegen.lua
 Elements\DataTexts\BagSlots.lua
 Elements\DataTexts\CombatTime.lua
