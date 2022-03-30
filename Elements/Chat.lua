@@ -162,6 +162,7 @@ local SetEditBoxToLink = function(box, text)
 		ChatEdit_UpdateHeader(box)
 	end
 	
+	box:SetFocus(true)
 	box:Insert(text)
 	box:HighlightText()
 end
