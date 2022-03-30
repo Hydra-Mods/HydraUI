@@ -22,6 +22,7 @@ Defaults["tooltips-cursor-anchor"] = "ANCHOR_CURSOR"
 Defaults["tooltips-cursor-anchor-x"] = 0
 Defaults["tooltips-cursor-anchor-y"] = 8
 Defaults["tooltips-show-health"] = true
+Defaults["tooltips-show-price"] = true
 Defaults["tooltips-opacity"] = 100
 
 local select = select
@@ -376,6 +377,31 @@ local OnTooltipSetItem = function(self)
 		return
 	end
 	
+	if (not HydraUI.IsMainline) and Settings["tooltips-show-price"] then
+		local VendorPrice = select(11, GetItemInfo(Link))
+		
+		if VendorPrice then
+			local Count = 1
+			local MouseFocus = GetMouseFocus()
+
+			if (MouseFocus and MouseFocus.count) then
+				Count = MouseFocus.count
+			end
+
+			if (Count and type(Count) == "number") then
+				local CopperValue = VendorPrice * Count
+
+				if (CopperValue > 0) then
+					local CoinString = GetCoinTextureString(CopperValue)
+
+					if CoinString then
+						self:AddLine(CoinString, 1, 1, 1)
+					end
+				end
+			end
+		end
+	end
+	
 	if Settings["tooltips-show-id"] then
 		local id = match(Link, ":(%w+)")
 		
@@ -713,6 +739,7 @@ GUI:AddWidgets(Language["General"], Language["Tooltips"], function(left, right)
 	left:CreateSwitch("tooltips-display-realm", Settings["tooltips-display-realm"], Language["Display Realm"], Language["Display character realms"])
 	left:CreateSwitch("tooltips-display-title", Settings["tooltips-display-title"], Language["Display Title"], Language["Display character titles"])
 	left:CreateSwitch("tooltips-display-rank", Settings["tooltips-display-rank"], Language["Display Guild Rank"], Language["Display character guild ranks"])
+	left:CreateSwitch("tooltips-show-price", Settings["tooltips-show-price"], Language["Display Vendor Price"], Language["Display the vendor price of an item"])
 	
 	left:CreateHeader(Language["Opacity"])
 	left:CreateSlider("tooltips-opacity", Settings["tooltips-opacity"], 0, 100, 5, Language["Tooltip Opacity"], Language["Set the opacity of the tooltip background"], UpdateTooltipBackdrop)
