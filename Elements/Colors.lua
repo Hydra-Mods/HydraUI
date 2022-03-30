@@ -62,6 +62,11 @@ Defaults["color-magic"] = "3399FF"
 Defaults["color-poison"] = "009900"
 Defaults["color-none"] = "000000"
 
+-- Happiness
+Defaults["color-happiness-1"] = "C62828" -- "8BC94D"
+Defaults["color-happiness-2"] = "FBC02D" -- "FFC44D"
+Defaults["color-happiness-3"] = "4CAF50" -- "EE4D4D"
+
 -- Combo Points
 Defaults["color-combo-1"] = "FF6666"
 Defaults["color-combo-2"] = "FFB266"
@@ -98,7 +103,9 @@ HydraUI.ReactionColors = {}
 HydraUI.ZoneColors = {}
 HydraUI.PowerColors = {}
 HydraUI.DebuffColors = {}
+HydraUI.HappinessColors = {}
 HydraUI.ComboPoints = {}
+HydraUI.TotemColors = {}
 
 function HydraUI:SetColorEntry(t, key, hex)
 	R, G, B = self:HexToRGB(hex)
@@ -178,6 +185,12 @@ function HydraUI:UpdateDebuffColors()
 	self:SetColorEntry(self.DebuffColors, "none", Settings["color-none"])
 end
 
+function HydraUI:UpdateHappinessColors()
+	self:SetColorEntry(self.HappinessColors, 1, Settings["color-happiness-1"])
+	self:SetColorEntry(self.HappinessColors, 2, Settings["color-happiness-2"])
+	self:SetColorEntry(self.HappinessColors, 3, Settings["color-happiness-3"])
+end
+
 function HydraUI:UpdateComboColors()
 	self:SetColorEntry(self.ComboPoints, 1, Settings["color-combo-1"])
 	self:SetColorEntry(self.ComboPoints, 2, Settings["color-combo-2"])
@@ -255,6 +268,13 @@ GUI:AddWidgets(Language["General"], Language["Colors"], function(left, right)
 	right:CreateColorSelection("color-magic", Settings["color-magic"], Language["Magic"], "")
 	right:CreateColorSelection("color-poison", Settings["color-poison"], Language["Poison"], "")
 	right:CreateColorSelection("color-none", Settings["color-none"], Language["None"], "")
+	
+	if (not HydraUI.IsMainline) then
+		right:CreateHeader(Language["Pet Happiness Colors"])
+		right:CreateColorSelection("color-happiness-3", Settings["color-happiness-3"], Language["Happy"], "")
+		right:CreateColorSelection("color-happiness-2", Settings["color-happiness-2"], Language["Content"], "")
+		right:CreateColorSelection("color-happiness-1", Settings["color-happiness-1"], Language["Unhappy"], "")
+	end
 	
 	left:CreateHeader(Language["Combo Points Colors"])
 	left:CreateColorSelection("color-combo-1", Settings["color-combo-1"], Language["Combo Point 1"], Language["Set the color of combo point 1"], ReloadUI):RequiresReload(true)
