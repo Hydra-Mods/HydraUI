@@ -51,9 +51,14 @@ local InCombatLockdown = InCombatLockdown
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitCanAttack = UnitCanAttack
 local UnitIsPVP = UnitIsPVP
+local GetHappiness
 
 local GameTooltipStatusBar = GameTooltipStatusBar
 local MyGuild
+
+if (not HydraUI.IsMainline) then
+	GetHappiness = GetPetHappiness
+end
 
 Tooltips.Handled = {
 	GameTooltip,
@@ -72,6 +77,12 @@ Tooltips.Classifications = {
 	["elite"] = Language["|cFFFDD835Elite|r"],
 	["rareelite"] = Language["|cFFBDBDBDRare Elite|r"],
 	["worldboss"] = Language["Boss"],
+}
+
+Tooltips.HappinessLevels = {
+	[1] = Language["Unhappy"],
+	[2] = Language["Content"],
+	[3] = Language["Happy"]
 }
 
 function Tooltips:UpdateFonts(tooltip)
@@ -356,6 +367,19 @@ local OnTooltipSetUnit = function(self)
 			local TargetColor = GetUnitColor(UnitID .. "target")
 			
 			self:AddLine(Language["Targeting: |cFF"] .. TargetColor .. UnitName(UnitID .. "target") .. "|r", 1, 1, 1)
+		end
+		
+		if ((not HydraUI.IsMainline) and HydraUI.UserClass == "HUNTER" and UnitID == "pet") then
+			local Level = GetHappiness()
+			
+			if Level then
+				local Color = HydraUI.HappinessColors[Level]
+				
+				if Color then
+					self:AddLine(" ")
+					self:AddDoubleLine(Language["Happiness:"], format("|cFF%s%s|r", HydraUI:RGBToHex(Color[1], Color[2], Color[3]), Tooltips.HappinessLevels[Level]))
+				end
+			end
 		end
 	end
 end

@@ -75,6 +75,10 @@ function Update:PLAYER_ENTERING_WORLD()
 		end
 	end
 	
+	if (not HydraUI.IsMainline) then
+		SendAddonMessage("HydraUI-Version", AddOnVersion, "YELL")
+	end
+	
 	C_FriendList.ShowFriends()
 end
 

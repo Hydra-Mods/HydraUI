@@ -207,6 +207,10 @@ function HydraUI:UpdateColors()
 	self:UpdatePowerColors()
 	self:UpdateDebuffColors()
 	self:UpdateComboColors()
+	
+	if (not self.IsMainline) then
+		self:UpdateHappinessColors()
+	end
 end
 
 GUI:AddWidgets(Language["General"], Language["Colors"], function(left, right)
