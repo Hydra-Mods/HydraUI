@@ -345,14 +345,14 @@ local OnEditFocusLost = function(self)
 	Chat.EditBox:SetAlpha(0)
 	Chat.EditBox:EnableMouse(false)
 	
-	Left:SetAlpha(1)
-	Middle:SetAlpha(1)
-	Right:SetAlpha(1)
+	if Left then Left:SetAlpha(1) end
+	if Middle then Middle:SetAlpha(1) end
+	if Right then Right:SetAlpha(1) end
 	
 	if Settings["data-text-enable-tooltips"] then
-		Left:EnableMouse(true)
-		Middle:EnableMouse(true)
-		Right:EnableMouse(true)
+		if Left then Left:EnableMouse(true) end
+		if Middle then Middle:EnableMouse(true) end
+		if Right then Right:EnableMouse(true) end
 	end
 end
 
@@ -361,20 +361,28 @@ local OnEditFocusGained = function(self)
 	local Middle = DT:GetAnchor("Chat-Middle")
 	local Right = DT:GetAnchor("Chat-Right")
 	
-	Left:SetAlpha(0)
-	Middle:SetAlpha(0)
-	Right:SetAlpha(0)
-	
-	if Left:IsMouseEnabled() then
-		Left:EnableMouse(false)
+	if Left then
+		Left:SetAlpha(0)
+		
+		if Left:IsMouseEnabled() then
+			Left:EnableMouse(false)
+		end
 	end
 	
-	if Middle:IsMouseEnabled() then
-		Middle:EnableMouse(false)
+	if Middle then
+		Middle:SetAlpha(0)
+		
+		if Middle:IsMouseEnabled() then
+			Middle:EnableMouse(false)
+		end
 	end
 	
-	if Right:IsMouseEnabled() then
-		Right:EnableMouse(false)
+	if Right then
+		Right:SetAlpha(0)
+		
+		if Right:IsMouseEnabled() then
+			Right:EnableMouse(false)
+		end
 	end
 	
 	Chat.EditBox:SetAlpha(1)

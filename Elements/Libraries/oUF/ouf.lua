@@ -795,7 +795,10 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 	eventHandler:RegisterEvent('NAME_PLATE_UNIT_ADDED')
 	eventHandler:RegisterEvent('NAME_PLATE_UNIT_REMOVED')
 	eventHandler:RegisterEvent('PLAYER_TARGET_CHANGED')
-	eventHandler:RegisterEvent('UNIT_HEALTH_FREQUENT')
+	
+	if select(4, GetBuildInfo()) < 90000 then
+		eventHandler:RegisterEvent('UNIT_HEALTH_FREQUENT')
+	end
 
 	if(IsLoggedIn()) then
 		if(nameplateCVars) then
