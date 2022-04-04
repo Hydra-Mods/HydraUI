@@ -134,13 +134,11 @@ function BagsFrame:Load()
 		Object.BG:SetPoint("BOTTOMRIGHT", Object, 1, -1)
 		Object.BG:SetColorTexture(0, 0, 0)
 		
-		--[[local Checked = Object:CreateTexture(nil, "ARTWORK")
-		Checked:SetPoint("TOPLEFT", Object, 0, 0)
-		Checked:SetPoint("BOTTOMRIGHT", Object, 0, 0)
-		Checked:SetColorTexture(0.1, 0.8, 0.1)
-		Checked:SetAlpha(0.2)
-		
-		Object:SetCheckedTexture(Checked)]]
+		if HydraUI.IsMainline then
+			Object.SlotHighlightTexture:SetAlpha(0)
+		else
+			Object:SetCheckedTexture("")
+		end
 		
 		local Highlight = Object:CreateTexture(nil, "ARTWORK")
 		Highlight:SetPoint("TOPLEFT", Object, 0, 0)
@@ -150,16 +148,6 @@ function BagsFrame:Load()
 		
 		Object:SetHighlightTexture(Highlight)
 		
-		if (KeyRingButton and i ~= 1) or (not KeyRingButton) then
-			local Pushed = Object:CreateTexture(nil, "ARTWORK", 7)
-			Pushed:SetPoint("TOPLEFT", Object, 0, 0)
-			Pushed:SetPoint("BOTTOMRIGHT", Object, 0, 0)
-			Pushed:SetColorTexture(0.2, 0.9, 0.2)
-			Pushed:SetAlpha(0.4)
-			
-			Object:SetPushedTexture(Pushed)
-		end
-		
 		if (i == 1) then
 			Object:SetPoint("LEFT", self.Panel, 4, 0)
 			
@@ -168,6 +156,14 @@ function BagsFrame:Load()
 			end
 		else
 			Object:SetPoint("LEFT", self.Objects[i-1], "RIGHT", 4, 0)
+			
+			local Pushed = Object:CreateTexture(nil, "ARTWORK", 7)
+			Pushed:SetPoint("TOPLEFT", Object, 0, 0)
+			Pushed:SetPoint("BOTTOMRIGHT", Object, 0, 0)
+			Pushed:SetColorTexture(0.2, 0.9, 0.2)
+			Pushed:SetAlpha(0.4)
+			
+			Object:SetPushedTexture(Pushed)
 		end
 	end
 	
