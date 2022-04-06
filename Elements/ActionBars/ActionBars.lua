@@ -1011,9 +1011,11 @@ function AB:UpdateFlyout()
 		return
 	end
 	
-	SpellFlyout.BgEnd:SetTexture()
-	SpellFlyout.HorizBg:SetTexture()
-	SpellFlyout.VertBg:SetTexture()
+	if (SpellFlyout and SpellFlyout:IsShown()) then
+		SpellFlyout.BgEnd:SetTexture()
+		SpellFlyout.HorizBg:SetTexture()
+		SpellFlyout.VertBg:SetTexture()
+	end
 	
 	if self.FlyoutBorder then
 		self.FlyoutBorder:SetTexture()
@@ -1094,10 +1096,8 @@ function AB:Load()
 	self:UpdateEmptyButtons()
 	
 	self:Hook("ActionButton_UpdateRangeIndicator", "UpdateButtonStatus")
-	
-	if HydraUI.Mainline then
-		self:Hook("ActionButton_UpdateFlyout", "UpdateFlyout")
-	end
+	--self:Hook("ActionButton_Update", "UpdateButtonStatus")
+	self:Hook("ActionButton_UpdateFlyout", "UpdateFlyout")
 end
 
 local UpdateBar1 = function()
