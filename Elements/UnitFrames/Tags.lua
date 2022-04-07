@@ -125,7 +125,7 @@ end
 
 Events["Level"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED PLAYER_ENTERING_WORLD"
 Methods["Level"] = function(unit)
-	local Level = UnitEffectiveLevel(unit)
+	local Level = UnitLevel(unit)
 	
 	if (Level == -1) then
 		if UnitIsPlayer(unit) then

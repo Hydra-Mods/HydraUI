@@ -1,49 +1,14 @@
 local addon, ns = ...
 local HydraUI, GUI, Language, Assets, Settings, Defaults = ns:get()
 
+local oUF = ns.oUF or oUF
+local Name, Duration, Expiration, Caster, SpellID, _
+
 local unpack = unpack
 local select = select
-local format = string.format
-local floor = math.floor
-local sub = string.sub
-local len = string.len
-local byte = string.byte
 local find = string.find
-local UnitName = UnitName
-local UnitPower = UnitPower
-local UnitPowerMax = UnitPowerMax
-local UnitPowerType = UnitPowerType
-local UnitHealth = UnitHealth
-local UnitHealthMax = UnitHealthMax
-local UnitIsConnected = UnitIsConnected
-local UnitIsPlayer = UnitIsPlayer
-local UnitIsGhost = UnitIsGhost
-local UnitIsDead = UnitIsDead
-local UnitIsAFK = UnitIsAFK
-local UnitClass = UnitClass
-local UnitLevel = UnitLevel
-local UnitEffectiveLevel = UnitEffectiveLevel
-local GetQuestDifficultyColor = GetQuestDifficultyColor
-local UnitReaction = UnitReaction
-local IsResting = IsResting
 local UnitAura = UnitAura
 local GetTime = GetTime
-
-local DEAD = DEAD
-local CHAT_MSG_AFK = CHAT_MSG_AFK
-local PLAYER_OFFLINE = PLAYER_OFFLINE
-
-local LCMH = LibStub("LibClassicMobHealth-1.0")
-local LCD = LibStub("LibClassicDurations")
-
-LCD:Register("HydraUI")
-
-local oUF = ns.oUF or oUF
-local Events = oUF.Tags.Events
-local Methods = oUF.Tags.Methods
-local Name, Duration, Expiration, Caster, SpellID, _
-local TestPartyIndex = 0
-local TestRaidIndex = 0
 
 Defaults["unitframes-only-player-debuffs"] = false
 Defaults["unitframes-show-player-buffs"] = true
@@ -62,38 +27,19 @@ HydraUI.StyleFuncs = {}
 local Hider = CreateFrame("Frame", nil, HydraUI.UIParent, "SecureHandlerStateTemplate")
 Hider:Hide()
 
-local HappinessLevels = {
-	[1] = Language["Unhappy"],
-	[2] = Language["Content"],
-	[3] = Language["Happy"]
-}
+local Ignore = {}
 
-local Classes = {
-	["rare"] = Language["Rare"],
-	["elite"] = Language["Elite"],
-	["rareelite"] = Language["Rare Elite"],
-	--["worldboss"] = Language["Boss"],
-}
-
-local ShortClasses = {
-	["rare"] = Language[" R"],
-	["elite"] = Language["+"],
-	["rareelite"] = Language[" R+"],
-	--["worldboss"] = Language[" B"],
-}
-
-local Ignore = {
-
-}
+if HydraUI.IsMainline then
+	Ignore[GetSpellInfo(57724)] = true -- Sated
+	Ignore[GetSpellInfo(288293)] = true -- Temporal Displacement
+	Ignore[GetSpellInfo(206150)] = true -- Challenger's Might
+	Ignore[GetSpellInfo(206151)] = true -- Challenger's Burden
+end
 
 local CustomFilter = function(self, unit, icon, name, texture, count, dtype, duration, timeLeft, caster)
 	if ((self.onlyShowPlayer and icon.isPlayer) or (not self.onlyShowPlayer and name)) and (not Ignore[name]) then
 		return true
 	end
-end
-
-local GetColor = function(p, r1, g1, b1, r2, g2, b2)
-	return r1 + (r2 - r1) * p, g1 + (g2 - g1) * p, b1 + (b2 - b1) * p
 end
 
 function UF:SetHealthAttributes(health, value)
@@ -137,525 +83,6 @@ function UF:SetPowerAttributes(power, value)
 	end
 end
 
-local UTF8Sub = function(str, stop) -- utf8 sub derived from tukui
-	if (not str) then
-		return
-	end
-
-	local Bytes = len(str)
-
-	if (Bytes <= stop) then
-		return str
-	else
-		local Len, Pos = 0, 1
-
-		while (Pos <= Bytes) do
-			Len = Len + 1
-
-			local c = byte(str, Pos)
-
-			if (c > 0 and c <= 127) then
-				Pos = Pos + 1
-			elseif (c >= 192 and c <= 223) then
-				Pos = Pos + 2
-			elseif (c >= 224 and c <= 239) then
-				Pos = Pos + 3
-			elseif (c >= 240 and c <= 247) then
-				Pos = Pos + 4
-			end
-
-			if (Len == stop) then
-				break
-			end
-		end
-
-		if (Len == stop and Pos <= Bytes) then
-			return sub(str, 1, Pos - 1) .. ".."
-		else
-			return str
-		end
-	end
-end
-
--- Tags
-Events["ColorStop"] = "PLAYER_ENTERING_WORLD"
-Methods["ColorStop"] = function()
-	return "|r"
-end
-
-Events["Resting"] = "PLAYER_UPDATE_RESTING"
-Methods["Resting"] = function(unit)
-	if (unit == "player" and IsResting()) then
-		return "zZz"
-	end
-end
-
-Events["Status"] = "UNIT_HEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED PLAYER_UPDATE_RESTING"
-Methods["Status"] = function(unit)
-	if UnitIsDead(unit) then
-		return "|cFFEE4D4D" .. DEAD .. "|r"
-	elseif UnitIsGhost(unit) then
-		return "|cFFEEEEEE" .. Language["Ghost"] .. "|r"
-	elseif (not UnitIsConnected(unit)) then
-		return "|cFFEEEEEE" .. PLAYER_OFFLINE .. "|r"
-	elseif UnitIsAFK(unit) then
-		return "|cFFEEEEEE" .. CHAT_MSG_AFK .. "|r"
-	else
-		return Methods["Resting"](unit)
-	end
-	
-	return ""
-end
-
-Events["Level"] = "UNIT_LEVEL PLAYER_LEVEL_UP PLAYER_ENTERING_WORLD"
-Methods["Level"] = function(unit)
-	local Level = UnitLevel(unit)
-	
-	if (Level == -1) then
-		if UnitIsPlayer(unit) then
-			return "??"
-		else
-			return Language["Boss"]
-		end
-	else
-		return Level
-	end
-end
-
-Events["LevelPlus"] = "UNIT_LEVEL PLAYER_LEVEL_UP PLAYER_ENTERING_WORLD"
-Methods["LevelPlus"] = function(unit)
-	local Class = UnitClassification(unit)
-	
-	if (Class == "worldboss") then
-		return "Boss"
-	else
-		local Plus = Methods["Plus"](unit)
-		local Level = Methods["Level"](unit)
-		
-		if Plus then
-			return Level .. Plus
-		else
-			return Level
-		end
-	end
-end
-
-Events["Classification"] = "UNIT_LEVEL PLAYER_LEVEL_UP PLAYER_ENTERING_WORLD"
-Methods["Classification"] = function(unit)
-	local Class = UnitClassification(unit)
-	
-	if Classes[Class] then
-		return Classes[Class]
-	end
-end
-
-Events["ShortClassification"] = "UNIT_LEVEL PLAYER_LEVEL_UP PLAYER_ENTERING_WORLD"
-Methods["ShortClassification"] = function(unit)
-	local Class = UnitClassification(unit)
-	
-	if ShortClasses[Class] then
-		return ShortClasses[Class]
-	end
-end
-
-Events["Plus"] = "UNIT_LEVEL PLAYER_LEVEL_UP PLAYER_ENTERING_WORLD"
-Methods["Plus"] = function(unit)
-	local Class = UnitClassification(unit)
-	
-	if ShortClasses[Class] then
-		return ShortClasses[Class]
-	end
-end
-
-Events["Resting"] = "PLAYER_UPDATE_RESTING PLAYER_ENTERING_WORLD"
-Methods["Resting"] = function(unit)
-	if (unit == "player" and IsResting()) then
-		return "zZz"
-	end
-end
-
-Events["Health"] = "UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD"
-Methods["Health"] = function(unit)
-	local Current, Max, Found = LCMH:GetUnitHealth(unit)
-	
-	if (not Found) then
-		Current = UnitHealth(unit)
-	end
-
-	return Current
-end
-
-Events["Health:Short"] = "UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD"
-Methods["Health:Short"] = function(unit)
-	local Current, Max, Found = LCMH:GetUnitHealth(unit)
-	
-	if (not Found) then
-		Current = UnitHealth(unit)
-	end
-
-	return HydraUI:ShortValue(Current)
-end
-
-Events["HealthPercent"] = "UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD"
-Methods["HealthPercent"] = function(unit)
-	local Current, Max, Found = LCMH:GetUnitHealth(unit)
-	
-	if (not Found) then
-		Current = UnitHealth(unit)
-		Max = UnitHealthMax(unit)
-	end
-	
-	if (Max == 0) then
-		return 0
-	else
-		return floor((Current / Max * 100 + 0.05) * 10) / 10 .. "%"
-	end
-end
-
-Events["HealthValues"] = "UNIT_HEALTH_FREQUENT UNIT_CONNECTION PLAYER_ENTERING_WORLD"
-Methods["HealthValues"] = function(unit)
-	local Current, Max, Found = LCMH:GetUnitHealth(unit)
-	
-	if (not Found) then
-		Current = UnitHealth(unit)
-		Max = UnitHealthMax(unit)
-	end
-	
-	return Current .. " / " .. Max
-end
-
-Events["HealthValues:Short"] = "UNIT_HEALTH_FREQUENT UNIT_CONNECTION PLAYER_ENTERING_WORLD"
-Methods["HealthValues:Short"] = function(unit)
-	local Current, Max, Found = LCMH:GetUnitHealth(unit)
-	
-	if (not Found) then
-		Current = UnitHealth(unit)
-		Max = UnitHealthMax(unit)
-	end
-	
-	return HydraUI:ShortValue(Current) .. " / " .. HydraUI:ShortValue(Max)
-end
-
-Events["HealthDeficit"] = "UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
-Methods["HealthDeficit"] = function(unit)
-	if UnitIsDead(unit) then
-		return "|cFFEE4D4D" .. DEAD .. "|r"
-	elseif UnitIsGhost(unit) then
-		return "|cFFEEEEEE" .. Language["Ghost"] .. "|r"
-	elseif (not UnitIsConnected(unit)) then
-		return "|cFFEEEEEE" .. PLAYER_OFFLINE .. "|r"
-	elseif UnitIsAFK(unit) then
-		return "|cFFEEEEEE" .. CHAT_MSG_AFK .. "|r"
-	end
-	
-	local Current = UnitHealth(unit)
-	local Max = UnitHealthMax(unit)
-	local Deficit = Max - Current
-	
-	if ((Deficit ~= 0) or (Current ~= Max)) then
-		return "-" .. Deficit
-	end
-end
-
-Events["HealthDeficit:Short"] = "UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
-Methods["HealthDeficit:Short"] = function(unit)
-	if UnitIsDead(unit) then
-		return "|cFFEE4D4D" .. DEAD .. "|r"
-	elseif UnitIsGhost(unit) then
-		return "|cFFEEEEEE" .. Language["Ghost"] .. "|r"
-	elseif (not UnitIsConnected(unit)) then
-		return "|cFFEEEEEE" .. PLAYER_OFFLINE .. "|r"
-	elseif UnitIsAFK(unit) then
-		return "|cFFEEEEEE" .. CHAT_MSG_AFK .. "|r"
-	end
-	
-	local Current = UnitHealth(unit)
-	local Max = UnitHealthMax(unit)
-	local Deficit = Max - Current
-	
-	if ((Deficit ~= 0) or (Current ~= Max)) then
-		return "-" .. HydraUI:ShortValue(Deficit)
-	end
-end
-
-Events["GroupStatus"] = "UNIT_HEALTH_FREQUENT UNIT_CONNECTION PLAYER_FLAGS_CHANGED PLAYER_ENTERING_WORLD"
-Methods["GroupStatus"] = function(unit)
-	if UnitIsDead(unit) then
-		return "|cFFEE4D4D" .. DEAD .. "|r"
-	elseif UnitIsGhost(unit) then
-		return "|cFFEEEEEE" .. Language["Ghost"] .. "|r"
-	elseif (not UnitIsConnected(unit)) then
-		return "|cFFEEEEEE" .. PLAYER_OFFLINE .. "|r"
-	elseif UnitIsAFK(unit) then
-		return "|cFFEEEEEE" .. CHAT_MSG_AFK .. "|r"
-	end
-	
-	local Current, Max, Found = LCMH:GetUnitHealth(unit)
-	local Color = Methods["HealthColor"](unit)
-	
-	if (not Found) then
-		Current = UnitHealth(unit)
-		Max = UnitHealthMax(unit)
-	end
-	
-	if (Max == 0) then
-		return Color .. "0|r"
-	else
-		return Color .. floor(Current / Max * 100 + 0.5) .. "|r"
-	end
-end
-
-Events["HealthColor"] = "UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD"
-Methods["HealthColor"] = function(unit)
-	local Current, Max, Found = LCMH:GetUnitHealth(unit)
-	
-	if (not Found) then
-		Current = UnitHealth(unit)
-		Max = UnitHealthMax(unit)
-	end
-	
-	if (Current and Max > 0) then
-		return "|cFF" .. HydraUI:RGBToHex(GetColor(Current / Max, 0.905, 0.298, 0.235, 0.17, 0.77, 0.4))
-	else
-		return "|cFF" .. HydraUI:RGBToHex(0.18, 0.8, 0.443)
-	end
-end
-
-Events["Power"] = "UNIT_POWER_FREQUENT PLAYER_ENTERING_WORLD"
-Methods["Power"] = function(unit)
-	if (UnitPower(unit) ~= 0) then
-		return UnitPower(unit)
-	end
-end
-
-Events["Power:Short"] = "UNIT_POWER_FREQUENT PLAYER_ENTERING_WORLD"
-Methods["Power:Short"] = function(unit)
-	if (UnitPower(unit) ~= 0) then
-		return HydraUI:ShortValue(UnitPower(unit))
-	end
-end
-
-Events["PowerValues"] = "UNIT_POWER_FREQUENT PLAYER_ENTERING_WORLD"
-Methods["PowerValues"] = function(unit)
-	local Current = UnitPower(unit)
-	local Max = UnitPowerMax(unit)
-	
-	if (Max ~= 0) then
-		return Current .. " / " .. Max
-	end
-end
-
-Events["PowerValues:Short"] = "UNIT_POWER_FREQUENT PLAYER_ENTERING_WORLD"
-Methods["PowerValues:Short"] = function(unit)
-	local Current = UnitPower(unit)
-	local Max = UnitPowerMax(unit)
-	
-	if (Max ~= 0) then
-		return HydraUI:ShortValue(Current) .. " / " .. HydraUI:ShortValue(Max)
-	end
-end
-
-Events["PowerPercent"] = "UNIT_POWER_FREQUENT PLAYER_ENTERING_WORLD"
-Methods["PowerPercent"] = function(unit)
-	if (UnitPower(unit) ~= 0) then
-		return floor((UnitPower(unit) / UnitPowerMax(unit) * 100 + 0.05) * 10) / 10 .. "%"
-	end
-end
-
-Events["PowerColor"] = "UNIT_POWER_FREQUENT PLAYER_ENTERING_WORLD"
-Methods["PowerColor"] = function(unit)
-	local PowerType, PowerToken = UnitPowerType(unit)
-	
-	if HydraUI.PowerColors[PowerToken] then
-		return format("|cFF%s", HydraUI.PowerColors[PowerToken].Hex)
-	else
-		return "|cFFFFFF"
-	end
-end
-
-Events["Name4"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
-Methods["Name4"] = function(unit)
-	local Name = UnitName(unit)
-	
-	if Name then
-		return UTF8Sub(Name, 4)
-	end
-end
-
-Events["Name5"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
-Methods["Name5"] = function(unit)
-	local Name = UnitName(unit)
-	
-	if Name then
-		return UTF8Sub(Name, 5)
-	end
-end
-
-Events["Name8"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
-Methods["Name8"] = function(unit)
-	local Name = UnitName(unit)
-	
-	if Name then
-		return UTF8Sub(Name, 8)
-	end
-end
-
-Events["Name10"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
-Methods["Name10"] = function(unit)
-	local Name = UnitName(unit)
-	
-	if Name then
-		return UTF8Sub(Name, 10)
-	end
-end
-
-Events["Name14"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
-Methods["Name14"] = function(unit)
-	local Name = UnitName(unit)
-	
-	if Name then
-		return UTF8Sub(Name, 14)
-	end
-end
-
-Events["Name15"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
-Methods["Name15"] = function(unit)
-	local Name = UnitName(unit)
-	
-	if Name then
-		return UTF8Sub(Name, 15)
-	end
-end
-
-Events["Name20"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
-Methods["Name20"] = function(unit)
-	local Name = UnitName(unit)
-	
-	if Name then
-		return UTF8Sub(Name, 20)
-	end
-end
-
-Events["Name30"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
-Methods["Name30"] = function(unit)
-	local Name = UnitName(unit)
-	
-	if Name then
-		return UTF8Sub(Name, 30)
-	end
-end
-
-Events["NameColor"] = "UNIT_NAME_UPDATE PLAYER_ENTERING_WORLD UNIT_CLASSIFICATION_CHANGED"
-Methods["NameColor"] = function(unit)
-	if UnitIsPlayer(unit) then
-		local _, Class = UnitClass(unit)
-		
-		if Class then
-			local Color = HydraUI.ClassColors[Class]
-			
-			if Color then
-				return "|cFF"..HydraUI:RGBToHex(Color[1], Color[2], Color[3])
-			end
-		end
-	else
-		local Reaction = UnitReaction(unit, "player")
-		
-		if Reaction then
-			local Color = HydraUI.ReactionColors[Reaction]
-			
-			if Color then
-				return "|cFF"..HydraUI:RGBToHex(Color[1], Color[2], Color[3])
-			end
-		end
-	end
-end
-
-Events["Reaction"] = "UNIT_NAME_UPDATE PLAYER_ENTERING_WORLD UNIT_CLASSIFICATION_CHANGED"
-Methods["Reaction"] = function(unit)
-	local Reaction = UnitReaction(unit, "player")
-	
-	if Reaction then
-		local Color = HydraUI.ReactionColors[Reaction]
-		
-		if Color then
-			return "|cFF"..HydraUI:RGBToHex(Color[1], Color[2], Color[3])
-		end
-	end
-end
-
-Events["LevelColor"] = "UNIT_LEVEL PLAYER_LEVEL_UP PLAYER_ENTERING_WORLD"
-Methods["LevelColor"] = function(unit)
-	local Level = UnitLevel(unit)
-	local Color = GetQuestDifficultyColor(Level)
-	
-	return "|cFF" .. HydraUI:RGBToHex(Color.r, Color.g, Color.b)
-end
-
-Events["RaidGroup"] = "GROUP_ROSTER_UPDATE PLAYER_ENTERING_WORLD"
-Methods["RaidGroup"] = function(unit)
-	local Name = UnitName(unit)
-	local Unit, Rank, Group
-	
-	for i = 1, MAX_RAID_MEMBERS do
-		Unit, Rank, Group = GetRaidRosterInfo(i)
-		
-		if (not Unit) then
-			break
-		end
-		
-		if (Unit == Name) then
-			return Group
-		end
-	end
-end
-
-Events["PetColor"] = "UNIT_HAPPINESS UNIT_LEVEL PLAYER_LEVEL_UP PLAYER_ENTERING_WORLD UNIT_PET"
-Methods["PetColor"] = function(unit)
-	if (HydraUI.UserClass == "HUNTER") then
-		return Methods["HappinessColor"](unit)
-	else
-		return Methods["Reaction"](unit)
-	end
-end
-
-Events["PetHappiness"] = "UNIT_HAPPINESS PLAYER_ENTERING_WORLD UNIT_PET"
-Methods["PetHappiness"] = function(unit)
-	if (unit == "pet") then
-		local Happiness = GetPetHappiness()
-		
-		if Happiness then
-			return HappinessLevels[Happiness]
-		end
-	end
-end
-
-Events["HappinessColor"] = "UNIT_HAPPINESS PLAYER_ENTERING_WORLD"
-Methods["HappinessColor"] = function(unit)
-	if (unit == "pet") then
-		local Happiness = GetPetHappiness()
-		
-		if Happiness then
-			local Color = HydraUI.HappinessColors[Happiness]
-			
-			if Color then
-				return "|cFF"..HydraUI:RGBToHex(Color[1], Color[2], Color[3])
-			end
-		end
-	end
-end
-
-local ComboPointsUpdateShapeshiftForm = function(self, form)
-	local Parent = self:GetParent()
-	
-	Parent.Buffs:ClearAllPoints()
-	
-	if (form == 3) then
-		Parent.Buffs:SetPoint("BOTTOMLEFT", Parent.ComboPoints, "TOPLEFT", 0, 2)
-	else
-		Parent.Buffs:SetPoint("BOTTOMLEFT", Parent, "TOPLEFT", 0, 2)
-	end
-end
-
 local AuraOnUpdate = function(self, ela)
 	self.ela = self.ela + ela
 	
@@ -663,10 +90,10 @@ local AuraOnUpdate = function(self, ela)
 		local Now = (self.Expiration - GetTime())
 		
 		if (Now > 0) then
-			self.Time:SetText(HydraUI:FormatTime(Now))
+			self.Time:SetText(HydraUI:AuraFormatTime(Now))
 		else
 			self:SetScript("OnUpdate", nil)
-			--self.Time:Hide()
+			self.Time:Hide()
 		end
 		
 		if (Now <= 0) then
@@ -680,12 +107,6 @@ end
 
 UF.PostUpdateIcon = function(self, unit, button, index, position, duration, expiration, debuffType, isStealable)
 	local Name, _, _, _, Duration, Expiration, Caster, _, _, SpellID = UnitAura(unit, index, button.filter)
-	local DurationNew, ExpirationNew = LCD:GetAuraDurationByUnit(unit, SpellID, Caster, Name)
-	
-	if (Duration == 0 and DurationNew) then
-		Duration = DurationNew
-		Expiration = ExpirationNew
-	end
 	
 	button.Duration = Duration
 	button.Expiration = Expiration
@@ -759,18 +180,18 @@ UF.PostCreateIcon = function(unit, button)
 	
 	button.count:SetPoint("BOTTOMRIGHT", 1, 2)
 	button.count:SetJustifyH("RIGHT")
-	HydraUI:SetFontInfo(button.count, Settings["ui-widget-font"], Settings["ui-font-size"], "OUTLINE")
+	HydraUI:SetFontInfo(button.count, Settings["unitframes-font"], Settings["unitframes-font-size"], "OUTLINE")
 	
 	button.overlayFrame = CreateFrame("Frame", nil, button)
 	button.overlayFrame:SetFrameLevel(button.cd:GetFrameLevel() + 1)	 
 	
 	button.Time = button:CreateFontString(nil, "OVERLAY")
-	HydraUI:SetFontInfo(button.Time, Settings["ui-widget-font"], Settings["ui-font-size"], "OUTLINE")
+	HydraUI:SetFontInfo(button.Time, Settings["unitframes-font"], Settings["unitframes-font-size"], "OUTLINE")
 	button.Time:SetPoint("TOPLEFT", 2, -2)
 	button.Time:SetJustifyH("LEFT")
 	
 	button.count:SetParent(button.overlayFrame)
-	
+
 	if Settings["unitframes-display-aura-timers"] then
 		button.Time:SetParent(button.overlayFrame)
 	else
@@ -801,69 +222,49 @@ UF.AuraOffsets = {
 
 UF.BuffIDs = {
 	["DRUID"] = {
-		-- Regrowth
-		{8936, "TOPRIGHT", {0.2, 0.8, 0.2}},
-		{8938, "TOPRIGHT", {0.2, 0.8, 0.2}},
-		{8939, "TOPRIGHT", {0.2, 0.8, 0.2}},
-		{8940, "TOPRIGHT", {0.2, 0.8, 0.2}},
-		{8941, "TOPRIGHT", {0.2, 0.8, 0.2}},
-		{9750, "TOPRIGHT", {0.2, 0.8, 0.2}},
-		{9856, "TOPRIGHT", {0.2, 0.8, 0.2}},
-		{9857, "TOPRIGHT", {0.2, 0.8, 0.2}},
-		{9858, "TOPRIGHT", {0.2, 0.8, 0.2}},
-		
-		-- Rejuvenation
-		{774, "TOPLEFT", {0.8, 0.4, 0.8}},
-		{1058, "TOPLEFT", {0.8, 0.4, 0.8}},
-		{1430, "TOPLEFT", {0.8, 0.4, 0.8}},
-		{2090, "TOPLEFT", {0.8, 0.4, 0.8}},
-		{2091, "TOPLEFT", {0.8, 0.4, 0.8}},
-		{3627, "TOPLEFT", {0.8, 0.4, 0.8}},
-		{8910, "TOPLEFT", {0.8, 0.4, 0.8}},
-		{9839, "TOPLEFT", {0.8, 0.4, 0.8}},
-		{9840, "TOPLEFT", {0.8, 0.4, 0.8}},
-		{9841, "TOPLEFT", {0.8, 0.4, 0.8}},
-		{25299, "TOPLEFT", {0.8, 0.4, 0.8}},
+		{774, "TOPLEFT", {0.8, 0.4, 0.8}},      -- Rejuvenation
+		{155777, "LEFT", {0.8, 0.4, 0.8}},      -- Germination
+		{8936, "TOPRIGHT", {0.2, 0.8, 0.2}},    -- Regrowth
+		{33763, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- Lifebloom
+		{48438, "BOTTOMRIGHT", {0.8, 0.4, 0}},  -- Wild Growth
+		{102342, "RIGHT", {0.8, 0.2, 0.2}},     -- Ironbark
+		{102351, "BOTTOM", {0.84, 0.92, 0.77}},    -- Cenarion Ward
+		{102352, "BOTTOM", {0.84, 0.92, 0.77}},    -- Cenarion Ward (Heal)
+	},
+	
+	["MONK"] = {
+		{119611, "TOPLEFT", {0.32, 0.89, 0.74}},  -- Renewing Mist
+		{116849, "TOPRIGHT", {0.2, 0.8, 0.2}},	  -- Life Cocoon
+		{124682, "BOTTOMLEFT", {0.9, 0.8, 0.48}}, -- Enveloping Mist
+		{124081, "BOTTOMRIGHT", {0.7, 0.4, 0}},   -- Zen Sphere
+		{115175, "LEFT", {0.24, 0.87, 0.49}},     -- Soothing Mist
 	},
 	
 	["PALADIN"] = {
-		-- Blessing of Freedom
-		{1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true},
-		
-		-- Blessing of Protection
-		{1022, "BOTTOMRIGHT", {0.29, 0.45, 0.73}, true},
-		{5599, "BOTTOMRIGHT", {0.29, 0.45, 0.73}, true},
-		{10278, "BOTTOMRIGHT", {0.29, 0.45, 0.73}, true},
-		
-		-- Blessing of Sacrifice
-		{6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},
-		{20729, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},
+		{53563, "TOPRIGHT", {0.7, 0.3, 0.7}},	        -- Beacon of Light
+		{156910, "TOPRIGHT", {0.7, 0.3, 0.7}},	        -- Beacon of Faith
+		{200025, "TOPRIGHT", {0.7, 0.3, 0.7}},	        -- Beacon of Virtue
+		{287280, "BOTTOMLEFT", {0.99, 0.75, 0.36}},	    -- Glimmer of Light
+		{1022, "BOTTOMRIGHT", {0.29, 0.45, 0.73}, true},-- Blessing of Protection
+		{1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true},	-- Blessing of Freedom
+		--{1038, "BOTTOMRIGHT", {0.93, 0.75, 0}, true},	-- Blessing of Salvation
+		{6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},	-- Blessing of Sacrifice
+		--{223306, "TOPLEFT", {0.81, 0.85, 0.1}},	    -- Bestow Faith
 	},
 	
 	["PRIEST"] = {
-		-- Power Word: Shield
-		{17, "TOPLEFT", {0.81, 0.85, 0.1}, true},
-		{592, "TOPLEFT", {0.81, 0.85, 0.1}, true},
-		{600, "TOPLEFT", {0.81, 0.85, 0.1}, true},
-		{3747, "TOPLEFT", {0.81, 0.85, 0.1}, true},
-		{6065, "TOPLEFT", {0.81, 0.85, 0.1}, true},
-		{6066, "TOPLEFT", {0.81, 0.85, 0.1}, true},
-		{10898, "TOPLEFT", {0.81, 0.85, 0.1}, true},
-		{10899, "TOPLEFT", {0.81, 0.85, 0.1}, true},
-		{10900, "TOPLEFT", {0.81, 0.85, 0.1}, true},
-		{10901, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+		{41635, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},  -- Prayer of Mending
+		{139, "BOTTOMLEFT", {0.4, 0.7, 0.2}},     -- Renew
+		{17, "TOPLEFT", {0.81, 0.85, 0.1}, true}, -- Power Word: Shield
+		{194384, "TOPRIGHT", {1, 0, 0}},          -- Atonement
 		
-		-- Renew
-		{139, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
-		{6074, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
-		{6075, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
-		{6076, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
-		{6077, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
-		{6078, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
-		{10927, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
-		{10928, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
-		{10929, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
-		{25315, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+		{33206, "BOTTOMLEFT", {237/255, 233/255, 221/255}}, -- Pain Suppression
+		{121536, "BOTTOMRIGHT", {251/255, 193/255, 8/255}}, -- Angelic Feather
+	},
+	
+	["SHAMAN"] = {
+		{61295, "TOPLEFT", {0.7, 0.3, 0.7}},   -- Riptide
+		{974, "TOPRIGHT", {0.73, 0.61, 0.33}}, -- Earth Shield
 	},
 }
 
@@ -914,6 +315,17 @@ local Style = function(self, unit)
 		HydraUI.StyleFuncs["nameplate"](self, unit)
 	elseif find(unit, "boss%d") then
 		HydraUI.StyleFuncs["boss"](self, unit)
+	end
+end
+
+local UpdateShowPlayerBuffs = function(value)
+	if HydraUI.UnitFrames["player"] then
+		if value then
+			HydraUI.UnitFrames["player"]:EnableElement("Auras")
+			HydraUI.UnitFrames["player"]:UpdateAllElements("ForceUpdate")
+		else
+			HydraUI.UnitFrames["player"]:DisableElement("Auras")
+		end
 	end
 end
 
@@ -1004,6 +416,11 @@ function UF:Load()
 			Player:DisableElement("Portrait")
 		end
 		
+		if (not Settings["player-enable-pvp-indicator"]) then
+			Player:DisableElement("PvPIndicator")
+			Player.PvPIndicator:Hide()
+		end
+		
 		if Settings["unitframes-show-player-buffs"] then
 			Player:EnableElement("Auras")
 		else
@@ -1078,6 +495,16 @@ function UF:Load()
 		HydraUI:CreateMover(Pet)
 	end
 	
+	if Settings["focus-enable"] then
+		local Focus = oUF:Spawn("focus", "HydraUI Focus")
+		Focus:SetSize(Settings["unitframes-focus-width"], Settings["unitframes-focus-health-height"] + Settings["unitframes-focus-power-height"] + 3)
+		Focus:SetPoint("RIGHT", HydraUI.UIParent, "CENTER", -68, 304)
+		Focus:SetParent(HydraUI.UIParent)
+		
+		HydraUI.UnitFrames["focus"] = Focus
+		HydraUI:CreateMover(Focus)
+	end
+	
 	if Settings["unitframes-boss-enable"] then
 		for i = 1, 5 do
 			local Boss = oUF:Spawn("boss" .. i, "HydraUI Boss " .. i)
@@ -1143,27 +570,27 @@ function UF:Load()
 		HydraUI.UnitFrames["party"] = Party
 		
 		--UpdatePartyShowRole(Settings["party-show-role"])
-			
+		
 		HydraUI:CreateMover(self.PartyAnchor)
 		
 		if Settings["party-pets-enable"] then
 			local XOffset = 0
 			local YOffset = 0
-
+			
 			if (Settings["party-point"] == "LEFT") then
 				XOffset = Settings["party-spacing"]
 				YOffset = 0
 			elseif (Settings["party-point"] == "RIGHT") then
-				XOffset = -Settings["party-spacing"]
+				XOffset = - Settings["party-spacing"]
 				YOffset = 0
 			elseif (Settings["party-point"] == "TOP") then
 				XOffset = 0
-				YOffset = -Settings["party-spacing"]
+				YOffset = - Settings["party-spacing"]
 			elseif (Settings["party-point"] == "BOTTOM") then
 				XOffset = 0
 				YOffset = Settings["party-spacing"]
 			end
-			
+
 			local PartyPet = oUF:SpawnHeader("HydraUI Party Pets", "SecureGroupPetHeaderTemplate", "party,solo",
 				"initial-width", Settings["party-pets-width"],
 				"initial-height", (Settings["party-pets-health-height"] + Settings["party-pets-power-height"] + 3),
@@ -1181,19 +608,19 @@ function UF:Load()
 					self:SetHeight(Header:GetAttribute("initial-height"))
 				]]
 			)
-			
+
 			if (Settings["party-point"] == "LEFT") then
-				PartyPet:SetPoint("TOPLEFT", Party, "BOTTOMLEFT", 0, -Settings["party-spacing"])
+				PartyPet:SetPoint("TOPLEFT", Party, "BOTTOMLEFT", 0, - Settings["party-spacing"])
 			elseif (Settings["party-point"] == "RIGHT") then
-				PartyPet:SetPoint("TOPRIGHT", Party, "BOTTOMRIGHT", 0, -Settings["party-spacing"])
+				PartyPet:SetPoint("TOPRIGHT", Party, "BOTTOMRIGHT", 0, - Settings["party-spacing"])
 			elseif (Settings["party-point"] == "TOP") then
-				PartyPet:SetPoint("TOPLEFT", Party, "BOTTOMLEFT", 0, -Settings["party-spacing"])
+				PartyPet:SetPoint("TOPLEFT", Party, "BOTTOMLEFT", 0, - Settings["party-spacing"])
 			elseif (Settings["party-point"] == "BOTTOM") then
 				PartyPet:SetPoint("BOTTOMLEFT", Party, "TOPLEFT", 0, Settings["party-spacing"])
 			end
-			
+
 			PartyPet:SetParent(HydraUI.UIParent)
-			
+
 			HydraUI.UnitFrames["party-pets"] = PartyPet
 		end
 	end
@@ -1208,7 +635,7 @@ function UF:Load()
 			"showParty", false,
 			"showRaid", true,
 			"point", Settings["raid-point"],
-			"xOffset", Settings["raid-x-offset"],
+			"xoffset", Settings["raid-x-offset"],
 			"yOffset", Settings["raid-y-offset"],
 			"maxColumns", Settings["raid-max-columns"],
 			"unitsPerColumn", Settings["raid-units-per-column"],
@@ -1231,7 +658,7 @@ function UF:Load()
 			CompactRaidFrameContainer:UnregisterAllEvents()
 			CompactRaidFrameContainer:SetParent(Hider)
 			
-			--CompactRaidFrameManager:UnregisterAllEvents()
+			CompactRaidFrameManager:UnregisterAllEvents()
 			CompactRaidFrameManager:SetParent(Hider)
 		end
 		
@@ -1259,7 +686,7 @@ GUI:AddWidgets(Language["General"], Language["Unit Frames"], function(left, righ
 	left:CreateDropdown("unitframes-font", Settings["unitframes-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the unit frames"], nil, "Font")
 	left:CreateSlider("unitframes-font-size", Settings["unitframes-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the unit frames"])
 	left:CreateDropdown("unitframes-font-flags", Settings["unitframes-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the unit frames"])
-
+	
 	right:CreateHeader(Language["Auras"])
 	right:CreateSwitch("unitframes-display-aura-timers", Settings["unitframes-display-aura-timers"], Language["Display Aura Timers"], Language["Display the timer on unit frame auras"], ReloadUI):RequiresReload(true)
 end)
