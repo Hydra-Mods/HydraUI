@@ -50,14 +50,6 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Health:SetReverseFill(Settings["unitframes-player-health-reverse"])
 	
-	local AbsorbsBar = CreateFrame("StatusBar", nil, self)
-	AbsorbsBar:SetWidth(Settings["unitframes-player-width"])
-	AbsorbsBar:SetHeight(Settings["unitframes-player-health-height"])
-	AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
-	AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
-	AbsorbsBar:SetReverseFill(Settings["unitframes-player-health-reverse"])
-	
 	local HealBar = CreateFrame("StatusBar", nil, self)
 	HealBar:SetWidth(Settings["unitframes-player-width"])
 	HealBar:SetHeight(Settings["unitframes-player-health-height"])
@@ -67,11 +59,27 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	HealBar:SetReverseFill(Settings["unitframes-player-health-reverse"])
 	
 	if Settings["unitframes-player-health-reverse"] then
-		AbsorbsBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 		HealBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 	else
-		AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 		HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+	end
+	
+	if HydraUI.IsMainline then
+		local AbsorbsBar = CreateFrame("StatusBar", nil, self)
+		AbsorbsBar:SetWidth(Settings["unitframes-player-width"])
+		AbsorbsBar:SetHeight(Settings["unitframes-player-health-height"])
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
+		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
+		AbsorbsBar:SetReverseFill(Settings["unitframes-player-health-reverse"])
+		
+		if Settings["unitframes-player-health-reverse"] then
+			AbsorbsBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
+		else
+			AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+		end
+		
+		self.AbsorbsBar = AbsorbsBar
 	end
 	
 	local HealthBG = self:CreateTexture(nil, "BORDER")
@@ -197,18 +205,20 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		AdditionalPower:SetReverseFill(Settings["unitframes-player-power-reverse"])]]
 		
 		-- Power prediction
-		local MainBar = CreateFrame("StatusBar", nil, Power)
-		MainBar:SetReverseFill(true)
-		MainBar:SetPoint("TOPLEFT")
-		MainBar:SetPoint("BOTTOMRIGHT")
-		MainBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-		MainBar:SetStatusBarColor(0.8, 0.1, 0.1)
-		--MainBar:SetReverseFill(Settings["unitframes-player-power-reverse"])
-		
-		-- Register with oUF
-		self.PowerPrediction = {
-			mainBar = MainBar,
-		}
+		if HydraUI.IsMainline then
+			local MainBar = CreateFrame("StatusBar", nil, Power)
+			MainBar:SetReverseFill(true)
+			MainBar:SetPoint("TOPLEFT")
+			MainBar:SetPoint("BOTTOMRIGHT")
+			MainBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+			MainBar:SetStatusBarColor(0.8, 0.1, 0.1)
+			--MainBar:SetReverseFill(Settings["unitframes-player-power-reverse"])
+			
+			-- Register with oUF
+			self.PowerPrediction = {
+				mainBar = MainBar,
+			}
+		end
 		
 		-- Attributes
 		Power.frequentUpdates = true
@@ -648,7 +658,6 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	
 	self.Health = Health
 	self.Health.bg = HealthBG
-	self.AbsorbsBar = AbsorbsBar
 	self.HealBar = HealBar
 	self.HealthLeft = HealthLeft
 	self.HealthRight = HealthRight

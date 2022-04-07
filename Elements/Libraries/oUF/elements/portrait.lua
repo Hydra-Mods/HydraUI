@@ -59,7 +59,7 @@ local function Update(self, event, unit)
 				element:ClearModel()
 				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
 			else
-				element:SetCamDistanceScale(0.75)
+				element:SetCamDistanceScale(1)
 				element:SetPortraitZoom(1)
 				element:SetPosition(0, 0, 0)
 				element:ClearModel()

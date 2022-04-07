@@ -35,8 +35,9 @@ The following options are listed by priority. The first check that returns true 
 .colorPower        - Use `self.colors.power[token]` to color the bar based on the unit's power type. This method will
                      fall-back to `:GetAlternativeColor()` if it can't find a color matching the token. If this function
                      isn't defined, then it will attempt to color based upon the alternative power colors returned by
-                     [UnitPowerType](http://wowprogramming.com/docs/api/UnitPowerType.html). Finally, if these aren't
-                     defined, then it will attempt to color the bar based upon `self.colors.power[type]` (boolean)
+                     [UnitPowerType](http://wowprogramming.com/docs/api/UnitPowerType.html). If these aren't
+                     defined, then it will attempt to color the bar based upon `self.colors.power[type]`. In case of
+                     failure it'll default to `self.colors.power.MANA` (boolean)
 .colorClass        - Use `self.colors.class[class]` to color the bar based on unit class. `class` is defined by the
                      second return of [UnitClass](http://wowprogramming.com/docs/api/UnitClass.html) (boolean)
 .colorClassNPC     - Use `self.colors.class[class]` to color the bar if the unit is a NPC (boolean)
@@ -117,48 +118,50 @@ local function UpdateColor(self, event, unit)
 	if(self.unit ~= unit) then return end
 	local element = self.Power
 
-	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
+	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 
-	local r, g, b, t
+	local r, g, b, color
 	if(element.colorDisconnected and not UnitIsConnected(unit)) then
-		t = self.colors.disconnected
+		color = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
-		t = self.colors.tapped
+		color = self.colors.tapped
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
-		t =  self.colors.threat[UnitThreatSituation('player', unit)]
+		color =  self.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorPower) then
 		if(element.displayType ~= ALTERNATE_POWER_INDEX) then
-			t = self.colors.power[ptoken or ptype]
-			if(not t) then
+			color = self.colors.power[pToken]
+			if(not color) then
 				if(element.GetAlternativeColor) then
-					r, g, b = element:GetAlternativeColor(unit, ptype, ptoken, altR, altG, altB)
+					r, g, b = element:GetAlternativeColor(unit, pType, pToken, altR, altG, altB)
 				elseif(altR) then
 					r, g, b = altR, altG, altB
 					if(r > 1 or g > 1 or b > 1) then
 						-- BUG: As of 7.0.3, altR, altG, altB may be in 0-1 or 0-255 range.
 						r, g, b = r / 255, g / 255, b / 255
 					end
+				else
+					color = self.colors.power[pType] or self.colors.power.MANA
 				end
 			end
 		else
-			t = self.colors.power[ALTERNATE_POWER_INDEX]
+			color = self.colors.power[ALTERNATE_POWER_INDEX]
 		end
 	elseif(element.colorClass and UnitIsPlayer(unit))
 		or (element.colorClassNPC and not UnitIsPlayer(unit))
 		or (element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
 		local _, class = UnitClass(unit)
-		t = self.colors.class[class]
+		color = self.colors.class[class]
 	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
-		t = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
+		color = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
-		t = self.colors.reaction[UnitReaction(unit, 'player')]
+		color = self.colors.reaction[UnitReaction(unit, 'player')]
 	elseif(element.colorSmooth) then
 		local adjust = 0 - (element.min or 0)
 		r, g, b = self:ColorGradient((element.cur or 1) + adjust, (element.max or 1) + adjust, unpack(element.smoothGradient or self.colors.smooth))
 	end
 
-	if(t) then
-		r, g, b = t[1], t[2], t[3]
+	if(color) then
+		r, g, b = color[1], color[2], color[3]
 	end
 
 	if(b) then

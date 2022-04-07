@@ -88,11 +88,10 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 
 local _, ns = ...
 local oUF = ns.oUF
-local HydraUI, GUI, Language, Media, Settings = ns:get()
 
-local UnitCastingInfo = UnitCastingInfo
-local UnitChannelInfo = UnitChannelInfo
 local FALLBACK_ICON = 136243 -- Interface\ICONS\Trade_Engineering
+local FAILED = _G.FAILED or 'Failed'
+local INTERRUPTED = _G.INTERRUPTED or 'Interrupted'
 
 local function resetAttributes(self)
 	self.castID = nil
@@ -148,12 +147,6 @@ local function CastStart(self, event, unit)
 	if(element.Spark) then element.Spark:Show() end
 	if(element.Text) then element.Text:SetText(name) end
 	if(element.Time) then element.Time:SetText() end
-
-	element:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-casting-start"]))
-
-	if element.bg then
-		element.bg:SetVertexColor(HydraUI:HexToRGB(Settings["color-casting-start"]))
-	end
 
 	local safeZone = element.SafeZone
 	if(safeZone) then
@@ -253,12 +246,6 @@ local function CastStop(self, event, unit, castID, spellID)
 
 	resetAttributes(element)
 
-	element:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-casting-stopped"]))
-
-	if element.bg then
-		element.bg:SetVertexColor(HydraUI:HexToRGB(Settings["color-casting-stopped"]))
-	end
-
 	--[[ Callback: Castbar:PostCastStop(unit, spellID)
 	Called after the element has been updated when a spell cast or channel has stopped.
 
@@ -290,12 +277,6 @@ local function CastFail(self, event, unit, castID, spellID)
 	resetAttributes(element)
 	element:SetValue(element.max)
 
-	element:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-casting-interrupted"]))
-
-	if element.bg then
-		element.bg:SetVertexColor(HydraUI:HexToRGB(Settings["color-casting-interrupted"]))
-	end
-
 	--[[ Callback: Castbar:PostCastFail(unit, spellID)
 	Called after the element has been updated upon a failed or interrupted spell cast.
 
@@ -315,7 +296,7 @@ local function CastInterruptible(self, event, unit)
 	if(not element:IsShown()) then return end
 
 	element.notInterruptible = event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE'
-	
+
 	if(element.Shield) then element.Shield:SetShown(element.notInterruptible) end
 
 	--[[ Callback: Castbar:PostCastInterruptible(unit)

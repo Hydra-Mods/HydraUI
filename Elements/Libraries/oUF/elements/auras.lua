@@ -18,6 +18,8 @@ At least one of the above widgets must be present for the element to work.
 .disableMouse       - Disables mouse events (boolean)
 .disableCooldown    - Disables the cooldown spiral (boolean)
 .size               - Aura icon size. Defaults to 16 (number)
+.width              - Aura icon width. Takes priority over `size` (number)
+.height             - Aura icon height. Takes priority over `size` (number)
 .onlyShowPlayer     - Shows only auras created by player/vehicle (boolean)
 .showStealableBuffs - Displays the stealable texture on buffs that can be stolen (boolean)
 .spacing            - Spacing between each icon. Defaults to 0 (number)
@@ -74,22 +76,29 @@ local VISIBLE = 1
 local HIDDEN = 0
 
 local function UpdateTooltip(self)
+	if(GameTooltip:IsForbidden()) then return end
+
 	GameTooltip:SetUnitAura(self:GetParent().__owner.unit, self:GetID(), self.filter)
 end
 
 local function onEnter(self)
-	if(not self:IsVisible()) then return end
+	if(GameTooltip:IsForbidden() or not self:IsVisible()) then return end
 
-	GameTooltip:SetOwner(self, self:GetParent().tooltipAnchor)
+	-- Avoid parenting GameTooltip to frames with anchoring restrictions,
+	-- otherwise it'll inherit said restrictions which will cause issues with
+	-- its further positioning, clamping, etc
+	GameTooltip:SetOwner(self, self:GetParent().__restricted and 'ANCHOR_CURSOR' or self:GetParent().tooltipAnchor)
 	self:UpdateTooltip()
 end
 
 local function onLeave()
+	if(GameTooltip:IsForbidden()) then return end
+
 	GameTooltip:Hide()
 end
 
 local function createAuraIcon(element, index)
-	local button = CreateFrame('Button', element:GetDebugName() .. 'Button' .. index, element, "BackdropTemplate")
+	local button = CreateFrame('Button', element:GetDebugName() .. 'Button' .. index, element)
 	button:RegisterForClicks('RightButtonUp')
 
 	local cd = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
@@ -104,6 +113,12 @@ local function createAuraIcon(element, index)
 
 	local count = countFrame:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
 	count:SetPoint('BOTTOMRIGHT', countFrame, 'BOTTOMRIGHT', -1, 0)
+
+	local overlay = button:CreateTexture(nil, 'OVERLAY')
+	overlay:SetTexture([[Interface\Buttons\UI-Debuff-Overlays]])
+	overlay:SetAllPoints()
+	overlay:SetTexCoord(.296875, .5703125, 0, .515625)
+	button.overlay = overlay
 
 	local stealable = button:CreateTexture(nil, 'OVERLAY')
 	stealable:SetTexture([[Interface\TargetingFrame\UI-TargetingFrame-Stealable]])
@@ -195,7 +210,18 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 					button.cd:Hide()
 				end
 			end
-			
+
+			if(button.overlay) then
+				if((isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType) then
+					local color = element.__owner.colors.debuff[debuffType] or element.__owner.colors.debuff.none
+
+					button.overlay:SetVertexColor(color[1], color[2], color[3])
+					button.overlay:Show()
+				else
+					button.overlay:Hide()
+				end
+			end
+
 			if(button.stealable) then
 				if(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit('player', unit)) then
 					button.stealable:Show()
@@ -207,8 +233,9 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			if(button.icon) then button.icon:SetTexture(texture) end
 			if(button.count) then button.count:SetText(count > 1 and count) end
 
-			local size = element.size or 16
-			button:SetSize(size, size)
+			local width = element.width or element.size or 16
+			local height = element.height or element.size or 16
+			button:SetSize(width, height)
 
 			button:EnableMouse(not element.disableMouse)
 			button:SetID(index)
@@ -239,8 +266,10 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 end
 
 local function SetPosition(element, from, to)
-	local sizex = (element.size or 16) + (element['spacing-x'] or element.spacing or 0)
-	local sizey = (element.size or 16) + (element['spacing-y'] or element.spacing or 0)
+	local width = element.width or element.size or 16
+	local height = element.height or element.size or 16
+	local sizex = width + (element['spacing-x'] or element.spacing or 0)
+	local sizey = height + (element['spacing-y'] or element.spacing or 0)
 	local anchor = element.initialAnchor or 'BOTTOMLEFT'
 	local growthx = (element['growth-x'] == 'LEFT' and -1) or 1
 	local growthy = (element['growth-y'] == 'DOWN' and -1) or 1
@@ -303,7 +332,7 @@ local function UpdateAuras(self, event, unit)
 		local numDebuffs = auras.numDebuffs or 40
 		local max = auras.numTotal or numBuffs + numDebuffs
 
-		local visibleBuffs, hiddenBuffs = filterIcons(auras, unit, auras.buffFilter or auras.filter or 'HELPFUL', math.min(numBuffs, max), nil, 0, true)
+		local visibleBuffs = filterIcons(auras, unit, auras.buffFilter or auras.filter or 'HELPFUL', math.min(numBuffs, max), nil, 0, true)
 
 		local hasGap
 		if(visibleBuffs ~= 0 and auras.gap) then
@@ -320,6 +349,7 @@ local function UpdateAuras(self, event, unit)
 			-- Prevent the button from displaying anything.
 			if(button.cd) then button.cd:Hide() end
 			if(button.icon) then button.icon:SetTexture() end
+			if(button.overlay) then button.overlay:Hide() end
 			if(button.stealable) then button.stealable:Hide() end
 			if(button.count) then button.count:SetText() end
 
@@ -339,7 +369,7 @@ local function UpdateAuras(self, event, unit)
 			end
 		end
 
-		local visibleDebuffs, hiddenDebuffs = filterIcons(auras, unit, auras.debuffFilter or auras.filter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
+		local visibleDebuffs = filterIcons(auras, unit, auras.debuffFilter or auras.filter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
 		auras.visibleDebuffs = visibleDebuffs
 
 		if(hasGap and visibleDebuffs == 0) then
@@ -393,7 +423,7 @@ local function UpdateAuras(self, event, unit)
 		if(buffs.PreUpdate) then buffs:PreUpdate(unit) end
 
 		local numBuffs = buffs.num or 32
-		local visibleBuffs, hiddenBuffs = filterIcons(buffs, unit, buffs.filter or 'HELPFUL', numBuffs)
+		local visibleBuffs = filterIcons(buffs, unit, buffs.filter or 'HELPFUL', numBuffs)
 		buffs.visibleBuffs = visibleBuffs
 
 		local fromRange, toRange
@@ -414,7 +444,7 @@ local function UpdateAuras(self, event, unit)
 		if(debuffs.PreUpdate) then debuffs:PreUpdate(unit) end
 
 		local numDebuffs = debuffs.num or 40
-		local visibleDebuffs, hiddenDebuffs = filterIcons(debuffs, unit, debuffs.filter or 'HARMFUL', numDebuffs, true)
+		local visibleDebuffs = filterIcons(debuffs, unit, debuffs.filter or 'HARMFUL', numDebuffs, true)
 		debuffs.visibleDebuffs = visibleDebuffs
 
 		local fromRange, toRange
@@ -467,19 +497,13 @@ local function Enable(self)
 		local buffs = self.Buffs
 		if(buffs) then
 			buffs.__owner = self
+			-- check if there's any anchoring restrictions
+			buffs.__restricted = not pcall(self.GetCenter, self)
 			buffs.ForceUpdate = ForceUpdate
 
 			buffs.createdIcons = buffs.createdIcons or 0
 			buffs.anchoredIcons = 0
-
-			-- Avoid parenting GameTooltip to frames with anchoring restrictions,
-			-- otherwise it'll inherit said restrictions which will cause issues
-			-- with its further positioning, clamping, etc
-			if(not pcall(self.GetCenter, self)) then
-				buffs.tooltipAnchor = 'ANCHOR_CURSOR'
-			else
-				buffs.tooltipAnchor = buffs.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
-			end
+			buffs.tooltipAnchor = buffs.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
 
 			buffs:Show()
 		end
@@ -487,19 +511,13 @@ local function Enable(self)
 		local debuffs = self.Debuffs
 		if(debuffs) then
 			debuffs.__owner = self
+			-- check if there's any anchoring restrictions
+			debuffs.__restricted = not pcall(self.GetCenter, self)
 			debuffs.ForceUpdate = ForceUpdate
 
 			debuffs.createdIcons = debuffs.createdIcons or 0
 			debuffs.anchoredIcons = 0
-
-			-- Avoid parenting GameTooltip to frames with anchoring restrictions,
-			-- otherwise it'll inherit said restrictions which will cause issues
-			-- with its further positioning, clamping, etc
-			if(not pcall(self.GetCenter, self)) then
-				debuffs.tooltipAnchor = 'ANCHOR_CURSOR'
-			else
-				debuffs.tooltipAnchor = debuffs.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
-			end
+			debuffs.tooltipAnchor = debuffs.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
 
 			debuffs:Show()
 		end
@@ -507,19 +525,13 @@ local function Enable(self)
 		local auras = self.Auras
 		if(auras) then
 			auras.__owner = self
+			-- check if there's any anchoring restrictions
+			auras.__restricted = not pcall(self.GetCenter, self)
 			auras.ForceUpdate = ForceUpdate
 
 			auras.createdIcons = auras.createdIcons or 0
 			auras.anchoredIcons = 0
-
-			-- Avoid parenting GameTooltip to frames with anchoring restrictions,
-			-- otherwise it'll inherit said restrictions which will cause issues
-			-- with its further positioning, clamping, etc
-			if(not pcall(self.GetCenter, self)) then
-				auras.tooltipAnchor = 'ANCHOR_CURSOR'
-			else
-				auras.tooltipAnchor = auras.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
-			end
+			auras.tooltipAnchor = auras.tooltipAnchor or 'ANCHOR_BOTTOMRIGHT'
 
 			auras:Show()
 		end

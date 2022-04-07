@@ -39,13 +39,6 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Health:SetReverseFill(Settings["unitframes-targettarget-health-reverse"])
 	
-	local AbsorbsBar = CreateFrame("StatusBar", nil, self)
-	AbsorbsBar:SetWidth(Settings["unitframes-targettarget-width"])
-	AbsorbsBar:SetHeight(Settings["unitframes-targettarget-health-height"])
-	AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
-	AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
-	
 	local HealBar = CreateFrame("StatusBar", nil, self)
 	HealBar:SetWidth(Settings["unitframes-targettarget-width"])
 	HealBar:SetHeight(Settings["unitframes-targettarget-health-height"])
@@ -54,11 +47,26 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 	
 	if Settings["unitframes-targettarget-health-reverse"] then
-		AbsorbsBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 		HealBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 	else
-		AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 		HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+	end
+	
+	if HydraUI.IsMainline then
+		local AbsorbsBar = CreateFrame("StatusBar", nil, self)
+		AbsorbsBar:SetWidth(Settings["unitframes-targettarget-width"])
+		AbsorbsBar:SetHeight(Settings["unitframes-targettarget-health-height"])
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
+		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
+		
+		if Settings["unitframes-targettarget-health-reverse"] then
+			AbsorbsBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
+		else
+			AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+		end
+		
+		self.AbsorbsBar = AbsorbsBar
 	end
 	
 	local HealthBG = self:CreateTexture(nil, "BORDER")
@@ -149,7 +157,6 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 	}
 	
 	self.Health = Health
-	self.AbsorbsBar = AbsorbsBar
 	self.HealBar = HealBar
 	self.Health.bg = HealthBG
 	self.Power = Power

@@ -1,8 +1,17 @@
-local parent, ns = ...
+local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
-local HydraUI, GUI, Language, Assets, Settings = ns:get()
+
 local frame_metatable = Private.frame_metatable
+
+function oUF:CreateColor(r, g, b, a, atlas)
+	local color = CreateColor(r, g, b, a)
+
+	color[1], color[2], color[3] = r, g, b
+	color.atlas = atlas
+
+	return color
+end
 
 local colors = {
 	smooth = {
@@ -10,29 +19,29 @@ local colors = {
 		1, 1, 0,
 		0, 1, 0
 	},
-	--health = {49 / 255, 207 / 255, 37 / 255},
-	disconnected = {0.6, 0.6, 0.6},
-	tapped = {0.6, 0.6, 0.6},
+	health = oUF:CreateColor(49 / 255, 207 / 255, 37 / 255),
+	disconnected = oUF:CreateColor(0.6, 0.6, 0.6),
+	tapped = oUF:CreateColor(0.6, 0.6, 0.6),
 	runes = {
-		{247 / 255, 65 / 255, 57 / 255}, -- blood
-		{148 / 255, 203 / 255, 247 / 255}, -- frost
-		{173 / 255, 235 / 255, 66 / 255}, -- unholy
+		oUF:CreateColor(247 / 255, 65 / 255, 57 / 255), -- blood
+		oUF:CreateColor(148 / 255, 203 / 255, 247 / 255), -- frost
+		oUF:CreateColor(173 / 255, 235 / 255, 66 / 255), -- unholy
 	},
 	selection = {
-		[ 0] = {255 / 255, 0 / 255, 0 / 255}, -- HOSTILE
-		[ 1] = {255 / 255, 129 / 255, 0 / 255}, -- UNFRIENDLY
-		[ 2] = {255 / 255, 255 / 255, 0 / 255}, -- NEUTRAL
-		[ 3] = {0 / 255, 255 / 255, 0 / 255}, -- FRIENDLY
-		[ 4] = {0 / 255, 0 / 255, 255 / 255}, -- PLAYER_SIMPLE
-		[ 5] = {96 / 255, 96 / 255, 255 / 255}, -- PLAYER_EXTENDED
-		[ 6] = {170 / 255, 170 / 255, 255 / 255}, -- PARTY
-		[ 7] = {170 / 255, 255 / 255, 170 / 255}, -- PARTY_PVP
-		[ 8] = {83 / 255, 201 / 255, 255 / 255}, -- FRIEND
-		[ 9] = {128 / 255, 128 / 255, 128 / 255}, -- DEAD
+		[ 0] = oUF:CreateColor(255 / 255, 0 / 255, 0 / 255), -- HOSTILE
+		[ 1] = oUF:CreateColor(255 / 255, 129 / 255, 0 / 255), -- UNFRIENDLY
+		[ 2] = oUF:CreateColor(255 / 255, 255 / 255, 0 / 255), -- NEUTRAL
+		[ 3] = oUF:CreateColor(0 / 255, 255 / 255, 0 / 255), -- FRIENDLY
+		[ 4] = oUF:CreateColor(0 / 255, 0 / 255, 255 / 255), -- PLAYER_SIMPLE
+		[ 5] = oUF:CreateColor(96 / 255, 96 / 255, 255 / 255), -- PLAYER_EXTENDED
+		[ 6] = oUF:CreateColor(170 / 255, 170 / 255, 255 / 255), -- PARTY
+		[ 7] = oUF:CreateColor(170 / 255, 255 / 255, 170 / 255), -- PARTY_PVP
+		[ 8] = oUF:CreateColor(83 / 255, 201 / 255, 255 / 255), -- FRIEND
+		[ 9] = oUF:CreateColor(128 / 255, 128 / 255, 128 / 255), -- DEAD
 		-- [10] = {}, -- COMMENTATOR_TEAM_1, unavailable to players
 		-- [11] = {}, -- COMMENTATOR_TEAM_2, unavailable to players
-		[12] = {255 / 255, 255 / 255, 139 / 255}, -- SELF, buggy
-		[13] = {0 / 255, 153 / 255, 0 / 255}, -- BATTLEGROUND_FRIENDLY_PVP
+		[12] = oUF:CreateColor(255 / 255, 255 / 255, 139 / 255), -- SELF, buggy
+		[13] = oUF:CreateColor(0 / 255, 153 / 255, 0 / 255), -- BATTLEGROUND_FRIENDLY_PVP
 	},
 	class = {},
 	debuff = {},
@@ -44,10 +53,10 @@ local colors = {
 -- We do this because people edit the vars directly, and changing the default
 -- globals makes SPICE FLOW!
 local function customClassColors()
-	if(CUSTOM_CLASS_COLORS) then
+	if(_G.CUSTOM_CLASS_COLORS) then
 		local function updateColors()
-			for classToken, color in next, CUSTOM_CLASS_COLORS do
-				colors.class[classToken] = {color.r, color.g, color.b}
+			for classToken, color in next, _G.CUSTOM_CLASS_COLORS do
+				colors.class[classToken] = oUF:CreateColor(color.r, color.g, color.b)
 			end
 
 			for _, obj in next, oUF.objects do
@@ -56,15 +65,15 @@ local function customClassColors()
 		end
 
 		updateColors()
-		CUSTOM_CLASS_COLORS:RegisterCallback(updateColors)
+		_G.CUSTOM_CLASS_COLORS:RegisterCallback(updateColors)
 
 		return true
 	end
 end
 
 if(not customClassColors()) then
-	for classToken, color in next, RAID_CLASS_COLORS do
-		colors.class[classToken] = {color.r, color.g, color.b}
+	for classToken, color in next, _G.RAID_CLASS_COLORS do
+		colors.class[classToken] = oUF:CreateColor(color.r, color.g, color.b)
 	end
 
 	local eventHandler = CreateFrame('Frame')
@@ -77,12 +86,12 @@ if(not customClassColors()) then
 	end)
 end
 
-for debuffType, color in next, DebuffTypeColor do
-	colors.debuff[debuffType] = {color.r, color.g, color.b}
+for debuffType, color in next, _G.DebuffTypeColor do
+	colors.debuff[debuffType] = oUF:CreateColor(color.r, color.g, color.b)
 end
 
-for eclass, color in next, FACTION_BAR_COLORS do
-	colors.reaction[eclass] = {color.r, color.g, color.b}
+for eclass, color in next, _G.FACTION_BAR_COLORS do
+	colors.reaction[eclass] = oUF:CreateColor(color.r, color.g, color.b)
 end
 
 for power, color in next, PowerBarColor do
@@ -90,61 +99,41 @@ for power, color in next, PowerBarColor do
 		if(type(select(2, next(color))) == 'table') then
 			colors.power[power] = {}
 
-			for index, color in next, color do
-				colors.power[power][index] = {color.r, color.g, color.b}
+			for index, color_ in next, color do
+				colors.power[power][index] = oUF:CreateColor(color_.r, color_.g, color_.b)
 			end
 		else
-			colors.power[power] = {color.r, color.g, color.b, atlas = color.atlas}
+			colors.power[power] = oUF:CreateColor(color.r, color.g, color.b, 1, color.atlas)
 		end
 	end
 end
 
-function HydraUI:UpdateoUFColors()
-	colors.class = HydraUI.ClassColors
-	colors.reaction = HydraUI.ReactionColors
-	colors.power = HydraUI.PowerColors
-	colors.debuff = HydraUI.DebuffColors
-	colors.power[0] = colors.power.MANA
-	colors.power[1] = colors.power.RAGE
-	colors.power[2] = colors.power.FOCUS
-	colors.power[3] = colors.power.ENERGY
-	colors.power[4] = colors.power.COMBO_POINTS
-	colors.power[5] = colors.power.RUNES
-	colors.power[6] = colors.power.RUNIC_POWER
-	colors.power[7] = colors.power.SOUL_SHARDS
-	colors.power[8] = colors.power.LUNAR_POWER
-	colors.power[9] = colors.power.HOLY_POWER
-	colors.power[11] = colors.power.MAELSTROM
-	colors.power[12] = colors.power.CHI
-	colors.power[13] = colors.power.INSANITY
-	colors.power[16] = colors.power.ARCANE_CHARGES
-	colors.power[17] = colors.power.FURY
-	colors.power[18] = colors.power.PAIN
-	
-	colors.power.STAGGER = {}
-	colors.power.STAGGER[1] = {HydraUI:HexToRGB(Settings["color-stagger-1"])}
-	colors.power.STAGGER[2] = {HydraUI:HexToRGB(Settings["color-stagger-2"])}
-	colors.power.STAGGER[3] = {HydraUI:HexToRGB(Settings["color-stagger-3"])}
-	
-	colors.tapped = {HydraUI:HexToRGB(Settings["color-tapped"])}
-	colors.disconnected = {HydraUI:HexToRGB(Settings["color-disconnected"])}
-	
-	--colors.health = {HydraUI:HexToRGB(Settings["ui-header-texture-color"])}
-	
-	-- alternate power, sourced from FrameXML/CompactUnitFrame.lua
-	colors.power.ALTERNATE = {0.7, 0.7, 0.6}
-	colors.power[10] = colors.power.ALTERNATE
-	
-	if HydraUI.IsMainline then
-		for i = 0, 3 do
-			colors.threat[i] = {GetThreatStatusColor(i)}
-		end
+-- sourced from FrameXML/Constants.lua
+colors.power[0] = colors.power.MANA
+colors.power[1] = colors.power.RAGE
+colors.power[2] = colors.power.FOCUS
+colors.power[3] = colors.power.ENERGY
+colors.power[4] = colors.power.COMBO_POINTS
+colors.power[5] = colors.power.RUNES
+colors.power[6] = colors.power.RUNIC_POWER
+colors.power[7] = colors.power.SOUL_SHARDS
+colors.power[8] = colors.power.LUNAR_POWER
+colors.power[9] = colors.power.HOLY_POWER
+colors.power[11] = colors.power.MAELSTROM
+colors.power[12] = colors.power.CHI
+colors.power[13] = colors.power.INSANITY
+colors.power[16] = colors.power.ARCANE_CHARGES
+colors.power[17] = colors.power.FURY
+colors.power[18] = colors.power.PAIN
+
+-- alternate power, sourced from FrameXML/CompactUnitFrame.lua
+colors.power.ALTERNATE = oUF:CreateColor(0.7, 0.7, 0.6)
+colors.power[10] = colors.power.ALTERNATE
+
+if GetThreatStatusColor then
+	for i = 0, 3 do
+		colors.threat[i] = oUF:CreateColor(GetThreatStatusColor(i))
 	end
-	
-	oUF.colors = colors
-	
-	frame_metatable.__index.colors = colors
-	frame_metatable.__index.ColorGradient = oUF.ColorGradient
 end
 
 local function colorsAndPercent(a, b, ...)

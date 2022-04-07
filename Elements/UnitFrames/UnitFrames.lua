@@ -122,15 +122,15 @@ UF.PostUpdateIcon = function(self, unit, button, index, position, duration, expi
 	
 	if ((button.filter == "HARMFUL") and (not button.isPlayer) and debuffType) then
 		button.icon:SetDesaturated(true)
-		button:SetBackdropColor(0, 0, 0)
+		--button:SetBackdropColor(0, 0, 0)
 	elseif (button.filter == "HELPFUL") then
 		button.icon:SetDesaturated(false)
-		button:SetBackdropColor(0, 0, 0)
+		--button:SetBackdropColor(0, 0, 0)
 	else
 		local color = HydraUI.DebuffColors[debuffType] or HydraUI.DebuffColors.none
 	
 		button.icon:SetDesaturated(false)
-		button:SetBackdropColor(unpack(color))
+		--button:SetBackdropColor(unpack(color))
 	end
 	
 	if (Expiration and Expiration ~= 0) then

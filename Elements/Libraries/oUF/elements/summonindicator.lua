@@ -26,10 +26,10 @@ local _, ns = ...
 local oUF = ns.oUF
 
 -- sourced from Blizzard_APIDocumentation/IncomingSummonDocumentation.lua
-local SUMMON_STATUS_NONE = 0
-local SUMMON_STATUS_PENDING = 1
-local SUMMON_STATUS_ACCEPTED = 2
-local SUMMON_STATUS_DECLINED = 3
+local SUMMON_STATUS_NONE = Enum.SummonStatus.None or 0
+local SUMMON_STATUS_PENDING = Enum.SummonStatus.Pending or 1
+local SUMMON_STATUS_ACCEPTED = Enum.SummonStatus.Accepted or 2
+local SUMMON_STATUS_DECLINED = Enum.SummonStatus.Declined or 3
 
 local function Update(self, event, unit)
 	if(self.unit ~= unit) then return end

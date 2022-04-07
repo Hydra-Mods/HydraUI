@@ -79,7 +79,6 @@ The following options are listed by priority. The first check that returns true 
 local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
-local Mainline = select(4, GetBuildInfo()) > 90000
 
 local unitSelectionType = Private.unitSelectionType
 
@@ -87,30 +86,30 @@ local function UpdateColor(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
 	local element = self.Health
 
-	local r, g, b, t
+	local r, g, b, color
 	if(element.colorDisconnected and not UnitIsConnected(unit)) then
-		t = self.colors.disconnected
+		color = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
-		t = self.colors.tapped
+		color = self.colors.tapped
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
-		t =  self.colors.threat[UnitThreatSituation('player', unit)]
+		color =  self.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorClass and UnitIsPlayer(unit))
 		or (element.colorClassNPC and not UnitIsPlayer(unit))
 		or (element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
 		local _, class = UnitClass(unit)
-		t = self.colors.class[class]
+		color = self.colors.class[class]
 	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
-		t = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
+		color = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
-		t = self.colors.reaction[UnitReaction(unit, 'player')]
+		color = self.colors.reaction[UnitReaction(unit, 'player')]
 	elseif(element.colorSmooth) then
 		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
 	elseif(element.colorHealth) then
-		t = self.colors.health
+		color = self.colors.health
 	end
 
-	if(t) then
-		r, g, b = t[1], t[2], t[3]
+	if(color) then
+		r, g, b = color[1], color[2], color[3]
 	end
 
 	if(b) then
@@ -276,7 +275,7 @@ local function SetColorThreat(element, state, isForced)
 	end
 end
 
-local function Enable(self, unit)
+local function Enable(self)
 	local element = self.Health
 	if(element) then
 		element.__owner = self
@@ -288,8 +287,6 @@ local function Enable(self, unit)
 
 		if(element.colorDisconnected) then
 			self:RegisterEvent('UNIT_CONNECTION', ColorPath)
-			self:RegisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
-			self:RegisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
 		end
 
 		if(element.colorSelection) then
@@ -304,12 +301,7 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)
 		end
 
-		if Mainline then
-			self:RegisterEvent('UNIT_HEALTH', Path)
-		else
-			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
-		end
-
+		self:RegisterEvent('UNIT_HEALTH', Path)
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
 
 		if(element:IsObjectType('StatusBar') and not (element:GetStatusBarTexture() or element:GetStatusBarAtlas())) then
@@ -327,16 +319,9 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		if Mainline then
-			self:UnregisterEvent('UNIT_HEALTH', Path)
-		else
-			self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
-		end
-
+		self:UnregisterEvent('UNIT_HEALTH', Path)
 		self:UnregisterEvent('UNIT_MAXHEALTH', Path)
 		self:UnregisterEvent('UNIT_CONNECTION', ColorPath)
-		self:UnregisterEvent('PARTY_MEMBER_ENABLE', ColorPath)
-		self:UnregisterEvent('PARTY_MEMBER_DISABLE', ColorPath)
 		self:UnregisterEvent('UNIT_FACTION', ColorPath)
 		self:UnregisterEvent('UNIT_FLAGS', ColorPath)
 		self:UnregisterEvent('UNIT_THREAT_LIST_UPDATE', ColorPath)

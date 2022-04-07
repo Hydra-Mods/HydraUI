@@ -8,27 +8,26 @@ local UnitAura = UnitAura
 local DebuffTypeColor = DebuffTypeColor
 
 local Priorities = {
-	["Magic"] = 5,
-	["Curse"] = 4,
-	["Disease"] = 3,
-	["Poison"] = 2,
-	["Custom"] = 1,
+	Magic = 5,
+	Curse = 4,
+	Disease = 3,
+	Poison = 2,
+	Custom = 1,
 }
 
 local Classes = {
-	["DRUID"] = {["Custom"] = false, ["Poison"] = true, ["Curse"] = true},
-	["MONK"] = {["Custom"] = false, ["Magic"] = false, ["Poison"] = true, ["Disease"] = true},
-	["PALADIN"] = {["Custom"] = false, ["Magic"] = true, ["Poison"] = true, ["Disease"] = true},
-	["PRIEST"] = {["Custom"] = false, ["Magic"] = true, ["Disease"] = true},
-	["SHAMAN"] = {["Custom"] = false, ["Poison"] = true, ["Disease"] = true},
-	["MAGE"] = {["Curse"] = true},
+	DRUID = {Custom = false, Poison = true, Curse = true},
+	MONK = {Custom = false, Magic = false, Poison = true, Disease = true},
+	PALADIN = {Custom = false, Magic = true, Poison = true, Disease = true},
+	PRIEST = {Custom = false, Magic = true, Disease = true},
+	SHAMAN = {Custom = false, Poison = true, Disease = true},
+	MAGE = {Curse = true},
 }
 
 local Filter = {}
 
 -- Spells which should be watched to gauge damage or effects on players, but cannot be dispelled. (DoT's and Stuns mostly)
 local Debuffs = {}
-
 local Valid = Classes[Class]
 
 local Update = function(self, event, unit)
