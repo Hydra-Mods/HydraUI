@@ -6,6 +6,7 @@ local floor = math.floor
 local sub = string.sub
 local len = string.len
 local byte = string.byte
+local tonumber = tonumber
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local UnitName = UnitName
 local UnitPower = UnitPower
@@ -360,7 +361,7 @@ Methods["Name"] = function(unit, realunit, arg)
 	local Name = UnitName(realunit or unit)
 	
 	if Name then
-		return UTF8Sub(Name, arg)
+		return UTF8Sub(Name, tonumber(arg))
 	end
 end
 
