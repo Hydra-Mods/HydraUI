@@ -190,7 +190,7 @@ Methods["Resting"] = function(unit)
 	end
 end
 
-Events["Health"] = "UNIT_HEALTH PLAYER_ENTERING_WORLD"
+Events["Health"] = "UNIT_HEALTH UNIT_HEALTH_FREQUENT PLAYER_ENTERING_WORLD"
 Methods["Health"] = UnitHealth
 
 Events["Health:Short"] = "UNIT_HEALTH PLAYER_ENTERING_WORLD"
