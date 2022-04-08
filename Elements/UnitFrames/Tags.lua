@@ -190,15 +190,15 @@ Methods["Resting"] = function(unit)
 	end
 end
 
-Events["Health"] = "UNIT_HEALTH UNIT_HEALTH_MAX PLAYER_ENTERING_WORLD"
+Events["Health"] = "UNIT_HEALTH UNIT_MAXHEALTH PLAYER_ENTERING_WORLD"
 Methods["Health"] = UnitHealth
 
-Events["Health:Short"] = "UNIT_HEALTH PLAYER_ENTERING_WORLD"
+Events["Health:Short"] = "UNIT_HEALTH PLAYER_ENTERING_WORLD" -- Note for self, is this okay without special events? Test on classic and retail
 Methods["Health:Short"] = function(unit)
 	return HydraUI:ShortValue(UnitHealth(unit))
 end
 
-Events["HealthPercent"] = "UNIT_HEALTH UNIT_HEALTH_MAX PLAYER_ENTERING_WORLD"
+Events["HealthPercent"] = "UNIT_HEALTH UNIT_MAXHEALTH PLAYER_ENTERING_WORLD"
 Methods["HealthPercent"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -210,7 +210,7 @@ Methods["HealthPercent"] = function(unit)
 	end
 end
 
-Events["HealthValues"] = "UNIT_HEALTH UNIT_HEALTH_MAX UNIT_CONNECTION PLAYER_ENTERING_WORLD"
+Events["HealthValues"] = "UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD"
 Methods["HealthValues"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -218,7 +218,7 @@ Methods["HealthValues"] = function(unit)
 	return Current .. " / " .. Max
 end
 
-Events["HealthValues:Short"] = "UNIT_HEALTH UNIT_HEALTH_MAX UNIT_CONNECTION PLAYER_ENTERING_WORLD"
+Events["HealthValues:Short"] = "UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD"
 Methods["HealthValues:Short"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -226,7 +226,7 @@ Methods["HealthValues:Short"] = function(unit)
 	return HydraUI:ShortValue(Current) .. " / " .. HydraUI:ShortValue(Max)
 end
 
-Events["HealthDeficit"] = "UNIT_HEALTH UNIT_HEALTH_MAX PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
+Events["HealthDeficit"] = "UNIT_HEALTH UNIT_MAXHEALTH PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
 Methods["HealthDeficit"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -247,7 +247,7 @@ Methods["HealthDeficit"] = function(unit)
 	end
 end
 
-Events["HealthDeficit:Short"] = "UNIT_HEALTH UNIT_HEALTH_MAX PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
+Events["HealthDeficit:Short"] = "UNIT_HEALTH UNIT_MAXHEALTH PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
 Methods["HealthDeficit:Short"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -268,7 +268,7 @@ Methods["HealthDeficit:Short"] = function(unit)
 	end
 end
 
-Events["GroupStatus"] = "UNIT_HEALTH UNIT_HEALTH_MAX UNIT_CONNECTION PLAYER_FLAGS_CHANGED PLAYER_ENTERING_WORLD"
+Events["GroupStatus"] = "UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED PLAYER_ENTERING_WORLD"
 Methods["GroupStatus"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -291,7 +291,7 @@ Methods["GroupStatus"] = function(unit)
 	end
 end
 
-Events["HealthColor"] = "UNIT_HEALTH UNIT_HEALTH_MAX PLAYER_ENTERING_WORLD"
+Events["HealthColor"] = "UNIT_HEALTH UNIT_MAXHEALTH PLAYER_ENTERING_WORLD"
 Methods["HealthColor"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -355,6 +355,16 @@ Methods["PowerColor"] = function(unit)
 	end
 end
 
+Events["Name"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
+Methods["Name"] = function(unit, realunit, arg)
+	local Name = UnitName(realunit or unit)
+	
+	if Name then
+		return UTF8Sub(Name, arg)
+	end
+end
+
+-- Deprecated as of April 8th, 2022
 Events["Name4"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
 Methods["Name4"] = function(unit)
 	local Name = UnitName(unit)
