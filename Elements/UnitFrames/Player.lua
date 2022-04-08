@@ -320,7 +320,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 				ComboPoints:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 			end
 			
-			local Max = (HydraUI.UserClass == "ROGUE" and 6 or 5)
+			local Max = UnitPowerMax("player", Enum.PowerType.ComboPoints)
 			local Width = (Settings["unitframes-player-width"] / Max) - 1
 			
 			for i = 1, Max do
@@ -373,7 +373,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			
 			self.ComboPoints = ComboPoints
 			self.AuraParent = ComboPoints
-		elseif (HydraUI.UserClass == "WARLOCK") then
+		elseif (HydraUI.UserClass == "WARLOCK" and HydraUI.IsMainline) then
 			local SoulShards = CreateFrame("Frame", self:GetName() .. "SoulShards", self, "BackdropTemplate")
 			SoulShards:SetSize(Settings["unitframes-player-width"], Settings["player-resource-height"] + 2)
 			SoulShards:SetBackdrop(HydraUI.Backdrop)
@@ -411,7 +411,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			self.ClassPower = SoulShards
 			self.SoulShards = SoulShards
 			self.AuraParent = SoulShards
-		elseif (HydraUI.UserClass == "MAGE") then
+		elseif (HydraUI.UserClass == "MAGE" and HydraUI.IsMainline) then
 			local ArcaneCharges = CreateFrame("Frame", self:GetName() .. "ArcaneCharges", self, "BackdropTemplate")
 			ArcaneCharges:SetSize(Settings["unitframes-player-width"], Settings["player-resource-height"] + 2)
 			ArcaneCharges:SetBackdrop(HydraUI.Backdrop)
@@ -569,7 +569,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			
 			self.Runes = Runes
 			self.AuraParent = Runes
-		elseif (HydraUI.UserClass == "PALADIN") then
+		elseif (HydraUI.UserClass == "PALADIN" and HydraUI.IsMainline) then
 			local HolyPower = CreateFrame("Frame", self:GetName() .. "HolyPower", self, "BackdropTemplate")
 			HolyPower:SetSize(Settings["unitframes-player-width"], Settings["player-resource-height"] + 2)
 			HolyPower:SetBackdrop(HydraUI.Backdrop)
