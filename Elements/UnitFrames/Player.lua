@@ -150,7 +150,6 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-header-texture-color"])
 	
 	-- Attributes
-	Health.frequentUpdates = true
 	Health.Smooth = true
 	self.colors.health = {R, G, B}
 	UF:SetHealthAttributes(Health, Settings["unitframes-player-health-color"])

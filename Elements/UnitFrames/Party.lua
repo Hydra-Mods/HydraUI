@@ -133,7 +133,6 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	HealthBottom:SetJustifyH("CENTER")
 	
 	-- Attributes
-	Health.frequentUpdates = true
 	Health.colorDisconnected = true
 	Health.Smooth = true
 	

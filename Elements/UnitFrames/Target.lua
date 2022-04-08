@@ -125,7 +125,6 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-header-texture-color"])
 	
 	-- Attributes
-	Health.frequentUpdates = true
 	Health.Smooth = true
 	Health.colorTapping = true
 	Health.colorDisconnected = true
