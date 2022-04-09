@@ -20,7 +20,7 @@ Defaults["unitframes-player-cast-height"] = 24
 Defaults["unitframes-player-enable-castbar"] = true
 Defaults["player-enable-portrait"] = false
 Defaults["player-portrait-style"] = "3D"
-Defaults["player-enable-pvp-indicator"] = true
+Defaults["player-enable-pvp"] = true
 Defaults["player-resource-height"] = 8
 Defaults["player-move-resource"] = false
 Defaults["player-move-power"] = false
@@ -135,13 +135,19 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
     Leader:Hide()
 	
     -- PVP indicator
-    local PvPIndicator = Health:CreateTexture(nil, "ARTWORK", nil, 1)
-    PvPIndicator:SetSize(30, 30)
-    PvPIndicator:SetPoint("RIGHT", Health, "LEFT", -4, -2)
+	local PvPIndicator = Health:CreateTexture(nil, "ARTWORK", nil, 1)
 	
-	PvPIndicator.Badge = Health:CreateTexture(nil, "ARTWORK")
-	PvPIndicator.Badge:SetSize(50, 52)
-    PvPIndicator.Badge:SetPoint("CENTER", PvPIndicator, "CENTER")
+	if HydraUI.IsMainline then
+		PvPIndicator:SetSize(30, 30)
+		PvPIndicator:SetPoint("RIGHT", Health, "LEFT", -4, -2)
+			
+		PvPIndicator.Badge = Health:CreateTexture(nil, "ARTWORK")
+		PvPIndicator.Badge:SetSize(50, 52)
+		PvPIndicator.Badge:SetPoint("CENTER", PvPIndicator, "CENTER")
+	else
+		PvPIndicator:SetSize(32, 32)
+		PvPIndicator:SetPoint("CENTER", Health, 0, -6)
+	end
 	
 	local RaidTarget = Health:CreateTexture(nil, "OVERLAY")
 	RaidTarget:SetSize(16, 16)
@@ -664,9 +670,9 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	self.Buffs = Buffs
 	self.Debuffs = Debuffs
 	--self.RaidTargetIndicator = RaidTarget
-	self.PvPIndicator = PvPIndicator
 	self.ResurrectIndicator = Resurrect
 	self.LeaderIndicator = Leader
+	self.PvPIndicator = PvPIndicator
 end
 
 local UpdateOnlyPlayerDebuffs = function(value)
@@ -913,7 +919,7 @@ GUI:AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"],
 	left:CreateSwitch("unitframes-player-enable-resource", Settings["unitframes-player-enable-resource"], Language["Enable Resource Bar"], Language["Enable the player resource such as combo points, runes, etc."], ReloadUI):RequiresReload(true)
 	left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
 	left:CreateSwitch("player-enable-portrait", Settings["player-enable-portrait"], Language["Enable Portrait"], Language["Display the player unit portrait"], UpdatePlayerEnablePortrait)
-	left:CreateSwitch("player-enable-pvp-indicator", Settings["player-enable-pvp-indicator"], Language["Enable PVP Indicator"], Language["Display the pvp indicator"], UpdatePlayerEnablePVPIndicator)
+	left:CreateSwitch("player-enable-pvp", Settings["player-enable-pvp"], Language["Enable PVP Indicator"], Language["Display the pvp indicator"], UpdatePlayerEnablePVPIndicator)
 	left:CreateDropdown("player-portrait-style", Settings["player-portrait-style"], {[Language["2D"]] = "2D", [Language["3D"]] = "3D"}, Language["Set Portrait Style"], Language["Set the style of the portrait"], ReloadUI):RequiresReload(true)
 	
 	left:CreateHeader(Language["Health"])

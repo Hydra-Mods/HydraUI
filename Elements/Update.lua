@@ -16,42 +16,6 @@ local UpdateOnMouseUp = function()
 	print(Language["Join the Discord community for support and feedback https://discord.gg/XefDFa6nJR"])
 end
 
-function Update:FRIENDLIST_UPDATE()
-	if HydraUI.IsMainline then
-		for i = 1, BNGetNumFriends() do
-			local Info = C_BattleNet.GetFriendAccountInfo(i)
-			
-			if (Info and Info.gameAccountInfo.clientProgram == "WoW" and Info.gameAccountInfo.wowProjectID == 1) then
-				BNSendGameData(Info.gameAccountInfo.gameAccountID, "HydraUI-Version", AddOnVersion)
-			end
-		end
-	else
-		for i = 1, BNGetNumFriends() do
-			local PresenceID, AccountName, BattleTag, IsBattleTagPresence, CharacterName, BNetIDGameAccount, Client, IsOnline = BNGetFriendInfo(i)
-			
-			if (Client == "WoW") then
-				_, CharacterName, Client, RealmName, _, Faction, _, _, _, _, _, _, _, _, IsOnline, _, _, _, _, _, WoWProjectID = BNGetGameAccountInfo((BNetIDGameAccount or PresenceID))
-				
-				if (WoWProjectID == 5) and IsOnline then
-					BNSendGameData(BNetIDGameAccount, "HydraUI-Version", AddOnVersion)
-				end
-			end
-		end
-	end
-	
-	for i = 1, C_FriendList.GetNumFriends() do
-		Info = C_FriendList.GetFriendInfoByIndex(i)
-		
-		if Info.connected then
-			SendAddonMessage("HydraUI-Version", AddOnVersion, "WHISPER", Info.name)
-		end
-	end
-	
-	Info = nil
-	
-	self:UnregisterEvent("FRIENDLIST_UPDATE")
-end
-
 function Update:PLAYER_ENTERING_WORLD()
 	if IsInGuild() then
 		SendAddonMessage("HydraUI-Version", AddOnVersion, "GUILD")
@@ -78,8 +42,6 @@ function Update:PLAYER_ENTERING_WORLD()
 	if (not HydraUI.IsMainline) then
 		SendAddonMessage("HydraUI-Version", AddOnVersion, "YELL")
 	end
-	
-	C_FriendList.ShowFriends()
 end
 
 function Update:GUILD_ROSTER_UPDATE(update)
@@ -129,38 +91,6 @@ function Update:VARIABLES_LOADED()
 	self:UnregisterEvent("VARIABLES_LOADED")
 end
 
-function Update:BN_CHAT_MSG_ADDON(prefix, message, channel, sender)
-	if (prefix ~= "HydraUI-Version") then
-		return
-	end
-	
-	message = tonumber(message)
-	
-	if (channel == "WHISPER") then
-		if (message > AddOnVersion) then
-			HydraUI:SendAlert(Language["New Version!"], format(Language["Update to version |cFF%s%s|r"], Settings["ui-header-font-color"], message), nil, UpdateOnMouseUp, true)
-			
-			-- Store this higher version and tell anyone else who asks
-			AddOnVersion = message
-			
-			self:RegisterEvent("FRIENDLIST_UPDATE")
-			self:PLAYER_ENTERING_WORLD() -- Tell others that we found a new version
-		end
-	else
-		if (AddOnVersion > message) then -- We have a higher version, share it
-			SendAddonMessage("HydraUI-Version", AddOnVersion, "WHISPER", sender)
-		elseif (message > AddOnVersion) then -- We're behind!
-			HydraUI:SendAlert(Language["New Version!"], format(Language["Update to version |cFF%s%s|r"], Settings["ui-header-font-color"], message), nil, UpdateOnMouseUp, true)
-			
-			-- Store this higher version and tell anyone else who asks
-			AddOnVersion = message
-			
-			self:RegisterEvent("FRIENDLIST_UPDATE")
-			self:PLAYER_ENTERING_WORLD() -- Tell others that we found a new version
-		end
-	end
-end
-
 function Update:CHAT_MSG_ADDON(prefix, message, channel, sender)
 	if (sender == User or prefix ~= "HydraUI-Version") then
 		return
@@ -176,7 +106,6 @@ function Update:CHAT_MSG_ADDON(prefix, message, channel, sender)
 		-- Store this higher version and tell anyone else who asks
 		AddOnVersion = message
 		
-		self:RegisterEvent("FRIENDLIST_UPDATE")
 		self:PLAYER_ENTERING_WORLD() -- Tell others that we found a new version
 	end
 end
@@ -187,12 +116,10 @@ function Update:OnEvent(event, ...)
 	end
 end
 
-Update:RegisterEvent("FRIENDLIST_UPDATE")
 Update:RegisterEvent("VARIABLES_LOADED")
 Update:RegisterEvent("PLAYER_ENTERING_WORLD")
 Update:RegisterEvent("GROUP_ROSTER_UPDATE")
 Update:RegisterEvent("CHAT_MSG_ADDON")
-Update:RegisterEvent("BN_CHAT_MSG_ADDON")
 Update:SetScript("OnEvent", Update.OnEvent)
 
 C_ChatInfo.RegisterAddonMessagePrefix("HydraUI-Version")

@@ -416,7 +416,7 @@ function UF:Load()
 			Player:DisableElement("Portrait")
 		end
 		
-		if (not Settings["player-enable-pvp-indicator"]) then
+		if (not Settings["player-enable-pvp"]) then
 			Player:DisableElement("PvPIndicator")
 			Player.PvPIndicator:Hide()
 		end
