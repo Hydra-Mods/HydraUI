@@ -676,7 +676,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	Buffs.PostCreateIcon = UF.PostCreateIcon
 	Buffs.PostUpdateIcon = UF.PostUpdateIcon
 	--Buffs.SetPosition = BuffsSetPosition
-	Buffs.showType = true
+	--Buffs.showType = true
 	
 	if Settings["player-move-resource"] then
 		Buffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
@@ -697,7 +697,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	Debuffs.PostCreateIcon = UF.PostCreateIcon
 	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["unitframes-only-player-debuffs"]
-	Debuffs.showType = true
+	--Debuffs.showType = true
 	
 	-- Resurrect
 	local Resurrect = Health:CreateTexture(nil, "OVERLAY")
@@ -968,12 +968,13 @@ GUI:AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"],
 	left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
 	left:CreateSwitch("player-enable-portrait", Settings["player-enable-portrait"], Language["Enable Portrait"], Language["Display the player unit portrait"], UpdatePlayerEnablePortrait)
 	left:CreateSwitch("player-enable-pvp", Settings["player-enable-pvp"], Language["Enable PVP Indicator"], Language["Display the pvp indicator"], UpdatePlayerEnablePVPIndicator)
-	left:CreateDropdown("player-portrait-style", Settings["player-portrait-style"], {[Language["2D"]] = "2D", [Language["3D"]] = "3D"}, Language["Set Portrait Style"], Language["Set the style of the portrait"], ReloadUI):RequiresReload(true)
 	
 	if (not HydraUI.IsMainline) then
 		left:CreateSwitch("unitframes-show-mana-timer", Settings["unitframes-show-mana-timer"], Language["Enable Mana Regen Timer"], Language["Display the time until your full mana regeneration is active"], ReloadUI):RequiresReload(true)
 		left:CreateSwitch("unitframes-show-energy-timer", Settings["unitframes-show-energy-timer"], Language["Enable Energy Timer"], Language["Display the time until your next energy tick on the power bar"], ReloadUI):RequiresReload(true)
 	end
+	
+	left:CreateDropdown("player-portrait-style", Settings["player-portrait-style"], {[Language["2D"]] = "2D", [Language["3D"]] = "3D"}, Language["Set Portrait Style"], Language["Set the style of the portrait"], ReloadUI):RequiresReload(true)
 	
 	left:CreateHeader(Language["Health"])
 	left:CreateSwitch("unitframes-player-health-reverse", Settings["unitframes-player-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePlayerHealthFill)

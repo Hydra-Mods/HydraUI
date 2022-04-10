@@ -130,7 +130,6 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 		Debuffs.tooltipAnchor = "ANCHOR_TOP"
 		Debuffs.PostCreateIcon = UF.PostCreateIcon
 		Debuffs.PostUpdateIcon = UF.PostUpdateIcon
-		Debuffs.showType = true
 		
 		if (Settings["unitframes-targettarget-debuff-pos"] == "TOP") then
 			Debuffs:SetPoint("BOTTOM", self, "TOP", 0, 2)

@@ -161,7 +161,6 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	Debuffs.PostCreateIcon = UF.PostCreateIcon
 	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
 	Debuffs.CustomFilter = PartyDebuffFilter
-	Debuffs.showType = true
 	
 	if (Settings["party-point"] == "LEFT") or (Settings["party-point"] == "RIGHT") then
 		Debuffs:SetSize(24 * 3 + (2 * 2), 24)

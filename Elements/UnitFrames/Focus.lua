@@ -179,7 +179,6 @@ HydraUI.StyleFuncs["focus"] = function(self, unit)
 	Buffs.PostCreateIcon = UF.PostCreateIcon
 	Buffs.PostUpdateIcon = UF.PostUpdateIcon
 	--Buffs.SetPosition = BuffsSetPosition
-	Buffs.showType = true
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetSize(((Settings["unitframes-focus-health-height"] + Settings["unitframes-focus-power-height"] + 3) * 3) + 4, Settings["unitframes-focus-health-height"] + Settings["unitframes-focus-power-height"] + 3)
@@ -193,7 +192,6 @@ HydraUI.StyleFuncs["focus"] = function(self, unit)
 	Debuffs.PostCreateIcon = UF.PostCreateIcon
 	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["unitframes-only-focus-debuffs"]
-	Debuffs.showType = true
 	
 	-- Tags
 	self:Tag(HealthLeft, Settings["unitframes-focus-health-left"])

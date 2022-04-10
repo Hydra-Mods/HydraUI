@@ -128,7 +128,7 @@ HydraUI.StyleFuncs["pet"] = function(self, unit)
 		Buffs.tooltipAnchor = "ANCHOR_TOP"
 		Buffs.PostCreateIcon = UF.PostCreateIcon
 		Buffs.PostUpdateIcon = UF.PostUpdateIcon
-		Buffs.showType = true
+		--Buffs.showType = true
 		
 		if (Settings["unitframes-pet-buff-pos"] == "TOP") then
 			Buffs:SetPoint("BOTTOM", self, "TOP", 0, 2)
@@ -154,7 +154,7 @@ HydraUI.StyleFuncs["pet"] = function(self, unit)
 		Debuffs.tooltipAnchor = "ANCHOR_TOP"
 		Debuffs.PostCreateIcon = UF.PostCreateIcon
 		Debuffs.PostUpdateIcon = UF.PostUpdateIcon
-		Debuffs.showType = true
+		--Debuffs.showType = true
 		
 		if (Settings["unitframes-pet-debuff-pos"] == "TOP") then
 			if self.Buffs then

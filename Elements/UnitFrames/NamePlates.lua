@@ -150,7 +150,6 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 		Buffs.num = 5
 		Buffs.PostCreateIcon = UF.PostCreateIcon
 		Buffs.PostUpdateIcon = UF.PostUpdateIcon
-		Buffs.showType = true
 		
 		if (Settings["nameplates-buffs-direction"] == "LTR") then
 			Buffs.initialAnchor = "TOPLEFT"
@@ -175,7 +174,6 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 	Debuffs.PostCreateIcon = UF.PostCreateIcon
 	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["nameplates-only-player-debuffs"]
-	Debuffs.showType = true
 	Debuffs.disableMouse = true
 	
 	if (Settings["nameplates-debuffs-direction"] == "LTR") then

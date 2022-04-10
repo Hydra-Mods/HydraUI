@@ -175,7 +175,6 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 	Buffs["growth-y"] = "UP"
 	Buffs.PostCreateIcon = UF.PostCreateIcon
 	Buffs.PostUpdateIcon = UF.PostUpdateIcon
-	Buffs.showType = true
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetSize(Settings["unitframes-player-width"], 28)
@@ -190,7 +189,6 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 	Debuffs.PostCreateIcon = UF.PostCreateIcon
 	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["unitframes-only-player-debuffs"]
-	Debuffs.showType = true
 	
     -- Castbar
 	if Settings["unitframes-target-enable-castbar"] then

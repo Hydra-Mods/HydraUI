@@ -74,7 +74,6 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-header-texture-color"])
 	
 	-- Attributes
-	Health.frequentUpdates = true
 	Health.Smooth = true
 	Health.colorTapping = true
 	Health.colorDisconnected = true
@@ -116,7 +115,7 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	Buffs:SetSize(Settings["unitframes-player-width"], Settings["unitframes-boss-health-height"] + Settings["unitframes-boss-power-height"] + 3)
 	Buffs:SetPoint("RIGHT", self, "LEFT", -2, 0)
 	Buffs.size = Settings["unitframes-boss-health-height"] + Settings["unitframes-boss-power-height"] + 3
-	Buffs.spacing = 2 --  2
+	Buffs.spacing = 2
 	Buffs.num = 3
 	Buffs.initialAnchor = "TOPRIGHT"
 	Buffs.tooltipAnchor = "ANCHOR_TOP"
@@ -124,7 +123,6 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	Buffs["growth-y"] = "UP"
 	Buffs.PostCreateIcon = UF.PostCreateIcon
 	Buffs.PostUpdateIcon = UF.PostUpdateIcon
-	Buffs.showType = true
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetSize(Settings["unitframes-player-width"], Settings["unitframes-boss-health-height"] + Settings["unitframes-boss-power-height"] + 3)
@@ -139,7 +137,6 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	Debuffs.PostCreateIcon = UF.PostCreateIcon
 	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["unitframes-only-player-debuffs"]
-	Debuffs.showType = true
 	
     -- Castbar
     local Castbar = CreateFrame("StatusBar", self:GetName() .. " Casting Bar", self)
@@ -152,8 +149,6 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	CastbarBG:SetPoint("BOTTOMRIGHT", Castbar, 0, 0)
     CastbarBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	CastbarBG:SetAlpha(0.2)
-	
-	--Boss:SetSize(Settings["unitframes-boss-width"], Settings["unitframes-boss-health-height"] + Settings["unitframes-boss-power-height"] + 3)
 	
     -- Add a background
     local Background = Castbar:CreateTexture(nil, "BACKGROUND")

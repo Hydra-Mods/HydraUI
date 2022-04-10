@@ -120,17 +120,23 @@ UF.PostUpdateIcon = function(self, unit, button, index, position, duration, expi
 		end
 	end
 	
+	if debuffType then
+		local color = self.__owner.colors.debuff[debuffType]
+		
+		button.DebuffType:SetBackdropBorderColor(color[1], color[2], color[3])
+		button.DebuffType:Show()
+	else
+		button.DebuffType:Hide()
+	end
+	
 	if ((button.filter == "HARMFUL") and (not button.isPlayer) and debuffType) then
 		button.icon:SetDesaturated(true)
-		--button:SetBackdropColor(0, 0, 0)
 	elseif (button.filter == "HELPFUL") then
 		button.icon:SetDesaturated(false)
-		--button:SetBackdropColor(0, 0, 0)
 	else
 		local color = HydraUI.DebuffColors[debuffType] or HydraUI.DebuffColors.none
 	
 		button.icon:SetDesaturated(false)
-		--button:SetBackdropColor(unpack(color))
 	end
 	
 	if (Expiration and Expiration ~= 0) then
@@ -157,8 +163,6 @@ UF.PostCreateIcon = function(unit, button)
 		button:SetScript("OnMouseUp", CancelAuraOnMouseUp)
 	end
 	
-	button:SetFrameLevel(6)
-	
 	button.bg = button:CreateTexture(nil, "BACKGROUND")
 	button.bg:SetPoint("TOPLEFT", button, 0, 0)
 	button.bg:SetPoint("BOTTOMRIGHT", button, 0, 0)
@@ -166,7 +170,6 @@ UF.PostCreateIcon = function(unit, button)
 	
 	button.cd.noOCC = true
 	button.cd.noCooldownCount = true
-	button.cd:SetFrameLevel(button:GetFrameLevel() + 1)
 	button.cd:ClearAllPoints()
 	button.cd:SetPoint("TOPLEFT", button, 1, -1)
 	button.cd:SetPoint("BOTTOMRIGHT", button, -1, 1)
@@ -176,25 +179,23 @@ UF.PostCreateIcon = function(unit, button)
 	button.icon:SetPoint("TOPLEFT", 1, -1)
 	button.icon:SetPoint("BOTTOMRIGHT", -1, 1)
 	button.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	button.icon:SetDrawLayer("ARTWORK")
 	
 	button.count:SetPoint("BOTTOMRIGHT", 1, 2)
 	button.count:SetJustifyH("RIGHT")
-	HydraUI:SetFontInfo(button.count, Settings["unitframes-font"], Settings["unitframes-font-size"], "OUTLINE")
+	HydraUI:SetFontInfo(button.count, Settings["unitframes-font"], Settings["unitframes-font-size"], "OUTLINE")	 
 	
-	button.overlayFrame = CreateFrame("Frame", nil, button)
-	button.overlayFrame:SetFrameLevel(button.cd:GetFrameLevel() + 1)	 
-	
-	button.Time = button:CreateFontString(nil, "OVERLAY")
+	button.Time = button.cd:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(button.Time, Settings["unitframes-font"], Settings["unitframes-font-size"], "OUTLINE")
 	button.Time:SetPoint("TOPLEFT", 2, -2)
 	button.Time:SetJustifyH("LEFT")
 	
-	button.count:SetParent(button.overlayFrame)
-
-	if Settings["unitframes-display-aura-timers"] then
-		button.Time:SetParent(button.overlayFrame)
-	else
+	button.DebuffType = CreateFrame("Frame", nil, button, "BackdropTemplate")
+	button.DebuffType:SetPoint("TOPLEFT", 1, -1)
+	button.DebuffType:SetPoint("BOTTOMRIGHT", -1, 1)
+	button.DebuffType:SetBackdrop(HydraUI.Outline)
+	button.DebuffType:SetFrameLevel(button:GetFrameLevel() + 3)
+	
+	if (not Settings["unitframes-display-aura-timers"]) then
 		button.Time:SetParent(Hider)
 	end
 	

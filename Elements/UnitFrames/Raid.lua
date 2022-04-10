@@ -201,7 +201,6 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	Debuffs.PostCreateIcon = UF.PostCreateIcon
 	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
 	Debuffs.CustomFilter = RaidDebuffFilter
-	Debuffs.showType = true
 	self.Debuffs = Debuffs
 	
 	-- Leader
