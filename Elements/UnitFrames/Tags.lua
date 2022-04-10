@@ -94,6 +94,14 @@ local UTF8Sub = function(str, stop) -- utf8 sub derived from tukui
 	end
 end
 
+local HealthEvent
+
+if HydraUI.IsMainline then
+	HealthEvent = "UNIT_HEALTH "
+else
+	HealthEvent = "UNIT_HEALTH_FREQUENT "
+end
+
 -- Tags
 Events["ColorStop"] = "PLAYER_ENTERING_WORLD"
 Methods["ColorStop"] = function()
@@ -107,7 +115,7 @@ Methods["Resting"] = function(unit)
 	end
 end
 
-Events["Status"] = "UNIT_HEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED PLAYER_UPDATE_RESTING"
+Events["Status"] = HealthEvent .. "UNIT_CONNECTION PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED PLAYER_UPDATE_RESTING"
 Methods["Status"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -191,15 +199,15 @@ Methods["Resting"] = function(unit)
 	end
 end
 
-Events["Health"] = "UNIT_HEALTH UNIT_MAXHEALTH PLAYER_ENTERING_WORLD"
+Events["Health"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_ENTERING_WORLD"
 Methods["Health"] = UnitHealth
 
-Events["Health:Short"] = "UNIT_HEALTH PLAYER_ENTERING_WORLD" -- Note for self, is this okay without special events? Test on classic and retail
+Events["Health:Short"] = HealthEvent .. "PLAYER_ENTERING_WORLD"
 Methods["Health:Short"] = function(unit)
 	return HydraUI:ShortValue(UnitHealth(unit))
 end
 
-Events["HealthPercent"] = "UNIT_HEALTH UNIT_MAXHEALTH PLAYER_ENTERING_WORLD"
+Events["HealthPercent"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_ENTERING_WORLD"
 Methods["HealthPercent"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -211,7 +219,7 @@ Methods["HealthPercent"] = function(unit)
 	end
 end
 
-Events["HealthValues"] = "UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD"
+Events["HealthValues"] = HealthEvent .. "UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD"
 Methods["HealthValues"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -219,7 +227,7 @@ Methods["HealthValues"] = function(unit)
 	return Current .. " / " .. Max
 end
 
-Events["HealthValues:Short"] = "UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD"
+Events["HealthValues:Short"] = HealthEvent .. "UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD"
 Methods["HealthValues:Short"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -227,7 +235,7 @@ Methods["HealthValues:Short"] = function(unit)
 	return HydraUI:ShortValue(Current) .. " / " .. HydraUI:ShortValue(Max)
 end
 
-Events["HealthDeficit"] = "UNIT_HEALTH UNIT_MAXHEALTH PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
+Events["HealthDeficit"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
 Methods["HealthDeficit"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -248,7 +256,7 @@ Methods["HealthDeficit"] = function(unit)
 	end
 end
 
-Events["HealthDeficit:Short"] = "UNIT_HEALTH UNIT_MAXHEALTH PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
+Events["HealthDeficit:Short"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
 Methods["HealthDeficit:Short"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -269,7 +277,7 @@ Methods["HealthDeficit:Short"] = function(unit)
 	end
 end
 
-Events["GroupStatus"] = "UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED PLAYER_ENTERING_WORLD"
+Events["GroupStatus"] = HealthEvent .. "UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED PLAYER_ENTERING_WORLD"
 Methods["GroupStatus"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -292,7 +300,7 @@ Methods["GroupStatus"] = function(unit)
 	end
 end
 
-Events["HealthColor"] = "UNIT_HEALTH UNIT_MAXHEALTH PLAYER_ENTERING_WORLD"
+Events["HealthColor"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_ENTERING_WORLD"
 Methods["HealthColor"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -304,21 +312,21 @@ Methods["HealthColor"] = function(unit)
 	end
 end
 
-Events["Power"] = "UNIT_POWER_FREQUENT UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
+Events["Power"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
 Methods["Power"] = function(unit)
 	if (UnitPower(unit) ~= 0) then
 		return UnitPower(unit)
 	end
 end
 
-Events["Power:Short"] = "UNIT_POWER_FREQUENT UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
+Events["Power:Short"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
 Methods["Power:Short"] = function(unit)
 	if (UnitPower(unit) ~= 0) then
 		return HydraUI:ShortValue(UnitPower(unit))
 	end
 end
 
-Events["PowerValues"] = "UNIT_POWER_FREQUENT UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
+Events["PowerValues"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
 Methods["PowerValues"] = function(unit)
 	local Current = UnitPower(unit)
 	local Max = UnitPowerMax(unit)
@@ -328,7 +336,7 @@ Methods["PowerValues"] = function(unit)
 	end
 end
 
-Events["PowerValues:Short"] = "UNIT_POWER_FREQUENT UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
+Events["PowerValues:Short"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
 Methods["PowerValues:Short"] = function(unit)
 	local Current = UnitPower(unit)
 	local Max = UnitPowerMax(unit)
@@ -338,14 +346,14 @@ Methods["PowerValues:Short"] = function(unit)
 	end
 end
 
-Events["PowerPercent"] = "UNIT_POWER_FREQUENT UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
+Events["PowerPercent"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
 Methods["PowerPercent"] = function(unit)
 	if (UnitPower(unit) ~= 0) then
 		return floor((UnitPower(unit) / UnitPowerMax(unit) * 100 + 0.05) * 10) / 10 .. "%"
 	end
 end
 
-Events["PowerColor"] = "UNIT_POWER_FREQUENT UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
+Events["PowerColor"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE UNIT_DISPLAYPOWER PLAYER_ENTERING_WORLD"
 Methods["PowerColor"] = function(unit)
 	local PowerType, PowerToken = UnitPowerType(unit)
 	
