@@ -2,12 +2,9 @@ local addon, ns = ...
 local HydraUI, GUI, Language, Assets, Settings, Defaults = ns:get()
 
 local oUF = ns.oUF or oUF
-local Name, Duration, Expiration, Caster, SpellID, _
 
-local unpack = unpack
 local select = select
 local find = string.find
-local UnitAura = UnitAura
 local GetTime = GetTime
 
 Defaults["unitframes-only-player-debuffs"] = false
@@ -106,14 +103,11 @@ local AuraOnUpdate = function(self, ela)
 end
 
 UF.PostUpdateIcon = function(self, unit, button, index, position, duration, expiration, debuffType, isStealable)
-	local Name, _, _, _, Duration, Expiration, Caster, _, _, SpellID = UnitAura(unit, index, button.filter)
-	
-	button.Duration = Duration
-	button.Expiration = Expiration
+	button.Expiration = expiration
 	
 	if button.cd then
-		if (Duration and Duration > 0) then
-			button.cd:SetCooldown(Expiration - Duration, Duration)
+		if (duration and duration > 0) then
+			button.cd:SetCooldown(expiration - duration, duration)
 			button.cd:Show()
 		else
 			button.cd:Hide()
@@ -121,9 +115,9 @@ UF.PostUpdateIcon = function(self, unit, button, index, position, duration, expi
 	end
 	
 	if debuffType then
-		local color = self.__owner.colors.debuff[debuffType]
+		local Color = self.__owner.colors.debuff[debuffType]
 		
-		button.DebuffType:SetBackdropBorderColor(color[1], color[2], color[3])
+		button.DebuffType:SetBackdropBorderColor(Color[1], Color[2], Color[3])
 		button.DebuffType:Show()
 	else
 		button.DebuffType:Hide()
@@ -131,15 +125,11 @@ UF.PostUpdateIcon = function(self, unit, button, index, position, duration, expi
 	
 	if ((button.filter == "HARMFUL") and (not button.isPlayer) and debuffType) then
 		button.icon:SetDesaturated(true)
-	elseif (button.filter == "HELPFUL") then
-		button.icon:SetDesaturated(false)
 	else
-		local color = HydraUI.DebuffColors[debuffType] or HydraUI.DebuffColors.none
-	
 		button.icon:SetDesaturated(false)
 	end
 	
-	if (Expiration and Expiration ~= 0) then
+	if (expiration and expiration ~= 0) then
 		button:SetScript("OnUpdate", AuraOnUpdate)
 		button.Time:Show()
 	else
