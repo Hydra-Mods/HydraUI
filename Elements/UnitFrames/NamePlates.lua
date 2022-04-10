@@ -53,13 +53,17 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Health:EnableMouse(false)
 	
-	local AbsorbsBar = CreateFrame("StatusBar", nil, self)
-	AbsorbsBar:SetWidth(Settings["nameplates-width"])
-	AbsorbsBar:SetHeight(Settings["nameplates-height"])
-	AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
-	AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
-	AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
+	if HydraUI.IsMainline then
+		local AbsorbsBar = CreateFrame("StatusBar", nil, self)
+		AbsorbsBar:SetWidth(Settings["nameplates-width"])
+		AbsorbsBar:SetHeight(Settings["nameplates-height"])
+		AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
+		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
+		
+		self.AbsorbsBar = AbsorbsBar
+	end
 	
 	local HealBar = CreateFrame("StatusBar", nil, self)
 	HealBar:SetWidth(Settings["nameplates-width"])
@@ -288,7 +292,6 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 	self:Tag(BottomLeft, Settings["nameplates-bottomleft-text"])
 	
 	self.Health = Health
-	self.AbsorbsBar = AbsorbsBar
 	self.HealBar = HealBar
 	self.Top = Top
 	self.TopLeft = TopLeft
