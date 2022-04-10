@@ -18,6 +18,8 @@ Defaults["unitframes-player-enable-resource"] = true
 Defaults["unitframes-player-cast-width"] = 250
 Defaults["unitframes-player-cast-height"] = 24
 Defaults["unitframes-player-enable-castbar"] = true
+Defaults["unitframes-show-mana-timer"] = true
+Defaults["unitframes-show-energy-timer"] = true
 Defaults["player-enable-portrait"] = false
 Defaults["player-portrait-style"] = "3D"
 Defaults["player-enable-pvp"] = true
@@ -208,6 +210,52 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		AdditionalPower:SetAllPoints(Power)
 		AdditionalPower:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 		AdditionalPower:SetReverseFill(Settings["unitframes-player-power-reverse"])]]
+		
+		-- Mana regen
+		if (Settings["unitframes-show-mana-timer"] and not HydraUI.IsMainline) then
+			local ManaTimer = CreateFrame("StatusBar", nil, Power)
+			ManaTimer:SetAllPoints(Power)
+			ManaTimer:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+			ManaTimer:SetStatusBarColor(0, 0, 0, 0)
+			ManaTimer:Hide()
+			
+			ManaTimer.Spark = ManaTimer:CreateTexture(nil, "ARTWORK")
+			ManaTimer.Spark:SetSize(3, Settings["unitframes-player-power-height"])
+			ManaTimer.Spark:SetPoint("LEFT", ManaTimer:GetStatusBarTexture(), "RIGHT", -1, 0)
+			ManaTimer.Spark:SetTexture(Assets:GetTexture("Blank"))
+			ManaTimer.Spark:SetVertexColor(1, 1, 1, 0.2)
+			
+			ManaTimer.Spark2 = ManaTimer:CreateTexture(nil, "ARTWORK")
+			ManaTimer.Spark2:SetSize(1, Settings["unitframes-player-power-height"])
+			ManaTimer.Spark2:SetPoint("CENTER", ManaTimer.Spark, 0, 0)
+			ManaTimer.Spark2:SetTexture(Assets:GetTexture("Blank"))
+			ManaTimer.Spark2:SetVertexColor(1, 1, 1, 0.8)
+			
+			self.ManaTimer = ManaTimer
+		end
+		
+		-- Energy ticks
+		if (Settings["unitframes-show-energy-timer"] and not HydraUI.IsMainline) then
+			local EnergyTick = CreateFrame("StatusBar", nil, Power)
+			EnergyTick:SetAllPoints(Power)
+			EnergyTick:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+			EnergyTick:SetStatusBarColor(0, 0, 0, 0)
+			EnergyTick:Hide()
+			
+			EnergyTick.Spark = EnergyTick:CreateTexture(nil, "ARTWORK")
+			EnergyTick.Spark:SetSize(3, Settings["unitframes-player-power-height"])
+			EnergyTick.Spark:SetPoint("LEFT", EnergyTick:GetStatusBarTexture(), "RIGHT", -1, 0)
+			EnergyTick.Spark:SetTexture(Assets:GetTexture("Blank"))
+			EnergyTick.Spark:SetVertexColor(1, 1, 1, 0.2)
+			
+			EnergyTick.Spark2 = EnergyTick:CreateTexture(nil, "ARTWORK")
+			EnergyTick.Spark2:SetSize(1, Settings["unitframes-player-power-height"])
+			EnergyTick.Spark2:SetPoint("CENTER", EnergyTick.Spark, 0, 0)
+			EnergyTick.Spark2:SetTexture(Assets:GetTexture("Blank"))
+			EnergyTick.Spark2:SetVertexColor(1, 1, 1, 0.8)
+			
+			self.EnergyTick = EnergyTick
+		end
 		
 		-- Power prediction
 		if HydraUI.IsMainline then
@@ -921,6 +969,11 @@ GUI:AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"],
 	left:CreateSwitch("player-enable-portrait", Settings["player-enable-portrait"], Language["Enable Portrait"], Language["Display the player unit portrait"], UpdatePlayerEnablePortrait)
 	left:CreateSwitch("player-enable-pvp", Settings["player-enable-pvp"], Language["Enable PVP Indicator"], Language["Display the pvp indicator"], UpdatePlayerEnablePVPIndicator)
 	left:CreateDropdown("player-portrait-style", Settings["player-portrait-style"], {[Language["2D"]] = "2D", [Language["3D"]] = "3D"}, Language["Set Portrait Style"], Language["Set the style of the portrait"], ReloadUI):RequiresReload(true)
+	
+	if (not HydraUI.IsMainline) then
+		left:CreateSwitch("unitframes-show-mana-timer", Settings["unitframes-show-mana-timer"], Language["Enable Mana Regen Timer"], Language["Display the time until your full mana regeneration is active"], ReloadUI):RequiresReload(true)
+		left:CreateSwitch("unitframes-show-energy-timer", Settings["unitframes-show-energy-timer"], Language["Enable Energy Timer"], Language["Display the time until your next energy tick on the power bar"], ReloadUI):RequiresReload(true)
+	end
 	
 	left:CreateHeader(Language["Health"])
 	left:CreateSwitch("unitframes-player-health-reverse", Settings["unitframes-player-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePlayerHealthFill)
