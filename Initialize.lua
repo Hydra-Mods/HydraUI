@@ -225,6 +225,18 @@ function HydraUI:CreatePluginWindow()
 	end)
 end
 
+function HydraUI:UpdateoUFColors()
+	local Colors = Namespace.oUF.colors
+	
+	Colors.class = HydraUI.ClassColors
+	Colors.reaction = HydraUI.ReactionColors
+	Colors.power = HydraUI.PowerColors
+	Colors.debuff = HydraUI.DebuffColors
+	Colors.tapped = {HydraUI:HexToRGB(Settings["color-tapped"])}
+	Colors.disconnected = {HydraUI:HexToRGB(Settings["color-disconnected"])}
+	Colors.health = {HydraUI:HexToRGB(Settings["ui-header-texture-color"])}
+end
+
 -- Events
 function HydraUI:OnEvent(event)
 	Defaults["ui-scale"] = self:GetSuggestedScale()
@@ -238,7 +250,7 @@ function HydraUI:OnEvent(event)
 	
 	self:SetScale(Settings["ui-scale"])
 	
-	--self:UpdateoUFColors()
+	self:UpdateoUFColors()
 	self:UpdateColors()
 	
 	self:WelcomeMessage()

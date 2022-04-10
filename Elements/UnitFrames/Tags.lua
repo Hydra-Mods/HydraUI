@@ -115,7 +115,7 @@ Methods["Resting"] = function(unit)
 	end
 end
 
-Events["Status"] = HealthEvent .. "UNIT_CONNECTION PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED PLAYER_UPDATE_RESTING"
+Events["Status"] = HealthEvent .. "UNIT_CONNECTION PLAYER_FLAGS_CHANGED PLAYER_UPDATE_RESTING"
 Methods["Status"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -132,7 +132,7 @@ Methods["Status"] = function(unit)
 	return ""
 end
 
-Events["Level"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED PLAYER_ENTERING_WORLD"
+Events["Level"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED"
 Methods["Level"] = function(unit)
 	local Level = UnitLevel(unit)
 	
@@ -147,7 +147,7 @@ Methods["Level"] = function(unit)
 	end
 end
 
-Events["LevelPlus"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED PLAYER_ENTERING_WORLD"
+Events["LevelPlus"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED"
 Methods["LevelPlus"] = function(unit)
 	local Class = UnitClassification(unit)
 	
@@ -165,7 +165,7 @@ Methods["LevelPlus"] = function(unit)
 	end
 end
 
-Events["Classification"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED PLAYER_ENTERING_WORLD"
+Events["Classification"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED"
 Methods["Classification"] = function(unit)
 	local Class = UnitClassification(unit)
 	
@@ -174,7 +174,7 @@ Methods["Classification"] = function(unit)
 	end
 end
 
-Events["ShortClassification"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED PLAYER_ENTERING_WORLD"
+Events["ShortClassification"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED"
 Methods["ShortClassification"] = function(unit)
 	local Class = UnitClassification(unit)
 	
@@ -183,7 +183,7 @@ Methods["ShortClassification"] = function(unit)
 	end
 end
 
-Events["Plus"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED PLAYER_ENTERING_WORLD"
+Events["Plus"] = "UNIT_LEVEL PLAYER_LEVEL_UP UNIT_CLASSIFICATION_CHANGED"
 Methods["Plus"] = function(unit)
 	local Class = UnitClassification(unit)
 	
@@ -192,22 +192,22 @@ Methods["Plus"] = function(unit)
 	end
 end
 
-Events["Resting"] = "PLAYER_UPDATE_RESTING PLAYER_ENTERING_WORLD"
+Events["Resting"] = "PLAYER_UPDATE_RESTING"
 Methods["Resting"] = function(unit)
 	if (unit == "player" and IsResting()) then
 		return "zZz"
 	end
 end
 
-Events["Health"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_ENTERING_WORLD"
+Events["Health"] = HealthEvent .. "UNIT_MAXHEALTH"
 Methods["Health"] = UnitHealth
 
-Events["Health:Short"] = HealthEvent .. "PLAYER_ENTERING_WORLD"
+Events["Health:Short"] = HealthEvent .. "UNIT_MAXHEALTH"
 Methods["Health:Short"] = function(unit)
 	return HydraUI:ShortValue(UnitHealth(unit))
 end
 
-Events["HealthPercent"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_ENTERING_WORLD"
+Events["HealthPercent"] = HealthEvent .. "UNIT_MAXHEALTH"
 Methods["HealthPercent"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -219,7 +219,7 @@ Methods["HealthPercent"] = function(unit)
 	end
 end
 
-Events["HealthValues"] = HealthEvent .. "UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD"
+Events["HealthValues"] = HealthEvent .. "UNIT_MAXHEALTH UNIT_CONNECTION"
 Methods["HealthValues"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -227,7 +227,7 @@ Methods["HealthValues"] = function(unit)
 	return Current .. " / " .. Max
 end
 
-Events["HealthValues:Short"] = HealthEvent .. "UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_ENTERING_WORLD"
+Events["HealthValues:Short"] = HealthEvent .. "UNIT_MAXHEALTH UNIT_CONNECTION"
 Methods["HealthValues:Short"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -235,7 +235,7 @@ Methods["HealthValues:Short"] = function(unit)
 	return HydraUI:ShortValue(Current) .. " / " .. HydraUI:ShortValue(Max)
 end
 
-Events["HealthDeficit"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
+Events["HealthDeficit"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
 Methods["HealthDeficit"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -256,7 +256,7 @@ Methods["HealthDeficit"] = function(unit)
 	end
 end
 
-Events["HealthDeficit:Short"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_ENTERING_WORLD PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
+Events["HealthDeficit:Short"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
 Methods["HealthDeficit:Short"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -277,7 +277,7 @@ Methods["HealthDeficit:Short"] = function(unit)
 	end
 end
 
-Events["GroupStatus"] = HealthEvent .. "UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED PLAYER_ENTERING_WORLD"
+Events["GroupStatus"] = HealthEvent .. "UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED"
 Methods["GroupStatus"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -300,7 +300,7 @@ Methods["GroupStatus"] = function(unit)
 	end
 end
 
-Events["HealthColor"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_ENTERING_WORLD"
+Events["HealthColor"] = HealthEvent .. "UNIT_MAXHEALTH"
 Methods["HealthColor"] = function(unit)
 	local Current = UnitHealth(unit)
 	local Max = UnitHealthMax(unit)
@@ -312,21 +312,21 @@ Methods["HealthColor"] = function(unit)
 	end
 end
 
-Events["Power"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
+Events["Power"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE"
 Methods["Power"] = function(unit)
 	if (UnitPower(unit) ~= 0) then
 		return UnitPower(unit)
 	end
 end
 
-Events["Power:Short"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
+Events["Power:Short"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE"
 Methods["Power:Short"] = function(unit)
 	if (UnitPower(unit) ~= 0) then
 		return HydraUI:ShortValue(UnitPower(unit))
 	end
 end
 
-Events["PowerValues"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
+Events["PowerValues"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE"
 Methods["PowerValues"] = function(unit)
 	local Current = UnitPower(unit)
 	local Max = UnitPowerMax(unit)
@@ -336,7 +336,7 @@ Methods["PowerValues"] = function(unit)
 	end
 end
 
-Events["PowerValues:Short"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
+Events["PowerValues:Short"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE"
 Methods["PowerValues:Short"] = function(unit)
 	local Current = UnitPower(unit)
 	local Max = UnitPowerMax(unit)
@@ -346,14 +346,14 @@ Methods["PowerValues:Short"] = function(unit)
 	end
 end
 
-Events["PowerPercent"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE PLAYER_ENTERING_WORLD"
+Events["PowerPercent"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE"
 Methods["PowerPercent"] = function(unit)
 	if (UnitPower(unit) ~= 0) then
 		return floor((UnitPower(unit) / UnitPowerMax(unit) * 100 + 0.05) * 10) / 10 .. "%"
 	end
 end
 
-Events["PowerColor"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE UNIT_DISPLAYPOWER PLAYER_ENTERING_WORLD"
+Events["PowerColor"] = "UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_POWER_UPDATE UNIT_DISPLAYPOWER"
 Methods["PowerColor"] = function(unit)
 	local PowerType, PowerToken = UnitPowerType(unit)
 	
@@ -364,7 +364,7 @@ Methods["PowerColor"] = function(unit)
 	end
 end
 
-Events["Name"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
+Events["Name"] = "UNIT_NAME_UPDATE UNIT_PET"
 Methods["Name"] = function(unit, realunit, arg)
 	local Name = UnitName(realunit or unit)
 	
@@ -374,7 +374,7 @@ Methods["Name"] = function(unit, realunit, arg)
 end
 
 -- Deprecated as of April 8th, 2022
-Events["Name4"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
+Events["Name4"] = "UNIT_NAME_UPDATE UNIT_PET"
 Methods["Name4"] = function(unit)
 	local Name = UnitName(unit)
 	
@@ -383,7 +383,7 @@ Methods["Name4"] = function(unit)
 	end
 end
 
-Events["Name5"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
+Events["Name5"] = "UNIT_NAME_UPDATE UNIT_PET"
 Methods["Name5"] = function(unit)
 	local Name = UnitName(unit)
 	
@@ -392,7 +392,7 @@ Methods["Name5"] = function(unit)
 	end
 end
 
-Events["Name8"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
+Events["Name8"] = "UNIT_NAME_UPDATE UNIT_PET"
 Methods["Name8"] = function(unit)
 	local Name = UnitName(unit)
 	
@@ -401,7 +401,7 @@ Methods["Name8"] = function(unit)
 	end
 end
 
-Events["Name10"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
+Events["Name10"] = "UNIT_NAME_UPDATE UNIT_PET"
 Methods["Name10"] = function(unit)
 	local Name = UnitName(unit)
 	
@@ -410,7 +410,7 @@ Methods["Name10"] = function(unit)
 	end
 end
 
-Events["Name14"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
+Events["Name14"] = "UNIT_NAME_UPDATE UNIT_PET"
 Methods["Name14"] = function(unit)
 	local Name = UnitName(unit)
 	
@@ -419,7 +419,7 @@ Methods["Name14"] = function(unit)
 	end
 end
 
-Events["Name15"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
+Events["Name15"] = "UNIT_NAME_UPDATE UNIT_PET"
 Methods["Name15"] = function(unit)
 	local Name = UnitName(unit)
 	
@@ -428,7 +428,7 @@ Methods["Name15"] = function(unit)
 	end
 end
 
-Events["Name20"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
+Events["Name20"] = "UNIT_NAME_UPDATE UNIT_PET"
 Methods["Name20"] = function(unit)
 	local Name = UnitName(unit)
 	
@@ -437,7 +437,7 @@ Methods["Name20"] = function(unit)
 	end
 end
 
-Events["Name30"] = "UNIT_NAME_UPDATE UNIT_PET PLAYER_ENTERING_WORLD"
+Events["Name30"] = "UNIT_NAME_UPDATE UNIT_PET"
 Methods["Name30"] = function(unit)
 	local Name = UnitName(unit)
 	
@@ -446,7 +446,7 @@ Methods["Name30"] = function(unit)
 	end
 end
 
-Events["NameColor"] = "UNIT_NAME_UPDATE PLAYER_ENTERING_WORLD UNIT_CLASSIFICATION_CHANGED"
+Events["NameColor"] = "UNIT_NAME_UPDATE UNIT_CLASSIFICATION_CHANGED"
 Methods["NameColor"] = function(unit)
 	if UnitIsPlayer(unit) then
 		local _, Class = UnitClass(unit)
@@ -471,7 +471,7 @@ Methods["NameColor"] = function(unit)
 	end
 end
 
-Events["Reaction"] = "UNIT_NAME_UPDATE PLAYER_ENTERING_WORLD UNIT_CLASSIFICATION_CHANGED"
+Events["Reaction"] = "UNIT_NAME_UPDATE UNIT_CLASSIFICATION_CHANGED"
 Methods["Reaction"] = function(unit)
 	local Reaction = UnitReaction(unit, "player")
 	
@@ -484,7 +484,7 @@ Methods["Reaction"] = function(unit)
 	end
 end
 
-Events["LevelColor"] = "UNIT_LEVEL PLAYER_LEVEL_UP PLAYER_ENTERING_WORLD"
+Events["LevelColor"] = "UNIT_LEVEL PLAYER_LEVEL_UP"
 Methods["LevelColor"] = function(unit)
 	local Level = UnitLevel(unit)
 	local Color = GetQuestDifficultyColor(Level)
@@ -492,7 +492,7 @@ Methods["LevelColor"] = function(unit)
 	return "|cFF" .. HydraUI:RGBToHex(Color.r, Color.g, Color.b)
 end
 
-Events["PartyIndex"] = "GROUP_ROSTER_UPDATE PLAYER_ENTERING_WORLD"
+Events["PartyIndex"] = "GROUP_ROSTER_UPDATE"
 Methods["PartyIndex"] = function(unit)
 	local Header = _G["HydraUI Party"]
 
@@ -512,7 +512,7 @@ Methods["PartyIndex"] = function(unit)
 	end
 end
 
-Events["RaidIndex"] = "GROUP_ROSTER_UPDATE PLAYER_ENTERING_WORLD"
+Events["RaidIndex"] = "GROUP_ROSTER_UPDATE"
 Methods["RaidIndex"] = function(unit)
 	local Header = _G["HydraUI Raid"]
 
@@ -527,7 +527,7 @@ Methods["RaidIndex"] = function(unit)
 	return UnitInRaid(unit)
 end
 
-Events["RaidGroup"] = "GROUP_ROSTER_UPDATE PLAYER_ENTERING_WORLD"
+Events["RaidGroup"] = "GROUP_ROSTER_UPDATE"
 Methods["RaidGroup"] = function(unit)
 	local Name = UnitName(unit)
 	local Unit, Rank, Group
