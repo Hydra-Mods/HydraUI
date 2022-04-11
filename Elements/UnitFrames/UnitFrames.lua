@@ -102,38 +102,88 @@ local AuraOnUpdate = function(self, ela)
 	end
 end
 
-UF.PostUpdateIcon = function(self, unit, button, index, position, duration, expiration, debuffType, isStealable)
-	button.Expiration = expiration
+if HydraUI.IsClassic then
+	local LCD = LibStub("LibClassicDurations")
+	local UnitAura = UnitAura
 	
-	if button.cd then
-		if (duration and duration > 0) then
-			button.cd:SetCooldown(expiration - duration, duration)
-			button.cd:Show()
+	LCD:Register("HydraUI")
+	
+	UF.PostUpdateIcon = function(self, unit, button, index, position, duration, expiration, debuffType, isStealable)
+		local Name, _, _, _, Duration, Expiration, Caster, _, _, SpellID = UnitAura(unit, index, button.filter)
+		local DurationNew, ExpirationNew = LCD:GetAuraDurationByUnit(unit, SpellID, Caster, Name)
+		
+		if (Duration == 0 and DurationNew) then
+			Duration = DurationNew
+			Expiration = ExpirationNew
+		end
+		
+		button.Expiration = Expiration
+		
+		if button.cd then
+			if (Duration and Duration > 0) then
+				button.cd:SetCooldown(Expiration - Duration, Duration)
+				button.cd:Show()
+			else
+				button.cd:Hide()
+			end
+		end
+		
+		if debuffType then
+			local Color = self.__owner.colors.debuff[debuffType]
+			
+			button.DebuffType:SetBackdropBorderColor(Color[1], Color[2], Color[3])
+			button.DebuffType:Show()
 		else
-			button.cd:Hide()
+			button.DebuffType:Hide()
+		end
+		
+		if ((button.filter == "HARMFUL") and (not button.isPlayer) and debuffType) then
+			button.icon:SetDesaturated(true)
+		else
+			button.icon:SetDesaturated(false)
+		end
+		
+		if (Expiration and Expiration ~= 0) then
+			button:SetScript("OnUpdate", AuraOnUpdate)
+			button.Time:Show()
+		else
+			button.Time:Hide()
 		end
 	end
-	
-	if debuffType then
-		local Color = self.__owner.colors.debuff[debuffType]
+else
+	UF.PostUpdateIcon = function(self, unit, button, index, position, duration, expiration, debuffType, isStealable)
+		button.Expiration = expiration
 		
-		button.DebuffType:SetBackdropBorderColor(Color[1], Color[2], Color[3])
-		button.DebuffType:Show()
-	else
-		button.DebuffType:Hide()
-	end
-	
-	if ((button.filter == "HARMFUL") and (not button.isPlayer) and debuffType) then
-		button.icon:SetDesaturated(true)
-	else
-		button.icon:SetDesaturated(false)
-	end
-	
-	if (expiration and expiration ~= 0) then
-		button:SetScript("OnUpdate", AuraOnUpdate)
-		button.Time:Show()
-	else
-		button.Time:Hide()
+		if button.cd then
+			if (duration and duration > 0) then
+				button.cd:SetCooldown(expiration - duration, duration)
+				button.cd:Show()
+			else
+				button.cd:Hide()
+			end
+		end
+		
+		if debuffType then
+			local Color = self.__owner.colors.debuff[debuffType]
+			
+			button.DebuffType:SetBackdropBorderColor(Color[1], Color[2], Color[3])
+			button.DebuffType:Show()
+		else
+			button.DebuffType:Hide()
+		end
+		
+		if ((button.filter == "HARMFUL") and (not button.isPlayer) and debuffType) then
+			button.icon:SetDesaturated(true)
+		else
+			button.icon:SetDesaturated(false)
+		end
+		
+		if (expiration and expiration ~= 0) then
+			button:SetScript("OnUpdate", AuraOnUpdate)
+			button.Time:Show()
+		else
+			button.Time:Hide()
+		end
 	end
 end
 

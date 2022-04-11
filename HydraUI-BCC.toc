@@ -59,8 +59,8 @@ Elements\UnitFrames\Boss.lua
 Elements\UnitFrames\Party.lua
 Elements\UnitFrames\Raid.lua
 Elements\UnitFrames\NamePlates.lua
-Elements\MiniMap\MiniMap.lua
-Elements\MiniMap\MiniMapButtons.lua
+Elements\MiniMap.lua
+Elements\MiniMapButtons.lua
 Elements\ZoneText.lua
 Elements\Update.lua
 Elements\AuraTemplate.xml

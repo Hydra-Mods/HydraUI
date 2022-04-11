@@ -31,7 +31,6 @@ GUI.LoadCalls = {}
 GUI.Buttons = {}
 GUI.ButtonQueue = {}
 GUI.ScrollButtons = {}
-GUI.WindowHooks = {onshow = {}, onhide = {}}
 
 local Scroll = function(self)
 	local FirstLeft
@@ -706,28 +705,6 @@ function GUI:AddWidgets(category, name, arg1, arg2)
 		
 		tinsert(self.LoadCalls[category][arg1].Children[name].Calls, arg2)
 		tinsert(self.ButtonQueue, {category, name, arg1})
-	end
-end
-
-function GUI:AddWindowHook(hook, category, name, arg1, arg2)
-	if (not self.WindowHooks[hook][category]) then
-		self.WindowHooks[hook][category] = {}
-	end
-	
-	if (not self.WindowHooks[hook][category][name]) then
-		self.WindowHooks[hook][category][name] = {Hooks = {}}
-	end
-	
-	if (type(arg1) == "function") then
-		tinsert(self.WindowHooks[hook][category][name].Hooks, arg1)
-	else -- string
-		if (not self.WindowHooks[hook][category][arg1].Children) then
-			self.WindowHooks[hook][category][arg1].Children = {}
-		end
-		
-		self.WindowHooks[hook][category][arg1].Children[name] = {Hooks = {}}
-		
-		tinsert(self.WindowHooks[hook][category][arg1].Children[name].Hooks, arg2)
 	end
 end
 

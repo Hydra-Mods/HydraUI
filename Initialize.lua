@@ -64,22 +64,6 @@ end
 setmetatable(Language, {__index = Index})
 
 -- Modules and plugins
-local Hook = function(self, global, hook)
-	if _G[global] then
-		local Func
-	
-		if self[global] then
-			Func = self[global]
-		elseif (hook and self[hook]) then
-			Func = self[hook]
-		end
-		
-		if Func then
-			hooksecurefunc(global, Func)
-		end
-	end
-end
-
 function HydraUI:NewModule(name)
 	local Module = self:GetModule(name)
 	
@@ -91,7 +75,6 @@ function HydraUI:NewModule(name)
 	
 	Module.Name = name
 	Module.Loaded = false
-	Module.Hook = Hook
 	
 	self.Modules[#self.Modules + 1] = Module
 	
@@ -146,7 +129,6 @@ function HydraUI:NewPlugin(name)
 	Plugin.Author = Author
 	Plugin.Version = Version
 	Plugin.Loaded = false
-	Plugin.Hook = Hook
 	
 	self.Plugins[#self.Plugins + 1] = Plugin
 	

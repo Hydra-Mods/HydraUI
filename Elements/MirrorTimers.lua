@@ -95,7 +95,7 @@ function MirrorTimers:Load()
 	self.OuterBG:SetFrameStrata("BACKGROUND")
 	self.OuterBG:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-bg-color"]))
 	
-	self:Hook("MirrorTimer_Show")
+	hooksecurefunc("MirrorTimer_Show", self.MirrorTimer_Show)
 	
 	self:RegisterEvent("MIRROR_TIMER_PAUSE")
 	self:RegisterEvent("MIRROR_TIMER_STOP")

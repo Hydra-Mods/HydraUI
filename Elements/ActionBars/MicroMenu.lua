@@ -219,8 +219,8 @@ function MicroButtons:Load()
 		self.Panel:Hide()
 	end
 	
-	self:Hook("UpdateMicroButtonsParent")
-	self:Hook("MoveMicroButtons")
+	hooksecurefunc("UpdateMicroButtonsParent", self.UpdateMicroButtonsParent)
+	hooksecurefunc("MoveMicroButtons", self.MoveMicroButtons)
 	
 	self:UpdateVisibility()
 end

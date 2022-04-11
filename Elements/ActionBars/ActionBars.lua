@@ -807,7 +807,7 @@ function AB:CreatePetBar()
 	
 	self:PositionButtons(self.PetBar, NUM_PET_ACTION_SLOTS, Settings["ab-pet-per-row"], Settings["ab-pet-button-size"], Settings["ab-pet-button-gap"])
 	
-	self:Hook("PetActionBar_Update")
+	hooksecurefunc("PetActionBar_Update", AB.PetActionBar_Update)
 	
 	if Settings["ab-pet-enable"] then
 		self:EnableBar(self.PetBar)
@@ -857,7 +857,7 @@ function AB:CreateStanceBar()
 		
 		self:PositionButtons(self.StanceBar, NUM_STANCE_SLOTS, Settings["ab-stance-per-row"], Settings["ab-stance-button-size"], Settings["ab-stance-button-gap"])
 		
-		self:Hook("StanceBar_UpdateState")
+		hooksecurefunc("StanceBar_UpdateState", self.StanceBar_UpdateState)
 		
 		if Settings["ab-stance-enable"] then
 			self:EnableBar(self.StanceBar)
@@ -1095,9 +1095,9 @@ function AB:Load()
 	self:CreateMovers()
 	self:UpdateEmptyButtons()
 	
-	self:Hook("ActionButton_UpdateRangeIndicator", "UpdateButtonStatus")
-	--self:Hook("ActionButton_Update", "UpdateButtonStatus")
-	self:Hook("ActionButton_UpdateFlyout", "UpdateFlyout")
+	hooksecurefunc("ActionButton_UpdateRangeIndicator", AB.UpdateButtonStatus)
+	hooksecurefunc("ActionButton_UpdateFlyout", AB.UpdateFlyout)
+	hooksecurefunc("ActionButton_Update", AB.UpdateButtonStatus)
 end
 
 local UpdateBar1 = function()
