@@ -78,13 +78,9 @@ Popup.CreatePopupFrame = function(self)
 	self.Body:SetBackdropBorderColor(0, 0, 0)
 	
 	self.Body.Text = self.Body:CreateFontString(nil, "OVERLAY")
-	--self.Body.Text:SetPoint("TOP", self.Body, 0, -3)
-	--self.Body.Text:SetWidth(POPUP_WIDTH - 12)
-	
 	self.Body.Text:SetPoint("TOPLEFT", self.Body, 3, -3)
 	self.Body.Text:SetPoint("BOTTOMRIGHT", self.Body, -3, 3)
 	HydraUI:SetFontInfo(self.Body.Text, Assets:GetFont(Settings["ui-button-font"]), Settings["ui-font-size"])
-	--self.Body.Text:SetJustifyH("LEFT")
 	self.Body.Text:SetShadowColor(0, 0, 0)
 	self.Body.Text:SetShadowOffset(1, -1)
 	self.Body.Text:SetText(value)
