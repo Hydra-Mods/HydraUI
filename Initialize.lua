@@ -226,7 +226,7 @@ function HydraUI:OnEvent(event)
 	self:UpdateProfileList()
 	self:ApplyProfile(self:GetActiveProfileName())
 	
-	--self:SetScale(Settings["ui-scale"])
+	self:SetScale(Settings["ui-scale"])
 	
 	self:UpdateoUFColors()
 	self:UpdateColors()

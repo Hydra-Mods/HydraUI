@@ -62,7 +62,6 @@ Elements\ZoneText.lua
 Elements\Update.lua
 Elements\AuraTemplate.xml
 Elements\Auras.lua
-Elements\Bags.lua
 Elements\DataTexts\DataTexts.lua
 Elements\DataTexts\Armor.lua
 Elements\DataTexts\BagSlots.lua
