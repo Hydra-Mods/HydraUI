@@ -3,6 +3,7 @@ local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
 local Slots = {1, 3, 5, 9, 10, 6, 7, 8, 16, 17, 18}
 local GetRepairAllCost = GetRepairAllCost
 local GetInventoryItemLink = GetInventoryItemLink
+local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventoryItemDurability = GetInventoryItemDurability
 local floor = math.floor
 local format = format
@@ -23,7 +24,7 @@ local OnEnter = function(self)
 		Current, Max = GetInventoryItemDurability(Slots[i])
 		
 		if Current then
-			GameTooltip:AddDoubleLine(GetInventoryItemLink("player", Slots[i]), format("%s%%", floor(Current / Max * 100)))
+			GameTooltip:AddDoubleLine(format("|T%s:14:14:0:0:64:64:4:60:4:60|t  %s", GetInventoryItemTexture("player", Slots[i]), GetInventoryItemLink("player", Slots[i])), format("%s%%", floor(Current / Max * 100)))
 			
 			HasItem, HasCooldown, RepairCost = ScanTooltip:SetInventoryItem("player", Slots[i], true)
 			

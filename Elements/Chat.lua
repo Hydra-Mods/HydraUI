@@ -1439,18 +1439,6 @@ function Window:Load()
 	HydraUI:CreateMover(self)
 end
 
-local UpdateLeftText = function(value)
-	DT:SetDataText("Window-Left", value)
-end
-
-local UpdateMiddleText = function(value)
-	DT:SetDataText("Window-Middle", value)
-end
-
-local UpdateRightText = function(value)
-	DT:SetDataText("Window-Right", value)
-end
-
 local UpdateOpacity = function(value)
 	if (Settings["right-window-size"] == "SINGLE") then
 		local R, G, B = HydraUI:HexToRGB(Settings["ui-window-main-color"])
@@ -1536,13 +1524,6 @@ local GetChatFrameList = function()
 	
 	return Frames
 end
-
-GUI:AddWidgets(Language["General"], Language["Data Texts"], function(left, right)
-	left:CreateHeader(Language["Right Window Texts"])
-	left:CreateDropdown("data-text-extra-left", Settings["data-text-extra-left"], DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the left data text anchor"], UpdateLeftText)
-	left:CreateDropdown("data-text-extra-middle", Settings["data-text-extra-middle"], DT.List, Language["Set Middle Text"], Language["Set the information to be displayed in the middle data text anchor"], UpdateMiddleText)
-	left:CreateDropdown("data-text-extra-right", Settings["data-text-extra-right"], DT.List, Language["Set Right Text"], Language["Set the information to be displayed in the right data text anchor"], UpdateRightText)
-end)
 
 GUI:AddWidgets(Language["General"], Language["Right"], Language["Chat"], function(left, right)
 	left:CreateHeader(Language["General"])

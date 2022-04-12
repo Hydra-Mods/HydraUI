@@ -301,27 +301,23 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		CastbarBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 		CastbarBG:SetAlpha(0.2)
 		
-		-- Add a background
 		local Background = Castbar:CreateTexture(nil, "BACKGROUND")
 		Background:SetPoint("TOPLEFT", Castbar, -1, 1)
 		Background:SetPoint("BOTTOMRIGHT", Castbar, 1, -1)
 		Background:SetTexture(Assets:GetTexture("Blank"))
 		Background:SetVertexColor(0, 0, 0)
 		
-		-- Add a timer
 		local Time = Castbar:CreateFontString(nil, "OVERLAY")
 		HydraUI:SetFontInfo(Time, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 		Time:SetPoint("RIGHT", Castbar, -3, 0)
 		Time:SetJustifyH("RIGHT")
 		
-		-- Add spell text
 		local Text = Castbar:CreateFontString(nil, "OVERLAY")
 		HydraUI:SetFontInfo(Text, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 		Text:SetPoint("LEFT", Castbar, 3, 0)
 		Text:SetSize(Settings["unitframes-player-cast-width"] * 0.7, Settings["unitframes-font-size"])
 		Text:SetJustifyH("LEFT")
 		
-		-- Add spell icon
 		local Icon = Castbar:CreateTexture(nil, "OVERLAY")
 		Icon:SetSize(Settings["unitframes-player-cast-height"], Settings["unitframes-player-cast-height"])
 		Icon:SetPoint("TOPRIGHT", Castbar, "TOPLEFT", -4, 0)
@@ -333,12 +329,10 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		IconBG:SetTexture(Assets:GetTexture("Blank"))
 		IconBG:SetVertexColor(0, 0, 0)
 		
-		-- Add safezone
 		local SafeZone = Castbar:CreateTexture(nil, "OVERLAY")
 		SafeZone:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-		SafeZone:SetVertexColor(HydraUI:HexToRGB("C0392B"))
+		SafeZone:SetVertexColor(0.75, 0.22, 0.17)
 		
-		-- Register it with oUF
 		Castbar.bg = CastbarBG
 		Castbar.Time = Time
 		Castbar.Text = Text
@@ -346,6 +340,10 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		Castbar.SafeZone = SafeZone
 		Castbar.showTradeSkills = true
 		Castbar.timeToHold = 0.7
+		Castbar.PostCastStart = UF.PostCastStart
+		Castbar.PostCastStop = UF.PostCastStop
+		Castbar.PostCastFail = UF.PostCastFail
+		Castbar.PostCastInterruptible = UF.PostCastInterruptible
 		
 		self.Castbar = Castbar
 	end
@@ -676,7 +674,6 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	Buffs.PostCreateIcon = UF.PostCreateIcon
 	Buffs.PostUpdateIcon = UF.PostUpdateIcon
 	--Buffs.SetPosition = BuffsSetPosition
-	--Buffs.showType = true
 	
 	if Settings["player-move-resource"] then
 		Buffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
@@ -697,7 +694,6 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	Debuffs.PostCreateIcon = UF.PostCreateIcon
 	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["unitframes-only-player-debuffs"]
-	--Debuffs.showType = true
 	
 	-- Resurrect
 	local Resurrect = Health:CreateTexture(nil, "OVERLAY")

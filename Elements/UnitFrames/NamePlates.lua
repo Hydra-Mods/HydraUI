@@ -208,27 +208,23 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
     CastbarBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	CastbarBG:SetAlpha(0.2)
 	
-    -- Add a background
     local Background = Castbar:CreateTexture(nil, "BACKGROUND")
 	Background:SetPoint("TOPLEFT", Castbar, -1, 1)
     Background:SetPoint("BOTTOMRIGHT", Castbar, 1, -1)
     Background:SetTexture(Assets:GetTexture("Blank"))
     Background:SetVertexColor(0, 0, 0)
 	
-    -- Add a timer
     local Time = Castbar:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(Time, Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	Time:SetPoint("RIGHT", Castbar, "BOTTOMRIGHT", -4, -3)
 	Time:SetJustifyH("RIGHT")
 	
-    -- Add spell text
     local Text = Castbar:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(Text, Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	Text:SetPoint("LEFT", Castbar, "BOTTOMLEFT", 4, -3)
 	Text:SetWidth(Settings["nameplates-width"] / 2 + 4)
 	Text:SetJustifyH("LEFT")
 	
-    -- Add spell icon
     local Icon = Castbar:CreateTexture(nil, "OVERLAY")
     Icon:SetSize(Settings["nameplates-height"] + 12 + 2, Settings["nameplates-height"] + 12 + 2)
     Icon:SetPoint("BOTTOMRIGHT", Castbar, "BOTTOMLEFT", -4, 0)
@@ -247,8 +243,9 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
     Castbar.showTradeSkills = true
     Castbar.timeToHold = 0.7
 	Castbar.PostCastStart = UF.PostCastStart
-	Castbar.PostChannelStart = UF.PostCastStart
-	Castbar.PostCastInterruptible = UF.PostCastStart
+	Castbar.PostCastStop = UF.PostCastStop
+	Castbar.PostCastFail = UF.PostCastFail
+	Castbar.PostCastInterruptible = UF.PostCastInterruptible
 	
 	--[[ Elite icon
 	local EliteIndicator = Health:CreateTexture(nil, "OVERLAY")

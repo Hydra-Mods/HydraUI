@@ -92,6 +92,28 @@ local oUF = ns.oUF
 local FALLBACK_ICON = 136243 -- Interface\ICONS\Trade_Engineering
 local FAILED = _G.FAILED or 'Failed'
 local INTERRUPTED = _G.INTERRUPTED or 'Interrupted'
+local UnitCastingInfo = UnitCastingInfo
+local UnitChannelInfo = UnitChannelInfo
+local GetNetStats = GetNetStats
+local GetTime = GetTime
+
+local ClientVersion = select(4, GetBuildInfo())
+local IsClassic = ClientVersion > 10000 and ClientVersion < 20000
+local IsTBC = ClientVersion > 20000 and ClientVersion < 30000
+local IsMainline = ClientVersion > 90000 and ClientVersion < 100000
+local LibCC
+
+if IsClassic then
+	LibCC = LibStub("LibClassicCasterino", true)
+	
+    UnitCastingInfo = function(unit)
+        return LibCC:UnitCastingInfo(unit)
+    end
+	
+    UnitChannelInfo = function(unit)
+        return LibCC:UnitChannelInfo(unit)
+    end
+end
 
 local function resetAttributes(self)
 	self.castID = nil
@@ -381,17 +403,44 @@ local function Enable(self, unit)
 	if(element and unit and not unit:match('%wtarget$')) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
-
-		self:RegisterEvent('UNIT_SPELLCAST_START', CastStart)
-		self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', CastStart)
-		self:RegisterEvent('UNIT_SPELLCAST_STOP', CastStop)
-		self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
-		self:RegisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
-		self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
-		self:RegisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
-		self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
-		self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
-		self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
+		
+		if LibCC then
+			local Callback = function(event, ...)
+				self[event](self, event, ...)
+			end
+			
+			self['UNIT_SPELLCAST_START'] = CastStart
+			self['UNIT_SPELLCAST_CHANNEL_START'] = CastStart
+			self['UNIT_SPELLCAST_STOP'] = CastStop
+			self['UNIT_SPELLCAST_CHANNEL_STOP'] = CastStop
+			self['UNIT_SPELLCAST_DELAYED'] = CastUpdate
+			self['UNIT_SPELLCAST_CHANNEL_UPDATE'] = CastUpdate
+			self['UNIT_SPELLCAST_FAILED'] = CastFail
+			self['UNIT_SPELLCAST_INTERRUPTED'] = CastFail
+			
+			LibCC.RegisterCallback(self, "UNIT_SPELLCAST_START", Callback)
+			LibCC.RegisterCallback(self, "UNIT_SPELLCAST_CHANNEL_START", Callback)
+			LibCC.RegisterCallback(self, "UNIT_SPELLCAST_STOP", Callback)
+			LibCC.RegisterCallback(self, "UNIT_SPELLCAST_CHANNEL_STOP", Callback)
+			LibCC.RegisterCallback(self, "UNIT_SPELLCAST_DELAYED", Callback) -- only for player
+			LibCC.RegisterCallback(self, "UNIT_SPELLCAST_CHANNEL_UPDATE", Callback) -- only for player
+			LibCC.RegisterCallback(self, "UNIT_SPELLCAST_FAILED", Callback)
+			LibCC.RegisterCallback(self, "UNIT_SPELLCAST_INTERRUPTED", Callback)
+		else
+			self:RegisterEvent('UNIT_SPELLCAST_START', CastStart)
+			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', CastStart)
+			self:RegisterEvent('UNIT_SPELLCAST_STOP', CastStop)
+			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
+			self:RegisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
+			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
+			self:RegisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
+			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
+			
+			if IsMainline then
+				self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
+				self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
+			end
+		end
 
 		element.holdTime = 0
 
@@ -432,16 +481,30 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		self:UnregisterEvent('UNIT_SPELLCAST_START', CastStart)
-		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_START', CastStart)
-		self:UnregisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
-		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
-		self:UnregisterEvent('UNIT_SPELLCAST_STOP', CastStop)
-		self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
-		self:UnregisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
-		self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
-		self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
-		self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
+		if LibCC then
+			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_START")
+			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_CHANNEL_START")
+			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_DELAYED") -- only for player
+			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_CHANNEL_UPDATE") -- only for player
+			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_STOP")
+			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_CHANNEL_STOP")
+			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_FAILED")
+			LibCC.UnregisterCallback(self, "UNIT_SPELLCAST_INTERRUPTED")
+		else
+			self:UnregisterEvent('UNIT_SPELLCAST_START', CastStart)
+			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_START', CastStart)
+			self:UnregisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
+			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
+			self:UnregisterEvent('UNIT_SPELLCAST_STOP', CastStop)
+			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
+			self:UnregisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
+			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
+			
+			if IsMainline then
+				self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
+				self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
+			end
+		end
 
 		element:SetScript('OnUpdate', nil)
 

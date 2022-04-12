@@ -74,7 +74,6 @@ function HydraUI:NewModule(name)
 	Module = CreateFrame("Frame", "HydraUI " .. name, self.UIParent, "BackdropTemplate")
 	
 	Module.Name = name
-	Module.Loaded = false
 	
 	self.Modules[#self.Modules + 1] = Module
 	
@@ -128,7 +127,6 @@ function HydraUI:NewPlugin(name)
 	Plugin.Notes = Notes
 	Plugin.Author = Author
 	Plugin.Version = Version
-	Plugin.Loaded = false
 	
 	self.Plugins[#self.Plugins + 1] = Plugin
 	
@@ -224,13 +222,11 @@ function HydraUI:OnEvent(event)
 	Defaults["ui-scale"] = self:GetSuggestedScale()
 	
 	-- Import profile data and load a profile
-	--self:MigrateData()
 	self:CreateProfileData()
-	--self:MigrateMoverData()
 	self:UpdateProfileList()
 	self:ApplyProfile(self:GetActiveProfileName())
 	
-	self:SetScale(Settings["ui-scale"])
+	--self:SetScale(Settings["ui-scale"])
 	
 	self:UpdateoUFColors()
 	self:UpdateColors()

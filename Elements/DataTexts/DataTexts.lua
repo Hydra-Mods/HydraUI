@@ -158,16 +158,28 @@ function HydraUI:AddDataText(name, enable, disable, update)
 	DT.List[name] = name
 end
 
-local UpdateLeftText = function(value)
+local UpdateChatLeftText = function(value)
 	DT:SetDataText("Chat-Left", value)
 end
 
-local UpdateMiddleText = function(value)
+local UpdateChatMiddleText = function(value)
 	DT:SetDataText("Chat-Middle", value)
 end
 
-local UpdateRightText = function(value)
+local UpdateChatRightText = function(value)
 	DT:SetDataText("Chat-Right", value)
+end
+
+local UpdateWindowLeftText = function(value)
+	DT:SetDataText("Window-Left", value)
+end
+
+local UpdateWindowMiddleText = function(value)
+	DT:SetDataText("Window-Middle", value)
+end
+
+local UpdateWindowRightText = function(value)
+	DT:SetDataText("Window-Right", value)
 end
 
 local UpdateMinimapTopText = function(value)
@@ -223,9 +235,14 @@ end
 
 GUI:AddWidgets(Language["General"], Language["Data Texts"], function(left, right)
 	left:CreateHeader(Language["Chat Frame Texts"])
-	left:CreateDropdown("data-text-chat-left", Settings["data-text-chat-left"], DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the left data text anchor"], UpdateLeftText)
-	left:CreateDropdown("data-text-chat-middle", Settings["data-text-chat-middle"], DT.List, Language["Set Middle Text"], Language["Set the information to be displayed in the middle data text anchor"], UpdateMiddleText)
-	left:CreateDropdown("data-text-chat-right", Settings["data-text-chat-right"], DT.List, Language["Set Right Text"], Language["Set the information to be displayed in the right data text anchor"], UpdateRightText)
+	left:CreateDropdown("data-text-chat-left", Settings["data-text-chat-left"], DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the left data text anchor"], UpdateChatLeftText)
+	left:CreateDropdown("data-text-chat-middle", Settings["data-text-chat-middle"], DT.List, Language["Set Middle Text"], Language["Set the information to be displayed in the middle data text anchor"], UpdateChatMiddleText)
+	left:CreateDropdown("data-text-chat-right", Settings["data-text-chat-right"], DT.List, Language["Set Right Text"], Language["Set the information to be displayed in the right data text anchor"], UpdateChatRightText)
+	
+	left:CreateHeader(Language["Right Window Texts"])
+	left:CreateDropdown("data-text-extra-left", Settings["data-text-extra-left"], DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the left data text anchor"], UpdateWindowLeftText)
+	left:CreateDropdown("data-text-extra-middle", Settings["data-text-extra-middle"], DT.List, Language["Set Middle Text"], Language["Set the information to be displayed in the middle data text anchor"], UpdateWindowMiddleText)
+	left:CreateDropdown("data-text-extra-right", Settings["data-text-extra-right"], DT.List, Language["Set Right Text"], Language["Set the information to be displayed in the right data text anchor"], UpdateWindowRightText)
 	
 	left:CreateHeader(Language["Mini Map Texts"])
 	left:CreateDropdown("data-text-minimap-top", Settings["data-text-minimap-top"], DT.List, Language["Set Top Text"], Language["Set the information to be displayed in the top mini map data text anchor"], UpdateMinimapTopText)

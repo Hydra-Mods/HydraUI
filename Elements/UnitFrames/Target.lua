@@ -202,27 +202,23 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 		CastbarBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 		CastbarBG:SetAlpha(0.2)
 		
-		-- Add a background
 		local Background = Castbar:CreateTexture(nil, "BACKGROUND")
 		Background:SetPoint("TOPLEFT", Castbar, -1, 1)
 		Background:SetPoint("BOTTOMRIGHT", Castbar, 1, -1)
 		Background:SetTexture(Assets:GetTexture("Blank"))
 		Background:SetVertexColor(0, 0, 0)
 		
-		-- Add a timer
 		local Time = Castbar:CreateFontString(nil, "OVERLAY")
 		HydraUI:SetFontInfo(Time, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 		Time:SetPoint("RIGHT", Castbar, -3, 0)
 		Time:SetJustifyH("RIGHT")
 		
-		-- Add spell text
 		local Text = Castbar:CreateFontString(nil, "OVERLAY")
 		HydraUI:SetFontInfo(Text, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 		Text:SetPoint("LEFT", Castbar, 3, 0)
 		Text:SetSize(Settings["unitframes-target-cast-width"] * 0.7, Settings["unitframes-font-size"])
 		Text:SetJustifyH("LEFT")
 		
-		-- Add spell icon
 		local Icon = Castbar:CreateTexture(nil, "OVERLAY")
 		Icon:SetSize(Settings["unitframes-target-cast-height"], Settings["unitframes-target-cast-height"])
 		Icon:SetPoint("TOPRIGHT", Castbar, "TOPLEFT", -4, 0)
@@ -241,8 +237,9 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 		Castbar.showTradeSkills = true
 		Castbar.timeToHold = 0.3
 		Castbar.PostCastStart = UF.PostCastStart
-		Castbar.PostChannelStart = UF.PostCastStart
-		Castbar.PostCastInterruptible = UF.PostCastStart
+		Castbar.PostCastStop = UF.PostCastStop
+		Castbar.PostCastFail = UF.PostCastFail
+		Castbar.PostCastInterruptible = UF.PostCastInterruptible
 		
 		self.Castbar = Castbar
 	end

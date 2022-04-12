@@ -20,10 +20,14 @@ local OnEnter = function(self)
 			
 			if (i > 0) then
 				Name = GetInventoryItemLink("player", ContainerIDToInventoryID(i))
-			end
-			
-			if Name then
-				GameTooltip:AddDoubleLine(Name, format("%s/%s", NumSlots-FreeSlots, NumSlots), nil, nil, nil, 1, 1, 1)
+				
+				if Name then
+					local Texture = select(10, GetItemInfo(Name))
+					
+					GameTooltip:AddDoubleLine(format("|T%s:14:14:0:0:64:64:4:60:4:60|t  %s", Texture, Name), format("%s/%s", NumSlots-FreeSlots, NumSlots), nil, nil, nil, 1, 1, 1)
+				end
+			else
+				GameTooltip:AddDoubleLine(format("|T%s:14:14:0:0:64:64:4:60:4:60|t  %s", 130716, Name), format("%s/%s", NumSlots-FreeSlots, NumSlots), nil, nil, nil, 1, 1, 1)
 			end
 		end
 	end
