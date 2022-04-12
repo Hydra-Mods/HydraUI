@@ -17,6 +17,7 @@ Defaults["unitframes-player-enable-power"] = true
 Defaults["unitframes-player-enable-resource"] = true
 Defaults["unitframes-player-cast-width"] = 250
 Defaults["unitframes-player-cast-height"] = 24
+Defaults["unitframes-player-cast-classcolor"] = true
 Defaults["unitframes-player-enable-castbar"] = true
 Defaults["unitframes-show-mana-timer"] = true
 Defaults["unitframes-show-energy-timer"] = true
@@ -313,12 +314,12 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		
 		local Time = Castbar:CreateFontString(nil, "OVERLAY")
 		HydraUI:SetFontInfo(Time, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
-		Time:SetPoint("RIGHT", Castbar, -3, 0)
+		Time:SetPoint("RIGHT", Castbar, -5, 0)
 		Time:SetJustifyH("RIGHT")
 		
 		local Text = Castbar:CreateFontString(nil, "OVERLAY")
 		HydraUI:SetFontInfo(Text, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
-		Text:SetPoint("LEFT", Castbar, 3, 0)
+		Text:SetPoint("LEFT", Castbar, 5, 0)
 		Text:SetSize(Settings["unitframes-player-cast-width"] * 0.7, Settings["unitframes-font-size"])
 		Text:SetJustifyH("LEFT")
 		
@@ -329,7 +330,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		
 		local SafeZone = Castbar:CreateTexture(nil, "ARTWORK")
 		SafeZone:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-		SafeZone:SetVertexColor(0.75, 0.22, 0.17)
+		SafeZone:SetVertexColor(0.75, 0.22, 0.17, 0.7)
 		
 		Castbar.bg = CastbarBG
 		Castbar.Time = Time
@@ -338,6 +339,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		Castbar.SafeZone = SafeZone
 		Castbar.showTradeSkills = true
 		Castbar.timeToHold = 0.7
+		Castbar.ClassColor = Settings["unitframes-player-cast-classcolor"]
 		Castbar.PostCastStart = UF.PostCastStart
 		Castbar.PostCastStop = UF.PostCastStop
 		Castbar.PostCastFail = UF.PostCastFail
@@ -989,6 +991,7 @@ GUI:AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"],
 	
 	right:CreateHeader(Language["Cast Bar"])
 	right:CreateSwitch("unitframes-player-enable-castbar", Settings["unitframes-player-enable-castbar"], Language["Enable Cast Bar"], Language["Enable the player cast bar"], ReloadUI):RequiresReload(true)
+	right:CreateSwitch("unitframes-player-cast-classcolor", Settings["unitframes-player-cast-classcolor"], Language["Enable Class Color"], Language["Use class colors"], ReloadUI):RequiresReload(true)
 	right:CreateSlider("unitframes-player-cast-width", Settings["unitframes-player-cast-width"], 80, 360, 1, Language["Cast Bar Width"], Language["Set the width of the player cast bar"], UpdatePlayerCastBarSize)
 	right:CreateSlider("unitframes-player-cast-height", Settings["unitframes-player-cast-height"], 8, 50, 1, Language["Cast Bar Height"], Language["Set the height of the player cast bar"], UpdatePlayerCastBarSize)
 	

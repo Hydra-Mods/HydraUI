@@ -14,7 +14,8 @@ Defaults["unitframes-target-health-right"] = "[HealthPercent]"
 Defaults["unitframes-target-power-left"] = "[HealthValues:Short]"
 Defaults["unitframes-target-power-right"] = "[PowerValues:Short]"
 Defaults["unitframes-target-cast-width"] = 250
-Defaults["unitframes-target-cast-height"] = 22
+Defaults["unitframes-target-cast-height"] = 24
+Defaults["unitframes-target-cast-classcolor"] = true
 Defaults["unitframes-target-enable-castbar"] = true
 Defaults["target-enable-portrait"] = false
 Defaults["target-portrait-style"] = "3D"
@@ -214,12 +215,12 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 		
 		local Time = Castbar:CreateFontString(nil, "OVERLAY")
 		HydraUI:SetFontInfo(Time, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
-		Time:SetPoint("RIGHT", Castbar, -3, 0)
+		Time:SetPoint("RIGHT", Castbar, -5, 0)
 		Time:SetJustifyH("RIGHT")
 		
 		local Text = Castbar:CreateFontString(nil, "OVERLAY")
 		HydraUI:SetFontInfo(Text, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
-		Text:SetPoint("LEFT", Castbar, 3, 0)
+		Text:SetPoint("LEFT", Castbar, 5, 0)
 		Text:SetSize(Settings["unitframes-target-cast-width"] * 0.7, Settings["unitframes-font-size"])
 		Text:SetJustifyH("LEFT")
 		
@@ -234,6 +235,7 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 		Castbar.Icon = Icon
 		Castbar.showTradeSkills = true
 		Castbar.timeToHold = 0.3
+		Castbar.ClassColor = Settings["unitframes-player-cast-classcolor"]
 		Castbar.PostCastStart = UF.PostCastStart
 		Castbar.PostCastStop = UF.PostCastStop
 		Castbar.PostCastFail = UF.PostCastFail
@@ -402,6 +404,7 @@ GUI:AddWidgets(Language["General"], Language["Target"], Language["Unit Frames"],
 	
 	right:CreateHeader(Language["Cast Bar"])
 	right:CreateSwitch("unitframes-target-enable-castbar", Settings["unitframes-target-enable-castbar"], Language["Enable Cast Bar"], Language["Enable the target cast bar"], ReloadUI):RequiresReload(true)
+	right:CreateSwitch("unitframes-target-cast-classcolor", Settings["unitframes-target-cast-classcolor"], Language["Enable Class Color"], Language["Use class colors"], ReloadUI):RequiresReload(true)
 	
 	right:CreateSlider("unitframes-target-cast-width", Settings["unitframes-target-cast-width"], 80, 360, 1, Language["Cast Bar Width"], Language["Set the width of the target cast bar"], UpdateTargetCastBarSize)
 	right:CreateSlider("unitframes-target-cast-height", Settings["unitframes-target-cast-height"], 8, 50, 1, Language["Cast Bar Height"], Language["Set the height of the target cast bar"], UpdateTargetCastBarSize)

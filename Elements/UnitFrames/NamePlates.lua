@@ -22,6 +22,7 @@ Defaults["nameplates-enable-elite-indicator"] = true
 Defaults["nameplates-enable-target-indicator"] = true
 Defaults["nameplates-target-indicator-size"] = "SMALL"
 Defaults["nameplates-enable-castbar"] = true
+Defaults["nameplates-cast-classcolor"] = true
 Defaults["nameplates-castbar-height"] = 12
 Defaults["nameplates-castbar-enable-icon"] = true
 Defaults["nameplates-selected-alpha"] = 100
@@ -242,6 +243,7 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
     Castbar.Icon = Icon
     Castbar.showTradeSkills = true
     Castbar.timeToHold = 0.7
+	Castbar.ClassColor = Settings["nameplates-cast-classcolor"]
 	Castbar.PostCastStart = UF.PostCastStart
 	Castbar.PostCastStop = UF.PostCastStop
 	Castbar.PostCastFail = UF.PostCastFail
@@ -574,6 +576,7 @@ GUI:AddWidgets(Language["General"], Language["Name Plates"], function(left, righ
 	
 	right:CreateHeader(Language["Casting Bar"])
 	right:CreateSwitch("nameplates-enable-castbar", Settings["nameplates-enable-castbar"], Language["Enable Casting Bar"], Language["Enable the casting bar the name plates"], UpdateNamePlatesEnableCastBars)
+	right:CreateSwitch("nameplates-cast-classcolor", Settings["nameplates-cast-classcolor"], Language["Enable Class Color"], Language["Use class colors"], ReloadUI):RequiresReload(true)
 	right:CreateSlider("nameplates-castbar-height", Settings["nameplates-castbar-height"], 3, 28, 1, Language["Set Height"], Language["Set the height of name plate casting bars"], UpdateNamePlatesCastBarsHeight)
 	
 	right:CreateHeader(Language["Target Indicator"])
