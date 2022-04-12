@@ -348,9 +348,16 @@ local UpdateTargetPowerColor = function(value)
 end
 
 local UpdateTargetCastBarSize = function()
-	if _G["HydraUI Target Casting Bar"] then
-		_G["HydraUI Target Casting Bar"]:SetSize(Settings["unitframes-target-cast-width"], Settings["unitframes-target-cast-height"])
-		_G["HydraUI Target Casting Bar"].Icon:SetSize(Settings["unitframes-target-cast-height"], Settings["unitframes-target-cast-height"])
+	if HydraUI.UnitFrames["target"].Castbar then
+		HydraUI.UnitFrames["target"].Castbar:SetSize(Settings["unitframes-target-cast-width"], Settings["unitframes-target-cast-height"])
+		HydraUI.UnitFrames["target"].Castbar.Icon:SetSize(Settings["unitframes-target-cast-height"], Settings["unitframes-target-cast-height"])
+	end
+end
+
+local UpdateCastClassColor = function(value)
+	if HydraUI.UnitFrames["target"].Castbar then
+		HydraUI.UnitFrames["target"].Castbar.ClassColor = value
+		HydraUI.UnitFrames["target"].Castbar:ForceUpdate()
 	end
 end
 
@@ -404,7 +411,7 @@ GUI:AddWidgets(Language["General"], Language["Target"], Language["Unit Frames"],
 	
 	right:CreateHeader(Language["Cast Bar"])
 	right:CreateSwitch("unitframes-target-enable-castbar", Settings["unitframes-target-enable-castbar"], Language["Enable Cast Bar"], Language["Enable the target cast bar"], ReloadUI):RequiresReload(true)
-	right:CreateSwitch("unitframes-target-cast-classcolor", Settings["unitframes-target-cast-classcolor"], Language["Enable Class Color"], Language["Use class colors"], ReloadUI):RequiresReload(true)
+	right:CreateSwitch("unitframes-target-cast-classcolor", Settings["unitframes-target-cast-classcolor"], Language["Enable Class Color"], Language["Use class colors"], UpdateCastClassColor)
 	
 	right:CreateSlider("unitframes-target-cast-width", Settings["unitframes-target-cast-width"], 80, 360, 1, Language["Cast Bar Width"], Language["Set the width of the target cast bar"], UpdateTargetCastBarSize)
 	right:CreateSlider("unitframes-target-cast-height", Settings["unitframes-target-cast-height"], 8, 50, 1, Language["Cast Bar Height"], Language["Set the height of the target cast bar"], UpdateTargetCastBarSize)

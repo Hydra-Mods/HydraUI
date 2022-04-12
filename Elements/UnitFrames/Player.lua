@@ -843,9 +843,16 @@ local UpdatePlayerPowerFill = function(value)
 end
 
 local UpdatePlayerCastBarSize = function()
-	if _G["HydraUI Casting Bar"] then
-		_G["HydraUI Casting Bar"]:SetSize(Settings["unitframes-player-cast-width"], Settings["unitframes-player-cast-height"])
-		_G["HydraUI Casting Bar"].Icon:SetSize(Settings["unitframes-player-cast-height"], Settings["unitframes-player-cast-height"])
+	if HydraUI.UnitFrames["player"].Castbar then
+		HydraUI.UnitFrames["player"].Castbar:SetSize(Settings["unitframes-player-cast-width"], Settings["unitframes-player-cast-height"])
+		HydraUI.UnitFrames["player"].Castbar.Icon:SetSize(Settings["unitframes-player-cast-height"], Settings["unitframes-player-cast-height"])
+	end
+end
+
+local UpdateCastClassColor = function(value)
+	if HydraUI.UnitFrames["player"].Castbar then
+		HydraUI.UnitFrames["player"].Castbar.ClassColor = value
+		HydraUI.UnitFrames["player"].Castbar:ForceUpdate()
 	end
 end
 
@@ -991,7 +998,7 @@ GUI:AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"],
 	
 	right:CreateHeader(Language["Cast Bar"])
 	right:CreateSwitch("unitframes-player-enable-castbar", Settings["unitframes-player-enable-castbar"], Language["Enable Cast Bar"], Language["Enable the player cast bar"], ReloadUI):RequiresReload(true)
-	right:CreateSwitch("unitframes-player-cast-classcolor", Settings["unitframes-player-cast-classcolor"], Language["Enable Class Color"], Language["Use class colors"], ReloadUI):RequiresReload(true)
+	right:CreateSwitch("unitframes-player-cast-classcolor", Settings["unitframes-player-cast-classcolor"], Language["Enable Class Color"], Language["Use class colors"], UpdateCastClassColor)
 	right:CreateSlider("unitframes-player-cast-width", Settings["unitframes-player-cast-width"], 80, 360, 1, Language["Cast Bar Width"], Language["Set the width of the player cast bar"], UpdatePlayerCastBarSize)
 	right:CreateSlider("unitframes-player-cast-height", Settings["unitframes-player-cast-height"], 8, 50, 1, Language["Cast Bar Height"], Language["Set the height of the player cast bar"], UpdatePlayerCastBarSize)
 	

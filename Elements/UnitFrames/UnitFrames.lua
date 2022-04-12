@@ -244,13 +244,13 @@ UF.PostCreateIcon = function(unit, button)
 	button.ela = 0
 end
 
--- Do a UnitIsPlayer check, NPC's can just use normal colors instead of class colors.
+local UnitIsPlayer = UnitIsPlayer
 
 UF.PostCastStart = function(self, unit)
 	if self.notInterruptible then
 		self:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-casting-uninterruptible"]))
 		self.bg:SetVertexColor(HydraUI:HexToRGB(Settings["color-casting-uninterruptible"]))
-	elseif self.ClassColor then
+	elseif (self.ClassColor and UnitIsPlayer(unit)) then
 		_, Class = UnitClass(unit)
 		
 		if Class then
@@ -272,7 +272,7 @@ UF.PostCastInterruptible = function(self)
 	if self.notInterruptible then
 		self:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-casting-uninterruptible"]))
 		self.bg:SetVertexColor(HydraUI:HexToRGB(Settings["color-casting-uninterruptible"]))
-	elseif self.ClassColor then
+	elseif (self.ClassColor and UnitIsPlayer(unit)) then
 		_, Class = UnitClass(unit)
 		
 		if Class then
@@ -955,6 +955,25 @@ HydraUIFakeBosses = function()
 			Boss.unit = nil
 			UnregisterUnitWatch(Boss)
 			Boss:Hide()
+		end
+	end
+end
+
+local GetNamePlates = C_NamePlate.GetNamePlates
+local type = type
+
+function oUF:RunForAllNamePlates(func, value)
+	if (type(func) ~= "function") then
+		return
+	end
+	
+	local NamePlates = GetNamePlates()
+	
+	if NamePlates then
+		for i = 1, #NamePlates do
+			func(NamePlates[i].unitFrame, value)
+			
+			NamePlates[i].unitFrame:UpdateAllElements("ForceUpdate")
 		end
 	end
 end
