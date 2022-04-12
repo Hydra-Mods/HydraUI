@@ -34,6 +34,9 @@ Defaults["nameplates-debuffs-direction"] = "RTL"
 local oUF = ns.oUF or oUF
 local UF = HydraUI:GetModule("Unit Frames")
 
+local GetNamePlates = C_NamePlate.GetNamePlates
+local type = type
+
 HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 	self:SetScale(Settings["ui-scale"])
 	self:SetSize(Settings["nameplates-width"], Settings["nameplates-height"])
@@ -391,6 +394,22 @@ UF.NamePlateCallback = function(plate)
 	HydraUI:SetFontInfo(plate.Castbar.Text, Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 end
 
+local RunForAllNamePlates = function(func, value)
+	if (type(func) ~= "function") then
+		return
+	end
+	
+	local NamePlates = GetNamePlates()
+	
+	if NamePlates then
+		for i = 1, #NamePlates do
+			func(NamePlates[i].unitFrame, value)
+			
+			NamePlates[i].unitFrame:UpdateAllElements("ForceUpdate")
+		end
+	end
+end
+
 local NamePlatesUpdateEnableDebuffs = function(self, value)
 	if value then
 		self:EnableElement("Auras")
@@ -400,7 +419,7 @@ local NamePlatesUpdateEnableDebuffs = function(self, value)
 end
 
 local UpdateNamePlatesEnableDebuffs = function(value)
-	oUF:RunForAllNamePlates(NamePlatesUpdateEnableDebuffs, value)
+	RunForAllNamePlates(NamePlatesUpdateEnableDebuffs, value)
 end
 
 local NamePlatesUpdateShowPlayerDebuffs = function(self)
@@ -410,7 +429,7 @@ local NamePlatesUpdateShowPlayerDebuffs = function(self)
 end
 
 local UpdateNamePlatesShowPlayerDebuffs = function(value)
-	oUF:RunForAllNamePlates(NamePlatesUpdateShowPlayerDebuffs, value)
+	RunForAllNamePlates(NamePlatesUpdateShowPlayerDebuffs, value)
 end
 
 local NamePlateSetWidth = function(self)
@@ -418,7 +437,7 @@ local NamePlateSetWidth = function(self)
 end
 
 local UpdateNamePlatesWidth = function()
-	oUF:RunForAllNamePlates(NamePlateSetWidth)
+	RunForAllNamePlates(NamePlateSetWidth)
 end
 
 local NamePlateSetHeight = function(self)
@@ -426,7 +445,7 @@ local NamePlateSetHeight = function(self)
 end
 
 local UpdateNamePlatesHeight = function()
-	oUF:RunForAllNamePlates(NamePlateSetHeight)
+	RunForAllNamePlates(NamePlateSetHeight)
 end
 
 local NamePlateSetHealthColor = function(self)
@@ -434,7 +453,7 @@ local NamePlateSetHealthColor = function(self)
 end
 
 local UpdateNamePlatesHealthColor = function()
-	oUF:RunForAllNamePlates(NamePlateSetHealthColor)
+	RunForAllNamePlates(NamePlateSetHealthColor)
 end
 
 local NamePlateSetTargetHightlight = function(self, value)
@@ -446,7 +465,7 @@ local NamePlateSetTargetHightlight = function(self, value)
 end
 
 local UpdateNamePlatesTargetHighlight = function(value)
-	oUF:RunForAllNamePlates(NamePlateSetTargetHightlight, value)
+	RunForAllNamePlates(NamePlateSetTargetHightlight, value)
 end
 
 local NamePlateSetFont = function(self)
@@ -461,7 +480,7 @@ local NamePlateSetFont = function(self)
 end
 
 local UpdateNamePlatesFont = function()
-	oUF:RunForAllNamePlates(NamePlateSetFont)
+	RunForAllNamePlates(NamePlateSetFont)
 end
 
 local NamePlateEnableCastBars = function(self, value)
@@ -473,7 +492,7 @@ local NamePlateEnableCastBars = function(self, value)
 end
 
 local UpdateNamePlatesEnableCastBars = function(value)
-	oUF:RunForAllNamePlates(NamePlateSetTargetHightlight, value)
+	RunForAllNamePlates(NamePlateSetTargetHightlight, value)
 end
 
 local NamePlateSetCastBarsHeight = function(self, value)
@@ -481,7 +500,7 @@ local NamePlateSetCastBarsHeight = function(self, value)
 end
 
 local UpdateNamePlatesCastBarsHeight = function(value)
-	oUF:RunForAllNamePlates(NamePlateSetCastBarsHeight, value)
+	RunForAllNamePlates(NamePlateSetCastBarsHeight, value)
 end
 
 local NamePlateSetTargetIndicatorSize = function(self, value)
@@ -498,7 +517,7 @@ local NamePlateSetTargetIndicatorSize = function(self, value)
 end
 
 local UpdateNamePlatesTargetIndicatorSize = function(value)
-	oUF:RunForAllNamePlates(NamePlateSetTargetIndicatorSize, value)
+	RunForAllNamePlates(NamePlateSetTargetIndicatorSize, value)
 end
 
 local UpdateNamePlateSelectedAlpha = function(value)
@@ -523,7 +542,7 @@ local NamePlateSetBuffDirection = function(self, value)
 end
 
 local UpdateNamePlatesBuffDirection = function(value)
-	oUF:RunForAllNamePlates(NamePlateSetBuffDirection, value)
+	RunForAllNamePlates(NamePlateSetBuffDirection, value)
 end
 
 local NamePlateSetDebuffDirection = function(self, value)
@@ -539,7 +558,7 @@ local NamePlateSetDebuffDirection = function(self, value)
 end
 
 local UpdateNamePlatesDebuffDirection = function(value)
-	oUF:RunForAllNamePlates(NamePlateSetDebuffDirection, value)
+	RunForAllNamePlates(NamePlateSetDebuffDirection, value)
 end
 
 GUI:AddWidgets(Language["General"], Language["Name Plates"], function(left, right)

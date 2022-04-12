@@ -75,6 +75,11 @@ local oUF = ns.oUF
 local VISIBLE = 1
 local HIDDEN = 0
 
+local UnitAura = UnitAura
+local UnitIsUnit = UnitIsUnit
+local min = math.min
+local tinsert = table.insert
+
 local function UpdateTooltip(self)
 	if(GameTooltip:IsForbidden()) then return end
 
@@ -173,7 +178,7 @@ local function updateIcon(element, unit, index, offset, filter, isDebuff, visibl
 			--]]
 			button = (element.CreateIcon or createAuraIcon) (element, position)
 
-			table.insert(element, button)
+			tinsert(element, button)
 			element.createdIcons = element.createdIcons + 1
 		end
 
@@ -332,7 +337,7 @@ local function UpdateAuras(self, event, unit)
 		local numDebuffs = auras.numDebuffs or 40
 		local max = auras.numTotal or numBuffs + numDebuffs
 
-		local visibleBuffs = filterIcons(auras, unit, auras.buffFilter or auras.filter or 'HELPFUL', math.min(numBuffs, max), nil, 0, true)
+		local visibleBuffs = filterIcons(auras, unit, auras.buffFilter or auras.filter or 'HELPFUL', min(numBuffs, max), nil, 0, true)
 
 		local hasGap
 		if(visibleBuffs ~= 0 and auras.gap) then
@@ -342,7 +347,7 @@ local function UpdateAuras(self, event, unit)
 			local button = auras[visibleBuffs]
 			if(not button) then
 				button = (auras.CreateIcon or createAuraIcon) (auras, visibleBuffs)
-				table.insert(auras, button)
+				tinsert(auras, button)
 				auras.createdIcons = auras.createdIcons + 1
 			end
 
@@ -369,7 +374,7 @@ local function UpdateAuras(self, event, unit)
 			end
 		end
 
-		local visibleDebuffs = filterIcons(auras, unit, auras.debuffFilter or auras.filter or 'HARMFUL', math.min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
+		local visibleDebuffs = filterIcons(auras, unit, auras.debuffFilter or auras.filter or 'HARMFUL', min(numDebuffs, max - visibleBuffs), true, visibleBuffs)
 		auras.visibleDebuffs = visibleDebuffs
 
 		if(hasGap and visibleDebuffs == 0) then

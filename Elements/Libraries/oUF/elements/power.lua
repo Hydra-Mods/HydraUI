@@ -93,6 +93,15 @@ local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
 
+local UnitIsConnected = UnitIsConnected
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitThreatSituation = UnitThreatSituation
+local UnitIsPlayer = UnitIsPlayer
+local UnitPower = UnitPower
+local UnitPowerMax = UnitPowerMax
+local UnitReaction = UnitReaction
+
 -- sourced from FrameXML/UnitPowerBarAlt.lua
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 

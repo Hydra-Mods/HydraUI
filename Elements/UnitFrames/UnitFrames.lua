@@ -7,6 +7,7 @@ local select = select
 local find = string.find
 local GetTime = GetTime
 local UnitClass = UnitClass
+local UnitIsPlayer = UnitIsPlayer
 local Class, Colors, _
 
 Defaults["unitframes-only-player-debuffs"] = false
@@ -243,8 +244,6 @@ UF.PostCreateIcon = function(unit, button)
 	
 	button.ela = 0
 end
-
-local UnitIsPlayer = UnitIsPlayer
 
 UF.PostCastStart = function(self, unit)
 	if self.notInterruptible then
@@ -955,25 +954,6 @@ HydraUIFakeBosses = function()
 			Boss.unit = nil
 			UnregisterUnitWatch(Boss)
 			Boss:Hide()
-		end
-	end
-end
-
-local GetNamePlates = C_NamePlate.GetNamePlates
-local type = type
-
-function oUF:RunForAllNamePlates(func, value)
-	if (type(func) ~= "function") then
-		return
-	end
-	
-	local NamePlates = GetNamePlates()
-	
-	if NamePlates then
-		for i = 1, #NamePlates do
-			func(NamePlates[i].unitFrame, value)
-			
-			NamePlates[i].unitFrame:UpdateAllElements("ForceUpdate")
 		end
 	end
 end

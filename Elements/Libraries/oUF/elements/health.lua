@@ -83,6 +83,15 @@ local Mainline = select(4, GetBuildInfo()) > 90000
 
 local unitSelectionType = Private.unitSelectionType
 
+local UnitIsConnected = UnitIsConnected
+local UnitPlayerControlled = UnitPlayerControlled
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitIsPlayer = UnitIsPlayer
+local UnitThreatSituation = UnitThreatSituation
+local UnitReaction = UnitReaction
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+
 local function UpdateColor(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
 	local element = self.Health
