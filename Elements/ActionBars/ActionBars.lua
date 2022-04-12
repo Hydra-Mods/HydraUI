@@ -163,7 +163,6 @@ function AB:StyleActionButton(button)
 		button.HotKey:SetPoint("TOPLEFT", button, 2, -3)
 		HydraUI:SetFontInfo(button.HotKey, Settings["ab-font"], Settings["ab-font-size"], Settings["ab-font-flags"])
 		button.HotKey:SetJustifyH("LEFT")
-		button.HotKey:SetDrawLayer("OVERLAY")
 		button.HotKey:SetTextColor(1, 1, 1)
 		button.HotKey.SetTextColor = function() end
 		
@@ -198,7 +197,6 @@ function AB:StyleActionButton(button)
 		button.Name:SetWidth(button:GetWidth() - 4)
 		HydraUI:SetFontInfo(button.Name, Settings["ab-font"], Settings["ab-font-size"], Settings["ab-font-flags"])
 		button.Name:SetJustifyH("LEFT")
-		button.Name:SetDrawLayer("OVERLAY")
 		button.Name:SetTextColor(1, 1, 1)
 		button.Name.SetTextColor = function() end
 		

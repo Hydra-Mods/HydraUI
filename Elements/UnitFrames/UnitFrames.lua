@@ -654,8 +654,8 @@ function UF:Load()
 		end
 		
 		if Settings["unitframes-player-enable-castbar"] then
-			Player.Castbar:SetPoint("BOTTOM", HydraUI.UIParent, 0, 118)
-			HydraUI:CreateMover(Player.Castbar, 2)
+			Player.CastAnchor:SetPoint("BOTTOM", HydraUI.UIParent, 0, 118)
+			HydraUI:CreateMover(Player.CastAnchor, 2)
 		end
 		
 		HydraUI.UnitFrames["player"] = Player
@@ -683,8 +683,8 @@ function UF:Load()
 		end
 		
 		if Settings["unitframes-target-enable-castbar"] then
-			Target.Castbar:SetPoint("BOTTOM", HydraUI.UIParent, 0, 146)
-			HydraUI:CreateMover(Target.Castbar, 2)
+			Target.CastAnchor:SetPoint("BOTTOM", HydraUI.UIParent, 0, 146)
+			HydraUI:CreateMover(Target.CastAnchor, 2)
 		end
 		
 		HydraUI.UnitFrames["target"] = Target

@@ -228,11 +228,11 @@ function HydraUI:OnEvent(event)
 	
 	self:SetScale(Settings["ui-scale"])
 	
-	self:UpdateoUFColors()
 	self:UpdateColors()
+	self:UpdateoUFColors()
 	
 	self:WelcomeMessage()
-
+	
 	self:LoadModules()
 	self:LoadPlugins()
 	

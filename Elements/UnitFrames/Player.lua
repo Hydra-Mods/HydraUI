@@ -291,8 +291,12 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	
     -- Castbar
 	if Settings["unitframes-player-enable-castbar"] then
-		local Castbar = CreateFrame("StatusBar", "HydraUI Casting Bar", self)
-		Castbar:SetSize(Settings["unitframes-player-cast-width"], Settings["unitframes-player-cast-height"])
+		local Anchor = CreateFrame("Frame", "HydraUI Casting Bar", self)
+		Anchor:SetSize(Settings["unitframes-player-cast-width"], Settings["unitframes-player-cast-height"])
+		
+		local Castbar = CreateFrame("StatusBar", nil, self)
+		Castbar:SetSize(Settings["unitframes-player-cast-width"] - Settings["unitframes-player-cast-height"] - 1, Settings["unitframes-player-cast-height"])
+		Castbar:SetPoint("RIGHT", Anchor, 0, 0)
 		Castbar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 		
 		local CastbarBG = Castbar:CreateTexture(nil, "ARTWORK")
@@ -302,7 +306,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		CastbarBG:SetAlpha(0.2)
 		
 		local Background = Castbar:CreateTexture(nil, "BACKGROUND")
-		Background:SetPoint("TOPLEFT", Castbar, -1, 1)
+		Background:SetPoint("TOPLEFT", Castbar, -(Settings["unitframes-player-cast-height"] + 2), 1)
 		Background:SetPoint("BOTTOMRIGHT", Castbar, 1, -1)
 		Background:SetTexture(Assets:GetTexture("Blank"))
 		Background:SetVertexColor(0, 0, 0)
@@ -320,16 +324,10 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		
 		local Icon = Castbar:CreateTexture(nil, "OVERLAY")
 		Icon:SetSize(Settings["unitframes-player-cast-height"], Settings["unitframes-player-cast-height"])
-		Icon:SetPoint("TOPRIGHT", Castbar, "TOPLEFT", -4, 0)
+		Icon:SetPoint("TOPRIGHT", Castbar, "TOPLEFT", -1, 0)
 		Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		
-		local IconBG = Castbar:CreateTexture(nil, "BACKGROUND")
-		IconBG:SetPoint("TOPLEFT", Icon, -1, 1)
-		IconBG:SetPoint("BOTTOMRIGHT", Icon, 1, -1)
-		IconBG:SetTexture(Assets:GetTexture("Blank"))
-		IconBG:SetVertexColor(0, 0, 0)
-		
-		local SafeZone = Castbar:CreateTexture(nil, "OVERLAY")
+		local SafeZone = Castbar:CreateTexture(nil, "ARTWORK")
 		SafeZone:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 		SafeZone:SetVertexColor(0.75, 0.22, 0.17)
 		
@@ -346,6 +344,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		Castbar.PostCastInterruptible = UF.PostCastInterruptible
 		
 		self.Castbar = Castbar
+		self.CastAnchor = Anchor
 	end
 	
 	if Settings["unitframes-player-enable-resource"] then
