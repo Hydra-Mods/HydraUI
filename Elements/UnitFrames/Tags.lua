@@ -25,6 +25,7 @@ local UnitReaction = UnitReaction
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsAFK = UnitIsAFK
 local IsResting = IsResting
+local GetPetHappiness = GetPetHappiness
 
 local DEAD = DEAD
 local CHAT_MSG_AFK = CHAT_MSG_AFK
@@ -490,6 +491,30 @@ Methods["LevelColor"] = function(unit)
 	local Color = GetQuestDifficultyColor(Level)
 	
 	return "|cFF" .. HydraUI:RGBToHex(Color.r, Color.g, Color.b)
+end
+
+Events["PetColor"] = "UNIT_HAPPINESS UNIT_LEVEL PLAYER_LEVEL_UP UNIT_PET"
+Methods["PetColor"] = function(unit)
+	if (HydraUI.UserClass == "HUNTER") then
+		return Methods["HappinessColor"](unit)
+	else
+		return Methods["Reaction"](unit)
+	end
+end
+
+Events["HappinessColor"] = "UNIT_HAPPINESS UNIT_PET"
+Methods["HappinessColor"] = function(unit)
+	if (unit == "pet") then
+		local Happiness = GetPetHappiness()
+		
+		if Happiness then
+			local Color = HydraUI.HappinessColors[Happiness]
+			
+			if Color then
+				return "|cFF"..HydraUI:RGBToHex(Color[1], Color[2], Color[3])
+			end
+		end
+	end
 end
 
 Events["PartyIndex"] = "GROUP_ROSTER_UPDATE"

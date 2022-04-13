@@ -268,7 +268,6 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			MainBar:SetStatusBarColor(0.8, 0.1, 0.1)
 			--MainBar:SetReverseFill(Settings["unitframes-player-power-reverse"])
 			
-			-- Register with oUF
 			self.PowerPrediction = {
 				mainBar = MainBar,
 			}
