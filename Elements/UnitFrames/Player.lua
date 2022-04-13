@@ -476,14 +476,14 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 				ArcaneCharges:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 			end
 			
-			local Width = (Settings["unitframes-player-width"] / 4)
+			local Width = (Settings["unitframes-player-width"] / 4) - 1
 			
 			for i = 1, 4 do
 				ArcaneCharges[i] = CreateFrame("StatusBar", self:GetName() .. "ArcaneCharge" .. i, ArcaneCharges)
 				ArcaneCharges[i]:SetSize(Width, Settings["player-resource-height"])
 				ArcaneCharges[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 				ArcaneCharges[i]:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-arcane-charges"]))
-				ArcaneCharges[i]:SetWidth(i == 1 and Width - 1 or Width)
+				ArcaneCharges[i]:SetWidth(Width)
 				
 				ArcaneCharges[i].bg = ArcaneCharges:CreateTexture(nil, "BORDER")
 				ArcaneCharges[i].bg:SetAllPoints(ArcaneCharges[i])

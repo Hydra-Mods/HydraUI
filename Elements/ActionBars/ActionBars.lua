@@ -1095,7 +1095,10 @@ function AB:Load()
 	
 	hooksecurefunc("ActionButton_UpdateRangeIndicator", AB.UpdateButtonStatus)
 	hooksecurefunc("ActionButton_UpdateFlyout", AB.UpdateFlyout)
-	hooksecurefunc("ActionButton_Update", AB.UpdateButtonStatus)
+	
+	if (not HydraUI.IsMainline) then
+		hooksecurefunc("ActionButton_Update", AB.UpdateButtonStatus)
+	end
 end
 
 local UpdateBar1 = function()

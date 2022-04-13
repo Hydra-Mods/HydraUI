@@ -1009,9 +1009,9 @@ function Chat:Install()
 	
 	DEFAULT_CHAT_FRAME:SetUserPlaced(true)
 	
-	C_CVar.SetCVar("chatMouseScroll", 1)
+	C_CVar.SetCVar("chatMouseScroll", "1")
 	C_CVar.SetCVar("chatStyle", "im")
-	C_CVar.SetCVar("WholeChatWindowClickable", 0)
+	C_CVar.SetCVar("WholeChatWindowClickable", "0")
 	C_CVar.SetCVar("WhisperMode", "inline")
 	--C_CVar.SetCVar("BnWhisperMode", "inline")
 	C_CVar.SetCVar("removeChatDelay", "1")
