@@ -4,11 +4,11 @@ local AddOn, Namespace = ...
 local Assets = {}
 local Settings = {}
 local Defaults = {}
+local Modules = {}
+local Plugins = {}
 
 -- Core functions and data
 local HydraUI = CreateFrame("Frame", nil, UIParent)
-HydraUI.Modules = {}
-HydraUI.Plugins = {}
 HydraUI.DBs = {}
 
 HydraUI.UIParent = CreateFrame("Frame", "HydraUIParent", UIParent, "SecureHandlerStateTemplate")
@@ -75,15 +75,15 @@ function HydraUI:NewModule(name)
 	
 	Module.Name = name
 	
-	self.Modules[#self.Modules + 1] = Module
+	Modules[#Modules + 1] = Module
 	
 	return Module
 end
 
 function HydraUI:GetModule(name)
-	for i = 1, #self.Modules do
-		if (self.Modules[i].Name == name) then
-			return self.Modules[i]
+	for i = 1, #Modules do
+		if (Modules[i].Name == name) then
+			return Modules[i]
 		end
 	end
 end
@@ -102,10 +102,10 @@ function HydraUI:LoadModule(name)
 end
 
 function HydraUI:LoadModules()
-	for i = 1, #self.Modules do
-		if (self.Modules[i].Load and not self.Modules[i].Loaded) then
-			self.Modules[i]:Load()
-			self.Modules[i].Loaded = true
+	for i = 1, #Modules do
+		if (Modules[i].Load and not Modules[i].Loaded) then
+			Modules[i]:Load()
+			Modules[i].Loaded = true
 		end
 	end
 end
@@ -128,15 +128,15 @@ function HydraUI:NewPlugin(name)
 	Plugin.Author = Author
 	Plugin.Version = Version
 	
-	self.Plugins[#self.Plugins + 1] = Plugin
+	Plugins[#Plugins + 1] = Plugin
 	
 	return Plugin
 end
 
 function HydraUI:GetPlugin(name)
-	for i = 1, #self.Plugins do
-		if (self.Plugins[i].Name == name) then
-			return self.Plugins[i]
+	for i = 1, #Plugins do
+		if (Plugins[i].Name == name) then
+			return Plugins[i]
 		end
 	end
 end
@@ -155,13 +155,13 @@ function HydraUI:LoadPlugin(name)
 end
 
 function HydraUI:LoadPlugins()
-	if (#self.Plugins == 0) then
+	if (#Plugins == 0) then
 		return
 	end
 	
-	for i = 1, #self.Plugins do
-		if self.Plugins[i].Load then
-			self.Plugins[i]:Load()
+	for i = 1, #Plugins do
+		if Plugins[i].Load then
+			Plugins[i]:Load()
 		end
 	end
 	
@@ -190,17 +190,17 @@ function HydraUI:CreatePluginWindow()
 	GUI:AddWidgets(Language["Info"], Language["Plugins"], function(left, right)
 		local Anchor
 		
-		for i = 1, #self.Plugins do
+		for i = 1, #Plugins do
 			if ((i % 2) == 0) then
 				Anchor = right
 			else
 				Anchor = left
 			end
 			
-			Anchor:CreateHeader(self.Plugins[i].Title)
-			Anchor:CreateDoubleLine("", Language["Author"], self.Plugins[i].Author)
-			Anchor:CreateDoubleLine("", Language["Version"], self.Plugins[i].Version)
-			Anchor:CreateMessage("", self.Plugins[i].Notes)
+			Anchor:CreateHeader(Plugins[i].Title)
+			Anchor:CreateDoubleLine("", Language["Author"], Plugins[i].Author)
+			Anchor:CreateDoubleLine("", Language["Version"], Plugins[i].Version)
+			Anchor:CreateMessage("", Plugins[i].Notes)
 		end
 	end)
 end

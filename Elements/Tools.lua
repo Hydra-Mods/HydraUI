@@ -66,11 +66,11 @@ end
 
 function HydraUI:AuraFormatTime(seconds)
 	if (seconds > 86399) then
-		return format("%d", ceil(seconds / 86400))
+		return format("%dd", ceil(seconds / 86400))
 	elseif (seconds > 3599) then
-		return format("%d", ceil(seconds / 3600))
+		return format("%dh", ceil(seconds / 3600))
 	elseif (seconds > 59) then
-		return format("%d", ceil(seconds / 60))
+		return format("%dm", ceil(seconds / 60))
 	elseif (seconds > 5) then
 		return format("%d", floor(seconds))
 	end

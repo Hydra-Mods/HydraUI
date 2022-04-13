@@ -229,7 +229,7 @@ UF.PostCreateIcon = function(unit, button)
 	
 	button.Time = button.cd:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(button.Time, Settings["unitframes-font"], Settings["unitframes-font-size"], "OUTLINE")
-	button.Time:SetPoint("TOPLEFT", 2, -2)
+	button.Time:SetPoint("TOPLEFT", -1, -1)
 	button.Time:SetJustifyH("LEFT")
 	
 	button.DebuffType = CreateFrame("Frame", nil, button, "BackdropTemplate")
