@@ -1,12 +1,13 @@
 local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
 local tonumber = tonumber
-local SendAddonMessage = C_ChatInfo.SendAddonMessage
 local IsInGuild = IsInGuild
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
 
-local AddOnVersion = tonumber(HydraUI.UIVersion)
+local CT = ChatThrottleLib
+local AddOnVersion = HydraUI.UIVersion
+local AddOnNum = tonumber(HydraUI.UIVersion)
 local User = HydraUI.UserName .. "-" .. HydraUI.UserRealm
 
 local Update = HydraUI:NewModule("Update")
@@ -18,29 +19,29 @@ end
 
 function Update:PLAYER_ENTERING_WORLD()
 	if IsInGuild() then
-		SendAddonMessage("HydraUI-Version", AddOnVersion, "GUILD")
+		CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, "GUILD")
 	else
 		self:RegisterEvent("GUILD_ROSTER_UPDATE")
 	end
 	
 	if IsInRaid() then
 		if IsInRaid(LE_PARTY_CATEGORY_INSTANCE) then
-			SendAddonMessage("HydraUI-Version", AddOnVersion, "INSTANCE")
+			CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, "INSTANCE")
 		else
-			SendAddonMessage("HydraUI-Version", AddOnVersion, "RAID")
+			CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, "RAID")
 		end
 	end
 	
 	if IsInGroup() then
 		if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
-			SendAddonMessage("HydraUI-Version", AddOnVersion, "INSTANCE")
+			CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, "INSTANCE")
 		else
-			SendAddonMessage("HydraUI-Version", AddOnVersion, "PARTY")
+			CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, "PARTY")
 		end
 	end
 	
 	if (not HydraUI.IsMainline) then
-		SendAddonMessage("HydraUI-Version", AddOnVersion, "YELL")
+		CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, "YELL")
 	end
 end
 
@@ -49,7 +50,7 @@ function Update:GUILD_ROSTER_UPDATE(update)
 		return
 	end
 	
-	SendAddonMessage("HydraUI-Version", AddOnVersion, "GUILD")
+	CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, "GUILD")
 	
 	self:UnregisterEvent("GUILD_ROSTER_UPDATE")
 end
@@ -57,17 +58,17 @@ end
 function Update:GROUP_ROSTER_UPDATE()
 	if IsInRaid() then
 		if IsInRaid(LE_PARTY_CATEGORY_INSTANCE) then
-			SendAddonMessage("HydraUI-Version", AddOnVersion, "INSTANCE")
+			CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, "INSTANCE")
 		else
-			SendAddonMessage("HydraUI-Version", AddOnVersion, "RAID")
+			CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, "RAID")
 		end
 	end
 	
 	if IsInGroup() then
 		if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
-			SendAddonMessage("HydraUI-Version", AddOnVersion, "INSTANCE")
+			CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, "INSTANCE")
 		else
-			SendAddonMessage("HydraUI-Version", AddOnVersion, "PARTY")
+			CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, "PARTY")
 		end
 	end
 end
@@ -75,8 +76,8 @@ end
 function Update:VARIABLES_LOADED()
 	HydraUI:BindSavedVariable("HydraUIData", "Data")
 	
-	if (not HydraUI.Data.Version) or (HydraUI.Data.Version and HydraUI.Data.Version ~= AddOnVersion) then -- Create version, or store a new version if needed.
-		HydraUI.Data.Version = AddOnVersion
+	if (not HydraUI.Data.Version) or (HydraUI.Data.Version and HydraUI.Data.Version ~= AddOnNum) then -- Create version, or store a new version if needed.
+		HydraUI.Data.Version = AddOnNum
 	end
 	
 	local StoredVersion = HydraUI.Data.Version
@@ -98,13 +99,13 @@ function Update:CHAT_MSG_ADDON(prefix, message, channel, sender)
 	
 	message = tonumber(message)
 	
-	if (AddOnVersion > message) then -- We have a higher version, share it
-		SendAddonMessage("HydraUI-Version", AddOnVersion, "WHISPER", sender)
-	elseif (message > AddOnVersion) then -- We're behind!
+	if (AddOnNum > message) then -- We have a higher version, share it
+		CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, "WHISPER", sender)
+	elseif (message > AddOnNum) then -- We're behind!
 		HydraUI:SendAlert(Language["New Version!"], format(Language["Update to version |cFF%s%s|r"], Settings["ui-header-font-color"], message), nil, UpdateOnMouseUp, true)
 		
 		-- Store this higher version and tell anyone else who asks
-		AddOnVersion = message
+		AddOnNum = message
 		
 		self:PLAYER_ENTERING_WORLD() -- Tell others that we found a new version
 	end
