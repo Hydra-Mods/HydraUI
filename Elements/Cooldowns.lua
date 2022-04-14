@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Cooldowns = HydraUI:NewModule("Cooldowns")
 
@@ -266,7 +266,7 @@ local UpdateCooldownHold = function(value)
 	Cooldowns.Hold:SetDuration(value + 0.2)
 end
 
-GUI:AddWidgets(Language["General"], Language["General"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["General"], function(left, right)
 	right:CreateHeader(Language["Cooldown Alert"])
 	right:CreateSwitch("cooldowns-enable", Settings["cooldowns-enable"], Language["Enable Cooldown Alert"], Language["When an ability comes off cooldown the icon will flash as an alert"], UpdateEnableCooldownFlash)
 	right:CreateSwitch("cooldowns-text", Settings["cooldowns-text"], Language["Enable Cooldown Text"], Language["Display text on the cooldown alert"])

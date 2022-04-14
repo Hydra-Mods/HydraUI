@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 local SharedMedia = LibStub:GetLibrary("LibSharedMedia-3.0")
 local Textures = SharedMedia:HashTable("statusbar")
 local Fonts = SharedMedia:HashTable("font")

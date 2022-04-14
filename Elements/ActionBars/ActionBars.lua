@@ -1,6 +1,7 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local AB = HydraUI:NewModule("Action Bars")
+local GUI = HydraUI:GetModule("GUI")
 
 local IsUsableAction = IsUsableAction
 local NUM_PET_ACTION_SLOTS = NUM_PET_ACTION_SLOTS

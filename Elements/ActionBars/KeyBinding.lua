@@ -1,6 +1,7 @@
-local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
 local KeyBinding = HydraUI:NewModule("Key Binding")
+local GUI = HydraUI:GetModule("GUI")
 
 local GetMouseFocus = GetMouseFocus
 local match = string.match

@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local DT = HydraUI:NewModule("DataText")
 
@@ -233,7 +233,7 @@ local DeleteGoldData = function(value)
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Data Texts"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Data Texts"], function(left, right)
 	left:CreateHeader(Language["Chat Frame Texts"])
 	left:CreateDropdown("data-text-chat-left", Settings["data-text-chat-left"], DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the left data text anchor"], UpdateChatLeftText)
 	left:CreateDropdown("data-text-chat-middle", Settings["data-text-chat-middle"], DT.List, Language["Set Middle Text"], Language["Set the information to be displayed in the middle data text anchor"], UpdateChatMiddleText)

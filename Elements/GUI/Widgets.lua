@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 -- Locals
 local type = type
@@ -29,6 +29,8 @@ local LABEL_SPACING = 3
 local SELECTED_HIGHLIGHT_ALPHA = 0.3
 local MOUSEOVER_HIGHLIGHT_ALPHA = 0.1
 local LAST_ACTIVE_DROPDOWN
+
+local GUI = HydraUI:GetModule("GUI")
 
 GUI.Ignore = {
 	["ui-profile"] = true,

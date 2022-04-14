@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Map = HydraUI:NewModule("Minimap")
 
@@ -278,7 +278,7 @@ function Map:Load()
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Minimap"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Minimap"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("minimap-enable", Settings["minimap-enable"], Language["Enable Minimap Module"], Language["Enable the HydraUI mini map module"], ReloadUI):RequiresReload(true)
 	

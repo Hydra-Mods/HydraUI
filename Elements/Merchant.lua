@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local AutoVendor = HydraUI:NewModule("Auto Vendor") -- Automatically sell useless items
 
@@ -156,7 +156,7 @@ local UpdateAutoRepair = function(value)
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["General"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["General"], function(left, right)
 	right:CreateHeader(Language["Merchant"])
 	right:CreateSwitch("auto-repair-enable", Settings["auto-repair-enable"], Language["Auto Repair Equipment"], Language["Automatically repair damaged items when visiting a repair merchant"], UpdateAutoRepair)
 	right:CreateSwitch("auto-repair-use-guild", Settings["auto-repair-use-guild"], Language["Use Guild Funds"], Language["Use guild funds if available for automatic repairs"])

@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Experience = HydraUI:NewModule("Experience")
 
@@ -467,7 +467,7 @@ local UpdateMouseoverOpacity = function(value)
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Experience"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Experience"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("experience-enable", Settings["experience-enable"], Language["Enable Experience Module"], Language["Enable the HydraUI experience module"], ReloadUI):RequiresReload(true)
 	

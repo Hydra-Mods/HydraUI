@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
 local unpack = unpack
 local find = string.find
@@ -9,6 +9,8 @@ local Round = Round
 HydraUI.MovingFrames = {}
 HydraUI.FrameDefaults = {}
 HydraUI.MovingActive = false
+
+local GUI = HydraUI:GetModule("GUI")
 
 function HydraUI:PositionToString(frame)
 	local A1, Parent, A2, X, Y = frame:GetPoint()

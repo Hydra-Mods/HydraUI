@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 Defaults["raid-enable"] = true
 Defaults["raid-width"] = 78
@@ -577,7 +577,7 @@ local TestRaid = function()
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Raid"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Raid"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("raid-enable", Settings["raid-enable"], Language["Enable Raid Module"], Language["Enable the raid frames module"], ReloadUI):RequiresReload(true)
 	

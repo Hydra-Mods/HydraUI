@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
 if (HydraUI.UserClass ~= "DRUID") then
 	return
@@ -136,7 +136,7 @@ local UpdateEnableDruidMana = function(value)
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Unit Frames"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Unit Frames"], function(left, right)
 	right:CreateHeader(Language["Druid Mana"])
 	right:CreateSwitch("unitframes-show-druid-mana", Settings["unitframes-show-druid-mana"], Language["Enable Druid Mana"], Language["Enable a bar displaying your mana while in other forms"], UpdateEnableDruidMana)
 end)

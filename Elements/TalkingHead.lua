@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local TH = HydraUI:NewModule("Talking Head")
 
@@ -152,7 +152,7 @@ function TH:Load()
 	HydraUI:CreateMover(self.Mover)
 end
 
-GUI:AddWidgets(Language["General"], Language["General"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["General"], function(left, right)
 	right:CreateHeader(Language["Talking Head"])
 	right:CreateSwitch("hide-th", Settings["hide-th"], Language["Hide Talking Head Frame"], Language["Hide the talking head frame, and stop it from showing."], ReloadUI):RequiresReload(true)
 end)

@@ -1,6 +1,7 @@
-local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
 local Throttle = HydraUI:GetModule("Throttle")
+local GUI = HydraUI:GetModule("GUI")
 
 local HasPrinted = false
 local DevTools = "|Hcommand:/reload|h|cFF%s[Reload UI]|r|h |Hcommand:/eventtrace|h|cFF%s[Event Trace]|r|h |Hplayer:%s|h|cFF%s[Whisper Self]|r|h |Hcommand:/framestack|h|cFF%s[Frame Stack]|r|h"

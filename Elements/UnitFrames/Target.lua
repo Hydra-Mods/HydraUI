@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 Defaults["unitframes-target-width"] = 238
 Defaults["unitframes-target-health-height"] = 32
@@ -20,6 +20,10 @@ Defaults["unitframes-target-enable-castbar"] = true
 Defaults["target-enable-portrait"] = false
 Defaults["target-portrait-style"] = "3D"
 Defaults["target-enable"] = true
+Defaults.TargetBuffSize = 28
+Defaults.TargetBuffSpacing = 2
+Defaults.TargetDebuffSize = 28
+Defaults.TargetDebuffSpacing = 2
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -386,11 +390,40 @@ local UpdateShowTargetBuffs = function(value)
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Target"], Language["Unit Frames"], function(left, right)
+local UpdateBuffSize = function(value)
+	if HydraUI.UnitFrames["target"] then
+		HydraUI.UnitFrames["target"].Buffs.size = value
+		HydraUI.UnitFrames["target"].Buffs:SetSize(Settings["unitframes-target-width"], value)
+		HydraUI.UnitFrames["target"].Buffs:ForceUpdate()
+	end
+end
+
+local UpdateBuffSpacing = function(value)
+	if HydraUI.UnitFrames["target"] then
+		HydraUI.UnitFrames["target"].Buffs.spacing = value
+		HydraUI.UnitFrames["target"].Buffs:ForceUpdate()
+	end
+end
+
+local UpdateDebuffSize = function(value)
+	if HydraUI.UnitFrames["target"] then
+		HydraUI.UnitFrames["target"].Debuffs.size = value
+		HydraUI.UnitFrames["target"].Debuffs:SetSize(Settings["unitframes-target-width"], value)
+		HydraUI.UnitFrames["target"].Debuffs:ForceUpdate()
+	end
+end
+
+local UpdateDebuffSpacing = function(value)
+	if HydraUI.UnitFrames["target"] then
+		HydraUI.UnitFrames["target"].Debuffs.spacing = value
+		HydraUI.UnitFrames["target"].Debuffs:ForceUpdate()
+	end
+end
+
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Target"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("target-enable", Settings["target-enable"], Language["Enable Target"], Language["Enable the target unit frame"], ReloadUI):RequiresReload(true)
 	left:CreateSlider("unitframes-target-width", Settings["unitframes-target-width"], 120, 320, 1, "Width", "Set the width of the target unit frame", UpdateTargetWidth)
-	left:CreateSwitch("unitframes-show-target-buffs", Settings["unitframes-show-target-buffs"], Language["Show Target Buffs"], Language["Show yauras above the target unit frame"], UpdateShowTargetBuffs)
 	left:CreateSwitch("unitframes-only-player-debuffs", Settings["unitframes-only-player-debuffs"], Language["Only Display Player Debuffs"], Language["If enabled, only your own debuffs will be displayed on the target"], UpdateOnlyPlayerDebuffs)
 	left:CreateSwitch("target-enable-portrait", Settings["target-enable-portrait"], Language["Enable Portrait"], Language["Display the target unit portrait"], UpdateTargetEnablePortrait)
 	left:CreateDropdown("target-portrait-style", Settings["target-portrait-style"], {[Language["2D"]] = "2D", [Language["3D"]] = "3D"}, Language["Set Portrait Style"], Language["Set the style of the portrait"], ReloadUI):RequiresReload(true)
@@ -401,6 +434,15 @@ GUI:AddWidgets(Language["General"], Language["Target"], Language["Unit Frames"],
 	left:CreateDropdown("unitframes-target-health-color", Settings["unitframes-target-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Color"], Language["Set the color of the health bar"], UpdateTargetHealthColor)
 	left:CreateInput("unitframes-target-health-left", Settings["unitframes-target-health-left"], Language["Left Health Text"], Language["Set the text on the left of the target health bar"], ReloadUI):RequiresReload(true)
 	left:CreateInput("unitframes-target-health-right", Settings["unitframes-target-health-right"], Language["Right Health Text"], Language["Set the text on the right of the target health bar"], ReloadUI):RequiresReload(true)
+	
+	left:CreateHeader(Language["Buffs"])
+	left:CreateSwitch("unitframes-show-target-buffs", Settings["unitframes-show-target-buffs"], Language["Show Target Buffs"], Language["Show yauras above the target unit frame"], UpdateShowTargetBuffs)
+	left:CreateSlider("TargetBuffSize", Settings.TargetBuffSize, 26, 40, 2, "Set Size", "Set the size of the auras", UpdateBuffSize)
+	left:CreateSlider("TargetBuffSpacing", Settings.TargetBuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateBuffSpacing)
+	
+	left:CreateHeader(Language["Debuffs"])
+	left:CreateSlider("TargetDebuffSize", Settings.TargetDebuffSize, 26, 40, 2, "Set Size", "Set the size of the auras", UpdateDebuffSize)
+	left:CreateSlider("TargetDebuffSpacing", Settings.TargetDebuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateDebuffSpacing)
 	
 	right:CreateHeader(Language["Power"])
 	right:CreateSwitch("unitframes-target-power-reverse", Settings["unitframes-target-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateTargetPowerFill)

@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 Defaults["party-enable"] = true
 Defaults["party-width"] = 78
@@ -682,7 +682,7 @@ local TestParty = function()
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Party"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Party"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("party-enable", Settings["party-enable"], Language["Enable Party Module"], Language["Enable the party frames module"], ReloadUI):RequiresReload(true)
 	left:CreateSwitch("party-pets-enable", Settings["party-pets-enable"], Language["Enable Party Pet Frames"], Language["Enable the party pet frames module"], ReloadUI):RequiresReload(true)

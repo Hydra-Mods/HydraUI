@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 -- Default setting values
 Defaults["chat-enable"] = true
@@ -1269,7 +1269,7 @@ local UpdateShortenChannels = function(value)
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Chat"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Chat"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("chat-enable", Settings["chat-enable"], Language["Enable Chat Module"], Language["Enable the HydraUI chat module"], ReloadUI):RequiresReload(true)
 	
@@ -1301,7 +1301,7 @@ GUI:AddWidgets(Language["General"], Language["Chat"], function(left, right)
 	right:CreateColorSelection("chat-tab-font-color-mouseover", Settings["chat-tab-font-color-mouseover"], Language["Font Color Mouseover"], Language["Set the color of the chat frame tab while mousing over it"])
 end)
 
-GUI:AddWidgets(Language["General"], Language["Left"], Language["Chat"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Left"], Language["Chat"], function(left, right)
 	left:CreateHeader(Language["General"])
 	left:CreateSlider("chat-frame-width", Settings["chat-frame-width"], 300, 650, 1, Language["Chat Width"], Language["Set the width of the chat frame"], UpdateChatFrameWidth)
 	left:CreateSlider("chat-frame-height", Settings["chat-frame-height"], 40, 350, 1, Language["Chat Height"], Language["Set the height of the chat frame"], UpdateChatFrameHeight)
@@ -1526,7 +1526,7 @@ local GetChatFrameList = function()
 	return Frames
 end
 
-GUI:AddWidgets(Language["General"], Language["Right"], Language["Chat"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Right"], Language["Chat"], function(left, right)
 	left:CreateHeader(Language["General"])
 	left:CreateSwitch("right-window-enable", Settings["right-window-enable"], Language["Enable Right Window"], Language["Enable the right side window, for placing chat or addons into"], ReloadUI):RequiresReload(true)
 	left:CreateSlider("right-window-width", Settings["right-window-width"], 300, 650, 1, Language["Window Width"], Language["Set the width of the window"], UpdateWidth)

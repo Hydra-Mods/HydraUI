@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
 local CR_HASTE_MELEE = CR_HASTE_MELEE
 local GetHaste = GetHaste

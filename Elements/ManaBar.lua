@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Load = {DRUID = 1, PRIEST = 1, SHAMAN = 1}
 
@@ -164,7 +164,7 @@ local UpdateEnableManaBar = function(value)
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Unit Frames"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Unit Frames"], function(left, right)
 	right:CreateHeader(Language["Mana Bar"])
 	right:CreateSwitch("unitframes-show-mana-bar", Settings["unitframes-show-mana-bar"], Language["Enable Mana Bar"], Language["Enable a mana bar for Druids/Priests/Shaman"], UpdateEnableManaBar)
 end)

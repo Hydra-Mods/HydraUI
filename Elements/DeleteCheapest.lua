@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
 --[[ 
 	Delete cheapest item
@@ -183,7 +183,7 @@ local DeleteCheapest = function()
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["General"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["General"], function(left, right)
 	right:CreateHeader(Language["Inventory"])
 	right:CreateButton("", Language["Search"], Language["Find Cheapest Item"], Language["Find the cheapest item currently in your inventory"], PrintCheapest)
 	right:CreateButton("", Language["Delete"], Language["Delete Cheapest Item"], Language["Delete the cheapest item currently in your inventory"], DeleteCheapest)

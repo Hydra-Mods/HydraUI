@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 -- Constants
 local SPACING = 3
@@ -22,6 +22,8 @@ local tinsert = table.insert
 local tremove = table.remove
 local tsort = table.sort
 local floor = math.floor
+
+local GUI = HydraUI:NewModule("GUI")
 
 -- Storage
 GUI.Categories = {}

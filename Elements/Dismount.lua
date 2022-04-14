@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
 local AutoDismount = HydraUI:NewModule("Dismount")
 
@@ -76,7 +76,7 @@ local UpdateEnableDismount = function(value)
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["General"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["General"], function(left, right)
 	right:CreateHeader(Language["Auto Dismount"])
 	right:CreateSwitch("dismount-enable", Settings["dismount-enable"], Language["Enable Auto Dismount"], Language["Automatically dismount during actions that can't be performed while mounted"], UpdateEnableDismount)
 end)

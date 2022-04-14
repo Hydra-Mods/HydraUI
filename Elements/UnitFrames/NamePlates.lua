@@ -1,5 +1,5 @@
 local addon, ns = ...
-local HydraUI, GUI, Language, Assets, Settings, Defaults = ns:get()
+local HydraUI, Language, Assets, Settings, Defaults = ns:get()
 
 Defaults["nameplates-enable"] = true
 Defaults["nameplates-width"] = 138
@@ -561,7 +561,7 @@ local UpdateNamePlatesDebuffDirection = function(value)
 	RunForAllNamePlates(NamePlateSetDebuffDirection, value)
 end
 
-GUI:AddWidgets(Language["General"], Language["Name Plates"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Name Plates"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("nameplates-enable", Settings["nameplates-enable"], Language["Enable Name Plates"], Language["Enable the HydraUI name plates module"], ReloadUI):RequiresReload(true)
 	

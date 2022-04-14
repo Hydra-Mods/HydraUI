@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 Defaults["unitframes-player-width"] = 238
 Defaults["unitframes-player-health-height"] = 32
@@ -28,6 +28,10 @@ Defaults["player-resource-height"] = 8
 Defaults["player-move-resource"] = false
 Defaults["player-move-power"] = false
 Defaults["player-enable"] = true
+Defaults.PlayerBuffSize = 28
+Defaults.PlayerBuffSpacing = 2
+Defaults.PlayerDebuffSize = 28
+Defaults.PlayerDebuffSpacing = 2
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -329,7 +333,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		
 		local SafeZone = Castbar:CreateTexture(nil, "ARTWORK")
 		SafeZone:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-		SafeZone:SetVertexColor(0.75, 0.22, 0.17, 0.7)
+		SafeZone:SetVertexColor(0.9, 0.15, 0.15, 0.75)
 		
 		Castbar.bg = CastbarBG
 		Castbar.Time = Time
@@ -663,11 +667,11 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	
 	-- Auras
 	local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
-	Buffs:SetSize(Settings["unitframes-player-width"], 28)
-	Buffs.size = 28
-	Buffs.spacing = 2
+	Buffs:SetSize(Settings["unitframes-player-width"], Settings.PlayerBuffSize)
+	Buffs.size = Settings.PlayerBuffSize
+	Buffs.spacing = Settings.PlayerBuffSpacing
 	Buffs.num = 40
-	Buffs.initialAnchor = "TOPLEFT"
+	Buffs.initialAnchor = "BOTTOMLEFT"
 	Buffs.tooltipAnchor = "ANCHOR_TOP"
 	Buffs["growth-x"] = "RIGHT"
 	Buffs["growth-y"] = "UP"
@@ -684,10 +688,10 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetSize(Settings["unitframes-player-width"], 28)
 	Debuffs:SetPoint("BOTTOM", Buffs, "TOP", 0, 2)
-	Debuffs.size = 28
-	Debuffs.spacing = 2
+	Debuffs.size = Settings.PlayerDebuffSize
+	Debuffs.spacing = Settings.PlayerDebuffSpacing
 	Debuffs.num = 16
-	Debuffs.initialAnchor = "TOPRIGHT"
+	Debuffs.initialAnchor = "BOTTOMRIGHT"
 	Debuffs.tooltipAnchor = "ANCHOR_TOP"
 	Debuffs["growth-x"] = "LEFT"
 	Debuffs["growth-y"] = "UP"
@@ -963,12 +967,41 @@ local UpdateResourceBarHeight = function(value)
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"], function(left, right)
+local UpdateBuffSize = function(value)
+	if HydraUI.UnitFrames["player"] then
+		HydraUI.UnitFrames["player"].Buffs.size = value
+		HydraUI.UnitFrames["player"].Buffs:SetSize(Settings["unitframes-player-width"], value)
+		HydraUI.UnitFrames["player"].Buffs:ForceUpdate()
+	end
+end
+
+local UpdateBuffSpacing = function(value)
+	if HydraUI.UnitFrames["player"] then
+		HydraUI.UnitFrames["player"].Buffs.spacing = value
+		HydraUI.UnitFrames["player"].Buffs:ForceUpdate()
+	end
+end
+
+local UpdateDebuffSize = function(value)
+	if HydraUI.UnitFrames["player"] then
+		HydraUI.UnitFrames["player"].Debuffs.size = value
+		HydraUI.UnitFrames["player"].Debuffs:SetSize(Settings["unitframes-player-width"], value)
+		HydraUI.UnitFrames["player"].Debuffs:ForceUpdate()
+	end
+end
+
+local UpdateDebuffSpacing = function(value)
+	if HydraUI.UnitFrames["player"] then
+		HydraUI.UnitFrames["player"].Debuffs.spacing = value
+		HydraUI.UnitFrames["player"].Debuffs:ForceUpdate()
+	end
+end
+
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("player-enable", Settings["player-enable"], Language["Enable Player"], Language["Enable the player unit frame"], ReloadUI):RequiresReload(true)
 	left:CreateSlider("unitframes-player-width", Settings["unitframes-player-width"], 120, 320, 1, Language["Width"], Language["Set the width of the player unit frame"], UpdatePlayerWidth)
 	left:CreateSwitch("unitframes-player-enable-resource", Settings["unitframes-player-enable-resource"], Language["Enable Resource Bar"], Language["Enable the player resource such as combo points, runes, etc."], ReloadUI):RequiresReload(true)
-	left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
 	left:CreateSwitch("player-enable-portrait", Settings["player-enable-portrait"], Language["Enable Portrait"], Language["Display the player unit portrait"], UpdatePlayerEnablePortrait)
 	left:CreateSwitch("player-enable-pvp", Settings["player-enable-pvp"], Language["Enable PVP Indicator"], Language["Display the pvp indicator"], UpdatePlayerEnablePVPIndicator)
 	
@@ -985,6 +1018,15 @@ GUI:AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"],
 	left:CreateDropdown("unitframes-player-health-color", Settings["unitframes-player-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdatePlayerHealthColor)
 	left:CreateInput("unitframes-player-health-left", Settings["unitframes-player-health-left"], Language["Left Health Text"], Language["Set the text on the left of the player health bar"], ReloadUI):RequiresReload(true)
 	left:CreateInput("unitframes-player-health-right", Settings["unitframes-player-health-right"], Language["Right Health Text"], Language["Set the text on the right of the player health bar"], ReloadUI):RequiresReload(true)
+	
+	left:CreateHeader(Language["Buffs"])
+	left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
+	left:CreateSlider("PlayerBuffSize", Settings.PlayerBuffSize, 26, 40, 2, "Set Size", "Set the size of the auras", UpdateBuffSize)
+	left:CreateSlider("PlayerBuffSpacing", Settings.PlayerBuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateBuffSpacing)
+	
+	left:CreateHeader(Language["Debuffs"])
+	left:CreateSlider("PlayerDebuffSize", Settings.PlayerDebuffSize, 26, 40, 2, "Set Size", "Set the size of the auras", UpdateDebuffSize)
+	left:CreateSlider("PlayerDebuffSpacing", Settings.PlayerDebuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateDebuffSpacing)
 	
 	right:CreateHeader(Language["Power"])
 	right:CreateSwitch("unitframes-player-enable-power", Settings["unitframes-player-enable-power"], Language["Enable Power Bar"], Language["Enable the player power bar"], ReloadUI):RequiresReload(true)

@@ -1,5 +1,5 @@
 local AddonName, Namespace = ...
-local HydraUI, GUI, Language, Assets, Settings, Defaults = Namespace:get()
+local HydraUI, Language, Assets, Settings, Defaults = Namespace:get()
 local oUF = Namespace.oUF
 local R, G, B
 
@@ -213,7 +213,7 @@ function HydraUI:UpdateColors()
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Colors"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Colors"], function(left, right)
 	left:CreateHeader(Language["Class Colors"])
 	left:CreateColorSelection("color-death-knight", Settings["color-death-knight"], Language["Death Knight"], "")
 	left:CreateColorSelection("color-demon-hunter", Settings["color-demon-hunter"], Language["Demon Hunter"], "")

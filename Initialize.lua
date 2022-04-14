@@ -9,7 +9,8 @@ local Plugins = {}
 
 -- Core functions and data
 local HydraUI = CreateFrame("Frame", nil, UIParent)
-HydraUI.DBs = {}
+HydraUI.Modules = Modules
+HydraUI.Plugins = Plugins
 
 HydraUI.UIParent = CreateFrame("Frame", "HydraUIParent", UIParent, "SecureHandlerStateTemplate")
 HydraUI.UIParent:SetAllPoints(UIParent)
@@ -50,9 +51,6 @@ HydraUI.Outline = {
 	edgeSize = 1,
 	insets = {left = 0, right = 0, top = 0, bottom = 0},
 }
-
--- GUI
-local GUI = CreateFrame("Frame", nil, HydraUI.UIParent, "BackdropTemplate")
 
 -- Language
 local Language = {}
@@ -187,7 +185,7 @@ function HydraUI:GetDB(name)
 end
 
 function HydraUI:CreatePluginWindow()
-	GUI:AddWidgets(Language["Info"], Language["Plugins"], function(left, right)
+	self:GetModule("GUI"):AddWidgets(Language["Info"], Language["Plugins"], function(left, right)
 		local Anchor
 		
 		for i = 1, #Plugins do
@@ -244,8 +242,8 @@ HydraUI:SetScript("OnEvent", HydraUI.OnEvent)
 
 -- Access data tables
 function Namespace:get()
-	return HydraUI, GUI, Language, Assets, Settings, Defaults
+	return HydraUI, Language, Assets, Settings, Defaults
 end
 
 -- Global access
-_G["HydraUIGlobal"] = Namespace
+_G.HydraUIGlobal = Namespace

@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Bubbles = HydraUI:NewModule("Chat Bubbles")
 
@@ -118,7 +118,7 @@ local UpdateShowBubbles = function(value)
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Chat"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Chat"], function(left, right)
 	right:CreateHeader(Language["Chat Bubbles"])
 	right:CreateSwitch("chat-bubbles-enable", Settings["chat-bubbles-enable"], Language["Enable Chat Bubbles"], Language["Enable the HydraUI chat bubbles module"], ReloadUI):RequiresReload(true)
 	right:CreateSlider("chat-bubbles-opacity", Settings["chat-bubbles-opacity"], 0, 100, 5, Language["Background Opacity"], Language["Set the opacity of the chat bubbles background"], SetToRefresh, nil, "%")

@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Tracker = HydraUI:NewModule("Objective Tracker")
 
@@ -594,7 +594,7 @@ local UpdateEnableBackdrop = function(value)
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Objectives"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Objectives"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("tracker-enable", Settings["tracker-enable"], Language["Enable Tracker Module"], Language["Enable the HydraUI objective tracker module"], ReloadUI):RequiresReload(true)
 	

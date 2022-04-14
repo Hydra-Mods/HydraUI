@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local AceSerializer = LibStub:GetLibrary("AceSerializer-3.0")
 local LibDeflate = LibStub:GetLibrary("LibDeflate")
@@ -7,6 +7,8 @@ local DefaultKey = "%s-%s"
 local next = next
 local format = format
 local match = string.match
+
+local GUI = HydraUI:GetModule("GUI")
 
 HydraUI.ProfileList = {}
 

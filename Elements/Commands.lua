@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
 local Commands = {}
 
@@ -11,7 +11,7 @@ Commands["movereset"] = function()
 end
 
 Commands["settings"] = function()
-	GUI:Toggle()
+	HydraUI:GetModule("GUI"):Toggle()
 end
 
 Commands["keybind"] = function()

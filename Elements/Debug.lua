@@ -1,6 +1,7 @@
-local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
 local Debug = HydraUI:NewModule("Debug")
+local GUI = HydraUI:GetModule("GUI")
 
 local format = format
 local select = select

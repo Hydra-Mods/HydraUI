@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 Defaults["unitframes-boss-enable"] = true
 Defaults["unitframes-boss-width"] = 238
@@ -216,7 +216,7 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	self.RaidTargetIndicator = RaidTarget
 end
 
-GUI:AddWidgets(Language["General"], Language["Bosses"], Language["Unit Frames"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Bosses"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Bosses"])
 	left:CreateSwitch("unitframes-boss-enable", Settings["unitframes-boss-enable"], Language["Enable Boss Frames"], Language["Enable the boss unit frames"], ReloadUI):RequiresReload(true)
 end)

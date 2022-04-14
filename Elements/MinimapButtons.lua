@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings = select(2, ...):get()
+local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
 local MinimapButtons = HydraUI:NewModule("Minimap Buttons")
 
@@ -253,7 +253,7 @@ function MinimapButtons:Load()
 	C_Timer.After(2, DelayedLoad)
 end
 
-GUI:AddWidgets(Language["General"], Language["Minimap"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Minimap"], function(left, right)
 	right:CreateHeader(Language["Minimap Buttons"])
 	right:CreateSwitch("minimap-buttons-enable", Settings["minimap-buttons-enable"], Language["Enable Minimap Button Bar"], "", ReloadUI):RequiresReload(true)
 	right:CreateSlider("minimap-buttons-size", Settings["minimap-buttons-size"], 16, 44, 1, Language["Button Size"], "", UpdateBar)

@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Tooltips = HydraUI:NewModule("Tooltips")
 
@@ -748,7 +748,7 @@ local UpdateTooltipBackdrop = function(value)
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Tooltips"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Tooltips"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("tooltips-enable", Settings["tooltips-enable"], Language["Enable Tooltips Module"], Language["Enable the HydraUI tooltips module"], ReloadUI):RequiresReload(true)
 	

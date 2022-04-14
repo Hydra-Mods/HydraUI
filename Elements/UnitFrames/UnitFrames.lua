@@ -1,5 +1,5 @@
 local addon, ns = ...
-local HydraUI, GUI, Language, Assets, Settings, Defaults = ns:get()
+local HydraUI, Language, Assets, Settings, Defaults = ns:get()
 
 local oUF = ns.oUF or oUF
 
@@ -928,7 +928,7 @@ function UF:Load()
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Unit Frames"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Font"])
 	left:CreateDropdown("unitframes-font", Settings["unitframes-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the unit frames"], nil, "Font")
 	left:CreateSlider("unitframes-font-size", Settings["unitframes-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the unit frames"])

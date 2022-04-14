@@ -1,5 +1,5 @@
 local addon, ns = ...
-local HydraUI, GUI, Language, Assets, Settings = ns:get()
+local HydraUI, Language, Assets, Settings = ns:get()
 
 local format = string.format
 local floor = math.floor
@@ -21,6 +21,7 @@ local UnitIsDead = UnitIsDead
 local UnitClass = UnitClass
 local UnitLevel = UnitLevel
 local UnitEffectiveLevel = UnitEffectiveLevel
+local UnitClassification = UnitClassification
 local UnitReaction = UnitReaction
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsAFK = UnitIsAFK

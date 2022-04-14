@@ -1,4 +1,4 @@
-local HydraUI, GUI, Language, Assets, Settings, Defaults = select(2, ...):get()
+local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 local Auras = HydraUI:NewModule("Auras")
 
@@ -406,7 +406,7 @@ local UpdateCountAlignment = function(value)
 	end
 end
 
-GUI:AddWidgets(Language["General"], Language["Auras"], function(left, right)
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Auras"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("auras-enable", Settings["auras-enable"], Language["Enable Auras Module"], Language["Enable the HydraUI auras module"], ReloadUI):RequiresReload(true)
 	
