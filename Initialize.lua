@@ -86,19 +86,6 @@ function HydraUI:GetModule(name)
 	end
 end
 
-function HydraUI:LoadModule(name)
-	local Module = self:GetModule(name)
-	
-	if (not Module) then
-		return
-	end
-	
-	if ((not Module.Loaded) and Module.Load) then
-		Module:Load()
-		Module.Loaded = true
-	end
-end
-
 function HydraUI:LoadModules()
 	for i = 1, #Modules do
 		if (Modules[i].Load and not Modules[i].Loaded) then
@@ -136,19 +123,6 @@ function HydraUI:GetPlugin(name)
 		if (Plugins[i].Name == name) then
 			return Plugins[i]
 		end
-	end
-end
-
-function HydraUI:LoadPlugin(name)
-	local Plugin = self:GetPlugin(name)
-	
-	if (not Plugin) then
-		return
-	end
-	
-	if ((not Plugin.Loaded) and Plugin.Load) then
-		Plugin:Load()
-		Plugin.Loaded = true
 	end
 end
 
@@ -201,18 +175,6 @@ function HydraUI:CreatePluginWindow()
 			Anchor:CreateMessage("", Plugins[i].Notes)
 		end
 	end)
-end
-
-function HydraUI:UpdateoUFColors()
-	local Colors = Namespace.oUF.colors
-	
-	Colors.class = HydraUI.ClassColors
-	Colors.reaction = HydraUI.ReactionColors
-	Colors.power = HydraUI.PowerColors
-	Colors.debuff = HydraUI.DebuffColors
-	Colors.tapped = {HydraUI:HexToRGB(Settings["color-tapped"])}
-	Colors.disconnected = {HydraUI:HexToRGB(Settings["color-disconnected"])}
-	Colors.health = {HydraUI:HexToRGB(Settings["ui-header-texture-color"])}
 end
 
 -- Events

@@ -213,6 +213,18 @@ function HydraUI:UpdateColors()
 	end
 end
 
+function HydraUI:UpdateoUFColors()
+	local Colors = Namespace.oUF.colors
+	
+	Colors.class = HydraUI.ClassColors
+	Colors.reaction = HydraUI.ReactionColors
+	Colors.power = HydraUI.PowerColors
+	Colors.debuff = HydraUI.DebuffColors
+	Colors.tapped = {HydraUI:HexToRGB(Settings["color-tapped"])}
+	Colors.disconnected = {HydraUI:HexToRGB(Settings["color-disconnected"])}
+	Colors.health = {HydraUI:HexToRGB(Settings["ui-header-texture-color"])}
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Colors"], function(left, right)
 	left:CreateHeader(Language["Class Colors"])
 	left:CreateColorSelection("color-death-knight", Settings["color-death-knight"], Language["Death Knight"], "")
