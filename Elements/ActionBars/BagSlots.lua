@@ -135,16 +135,21 @@ function BagsFrame:Load()
 		Object.BG:SetColorTexture(0, 0, 0)
 		
 		if HydraUI.IsMainline then
-			Object.SlotHighlightTexture:SetAlpha(0)
+			Object.SlotHighlightTexture:SetTexture(Asset:GetTexture("Blank"))
+			Object.SlotHighlightTexture:SetVertexColor(0.9, 0.9, 0.1, 0.2)
 		else
-			Object:SetCheckedTexture("")
+			local Checked = Object:CreateTexture(nil, "ARTWORK", 7)
+			Checked:SetPoint("TOPLEFT", Object, 0, 0)
+			Checked:SetPoint("BOTTOMRIGHT", Object, 0, 0)
+			Checked:SetColorTexture(0.9, 0.9, 0.1, 0.2)
+		
+			Object:SetCheckedTexture(Checked)
 		end
 		
 		local Highlight = Object:CreateTexture(nil, "ARTWORK")
 		Highlight:SetPoint("TOPLEFT", Object, 0, 0)
 		Highlight:SetPoint("BOTTOMRIGHT", Object, 0, 0)
-		Highlight:SetColorTexture(1, 1, 1)
-		Highlight:SetAlpha(0.2)
+		Highlight:SetColorTexture(1, 1, 1, 0.25)
 		
 		Object:SetHighlightTexture(Highlight)
 		
@@ -160,8 +165,7 @@ function BagsFrame:Load()
 			local Pushed = Object:CreateTexture(nil, "ARTWORK", 7)
 			Pushed:SetPoint("TOPLEFT", Object, 0, 0)
 			Pushed:SetPoint("BOTTOMRIGHT", Object, 0, 0)
-			Pushed:SetColorTexture(0.2, 0.9, 0.2)
-			Pushed:SetAlpha(0.4)
+			Pushed:SetColorTexture(0.2, 0.9, 0.2, 0.4)
 			
 			Object:SetPushedTexture(Pushed)
 		end

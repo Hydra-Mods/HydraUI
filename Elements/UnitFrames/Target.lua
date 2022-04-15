@@ -194,6 +194,7 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 	Debuffs.PostCreateIcon = UF.PostCreateIcon
 	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["unitframes-only-player-debuffs"]
+	Debuffs.showStealableBuffs = true
 	
     -- Castbar
 	if Settings["unitframes-target-enable-castbar"] then

@@ -182,6 +182,7 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 	Debuffs.PostCreateIcon = UF.PostCreateIcon
 	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["nameplates-only-player-debuffs"]
+	Debuffs.showStealableBuffs = true
 	Debuffs.disableMouse = true
 	
 	if (Settings["nameplates-debuffs-direction"] == "LTR") then
