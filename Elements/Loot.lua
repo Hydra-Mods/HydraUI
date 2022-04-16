@@ -13,7 +13,6 @@ local GetLootSlotInfo = GetLootSlotInfo
 local LootSlot = LootSlot
 
 local Icon, Name, Quantity, CurrencyID, Quality, Locked, QuestItem, QuestID, IsActive
-
 local Quality, Locked, Threshold, _
 
 Loot.LootSlots = {}

@@ -554,7 +554,7 @@ local WindowButtonOnLeave = function(self)
 	self.Highlight:SetAlpha(0)
 end
 
-local WindowButtonOnMouseUp = function(self)
+local WindowButtonOnMouseUp = function(self) -- Rework the click interactions here
 	--[[if self.Texture then
 		self.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-button-texture-color"]))
 	end]]
@@ -601,7 +601,7 @@ function GUI:CreateWindow(category, name, parent)
 	Button:SetScript("OnEnter", WindowButtonOnEnter)
 	Button:SetScript("OnLeave", WindowButtonOnLeave)
 	Button:SetScript("OnMouseUp", WindowButtonOnMouseUp)
-	Button:SetScript("OnMouseDown", WindowButtonOnMouseDown)
+	--Button:SetScript("OnMouseDown", WindowButtonOnMouseDown)
 	
 	Button.Selected = Button:CreateTexture(nil, "ARTWORK")
 	Button.Selected:SetPoint("TOPLEFT", Button, 1, -1)
@@ -618,6 +618,7 @@ function GUI:CreateWindow(category, name, parent)
 	
 	Button.Text = Button:CreateFontString(nil, "OVERLAY")
 	Button.Text:SetSize(MENU_BUTTON_WIDTH - 6, WIDGET_HEIGHT)
+	Button.Text:SetJustifyH("LEFT")
 	
 	Button.Fade = CreateAnimationGroup(Button.Selected)
 	
@@ -637,7 +638,6 @@ function GUI:CreateWindow(category, name, parent)
 		Button.Selected:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-color"]))
 		
 		Button.Text:SetPoint("LEFT", Button, SPACING * 3, 0)
-		Button.Text:SetJustifyH("LEFT")
 		HydraUI:SetFontInfo(Button.Text, Settings["ui-widget-font"], 12)
 		Button.Text:SetText("|cFF" .. Settings["ui-widget-font-color"] .. name .. "|r")
 		
@@ -662,7 +662,6 @@ function GUI:CreateWindow(category, name, parent)
 		Button.Selected:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-bright-color"]))
 		
 		Button.Text:SetPoint("LEFT", Button, 4, 0)
-		Button.Text:SetJustifyH("LEFT")
 		HydraUI:SetFontInfo(Button.Text, Settings["ui-widget-font"], Settings["ui-header-font-size"])
 		Button.Text:SetText("|cFF" .. Settings["ui-button-font-color"] .. name .. "|r")
 		

@@ -46,7 +46,7 @@ function Update:PLAYER_ENTERING_WORLD()
 end
 
 function Update:GUILD_ROSTER_UPDATE(update)
-	if (not update and not IsInGuild()) then
+	if (not IsInGuild() or not update) then
 		return
 	end
 	
@@ -106,6 +106,7 @@ function Update:CHAT_MSG_ADDON(prefix, message, channel, sender)
 		
 		-- Store this higher version and tell anyone else who asks
 		AddOnNum = message
+		AddOnVersion = tostring(message)
 		
 		self:PLAYER_ENTERING_WORLD() -- Tell others that we found a new version
 	end

@@ -153,7 +153,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		PvPIndicator.Badge:SetPoint("CENTER", PvPIndicator, "CENTER")
 	else
 		PvPIndicator:SetSize(32, 32)
-		PvPIndicator:SetPoint("CENTER", Health, 0, -6)
+		PvPIndicator:SetPoint("CENTER", Health, 5, -6)
 	end
 	
 	local RaidTarget = Health:CreateTexture(nil, "OVERLAY")
