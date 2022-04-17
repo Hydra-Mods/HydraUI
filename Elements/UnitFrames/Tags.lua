@@ -194,13 +194,6 @@ Methods["Plus"] = function(unit)
 	end
 end
 
-Events["Resting"] = "PLAYER_UPDATE_RESTING"
-Methods["Resting"] = function(unit)
-	if (unit == "player" and IsResting()) then
-		return "zZz"
-	end
-end
-
 Events["Health"] = HealthEvent .. "UNIT_MAXHEALTH"
 Methods["Health"] = UnitHealth
 

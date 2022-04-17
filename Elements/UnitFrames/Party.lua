@@ -79,12 +79,22 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealthBG:SetAlpha(0.2)
 	
-	local AbsorbsBar = CreateFrame("StatusBar", nil, self)
-	AbsorbsBar:SetWidth(Settings["party-width"])
-	AbsorbsBar:SetHeight(Settings["party-health-height"])
-	AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
-	AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
+	if HydraUI.IsMainline then
+		local AbsorbsBar = CreateFrame("StatusBar", nil, self)
+		AbsorbsBar:SetWidth(Settings["party-width"])
+		AbsorbsBar:SetHeight(Settings["party-health-height"])
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
+		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
+		
+		if Settings["party-health-reverse"] then
+			AbsorbsBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
+		else
+			AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+		end
+		
+		self.AbsorbsBar = AbsorbsBar
+	end
 	
 	local HealBar = CreateFrame("StatusBar", nil, self)
 	HealBar:SetWidth(Settings["party-width"])
@@ -94,10 +104,8 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 	
 	if Settings["party-health-reverse"] then
-		AbsorbsBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 		HealBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 	else
-		AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 		HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	end
 	
@@ -320,7 +328,6 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	
 	self.Health = Health
 	self.Health.bg = HealthBG
-	self.AbsorbsBar = AbsorbsBar
 	self.HealBar = HealBar
 	self.Power = Power
 	self.Power.bg = PowerBG
