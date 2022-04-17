@@ -11,7 +11,7 @@ local OnMouseUp = function(self, button)
 
 	if (button == "LeftButton") then
 		TimeManager_Toggle()
-	else
+	elseif HydraUI.IsMainline then
 		ToggleCalendar()
 	end
 end

@@ -34,13 +34,17 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	Health:SetValue(1)
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	
-	local AbsorbsBar = CreateFrame("StatusBar", nil, self)
-	AbsorbsBar:SetWidth(Settings["unitframes-boss-width"])
-	AbsorbsBar:SetHeight(Settings["unitframes-boss-health-height"])
-	AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
-	AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
-	AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
+	if HydraUI.IsMainline then
+		local AbsorbsBar = CreateFrame("StatusBar", nil, self)
+		AbsorbsBar:SetWidth(Settings["unitframes-boss-width"])
+		AbsorbsBar:SetHeight(Settings["unitframes-boss-health-height"])
+		AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
+		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
+		
+		self.AbsorbsBar = AbsorbsBar
+	end
 	
 	local HealBar = CreateFrame("StatusBar", nil, self)
 	HealBar:SetWidth(Settings["unitframes-boss-width"])
@@ -202,7 +206,6 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	
 	self.Health = Health
 	self.Health.bg = HealthBG
-	self.AbsorbsBar = AbsorbsBar
 	self.HealBar = HealBar
 	self.HealthLeft = HealthLeft
 	self.HealthRight = HealthRight
