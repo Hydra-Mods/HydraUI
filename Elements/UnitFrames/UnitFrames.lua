@@ -166,7 +166,7 @@ else
 			end
 		end
 		
-		if debuffType then
+		if (debuffType and debuffType ~= "") then
 			local Color = self.__owner.colors.debuff[debuffType]
 			
 			button.DebuffType:SetBackdropBorderColor(Color[1], Color[2], Color[3])
@@ -753,7 +753,7 @@ function UF:Load()
 	end
 	
 	if Settings["unitframes-boss-enable"] then
-		for i = 1, 5 do
+		for i = 1, 8 do
 			local Boss = oUF:Spawn("boss" .. i, "HydraUI Boss " .. i)
 			Boss:SetSize(Settings["unitframes-boss-width"], Settings["unitframes-boss-health-height"] + Settings["unitframes-boss-power-height"] + 3)
 			Boss:SetParent(HydraUI.UIParent)
@@ -942,7 +942,7 @@ end)
 HydraUIFakeBosses = function()
 	local Boss
 	
-	for i = 1, 5 do
+	for i = 1, 8 do
 		Boss = HydraUI.UnitFrames["boss"..i]
 		
 		if (not Boss:IsShown()) then

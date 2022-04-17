@@ -15,7 +15,6 @@ Defaults["unitframes-pet-health-right"] = "[HealthPercent]"
 Defaults["unitframes-pet-buffs"] = true
 Defaults["unitframes-pet-buff-size"] = 20
 Defaults["unitframes-pet-buff-pos"] = "BOTTOM"
-Defaults["unitframes-pet-debuffs"] = true
 Defaults["unitframes-pet-debuff-size"] = 20
 Defaults["unitframes-pet-debuff-pos"] = "BOTTOM"
 Defaults["pet-enable"] = true
@@ -237,18 +236,25 @@ local UpdatePetHealthFill = function(value)
 		local Unit = HydraUI.UnitFrames["pet"]
 		
 		Unit.Health:SetReverseFill(value)
-		Unit.AbsorbsBar:SetReverseFill(value)
 		Unit.HealBar:SetReverseFill(value)
-		
-		Unit.AbsorbsBar:ClearAllPoints()
 		Unit.HealBar:ClearAllPoints()
 		
 		if value then
-			Unit.AbsorbsBar:SetPoint("RIGHT", Unit.Health:GetStatusBarTexture(), "LEFT", 0, 0)
 			Unit.HealBar:SetPoint("RIGHT", Unit.Health:GetStatusBarTexture(), "LEFT", 0, 0)
+			
+			if Unit.AbsorbsBar then
+				Unit.AbsorbsBar:ClearAllPoints()
+				Unit.AbsorbsBar:SetReverseFill(value)
+				Unit.AbsorbsBar:SetPoint("RIGHT", Unit.Health:GetStatusBarTexture(), "LEFT", 0, 0)
+			end
 		else
-			Unit.AbsorbsBar:SetPoint("LEFT", Unit.Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 			Unit.HealBar:SetPoint("LEFT", Unit.Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+			
+			if Unit.AbsorbsBar then
+				Unit.AbsorbsBar:ClearAllPoints()
+				Unit.AbsorbsBar:SetReverseFill(value)
+				Unit.AbsorbsBar:SetPoint("LEFT", Unit.Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+			end
 		end
 	end
 end
@@ -301,16 +307,6 @@ local UpdateBuffPosition = function(value)
 			Unit.Buffs:SetPoint("TOP", Unit, "BOTTOM", 0, -2)
 			Unit.Buffs["growth-x"] = "LEFT"
 			Unit.Buffs["growth-y"] = "DOWN"
-		end
-	end
-end
-
-local UpdateEnableDebuffs = function(value)
-	if HydraUI.UnitFrames["pet"] then
-		if value then
-			HydraUI.UnitFrames["pet"]:EnableElement("Debuffs")
-		else
-			HydraUI.UnitFrames["pet"]:DisableElement("Debuffs")
 		end
 	end
 end
@@ -383,7 +379,6 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Pet"], Langua
 	right:CreateDropdown("unitframes-pet-buff-pos", Settings["unitframes-pet-buff-pos"], {[Language["Bottom"]] = "BOTTOM", [Language["Top"]] = "TOP"}, Language["Set Position"], Language["Set the position of the buffs"], UpdateBuffPosition)
 	
 	right:CreateHeader(Language["Debuffs"])
-	right:CreateSwitch("unitframes-pet-debuffs", Settings["unitframes-pet-debuffs"], Language["Enable Debuffs"], Language["Enable debuffs on the unit frame"], UpdateEnableDebuffs)
 	right:CreateSlider("unitframes-pet-debuff-size", Settings["unitframes-pet-debuff-size"], 10, 30, 1, "Debuff Size", "Set the size of the debuff icons", UpdateDebuffSize)
 	right:CreateDropdown("unitframes-pet-debuff-pos", Settings["unitframes-pet-debuff-pos"], {[Language["Bottom"]] = "BOTTOM", [Language["Top"]] = "TOP"}, Language["Set Position"], Language["Set the position of the debuffs"], UpdateDebuffPosition)
 end)

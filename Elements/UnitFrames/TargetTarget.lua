@@ -201,18 +201,25 @@ local UpdateTargetTargetHealthFill = function(value)
 		local Unit = HydraUI.UnitFrames["targettarget"]
 		
 		Unit.Health:SetReverseFill(value)
-		Unit.AbsorbsBar:SetReverseFill(value)
 		Unit.HealBar:SetReverseFill(value)
-		
-		Unit.AbsorbsBar:ClearAllPoints()
 		Unit.HealBar:ClearAllPoints()
 		
 		if value then
-			Unit.AbsorbsBar:SetPoint("RIGHT", Unit.Health:GetStatusBarTexture(), "LEFT", 0, 0)
 			Unit.HealBar:SetPoint("RIGHT", Unit.Health:GetStatusBarTexture(), "LEFT", 0, 0)
+			
+			if Unit.AbsorbsBar then
+				Unit.AbsorbsBar:SetReverseFill(value)
+				Unit.AbsorbsBar:ClearAllPoints()
+				Unit.AbsorbsBar:SetPoint("RIGHT", Unit.Health:GetStatusBarTexture(), "LEFT", 0, 0)
+			end
 		else
-			Unit.AbsorbsBar:SetPoint("LEFT", Unit.Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 			Unit.HealBar:SetPoint("LEFT", Unit.Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+			
+			if Unit.AbsorbsBar then
+				Unit.AbsorbsBar:SetReverseFill(value)
+				Unit.AbsorbsBar:ClearAllPoints()
+				Unit.AbsorbsBar:SetPoint("LEFT", Unit.Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+			end
 		end
 	end
 end

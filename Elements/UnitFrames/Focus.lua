@@ -36,12 +36,22 @@ HydraUI.StyleFuncs["focus"] = function(self, unit)
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Health:SetReverseFill(Settings["unitframes-focus-health-reverse"])
 	
-	local AbsorbsBar = CreateFrame("StatusBar", nil, self)
-	AbsorbsBar:SetWidth(Settings["unitframes-focus-width"])
-	AbsorbsBar:SetHeight(Settings["unitframes-focus-health-height"])
-	AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
-	AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
+	if HydraUI.IsMainline then
+		local AbsorbsBar = CreateFrame("StatusBar", nil, self)
+		AbsorbsBar:SetWidth(Settings["unitframes-focus-width"])
+		AbsorbsBar:SetHeight(Settings["unitframes-focus-health-height"])
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
+		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
+		
+		if Settings["unitframes-focus-health-reverse"] then
+			AbsorbsBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
+		else
+			AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+		end
+		
+		self.AbsorbsBar = AbsorbsBar
+	end
 	
 	local HealBar = CreateFrame("StatusBar", nil, self)
 	HealBar:SetWidth(Settings["unitframes-focus-width"])
@@ -51,10 +61,8 @@ HydraUI.StyleFuncs["focus"] = function(self, unit)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 	
 	if Settings["unitframes-focus-health-reverse"] then
-		AbsorbsBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 		HealBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 	else
-		AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 		HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	end
 	
@@ -192,7 +200,6 @@ HydraUI.StyleFuncs["focus"] = function(self, unit)
 	self.Health.bg = HealthBG
 	self.Power = Power
 	self.Power.bg = PowerBG
-	self.AbsorbsBar = AbsorbsBar
 	self.HealBar = HealBar
 	self.HealthLeft = HealthLeft
 	self.HealthRight = HealthRight

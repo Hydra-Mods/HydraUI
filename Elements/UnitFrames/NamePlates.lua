@@ -14,7 +14,6 @@ Defaults["nameplates-topright-text"] = ""
 Defaults["nameplates-bottom-text"] = ""
 Defaults["nameplates-bottomleft-text"] = ""
 Defaults["nameplates-bottomright-text"] = "[HealthPercent]"
-Defaults["nameplates-display-debuffs"] = true
 Defaults["nameplates-only-player-debuffs"] = true
 Defaults["nameplates-health-color"] = "CLASS"
 Defaults["nameplates-health-smooth"] = true
@@ -327,7 +326,7 @@ UF.NamePlateCallback = function(plate)
 		return
 	end
 	
-	if Settings["nameplates-display-debuffs"] then
+	if Settings["nameplates-enable-auras"] then
 		plate:EnableElement("Auras")
 	else
 		plate:DisableElement("Auras")
@@ -411,7 +410,7 @@ local RunForAllNamePlates = function(func, value)
 	end
 end
 
-local NamePlatesUpdateEnableDebuffs = function(self, value)
+local NamePlatesUpdateEnableAuras = function(self, value)
 	if value then
 		self:EnableElement("Auras")
 	else
@@ -419,8 +418,8 @@ local NamePlatesUpdateEnableDebuffs = function(self, value)
 	end
 end
 
-local UpdateNamePlatesEnableDebuffs = function(value)
-	RunForAllNamePlates(NamePlatesUpdateEnableDebuffs, value)
+local UpdateNamePlatesEnableAuras = function(value)
+	RunForAllNamePlates(NamePlatesUpdateEnableAuras, value)
 end
 
 local NamePlatesUpdateShowPlayerDebuffs = function(self)
@@ -578,11 +577,10 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Name Plates"]
 	left:CreateSwitch("nameplates-health-smooth", Settings["nameplates-health-smooth"], Language["Enable Smooth Progress"], Language["Set the health bar to animate changes smoothly"], ReloadUI):RequiresReload(true)
 	
 	left:CreateHeader(Language["Buffs"])
-	left:CreateSwitch("nameplates-enable-auras", Settings["nameplates-enable-auras"], Language["Enable Buffs"], Language["Display buffs above nameplates"], ReloadUI):RequiresReload(true)
+	left:CreateSwitch("nameplates-enable-auras", Settings["nameplates-enable-auras"], Language["Enable Buffs"], Language["Display buffs above nameplates"], UpdateNamePlatesEnableAuras)
 	left:CreateDropdown("nameplates-buffs-direction", Settings["nameplates-buffs-direction"], {[Language["Left to Right"]] = "LTR", [Language["Right to Left"]] = "RTL"}, Language["Buff Direction"], Language["Set which direction the buffs will grow towards"], UpdateNamePlatesBuffDirection)
 	
 	left:CreateHeader(Language["Debuffs"])
-	left:CreateSwitch("nameplates-display-debuffs", Settings["nameplates-display-debuffs"], Language["Enable Debuffs"], Language["Display your debuffs above enemy name plates"], UpdateNamePlatesEnableDebuffs)
 	left:CreateSwitch("nameplates-only-player-debuffs", Settings["nameplates-only-player-debuffs"], Language["Only Display Player Debuffs"], Language["If enabled, only your own debuffs will be displayed"], UpdateNamePlatesShowPlayerDebuffs)
 	left:CreateDropdown("nameplates-debuffs-direction", Settings["nameplates-debuffs-direction"], {[Language["Left to Right"]] = "LTR", [Language["Right to Left"]] = "RTL"}, Language["Debuff Direction"], Language["Set which direction the debuffs will grow towards"], UpdateNamePlatesDebuffDirection)
 	

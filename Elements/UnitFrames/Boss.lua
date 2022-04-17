@@ -6,10 +6,18 @@ Defaults["unitframes-boss-health-height"] = 28
 Defaults["unitframes-boss-health-reverse"] = false
 Defaults["unitframes-boss-health-color"] = "CLASS"
 Defaults["unitframes-boss-health-smooth"] = true
+Defaults["unitframes-boss-health-left"] = "[LevelColor][Level][Plus]|r [Name(30)]"
+Defaults["unitframes-boss-health-right"] = "[HealthPercent]"
 Defaults["unitframes-boss-power-height"] = 16
 Defaults["unitframes-boss-power-reverse"] = false
 Defaults["unitframes-boss-power-color"] = "POWER"
 Defaults["unitframes-boss-power-smooth"] = true
+Defaults["unitframes-boss-power-smooth"] = true
+Defaults["unitframes-boss-power-left"] = "[HealthValues:Short]"
+Defaults["unitframes-boss-power-right"] = "[PowerValues:Short]"
+Defaults["unitframes-boss-buffs"] = true
+Defaults["unitframes-boss-buff-size"] = 47
+Defaults["unitframes-boss-debuff-size"] = 47
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -116,9 +124,9 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	
 	-- Auras
 	local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
-	Buffs:SetSize(Settings["unitframes-player-width"], Settings["unitframes-boss-health-height"] + Settings["unitframes-boss-power-height"] + 3)
+	Buffs:SetSize(Settings["unitframes-player-width"], Settings["unitframes-boss-buff-size"])
 	Buffs:SetPoint("RIGHT", self, "LEFT", -2, 0)
-	Buffs.size = Settings["unitframes-boss-health-height"] + Settings["unitframes-boss-power-height"] + 3
+	Buffs.size = Settings["unitframes-boss-buff-size"]
 	Buffs.spacing = 2
 	Buffs.num = 3
 	Buffs.initialAnchor = "TOPRIGHT"
@@ -129,9 +137,9 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	Buffs.PostUpdateIcon = UF.PostUpdateIcon
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
-	Debuffs:SetSize(Settings["unitframes-player-width"], Settings["unitframes-boss-health-height"] + Settings["unitframes-boss-power-height"] + 3)
+	Debuffs:SetSize(Settings["unitframes-player-width"], Settings["unitframes-boss-debuff-size"])
 	Debuffs:SetPoint("LEFT", self, "RIGHT", 2, 0)
-	Debuffs.size = Settings["unitframes-boss-health-height"] + Settings["unitframes-boss-power-height"] + 3
+	Debuffs.size = Settings["unitframes-boss-debuff-size"]
 	Debuffs.spacing = 2
 	Debuffs.num = 4
 	Debuffs.initialAnchor = "TOPLEFT"
@@ -194,10 +202,10 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	Castbar.PostCastInterruptible = UF.PostCastInterruptible
 	
 	-- Tags
-	self:Tag(HealthLeft, "[LevelColor][Level][Plus]|r [Name30]")
-	self:Tag(HealthRight, "[HealthPercent]")
-	self:Tag(PowerLeft, "[HealthValues:Short]")
-	self:Tag(PowerRight, "[PowerValues:Short]")
+	self:Tag(HealthLeft, Settings["unitframes-boss-health-left"])
+	self:Tag(HealthRight, Settings["unitframes-boss-health-right"])
+	self:Tag(PowerLeft, Settings["unitframes-boss-power-left"])
+	self:Tag(PowerRight, Settings["unitframes-boss-power-right"])
 	
 	self.Range = {
 		insideAlpha = 1,
@@ -219,7 +227,143 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	self.RaidTargetIndicator = RaidTarget
 end
 
+local UpdateWidth = function(value)
+	for i = 1, 8 do
+		if HydraUI.UnitFrames["boss"..i] then
+			HydraUI.UnitFrames["boss"..i]:SetWidth(value)
+		end
+	end
+end
+
+local UpdateHealthHeight = function(value)
+	for i = 1, 8 do
+		if HydraUI.UnitFrames["boss"..i] then
+			HydraUI.UnitFrames["boss"..i].Health:SetHeight(value)
+			HydraUI.UnitFrames["boss"..i]:SetHeight(value + Settings["unitframes-boss-power-height"] + 3)
+		end
+	end
+end
+
+local UpdatePowerHeight = function(value)
+	for i = 1, 8 do
+		if HydraUI.UnitFrames["boss"..i] then
+			HydraUI.UnitFrames["boss"..i].Power:SetHeight(value)
+			HydraUI.UnitFrames["boss"..i]:SetHeight(value + Settings["unitframes-boss-health-height"] + 3)
+		end
+	end
+end
+
+local UpdateHealthColor = function(value)
+	for i = 1, 8 do
+		if HydraUI.UnitFrames["boss"..i] then
+			UF:SetHealthAttributes(HydraUI.UnitFrames["boss"..i].Health, value)
+			HydraUI.UnitFrames["boss"..i].Health:ForceUpdate()
+		end
+	end
+end
+
+local UpdateHealthFill = function(value)
+	local Unit
+	
+	for i = 1, 8 do
+		if HydraUI.UnitFrames["boss"..i] then
+			Unit = HydraUI.UnitFrames["boss"..i]
+			
+			Unit.Health:SetReverseFill(value)
+			Unit.HealBar:SetReverseFill(value)
+			Unit.HealBar:ClearAllPoints()
+			
+			if value then
+				Unit.HealBar:SetPoint("RIGHT", Unit.Health:GetStatusBarTexture(), "LEFT", 0, 0)
+				
+				if Unit.AbsorbsBar then
+					Unit.AbsorbsBar:SetReverseFill(value)
+					Unit.AbsorbsBar:ClearAllPoints()
+					Unit.AbsorbsBar:SetPoint("RIGHT", Unit.Health:GetStatusBarTexture(), "LEFT", 0, 0)
+				end
+			else
+				Unit.HealBar:SetPoint("LEFT", Unit.Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+				
+				if Unit.AbsorbsBar then
+					Unit.AbsorbsBar:SetReverseFill(value)
+					Unit.AbsorbsBar:ClearAllPoints()
+					Unit.AbsorbsBar:SetPoint("LEFT", Unit.Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+				end
+			end
+		end
+	end
+end
+
+local UpdatePowerColor = function(value)
+	for i = 1, 8 do
+		if HydraUI.UnitFrames["boss"..i] then
+			UF:SetPowerAttributes(HydraUI.UnitFrames["boss"..i].Power, value)
+			HydraUI.UnitFrames["boss"..i].Power:ForceUpdate()
+		end
+	end
+end
+
+local UpdatePowerFill = function(value)
+	for i = 1, 8 do
+		if HydraUI.UnitFrames["boss"..i] then
+			HydraUI.UnitFrames["boss"..i].Power:SetReverseFill(value)
+		end
+	end
+end
+
+local UpdateEnableBuffs = function(value)
+	for i = 1, 8 do
+		if HydraUI.UnitFrames["boss"..i] then
+			if value then
+				HydraUI.UnitFrames["boss"..i]:EnableElement("Auras")
+			else
+				HydraUI.UnitFrames["boss"..i]:DisableElement("Auras")
+			end
+		end
+	end
+end
+
+local UpdateBuffSize = function(value)
+	for i = 1, 8 do
+		if HydraUI.UnitFrames["boss"..i] then
+			HydraUI.UnitFrames["boss"..i].Buffs.size = value
+			HydraUI.UnitFrames["boss"..i].Buffs:SetSize(Settings["unitframes-boss-width"], value)
+			HydraUI.UnitFrames["boss"..i].Buffs:ForceUpdate()
+		end
+	end
+end
+
+local UpdateDebuffSize = function(value)
+	for i = 1, 8 do
+		if HydraUI.UnitFrames["boss"..i] then
+			HydraUI.UnitFrames["boss"..i].Debuffs.size = value
+			HydraUI.UnitFrames["boss"..i].Debuffs:SetSize(Settings["unitframes-boss-width"], value)
+			HydraUI.UnitFrames["boss"..i].Debuffs:ForceUpdate()
+		end
+	end
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Bosses"], Language["Unit Frames"], function(left, right)
-	left:CreateHeader(Language["Bosses"])
+	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("unitframes-boss-enable", Settings["unitframes-boss-enable"], Language["Enable Boss Frames"], Language["Enable the boss unit frames"], ReloadUI):RequiresReload(true)
+	left:CreateSlider("unitframes-boss-width", Settings["unitframes-boss-width"], 60, 320, 1, "Width", "Set the width of the unit frame", UpdateWidth)
+	
+	left:CreateHeader(Language["Health"])
+	left:CreateSwitch("unitframes-boss-health-reverse", Settings["unitframes-boss-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateHealthFill)
+	left:CreateSlider("unitframes-boss-health-height", Settings["unitframes-boss-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the health bar", UpdateHealthHeight)
+	left:CreateDropdown("unitframes-boss-health-color", Settings["unitframes-boss-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdateHealthColor)
+	left:CreateInput("unitframes-boss-health-left", Settings["unitframes-boss-health-left"], Language["Left Health Text"], Language["Set the text on the left of the health bar"], ReloadUI):RequiresReload(true)
+	left:CreateInput("unitframes-boss-health-right", Settings["unitframes-boss-health-right"], Language["Right Health Text"], Language["Set the text on the right of the health bar"], ReloadUI):RequiresReload(true)
+	
+	right:CreateHeader(Language["Power"])
+	right:CreateSwitch("unitframes-boss-power-reverse", Settings["unitframes-boss-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePowerFill)
+	right:CreateSlider("unitframes-boss-power-height", Settings["unitframes-boss-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the power bar", UpdatePowerHeight)
+	right:CreateDropdown("unitframes-boss-power-color", Settings["unitframes-boss-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePowerColor)
+	
+	right:CreateHeader(Language["Buffs"])
+	right:CreateSwitch("unitframes-boss-buffs", Settings["unitframes-boss-buffs"], Language["Enable buffs"], Language["Enable debuffs on the unit frame"], UpdateEnableBuffs)
+	right:CreateSlider("unitframes-boss-buff-size", Settings["unitframes-boss-buff-size"], 10, 50, 1, "Buff Size", "Set the size of the debuff icons", UpdateBuffSize)
+	
+	right:CreateHeader(Language["Debuffs"])
+	right:CreateSlider("unitframes-boss-debuff-size", Settings["unitframes-boss-debuff-size"], 10, 50, 1, "Debuff Size", "Set the size of the debuff icons", UpdateDebuffSize)
 end)

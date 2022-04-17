@@ -135,7 +135,7 @@ function BagsFrame:Load()
 		Object.BG:SetColorTexture(0, 0, 0)
 		
 		if HydraUI.IsMainline then
-			Object.SlotHighlightTexture:SetTexture(Asset:GetTexture("Blank"))
+			Object.SlotHighlightTexture:SetTexture(Assets:GetTexture("Blank"))
 			Object.SlotHighlightTexture:SetVertexColor(0.9, 0.9, 0.1, 0.2)
 		else
 			local Checked = Object:CreateTexture(nil, "ARTWORK", 7)
