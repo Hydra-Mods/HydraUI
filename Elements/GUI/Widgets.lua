@@ -32,14 +32,14 @@ local LAST_ACTIVE_DROPDOWN
 
 local GUI = HydraUI:GetModule("GUI")
 
-GUI.Ignore = {
+local Ignore = {
 	["ui-profile"] = true,
 	["profile-copy"] = true,
 }
 
 -- Functions
 local SetVariable = function(id, value)
-	if GUI.Ignore[id] then
+	if Ignore[id] then
 		return
 	end
 	
@@ -59,9 +59,7 @@ local Round = function(num, dec)
 end
 
 local TrimHex = function(s)
-	local Subbed = match(s, "|c%x%x%x%x%x%x%x%x(.-)|r")
-	
-	return Subbed or s
+	return match(s, "|c%x%x%x%x%x%x%x%x(.-)|r") or s
 end
 
 local AnchorOnEnter = function(self)
@@ -414,66 +412,6 @@ GUI.Widgets.CreateFooter = function(self)
 	Anchor.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
 	tinsert(self.Widgets, Anchor)
-end
-
--- Header
-GUI.Widgets.CreateSupportHeader = function(self, text)
-	local Anchor = CreateFrame("Frame", nil, self)
-	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
-	Anchor.IsHeader = true
-	
-	Anchor.Text = Anchor:CreateFontString(nil, "OVERLAY")
-	Anchor.Text:SetPoint("CENTER", Anchor, 0, 0)
-	Anchor.Text:SetHeight(WIDGET_HEIGHT)
-	HydraUI:SetFontInfo(Anchor.Text, Settings["ui-header-font"], Settings["ui-font-size"]) -- 14
-	Anchor.Text:SetJustifyH("CENTER")
-	Anchor.Text:SetText("|cFF"..Settings["ui-header-font-color"]..text.."|r")
-	
-	-- Header Left Line
-	local HeaderLeft = CreateFrame("Frame", nil, Anchor, "BackdropTemplate")
-	HeaderLeft:SetHeight(4)
-	HeaderLeft:SetPoint("LEFT", Anchor, 0, 0)
-	HeaderLeft:SetPoint("RIGHT", Anchor.Text, "LEFT", -20, 0)
-	HeaderLeft:SetBackdrop(HydraUI.BackdropAndBorder)
-	HeaderLeft:SetBackdropColor(0, 0, 0)
-	HeaderLeft:SetBackdropBorderColor(0, 0, 0)
-	
-	HeaderLeft.Texture = HeaderLeft:CreateTexture(nil, "OVERLAY")
-	HeaderLeft.Texture:SetPoint("TOPLEFT", HeaderLeft, 1, -1)
-	HeaderLeft.Texture:SetPoint("BOTTOMRIGHT", HeaderLeft, -1, 1)
-	HeaderLeft.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	HeaderLeft.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	HeaderLeft.Star = HeaderLeft:CreateTexture(nil, "OVERLAY")
-	HeaderLeft.Star:SetPoint("LEFT", HeaderLeft.Texture, "RIGHT", 1, -1)
-	HeaderLeft.Star:SetSize(16, 16)
-	HeaderLeft.Star:SetTexture(Assets:GetTexture("Small Star"))
-	HeaderLeft.Star:SetVertexColor(HydraUI:HexToRGB("FFB900"))
-	
-	-- Header Right Line
-	local HeaderRight = CreateFrame("Frame", nil, Anchor, "BackdropTemplate")
-	HeaderRight:SetHeight(4)
-	HeaderRight:SetPoint("RIGHT", Anchor, 0, 0)
-	HeaderRight:SetPoint("LEFT", Anchor.Text, "RIGHT", 16, 0)
-	HeaderRight:SetBackdrop(HydraUI.BackdropAndBorder)
-	HeaderRight:SetBackdropColor(0, 0, 0)
-	HeaderRight:SetBackdropBorderColor(0, 0, 0)
-	
-	HeaderRight.Texture = HeaderRight:CreateTexture(nil, "OVERLAY")
-	HeaderRight.Texture:SetPoint("TOPLEFT", HeaderRight, 1, -1)
-	HeaderRight.Texture:SetPoint("BOTTOMRIGHT", HeaderRight, -1, 1)
-	HeaderRight.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	HeaderRight.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-button-texture-color"]))
-	
-	HeaderRight.Star = HeaderRight:CreateTexture(nil, "OVERLAY")
-	HeaderRight.Star:SetPoint("RIGHT", HeaderRight.Texture, "LEFT", -1, -1)
-	HeaderRight.Star:SetSize(16, 16)
-	HeaderRight.Star:SetTexture(Assets:GetTexture("Small Star"))
-	HeaderRight.Star:SetVertexColor(HydraUI:HexToRGB("FFB900"))
-	
-	tinsert(self.Widgets, Anchor)
-	
-	return Anchor.Text
 end
 
 -- Button
@@ -2188,11 +2126,7 @@ local SliderOnValueChanged = function(self)
 	if (self.EditBox.StepValue >= 1) then
 		Value = floor(Value)
 	else
-		if (self.EditBox.StepValue <= 0.01) then
-			Value = Round(Value, 2)
-		else
-			Value = Round(Value, 1)
-		end
+		Value = Round(Value, (self.EditBox.StepValue <= 0.01 and 2 or 1))
 	end
 	
 	self.EditBox.Value = Value
@@ -2224,11 +2158,7 @@ local SliderOnMouseWheel = function(self, delta)
 	if (Step >= 1) then
 		Value = floor(Value)
 	else
-		if (Step <= 0.01) then
-			Value = Round(Value, 2)
-		else
-			Value = Round(Value, 1)
-		end
+		Value = Round(Value, (Step <= 0.01 and 2 or 1))
 	end
 	
 	if (Value < self.EditBox.MinValue) then
@@ -2977,13 +2907,11 @@ local CreateColorPicker = function()
 					Swatch:SetScript("OnMouseUp", ColorSwatchOnMouseUp)
 					Swatch:SetScript("OnEnter", ColorSwatchOnEnter)
 					Swatch:SetScript("OnLeave", ColorSwatchOnLeave)
-					--Swatch:Show()
 				else
 					Swatch.Value = "444444"
 					Swatch:SetScript("OnMouseUp", nil)
 					Swatch:SetScript("OnEnter", nil)
 					Swatch:SetScript("OnLeave", nil)
-					--Swatch:Hide()
 				end
 				
 				Swatch.Texture:SetVertexColor(HydraUI:HexToRGB(Swatch.Value))
@@ -3009,7 +2937,6 @@ local CreateColorPicker = function()
 				Swatch:SetScript("OnMouseUp", nil)
 				Swatch:SetScript("OnEnter", nil)
 				Swatch:SetScript("OnLeave", nil)
-				--Swatch:Hide()
 			end
 			
 			Swatch.Texture = Swatch:CreateTexture(nil, "OVERLAY")

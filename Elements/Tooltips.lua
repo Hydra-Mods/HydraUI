@@ -157,9 +157,7 @@ local SetTooltipStyle = function(self)
 		
 		if (self == AutoCompleteBox) then
 			for i = 1, AUTOCOMPLETE_MAX_BUTTONS do
-				local Text = _G["AutoCompleteButton" .. i .. "Text"]
-				
-				HydraUI:SetFontInfo(Text, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
+				HydraUI:SetFontInfo(_G["AutoCompleteButton" .. i .. "Text"], Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 			end
 			
 			HydraUI:SetFontInfo(AutoCompleteInstructions, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])

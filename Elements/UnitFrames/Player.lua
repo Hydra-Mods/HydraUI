@@ -375,7 +375,8 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 				ComboPoints:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 			end
 			
-			local Max = UnitPowerMax("player", Enum.PowerType.ComboPoints)
+			--local Max = UnitPowerMax("player", Enum.PowerType.ComboPoints)
+			local Max = HydraUI.UserClass == "DRUID" and 5 or (not HydraUI.IsMainline and 5 or 6)
 			local Width = (Settings["unitframes-player-width"] / Max) - 1
 			
 			for i = 1, Max do
@@ -385,39 +386,19 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 				ComboPoints[i]:SetStatusBarColor(HydraUI.ComboPoints[i][1], HydraUI.ComboPoints[i][2], HydraUI.ComboPoints[i][3])
 				ComboPoints[i]:SetWidth(i == 1 and Width - 1 or Width)
 				
-				ComboPoints[i].bg = ComboPoints[i]:CreateTexture(nil, "BORDER")
-				ComboPoints[i].bg:SetAllPoints(ComboPoints[i])
-				ComboPoints[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-				ComboPoints[i].bg:SetVertexColor(HydraUI.ComboPoints[i][1], HydraUI.ComboPoints[i][2], HydraUI.ComboPoints[i][3])
-				ComboPoints[i].bg:SetAlpha(0.3)
+				ComboPoints[i].BG = ComboPoints:CreateTexture(nil, "BORDER")
+				ComboPoints[i].BG:SetAllPoints(ComboPoints[i])
+				ComboPoints[i].BG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				ComboPoints[i].BG:SetVertexColor(HydraUI.ComboPoints[i][1], HydraUI.ComboPoints[i][2], HydraUI.ComboPoints[i][3])
+				ComboPoints[i].BG:SetAlpha(0.3)
 				
-				ComboPoints[i].Charged = CreateFrame("Frame", nil, ComboPoints[i], "BackdropTemplate")
-				ComboPoints[i].Charged:SetPoint("TOPLEFT", 0, 0)
-				ComboPoints[i].Charged:SetPoint("BOTTOMRIGHT", 0, 0)
-				ComboPoints[i].Charged:SetBackdrop(HydraUI.Outline)
-				ComboPoints[i].Charged:SetBackdropBorderColor(HydraUI:HexToRGB("F5F5F5"))
-				ComboPoints[i].Charged:Hide()
-				
-				ComboPoints[i].ChargedInside = ComboPoints[i].Charged:CreateTexture(nil, "ARTWORK")
-				ComboPoints[i].ChargedInside:SetPoint("TOPLEFT", ComboPoints[i], 1, -1)
-				ComboPoints[i].ChargedInside:SetPoint("BOTTOMRIGHT", ComboPoints[i], -1, 1)
-				ComboPoints[i].ChargedInside:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-				ComboPoints[i].ChargedInside:SetVertexColor(HydraUI:HexToRGB(Settings["color-combo-charged"]))
-				
-				ComboPoints[i].Charged.Anim = CreateAnimationGroup(ComboPoints[i].Charged)
-				
-				ComboPoints[i].Charged.In = ComboPoints[i].Charged.Anim:CreateAnimation("Fade")
-				ComboPoints[i].Charged.In:SetEasing("in")
-				ComboPoints[i].Charged.In:SetDuration(0.2)
-				ComboPoints[i].Charged.In:SetChange(1)
-				
-				ComboPoints[i].Charged.Out = ComboPoints[i].Charged.Anim:CreateAnimation("Fade")
-				ComboPoints[i].Charged.Out:SetEasing("out")
-				ComboPoints[i].Charged.Out:SetDuration(0.2)
-				ComboPoints[i].Charged.Out:SetChange(0)
-				ComboPoints[i].Charged.Out:SetScript("OnFinished", function(self)
-					self.Parent:Hide()
-				end)
+				if HydraUI.IsMainline then
+					ComboPoints[i].Charged = ComboPoints[i]:CreateTexture(nil, "ARTWORK")
+					ComboPoints[i].Charged:SetAllPoints()
+					ComboPoints[i].Charged:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+					ComboPoints[i].Charged:SetVertexColor(HydraUI:HexToRGB(Settings["color-combo-charged"]))
+					ComboPoints[i].Charged:Hide()
+				end
 				
 				if (i == 1) then
 					ComboPoints[i]:SetPoint("LEFT", ComboPoints, 1, 0)
