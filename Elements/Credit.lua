@@ -7,7 +7,7 @@ local Tiers = {"FF8000", "A335EE", "0070DD", "1EFF00", "FFFFFF"}
 local Patrons = {
 	{"Dragonhawk", "last", "Erieeroot"},
 	{},
-	{"deck"},
+	{"deck", "Oxymorphone"},
 	{"JDoubleU00", "sylvester", "thurin"},
 	{},
 }
@@ -16,7 +16,7 @@ local Previous = {
 	{"SwoopCrown", "Cheeso_76", "Halven"},
 	{"Smelly", "Trix", "wolimazo", "Ari", "MrPoundsign"},
 	{"Euphoria", "Mitooshin", "MisseFar", "FrankPatten", "Dillan"},
-	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Aaron B.", "Steve R.", "Angel", "Jeor", "Mcbooze", "stko", "Syn", "Oxymorphone", "Rytok", "Ryex", "Blom", "Innie", "Cyber", "protocol7", "Dellamaik"},
+	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Aaron B.", "Steve R.", "Angel", "Jeor", "Mcbooze", "stko", "Syn", "Rytok", "Ryex", "Blom", "Innie", "Cyber", "protocol7", "Dellamaik"},
 	{"Akab00m", "OzzFreak", "madmaddy", "Uzify", "Erthelmi", "silence", "momzzze"},
 }
 

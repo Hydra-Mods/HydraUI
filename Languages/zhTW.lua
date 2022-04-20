@@ -1,4 +1,4 @@
-local HydraUI, GUI, L = select(2, ...):get()
+local HydraUI, L = select(2, ...):get()
 
 if (HydraUI.UserLocale ~= "zhTW") then
 	return
