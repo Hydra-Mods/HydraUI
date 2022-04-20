@@ -82,7 +82,7 @@ function HydraUI:ShortValue(num)
 	if (num > 999999) then
 		return format("%.2fm", num / 1000000)
 	elseif (num > 999) then
-		return format("%dk", num / 1000)
+		return format("%.1fk", num / 1000)
 	end
 	
 	return num
