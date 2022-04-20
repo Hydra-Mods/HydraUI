@@ -1,6 +1,6 @@
 ## Interface: 90200
 ## Author: Hydra
-## Version: 1.592
+## Version: 1.593
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: An interface replacement for Shadowlands
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
@@ -8,7 +8,6 @@
 Initialize.lua
 Elements\Libraries\LibStub.lua
 Elements\Libraries\CallbackHandler-1.0.lua
-Elements\Libraries\ChatThrottleLib.lua
 Elements\Libraries\LibSharedMedia-3.0.lua
 Elements\Libraries\AceSerializer-3.0.lua
 Elements\Libraries\LibDeflate.lua
