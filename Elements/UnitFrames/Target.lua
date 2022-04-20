@@ -171,8 +171,8 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 	local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)
 	Buffs:SetSize(Settings["unitframes-player-width"], 28)
 	Buffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
-	Buffs.size = 28
-	Buffs.spacing = 2
+	Buffs.size = Settings.TargetBuffSize
+	Buffs.spacing = Settings.TargetBuffSpacing
 	Buffs.num = 16
 	Buffs.initialAnchor = "TOPLEFT"
 	Buffs.tooltipAnchor = "ANCHOR_TOP"
@@ -184,8 +184,8 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetSize(Settings["unitframes-player-width"], 28)
 	Debuffs:SetPoint("BOTTOM", Buffs, "TOP", 0, 2)
-	Debuffs.size = 28
-	Debuffs.spacing = 2
+	Debuffs.size = Settings.TargetDebuffSize
+	Debuffs.spacing = Settings.TargetDebuffSpacing
 	Debuffs.num = 16
 	Debuffs.initialAnchor = "TOPRIGHT"
 	Debuffs.tooltipAnchor = "ANCHOR_TOP"
