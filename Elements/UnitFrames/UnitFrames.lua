@@ -409,6 +409,15 @@ elseif HydraUI.IsTBC then
 		},
 		
 		["PRIEST"] = {
+			-- Prayer of Mending
+			{33076, "BOTTOMRIGHT", {0.2, 0.7, 0.2}}, -- Investigate these ID's
+			{351575, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
+			{41635, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
+			{41637, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
+			{44583, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
+			{44586, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
+			{46045, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
+			
 			-- Power Word: Shield
 			{17, "TOPLEFT", {0.81, 0.85, 0.1}, true},
 			{592, "TOPLEFT", {0.81, 0.85, 0.1}, true},
