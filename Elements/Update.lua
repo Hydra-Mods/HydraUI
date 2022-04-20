@@ -5,7 +5,6 @@ local IsInGuild = IsInGuild
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
 
-local CT = ChatThrottleLib
 local AddOnVersion = HydraUI.UIVersion
 local AddOnNum = tonumber(HydraUI.UIVersion)
 local User = HydraUI.UserName .. "-" .. HydraUI.UserRealm

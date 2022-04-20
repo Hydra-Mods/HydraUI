@@ -10,7 +10,6 @@ Defaults["unitframes-pet-power-height"] = 3
 Defaults["unitframes-pet-power-reverse"] = false
 Defaults["unitframes-pet-power-color"] = "POWER"
 Defaults["unitframes-pet-power-smooth"] = true
-Defaults["unitframes-pet-health-left"] = "[Name(10)]"
 Defaults["unitframes-pet-health-right"] = "[HealthPercent]"
 Defaults["unitframes-pet-buffs"] = true
 Defaults["unitframes-pet-buff-size"] = 20
@@ -18,6 +17,12 @@ Defaults["unitframes-pet-buff-pos"] = "BOTTOM"
 Defaults["unitframes-pet-debuff-size"] = 20
 Defaults["unitframes-pet-debuff-pos"] = "BOTTOM"
 Defaults["pet-enable"] = true
+
+if HydraUI.IsMainline then
+	Defaults["unitframes-pet-health-left"] = "[Name(10)]"
+else
+	Defaults["unitframes-pet-health-left"] = "[HappinessColor][Name(10)]"
+end
 
 local UF = HydraUI:GetModule("Unit Frames")
 
