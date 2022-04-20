@@ -33,25 +33,6 @@ if (HydraUI.UserLocale == "enGB") then
 	HydraUI.UserLocale = "enUS"
 end
 
--- Backdrops
-HydraUI.Backdrop = {
-	bgFile = "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBlank.tga",
-	insets = {top = 0, left = 0, bottom = 0, right = 0},
-}
-
-HydraUI.BackdropAndBorder = {
-	bgFile = "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBlank.tga",
-	edgeFile = "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBlank.tga",
-	edgeSize = 1,
-	insets = {top = 0, left = 0, bottom = 0, right = 0},
-}
-
-HydraUI.Outline = {
-	edgeFile = "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBlank.tga",
-	edgeSize = 1,
-	insets = {left = 0, right = 0, top = 0, bottom = 0},
-}
-
 -- Language
 local Language = {}
 

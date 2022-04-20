@@ -228,14 +228,32 @@ function HydraUI:SetFontInfo(object, font, size, flags)
 	end
 end
 
+-- Backdrops
+HydraUI.Backdrop = {
+	bgFile = "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBlank.tga",
+	insets = {top = 0, left = 0, bottom = 0, right = 0},
+}
+
+HydraUI.BackdropAndBorder = {
+	bgFile = "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBlank.tga",
+	edgeFile = "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBlank.tga",
+	edgeSize = 1,
+	insets = {top = 0, left = 0, bottom = 0, right = 0},
+}
+
+HydraUI.Outline = {
+	edgeFile = "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBlank.tga",
+	edgeSize = 1,
+	insets = {left = 0, right = 0, top = 0, bottom = 0},
+}
+
 local Outside = {
-	bgFile = Assets:GetTexture("Blank"),
-	edgeFile = Assets:GetTexture("Blank"),
+	edgeFile = "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBlank.tga",
 }
 
 local Inside = {
-	bgFile = Assets:GetTexture("Blank"),
-	edgeFile = Assets:GetTexture("Blank"),
+	bgFile = "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBlank.tga",
+	edgeFile = "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBlank.tga",
 }
 
 function HydraUI:AddBackdrop(frame, texture)
