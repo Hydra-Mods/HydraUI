@@ -37,10 +37,10 @@ function Update:OnUpdate(elapsed)
 		SendAddonMessage("HydraUI-Version", AddOnVersion, Args[1], Args[2])
 		
 		self.Timer = 4
-	end
-	
-	if (#self.Queue == 0) then
-		self:SetScript("OnUpdate", nil)
+		
+		if (#self.Queue == 0) then
+			self:SetScript("OnUpdate", nil)
+		end
 	end
 end
 
