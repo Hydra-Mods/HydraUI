@@ -1212,7 +1212,9 @@ local UpdateShowHotKey = function(value)
 			end
 		end
 		
-		ExtraActionButton1.HotKey:SetAlpha(1)
+		if ExtraActionButton1 then
+			ExtraActionButton1.HotKey:SetAlpha(1)
+		end
 	else
 		for i = 1, 12 do
 			AB.Bar1[i].HotKey:SetAlpha(0)
@@ -1230,7 +1232,9 @@ local UpdateShowHotKey = function(value)
 			end
 		end
 		
-		ExtraActionButton1.HotKey:SetAlpha(0)
+		if ExtraActionButton1 then
+			ExtraActionButton1.HotKey:SetAlpha(0)
+		end
 	end
 end
 
