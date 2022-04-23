@@ -1,4 +1,4 @@
-local AddOn, Namespace = ...
+local AddOn, Namespace = ... -- HydraUI was born on June 6th, 2019
 
 -- Data storage
 local Assets = {}
@@ -51,7 +51,6 @@ function HydraUI:NewModule(name)
 	end
 	
 	Module = CreateFrame("Frame", "HydraUI " .. name, self.UIParent, "BackdropTemplate")
-	
 	Module.Name = name
 	
 	Modules[#Modules + 1] = Module

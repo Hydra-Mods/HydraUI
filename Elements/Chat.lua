@@ -823,7 +823,7 @@ function Chat:MoveChatFrames()
 		Frame:SetFrameStrata("MEDIUM")
 		Frame:SetJustifyH("LEFT")
 		
-		if (Frame:GetID() == 1) then
+		if (i == 1) then
 			Frame:SetUserPlaced(true)
 			Frame:ClearAllPoints()
 			Frame:SetPoint("TOPLEFT", self.Middle, 4 + Settings["ui-border-thickness"], -(4 + Settings["ui-border-thickness"]))
@@ -832,7 +832,6 @@ function Chat:MoveChatFrames()
 			if (Frame.name and Frame.name == Settings["rw-single-embed"]) then
 				local Window = HydraUI:GetModule("Right Window")
 				
-				FCF_DockFrame(Frame, #FCFDock_GetChatFrames(GENERAL_CHAT_DOCK) + 1, true)
 				FCF_UnDockFrame(Frame)
 				FCF_SetTabPosition(Frame, 0)
 				
@@ -842,11 +841,8 @@ function Chat:MoveChatFrames()
 				Frame:SetPoint("TOPLEFT", Window.Middle, 4 + Settings["ui-border-thickness"], -(4 + Settings["ui-border-thickness"]))
 				Frame:SetPoint("BOTTOMRIGHT", Window.Middle, -(4 + Settings["ui-border-thickness"]), 4 + Settings["ui-border-thickness"])
 			--elseif (not Frame.isDocked and not Frame.isLocked and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) and Frame.name ~= Settings["rw-single-embed"]) then
-			elseif (not Frame.isDocked and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) and Frame.name ~= Settings["rw-single-embed"] and Frame.name ~= VOICE) then
-				FCF_DockFrame(Frame, #FCFDock_GetChatFrames(GENERAL_CHAT_DOCK) + 1, true)
-			end
-		else
-			if (not Frame.isDocked) and Frame.isLocked and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) and Frame.name ~= VOICE then
+			elseif (not Frame.isDocked and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) and Frame.name ~= Settings["rw-single-embed"]) then
+				FCF_UnDockFrame(Frame)
 				FCF_DockFrame(Frame, #FCFDock_GetChatFrames(GENERAL_CHAT_DOCK) + 1, true)
 			end
 		end
@@ -856,7 +852,7 @@ function Chat:MoveChatFrames()
 		end
 		
 		FCF_SetChatWindowFontSize(nil, Frame, Settings["chat-font-size"])
-		FCF_SavePositionAndDimensions(Frame)
+		--FCF_SavePositionAndDimensions(Frame)
 		
 		local Font, IsPixel = Assets:GetFont(Settings["chat-font"])
 		
@@ -1515,11 +1511,14 @@ end
 
 local GetChatFrameList = function()
 	local Frames = {[Language["None"]] = "None"}
+	local Frame
+	local Tab
 	
 	for i = 4, NUM_CHAT_WINDOWS do
 		Frame = _G["ChatFrame"..i]
+		Tab = _G[Frame:GetName() .. "Tab"]
 		
-		if Frame.name and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) then
+		if Frame.name and Tab and Tab:IsVisible() and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) then
 			Frames[Frame.name] = Frame.name
 		end
 	end
