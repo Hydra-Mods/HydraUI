@@ -388,7 +388,11 @@ GUI.Widgets.CreateHeader = function(self, text)
 	Anchor.Text:SetJustifyH("CENTER")
 	Anchor.Text:SetText("|cFF"..Settings["ui-header-font-color"]..text.."|r")
 	
-	Anchor.Texture = Anchor:CreateTexture(nil, "OVERLAY")
+	Anchor.BG = Anchor:CreateTexture(nil, "BORDER")
+	Anchor.BG:SetAllPoints()
+	Anchor.BG:SetColorTexture(0, 0, 0)
+	
+	Anchor.Texture = Anchor:CreateTexture(nil, "ARTWORK")
 	Anchor.Texture:SetPoint("TOPLEFT", Anchor, 1, -1)
 	Anchor.Texture:SetPoint("BOTTOMRIGHT", Anchor, -1, 1)
 	Anchor.Texture:SetTexture(Assets:GetTexture("Blank"))
@@ -405,7 +409,11 @@ GUI.Widgets.CreateFooter = function(self)
 	Anchor:SetSize(GROUP_WIDTH, WIDGET_HEIGHT)
 	Anchor.IsHeader = true
 	
-	Anchor.Texture = Anchor:CreateTexture(nil, "BACKGROUND")
+	Anchor.BG = Anchor:CreateTexture(nil, "BORDER")
+	Anchor.BG:SetAllPoints()
+	Anchor.BG:SetColorTexture(0, 0, 0)
+	
+	Anchor.Texture = Anchor:CreateTexture(nil, "ARTWORK")
 	Anchor.Texture:SetPoint("TOPLEFT", Anchor, 1, -1)
 	Anchor.Texture:SetPoint("BOTTOMRIGHT", Anchor, -1, 1)
 	Anchor.Texture:SetTexture(Assets:GetTexture("Blank"))
