@@ -23,7 +23,7 @@ local SPACING = 3
 local HEADER_HEIGHT = 20
 local HEADER_SPACING = 5
 local GROUP_HEIGHT = 80
-local GROUP_WIDTH = 270
+local GROUP_WIDTH = 284 - (SPACING * 2)
 local WIDGET_HEIGHT = 20
 local LABEL_SPACING = 3
 local SELECTED_HIGHLIGHT_ALPHA = 0.3
@@ -428,6 +428,9 @@ local BUTTON_WIDTH = 130
 local ButtonOnMouseUp = function(self)
 	self.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
+	self.MiddleText:ClearAllPoints()
+	self.MiddleText:SetPoint("CENTER", self, 0, 0)
+	
 	if self.ReloadFlag then
 		HydraUI:DisplayPopup(Language["Attention"], Language["You have changed a setting that requires a UI reload. Would you like to reload the UI now?"], ACCEPT, self.Hook, CANCEL)
 	elseif self.Hook then
@@ -437,6 +440,9 @@ end
 
 local ButtonOnMouseDown = function(self)
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-widget-bright-color"])
+	
+	self.MiddleText:ClearAllPoints()
+	self.MiddleText:SetPoint("CENTER", self, 1, -1)
 	
 	self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
 end
@@ -503,7 +509,7 @@ GUI.Widgets.CreateButton = function(self, id, value, label, tooltip, hook)
 	Button.Highlight:SetAlpha(0)
 	
 	Button.MiddleText = Button:CreateFontString(nil, "OVERLAY")
-	Button.MiddleText:SetPoint("CENTER", Button, "CENTER", 0, 0)
+	Button.MiddleText:SetPoint("CENTER", Button, 0, 0)
 	Button.MiddleText:SetSize(BUTTON_WIDTH - 6, WIDGET_HEIGHT)
 	HydraUI:SetFontInfo(Button.MiddleText, Settings["ui-widget-font"], Settings["ui-font-size"])
 	Button.MiddleText:SetJustifyH("CENTER")
@@ -1462,7 +1468,7 @@ GUI.CreateExportWindow = function(self)
 	return Window
 end
 
-GUI.ToggleImportWindow = function(self)
+function GUI:ToggleImportWindow()
 	if (not self.ImportWindow) then
 		self:CreateImportWindow()
 	end
@@ -1498,12 +1504,42 @@ local ImportWindowOnEnterPressed = function(self)
 	GUI:ToggleImportWindow()
 end
 
+local ImportWindowOnEscapePressed = function(self)
+	self:SetAutoFocus(false)
+	self:ClearFocus()
+end
+
 local ImportWindowOnMouseDown = function(self)
 	self:HighlightText()
 	self:SetAutoFocus(true)
 end
 
-GUI.CreateImportWindow = function(self)
+local ImportWindowOnTextChanged = function(self)
+	local Text = self:GetText()
+	
+	if (not match(Text, "%S+")) then
+		self:SetAutoFocus(false)
+		self:ClearFocus()
+		
+		return
+	end
+	
+	local Profile = HydraUI:DecodeProfile(Text)
+	
+	if Profile then
+		--HydraUI:AddProfile(Profile)
+		print(Profile["profile-name"])
+		
+		
+	--[[["profile-name"] = true,
+	["profile-created"] = true,
+	["profile-created-by"] = true,
+	["profile-last-modified"] = true,]]
+		
+	end
+end
+
+function GUI:CreateImportWindow()
 	if self.ImportWindow then
 		return self.ImportWindow
 	end
@@ -1584,7 +1620,8 @@ GUI.CreateImportWindow = function(self)
 	Window.Input:SetMaxLetters(9999)
 	
 	Window.Input:SetScript("OnEnterPressed", ImportWindowOnEnterPressed)
-	Window.Input:SetScript("OnEscapePressed", ImportWindowOnEnterPressed)
+	Window.Input:SetScript("OnEscapePressed", ImportWindowOnEscapePressed)
+	Window.Input:SetScript("OnTextChanged", ImportWindowOnTextChanged)
 	Window.Input:SetScript("OnMouseDown", ImportWindowOnMouseDown)
 	
 	self.ImportWindow = Window
@@ -1598,10 +1635,6 @@ local DROPDOWN_HEIGHT = 20
 local DROPDOWN_FADE_DELAY = 3 -- To be implemented
 local DROPDOWN_MAX_SHOWN = 8
 
-local SetArrowUp = function(button)
-	button.Arrow:SetTexture(Assets:GetTexture("Arrow Up"))
-end
-
 local SetArrowDown = function(button)
 	button.Arrow:SetTexture(Assets:GetTexture("Arrow Down"))
 end
@@ -1610,7 +1643,7 @@ local CloseLastDropdown = function(compare)
 	if (LAST_ACTIVE_DROPDOWN and LAST_ACTIVE_DROPDOWN.Menu:IsShown() and (LAST_ACTIVE_DROPDOWN ~= compare)) then
 		if (not LAST_ACTIVE_DROPDOWN.Menu.FadeOut:IsPlaying()) then
 			LAST_ACTIVE_DROPDOWN.Menu.FadeOut:Play()
-			SetArrowDown(LAST_ACTIVE_DROPDOWN)
+			LAST_ACTIVE_DROPDOWN.Arrow:SetTexture(Assets:GetTexture("Arrow Down"))
 		end
 	end
 end
@@ -1618,9 +1651,12 @@ end
 local DropdownButtonOnMouseUp = function(self)
 	self.Parent.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
+	self.Parent.Current:ClearAllPoints()
+	self.Parent.Current:SetPoint("LEFT", self.Parent, HEADER_SPACING, 0)
+	
 	if self.Menu:IsVisible() then
 		self.Menu.FadeOut:Play()
-		SetArrowDown(self)
+		self.Arrow:SetTexture(Assets:GetTexture("Arrow Down"))
 	else
 		for i = 1, #self.Menu do
 			if self.Parent.SpecificType then
@@ -1641,7 +1677,7 @@ local DropdownButtonOnMouseUp = function(self)
 		CloseLastDropdown(self)
 		self.Menu:Show()
 		self.Menu.FadeIn:Play()
-		SetArrowUp(self)
+		self.Arrow:SetTexture(Assets:GetTexture("Arrow Up"))
 	end
 	
 	LAST_ACTIVE_DROPDOWN = self
@@ -1651,11 +1687,14 @@ local DropdownButtonOnMouseDown = function(self)
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-widget-bright-color"])
 	
 	self.Parent.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
+	
+	self.Parent.Current:ClearAllPoints()
+	self.Parent.Current:SetPoint("LEFT", self.Parent, HEADER_SPACING + 1, -1)
 end
 
 local MenuItemOnMouseUp = function(self)
 	self.Parent.FadeOut:Play()
-	SetArrowDown(self.GrandParent.Button)
+	self.GrandParent.Button.Arrow:SetTexture(Assets:GetTexture("Arrow Down"))
 	
 	self.Highlight:SetAlpha(0)
 	self.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-bright-color"]))

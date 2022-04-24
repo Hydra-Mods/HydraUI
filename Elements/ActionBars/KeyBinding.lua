@@ -166,7 +166,11 @@ local PopupOnCancel = function()
 end
 
 local OnAccept = function()
-	SaveBindings(GetCurrentBindingSet())
+	if HydraUI.IsClassic then
+		AttemptToSaveBindings(GetCurrentBindingSet())
+	else
+		SaveBindings(GetCurrentBindingSet())
+	end
 	
 	GUI:GetWidget("kb-discard"):Disable()
 	GUI:GetWidget("kb-save"):Disable()

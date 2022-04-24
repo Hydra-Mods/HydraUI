@@ -15,6 +15,9 @@ local ButtonOnMouseUp = function(self)
 		self.Callback(self.Arg1, self.Arg2)
 	end
 	
+	self.Text:ClearAllPoints()
+	self.Text:SetPoint("CENTER", self, 0, 0)
+	
 	self:GetParent():Hide()
 end
 
@@ -22,6 +25,9 @@ local ButtonOnMouseDown = function(self)
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-button-texture-color"])
 	
 	self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
+	
+	self.Text:ClearAllPoints()
+	self.Text:SetPoint("CENTER", self, 1, -1)
 end
 
 local ButtonOnEnter = function(self)
@@ -111,7 +117,7 @@ Popup.CreatePopupFrame = function(self)
 	self.Button1.Highlight:SetAlpha(0)
 	
 	self.Button1.Text = self.Button1:CreateFontString(nil, "OVERLAY")
-	self.Button1.Text:SetPoint("CENTER", self.Button1, "CENTER", 0, 0)
+	self.Button1.Text:SetPoint("CENTER", self.Button1)
 	self.Button1.Text:SetSize(BUTTON_WIDTH - 6, 20)
 	self.Button1.Text:SetFont(Assets:GetFont(Settings["ui-button-font"]), Settings["ui-font-size"])
 	self.Button1.Text:SetJustifyH("CENTER")

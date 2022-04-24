@@ -1,6 +1,10 @@
 local addon, ns = ...
 local HydraUI, Language, Assets, Settings = ns:get()
 
+local oUF = ns.oUF or oUF
+local Events = oUF.Tags.Events
+local Methods = oUF.Tags.Methods
+
 local format = string.format
 local floor = math.floor
 local sub = string.sub
@@ -29,12 +33,10 @@ local IsResting = IsResting
 local GetPetHappiness = GetPetHappiness
 
 local DEAD = DEAD
-local CHAT_MSG_AFK = CHAT_MSG_AFK
 local PLAYER_OFFLINE = PLAYER_OFFLINE
+local AFK = HydraUI.IsMainline and DEFAULT_AFK_MESSAGE or CHAT_MSG_AFK
+local HealthEvent = HydraUI.IsMainline and "UNIT_HEALTH " or "UNIT_HEALTH_FREQUENT "
 
-local oUF = ns.oUF or oUF
-local Events = oUF.Tags.Events
-local Methods = oUF.Tags.Methods
 local TestPartyIndex = 0
 local TestRaidIndex = 0
 
@@ -96,14 +98,6 @@ local UTF8Sub = function(str, stop) -- utf8 sub derived from tukui
 	end
 end
 
-local HealthEvent
-
-if HydraUI.IsMainline then
-	HealthEvent = "UNIT_HEALTH "
-else
-	HealthEvent = "UNIT_HEALTH_FREQUENT "
-end
-
 -- Tags
 Events["ColorStop"] = "PLAYER_ENTERING_WORLD"
 Methods["ColorStop"] = function()
@@ -126,7 +120,7 @@ Methods["Status"] = function(unit)
 	elseif (not UnitIsConnected(unit)) then
 		return "|cFFEEEEEE" .. PLAYER_OFFLINE .. "|r"
 	elseif UnitIsAFK(unit) then
-		return "|cFFEEEEEE" .. DEFAULT_AFK_MESSAGE .. "|r"
+		return "|cFFEEEEEE" .. AFK .. "|r"
 	else
 		return Methods["Resting"](unit)
 	end
@@ -239,7 +233,7 @@ Methods["HealthDeficit"] = function(unit)
 	elseif (not UnitIsConnected(unit)) then
 		return "|cFFEEEEEE" .. PLAYER_OFFLINE .. "|r"
 	elseif UnitIsAFK(unit) then
-		return "|cFFEEEEEE" .. DEFAULT_AFK_MESSAGE .. "|r"
+		return "|cFFEEEEEE" .. AFK .. "|r"
 	end
 	
 	local Current = UnitHealth(unit)
@@ -260,7 +254,7 @@ Methods["HealthDeficit:Short"] = function(unit)
 	elseif (not UnitIsConnected(unit)) then
 		return "|cFFEEEEEE" .. PLAYER_OFFLINE .. "|r"
 	elseif UnitIsAFK(unit) then
-		return "|cFFEEEEEE" .. DEFAULT_AFK_MESSAGE .. "|r"
+		return "|cFFEEEEEE" .. AFK .. "|r"
 	end
 	
 	local Current = UnitHealth(unit)
@@ -281,7 +275,7 @@ Methods["GroupStatus"] = function(unit)
 	elseif (not UnitIsConnected(unit)) then
 		return "|cFFEEEEEE" .. PLAYER_OFFLINE .. "|r"
 	elseif UnitIsAFK(unit) then
-		return "|cFFEEEEEE" .. DEFAULT_AFK_MESSAGE .. "|r"
+		return "|cFFEEEEEE" .. AFK .. "|r"
 	end
 	
 	local Current = UnitHealth(unit)

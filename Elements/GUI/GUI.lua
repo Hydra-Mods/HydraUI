@@ -3,18 +3,19 @@ local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 -- Constants
 local SPACING = 3
 local WIDGET_HEIGHT = 20
-local GROUP_WIDTH = 270
-local BUTTON_LIST_WIDTH = 112 -- 126
-local GUI_WIDTH = 710
-local GUI_HEIGHT = 340
+local BUTTON_LIST_WIDTH = 126 -- 118
+local GUI_WIDTH = 740 -- 710
+local GUI_HEIGHT = 362 -- 340
 local HEADER_WIDTH = GUI_WIDTH - (SPACING * 2)
 local HEADER_HEIGHT = 20
 local HEADER_SPACING = 5
 local PARENT_WIDTH = GUI_WIDTH - BUTTON_LIST_WIDTH - ((SPACING * 2) + 2)
+local GROUP_WIDTH = ((PARENT_WIDTH / 2) - 8) - (SPACING * 4) + 1
+print(GROUP_WIDTH)
 local MENU_BUTTON_WIDTH = BUTTON_LIST_WIDTH - (SPACING * 2)
-local SELECTED_HIGHLIGHT_ALPHA = 0.3
+local SELECTED_HIGHLIGHT_ALPHA = 0.25
 local MOUSEOVER_HIGHLIGHT_ALPHA = 0.1
-local MAX_WIDGETS_SHOWN = 14
+local MAX_WIDGETS_SHOWN = floor(GUI_HEIGHT / (WIDGET_HEIGHT + SPACING))
 
 -- Locals
 local type = type
@@ -276,7 +277,7 @@ local AddWindowScrollBar = function(self)
 	ScrollBar:Show()
 end
 
-function GUI:SortButtons()
+function GUI:SortMenuButtons()
 	tsort(self.Categories, function(a, b)
 		return a.Name < b.Name
 	end)
@@ -354,12 +355,12 @@ function GUI:CreateWidgetWindow(category, name, parent)
 	Window:Hide()
 	
 	Window.LeftWidgetsBG = CreateFrame("Frame", nil, Window)
-	Window.LeftWidgetsBG:SetWidth(GROUP_WIDTH + (SPACING * 2))
+	Window.LeftWidgetsBG:SetWidth(GROUP_WIDTH)
 	Window.LeftWidgetsBG:SetPoint("TOPLEFT", Window, 0, 0)
 	Window.LeftWidgetsBG:SetPoint("BOTTOMLEFT", Window, 0, 0)
 	
 	Window.LeftWidgetsBG.Backdrop = CreateFrame("Frame", nil, Window, "BackdropTemplate")
-	Window.LeftWidgetsBG.Backdrop:SetWidth(GROUP_WIDTH + (SPACING * 2))
+	Window.LeftWidgetsBG.Backdrop:SetWidth(GROUP_WIDTH)
 	Window.LeftWidgetsBG.Backdrop:SetPoint("TOPLEFT", Window.LeftWidgetsBG, 0, 0)
 	Window.LeftWidgetsBG.Backdrop:SetPoint("BOTTOMLEFT", Window.LeftWidgetsBG, 0, 0)
 	Window.LeftWidgetsBG.Backdrop:SetBackdrop(HydraUI.BackdropAndBorder)
@@ -367,12 +368,12 @@ function GUI:CreateWidgetWindow(category, name, parent)
 	Window.LeftWidgetsBG.Backdrop:SetBackdropBorderColor(0, 0, 0)
 	
 	Window.RightWidgetsBG = CreateFrame("Frame", nil, Window)
-	Window.RightWidgetsBG:SetWidth(GROUP_WIDTH + (SPACING * 2))
+	Window.RightWidgetsBG:SetWidth(GROUP_WIDTH)
 	Window.RightWidgetsBG:SetPoint("TOPLEFT", Window.LeftWidgetsBG, "TOPRIGHT", 2, 0)
 	Window.RightWidgetsBG:SetPoint("BOTTOMLEFT", Window.LeftWidgetsBG, "BOTTOMRIGHT", 2, 0)
 	
 	Window.RightWidgetsBG.Backdrop = CreateFrame("Frame", nil, Window, "BackdropTemplate")
-	Window.RightWidgetsBG.Backdrop:SetWidth(GROUP_WIDTH + (SPACING * 2))
+	Window.RightWidgetsBG.Backdrop:SetWidth(GROUP_WIDTH)
 	Window.RightWidgetsBG.Backdrop:SetPoint("TOPLEFT", Window.RightWidgetsBG, 0, 0)
 	Window.RightWidgetsBG.Backdrop:SetPoint("BOTTOMLEFT", Window.RightWidgetsBG, 0, 0)
 	Window.RightWidgetsBG.Backdrop:SetBackdrop(HydraUI.BackdropAndBorder)
@@ -560,7 +561,7 @@ end
 
 local WindowButtonOnMouseDown = function(self)
 	self.Text:ClearAllPoints()
-	self.Text:SetPoint("LEFT", self, 5, -1)
+	self.Text:SetPoint("LEFT", self, 6, -1)
 end
 
 local WindowSubButtonOnMouseUp = function(self)
@@ -572,7 +573,7 @@ end
 
 local WindowSubButtonOnMouseDown = function(self)
 	self.Text:ClearAllPoints()
-	self.Text:SetPoint("LEFT", self, SPACING * 3 + 1, -1)
+	self.Text:SetPoint("LEFT", self, (SPACING * 3) + 2, -1)
 end
 
 function GUI:HasButton(category, name, parent)
@@ -1082,7 +1083,7 @@ function GUI:CreateGUI()
 		self:CreateWindow(unpack(tremove(self.ButtonQueue, 1)))
 	end
 	
-	self:SortButtons()
+	self:SortMenuButtons()
 	
 	self.ScrollBar:SetMinMaxValues(1, ((self.NumShownButtons or 15) - MAX_WIDGETS_SHOWN) + 1)
 	self.ScrollBar:SetValue(1)

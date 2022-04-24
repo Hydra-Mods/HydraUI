@@ -922,31 +922,6 @@ function Chat:Install()
 	FCF_SetWindowName(ChatFrame1, Language["General"])
 	ChatFrame1:Show()
 	
-	-- Combat Log
-	FCF_DockFrame(ChatFrame2)
-	FCF_SetLocked(ChatFrame2, 1)
-	FCF_SetWindowName(ChatFrame2, Language["Combat"])
-	ChatFrame2:Show()
-	
-	-- Whispers
-	FCF_OpenNewWindow(Language["Whispers"])
-	FCF_SetLocked(ChatFrame3, 1)
-	FCF_DockFrame(ChatFrame3)
-	ChatFrame3:Show()
-	
-	-- Trade
-	FCF_OpenNewWindow(Language["Trade"])
-	FCF_SetLocked(ChatFrame4, 1)
-	FCF_DockFrame(ChatFrame4)
-	ChatFrame4:Show()
-	
-	-- Loot
-	FCF_OpenNewWindow(Language["Loot"])
-	FCF_SetLocked(ChatFrame5, 1)
-	FCF_DockFrame(ChatFrame5)
-	ChatFrame5:Show()
-	
-	-- General
 	ChatFrame_RemoveAllMessageGroups(ChatFrame1)
 	ChatFrame_RemoveChannel(ChatFrame1, TRADE)
 	ChatFrame_RemoveChannel(ChatFrame1, GENERAL)
@@ -983,25 +958,46 @@ function Chat:Install()
 	ChatFrame_AddMessageGroup(ChatFrame1, "IGNORED")
 	ChatFrame_AddMessageGroup(ChatFrame1, "ACHIEVEMENT")
 	
+	-- Combat Log
+	FCF_DockFrame(ChatFrame2)
+	FCF_SetLocked(ChatFrame2, 1)
+	FCF_SetWindowName(ChatFrame2, Language["Combat"])
+	ChatFrame2:Show()
+	
 	-- Whispers
-	ChatFrame_RemoveAllMessageGroups(ChatFrame3)
-	ChatFrame_AddMessageGroup(ChatFrame3, "WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame3, "BN_WHISPER")
-	ChatFrame_AddMessageGroup(ChatFrame3, "BN_CONVERSATION")
+	local Whispers = FCF_OpenNewWindow(Language["Whispers"])
+	FCF_SetLocked(Whispers, 1)
+	FCF_DockFrame(Whispers)
+	Whispers:Show()
+	
+	ChatFrame_RemoveAllMessageGroups(Whispers)
+	ChatFrame_AddMessageGroup(Whispers, "WHISPER")
+	ChatFrame_AddMessageGroup(Whispers, "BN_WHISPER")
+	ChatFrame_AddMessageGroup(Whispers, "BN_CONVERSATION")
 	
 	-- Trade
-	ChatFrame_RemoveAllMessageGroups(ChatFrame4)
-	ChatFrame_AddChannel(ChatFrame4, TRADE)
-	ChatFrame_AddChannel(ChatFrame4, GENERAL)
+	local Trade = FCF_OpenNewWindow(Language["Trade"])
+	FCF_SetLocked(Trade, 1)
+	FCF_DockFrame(Trade)
+	Trade:Show()
+	
+	ChatFrame_RemoveAllMessageGroups(Trade)
+	ChatFrame_AddChannel(Trade, TRADE)
+	ChatFrame_AddChannel(Trade, GENERAL)
 	
 	-- Loot
-	ChatFrame_RemoveAllMessageGroups(ChatFrame5)
-	ChatFrame_AddMessageGroup(ChatFrame5, "COMBAT_XP_GAIN")
-	ChatFrame_AddMessageGroup(ChatFrame5, "COMBAT_HONOR_GAIN")
-	ChatFrame_AddMessageGroup(ChatFrame5, "COMBAT_FACTION_CHANGE")
-	ChatFrame_AddMessageGroup(ChatFrame5, "LOOT")
-	ChatFrame_AddMessageGroup(ChatFrame5, "MONEY")
-	ChatFrame_AddMessageGroup(ChatFrame5, "SKILL")
+	local Loot = FCF_OpenNewWindow(Language["Loot"])
+	FCF_SetLocked(Loot, 1)
+	FCF_DockFrame(Loot)
+	Loot:Show()
+	
+	ChatFrame_RemoveAllMessageGroups(Loot)
+	ChatFrame_AddMessageGroup(Loot, "COMBAT_XP_GAIN")
+	ChatFrame_AddMessageGroup(Loot, "COMBAT_HONOR_GAIN")
+	ChatFrame_AddMessageGroup(Loot, "COMBAT_FACTION_CHANGE")
+	ChatFrame_AddMessageGroup(Loot, "LOOT")
+	ChatFrame_AddMessageGroup(Loot, "MONEY")
+	ChatFrame_AddMessageGroup(Loot, "SKILL")
 	
 	DEFAULT_CHAT_FRAME:SetUserPlaced(true)
 	
