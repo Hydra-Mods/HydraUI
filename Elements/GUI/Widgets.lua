@@ -3092,6 +3092,14 @@ local ColorSelectionOnMouseUp = function(self)
 		GUI.ColorPicker:Show()
 		GUI.ColorPicker.FadeIn:Play()
 	end
+	
+	self.MiddleText:ClearAllPoints()
+	self.MiddleText:SetPoint("CENTER", self, 0, 0)
+end
+
+local ColorSelectionOnMouseDown = function(self)
+	self.MiddleText:ClearAllPoints()
+	self.MiddleText:SetPoint("CENTER", self, 1, -1)
 end
 
 local ColorRequiresReload = function(self, flag)
@@ -3136,6 +3144,7 @@ GUI.Widgets.CreateColorSelection = function(self, id, value, label, tooltip, hoo
 	Button:SetScript("OnEnter", ColorSelectionOnEnter)
 	Button:SetScript("OnLeave", ColorSelectionOnLeave)
 	Button:SetScript("OnMouseUp", ColorSelectionOnMouseUp)
+	Button:SetScript("OnMouseDown", ColorSelectionOnMouseDown)
 	Button.ID = id
 	Button.Hook = hook
 	Button.Value = value
