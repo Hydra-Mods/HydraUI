@@ -3,15 +3,15 @@ local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 -- Constants
 local SPACING = 3
 local WIDGET_HEIGHT = 20
-local BUTTON_LIST_WIDTH = 126 -- 118
-local GUI_WIDTH = 740 -- 710
+local BUTTON_LIST_WIDTH = 126 -- 112
+local GUI_WIDTH = 730 -- 710
 local GUI_HEIGHT = 362 -- 340
 local HEADER_WIDTH = GUI_WIDTH - (SPACING * 2)
 local HEADER_HEIGHT = 20
 local HEADER_SPACING = 5
 local PARENT_WIDTH = GUI_WIDTH - BUTTON_LIST_WIDTH - ((SPACING * 2) + 2)
-local GROUP_WIDTH = ((PARENT_WIDTH / 2) - 8) - (SPACING * 4) + 1
-print(GROUP_WIDTH)
+local GROUP_WIDTH = ((PARENT_WIDTH / 2) - (SPACING * 4) - 8) + 1
+
 local MENU_BUTTON_WIDTH = BUTTON_LIST_WIDTH - (SPACING * 2)
 local SELECTED_HIGHLIGHT_ALPHA = 0.25
 local MOUSEOVER_HIGHLIGHT_ALPHA = 0.1

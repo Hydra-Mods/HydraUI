@@ -153,7 +153,7 @@ function Assets:ApplyStyle(name)
 	local Profile = HydraUI:GetActiveProfile()
 	
 	if Profile then
-		for ID, Value in pairs(self.Styles[name]) do
+		for ID, Value in next, self.Styles[name] do
 			if (Value ~= Defaults[ID]) then
 				Profile[ID] = Value
 			else
@@ -203,7 +203,7 @@ Assets:SetFont("Noto Sans", "Interface\\Addons\\HydraUI\\Assets\\Fonts\\NotoSans
 Assets:SetFont("Visitor", "Interface\\Addons\\HydraUI\\Assets\\Fonts\\Visitor.ttf", true)
 Assets:SetFont("Pixel Arial", "Interface\\Addons\\HydraUI\\Assets\\Fonts\\PixelArial.ttf", true)
 
-for Name, Path in pairs(Fonts) do
+for Name, Path in next, Fonts do
 	Assets:SetFont(Name, Path)
 end
 
@@ -247,7 +247,7 @@ Assets:SetTexture("Skull", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraU
 Assets:SetTexture("Small Star", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUISmallStar.tga", true)
 Assets:SetTexture("Copy", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUICopy.tga", true)
 
-for Name, Path in pairs(Textures) do
+for Name, Path in next, Textures do
 	Assets:SetTexture(Name, Path)
 end
 
@@ -260,7 +260,7 @@ Assets:SetHighlight("Ferous 14", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\
 
 -- Palettes - Yes, doing these did take forever. And yes it was worth it.
 
-local Default = { -- https://www.materialui.co/colors
+Assets:SetPalette("Default", { -- https://www.materialui.co/colors
 	{"FFEBEE", "FCE4EC", "F3E5F5", "EDE7F6", "E8EAF6", "E3F2FD", "E1F5FE", "E0F7FA", "E0F2F1", "E8F5E9", "F1F8E9", "F9FBE7", "FFFDE7", "FFF8E1", "FFF3E0", "FBE9E7", "EFEBE9", "FAFAFA", "ECEFF1"},
 	{"FFCDD2", "F8BBD0", "E1BEE7", "D1C4E9", "C5CAE9", "BBDEFB", "B3E5FC", "B2EBF2", "B2DFDB", "C8E6C9", "DCEDC8", "F0F4C3", "FFF9C4", "FFECB3", "FFE0B2", "FFCCBC", "D7CCC8", "F5F5F5", "CFD8DC"},
 	{"EF9A9A", "F48FB1", "CE93D8", "B39DDB", "9FA8DA", "90CAF9", "81D4FA", "80DEEA", "80CBC4", "A5D6A7", "C5E1A5", "E6EE9C", "FFF59D", "FFE082", "FFCC80", "FFAB91", "BCAAA4", "EEEEEE", "B0BEC5"},
@@ -271,16 +271,16 @@ local Default = { -- https://www.materialui.co/colors
 	{"D32F2F", "C2185B", "7B1FA2", "512DA8", "303F9F", "1976D2", "0288D1", "0097A7", "00796B", "388E3C", "689F38", "AFB42B", "FBC02D", "FFA000", "F57C00", "E64A19", "5D4037", "616161", "455A64"},
 	{"C62828", "AD1457", "6A1B9A", "4527A0", "283593", "1565C0", "0277BD", "00838F", "00695C", "2E7D32", "558B2F", "9E9D24", "F9A825", "FF8F00", "EF6C00", "D84315", "4E342E", "424242", "37474F"},
 	{"B71C1C", "880E4F", "4A148C", "311B92", "1A237E", "0D47A1", "01579B", "006064", "004D40", "1B5E20", "33691E", "827717", "F57F17", "FF6F00", "E65100", "BF360C", "3E2723", "212121", "263238"}
-}
+})
 
-local Flat = {
+Assets:SetPalette("Flat", {
 	{"1ABC9C", "2ECC71", "3498DB", "9B59B6", "34495E"},
 	{"16A085", "27AE60", "2980B9", "8E44AD", "2C3E50"},
 	{"F1C40F", "E67E22", "E74C3C", "ECF0F1", "95A5A6"},
 	{"F39C12", "D35400", "E0392B", "BDC3C7", "7F8C8D"}
-}
+})
 
-local Fluent = { -- https://fluentcolors.com/
+Assets:SetPalette("Fluent", { -- https://fluentcolors.com/
 	{"FFB900", "E74856", "0078D7", "0099BC", "7A7574", "767676"},
 	{"FF8C00", "E81123", "0063B1", "2D7D9A", "5D5A58", "4C4A48"},
 	{"F7630C", "EA005E", "8E8CD8", "00B7C3", "68768A", "69797E"},
@@ -289,9 +289,9 @@ local Fluent = { -- https://fluentcolors.com/
 	{"EF6950", "BF0077", "744DA9", "018574", "486860", "525E54"},
 	{"D13438", "C239B3", "B146C2", "00CC6A", "498205", "847545"},
 	{"FF4343", "9A0089", "881798", "10893E", "107C10", "7E735F"}
-}
+})
 
-local Large = { -- https://htmlcolorcodes.com/
+Assets:SetPalette("Large", { -- https://htmlcolorcodes.com/
 	{"F9EBEA", "FDEDEC", "F5EEF8", "F4ECF7", "EAF2F8", "EBF5FB", "E8F8F5", "E8F6F3", "E9F7EF","EAFAF1", "FEF9E7", "FEF5E7", "FDF2E9", "FBEEE6", "FDFEFE", "F8F9F9", "F4F6F6", "F2F4F4", "EBEDEF", "EAECEE"},
 	{"F2D7D5", "FADBD8", "EBDEF0", "E8DAEF", "D4E6F1", "D6EAF8", "D1F2EB", "D0ECE7", "D4EFDF", "D5F5E3", "FCF3CF", "FDEBD0", "FAE5D3", "F6DDCC", "FBFCFC", "F2F3F4", "EAEDED", "E5E8E8", "D6DBDF", "D5D8DC"},
 	{"E6B0AA", "F5B7B1", "D7BDE2", "D2B4DE", "A9CCE3", "AED6F1", "A3E4D7", "A2D9CE", "A9DFBF", "ABEBC6", "F9E79F", "FAD7A0", "F5CBA7", "EDBB99", "F7F9F9", "E5E7E9", "D5DBDB", "CCD1D1", "AEB6BF", "ABB2B9"},
@@ -302,15 +302,15 @@ local Large = { -- https://htmlcolorcodes.com/
 	{"922B21", "B03A2E", "76448A", "6C3483", "1F618D", "2874A6", "148F77", "117A65", "1E8449", "239B56", "B7950B", "B9770E", "AF601A", "A04000", "B3B6B7", "909497", "717D7E", "616A6B", "283747", "212F3D"},
 	{"7B241C", "943126", "633974", "5B2C6F", "1A5276", "21618C", "117864", "0E6655", "196F3D", "1D8348", "9A7D0A", "9C640C", "935116", "873600", "979A9A", "797D7F", "5F6A6A", "515A5A", "212F3C", "1C2833"},
 	{"641E16", "78281F", "512E5F", "4A235A", "154360", "1B4F72", "0E6251", "0B5345", "145A32", "186A3B", "7D6608", "7E5109", "784212", "6E2C00", "7B7D7D", "626567", "4D5656", "424949", "1B2631", "17202A"}
-}
+})
 
-local Lite = {
+Assets:SetPalette("Lite", {
 	{"F17171", "FFA071", "FFD071", "A2D471", "71E2D0", "71D0FF", "7EA9FF", "B38DFF", "FF71B7", "A2ADB8"},
 	{"EE4D4D", "FF884D", "FFC44D", "8BC94D", "4DDBC4", "4DC4FF", "5E94FF", "AD71FF", "FF4dA5", "8B98A6"},
 	{"D64545", "E57A45", "E5B045", "4C9900", "45C5B0", "45B0E5", "5485E5", "9065E5", "E54594", "7D8995"}
-}
+})
 
-local Rapid = { -- https://www.rapidtables.com/web/color/RGB_Color.html
+Assets:SetPalette("Rapid", { -- https://www.rapidtables.com/web/color/RGB_Color.html
 	{"330000", "331900", "333300", "193300", "003300", "003319", "003333", "001933", "000033", "190033", "330033", "330019", "000000"},
 	{"660000", "663300", "666600", "336600", "006600", "006633", "006666", "003366", "000066", "330066", "660066", "660033", "202020"},
 	{"990000", "994C00", "999900", "4C9900", "009900", "00994C", "009999", "004C99", "000099", "4C0099", "990099", "99004C", "404040"},
@@ -320,11 +320,4 @@ local Rapid = { -- https://www.rapidtables.com/web/color/RGB_Color.html
 	{"FF6666", "FFB266", "FFFF66", "B2FF66", "66FF66", "66FFB2", "66FFFF", "66B2FF", "6666FF", "B266FF", "FF66FF", "FF66B2", "C0C0C0"},
 	{"FF9999", "FFCC99", "FFFF99", "CCFF99", "99FF99", "99FFCC", "99FFFF", "99CCFF", "9999FF", "CC99FF", "FF99FF", "FF99CC", "E0E0E0"},
 	{"FFCCCC", "FFE5CC", "FFFFCC", "E5FFCC", "CCFFCC", "CCFFE5", "CCFFFF", "CCE5FF", "CCCCFF", "E5CCFF", "FFCCFF", "FFCCE5", "FFFFFF"}
-}
-
-Assets:SetPalette("Default", Default)
-Assets:SetPalette("Flat", Flat)
-Assets:SetPalette("Fluent", Fluent)
-Assets:SetPalette("Large", Large)
-Assets:SetPalette("Lite", Lite)
-Assets:SetPalette("Rapid", Rapid)
+})

@@ -683,6 +683,14 @@ local CreateProfile = function(value)
 	local Widget = GUI:GetWidget("ui-profile")
 	Widget.Dropdown:CreateSelection(value, value)
 	Widget.Dropdown:Sort()
+	
+	Widget = GUI:GetWidget("profile-copy")
+	Widget.Dropdown:CreateSelection(value, value)
+	Widget.Dropdown:Sort()
+	
+	Widget = GUI:GetWidget("profile-delete")
+	Widget.Dropdown:CreateSelection(value, value)
+	Widget.Dropdown:Sort()
 end
 
 local DeleteProfile = function(value)
@@ -692,6 +700,13 @@ local DeleteProfile = function(value)
 	local Widget = GUI:GetWidget("ui-profile")
 	Widget.Dropdown:RemoveSelection(value)
 	Widget.Dropdown.Current:SetText(HydraUI:GetActiveProfileName())
+	
+	Widget = GUI:GetWidget("profile-copy")
+	Widget.Dropdown:RemoveSelection(value)
+	
+	Widget = GUI:GetWidget("profile-delete")
+	Widget.Dropdown:RemoveSelection(value)
+	Widget.Dropdown.Current:SetText("")
 end
 
 local ShowExportWindow = function()
@@ -703,7 +718,6 @@ local ShowExportWindow = function()
 end
 
 local ShowImportWindow = function()
-	GUI:CreateImportWindow()
 	GUI:ToggleImportWindow()
 end
 
@@ -729,21 +743,24 @@ local CopyProfileOnAccept = function(from)
 	HydraUI:CopyProfile(from, HydraUI:GetActiveProfileName())
 end
 
+local PromptDelete = function(value)
+	HydraUI:DisplayPopup(Language["Attention"], format(Language["Are you sure you would like to delete %s"], value), ACCEPT, DeleteProfile, CANCEL, nil, value)
+end
+
 local CopyProfile = function(value)
 	HydraUI:DisplayPopup(Language["Attention"], format(Language["Are you sure you would like to copy %s to %s?"], value, HydraUI:GetActiveProfileName()), ACCEPT, CopyProfileOnAccept, CANCEL, nil, value)
 end
 
 GUI:AddWidgets(Language["General"], Language["Profiles"], function(left, right)
-	left:DisableScrolling()
-	
 	left:CreateHeader(Language["Profiles"])
 	left:CreateDropdown("ui-profile", HydraUI:GetActiveProfileName(), HydraUI:GetProfileList(), Language["Select Profile"], Language["Select a profile to load"], UpdateActiveProfile)
 	--left:CreateButton("Apply", "Apply Current Profile", "", UpdateActiveProfile)
 	
 	left:CreateHeader(Language["Modify"])
 	left:CreateInput("profile-key", HydraUI:GetDefaultProfileKey(), Language["Create New Profile"], Language["Create a new profile to store a different collection of settings"], CreateProfile):DisableSaving()
-	left:CreateInput("profile-delete", HydraUI:GetDefaultProfileKey(), Language["Delete Profile"], Language["Delete a profile"], DeleteProfile):DisableSaving()
+	--left:CreateInput("profile-delete", HydraUI:GetDefaultProfileKey(), Language["Delete Profile"], Language["Delete a profile"], DeleteProfile):DisableSaving()
 	left:CreateInput("profile-rename", "", Language["Rename Profile"], Language["Rename the currently selected profile"], RenameProfile):DisableSaving()
+	left:CreateDropdown("profile-delete", HydraUI:GetActiveProfileName(), HydraUI:GetProfileList(), Language["Delete Profile"],  Language["Delete a profile"], DeleteProfile):DisableSaving()
 	left:CreateDropdown("profile-copy", HydraUI:GetActiveProfileName(), HydraUI:GetProfileList(), Language["Copy From"], Language["Copy the settings from another profile"], CopyProfile)
 	
 	left:CreateHeader(Language["Manage"])
@@ -761,7 +778,6 @@ GUI:AddWidgets(Language["General"], Language["Profiles"], function(left, right)
 	local Profile = HydraUI:GetProfile(Name)
 	local MostUsed = HydraUI:GetMostUsedProfile()
 	local NumServed, IsAll = HydraUI:GetNumServedByProfile(Name)
-	local NumUnused = HydraUI:CountUnusedProfiles()
 	local MostUsedServed = NumServed
 	
 	if IsAll then
@@ -783,5 +799,5 @@ GUI:AddWidgets(Language["General"], Language["Profiles"], function(left, right)
 	right:CreateHeader(Language["General"])
 	right:CreateDoubleLine("popular-profile", Language["Popular Profile:"], format("%s (%d)", MostUsed, MostUsedServed))
 	right:CreateDoubleLine("stored-profiles", Language["Stored Profiles:"], HydraUI:GetProfileCount())
-	right:CreateDoubleLine("unused-profiles", Language["Unused Profiles:"], NumUnused)
+	right:CreateDoubleLine("unused-profiles", Language["Unused Profiles:"], HydraUI:CountUnusedProfiles())
 end)

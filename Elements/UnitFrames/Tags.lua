@@ -60,7 +60,7 @@ end
 
 local UTF8Sub = function(str, stop) -- utf8 sub derived from tukui
 	if (not str) then
-		return
+		return str
 	end
 
 	local Bytes = len(str)
@@ -111,7 +111,7 @@ Methods["Resting"] = function(unit)
 	end
 end
 
-Events["Status"] = HealthEvent .. "UNIT_CONNECTION PLAYER_FLAGS_CHANGED PLAYER_UPDATE_RESTING"
+Events["Status"] = HealthEvent .. "UNIT_CONNECTION PLAYER_FLAGS_CHANGED"
 Methods["Status"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -121,8 +121,6 @@ Methods["Status"] = function(unit)
 		return "|cFFEEEEEE" .. PLAYER_OFFLINE .. "|r"
 	elseif UnitIsAFK(unit) then
 		return "|cFFEEEEEE" .. AFK .. "|r"
-	else
-		return Methods["Resting"](unit)
 	end
 	
 	return ""

@@ -23,10 +23,10 @@ local SPACING = 3
 local HEADER_HEIGHT = 20
 local HEADER_SPACING = 5
 local GROUP_HEIGHT = 80
-local GROUP_WIDTH = 284 - (SPACING * 2)
+local GROUP_WIDTH = 279 - (SPACING * 2)
 local WIDGET_HEIGHT = 20
 local LABEL_SPACING = 3
-local SELECTED_HIGHLIGHT_ALPHA = 0.3
+local SELECTED_HIGHLIGHT_ALPHA = 0.25
 local MOUSEOVER_HIGHLIGHT_ALPHA = 0.1
 local LAST_ACTIVE_DROPDOWN
 
@@ -1353,7 +1353,7 @@ GUI.ToggleExportWindow = function(self)
 	end
 end
 
-GUI.SetExportWindowText = function(self, text)
+function GUI:SetExportWindowText(text)
 	if (type(text) ~= "string") then
 		return
 	end
@@ -1379,13 +1379,13 @@ local ExportWindowOnMouseDown = function(self)
 	self:SetAutoFocus(true)
 end
 
-GUI.CreateExportWindow = function(self)
+function GUI:CreateExportWindow()
 	if self.ExportWindow then
 		return self.ExportWindow
 	end
 	
 	local Window = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	Window:SetSize(300, 80)
+	Window:SetSize(300, 74)
 	Window:SetPoint("CENTER", HydraUI.UIParent, 0, 230)
 	Window:SetBackdrop(HydraUI.BackdropAndBorder)
 	Window:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-bg-color"]))
@@ -1433,35 +1433,47 @@ GUI.CreateExportWindow = function(self)
 	Window.Header.CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
 	Window.Header.CloseButton.Cross:SetVertexColor(HydraUI:HexToRGB("EEEEEE"))
 	
-	Window.Label = Window:CreateFontString(nil, "OVERLAY")
-	Window.Label:SetPoint("LEFT", Window, 6, 0)
-	HydraUI:SetFontInfo(Window.Label, Settings["ui-font"], Settings["ui-font-size"])
-	Window.Label:SetJustifyH("LEFT")
-	Window.Label:SetText(Language["Press ctrl + c to copy"])
+	Window.BG = CreateFrame("Frame", nil, Window, "BackdropTemplate")
+	Window.BG:SetPoint("TOPLEFT", Window.Header, "BOTTOMLEFT", 0, -2)
+	Window.BG:SetPoint("BOTTOMRIGHT", Window, -3, 3)
+	Window.BG:SetBackdrop(HydraUI.BackdropAndBorder)
+	Window.BG:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-main-color"]))
+	Window.BG:SetBackdropBorderColor(0, 0, 0)
 	
-	Window.Inner = CreateFrame("Frame", nil, Window, "BackdropTemplate")
-	Window.Inner:SetPoint("BOTTOMLEFT", Window, 3, 3)
-	Window.Inner:SetPoint("BOTTOMRIGHT", Window, -3, 3)
-	Window.Inner:SetHeight(20)
-	Window.Inner:SetBackdrop(HydraUI.BackdropAndBorder)
-	Window.Inner:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-main-color"]))
-	Window.Inner:SetBackdropBorderColor(0, 0, 0)
+	Window.InputBG = CreateFrame("Frame", nil, Window.BG, "BackdropTemplate")
+	Window.InputBG:SetPoint("BOTTOMLEFT", Window.BG, 3, 3)
+	Window.InputBG:SetPoint("BOTTOMRIGHT", Window.BG, -3, 3)
+	Window.InputBG:SetHeight(20)
+	Window.InputBG:SetBackdrop(HydraUI.BackdropAndBorder)
+	Window.InputBG:SetBackdropColor(0, 0, 0, 0)
+	Window.InputBG:SetBackdropBorderColor(0, 0, 0)
 	
-	Window.Input = CreateFrame("EditBox", nil, Window.Inner)
+	Window.InputTexture = Window.InputBG:CreateTexture(nil, "BACKGROUND")
+	Window.InputTexture:SetPoint("TOPLEFT", Window.InputBG, 1, -1)
+	Window.InputTexture:SetPoint("BOTTOMRIGHT", Window.InputBG, -1, 1)
+	Window.InputTexture:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Window.InputTexture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-bright-color"]))
+	
+	Window.Input = CreateFrame("EditBox", nil, Window.InputBG)
 	HydraUI:SetFontInfo(Window.Input, Settings["ui-widget-font"], Settings["ui-font-size"])
-	Window.Input:SetPoint("TOPLEFT", Window.Inner, 3, -3)
-	Window.Input:SetPoint("BOTTOMRIGHT", Window.Inner, -3, 3)
-	Window.Input:SetFrameStrata("DIALOG")
+	Window.Input:SetPoint("TOPLEFT", Window.InputBG, 3, -3)
+	Window.Input:SetPoint("BOTTOMRIGHT", Window.InputBG, -3, 3)
+	Window.Input:SetFrameLevel(10)
 	Window.Input:SetJustifyH("LEFT")
 	Window.Input:SetAutoFocus(false)
 	Window.Input:EnableKeyboard(true)
 	Window.Input:EnableMouse(true)
 	Window.Input:SetMaxLetters(9999)
 	Window.Input:SetCursorPosition(0)
-	
 	Window.Input:SetScript("OnEnterPressed", ExportWindowOnEnterPressed)
 	Window.Input:SetScript("OnEscapePressed", ExportWindowOnEnterPressed)
 	Window.Input:SetScript("OnMouseDown", ExportWindowOnMouseDown)
+	
+	Window.Label = Window.BG:CreateFontString(nil, "OVERLAY")
+	Window.Label:SetPoint("BOTTOMLEFT", Window.InputBG, "TOPLEFT", 3, 4)
+	HydraUI:SetFontInfo(Window.Label, Settings["ui-font"], Settings["ui-font-size"])
+	Window.Label:SetJustifyH("LEFT")
+	Window.Label:SetText(Language["Press ctrl + c to copy"])
 	
 	self.ExportWindow = Window
 	
@@ -1476,8 +1488,8 @@ function GUI:ToggleImportWindow()
 	if self.ImportWindow:IsShown() then
 		self.ImportWindow:Hide()
 	else
-		self.ImportWindow:Show()
 		self.ImportWindow.Input:SetAutoFocus(true)
+		self.ImportWindow:Show()
 	end
 end
 
@@ -1510,17 +1522,17 @@ local ImportWindowOnEscapePressed = function(self)
 end
 
 local ImportWindowOnMouseDown = function(self)
-	self:HighlightText()
 	self:SetAutoFocus(true)
 end
 
 local ImportWindowOnTextChanged = function(self)
 	local Text = self:GetText()
 	
+	self:SetText("")
+	self:SetAutoFocus(false)
+	self:ClearFocus()
+	
 	if (not match(Text, "%S+")) then
-		self:SetAutoFocus(false)
-		self:ClearFocus()
-		
 		return
 	end
 	
@@ -1545,7 +1557,7 @@ function GUI:CreateImportWindow()
 	end
 	
 	local Window = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	Window:SetSize(300, 80)
+	Window:SetSize(300, 74)
 	Window:SetPoint("CENTER", HydraUI.UIParent, 0, 230)
 	Window:SetBackdrop(HydraUI.BackdropAndBorder)
 	Window:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-bg-color"]))
@@ -1593,35 +1605,47 @@ function GUI:CreateImportWindow()
 	Window.Header.CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
 	Window.Header.CloseButton.Cross:SetVertexColor(HydraUI:HexToRGB("EEEEEE"))
 	
-	Window.Label = Window:CreateFontString(nil, "OVERLAY")
-	Window.Label:SetPoint("LEFT", Window, 6, 0)
+	-- Background
+	Window.BG = CreateFrame("Frame", nil, Window, "BackdropTemplate")
+	Window.BG:SetPoint("TOPLEFT", Window.Header, "BOTTOMLEFT", 0, -2)
+	Window.BG:SetPoint("BOTTOMRIGHT", Window, -3, 3)
+	Window.BG:SetBackdrop(HydraUI.BackdropAndBorder)
+	Window.BG:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-main-color"]))
+	Window.BG:SetBackdropBorderColor(0, 0, 0)
+	
+	Window.InputBG = CreateFrame("Frame", nil, Window.BG, "BackdropTemplate")
+	Window.InputBG:SetPoint("BOTTOMLEFT", Window.BG, 3, 3)
+	Window.InputBG:SetPoint("BOTTOMRIGHT", Window.BG, -3, 3)
+	Window.InputBG:SetHeight(20)
+	Window.InputBG:SetBackdrop(HydraUI.BackdropAndBorder)
+	Window.InputBG:SetBackdropColor(0, 0, 0, 0)
+	Window.InputBG:SetBackdropBorderColor(0, 0, 0)
+	
+	Window.InputTexture = Window.InputBG:CreateTexture(nil, "BORDER")
+	Window.InputTexture:SetPoint("TOPLEFT", Window.InputBG, 1, -1)
+	Window.InputTexture:SetPoint("BOTTOMRIGHT", Window.InputBG, -1, 1)
+	Window.InputTexture:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Window.InputTexture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-bright-color"]))
+	
+	Window.Label = Window.BG:CreateFontString(nil, "OVERLAY")
+	Window.Label:SetPoint("BOTTOMLEFT", Window.InputBG, "TOPLEFT", 3, 4)
 	HydraUI:SetFontInfo(Window.Label, Settings["ui-font"], Settings["ui-font-size"])
 	Window.Label:SetJustifyH("LEFT")
 	Window.Label:SetText(Language["Paste your profile string below"])
 	
-	Window.Inner = CreateFrame("Frame", nil, Window, "BackdropTemplate")
-	Window.Inner:SetPoint("BOTTOMLEFT", Window, 3, 3)
-	Window.Inner:SetPoint("BOTTOMRIGHT", Window, -3, 3)
-	Window.Inner:SetHeight(20)
-	Window.Inner:SetBackdrop(HydraUI.BackdropAndBorder)
-	Window.Inner:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-main-color"]))
-	Window.Inner:SetBackdropBorderColor(0, 0, 0)
-	
-	Window.Input = CreateFrame("EditBox", nil, Window.Inner)
+	Window.Input = CreateFrame("EditBox", nil, Window.InputBG)
 	HydraUI:SetFontInfo(Window.Input, Settings["ui-widget-font"], Settings["ui-font-size"])
-	Window.Input:SetPoint("TOPLEFT", Window.Inner, 3, -3)
-	Window.Input:SetPoint("BOTTOMRIGHT", Window.Inner, -3, 3)
-	Window.Input:SetFrameStrata("DIALOG")
-	Window.Input:SetFrameLevel(99)
+	Window.Input:SetPoint("TOPLEFT", Window.InputBG, 3, -3)
+	Window.Input:SetPoint("BOTTOMRIGHT", Window.InputBG, -3, 3)
+	Window.Input:SetFrameLevel(10)
 	Window.Input:SetJustifyH("LEFT")
 	Window.Input:SetAutoFocus(false)
 	Window.Input:EnableKeyboard(true)
 	Window.Input:EnableMouse(true)
 	Window.Input:SetMaxLetters(9999)
-	
 	Window.Input:SetScript("OnEnterPressed", ImportWindowOnEnterPressed)
 	Window.Input:SetScript("OnEscapePressed", ImportWindowOnEscapePressed)
-	Window.Input:SetScript("OnTextChanged", ImportWindowOnTextChanged)
+	--Window.Input:SetScript("OnTextChanged", ImportWindowOnTextChanged)
 	Window.Input:SetScript("OnMouseDown", ImportWindowOnMouseDown)
 	
 	self.ImportWindow = Window
@@ -1635,10 +1659,6 @@ local DROPDOWN_HEIGHT = 20
 local DROPDOWN_FADE_DELAY = 3 -- To be implemented
 local DROPDOWN_MAX_SHOWN = 8
 
-local SetArrowDown = function(button)
-	button.Arrow:SetTexture(Assets:GetTexture("Arrow Down"))
-end
-
 local CloseLastDropdown = function(compare)
 	if (LAST_ACTIVE_DROPDOWN and LAST_ACTIVE_DROPDOWN.Menu:IsShown() and (LAST_ACTIVE_DROPDOWN ~= compare)) then
 		if (not LAST_ACTIVE_DROPDOWN.Menu.FadeOut:IsPlaying()) then
@@ -1646,6 +1666,12 @@ local CloseLastDropdown = function(compare)
 			LAST_ACTIVE_DROPDOWN.Arrow:SetTexture(Assets:GetTexture("Arrow Down"))
 		end
 	end
+end
+
+local DropdownDisableSaving = function(self)
+	self.IsSavingDisabled = true
+	
+	return self
 end
 
 local DropdownButtonOnMouseUp = function(self)
@@ -1700,7 +1726,9 @@ local MenuItemOnMouseUp = function(self)
 	self.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
 	if self.GrandParent.SpecificType then
-		SetVariable(self.ID, self.Key)
+		if (not self.GrandParent.IsSavingDisabled) then
+			SetVariable(self.ID, self.Key)
+		end
 		
 		self.GrandParent.Value = self.Key
 		
@@ -1710,7 +1738,9 @@ local MenuItemOnMouseUp = function(self)
 			self.GrandParent.Hook(self.Key, self.ID)
 		end
 	else
-		SetVariable(self.ID, self.Value)
+		if (not self.GrandParent.IsSavingDisabled) then
+			SetVariable(self.ID, self.Value)
+		end
 		
 		self.GrandParent.Value = self.Value
 		
@@ -2019,6 +2049,7 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	Dropdown.Tooltip = tooltip
 	Dropdown.SpecificType = specific
 	Dropdown.RequiresReload = DropdownRequiresReload
+	Dropdown.DisableSaving = DropdownDisableSaving
 	
 	Dropdown.Sort = DropdownSort
 	Dropdown.CreateSelection = DropdownCreateSelection

@@ -24,6 +24,7 @@ Defaults["raid-column-spacing"] = 2
 Defaults["raid-point"] = "LEFT"
 Defaults["raid-column-anchor"] = "TOP"
 Defaults["raid-sorting-method"] = "GROUP"
+Defaults["raid-show-solo"] = false
 Defaults["raid-font"] = "Roboto"
 Defaults["raid-font-size"] = 12
 Defaults["raid-font-flags"] = ""
@@ -591,6 +592,10 @@ local TestRaid = function()
 	end
 end
 
+local UpdateShowSolo = function(value)
+	_G["HydraUI Raid"]:SetAttribute("showSolo", value)
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Raid"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("raid-enable", Settings["raid-enable"], Language["Enable Raid Module"], Language["Enable the raid frames module"], ReloadUI):RequiresReload(true)
@@ -627,6 +632,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Raid"], funct
 	left:CreateSlider("raid-out-of-range", Settings["raid-out-of-range"], 0, 100, 5, Language["Out of Range"], Language["Set the opacity of raid members out of your range"])
 	
 	left:CreateHeader(Language["Attributes"])
+	left:CreateSwitch("raid-show-solo", Settings["raid-show-solo"], Language["Show Solo"], Language["Display the raid frames while not in a group"], UpdateShowSolo)
 	left:CreateSlider("raid-x-offset", Settings["raid-x-offset"], -10, 10, 1, Language["X Offset"], Language["Set the x offset of raid units from eachother"], UpdateRaidXOffset)
 	left:CreateSlider("raid-y-offset", Settings["raid-y-offset"], -10, 10, 1, Language["Y Offset"], Language["Set the y offset of raid units from eachother"], UpdateRaidYOffset)
 	left:CreateSlider("raid-units-per-column", Settings["raid-units-per-column"], 1, 40, 1, Language["Units Per Column"], Language["Set the maximum number of units per column"], UpdateRaidUnitsPerColumn)

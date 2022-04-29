@@ -84,12 +84,16 @@ function MicroButtons:UpdateMicroButtonsParent()
 	end
 end
 
-function MicroButtons:PositionButtons(bar, numbuttons, perrow, spacing)
-	if (numbuttons < perrow) then
-		perrow = numbuttons
+function MicroButtons:PositionButtons()
+	local NumButtons = #MicroButtons.Buttons
+	local PerRow = Settings["micro-buttons-per-row"]
+	local Spacing = Settings["micro-buttons-gap"]
+
+	if (NumButtons < PerRow) then
+		PerRow = NumButtons
 	end
 	
-	local Columns = ceil(numbuttons / perrow)
+	local Columns = ceil(NumButtons / PerRow)
 	
 	if (Columns < 1) then
 		Columns = 1
@@ -98,8 +102,8 @@ function MicroButtons:PositionButtons(bar, numbuttons, perrow, spacing)
 	local Width, Height = MicroButtons.Buttons[1]:GetSize()
 	
 	-- Bar sizing
-	bar:SetWidth((Width * perrow) + (spacing * (perrow + 1)))
-	bar:SetHeight((Height * Columns) + (spacing * (Columns + 1)))
+	self.Panel:SetWidth((Width + Spacing) * PerRow - (Spacing * 2))
+	self.Panel:SetHeight((Height * Columns) + (Spacing * (Columns + 1)))
 	
 	-- Actual moving
 	for i = 1, #MicroButtons.Buttons do
@@ -108,17 +112,13 @@ function MicroButtons:PositionButtons(bar, numbuttons, perrow, spacing)
 		Button:ClearAllPoints()
 		
 		if (i == 1) then
-			Button:SetPoint("TOPLEFT", MicroButtons.Panel, spacing, -spacing)
-		elseif ((i - 1) % perrow == 0) then
-			Button:SetPoint("TOP", MicroButtons.Buttons[i - perrow], "BOTTOM", 0, -spacing)
+			Button:SetPoint("LEFT", MicroButtons.Panel, Spacing, 0)
+		elseif ((i - 1) % PerRow == 0) then
+			Button:SetPoint("TOP", MicroButtons.Buttons[i - PerRow], "BOTTOM", 0, -Spacing)
 		else
-			Button:SetPoint("LEFT", MicroButtons.Buttons[i - 1], "RIGHT", spacing, 0)
+			Button:SetPoint("LEFT", MicroButtons.Buttons[i - 1], "RIGHT", (Spacing - 1), 0)
 		end
 	end
-end
-
-function MicroButtons:MoveMicroButtons()
-	MicroButtons:PositionButtons(MicroButtons.Panel, #MicroButtons.Buttons, Settings["micro-buttons-per-row"], Settings["micro-buttons-gap"])
 end
 
 function MicroButtons:Load()
@@ -201,12 +201,6 @@ function MicroButtons:Load()
 		Highlight:SetPoint("BOTTOMRIGHT", self.Buttons[i], -2, 2)
 		Highlight:SetTexture(Assets:GetTexture("Blank"))
 		Highlight:SetVertexColor(1, 1, 1, 0.2)
-		
-		if (i == 1) then
-			self.Buttons[i]:SetPoint("LEFT", self.Panel, 2, 0)
-		else
-			self.Buttons[i]:SetPoint("LEFT", self.Buttons[i-1], "RIGHT", 0, 0)
-		end
 	end
 	
 	MicroButtonPortrait:ClearAllPoints()
@@ -220,9 +214,10 @@ function MicroButtons:Load()
 	end
 	
 	hooksecurefunc("UpdateMicroButtonsParent", self.UpdateMicroButtonsParent)
-	hooksecurefunc("MoveMicroButtons", self.MoveMicroButtons)
+	hooksecurefunc("MoveMicroButtons", self.PositionButtons)
 	
 	self:UpdateVisibility()
+	self:PositionButtons()
 end
 
 local UpdateMicroVisibility = function(value)
@@ -230,7 +225,7 @@ local UpdateMicroVisibility = function(value)
 end
 
 local UpdateMicroPositions = function()
-	MicroButtons:MoveMicroButtons()
+	MicroButtons:PositionButtons()
 end
 
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Action Bars"], function(left, right)

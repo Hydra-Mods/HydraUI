@@ -823,6 +823,12 @@ function Chat:MoveChatFrames()
 		Frame:SetFrameStrata("MEDIUM")
 		Frame:SetJustifyH("LEFT")
 		
+		if Frame.Tab then -- only Voice has .Tab
+			FCF_UnDockFrame(Frame)
+			FCF_SetLocked(Frame, false)
+			FCF_Close(Frame)
+		end
+		
 		if (i == 1) then
 			Frame:SetUserPlaced(true)
 			Frame:ClearAllPoints()
@@ -840,10 +846,6 @@ function Chat:MoveChatFrames()
 				Frame:ClearAllPoints()
 				Frame:SetPoint("TOPLEFT", Window.Middle, 4 + Settings["ui-border-thickness"], -(4 + Settings["ui-border-thickness"]))
 				Frame:SetPoint("BOTTOMRIGHT", Window.Middle, -(4 + Settings["ui-border-thickness"]), 4 + Settings["ui-border-thickness"])
-			--elseif (not Frame.isDocked and not Frame.isLocked and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) and Frame.name ~= Settings["rw-single-embed"]) then
-			elseif (not Frame.isDocked and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) and Frame.name ~= Settings["rw-single-embed"]) then
-				FCF_UnDockFrame(Frame)
-				FCF_DockFrame(Frame, #FCFDock_GetChatFrames(GENERAL_CHAT_DOCK) + 1, true)
 			end
 		end
 		
@@ -852,7 +854,6 @@ function Chat:MoveChatFrames()
 		end
 		
 		FCF_SetChatWindowFontSize(nil, Frame, Settings["chat-font-size"])
-		--FCF_SavePositionAndDimensions(Frame)
 		
 		local Font, IsPixel = Assets:GetFont(Settings["chat-font"])
 		
@@ -918,7 +919,7 @@ end
 function Chat:Install()
 	-- General
 	FCF_ResetChatWindows()
-	FCF_SetLocked(ChatFrame1, 1)
+	FCF_SetLocked(ChatFrame1, true)
 	FCF_SetWindowName(ChatFrame1, Language["General"])
 	ChatFrame1:Show()
 	
@@ -960,15 +961,14 @@ function Chat:Install()
 	
 	-- Combat Log
 	FCF_DockFrame(ChatFrame2)
-	FCF_SetLocked(ChatFrame2, 1)
+	FCF_SetLocked(ChatFrame2, true)
 	FCF_SetWindowName(ChatFrame2, Language["Combat"])
 	ChatFrame2:Show()
 	
 	-- Whispers
 	local Whispers = FCF_OpenNewWindow(Language["Whispers"])
-	FCF_SetLocked(Whispers, 1)
+	FCF_SetLocked(Whispers, true)
 	FCF_DockFrame(Whispers)
-	Whispers:Show()
 	
 	ChatFrame_RemoveAllMessageGroups(Whispers)
 	ChatFrame_AddMessageGroup(Whispers, "WHISPER")
@@ -977,9 +977,8 @@ function Chat:Install()
 	
 	-- Trade
 	local Trade = FCF_OpenNewWindow(Language["Trade"])
-	FCF_SetLocked(Trade, 1)
+	FCF_SetLocked(Trade, true)
 	FCF_DockFrame(Trade)
-	Trade:Show()
 	
 	ChatFrame_RemoveAllMessageGroups(Trade)
 	ChatFrame_AddChannel(Trade, TRADE)
@@ -987,9 +986,8 @@ function Chat:Install()
 	
 	-- Loot
 	local Loot = FCF_OpenNewWindow(Language["Loot"])
-	FCF_SetLocked(Loot, 1)
+	FCF_SetLocked(Loot, true)
 	FCF_DockFrame(Loot)
-	Loot:Show()
 	
 	ChatFrame_RemoveAllMessageGroups(Loot)
 	ChatFrame_AddMessageGroup(Loot, "COMBAT_XP_GAIN")
@@ -1009,7 +1007,6 @@ function Chat:Install()
 	C_CVar.SetCVar("removeChatDelay", "1")
 	C_CVar.SetCVar("colorChatNamesByClass", "1")
 	C_CVar.SetCVar("chatClassColorOverride", "0")
-	C_CVar.SetCVar("ENABLE_SPEECH_TO_TEXT_TRANSCRIPTION", "0")
 	C_CVar.SetCVar("speechToText", "0")
 	
 	--Chat:MoveChatFrames()

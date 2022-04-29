@@ -11,8 +11,10 @@ local User = HydraUI.UserName .. "-" .. HydraUI.UserRealm
 local SendAddonMessage = C_ChatInfo.SendAddonMessage
 
 local Update = HydraUI:NewModule("Update")
+Update.Timer = 3
 
-Update.Queue = {}
+local Tables = {}
+local Queue = {}
 
 function Update:OnMouseUp()
 	HydraUI:print(Language["You can get an updated version of HydraUI at https://www.curseforge.com/wow/addons/hydraui"])
@@ -20,10 +22,19 @@ function Update:OnMouseUp()
 end
 
 function Update:QueueChannel(channel, target)
-	table.insert(self.Queue, {channel, target})
+	local Data
 	
-	if (#self.Queue > 0) then
-		self.Timer = 3
+	if (#Tables == 0) then
+		Data = {channel, target}
+	else
+		Data = tremove(Tables, 1)
+		Data[1] = channel
+		Data[2] = target
+	end
+	
+	table.insert(Queue, Data)
+	
+	if (not self:GetScript("OnUpdate")) then
 		self:SetScript("OnUpdate", self.OnUpdate)
 	end
 end
@@ -32,13 +43,15 @@ function Update:OnUpdate(elapsed)
 	self.Timer = self.Timer - elapsed
 	
 	if (self.Timer < 0) then
-		local Args = table.remove(self.Queue, 1)
+		local Data = table.remove(Queue, 1)
 		
-		SendAddonMessage("HydraUI-Version", AddOnVersion, Args[1], Args[2])
+		SendAddonMessage("HydraUI-Version", AddOnVersion, Data[1], Data[2])
+		
+		table.insert(Tables, Data)
 		
 		self.Timer = 3
 		
-		if (#self.Queue == 0) then
+		if (#Queue == 0) then
 			self:SetScript("OnUpdate", nil)
 		end
 	end

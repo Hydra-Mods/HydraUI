@@ -3,21 +3,39 @@ local HydraUI, Language, Assets, Settings = select(2, ...):get()
 local UnitArmor = UnitArmor
 local Label = Language["Armor"]
 
-local OnEnter = function(self)
-	self:SetTooltip()
-	
-	local Base, EffectiveArmor = UnitArmor("player")
-    local ArmorReduction = PaperDollFrame_GetArmorReduction(EffectiveArmor, UnitEffectiveLevel("player"))
-	local AgainstTarget = PaperDollFrame_GetArmorReductionAgainstTarget(EffectiveArmor)
-	
-	GameTooltip:AddLine(format("%s %s", Label, HydraUI:Comma(EffectiveArmor)), 1, 1, 1)
-	GameTooltip:AddLine(format(STAT_ARMOR_TOOLTIP, ArmorReduction), nil, nil, nil, true)
-	
-	if AgainstTarget then
-		GameTooltip:AddLine(format(STAT_ARMOR_TARGET_TOOLTIP, AgainstTarget))
+local OnEnter
+
+if HydraUI.IsMainline then
+	OnEnter = function(self)
+		self:SetTooltip()
+		
+		local Base, EffectiveArmor = UnitArmor("player")
+		local ArmorReduction = PaperDollFrame_GetArmorReduction(EffectiveArmor, UnitEffectiveLevel("player"))
+		local AgainstTarget = PaperDollFrame_GetArmorReductionAgainstTarget(EffectiveArmor)
+		
+		GameTooltip:AddLine(format("%s %s", Label, HydraUI:Comma(EffectiveArmor)), 1, 1, 1)
+		GameTooltip:AddLine(format(STAT_ARMOR_TOOLTIP, ArmorReduction), nil, nil, nil, true)
+		
+		if AgainstTarget then
+			GameTooltip:AddLine(format(STAT_ARMOR_TARGET_TOOLTIP, AgainstTarget))
+		end
+		
+		GameTooltip:Show()
 	end
-	
-	GameTooltip:Show()
+else
+	OnEnter = function(self)
+		self:SetTooltip()
+		
+		local Base, EffectiveArmor = UnitArmor("player")
+		local Level = UnitLevel("player")
+		local ArmorReduction = EffectiveArmor / ((85 * Level) + 400)
+		ArmorReduction = 100 * (ArmorReduction / (ArmorReduction + 1))
+		
+		GameTooltip:AddLine(format("%s %s", Label, HydraUI:Comma(EffectiveArmor)), 1, 1, 1)
+		GameTooltip:AddLine(format(STAT_ARMOR_TOOLTIP, ArmorReduction), nil, nil, nil, true)
+		
+		GameTooltip:Show()
+	end
 end
 
 local OnLeave = function()

@@ -605,6 +605,7 @@ function Tooltips:StyleStatusBar()
 	GameTooltipStatusBar.Backdrop:SetPoint("BOTTOMRIGHT", GameTooltipStatusBar, Adjust, -Adjust)
 	
 	HydraUI:AddBackdrop(GameTooltipStatusBar.Backdrop)
+	GameTooltipStatusBar.Backdrop.Outside:SetFrameLevel(GameTooltip:GetFrameLevel() - 1)
 	
 	GameTooltipStatusBar.BG2 = GameTooltipStatusBar:CreateTexture(nil, "BACKGROUND")
 	GameTooltipStatusBar.BG2:SetAllPoints(GameTooltipStatusBar)

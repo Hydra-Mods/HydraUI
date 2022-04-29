@@ -1,4 +1,4 @@
-local AddOn, Namespace = ... -- HydraUI was born on June 6th, 2019
+local AddOn, Namespace = ... -- HydraUI was born on May 22, 2019
 
 -- Data storage
 local Assets = {}

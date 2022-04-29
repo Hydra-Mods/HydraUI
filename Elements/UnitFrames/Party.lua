@@ -21,6 +21,7 @@ Defaults["party-power-color"] = "POWER"
 Defaults["party-power-smooth"] = true
 Defaults["party-point"] = "LEFT"
 Defaults["party-spacing"] = 2
+Defaults["party-show-solo"] = false
 Defaults["party-font"] = "Roboto"
 Defaults["party-font-size"] = 12
 Defaults["party-font-flags"] = ""
@@ -696,6 +697,10 @@ local TestParty = function()
 	end
 end
 
+local UpdateShowSolo = function(value)
+	_G["HydraUI Party"]:SetAttribute("showSolo", value)
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Party"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("party-enable", Settings["party-enable"], Language["Enable Party Module"], Language["Enable the party frames module"], ReloadUI):RequiresReload(true)
@@ -737,6 +742,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Party"], func
 	left:CreateSlider("party-out-of-range", Settings["party-out-of-range"], 0, 100, 5, Language["Out of Range"], Language["Set the opacity of party members out of your range"])
 	
 	left:CreateHeader(Language["Attributes"])
+	left:CreateSwitch("party-show-solo", Settings["party-show-solo"], Language["Show Solo"], Language["Display the frames while not in a group"], UpdateShowSolo)
 	left:CreateDropdown("party-point", Settings["party-point"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Top"]] = "TOP", [Language["Bottom"]] = "BOTTOM"}, Language["Anchor Point"], Language["Set the anchor point for the party frames"], ReloadUI):RequiresReload(true)
 	left:CreateSlider("party-spacing", Settings["party-spacing"], -10, 10, 1, Language["Set Spacing"], Language["Set the spacing of party units from eachother"], UpdatePartySpacing)
 	
