@@ -36,6 +36,13 @@ local UF = HydraUI:GetModule("Unit Frames")
 local GetNamePlates = C_NamePlate.GetNamePlates
 local type = type
 
+local ThreatPostUpdate = function(self, unit, status, r, g, b)
+	if (status and status > 0) then
+		self.Top:SetVertexColor(r, g, b)
+		self.Bottom:SetVertexColor(r, g, b)
+	end
+end
+
 HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 	self:SetScale(Settings["ui-scale"])
 	self:SetSize(Settings["nameplates-width"], Settings["nameplates-height"])
@@ -76,7 +83,7 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 	
-	local HealthBG = Health:CreateTexture(nil, "BACKGROUND")
+	local HealthBG = Health:CreateTexture(nil, "BORDER")
 	HealthBG:SetPoint("TOPLEFT", Health, 0, 0)
 	HealthBG:SetPoint("BOTTOMRIGHT", Health, 0, 0)
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
@@ -132,6 +139,7 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 	Threat:SetAllPoints(Health)
 	Threat:SetFrameLevel(Health:GetFrameLevel() - 1)
 	Threat.feedbackUnit = "player"
+	Threat.PostUpdate = ThreatPostUpdate
 	
 	Threat.Top = Threat:CreateTexture(nil, "BORDER")
 	Threat.Top:SetHeight(6)

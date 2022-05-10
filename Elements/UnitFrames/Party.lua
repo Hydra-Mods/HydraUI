@@ -344,6 +344,12 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	self.PhaseIndicator = PhaseIndicator
 end
 
+local ThreatPostUpdate = function(self, unit, status, r, g, b)
+	if (status and status > 0) then
+		self:SetBackdropBorderColor(r, g, b)
+	end
+end
+
 HydraUI.StyleFuncs["partypet"] = function(self, unit)
 	-- General
 	self:RegisterForClicks("AnyUp")
@@ -354,6 +360,15 @@ HydraUI.StyleFuncs["partypet"] = function(self, unit)
 	Backdrop:SetAllPoints()
 	Backdrop:SetTexture(Assets:GetTexture("Blank"))
 	Backdrop:SetVertexColor(0, 0, 0)
+	
+	-- Threat
+	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	Threat:SetPoint("TOPLEFT", -1, 1)
+	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+	Threat:SetBackdrop(HydraUI.Outline)
+	Threat.PostUpdate = ThreatPostUpdate
+	
+	self.ThreatIndicator = Threat
 	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)

@@ -37,6 +37,12 @@ local RaidDebuffFilter = function(self, unit, icon, name, texture, count, dtype,
 	end
 end
 
+local ThreatPostUpdate = function(self, unit, status, r, g, b)
+	if (status and status > 0) then
+		self:SetBackdropBorderColor(r, g, b)
+	end
+end
+
 HydraUI.StyleFuncs["raid"] = function(self, unit)
 	-- General
 	self:RegisterForClicks("AnyUp")
@@ -47,6 +53,15 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	Backdrop:SetAllPoints()
 	Backdrop:SetTexture(Assets:GetTexture("Blank"))
 	Backdrop:SetVertexColor(0, 0, 0)
+	
+	-- Threat
+	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	Threat:SetPoint("TOPLEFT", -1, 1)
+	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+	Threat:SetBackdrop(HydraUI.Outline)
+	Threat.PostUpdate = ThreatPostUpdate
+	
+	self.ThreatIndicator = Threat
 	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
@@ -161,7 +176,7 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 		Auras.icons = {}
 		Auras.PostCreateIcon = UF.PostCreateAuraWatchIcon
 		
-		for key, spell in pairs(UF.BuffIDs[HydraUI.UserClass]) do
+		for key, spell in next, UF.BuffIDs[HydraUI.UserClass] do
 			local Icon = CreateFrame("Frame", nil, Auras)
 			Icon.spellID = spell[1]
 			Icon.anyUnit = spell[4]

@@ -39,7 +39,7 @@
 	<Script file="elements\smooth.lua"/>
 	<Script file="elements\tags.lua"/>
 	<Script file="elements\targetindicator.lua"/>
-	<Script file="elements\threatindicator_Classic.lua"/>
+	<Script file="elements\threatindicator.lua"/>
 	
 	<Script file="finalize.lua"/>
 

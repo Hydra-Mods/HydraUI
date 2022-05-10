@@ -102,8 +102,8 @@ function MicroButtons:PositionButtons()
 	local Width, Height = MicroButtons.Buttons[1]:GetSize()
 	
 	-- Bar sizing
-	self.Panel:SetWidth((Width + Spacing) * PerRow - (Spacing * 2))
-	self.Panel:SetHeight((Height * Columns) + (Spacing * (Columns + 1)))
+	MicroButtons.Panel:SetWidth((Width + Spacing) * PerRow - (Spacing * 2))
+	MicroButtons.Panel:SetHeight((Height * Columns) + (Spacing * (Columns + 1)))
 	
 	-- Actual moving
 	for i = 1, #MicroButtons.Buttons do

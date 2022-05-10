@@ -4,14 +4,21 @@ local tonumber = tonumber
 local IsInGuild = IsInGuild
 local IsInGroup = IsInGroup
 local IsInRaid = IsInRaid
+local GetNumGroupMembers = GetNumGroupMembers
+local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
+local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 
 local AddOnVersion = HydraUI.UIVersion
 local AddOnNum = tonumber(HydraUI.UIVersion)
 local User = HydraUI.UserName .. "-" .. HydraUI.UserRealm
 local SendAddonMessage = C_ChatInfo.SendAddonMessage
+local tinsert = table.insert
+local tremove = table.remove
 
 local Update = HydraUI:NewModule("Update")
-Update.Timer = 3
+Update.SentHome = false
+Update.SentInst = false
+Update.Timer = 5
 
 local Tables = {}
 local Queue = {}
@@ -32,7 +39,7 @@ function Update:QueueChannel(channel, target)
 		Data[2] = target
 	end
 	
-	table.insert(Queue, Data)
+	tinsert(Queue, Data)
 	
 	if (not self:GetScript("OnUpdate")) then
 		self:SetScript("OnUpdate", self.OnUpdate)
@@ -43,13 +50,13 @@ function Update:OnUpdate(elapsed)
 	self.Timer = self.Timer - elapsed
 	
 	if (self.Timer < 0) then
-		local Data = table.remove(Queue, 1)
+		local Data = tremove(Queue, 1)
 		
 		SendAddonMessage("HydraUI-Version", AddOnVersion, Data[1], Data[2])
 		
-		table.insert(Tables, Data)
+		tinsert(Tables, Data)
 		
-		self.Timer = 3
+		self.Timer = 5
 		
 		if (#Queue == 0) then
 			self:SetScript("OnUpdate", nil)
@@ -58,42 +65,37 @@ function Update:OnUpdate(elapsed)
 end
 
 function Update:PLAYER_ENTERING_WORLD()
-	if IsInGuild() then
-		self:QueueChannel("GUILD")
-	else
-		self:RegisterEvent("GUILD_ROSTER_UPDATE")
-	end
-	
 	if (not HydraUI.IsMainline) then
 		self:QueueChannel("YELL")
 	end
+	
+	self:GROUP_ROSTER_UPDATE()
 end
 
-function Update:GUILD_ROSTER_UPDATE(update)
-	if (not IsInGuild() or not update) then
-		return
+function Update:GUILD_ROSTER_UPDATE()
+	if IsInGuild() then
+		self:QueueChannel("GUILD")
+		
+		self:UnregisterEvent("GUILD_ROSTER_UPDATE")
 	end
-	
-	self:QueueChannel("GUILD")
-	
-	self:UnregisterEvent("GUILD_ROSTER_UPDATE")
 end
 
-function Update:GROUP_ROSTER_UPDATE() -- Be sure to check that PEW picks this up
-	if IsInRaid() then
-		if IsInRaid(LE_PARTY_CATEGORY_INSTANCE) then
-			self:QueueChannel("INSTANCE_CHAT")
-		else
-			self:QueueChannel("RAID")
-		end
+function Update:GROUP_ROSTER_UPDATE()
+	local Home = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME)
+	local Instance = GetNumGroupMembers(LE_PARTY_CATEGORY_INSTANCE)
+	
+	if (Home == 0 and self.SentHome) then
+		self.SentHome = false
+	elseif (Instance == 0 and self.SentInst) then
+		self.SentInst = false
 	end
 	
-	if IsInGroup() then
-		if IsInGroup(LE_PARTY_CATEGORY_INSTANCE) then
-			self:QueueChannel("INSTANCE_CHAT")
-		else
-			self:QueueChannel("PARTY")
-		end
+	if (Instance > 0 and not self.SentInst) then
+		self:QueueChannel("INSTANCE_CHAT")
+		self.SentInst = true
+	elseif (Home > 0 and not self.SentHome) then
+		self:QueueChannel(IsInRaid(LE_PARTY_CATEGORY_HOME) and "RAID" or IsInGroup(LE_PARTY_CATEGORY_HOME) and "PARTY")
+		self.SentHome = true
 	end
 end
 
@@ -109,7 +111,6 @@ function Update:CHAT_MSG_ADDON(prefix, message, channel, sender)
 	elseif (message > AddOnNum) then -- We're behind!
 		HydraUI:SendAlert(Language["New Version!"], format(Language["Update to version |cFF%s%s|r"], Settings["ui-header-font-color"], message), nil, self.OnMouseUp, true)
 		
-		-- Store this higher version and tell anyone else who asks
 		AddOnNum = message
 		AddOnVersion = tostring(message)
 		
@@ -123,6 +124,7 @@ function Update:OnEvent(event, ...)
 	end
 end
 
+Update:RegisterEvent("GUILD_ROSTER_UPDATE")
 Update:RegisterEvent("PLAYER_ENTERING_WORLD")
 Update:RegisterEvent("GROUP_ROSTER_UPDATE")
 Update:RegisterEvent("CHAT_MSG_ADDON")

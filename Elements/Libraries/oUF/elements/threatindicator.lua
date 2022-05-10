@@ -32,6 +32,7 @@ local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
+local UnitThreatSituation = UnitThreatSituation
 local unitExists = Private.unitExists
 
 local function Update(self, event, unit)

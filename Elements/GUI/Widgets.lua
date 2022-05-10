@@ -2,7 +2,7 @@ local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 -- Locals
 local type = type
-local pairs = pairs
+local next = next
 local tonumber = tonumber
 local tinsert = table.insert
 local tremove = table.remove
@@ -2138,7 +2138,7 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	Dropdown.Menu.BG:EnableMouse(true)
 	Dropdown.Menu.BG:SetScript("OnMouseWheel", function() end) -- Just to prevent misclicks from going through the frame
 	
-	for Key, Value in pairs(values) do
+	for Key, Value in next, values do
 		local MenuItem = Dropdown:CreateSelection(Key, Value)
 		
 		if (specific == "Texture") then

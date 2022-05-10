@@ -134,6 +134,8 @@ if GetThreatStatusColor then
 	for i = 0, 3 do
 		colors.threat[i] = oUF:CreateColor(GetThreatStatusColor(i))
 	end
+else
+	colors.threat = {{1, 1, 0.47}, {1, 0.6, 0}, {1, 0, 0}}
 end
 
 local function colorsAndPercent(a, b, ...)
