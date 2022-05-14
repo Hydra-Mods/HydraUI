@@ -62,11 +62,10 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 	
-	local HealthBG = self:CreateTexture(nil, "BORDER")
-	HealthBG:SetPoint("TOPLEFT", Health, 0, 0)
-	HealthBG:SetPoint("BOTTOMRIGHT", Health, 0, 0)
+	local HealthBG = Health:CreateTexture(nil, "BORDER")
+	HealthBG:SetAllPoints()
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	HealthBG:SetAlpha(0.2)
+	HealthBG.multiplier = 0.2
 	
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(HealthLeft, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])

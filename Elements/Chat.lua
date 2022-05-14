@@ -829,6 +829,26 @@ function Chat:MoveChatFrames()
 			FCF_Close(Frame)
 		end
 		
+		if (Settings["right-window-enable"] and (Settings["right-window-size"] == "SINGLE") and (Frame.name and Frame.name == Settings["rw-single-embed"])) then
+				local Window = HydraUI:GetModule("Right Window")
+				
+				FCF_UnDockFrame(Frame)
+				FCF_SetTabPosition(Frame, 0)
+				
+				Frame:SetMovable(true)
+				Frame:SetUserPlaced(true)
+				Frame:ClearAllPoints()
+				Frame:SetPoint("TOPLEFT", Window.Middle, 4 + Settings["ui-border-thickness"], -(4 + Settings["ui-border-thickness"]))
+				Frame:SetPoint("BOTTOMRIGHT", Window.Middle, -(4 + Settings["ui-border-thickness"]), 4 + Settings["ui-border-thickness"])
+		else
+			if (i == 1) then
+				Frame:SetUserPlaced(true)
+				Frame:ClearAllPoints()
+				Frame:SetPoint("TOPLEFT", self.Middle, 4 + Settings["ui-border-thickness"], -(4 + Settings["ui-border-thickness"]))
+				Frame:SetPoint("BOTTOMRIGHT", self.Middle, -(4 + Settings["ui-border-thickness"]), 4 + Settings["ui-border-thickness"])
+			end
+		end
+		--[[
 		if (i == 1) then
 			Frame:SetUserPlaced(true)
 			Frame:ClearAllPoints()
@@ -847,7 +867,7 @@ function Chat:MoveChatFrames()
 				Frame:SetPoint("TOPLEFT", Window.Middle, 4 + Settings["ui-border-thickness"], -(4 + Settings["ui-border-thickness"]))
 				Frame:SetPoint("BOTTOMRIGHT", Window.Middle, -(4 + Settings["ui-border-thickness"]), 4 + Settings["ui-border-thickness"])
 			end
-		end
+		end]]
 		
 		if (not Frame.isLocked) then
 			FCF_SetLocked(Frame, true)

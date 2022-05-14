@@ -519,7 +519,7 @@ function Tooltips:AddHooks()
 	ItemRefTooltip:HookScript("OnTooltipSetItem", OnItemRefTooltipSetItem)
 	
 	hooksecurefunc("GameTooltip_SetDefaultAnchor", SetDefaultAnchor)
-	hooksecurefunc("SharedTooltip_SetBackdropStyle", SetTooltipStyle)
+	--hooksecurefunc("SharedTooltip_SetBackdropStyle", SetTooltipStyle)
 	
 	hooksecurefunc(GameTooltip, "SetUnitAura", OnTooltipSetAura)
 	hooksecurefunc(GameTooltip, "SetUnitBuff", OnTooltipSetAura)
@@ -635,15 +635,15 @@ local ItemRefCloseOnLeave = function(self)
 end
 
 local ItemRefCloseOnMouseUp = function(self)
-	self.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-header-texture-color"]))
+	self.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
 	ItemRefTooltip:Hide()
 end
 
 local ItemRefCloseOnMouseDown = function(self)
-	local R, G, B = HydraUI:HexToRGB(Settings["ui-header-texture-color"])
+	local R, G, B = HydraUI:HexToRGB(Settings["ui-widget-bright-color"])
 	
-	self.Texture:SetVertexColor(R * 0.85, G * 0.85, B * 0.85)
+	self.Texture:SetVertexColor(R * 0.5, G * 0.5, B * 0.5)
 end
 
 function Tooltips:SkinItemRef()
@@ -656,7 +656,7 @@ function Tooltips:SkinItemRef()
 	-- Close button
 	local CloseButton = CreateFrame("Frame", nil, ItemRefTooltip, "BackdropTemplate")
 	CloseButton:SetSize(20, 20)
-	CloseButton:SetPoint("TOPRIGHT", ItemRefTooltip, -3, -3)
+	CloseButton:SetPoint("TOPRIGHT", ItemRefTooltip, -3, -4)
 	CloseButton:SetBackdrop(HydraUI.BackdropAndBorder)
 	CloseButton:SetBackdropColor(0, 0, 0, 0)
 	CloseButton:SetBackdropBorderColor(0, 0, 0)
@@ -669,7 +669,7 @@ function Tooltips:SkinItemRef()
 	CloseButton.Texture:SetPoint("TOPLEFT", CloseButton, 1, -1)
 	CloseButton.Texture:SetPoint("BOTTOMRIGHT", CloseButton, -1, 1)
 	CloseButton.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	CloseButton.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-header-texture-color"]))
+	CloseButton.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-bright-color"]))
 	
 	CloseButton.Cross = CloseButton:CreateTexture(nil, "OVERLAY")
 	CloseButton.Cross:SetPoint("CENTER", CloseButton, 0, 0)

@@ -105,6 +105,19 @@ local AuraOnUpdate = function(self, ela)
 	end
 end
 
+UF.ThreatPostUpdate = function(self, unit, status, r, g, b)
+	if (status and status > 0) then
+		self:SetBackdropBorderColor(r, g, b)
+	end
+end
+
+UF.NPThreatPostUpdate = function(self, unit, status, r, g, b)
+	if (status and status > 0) then
+		self.Top:SetVertexColor(r, g, b)
+		self.Bottom:SetVertexColor(r, g, b)
+	end
+end
+
 if HydraUI.IsClassic then
 	local LCD = LibStub("LibClassicDurations")
 	local UnitAura = UnitAura

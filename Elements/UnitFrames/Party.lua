@@ -64,6 +64,15 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	Backdrop:SetTexture(Assets:GetTexture("Blank"))
 	Backdrop:SetVertexColor(0, 0, 0)
 	
+	-- Threat
+	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	Threat:SetPoint("TOPLEFT", -1, 1)
+	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+	Threat:SetBackdrop(HydraUI.Outline)
+	Threat.PostUpdate = UF.ThreatPostUpdate
+	
+	self.ThreatIndicator = Threat
+	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
@@ -344,12 +353,6 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	self.PhaseIndicator = PhaseIndicator
 end
 
-local ThreatPostUpdate = function(self, unit, status, r, g, b)
-	if (status and status > 0) then
-		self:SetBackdropBorderColor(r, g, b)
-	end
-end
-
 HydraUI.StyleFuncs["partypet"] = function(self, unit)
 	-- General
 	self:RegisterForClicks("AnyUp")
@@ -366,7 +369,7 @@ HydraUI.StyleFuncs["partypet"] = function(self, unit)
 	Threat:SetPoint("TOPLEFT", -1, 1)
 	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
 	Threat:SetBackdrop(HydraUI.Outline)
-	Threat.PostUpdate = ThreatPostUpdate
+	Threat.PostUpdate = UF.ThreatPostUpdate
 	
 	self.ThreatIndicator = Threat
 	
@@ -386,11 +389,10 @@ HydraUI.StyleFuncs["partypet"] = function(self, unit)
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 	
-	local HealthBG = self:CreateTexture(nil, "BORDER")
-	HealthBG:SetPoint("TOPLEFT", Health, 0, 0)
-	HealthBG:SetPoint("BOTTOMRIGHT", Health, 0, 0)
+	local HealthBG = Health:CreateTexture(nil, "BORDER")
+	HealthBG:SetAllPoints()
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	HealthBG:SetAlpha(0.2)
+	HealthBG.multiplier = 0.2
 	
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(HealthLeft, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])

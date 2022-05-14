@@ -22,7 +22,7 @@ local Previous = {
 
 local Donors = {
 	"Innie", "Brightsides", "Erthelmi", "Gene", "JDoubleU00", "Duds", "Shazlen", "Shawna W.", "Dillan", "Bruce N.", "last", "Wrynn", "Ryxân", "Andrei B.", "Anthony M.", "AtticaOnline", "Hawksworth", "WingZero",
-	"Elizabeth T.", "Quadra", "Brandon W.",
+	"Elizabeth T.", "Quadra", "Brandon W.", "Richard S.",
 }
 
 GUI:AddWidgets(Language["Info"], Language["Credits"], function(left, right)

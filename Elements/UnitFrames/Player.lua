@@ -41,12 +41,21 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
 	
+	self.AuraParent = self
+	
 	local Backdrop = self:CreateTexture(nil, "BACKGROUND")
 	Backdrop:SetAllPoints()
 	Backdrop:SetTexture(Assets:GetTexture("Blank"))
 	Backdrop:SetVertexColor(0, 0, 0)
 	
-	self.AuraParent = self
+	-- Threat
+	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	Threat:SetPoint("TOPLEFT", -1, 1)
+	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+	Threat:SetBackdrop(HydraUI.Outline)
+	Threat.PostUpdate = UF.ThreatPostUpdate
+	
+	self.ThreatIndicator = Threat
 	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
@@ -89,11 +98,10 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		self.AbsorbsBar = AbsorbsBar
 	end
 	
-	local HealthBG = self:CreateTexture(nil, "BORDER")
-	HealthBG:SetPoint("TOPLEFT", Health, 0, 0)
-	HealthBG:SetPoint("BOTTOMRIGHT", Health, 0, 0)
+	local HealthBG = Health:CreateTexture(nil, "BORDER")
+	HealthBG:SetAllPoints()
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	HealthBG:SetAlpha(0.2)
+	HealthBG.multiplier = 0.2
 	
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(HealthLeft, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])

@@ -37,12 +37,6 @@ local RaidDebuffFilter = function(self, unit, icon, name, texture, count, dtype,
 	end
 end
 
-local ThreatPostUpdate = function(self, unit, status, r, g, b)
-	if (status and status > 0) then
-		self:SetBackdropBorderColor(r, g, b)
-	end
-end
-
 HydraUI.StyleFuncs["raid"] = function(self, unit)
 	-- General
 	self:RegisterForClicks("AnyUp")
@@ -56,10 +50,11 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	
 	-- Threat
 	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	Threat:SetPoint("TOPLEFT", -1, 1)
-	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+	--Threat:SetPoint("TOPLEFT", -1, 1)
+	--Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+	Threat:SetAllPoints()
 	Threat:SetBackdrop(HydraUI.Outline)
-	Threat.PostUpdate = ThreatPostUpdate
+	Threat.PostUpdate = UF.ThreatPostUpdate
 	
 	self.ThreatIndicator = Threat
 	
@@ -73,11 +68,10 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	Health:SetReverseFill(Settings["raid-health-reverse"])
 	Health:SetOrientation(Settings["raid-health-orientation"])
 	
-	local HealthBG = self:CreateTexture(nil, "BORDER")
-	HealthBG:SetPoint("TOPLEFT", Health, 0, 0)
-	HealthBG:SetPoint("BOTTOMRIGHT", Health, 0, 0)
+	local HealthBG = Health:CreateTexture(nil, "BORDER")
+	HealthBG:SetAllPoints()
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	HealthBG:SetAlpha(0.2)
+	HealthBG.multiplier = 0.2
 	
 	if HydraUI.IsMainline then
 		local AbsorbsBar = CreateFrame("StatusBar", nil, self)
