@@ -508,6 +508,10 @@ local OnTooltipSetAura = function(self, unit, index, filter)
 	self:Show()
 end
 
+local StripBackdrop = function(self)
+	self.NineSlice:SetAlpha(0)
+end
+
 function Tooltips:AddHooks()
 	for i = 1, #self.Handled do
 		self.Handled[i]:HookScript("OnShow", SetTooltipStyle)
@@ -519,7 +523,7 @@ function Tooltips:AddHooks()
 	ItemRefTooltip:HookScript("OnTooltipSetItem", OnItemRefTooltipSetItem)
 	
 	hooksecurefunc("GameTooltip_SetDefaultAnchor", SetDefaultAnchor)
-	--hooksecurefunc("SharedTooltip_SetBackdropStyle", SetTooltipStyle)
+	hooksecurefunc("SharedTooltip_SetBackdropStyle", StripBackdrop)
 	
 	hooksecurefunc(GameTooltip, "SetUnitAura", OnTooltipSetAura)
 	hooksecurefunc(GameTooltip, "SetUnitBuff", OnTooltipSetAura)
