@@ -267,11 +267,6 @@ local OnTooltipSetUnit = function(self)
 			Class = ""
 		end
 		
-		if HydraUI.Dev[format("%s-%s", Name, Realm ~= "" and Realm or HydraUI.UserRealm)] then
-			Name = "|TInterface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBadgeCrisp.tga:16|t " .. Name
-			Title = "|TInterface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBadgeCrisp.tga:16|t " .. Title
-		end
-		
 		GameTooltipStatusBar:SetStatusBarColor(HydraUI:HexToRGB(Color))
 		GameTooltipStatusBar.BG:SetVertexColor(HydraUI:HexToRGB(Color))
 		

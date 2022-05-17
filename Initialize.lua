@@ -6,6 +6,8 @@ local Settings = {}
 local Defaults = {}
 local Modules = {}
 local Plugins = {}
+local ModuleQueue = {}
+local PluginQueue = {}
 
 -- Core functions and data
 local HydraUI = CreateFrame("Frame", nil, UIParent)
@@ -53,26 +55,28 @@ function HydraUI:NewModule(name)
 	Module = CreateFrame("Frame", "HydraUI " .. name, self.UIParent, "BackdropTemplate")
 	Module.Name = name
 	
-	Modules[#Modules + 1] = Module
+	Modules[name] = Module
+	
+	table.insert(ModuleQueue, Module)
 	
 	return Module
 end
 
 function HydraUI:GetModule(name)
-	for i = 1, #Modules do
-		if (Modules[i].Name == name) then
-			return Modules[i]
-		end
+	if Modules[name] then
+		return Modules[name]
 	end
 end
 
 function HydraUI:LoadModules()
-	for i = 1, #Modules do
-		if (Modules[i].Load and not Modules[i].Loaded) then
-			Modules[i]:Load()
-			Modules[i].Loaded = true
+	for i = 1, #ModuleQueue do
+		if (ModuleQueue[i].Load and not ModuleQueue[i].Loaded) then
+			ModuleQueue[i]:Load()
+			ModuleQueue[i].Loaded = true
 		end
 	end
+	
+	-- Wipe the queue
 end
 
 function HydraUI:NewPlugin(name)
@@ -93,16 +97,16 @@ function HydraUI:NewPlugin(name)
 	Plugin.Author = Author
 	Plugin.Version = Version
 	
-	Plugins[#Plugins + 1] = Plugin
+	Plugins[name] = Plugin
+	
+	table.insert(PluginQueue, Plugin)
 	
 	return Plugin
 end
 
 function HydraUI:GetPlugin(name)
-	for i = 1, #Plugins do
-		if (Plugins[i].Name == name) then
-			return Plugins[i]
-		end
+	if Plugins[name] then
+		return Plugins[name]
 	end
 end
 
@@ -111,11 +115,13 @@ function HydraUI:LoadPlugins()
 		return
 	end
 	
-	for i = 1, #Plugins do
-		if Plugins[i].Load then
-			Plugins[i]:Load()
+	for i = 1, #PluginQueue do
+		if PluginQueue[i].Load then
+			PluginQueue[i]:Load()
 		end
 	end
+	
+	-- Wipe the queue
 	
 	self:CreatePluginWindow()
 end
