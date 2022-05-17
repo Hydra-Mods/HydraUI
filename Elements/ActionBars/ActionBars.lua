@@ -439,7 +439,7 @@ function AB:UpdateButtonStatus(check, inrange)
 			self.icon:SetVertexColor(HydraUI:HexToRGB("FFFFFF"))
 		end
 	elseif NoMana then
-		self.icon:SetVertexColor(HydraUI:HexToRGB("3498D8"))
+		self.icon:SetVertexColor(HydraUI:HexToRGB("7F7FE1"))
 	else
 		self.icon:SetVertexColor(HydraUI:HexToRGB("4C4C4C"))
 	end

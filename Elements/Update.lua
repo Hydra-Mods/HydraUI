@@ -14,6 +14,7 @@ local User = HydraUI.UserName .. "-" .. HydraUI.UserRealm
 local SendAddonMessage = C_ChatInfo.SendAddonMessage
 local tinsert = table.insert
 local tremove = table.remove
+local sort = table.sort
 
 local Update = HydraUI:NewModule("Update")
 Update.SentHome = false
@@ -39,7 +40,13 @@ function Update:QueueChannel(channel, target)
 		Data[2] = target
 	end
 	
+	Data[3] = channel == "WHISPER" and 1 or 2 -- Prioritize responses
+	
 	tinsert(Queue, Data)
+	
+	sort(Queue, function(a, b)
+		return a[3] < b[3]
+	end)
 	
 	if (not self:GetScript("OnUpdate")) then
 		self:SetScript("OnUpdate", self.OnUpdate)
