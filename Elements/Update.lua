@@ -71,6 +71,19 @@ function Update:OnUpdate(elapsed)
 	end
 end
 
+function Update:AnnounceAll()
+	if (not HydraUI.IsMainline) then
+		self:QueueChannel("YELL")
+	end
+	
+	self:GUILD_ROSTER_UPDATE()
+	
+	self.SentHome = false
+	self.SentInst = false
+	
+	self:GROUP_ROSTER_UPDATE()
+end
+
 function Update:PLAYER_ENTERING_WORLD()
 	if (not HydraUI.IsMainline) then
 		self:QueueChannel("YELL")
@@ -120,8 +133,6 @@ function Update:CHAT_MSG_ADDON(prefix, message, channel, sender)
 		
 		AddOnNum = message
 		AddOnVersion = tostring(message)
-		
-		self:PLAYER_ENTERING_WORLD() -- Tell others that we found a new version
 	end
 end
 

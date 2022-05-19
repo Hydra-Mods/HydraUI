@@ -1,6 +1,6 @@
 local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
-Defaults["unitframes-player-width"] = 238
+Defaults["unitframes-player-width"] = 240
 Defaults["unitframes-player-health-height"] = 32
 Defaults["unitframes-player-health-reverse"] = false
 Defaults["unitframes-player-health-color"] = "CLASS"
@@ -47,15 +47,6 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	Backdrop:SetAllPoints()
 	Backdrop:SetTexture(Assets:GetTexture("Blank"))
 	Backdrop:SetVertexColor(0, 0, 0)
-	
-	-- Threat
-	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	Threat:SetPoint("TOPLEFT", -1, 1)
-	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
-	Threat:SetBackdrop(HydraUI.Outline)
-	Threat.PostUpdate = UF.ThreatPostUpdate
-	
-	self.ThreatIndicator = Threat
 	
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
@@ -653,6 +644,59 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			self.AuraParent = HolyPower
 		end
 	end
+	
+	if (HydraUI.UserClass == "SHAMAN") and (not HydraUI.IsMainline) then
+		local Totems = CreateFrame("Frame", self:GetName() .. "Totems", self, "BackdropTemplate")
+		Totems:SetSize(Settings["unitframes-player-width"], Settings["player-resource-height"] + 2)
+		Totems:SetBackdrop(HydraUI.Backdrop)
+		Totems:SetBackdropColor(0, 0, 0)
+		Totems:SetBackdropBorderColor(0, 0, 0)
+		Totems.PostUpdate = UF.PostUpdateTotems
+		
+		if ResourceAnchor then
+			Totems:SetPoint("CENTER", ResourceAnchor, 0, 0)
+		else
+			Totems:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+		end
+		
+		local Width = (Settings["unitframes-player-width"] / 4) - 1
+		
+		for i = 1, 4 do
+			Totems[i] = CreateFrame("StatusBar", self:GetName() .. "Totems" .. i, Totems)
+			Totems[i]:SetSize(Width, Settings["player-resource-height"])
+			Totems[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+			--Totems[i]:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-arcane-charges"]))
+			Totems[i]:SetStatusBarColor(HydraUI.TotemColors[i][1], HydraUI.TotemColors[i][2], HydraUI.TotemColors[i][3])
+			Totems[i]:SetWidth(Width)
+			Totems[i]:EnableMouse(true)
+			Totems[i]:Hide()
+			
+			Totems[i].bg = Totems:CreateTexture(nil, "BORDER")
+			Totems[i].bg:SetAllPoints(Totems[i])
+			Totems[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+			Totems[i].bg:SetVertexColor(HydraUI.TotemColors[i][1], HydraUI.TotemColors[i][2], HydraUI.TotemColors[i][3])
+			Totems[i].bg:SetAlpha(0.3)
+			
+			if (i == 1) then
+				Totems[i]:SetPoint("LEFT", Totems, 1, 0)
+			else
+				Totems[i]:SetPoint("TOPLEFT", Totems[i-1], "TOPRIGHT", 1, 0)
+			end
+		end
+		
+		self.ClassPower = Totems
+		self.Totems = Totems
+		self.AuraParent = Totems
+	end
+	
+	-- Threat
+	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	Threat:SetPoint("TOPLEFT", self.AuraParent, -1, 1)
+	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+	Threat:SetBackdrop(HydraUI.Outline)
+	Threat.PostUpdate = UF.ThreatPostUpdate
+	
+	self.ThreatIndicator = Threat
 	
 	-- Auras
 	local Buffs = CreateFrame("Frame", self:GetName() .. "Buffs", self)

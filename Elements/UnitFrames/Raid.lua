@@ -32,7 +32,7 @@ Defaults["raid-font-flags"] = ""
 local UF = HydraUI:GetModule("Unit Frames")
 
 local RaidDebuffFilter = function(self, unit, icon, name, texture, count, dtype, duration, timeLeft, caster, stealable, nameplateshow, id, canapply, boss, player)
-	if boss then
+	if boss or (count and count > 0) or (duration > 0 and timeLeft and not player and not canapply) then
 		return true
 	end
 end
@@ -50,9 +50,8 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	
 	-- Threat
 	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	--Threat:SetPoint("TOPLEFT", -1, 1)
-	--Threat:SetPoint("BOTTOMRIGHT", 1, -1)
-	Threat:SetAllPoints()
+	Threat:SetPoint("TOPLEFT", -1, 1)
+	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
 	Threat:SetBackdrop(HydraUI.Outline)
 	Threat.PostUpdate = UF.ThreatPostUpdate
 	

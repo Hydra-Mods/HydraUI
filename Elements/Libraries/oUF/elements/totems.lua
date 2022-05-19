@@ -55,7 +55,7 @@ end
 local function OnEnter(self)
 	if(not self:IsVisible()) then return end
 
-	GameTooltip:SetOwner(self, 'ANCHOR_BOTTOMRIGHT')
+	GameTooltip:SetOwner(self, 'ANCHOR_TOP', 0, 3)
 	self:UpdateTooltip()
 end
 
@@ -128,6 +128,16 @@ local function ForceUpdate(element)
 	return Update(element.__owner, 'ForceUpdate')
 end
 
+local OnMouseUp = function(self, button)
+	local ID = self:GetID()
+	
+	if (not GetTotemCannotDismiss(ID)) then
+		if (button == "RightButton" and ID > 0) then
+			DestroyTotem(ID)
+		end
+	end
+end
+
 local function Enable(self)
 	local element = self.Totems
 	if(element) then
@@ -142,6 +152,7 @@ local function Enable(self)
 			if(totem:IsMouseEnabled()) then
 				totem:SetScript('OnEnter', OnEnter)
 				totem:SetScript('OnLeave', OnLeave)
+				totem:SetScript('OnMouseUp', OnMouseUp)
 
 				--[[ Override: Totems[slot]:UpdateTooltip()
 				Used to populate the tooltip when the totem is hovered.
@@ -159,7 +170,6 @@ local function Enable(self)
 		TotemFrame:UnregisterEvent('PLAYER_TOTEM_UPDATE')
 		TotemFrame:UnregisterEvent('PLAYER_ENTERING_WORLD')
 		TotemFrame:UnregisterEvent('UPDATE_SHAPESHIFT_FORM')
-		TotemFrame:UnregisterEvent('PLAYER_TALENT_UPDATE')
 
 		return true
 	end
@@ -175,7 +185,6 @@ local function Disable(self)
 		TotemFrame:RegisterEvent('PLAYER_TOTEM_UPDATE')
 		TotemFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
 		TotemFrame:RegisterEvent('UPDATE_SHAPESHIFT_FORM')
-		TotemFrame:RegisterEvent('PLAYER_TALENT_UPDATE')
 
 		self:UnregisterEvent('PLAYER_TOTEM_UPDATE', Path)
 	end

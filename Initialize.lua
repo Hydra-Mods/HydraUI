@@ -56,8 +56,7 @@ function HydraUI:NewModule(name)
 	Module.Name = name
 	
 	Modules[name] = Module
-	
-	table.insert(ModuleQueue, Module)
+	ModuleQueue[#ModuleQueue + 1] = Module
 	
 	return Module
 end
@@ -98,8 +97,7 @@ function HydraUI:NewPlugin(name)
 	Plugin.Version = Version
 	
 	Plugins[name] = Plugin
-	
-	table.insert(PluginQueue, Plugin)
+	PluginQueue[#PluginQueue + 1] = Plugin
 	
 	return Plugin
 end

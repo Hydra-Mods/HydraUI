@@ -312,6 +312,33 @@ UF.PostCastFail = function(self)
 	self.bg:SetVertexColor(HydraUI:HexToRGB(Settings["color-casting-interrupted"]))
 end
 
+local TotemOnUpdate = function(self, elapsed)
+	local Time = self.Duration - (GetTime() - self.Start)
+	
+	self:SetValue(Time)
+	
+	if (Time < 0) then
+		self:SetScript("OnUpdate", nil)
+		self:Hide()
+	end
+end
+
+UF.PostUpdateTotems = function(self, slot, havetotem, name, start, duration, icon)
+	if (start and duration > 0) then
+		local slot = self[slot]
+		
+		slot:SetMinMaxValues(0, duration)
+		slot:SetValue(duration - (GetTime() - start))
+		slot.Duration = duration
+		slot.Start = start
+		slot:Show()
+		
+		if not slot:GetScript("OnUpdate") then
+			slot:SetScript("OnUpdate", TotemOnUpdate)
+		end
+	end
+end
+
 UF.AuraOffsets = {
 	TOPLEFT = {6, 0},
 	TOPRIGHT = {-6, 0},

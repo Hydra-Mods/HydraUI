@@ -1,6 +1,6 @@
 local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
-Defaults["unitframes-target-width"] = 238
+Defaults["unitframes-target-width"] = 240
 Defaults["unitframes-target-health-height"] = 32
 Defaults["unitframes-target-health-reverse"] = false
 Defaults["unitframes-target-health-color"] = "CLASS"

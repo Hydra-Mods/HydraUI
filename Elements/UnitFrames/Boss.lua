@@ -1,7 +1,7 @@
 local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 Defaults["unitframes-boss-enable"] = true
-Defaults["unitframes-boss-width"] = 238
+Defaults["unitframes-boss-width"] = 240
 Defaults["unitframes-boss-health-height"] = 28
 Defaults["unitframes-boss-health-reverse"] = false
 Defaults["unitframes-boss-health-color"] = "CLASS"

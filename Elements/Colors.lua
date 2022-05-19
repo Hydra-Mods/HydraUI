@@ -94,6 +94,12 @@ Defaults["color-mirror-breath"] = "007FFF"
 Defaults["color-mirror-death"] = "FFB200"
 Defaults["color-mirror-feign-death"] = "FFB200"
 
+-- Totems
+Defaults["color-totem-fire"] = "FB8C00"
+Defaults["color-totem-earth"] = "BF360C"
+Defaults["color-totem-water"] = "3498DB"
+Defaults["color-totem-air"] = "BBDEFB"
+
 -- Other
 Defaults["color-tapped"] = "A6A6A6"
 Defaults["color-disconnected"] = "A6A6A6"
@@ -200,6 +206,13 @@ function HydraUI:UpdateComboColors()
 	self:SetColorEntry(self.ComboPoints, 6, Settings["color-combo-6"])
 end
 
+function HydraUI:UpdateTotemColors()
+	self:SetColorEntry(self.TotemColors, 1, Settings["color-totem-fire"])
+	self:SetColorEntry(self.TotemColors, 2, Settings["color-totem-earth"])
+	self:SetColorEntry(self.TotemColors, 3, Settings["color-totem-water"])
+	self:SetColorEntry(self.TotemColors, 4, Settings["color-totem-air"])
+end
+
 function HydraUI:UpdateColors()
 	self:UpdateClassColors()
 	self:UpdateReactionColors()
@@ -210,6 +223,7 @@ function HydraUI:UpdateColors()
 	
 	if (not self.IsMainline) then
 		self:UpdateHappinessColors()
+		self:UpdateTotemColors()
 	end
 end
 
@@ -290,6 +304,12 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Colors"], fun
 		right:CreateColorSelection("color-happiness-3", Settings["color-happiness-3"], Language["Happy"], "")
 		right:CreateColorSelection("color-happiness-2", Settings["color-happiness-2"], Language["Content"], "")
 		right:CreateColorSelection("color-happiness-1", Settings["color-happiness-1"], Language["Unhappy"], "")
+		
+		left:CreateHeader(Language["Totem Colors"])
+		left:CreateColorSelection("color-totem-fire", Settings["color-totem-fire"], Language["Fire"], "")
+		left:CreateColorSelection("color-totem-earth", Settings["color-totem-earth"], Language["Earth"], "")
+		left:CreateColorSelection("color-totem-water", Settings["color-totem-water"], Language["Water"], "")
+		left:CreateColorSelection("color-totem-air", Settings["color-totem-air"], Language["Air"], "")
 	end
 	
 	left:CreateHeader(Language["Combo Points Colors"])
