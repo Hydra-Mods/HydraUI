@@ -801,6 +801,14 @@ local UpdatePlayerWidth = function(value)
 			for i = 1, 4 do
 				Frame.ArcanePower[i]:SetWidth(i == 1 and Width - 1 or Width)
 			end
+		elseif Frame.Totems then
+			Frame.Totems:SetWidth(value)
+			
+			local Width = (Settings["unitframes-player-width"] / 4) - 1
+			
+			for i = 1, 4 do
+				Frame.Totems[i]:SetWidth(i == 1 and Width - 1 or Width)
+			end
 		elseif Frame.Chi then
 			Frame.Chi:SetWidth(value)
 			Frame.Stagger:SetWidth(value)
