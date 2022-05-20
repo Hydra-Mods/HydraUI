@@ -154,6 +154,10 @@ local function Enable(self)
 				totem:SetScript('OnLeave', OnLeave)
 				totem:SetScript('OnMouseUp', OnMouseUp)
 
+				totem.Bar:SetScript('OnEnter', OnEnter)
+				totem.Bar:SetScript('OnLeave', OnLeave)
+				totem.Bar:SetScript('OnMouseUp', OnMouseUp)
+
 				--[[ Override: Totems[slot]:UpdateTooltip()
 				Used to populate the tooltip when the totem is hovered.
 
@@ -161,6 +165,10 @@ local function Enable(self)
 				--]]
 				if(not totem.UpdateTooltip) then
 					totem.UpdateTooltip = UpdateTooltip
+				end
+				
+				if(not totem.Bar.UpdateTooltip) then
+					totem.Bar.UpdateTooltip = UpdateTooltip
 				end
 			end
 		end
