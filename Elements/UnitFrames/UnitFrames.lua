@@ -325,17 +325,29 @@ end
 
 UF.PostUpdateTotems = function(self, slot, havetotem, name, start, duration, icon)
 	if (start and duration > 0) then
-		local slot = self[slot]
+		local Bar = self[slot].Bar
 		
-		slot:SetMinMaxValues(0, duration)
-		slot:SetValue(duration - (GetTime() - start))
-		slot.Duration = duration
-		slot.Start = start
-		slot:Show()
-		
-		if not slot:GetScript("OnUpdate") then
-			slot:SetScript("OnUpdate", TotemOnUpdate)
+		if (not Bar) then
+			return
 		end
+		
+		Bar:SetMinMaxValues(0, duration)
+		Bar:SetValue(duration - (GetTime() - start))
+		Bar.Duration = duration
+		Bar.Start = start
+		Bar:Show()
+		
+		if not Bar:GetScript("OnUpdate") then
+			Bar:SetScript("OnUpdate", TotemOnUpdate)
+		end
+	else
+		local Bar = self[slot].Bar
+		
+		if Bar:GetScript("OnUpdate") then
+			Bar:SetScript("OnUpdate", nil)
+		end
+		
+		Bar:Hide()
 	end
 end
 

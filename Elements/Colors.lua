@@ -95,10 +95,10 @@ Defaults["color-mirror-death"] = "FFB200"
 Defaults["color-mirror-feign-death"] = "FFB200"
 
 -- Totems
-Defaults["color-totem-fire"] = "FB8C00"
-Defaults["color-totem-earth"] = "BF360C"
-Defaults["color-totem-water"] = "3498DB"
-Defaults["color-totem-air"] = "BBDEFB"
+Defaults["color-totem-fire"] = "D64545"
+Defaults["color-totem-earth"] = "E5B045"
+Defaults["color-totem-water"] = "45B0E5"
+Defaults["color-totem-air"] = "AED6F1"
 
 -- Other
 Defaults["color-tapped"] = "A6A6A6"

@@ -840,7 +840,12 @@ function Chat:MoveChatFrames()
 				Frame:ClearAllPoints()
 				Frame:SetPoint("TOPLEFT", Window.Middle, 4 + Settings["ui-border-thickness"], -(4 + Settings["ui-border-thickness"]))
 				Frame:SetPoint("BOTTOMRIGHT", Window.Middle, -(4 + Settings["ui-border-thickness"]), 4 + Settings["ui-border-thickness"])
+				Frame:Show()
 		else
+			if (Frame.name and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) and not Frame.Tab) then
+				FCF_DockFrame(Frame)
+			end
+			
 			if (i == 1) then
 				Frame:SetUserPlaced(true)
 				Frame:ClearAllPoints()
@@ -848,26 +853,6 @@ function Chat:MoveChatFrames()
 				Frame:SetPoint("BOTTOMRIGHT", self.Middle, -(4 + Settings["ui-border-thickness"]), 4 + Settings["ui-border-thickness"])
 			end
 		end
-		--[[
-		if (i == 1) then
-			Frame:SetUserPlaced(true)
-			Frame:ClearAllPoints()
-			Frame:SetPoint("TOPLEFT", self.Middle, 4 + Settings["ui-border-thickness"], -(4 + Settings["ui-border-thickness"]))
-			Frame:SetPoint("BOTTOMRIGHT", self.Middle, -(4 + Settings["ui-border-thickness"]), 4 + Settings["ui-border-thickness"])
-		elseif (Settings["right-window-enable"] and (Settings["right-window-size"] == "SINGLE")) then
-			if (Frame.name and Frame.name == Settings["rw-single-embed"]) then
-				local Window = HydraUI:GetModule("Right Window")
-				
-				FCF_UnDockFrame(Frame)
-				FCF_SetTabPosition(Frame, 0)
-				
-				Frame:SetMovable(true)
-				Frame:SetUserPlaced(true)
-				Frame:ClearAllPoints()
-				Frame:SetPoint("TOPLEFT", Window.Middle, 4 + Settings["ui-border-thickness"], -(4 + Settings["ui-border-thickness"]))
-				Frame:SetPoint("BOTTOMRIGHT", Window.Middle, -(4 + Settings["ui-border-thickness"]), 4 + Settings["ui-border-thickness"])
-			end
-		end]]
 		
 		if (not Frame.isLocked) then
 			FCF_SetLocked(Frame, true)
@@ -1531,7 +1516,8 @@ local GetChatFrameList = function()
 		Frame = _G["ChatFrame"..i]
 		Tab = _G[Frame:GetName() .. "Tab"]
 		
-		if Frame.name and Tab and Tab:IsVisible() and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) then
+		--if Frame.name and Tab and Tab:IsVisible() and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) then
+		if Frame.name and Tab and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) then
 			Frames[Frame.name] = Frame.name
 		end
 	end
