@@ -5,7 +5,6 @@ local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 -- UI
 Defaults["ui-scale"] = 0.71111111111111
 Defaults["ui-display-welcome"] = true
-Defaults["ui-display-dev-tools"] = false
 Defaults["ui-border-thickness"] = 0
 
 -- Main

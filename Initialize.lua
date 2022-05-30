@@ -109,7 +109,7 @@ function HydraUI:GetPlugin(name)
 end
 
 function HydraUI:LoadPlugins()
-	if (#Plugins == 0) then
+	if (#PluginQueue == 0) then
 		return
 	end
 	
@@ -122,24 +122,6 @@ function HydraUI:LoadPlugins()
 	-- Wipe the queue
 	
 	self:CreatePluginWindow()
-end
-
-function HydraUI:NewDB(name) -- for profiles, languages, settings, assets, etc. instead of creating a module which doesn't fit the bare minimum needs of these
-	if self.DBs[name] then
-		return self.DBs[name]
-	end
-	
-	local DB = {}
-	
-	self.DBs[name] = DB
-	
-	return DB
-end
-
-function HydraUI:GetDB(name)
-	if self.DBs[name] then
-		return self.DBs[name]
-	end
 end
 
 function HydraUI:CreatePluginWindow()

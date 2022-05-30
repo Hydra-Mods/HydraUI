@@ -42,6 +42,14 @@ local SetTooltip = function(anchor)
 	end
 end
 
+function DT:OnMouseDown()
+	self.Text:SetPoint("CENTER", self, 1, -1)
+end
+
+function DT:OnMouseUp()
+	self.Text:SetPoint("CENTER", self, 0, 0)
+end
+
 function DT:NewAnchor(name, parent)
 	if self.Anchors[name] then
 		return
@@ -54,14 +62,12 @@ function DT:NewAnchor(name, parent)
 	local Anchor = CreateFrame("Frame", nil, parent)
 	Anchor:SetFrameLevel(parent:GetFrameLevel() + 1)
 	Anchor:SetFrameStrata(parent:GetFrameStrata())
-	
 	Anchor.Name = name
 	Anchor.SetTooltip = SetTooltip
 	
 	Anchor.Text = Anchor:CreateFontString(nil, "ARTWORK")
 	HydraUI:SetFontInfo(Anchor.Text, Settings["data-text-font"], Settings["data-text-font-size"], Settings["data-text-font-flags"])
-	Anchor.Text:SetPoint("LEFT", Anchor, 2, 0)
-	Anchor.Text:SetPoint("RIGHT", Anchor, -2, 0)
+	Anchor.Text:SetPoint("CENTER", Anchor, 0, 0)
 	Anchor.Text:SetJustifyH("CENTER")
 	Anchor.Text:SetHeight(Settings["data-text-font-size"])
 	
@@ -93,6 +99,9 @@ function DT:SetDataText(anchor, name)
 	Anchor.Update = Type.Update
 	
 	Anchor:Enable()
+	
+	Anchor:HookScript("OnMouseDown", self.OnMouseDown)
+	Anchor:HookScript("OnMouseUp", self.OnMouseUp)
 end
 
 function DT:SetTooltipsEnabled(value)

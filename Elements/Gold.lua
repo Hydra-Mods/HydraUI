@@ -36,7 +36,7 @@ function Gold:GetServerInfo()
 	local Table
 	local Total = 0
 	
-	for Name, Value in pairs(HydraUI.GoldData[HydraUI.UserRealm]) do
+	for Name, Value in next, HydraUI.GoldData[HydraUI.UserRealm] do
 		Table = self:GetTable()
 		
 		Table[1] = Name

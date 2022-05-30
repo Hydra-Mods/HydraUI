@@ -3,20 +3,6 @@ local HydraUI, Language, Assets, Settings = select(2, ...):get()
 local Throttle = HydraUI:GetModule("Throttle")
 local GUI = HydraUI:GetModule("GUI")
 
-local HasPrinted = false
-local DevTools = "|Hcommand:/reload|h|cFF%s[Reload UI]|r|h |Hcommand:/eventtrace|h|cFF%s[Event Trace]|r|h |Hplayer:%s|h|cFF%s[Whisper Self]|r|h |Hcommand:/framestack|h|cFF%s[Frame Stack]|r|h"
-
-local UpdateDisplayDevTools = function()
-	if (not HasPrinted) then
-		local Color = Settings["ui-widget-color"]
-		local Name = UnitName("player")
-		
-		print(format(DevTools, Color, Color, Name, Color, Color))
-		
-		HasPrinted = true
-	end
-end
-
 local Expansion = {
 	[0] = EXPANSION_NAME0,
 	[1] = EXPANSION_NAME1,
@@ -37,15 +23,6 @@ function HydraUI:WelcomeMessage()
 		end
 		
 		print(format(Language["Type |cFF%s/hui|r to access the settings window, or click |cFF%s|Hcommand:/hui|h[here]|h|r."], Color1, Color1))
-		
-		-- May as well put this here for now too.
-		if Settings["ui-display-dev-tools"] then
-			local Name = UnitName("player")
-			
-			print(format(DevTools, Color1, Color1, Name, Color1, Color1))
-			
-			HasPrinted = true
-		end
 	end
 end
 
@@ -106,9 +83,6 @@ GUI:AddWidgets(Language["General"], Language["General"], function(left, right)
 	
 	right:CreateHeader(Language["Border Thickness"])
 	right:CreateSlider('ui-border-thickness', Settings['ui-border-thickness'], 0, 2, 1, Language["Border Thickness"], Language["Set how thick the border on UI elements is"], ReloadUI, nil, "px"):RequiresReload(true)
-	
-	--left:CreateHeader(Language["Developer"])
-	--left:CreateSwitch("ui-display-dev-tools", Settings["ui-display-dev-tools"], Language["Display Developer Chat Tools"], "", UpdateDisplayDevTools)
 end)
 
 -- Putting Styles here too

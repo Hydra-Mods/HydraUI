@@ -5,22 +5,18 @@ local Fonts = SharedMedia:HashTable("font")
 
 Assets.Fonts = {}
 Assets.Textures = {}
-Assets.Highlights = {}
 Assets.Styles = {}
 Assets.Palettes = {}
 Assets.Sounds = {}
 
 Assets.FontList = {}
+Assets.FontIsPixel = {}
 Assets.TextureList = {}
-Assets.HighlightList = {}
 Assets.StyleList = {}
 Assets.PaletteList = {}
 Assets.SoundList = {}
 
-Assets.FontOffset = {}
-Assets.FontIsPixel = {}
-
-Assets.FlagsList = {
+Assets.OutlineList = {
 	["Outline"] = "OUTLINE",
 	["Thick Outline"] = "THICKOUTLINE",
 	["Monochrome"] = "MONOCHROME",
@@ -29,7 +25,7 @@ Assets.FlagsList = {
 }
 
 function Assets:GetFlagsList()
-	return self.FlagsList
+	return self.OutlineList
 end
 
 -- Fonts
@@ -86,31 +82,6 @@ end
 
 function Assets:GetTextureList()
 	return self.TextureList
-end
-
--- Highlights
-function Assets:SetHighlight(name, path, silent)
-	if self.Highlights[name] then
-		return
-	end
-	
-	self.Highlights[name] = path
-	
-	if (not silent) then
-		self.HighlightList[name] = path
-	end
-end
-
-function Assets:GetHighlight(name)
-	if self.Highlights[name] then
-		return self.Highlights[name]
-	else
-		return self.Highlights["Blank"]
-	end
-end
-
-function Assets:GetHighlightList()
-	return self.HighlightList
 end
 
 -- Style templates
@@ -223,9 +194,11 @@ Assets:SetTexture("pHishTex6", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\pH
 Assets:SetTexture("pHishTex7", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\pHishTex7.tga")
 Assets:SetTexture("pHishTex11", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\pHishTex11.tga")
 Assets:SetTexture("pHishTex12", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\pHishTex12.tga")
+Assets:SetTexture("Ferous 14", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\fer14.tga")
 
 Assets:SetTexture("noInterrupt", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\noInterrupt.tga", true)
 Assets:SetTexture("RenHorizonUp", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\RenHorizonUp.tga", true)
+Assets:SetTexture("RenHorizonDown", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\RenHorizonDown.tga", true)
 Assets:SetTexture("RenaitreTunnel", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\RenaitreTunnel.tga", true)
 Assets:SetTexture("Mail", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIMail.tga", true)
 Assets:SetTexture("Mail 2", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIMailTextured.tga", true)
@@ -250,13 +223,6 @@ Assets:SetTexture("Copy", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUI
 for Name, Path in next, Textures do
 	Assets:SetTexture(Name, Path)
 end
-
--- Highlights
-Assets:SetHighlight("Blank", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\HydraUIBlank.tga")
-Assets:SetHighlight("RenHorizonUp", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\RenHorizonUp.tga")
-Assets:SetHighlight("RenHorizonDown", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\RenHorizonDown.tga")
-Assets:SetHighlight("RenaitreTunnel", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\RenaitreTunnel.tga")
-Assets:SetHighlight("Ferous 14", "Interface\\AddOns\\HydraUI\\Assets\\Textures\\fer14.tga")
 
 -- Palettes - Yes, doing these did take forever. And yes it was worth it.
 

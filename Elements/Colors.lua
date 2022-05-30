@@ -98,7 +98,7 @@ Defaults["color-mirror-feign-death"] = "FFB200"
 Defaults["color-totem-fire"] = "D64545"
 Defaults["color-totem-earth"] = "E5B045"
 Defaults["color-totem-water"] = "45B0E5"
-Defaults["color-totem-air"] = "AED6F1"
+Defaults["color-totem-air"] = "B3E5FC"
 
 -- Other
 Defaults["color-tapped"] = "A6A6A6"

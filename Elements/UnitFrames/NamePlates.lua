@@ -136,14 +136,14 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 	Threat.Top:SetHeight(6)
 	Threat.Top:SetPoint("BOTTOMLEFT", Threat, "TOPLEFT", 8, 1)
 	Threat.Top:SetPoint("BOTTOMRIGHT", Threat, "TOPRIGHT", -8, 1)
-	Threat.Top:SetTexture(Assets:GetHighlight("RenHorizonUp"))
+	Threat.Top:SetTexture(Assets:GetTexture("RenHorizonUp"))
 	Threat.Top:SetAlpha(0.8)
 	
 	Threat.Bottom = Threat:CreateTexture(nil, "BORDER")
 	Threat.Bottom:SetHeight(6)
 	Threat.Bottom:SetPoint("TOPLEFT", Threat, "BOTTOMLEFT", 8, -1)
 	Threat.Bottom:SetPoint("TOPRIGHT", Threat, "BOTTOMRIGHT", -8, -1)
-	Threat.Bottom:SetTexture(Assets:GetHighlight("RenHorizonDown"))
+	Threat.Bottom:SetTexture(Assets:GetTexture("RenHorizonDown"))
 	Threat.Bottom:SetAlpha(0.8)
 	
 	-- Buffs

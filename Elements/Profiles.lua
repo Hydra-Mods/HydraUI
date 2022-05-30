@@ -21,7 +21,6 @@ HydraUI.ProfileMetadata = {
 HydraUI.PreserveSettings = {
 	"ui-scale",
 	"ui-display-welcome",
-	"ui-display-dev-tools",
 	"ui-picker-palette",
 }
 
