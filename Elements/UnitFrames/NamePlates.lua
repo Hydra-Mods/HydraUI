@@ -51,32 +51,29 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 	local Health = CreateFrame("StatusBar", nil, self)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
 	Health:SetPoint("BOTTOMRIGHT", self, -1, 1)
-	Health:SetFrameLevel(5)
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Health:EnableMouse(false)
 	
-	if HydraUI.IsMainline then
-		local AbsorbsBar = CreateFrame("StatusBar", nil, self)
-		AbsorbsBar:SetWidth(Settings["nameplates-width"])
-		AbsorbsBar:SetHeight(Settings["nameplates-height"])
-		AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
-		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
-		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
-		
-		self.AbsorbsBar = AbsorbsBar
-	end
-	
-	local HealBar = CreateFrame("StatusBar", nil, self)
+	local HealBar = CreateFrame("StatusBar", nil, Health)
 	HealBar:SetWidth(Settings["nameplates-width"])
 	HealBar:SetHeight(Settings["nameplates-height"])
 	HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
-	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 	
-	local HealthBG = Health:CreateTexture(nil, "BORDER")
-	HealthBG:SetAllPoints()
+	if HydraUI.IsMainline then
+		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
+		AbsorbsBar:SetWidth(Settings["nameplates-width"])
+		AbsorbsBar:SetHeight(Settings["nameplates-height"])
+		AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
+		
+		self.AbsorbsBar = AbsorbsBar
+	end
+	
+	local HealthBG = self:CreateTexture(nil, "BORDER")
+	HealthBG:SetAllPoints(Health)
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealthBG.multiplier = 0.2
 	

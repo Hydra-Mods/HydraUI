@@ -41,12 +41,18 @@ HydraUI.StyleFuncs["focus"] = function(self, unit)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
 	Health:SetPoint("TOPRIGHT", self, -1, -1)
 	Health:SetHeight(Settings["unitframes-focus-health-height"])
-	Health:SetFrameLevel(5)
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Health:SetReverseFill(Settings["unitframes-focus-health-reverse"])
 	
+	local HealBar = CreateFrame("StatusBar", nil, Health)
+	HealBar:SetWidth(Settings["unitframes-focus-width"])
+	HealBar:SetHeight(Settings["unitframes-focus-health-height"])
+	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarColor(0, 0.48, 0)
+	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
+	
 	if HydraUI.IsMainline then
-		local AbsorbsBar = CreateFrame("StatusBar", nil, self)
+		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
 		AbsorbsBar:SetWidth(Settings["unitframes-focus-width"])
 		AbsorbsBar:SetHeight(Settings["unitframes-focus-health-height"])
 		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
@@ -62,21 +68,14 @@ HydraUI.StyleFuncs["focus"] = function(self, unit)
 		self.AbsorbsBar = AbsorbsBar
 	end
 	
-	local HealBar = CreateFrame("StatusBar", nil, self)
-	HealBar:SetWidth(Settings["unitframes-focus-width"])
-	HealBar:SetHeight(Settings["unitframes-focus-health-height"])
-	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	HealBar:SetStatusBarColor(0, 0.48, 0)
-	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
-	
 	if Settings["unitframes-focus-health-reverse"] then
 		HealBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 	else
 		HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	end
 	
-	local HealthBG = Health:CreateTexture(nil, "BORDER")
-	HealthBG:SetAllPoints()
+	local HealthBG = self:CreateTexture(nil, "BORDER")
+	HealthBG:SetAllPoints(Health)
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealthBG.multiplier = 0.2
 	

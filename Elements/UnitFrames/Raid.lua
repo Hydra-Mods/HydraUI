@@ -62,18 +62,25 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
 	Health:SetPoint("TOPRIGHT", self, -1, -1)
 	Health:SetHeight(Settings["raid-health-height"])
-	Health:SetFrameLevel(5)
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Health:SetReverseFill(Settings["raid-health-reverse"])
 	Health:SetOrientation(Settings["raid-health-orientation"])
 	
-	local HealthBG = Health:CreateTexture(nil, "BORDER")
-	HealthBG:SetAllPoints()
-	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	HealthBG.multiplier = 0.2
+	local HealBar = CreateFrame("StatusBar", nil, Health)
+	HealBar:SetWidth(Settings["raid-width"])
+	HealBar:SetHeight(Settings["raid-health-height"])
+	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarColor(0, 0.48, 0)
+	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
+	
+	if Settings["raid-health-reverse"] then
+		HealBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
+	else
+		HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+	end
 	
 	if HydraUI.IsMainline then
-		local AbsorbsBar = CreateFrame("StatusBar", nil, self)
+		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
 		AbsorbsBar:SetWidth(Settings["raid-width"])
 		AbsorbsBar:SetHeight(Settings["raid-health-height"])
 		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
@@ -89,18 +96,10 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 		self.AbsorbsBar = AbsorbsBar
 	end
 	
-	local HealBar = CreateFrame("StatusBar", nil, self)
-	HealBar:SetWidth(Settings["raid-width"])
-	HealBar:SetHeight(Settings["raid-health-height"])
-	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	HealBar:SetStatusBarColor(0, 0.48, 0)
-	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
-	
-	if Settings["raid-health-reverse"] then
-		HealBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
-	else
-		HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
-	end
+	local HealthBG = self:CreateTexture(nil, "BORDER")
+	HealthBG:SetAllPoints(Health)
+	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealthBG.multiplier = 0.2
 	
 	local HealthDead = Health:CreateTexture(nil, "OVERLAY")
 	HealthDead:SetAllPoints(Health)
