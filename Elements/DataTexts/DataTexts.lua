@@ -43,7 +43,7 @@ local SetTooltip = function(anchor)
 end
 
 function DT:OnMouseDown()
-	self.Text:SetPoint("CENTER", self, 1, -1)
+	self.Text:SetPoint("CENTER", self, 2, -1)
 end
 
 function DT:OnMouseUp()

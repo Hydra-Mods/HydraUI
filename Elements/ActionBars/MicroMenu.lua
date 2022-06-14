@@ -102,7 +102,7 @@ function MicroButtons:PositionButtons()
 	local Width, Height = MicroButtons.Buttons[1]:GetSize()
 	
 	-- Bar sizing
-	MicroButtons.Panel:SetWidth((Width + Spacing) * PerRow - (Spacing * 2))
+	MicroButtons.Panel:SetWidth((Width + Spacing) * PerRow - (Spacing * 2) - #MicroButtons.Buttons)
 	MicroButtons.Panel:SetHeight((Height * Columns) + (Spacing * (Columns + 1)))
 	
 	-- Actual moving
@@ -116,7 +116,7 @@ function MicroButtons:PositionButtons()
 		elseif ((i - 1) % PerRow == 0) then
 			Button:SetPoint("TOP", MicroButtons.Buttons[i - PerRow], "BOTTOM", 0, -Spacing)
 		else
-			Button:SetPoint("LEFT", MicroButtons.Buttons[i - 1], "RIGHT", (Spacing - 1), 0)
+			Button:SetPoint("LEFT", MicroButtons.Buttons[i - 1], "RIGHT", Spacing - 2, 0)
 		end
 	end
 end

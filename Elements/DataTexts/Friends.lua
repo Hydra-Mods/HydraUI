@@ -24,9 +24,9 @@ local ClientToName = {
 	["S2"] = Language["StarCraft 2"],
 	["VIPR"] = Language["Call of Duty: Black Ops 4"],
 	["ODIN"] = Language["Call of Duty: Modern Warfare"],
-	["OSI"] = "Diablo II: Resurrected",
 	["WoW"] = CINEMATIC_NAME_1,
 	["WTCG"] = Language["Hearthstone"],
+	["ANBS"] = "Diablo Immortal",
 }
 
 local ProjectIDToName = {
@@ -55,6 +55,20 @@ ClientInfo["App"] = function(name, info)
 	end
 	
 	return name, ClientToName[info.gameAccountInfo.clientProgram]
+end
+
+ClientInfo["ANBS"] = function(name, id)
+	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
+	
+	if IsAFK then
+		name = format("|cFF9E9E9E%s|r", name)
+	elseif IsBusy then
+		name = format("|cFFF44336%s|r", name)
+	else
+		name = format("|cFF00FFF6%s|r", name)
+	end
+	
+	return name, ClientToName[Client]
 end
 
 ClientInfo["BSAp"] = function(name, info)
