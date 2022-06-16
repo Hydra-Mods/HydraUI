@@ -50,7 +50,9 @@ function ZT:OnEvent(event)
 		self.CurrentZone = Zone
 	end
 	
-	self.SubZoneText:SetText(SubZone)
+	if (SubZone ~= Zone) then
+		self.SubZoneText:SetText(SubZone)
+	end
 	
 	if self.Group:IsPlaying() then
 		self.Group:Stop()
