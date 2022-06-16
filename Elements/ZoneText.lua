@@ -62,7 +62,7 @@ end
 function ZT:CreateFontObjects()
 	local ZoneFrame = CreateFrame("Frame", nil, HydraUI.UIParent)
 	ZoneFrame:SetSize(32, 32)
-	ZoneFrame:SetPoint("TOP", HydraUI.UIParent, 0, -320) -- SetPoint("TOP", HydraUI.UIParent, 0, -220)
+	ZoneFrame:SetPoint("TOP", HydraUI.UIParent, 0, -220)
 	ZoneFrame:SetAlpha(0)
 	-- Make a mover too? :thinking:
 	
