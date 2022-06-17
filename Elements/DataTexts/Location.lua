@@ -40,6 +40,12 @@ local OnLeave = function(self)
 	self.TooltipShown = false
 end
 
+local OnMouseUp = function(self)
+	if WorldMapFrame then
+		ToggleFrame(WorldMapFrame)
+	end
+end
+
 local Update = function(self)
 	local Color = HydraUI.ZoneColors[GetZonePVPInfo() or "other"]
 	
@@ -59,6 +65,7 @@ local OnEnable = function(self)
 	self:SetScript("OnEvent", Update)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
+	self:SetScript("OnMouseUp", OnMouseUp)
 	
 	self:Update()
 end
@@ -70,6 +77,7 @@ local OnDisable = function(self)
 	self:SetScript("OnEvent", nil)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
+	self:SetScript("OnMouseUp", nil)
 	
 	self.Text:SetText("")
 	self.Text:SetTextColor(1, 1, 1)
