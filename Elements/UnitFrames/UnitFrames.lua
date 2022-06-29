@@ -615,6 +615,8 @@ local Style = function(self, unit)
 		HydraUI.StyleFuncs[unit](self, unit)
 	elseif (find(unit, "raid") and Settings["raid-enable"]) then
 		HydraUI.StyleFuncs["raid"](self, unit)
+	elseif (find(unit, "raidpet") and Settings["raid-pets-enable"]) then
+		HydraUI.StyleFuncs["raidpet"](self, unit)
 	elseif (find(unit, "partypet") and Settings["party-enable"] and Settings["party-pets-enable"]) then
 		HydraUI.StyleFuncs["partypet"](self, unit)
 	elseif (find(unit, "party") and not find(unit, "pet") and Settings["party-enable"]) then

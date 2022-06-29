@@ -29,6 +29,15 @@ Defaults["raid-font"] = "Roboto"
 Defaults["raid-font-size"] = 12
 Defaults["raid-font-flags"] = ""
 
+Defaults["raid-pets-enable"] = true
+Defaults["raid-pets-width"] = 78
+Defaults["raid-pets-health-height"] = 22
+Defaults["raid-pets-health-reverse"] = false
+Defaults["raid-pets-health-color"] = "CLASS"
+Defaults["raid-pets-health-orientation"] = "HORIZONTAL"
+Defaults["raid-pets-health-smooth"] = true
+Defaults["raid-pets-power-height"] = 0 -- NYI
+
 local UF = HydraUI:GetModule("Unit Frames")
 
 local RaidDebuffFilter = function(self, unit, icon, name, texture, count, dtype, duration, timeLeft, caster, stealable, nameplateshow, id, canapply, boss, player)
@@ -318,6 +327,91 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	self.RaidTargetIndicator = RaidTarget
 	self.GroupRoleIndicator = RoleIndicator
 	self.PhaseIndicator = PhaseIndicator
+end
+
+HydraUI.StyleFuncs["partypet"] = function(self, unit)
+	-- General
+	self:RegisterForClicks("AnyUp")
+	self:SetScript("OnEnter", UnitFrame_OnEnter)
+	self:SetScript("OnLeave", UnitFrame_OnLeave)
+	
+	local Backdrop = self:CreateTexture(nil, "BACKGROUND")
+	Backdrop:SetAllPoints()
+	Backdrop:SetTexture(Assets:GetTexture("Blank"))
+	Backdrop:SetVertexColor(0, 0, 0)
+	
+	-- Threat
+	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	Threat:SetPoint("TOPLEFT", -1, 1)
+	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+	Threat:SetBackdrop(HydraUI.Outline)
+	Threat.PostUpdate = UF.ThreatPostUpdate
+	
+	self.ThreatIndicator = Threat
+	
+	-- Health Bar
+	local Health = CreateFrame("StatusBar", nil, self)
+	Health:SetPoint("TOPLEFT", self, 1, -1)
+	Health:SetPoint("TOPRIGHT", self, -1, -1)
+	Health:SetHeight(Settings["raid-pets-health-height"])
+	Health:SetFrameLevel(5)
+	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetReverseFill(Settings["raid-pets-health-reverse"])
+	Health:SetOrientation(Settings["raid-pets-health-orientation"])
+	
+	local HealBar = CreateFrame("StatusBar", nil, self)
+	HealBar:SetAllPoints(Health)
+	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarColor(0, 0.48, 0)
+	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
+	
+	local HealthBG = Health:CreateTexture(nil, "BORDER")
+	HealthBG:SetAllPoints()
+	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealthBG.multiplier = 0.2
+	
+	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
+	HydraUI:SetFontInfo(HealthLeft, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
+	HealthLeft:SetPoint("LEFT", Health, 3, 0)
+	HealthLeft:SetJustifyH("LEFT")
+	
+	local HealthRight = Health:CreateFontString(nil, "OVERLAY")
+	HydraUI:SetFontInfo(HealthRight, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
+	HealthRight:SetPoint("RIGHT", Health, -3, 0)
+	HealthRight:SetJustifyH("RIGHT")
+	
+	local HealthMiddle = Health:CreateFontString(nil, "OVERLAY")
+	HydraUI:SetFontInfo(HealthMiddle, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
+	HealthMiddle:SetPoint("CENTER", Health, 0, -1)
+	HealthMiddle:SetJustifyH("CENTER")
+	
+	-- Attributes
+	Health.frequentUpdates = true
+	Health.colorDisconnected = true
+	Health.Smooth = true
+	
+	UF:SetHealthAttributes(Health, Settings["raid-pets-health-color"])
+	
+	-- Target Icon
+	local RaidTarget = Health:CreateTexture(nil, 'OVERLAY')
+	RaidTarget:SetSize(16, 16)
+	RaidTarget:SetPoint("CENTER", Health, "TOP")
+	
+	-- Tags
+	self:Tag(HealthMiddle, "[Name10]")
+	
+	self.Range = {
+		insideAlpha = Settings["party-in-range"] / 100,
+		outsideAlpha = Settings["party-out-of-range"] / 100,
+	}
+	
+	self.Health = Health
+	self.HealBar = HealBar
+	self.Health.bg = HealthBG
+	self.HealthLeft = HealthLeft
+	self.HealthRight = HealthRight
+	self.HealthMiddle = HealthMiddle
+	self.RaidTargetIndicator = RaidTarget
 end
 
 local UpdateRaidAnchorSize = function()
