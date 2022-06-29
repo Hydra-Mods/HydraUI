@@ -980,6 +980,57 @@ function UF:Load()
 		UpdateRaidSortingMethod(Settings["raid-sorting-method"])
 		
 		HydraUI:CreateMover(self.RaidAnchor)
+		
+		if Settings["raid-pets-enable"] then
+			local XOffset = 0
+			local YOffset = 0
+			
+			if (Settings["raid-point"] == "LEFT") then
+				XOffset = Settings["raid-spacing"]
+				YOffset = 0
+			elseif (Settings["raid-point"] == "RIGHT") then
+				XOffset = - Settings["raid-spacing"]
+				YOffset = 0
+			elseif (Settings["raid-point"] == "TOP") then
+				XOffset = 0
+				YOffset = - Settings["raid-spacing"]
+			elseif (Settings["raid-point"] == "BOTTOM") then
+				XOffset = 0
+				YOffset = Settings["raid-spacing"]
+			end
+			
+			local RaidPet = oUF:SpawnHeader("HydraUI Raid Pets", "SecureGroupPetHeaderTemplate", "raid,solo",
+				"initial-width", Settings["raid-pets-width"],
+				"initial-height", (Settings["raid-pets-health-height"] + Settings["raid-pets-power-height"] + 3),
+				"showSolo", Settings["raid-show-solo"],
+				"showPlayer", false,
+				"showParty", true,
+				"showRaid", false,
+				"xOffset", XOffset,
+				"yOffset", YOffset,
+				"point", Settings["raid-point"],
+				"oUF-initialConfigFunction", [[
+					local Header = self:GetParent()
+					
+					self:SetWidth(Header:GetAttribute("initial-width"))
+					self:SetHeight(Header:GetAttribute("initial-height"))
+				]]
+			)
+
+			if (Settings["raid-point"] == "LEFT") then
+				RaidPet:SetPoint("TOPLEFT", Raid, "BOTTOMLEFT", 0, - Settings["raid-spacing"])
+			elseif (Settings["raid-point"] == "RIGHT") then
+				RaidPet:SetPoint("TOPRIGHT", Raid, "BOTTOMRIGHT", 0, - Settings["raid-spacing"])
+			elseif (Settings["raid-point"] == "TOP") then
+				RaidPet:SetPoint("TOPLEFT", Raid, "BOTTOMLEFT", 0, - Settings["raid-spacing"])
+			elseif (Settings["raid-point"] == "BOTTOM") then
+				RaidPet:SetPoint("BOTTOMLEFT", Raid, "TOPLEFT", 0, Settings["raid-spacing"])
+			end
+
+			RaidPet:SetParent(HydraUI.UIParent)
+
+			HydraUI.UnitFrames["raid-pets"] = RaidPet
+		end
 	end
 	
 	if Settings["nameplates-enable"] then
