@@ -1862,9 +1862,8 @@ local SetDropdownOffset = function(self, offset)
 end
 
 local DropdownScrollBarOnValueChanged = function(self)
-	local Value = Round(self:GetValue())
 	local Parent = self:GetParent()
-	Parent.Offset = Value
+	Parent.Offset = Round(self:GetValue())
 	
 	Parent:ScrollMenu()
 end
@@ -1894,8 +1893,6 @@ local AddDropdownScrollBar = function(self)
 	ScrollBar:EnableMouseWheel(true)
 	ScrollBar:SetScript("OnMouseWheel", DropdownScrollBarOnMouseWheel)
 	ScrollBar:SetScript("OnValueChanged", DropdownScrollBarOnValueChanged)
-	
-	self.ScrollBar = ScrollBar
 	
 	local Thumb = ScrollBar:GetThumbTexture() 
 	Thumb:SetSize(ScrollWidth, WIDGET_HEIGHT)

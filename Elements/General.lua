@@ -3,27 +3,15 @@ local HydraUI, Language, Assets, Settings = select(2, ...):get()
 local Throttle = HydraUI:GetModule("Throttle")
 local GUI = HydraUI:GetModule("GUI")
 
-local Expansion = {
-	[0] = EXPANSION_NAME0,
-	[1] = EXPANSION_NAME1,
-	[2] = EXPANSION_NAME2,
-	[8] = EXPANSION_NAME8,
-}
-
 function HydraUI:WelcomeMessage()
-	if Settings["ui-display-welcome"] then
-		local Color1 = Settings["ui-widget-color"]
-		local Color2 = Settings["ui-header-font-color"]
-		local Expansion = Expansion[GetServerExpansionLevel()]
-		
-		if Expansion then -- Trial accounts have different returns
-			print(format(Language["Welcome to |cFF%sHydra|r|cFFEFFFFFUI|r version |cFF%s%s|r for %s - https://discord.gg/XefDFa6nJR"], Color1, Color2, HydraUI.UIVersion, Expansion))
-		else
-			print(format(Language["Welcome to |cFF%sHydra|r|cFFEFFFFFUI|r version |cFF%s%s|r - https://discord.gg/XefDFa6nJR"], Color1, Color2, HydraUI.UIVersion))
-		end
-		
-		print(format(Language["Type |cFF%s/hui|r to access the settings window, or click |cFF%s|Hcommand:/hui|h[here]|h|r."], Color1, Color1))
+	if (not Settings["ui-display-welcome"]) then
+		return
 	end
+	
+	local Color = Settings["ui-widget-color"]
+	
+	print(format(Language["Welcome to |cFF%sHydra|r|cFFEFFFFFUI|r version |cFF%s%s|r - https://discord.gg/XefDFa6nJR"], Color, Settings["ui-header-font-color"], HydraUI.UIVersion))
+	print(format(Language["Type |cFF%s/hui|r to access the settings window, or click |cFF%s|Hcommand:/hui|h[here]|h|r."], Color, Color))
 end
 
 local UpdateUIScale = function(value)

@@ -47,13 +47,13 @@ Defaults["micro-buttons-max"] = 100
 Defaults["micro-buttons-per-row"] = #MicroButtons.Buttons
 Defaults["micro-buttons-gap"] = 2
 
-local MicroButtonsButtonOnEnter = function(self)
+local ButtonOnEnter = function(self)
 	if (Settings["micro-buttons-visiblity"] == "MOUSEOVER") then
 		self:GetParent():SetAlpha(Settings["micro-buttons-max"] / 100)
 	end
 end
 
-local MicroButtonsButtonOnLeave = function(self)
+local ButtonOnLeave = function(self)
 	if (Settings["micro-buttons-visiblity"] == "MOUSEOVER") then
 		self:GetParent():SetAlpha(Settings["micro-buttons-opacity"] / 100)
 	end
@@ -151,8 +151,8 @@ function MicroButtons:Load()
 		self.Buttons[i]:ClearAllPoints()
 		self.Buttons[i]:SetHitRectInsets(0, 0, 0, 0)
 		self.Buttons[i]:SetSize(28, 36)
-		self.Buttons[i]:HookScript("OnEnter", MicroButtonsButtonOnEnter)
-		self.Buttons[i]:HookScript("OnLeave", MicroButtonsButtonOnLeave)
+		self.Buttons[i]:HookScript("OnEnter", ButtonOnEnter)
+		self.Buttons[i]:HookScript("OnLeave", ButtonOnLeave)
 		
 		self.Buttons[i].BG = self.Buttons[i]:CreateTexture(nil, "BACKGROUND")
 		self.Buttons[i].BG:SetPoint("TOPLEFT", self.Buttons[i], 1, -1)

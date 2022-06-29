@@ -64,19 +64,6 @@ function Update:OnUpdate(elapsed)
 	end
 end
 
-function Update:AnnounceAll()
-	if (not HydraUI.IsMainline) then
-		self:QueueChannel("YELL")
-	end
-	
-	self:GUILD_ROSTER_UPDATE()
-	
-	self.SentHome = false
-	self.SentInst = false
-	
-	self:GROUP_ROSTER_UPDATE()
-end
-
 function Update:PLAYER_ENTERING_WORLD()
 	if (not HydraUI.IsMainline) then
 		self:QueueChannel("YELL")

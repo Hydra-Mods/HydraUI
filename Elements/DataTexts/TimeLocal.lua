@@ -8,11 +8,11 @@ local OnMouseUp = function(self, button)
 	if InCombatLockdown() then
 		return print(ERR_NOT_IN_COMBAT)
 	end
-
-	if (button == "LeftButton") then
-		TimeManager_Toggle()
-	elseif HydraUI.IsMainline then
+	
+	if (HydraUI.IsMainline and button == "LeftButton") then
 		ToggleCalendar()
+	else
+		TimeManager_Toggle()
 	end
 end
 

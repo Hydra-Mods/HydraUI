@@ -66,7 +66,6 @@ function ZT:CreateFontObjects()
 	ZoneFrame:SetSize(32, 32)
 	ZoneFrame:SetPoint("TOP", HydraUI.UIParent, 0, -220)
 	ZoneFrame:SetAlpha(0)
-	-- Make a mover too? :thinking:
 	
 	local ZoneText = ZoneFrame:CreateFontString(nil, "OVERLAY")
 	ZoneText:SetFont(Assets:GetFont(Settings["ui-widget-font"]), 32, "OUTLINE")
@@ -84,8 +83,7 @@ function ZT:CreateFontObjects()
 	
 	local ZoneFadeIn = Group:CreateAnimation("fade")
 	ZoneFadeIn:SetEasing("in")
-	ZoneFadeIn:SetDuration(0.4)
-	ZoneFadeIn:SetOrder(1)
+	ZoneFadeIn:SetDuration(0.4) 
 	ZoneFadeIn:SetChange(1)
 	
 	local ZoneSleep = Group:CreateAnimation("sleep")
@@ -113,8 +111,6 @@ function ZT:Load()
 	end
 	
 	self:CreateFontObjects()
-	
-	self.CurrentZone = nil -- nil instead of GetZoneText() so the first OnEvent call shows pvp info
 	
 	self:RegisterEvent("ZONE_CHANGED")
 	self:RegisterEvent("ZONE_CHANGED_INDOORS")

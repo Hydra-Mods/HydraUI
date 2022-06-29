@@ -15,6 +15,7 @@ Defaults["minimap-top-height"] = 28
 Defaults["minimap-bottom-height"] = 28
 Defaults["minimap-top-fill"] = 100
 Defaults["minimap-bottom-fill"] = 100
+Defaults["minimap-show-calendar"] = false
 
 function Map:Disable(object)
 	if object.UnregisterAllEvents then
@@ -163,8 +164,16 @@ function Map:Style()
 	self:Disable(MinimapNorthTag)
 	self:Disable(MiniMapWorldMapButton)
 	self:Disable(MiniMapMailBorder)
-	self:Disable(GameTimeFrame)
 	self:Disable(TimeManagerClockButton)
+	
+	if GameTimeFrame then
+		GameTimeFrame:ClearAllPoints()
+		GameTimeFrame:SetPoint("TOPRIGHT", 1, -1)
+		
+		if (not Settings["minimap-show-calendar"]) then
+			GameTimeFrame:Hide()
+		end
+	end
 	
 	if Settings["minimap-show-top"] and not Settings["minimap-show-bottom"] then
 		Minimap:SetPoint("BOTTOM", Map, 0, 4)
@@ -266,6 +275,14 @@ local UpdateShowTracking = function(value)
 	end
 end
 
+local UpdateShowCalendar = function(value)
+	if value then
+		GameTimeFrame:Show()
+	else
+		GameTimeFrame:Hide()
+	end
+end
+
 function Map:Load()
 	if (not Settings["minimap-enable"]) then
 		return
@@ -285,6 +302,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Minimap"], fu
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("minimap-show-top", Settings["minimap-show-top"], Language["Enable Top Bar"], Language["Enable the data text bar on top of the mini map"], UpdateShowTopBar)
 	left:CreateSwitch("minimap-show-bottom", Settings["minimap-show-bottom"], Language["Enable Bottom Bar"], Language["Enable the data text bar on the bottom of the mini map"], UpdateShowBottomBar)
+	left:CreateSwitch("minimap-show-calendar", Settings["minimap-show-calendar"], Language["Enable Calendar"], Language["Enable the calendar button on the minimap"], UpdateShowCalendar)
 	left:CreateSlider("minimap-size", Settings["minimap-size"], 100, 250, 10, Language["Mini Map Size"], Language["Set the size of the mini map"], UpdateMinimapSize)
 	left:CreateSlider("minimap-top-height", Settings["minimap-top-height"], 14, 40, 1, Language["Top Height"], Language["Set the height for the top of the minimap"], UpdateTopHeight)
 	left:CreateSlider("minimap-bottom-height", Settings["minimap-bottom-height"], 14, 40, 1, Language["Bottom Height"], Language["Set the height for the bottom of the minimap"], UpdateBottomHeight)
