@@ -903,7 +903,7 @@ function UF:Load()
 
 			local PartyPet = oUF:SpawnHeader("HydraUI Party Pets", "SecureGroupPetHeaderTemplate", "party,solo",
 				"initial-width", Settings["party-pets-width"],
-				"initial-height", (Settings["party-pets-health-height"] + Settings["party-pets-power-height"] + 3),
+				"initial-height", (Settings["party-pets-health-height"] + 2),
 				"showSolo", Settings["party-show-solo"],
 				"showPlayer", false,
 				"showParty", true,
@@ -984,7 +984,7 @@ function UF:Load()
 		if Settings["raid-pets-enable"] then
 			local RaidPet = oUF:SpawnHeader("HydraUI Raid Pets", "SecureGroupPetHeaderTemplate", "raid,solo",
 			"initial-width", Settings["raid-width"],
-			"initial-height", (Settings["raid-health-height"] + Settings["raid-power-height"] + 3),
+			"initial-height", (Settings["raid-pets-health-height"] + 2),
 			"isTesting", false,
 			"showSolo", Settings["raid-show-solo"],
 			"showPlayer", true,

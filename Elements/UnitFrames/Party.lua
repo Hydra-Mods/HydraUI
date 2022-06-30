@@ -392,19 +392,9 @@ HydraUI.StyleFuncs["partypet"] = function(self, unit)
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealthBG.multiplier = 0.2
 	
-	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
-	HydraUI:SetFontInfo(HealthLeft, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
-	HealthLeft:SetPoint("LEFT", Health, 3, 0)
-	HealthLeft:SetJustifyH("LEFT")
-	
-	local HealthRight = Health:CreateFontString(nil, "OVERLAY")
-	HydraUI:SetFontInfo(HealthRight, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
-	HealthRight:SetPoint("RIGHT", Health, -3, 0)
-	HealthRight:SetJustifyH("RIGHT")
-	
 	local HealthMiddle = Health:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(HealthMiddle, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
-	HealthMiddle:SetPoint("CENTER", Health, 0, -1)
+	HealthMiddle:SetPoint("CENTER", Health, 0, 0)
 	HealthMiddle:SetJustifyH("CENTER")
 	
 	-- Attributes
@@ -430,8 +420,6 @@ HydraUI.StyleFuncs["partypet"] = function(self, unit)
 	self.Health = Health
 	self.HealBar = HealBar
 	self.Health.bg = HealthBG
-	self.HealthLeft = HealthLeft
-	self.HealthRight = HealthRight
 	self.HealthMiddle = HealthMiddle
 	self.RaidTargetIndicator = RaidTarget
 end
@@ -672,6 +660,7 @@ local Testing = false
 
 local TestParty = function()
 	local Header = _G["HydraUI Party"]
+	local Pets = _G["HydraUI Party Pets"]
 	
 	if Testing then
 		if Header then
@@ -683,6 +672,21 @@ local TestParty = function()
 			
 			for i = 1, select("#", Header:GetChildren()) do
 				local Frame = select(i, Header:GetChildren())
+				
+				UnregisterUnitWatch(Frame)
+				Frame:Hide()
+			end
+		end
+		
+		if Pets then
+			Pets:SetAttribute("isTesting", false)
+
+			if (Pets:GetAttribute("startingIndex") ~= -4) then
+				Pets:SetAttribute("startingIndex", -4)
+			end
+			
+			for i = 1, select("#", Pets:GetChildren()) do
+				local Frame = select(i, Pets:GetChildren())
 				
 				UnregisterUnitWatch(Frame)
 				Frame:Hide()
@@ -702,6 +706,23 @@ local TestParty = function()
 				local Frame = select(i, Header:GetChildren())
 				
 				Frame.unit = "player"
+				UnregisterUnitWatch(Frame)
+				RegisterUnitWatch(Frame, true)
+				Frame:Show()
+			end
+		end
+		
+		if Pets then
+			Pets:SetAttribute("isTesting", true)
+
+			if (Pets:GetAttribute("startingIndex") ~= -4) then
+				Pets:SetAttribute("startingIndex", -4)
+			end
+			
+			for i = 1, select("#", Pets:GetChildren()) do
+				local Frame = select(i, Pets:GetChildren())
+				
+				Frame.unit = UnitExists("pet") and "pet" or "player"
 				UnregisterUnitWatch(Frame)
 				RegisterUnitWatch(Frame, true)
 				Frame:Show()
