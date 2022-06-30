@@ -982,49 +982,37 @@ function UF:Load()
 		HydraUI:CreateMover(self.RaidAnchor)
 		
 		if Settings["raid-pets-enable"] then
-			local XOffset = 0
-			local YOffset = 0
-			
-			if (Settings["raid-point"] == "LEFT") then
-				XOffset = Settings["raid-spacing"]
-				YOffset = 0
-			elseif (Settings["raid-point"] == "RIGHT") then
-				XOffset = - Settings["raid-spacing"]
-				YOffset = 0
-			elseif (Settings["raid-point"] == "TOP") then
-				XOffset = 0
-				YOffset = - Settings["raid-spacing"]
-			elseif (Settings["raid-point"] == "BOTTOM") then
-				XOffset = 0
-				YOffset = Settings["raid-spacing"]
-			end
-			
 			local RaidPet = oUF:SpawnHeader("HydraUI Raid Pets", "SecureGroupPetHeaderTemplate", "raid,solo",
-				"initial-width", Settings["raid-pets-width"],
-				"initial-height", (Settings["raid-pets-health-height"] + Settings["raid-pets-power-height"] + 3),
-				"showSolo", Settings["raid-show-solo"],
-				"showPlayer", false,
-				"showParty", true,
-				"showRaid", false,
-				"xOffset", XOffset,
-				"yOffset", YOffset,
-				"point", Settings["raid-point"],
-				"oUF-initialConfigFunction", [[
-					local Header = self:GetParent()
-					
-					self:SetWidth(Header:GetAttribute("initial-width"))
-					self:SetHeight(Header:GetAttribute("initial-height"))
-				]]
+			"initial-width", Settings["raid-width"],
+			"initial-height", (Settings["raid-health-height"] + Settings["raid-power-height"] + 3),
+			"isTesting", false,
+			"showSolo", Settings["raid-show-solo"],
+			"showPlayer", true,
+			"showParty", false,
+			"showRaid", true,
+			"point", Settings["raid-point"],
+			"xoffset", Settings["raid-x-offset"],
+			"yOffset", Settings["raid-y-offset"],
+			"maxColumns", Settings["raid-max-columns"],
+			"unitsPerColumn", Settings["raid-units-per-column"],
+			"columnSpacing", Settings["raid-column-spacing"],
+			"columnAnchorPoint", Settings["raid-column-anchor"],
+			"oUF-initialConfigFunction", [[
+				local Header = self:GetParent()
+				
+				self:SetWidth(Header:GetAttribute("initial-width"))
+				self:SetHeight(Header:GetAttribute("initial-height"))
+			]]
 			)
 
 			if (Settings["raid-point"] == "LEFT") then
-				RaidPet:SetPoint("TOPLEFT", Raid, "BOTTOMLEFT", 0, - Settings["raid-spacing"])
+				RaidPet:SetPoint("TOPLEFT", Raid, "BOTTOMLEFT", 0, - Settings["raid-column-spacing"])
 			elseif (Settings["raid-point"] == "RIGHT") then
-				RaidPet:SetPoint("TOPRIGHT", Raid, "BOTTOMRIGHT", 0, - Settings["raid-spacing"])
+				RaidPet:SetPoint("TOPRIGHT", Raid, "BOTTOMRIGHT", 0, - Settings["raid-column-spacing"])
 			elseif (Settings["raid-point"] == "TOP") then
-				RaidPet:SetPoint("TOPLEFT", Raid, "BOTTOMLEFT", 0, - Settings["raid-spacing"])
+				RaidPet:SetPoint("TOPLEFT", Raid, "BOTTOMLEFT", 0, - Settings["raid-column-spacing"])
 			elseif (Settings["raid-point"] == "BOTTOM") then
-				RaidPet:SetPoint("BOTTOMLEFT", Raid, "TOPLEFT", 0, Settings["raid-spacing"])
+				RaidPet:SetPoint("BOTTOMLEFT", Raid, "TOPLEFT", 0, Settings["raid-column-spacing"])
 			end
 
 			RaidPet:SetParent(HydraUI.UIParent)
