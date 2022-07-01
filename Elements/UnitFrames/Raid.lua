@@ -371,7 +371,7 @@ HydraUI.StyleFuncs["raidpet"] = function(self, unit)
 	HealthBG.multiplier = 0.2
 	
 	local HealthMiddle = Health:CreateFontString(nil, "OVERLAY")
-	HydraUI:SetFontInfo(HealthMiddle, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
+	HydraUI:SetFontInfo(HealthMiddle, Settings["raid-font"], Settings["raid-font-size"], Settings["raid-font-flags"])
 	HealthMiddle:SetPoint("CENTER", Health, 0, 0)
 	HealthMiddle:SetJustifyH("CENTER")
 	
@@ -391,8 +391,8 @@ HydraUI.StyleFuncs["raidpet"] = function(self, unit)
 	self:Tag(HealthMiddle, "[Name10]")
 	
 	self.Range = {
-		insideAlpha = Settings["party-in-range"] / 100,
-		outsideAlpha = Settings["party-out-of-range"] / 100,
+		insideAlpha = Settings["raid-in-range"] / 100,
+		outsideAlpha = Settings["raid-out-of-range"] / 100,
 	}
 	
 	self.Health = Health
