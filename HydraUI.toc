@@ -1,6 +1,6 @@
 ## Interface: 90205
 ## Author: Hydra
-## Version: 1.64
+## Version: 1.65
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: An interface replacement for Shadowlands
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
