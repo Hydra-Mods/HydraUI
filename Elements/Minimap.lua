@@ -302,7 +302,11 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Minimap"], fu
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("minimap-show-top", Settings["minimap-show-top"], Language["Enable Top Bar"], Language["Enable the data text bar on top of the mini map"], UpdateShowTopBar)
 	left:CreateSwitch("minimap-show-bottom", Settings["minimap-show-bottom"], Language["Enable Bottom Bar"], Language["Enable the data text bar on the bottom of the mini map"], UpdateShowBottomBar)
-	left:CreateSwitch("minimap-show-calendar", Settings["minimap-show-calendar"], Language["Enable Calendar"], Language["Enable the calendar button on the minimap"], UpdateShowCalendar)
+	
+	if HydraUI.IsRetail then
+		left:CreateSwitch("minimap-show-calendar", Settings["minimap-show-calendar"], Language["Enable Calendar"], Language["Enable the calendar button on the minimap"], UpdateShowCalendar)
+	end
+	
 	left:CreateSlider("minimap-size", Settings["minimap-size"], 100, 250, 10, Language["Mini Map Size"], Language["Set the size of the mini map"], UpdateMinimapSize)
 	left:CreateSlider("minimap-top-height", Settings["minimap-top-height"], 14, 40, 1, Language["Top Height"], Language["Set the height for the top of the minimap"], UpdateTopHeight)
 	left:CreateSlider("minimap-bottom-height", Settings["minimap-bottom-height"], 14, 40, 1, Language["Bottom Height"], Language["Set the height for the bottom of the minimap"], UpdateBottomHeight)
