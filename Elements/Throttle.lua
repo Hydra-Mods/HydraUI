@@ -11,10 +11,10 @@ Throttle.Inactive = {}
 function Throttle:IsThrottled(name)
 	for i = 1, #self.Active do
 		if (self.Active[i][1] == name) then
-			local Throttle = self.Active[i]
+			local Item = tremove(self.Active, i)
 			
-			if (GetTime() - Throttle[2] >= Throttle[3]) then
-				tinsert(self.Inactive, tremove(self.Active, i))
+			if (GetTime() - Item[2] >= Item[3]) then
+				tinsert(self.Inactive, Item)
 				
 				return false
 			end

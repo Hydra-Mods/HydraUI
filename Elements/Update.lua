@@ -23,6 +23,8 @@ Update.Timer = 5
 local Tables = {}
 local Queue = {}
 
+local Throttle = HydraUI:GetModule("Throttle")
+
 function Update:OnMouseUp()
 	HydraUI:print(Language["You can get an updated version of HydraUI at https://www.curseforge.com/wow/addons/hydraui"])
 	print(Language["Join the Discord community for support and feedback https://discord.gg/XefDFa6nJR"])
@@ -67,6 +69,7 @@ end
 function Update:PLAYER_ENTERING_WORLD()
 	if (not HydraUI.IsMainline) then
 		self:QueueChannel("YELL")
+		Throttle:Start("vrsn", 10)
 	end
 	
 	self:GROUP_ROSTER_UPDATE()
@@ -116,10 +119,35 @@ function Update:CHAT_MSG_ADDON(prefix, message, channel, sender)
 	end
 end
 
+function Update:ZONE_CHANGED_NEW_AREA()
+	local Zone = GetZoneText()
+	
+	if (Zone ~= self.Zone and not Throttle:IsThrottled("vrsn")) then
+		self:QueueChannel("YELL")
+		self.Zone = Zone
+		Throttle:Start("vrsn", 10)
+	end
+end
+
+function Update:ZONE_CHANGED()
+	local Zone = GetZoneText()
+	
+	if (Zone ~= self.Zone and not Throttle:IsThrottled("vrsn")) then
+		self:QueueChannel("YELL")
+		self.Zone = Zone
+		Throttle:Start("vrsn", 10)
+	end
+end
+
 function Update:OnEvent(event, ...)
 	if self[event] then
 		self[event](self, ...)
 	end
+end
+
+if not HydraUI.IsMainline then
+	Update:RegisterEvent("ZONE_CHANGED")
+	Update:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 end
 
 Update:RegisterEvent("GUILD_ROSTER_UPDATE")

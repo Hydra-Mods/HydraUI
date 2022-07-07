@@ -5,15 +5,15 @@ local GUI = HydraUI:GetModule("GUI")
 local Tiers = {"FF8000", "A335EE", "0070DD", "1EFF00", "FFFFFF"}
 
 local Patrons = {
-	{"Dragonhawk", "last"},
+	{"Dragonhawk"},
 	{},
-	{"deck", "Oxymorphone", "Quiet"},
+	{"deck", "Quiet"},
 	{"JDoubleU00", "sylvester", "thurin"},
-	{},
+	{"Oxymorphone"},
 }
 
 local Previous = {
-	{"SwoopCrown", "Cheeso_76", "Halven", "Erieeroot"},
+	{"SwoopCrown", "Cheeso_76", "Halven", "Erieeroot", "last"},
 	{"Smelly", "Trix", "wolimazo", "Ari", "MrPoundsign"},
 	{"Euphoria", "Mitooshin", "MisseFar", "FrankPatten", "Dillan"},
 	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Aaron B.", "Steve R.", "Angel", "Jeor", "Mcbooze", "stko", "Syn", "Rytok", "Ryex", "Blom", "Innie", "Cyber", "protocol7", "Dellamaik"},
@@ -22,7 +22,7 @@ local Previous = {
 
 local Donors = {
 	"Innie", "Brightsides", "Erthelmi", "Gene", "JDoubleU00", "Duds", "Shazlen", "Shawna W.", "Dillan", "Bruce N.", "last", "Wrynn", "Ryxân", "Andrei B.", "Anthony M.", "AtticaOnline", "Hawksworth", "WingZero",
-	"Elizabeth T.", "Quadra", "Brandon W.", "Richard S.", "Andreas M.",
+	"Elizabeth T.", "Quadra", "Brandon W.", "Richard S.", "Andreas M.", "Morgana N.",
 }
 
 GUI:AddWidgets(Language["Info"], Language["Credits"], function(left, right)

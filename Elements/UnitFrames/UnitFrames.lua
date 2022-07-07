@@ -918,19 +918,16 @@ function UF:Load()
 					self:SetHeight(Header:GetAttribute("initial-height"))
 				]]
 			)
-
-			if (Settings["party-point"] == "LEFT") then
-				PartyPet:SetPoint("TOPLEFT", Party, "BOTTOMLEFT", 0, - Settings["party-spacing"])
-			elseif (Settings["party-point"] == "RIGHT") then
-				PartyPet:SetPoint("TOPRIGHT", Party, "BOTTOMRIGHT", 0, - Settings["party-spacing"])
-			elseif (Settings["party-point"] == "TOP") then
-				PartyPet:SetPoint("TOPLEFT", Party, "BOTTOMLEFT", 0, - Settings["party-spacing"])
-			elseif (Settings["party-point"] == "BOTTOM") then
-				PartyPet:SetPoint("BOTTOMLEFT", Party, "TOPLEFT", 0, Settings["party-spacing"])
-			end
-
+			
+			self.PartyPetAnchor = CreateFrame("Frame", "HydraUI Party Pet Anchor", HydraUI.UIParent)
+			self.PartyPetAnchor:SetSize((5 * Settings["party-width"] + (4 * Settings["party-spacing"])), Settings["party-pets-health-height"] + 2)
+			self.PartyPetAnchor:SetPoint("TOPLEFT", self.PartyAnchor, "BOTTOMLEFT", 0, -2)
+			
+			PartyPet:SetPoint("TOPLEFT", self.PartyPetAnchor, 0, 0)
 			PartyPet:SetParent(HydraUI.UIParent)
-
+			
+			HydraUI:CreateMover(self.PartyPetAnchor)
+			
 			HydraUI.UnitFrames["party-pets"] = PartyPet
 		end
 	end
@@ -975,11 +972,11 @@ function UF:Load()
 		Raid:SetPoint("TOPLEFT", self.RaidAnchor, 0, 0)
 		Raid:SetParent(HydraUI.UIParent)
 		
+		HydraUI:CreateMover(self.RaidAnchor)
+		
 		HydraUI.UnitFrames["raid"] = Raid
 		
 		UpdateRaidSortingMethod(Settings["raid-sorting-method"])
-		
-		HydraUI:CreateMover(self.RaidAnchor)
 		
 		if Settings["raid-pets-enable"] then
 			local RaidPet = oUF:SpawnHeader("HydraUI Raid Pets", "SecureGroupPetHeaderTemplate", "raid,solo",
@@ -1005,16 +1002,14 @@ function UF:Load()
 			]]
 			)
 
-			if (Settings["raid-point"] == "LEFT") then
-				RaidPet:SetPoint("TOPLEFT", Raid, "BOTTOMLEFT", 0, - Settings["raid-column-spacing"])
-			elseif (Settings["raid-point"] == "RIGHT") then
-				RaidPet:SetPoint("TOPRIGHT", Raid, "BOTTOMRIGHT", 0, - Settings["raid-column-spacing"])
-			elseif (Settings["raid-point"] == "TOP") then
-				RaidPet:SetPoint("TOPLEFT", Raid, "BOTTOMLEFT", 0, - Settings["raid-column-spacing"])
-			elseif (Settings["raid-point"] == "BOTTOM") then
-				RaidPet:SetPoint("BOTTOMLEFT", Raid, "TOPLEFT", 0, Settings["raid-column-spacing"])
-			end
+			self.RaidPetAnchor = CreateFrame("Frame", "HydraUI Raid Pet Anchor", HydraUI.UIParent)
+			self.RaidPetAnchor:SetWidth((floor(40 / Settings["raid-max-columns"]) * Settings["raid-width"] + (floor(40 / Settings["raid-max-columns"]) * Settings["raid-x-offset"] - 2)))
+			self.RaidPetAnchor:SetHeight(Settings["raid-pets-health-height"] * (Settings["raid-max-columns"] + (Settings["raid-y-offset"])) - 1)
+			self.RaidPetAnchor:SetPoint("BOTTOMLEFT", self.RaidAnchor, "TOPLEFT", 0, 0)
 
+			HydraUI:CreateMover(self.RaidPetAnchor)
+
+			RaidPet:SetPoint("TOPLEFT", self.RaidPetAnchor, 0, 0)
 			RaidPet:SetParent(HydraUI.UIParent)
 
 			HydraUI.UnitFrames["raid-pets"] = RaidPet

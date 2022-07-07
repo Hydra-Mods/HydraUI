@@ -381,11 +381,35 @@ HydraUI.StyleFuncs["partypet"] = function(self, unit)
 	Health:SetReverseFill(Settings["party-pets-health-reverse"])
 	Health:SetOrientation(Settings["party-pets-health-orientation"])
 	
-	local HealBar = CreateFrame("StatusBar", nil, self)
-	HealBar:SetAllPoints(Health)
+	local HealBar = CreateFrame("StatusBar", nil, Health)
+	HealBar:SetWidth(Settings["party-width"])
+	HealBar:SetHeight(Settings["party-pets-health-height"])
 	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
+	
+	if Settings["party-health-reverse"] then
+		HealBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
+	else
+		HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+	end
+	
+	if HydraUI.IsMainline then
+		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
+		AbsorbsBar:SetWidth(Settings["party-width"])
+		AbsorbsBar:SetHeight(Settings["party-health-height"])
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
+		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
+		
+		if Settings["party-health-reverse"] then
+			AbsorbsBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
+		else
+			AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
+		end
+		
+		self.AbsorbsBar = AbsorbsBar
+	end
 	
 	local HealthBG = Health:CreateTexture(nil, "BORDER")
 	HealthBG:SetAllPoints()
