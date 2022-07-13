@@ -53,12 +53,10 @@ ClientInfo["App"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return  ClientToName[info.gameAccountInfo.clientProgram], name
+	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
 ClientInfo["ANBS"] = function(name, id)
-	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
-	
 	if IsAFK then
 		name = format("|cFF9E9E9E%s|r", name)
 	elseif IsBusy then
@@ -67,7 +65,7 @@ ClientInfo["ANBS"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[Client], name, Area
+	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
 ClientInfo["BSAp"] = function(name, info)
@@ -195,8 +193,8 @@ ClientInfo["WoW"] = function(name, info)
 	
 	local ClassColor = HydraUI.ClassColors[Class]
 	
-	if (not ClassColor) then -- Temporary until I hunt down the issue
-		return name, ProjectIDToName[info.gameAccountInfo.wowProjectID]
+	if (not ClassColor) then
+		return ProjectIDToName[info.gameAccountInfo.wowProjectID], name
 	end
 	
 	ClassColor = HydraUI:RGBToHex(ClassColor[1], ClassColor[2], ClassColor[3])

@@ -46,6 +46,8 @@ local GetClass = function(class)
 end
 
 ClientInfo["App"] = function(name, id)
+	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
+	
 	if IsAFK then
 		name = format("|cFF9E9E9E%s|r", name)
 	elseif IsBusy then
