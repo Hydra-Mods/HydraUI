@@ -5,7 +5,7 @@
 ## Notes: An interface replacement for Classic and Season of Mastery
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
 
-Initialize.lua
+Elements\Initialize.lua
 Elements\Libraries\LibStub.lua
 Elements\Libraries\CallbackHandler-1.0.lua
 Elements\Libraries\LibClassicCasterino.lua
@@ -20,16 +20,16 @@ Elements\Libraries\LibQuestXP\LibQuestXP.lua
 Elements\Libraries\LibClassicDurations\LibClassicDurations.xml
 Elements\Assets.lua
 Elements\Tools.lua
-Languages\deDE.lua
-Languages\esES.lua
-Languages\esMX.lua
-Languages\frFR.lua
-Languages\itIT.lua
-Languages\koKR.lua
-Languages\ptBR.lua
-Languages\ruRU.lua
-Languages\zhCN.lua
-Languages\zhTW.lua
+Elements\Languages\deDE.lua
+Elements\Languages\esES.lua
+Elements\Languages\esMX.lua
+Elements\Languages\frFR.lua
+Elements\Languages\itIT.lua
+Elements\Languages\koKR.lua
+Elements\Languages\ptBR.lua
+Elements\Languages\ruRU.lua
+Elements\Languages\zhCN.lua
+Elements\Languages\zhTW.lua
 Elements\Styles.lua
 Elements\Defaults.lua
 Elements\GUI\GUI.lua

@@ -5,7 +5,7 @@
 ## Notes: An interface replacement for Shadowlands
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
 
-Initialize.lua
+Elements\Initialize.lua
 Elements\Libraries\LibStub.lua
 Elements\Libraries\CallbackHandler-1.0.lua
 Elements\Libraries\LibSharedMedia-3.0.lua
@@ -15,16 +15,16 @@ Elements\Libraries\LibAnim.lua
 Elements\Libraries\oUF\oUF_Mainline.xml
 Elements\Assets.lua
 Elements\Tools.lua
-Languages\deDE.lua
-Languages\esES.lua
-Languages\esMX.lua
-Languages\frFR.lua
-Languages\itIT.lua
-Languages\koKR.lua
-Languages\ptBR.lua
-Languages\ruRU.lua
-Languages\zhCN.lua
-Languages\zhTW.lua
+Elements\Languages\deDE.lua
+Elements\Languages\esES.lua
+Elements\Languages\esMX.lua
+Elements\Languages\frFR.lua
+Elements\Languages\itIT.lua
+Elements\Languages\koKR.lua
+Elements\Languages\ptBR.lua
+Elements\Languages\ruRU.lua
+Elements\Languages\zhCN.lua
+Elements\Languages\zhTW.lua
 Elements\Styles.lua
 Elements\Defaults.lua
 Elements\GUI\GUI.lua
