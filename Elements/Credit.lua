@@ -20,10 +20,8 @@ local Previous = {
 	{"Akab00m", "OzzFreak", "madmaddy", "Uzify", "Erthelmi", "silence", "momzzze"},
 }
 
-local Donors = {
-	"Innie", "Brightsides", "Erthelmi", "Gene", "JDoubleU00", "Duds", "Shazlen", "Shawna W.", "Dillan", "Bruce N.", "last", "Wrynn", "Ryxân", "Andrei B.", "Anthony M.", "AtticaOnline", "Hawksworth", "WingZero",
-	"Elizabeth T.", "Quadra", "Brandon W.", "Richard S.", "Andreas M.", "Morgana N.",
-}
+local Donors = [[Innie Brightsides Erthelmi Gene JDoubleU00 Duds Shazlen Shawna W Dillan Bruce N last Wrynn Ryxân Andrei B Anthony M AtticaOnline Hawksworth WingZero
+Elizabeth T Quadra Brandon W Richard S Andreas M Morgana N]]
 
 GUI:AddWidgets(Language["Info"], Language["Credits"], function(left, right)
 	left:CreateHeader(Language["Scripting Help & Inspiration"])
@@ -90,14 +88,7 @@ GUI:AddWidgets(Language["Info"], Language["Supporters"], function(left, right)
 	left:CreateMessage("", ExPatrons)
 	
 	right:CreateHeader(Language["Donors"])
-	
-	for i = 1, #Donors, 2 do
-		if Donors[i + 1] then
-			right:CreateDoubleLine("", Donors[i], Donors[i + 1])
-		else
-			right:CreateLine("", Donors[i])
-		end
-	end
+	right:CreateMessage("", Donors)
 	
 	right:CreateHeader("Thank you so much!")
 	right:CreateMessage("", "Thank you to all of these amazing people for their support, through donations and Patreon pledges! This generosity allows me to spend so much of my time developing the interface for everyone.")

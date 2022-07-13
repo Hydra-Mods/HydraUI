@@ -9,8 +9,9 @@ local RAID_CLASS_COLORS = RAID_CLASS_COLORS
 local GetQuestDifficultyColor = GetQuestDifficultyColor
 local next = next
 local Label = TUTORIAL_TITLE22
-
 local PresenceID, AccountName, BattleTag, IsBattleTagPresence, CharacterName, BNetIDGameAccount, Client, IsOnline, LastOnline, IsAFK, IsDND
+local ClientInfo = {}
+local FriendList = {}
 
 local ClientToName = {
 	["App"] = Language["B.Net"],
@@ -43,8 +44,6 @@ local GetClass = function(class)
 	end
 end
 
-local ClientInfo = {}
-
 ClientInfo["App"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
 		name = format("|cFF9E9E9E%s|r", name)
@@ -54,7 +53,7 @@ ClientInfo["App"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return name, ClientToName[info.gameAccountInfo.clientProgram]
+	return  ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
 ClientInfo["ANBS"] = function(name, id)
@@ -68,7 +67,7 @@ ClientInfo["ANBS"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return name, ClientToName[Client]
+	return ClientToName[Client], name, Area
 end
 
 ClientInfo["BSAp"] = function(name, info)
@@ -80,7 +79,7 @@ ClientInfo["BSAp"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return name, ClientToName[info.gameAccountInfo.clientProgram]
+	return ClientToName[info.gameAccountInfo.clientProgram], name, Area
 end
 
 ClientInfo["DST2"] = function(name, info)
@@ -92,7 +91,7 @@ ClientInfo["DST2"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return name, ClientToName[info.gameAccountInfo.clientProgram]
+	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
 ClientInfo["D3"] = function(name, info)
@@ -104,7 +103,7 @@ ClientInfo["D3"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return name, ClientToName[info.gameAccountInfo.clientProgram]
+	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
 ClientInfo["Hero"] = function(name, info)
@@ -116,7 +115,7 @@ ClientInfo["Hero"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return name, ClientToName[info.gameAccountInfo.clientProgram]
+	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
 ClientInfo["Pro"] = function(name, info)
@@ -128,7 +127,7 @@ ClientInfo["Pro"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return name, ClientToName[info.gameAccountInfo.clientProgram]
+	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
 ClientInfo["S1"] = function(name, info)
@@ -140,7 +139,7 @@ ClientInfo["S1"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return name, ClientToName[info.gameAccountInfo.clientProgram]
+	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
 ClientInfo["S2"] = function(name, info)
@@ -152,7 +151,7 @@ ClientInfo["S2"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return name, ClientToName[info.gameAccountInfo.clientProgram]
+	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
 ClientInfo["VIPR"] = function(name, info)
@@ -164,7 +163,7 @@ ClientInfo["VIPR"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return name, ClientToName[info.gameAccountInfo.clientProgram]
+	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
 ClientInfo["ODIN"] = function(name, info)
@@ -176,7 +175,7 @@ ClientInfo["ODIN"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return name, ClientToName[info.gameAccountInfo.clientProgram]
+	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
 ClientInfo["OSI"] = function(name, info)
@@ -188,7 +187,7 @@ ClientInfo["OSI"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return name, ClientToName[info.gameAccountInfo.clientProgram]
+	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
 ClientInfo["WoW"] = function(name, info)
@@ -214,8 +213,13 @@ ClientInfo["WoW"] = function(name, info)
 	end
 	
 	local NameInfo = format("%s |cFFFFFFFF(|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF)|r", name, LevelColor, info.gameAccountInfo.characterLevel, ClassColor, info.gameAccountInfo.characterName)
+	local Area = info.gameAccountInfo.areaName
 	
-	return NameInfo, ProjectIDToName[info.gameAccountInfo.wowProjectID]
+	if (Area == GetRealZoneText()) then
+		Area = format("|cFF33FF33%s|r", Area)
+	end
+	
+	return ProjectIDToName[info.gameAccountInfo.wowProjectID], NameInfo, Area
 end
 
 ClientInfo["WTCG"] = function(name, info)
@@ -227,14 +231,14 @@ ClientInfo["WTCG"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return name, ClientToName[info.gameAccountInfo.clientProgram]
+	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
 local GetClientInformation = function(client, name, info)
 	if ClientInfo[client] then
-		local Left, Right = ClientInfo[client](name, info)
+		local RealClient, Left, Right = ClientInfo[client](name, info)
 		
-		return Left, Right
+		return RealClient, Left, Right
 	end
 end
 
@@ -245,6 +249,8 @@ local OnEnter = function(self)
 	local NumFriendsOnline = GetNumOnlineFriends()
 	local NumBNFriends, NumBNOnline = BNGetNumFriends()
 	local Name
+	local NumClients = 0
+	local ClientCount = 0
 	
 	GameTooltip:AddDoubleLine(Label, format("%s/%s", NumBNOnline + NumFriendsOnline, NumFriends + NumBNFriends))
 	GameTooltip:AddLine(" ")
@@ -254,13 +260,33 @@ local OnEnter = function(self)
 		local Info = GetFriendAccountInfo(i)
 		
 		if Info then
-			local Left, Right = GetClientInformation(Info.gameAccountInfo.clientProgram, Info.accountName, Info)
+			local RealClient, Left, Right = GetClientInformation(Info.gameAccountInfo.clientProgram, Info.accountName, Info)
 			
-			if Right then
-				GameTooltip:AddDoubleLine(Left, Right, nil, nil, nil, 1, 1, 1)
-			else
-				GameTooltip:AddLine(Left)
+			if RealClient then
+				if (not FriendList[RealClient]) then
+					FriendList[RealClient] = {}
+					NumClients = NumClients + 1
+				end
+				
+				tinsert(FriendList[RealClient], {Left, Right})
 			end
+		end
+	end
+	
+	for client, info in next, FriendList do
+		GameTooltip:AddLine(client)
+		ClientCount = ClientCount + 1
+		
+		for i = 1, #info do
+			if info[i][2] then
+				GameTooltip:AddDoubleLine(info[i][1], info[i][2], nil, nil, nil, 1, 1, 1)
+			else
+				GameTooltip:AddLine(info[i][1])
+			end
+		end
+		
+		if (ClientCount ~= NumClients) then
+			GameTooltip:AddLine(" ")
 		end
 	end
 	
@@ -274,7 +300,8 @@ local OnEnter = function(self)
 	end
 	
 	GameTooltip:Show()
-	GameTooltip:Show()
+	
+	wipe(FriendList)
 end
 
 local OnLeave = function()
