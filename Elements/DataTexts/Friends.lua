@@ -203,9 +203,9 @@ ClientInfo["WoW"] = function(name, info)
 	LevelColor = HydraUI:RGBToHex(LevelColor.r, LevelColor.g, LevelColor.b)
 	
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E(%s)|r |cFFFFFF33<%s>|r", name, DEFAULT_AFK_MESSAGE)
+		name = format("|cFF00FFF6(%s)|r |cFFFFFF33<%s>|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336(%s)|r  |cFFFFFF33<%s>|r", name, DEFAULT_DND_MESSAGE)
+		name = format("|cFF00FFF6(%s)|r |cFFFFFF33<%s>|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6(%s)|r", name)
 	end

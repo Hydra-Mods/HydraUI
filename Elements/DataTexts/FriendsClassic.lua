@@ -230,9 +230,9 @@ ClientInfo["WoW"] = function(name, id)
 	LevelColor = HydraUI:RGBToHex(LevelColor.r, LevelColor.g, LevelColor.b)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E(%s)|r |cFFFFFF33<%s>|r", name, CHAT_FLAG_AFK)
+		name = format("|cFF00FFF6(%s)|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336(%s)|r  |cFFFFFF33<%s>|r", name, CHAT_FLAG_DND)
+		name = format("|cFF00FFF6(%s)|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6(%s)|r", name)
 	end
