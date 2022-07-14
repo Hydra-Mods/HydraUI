@@ -49,9 +49,9 @@ ClientInfo["App"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -63,9 +63,9 @@ ClientInfo["ANBS"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -77,9 +77,9 @@ ClientInfo["BSAp"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -91,9 +91,9 @@ ClientInfo["DST2"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -105,9 +105,9 @@ ClientInfo["D3"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -119,9 +119,9 @@ ClientInfo["Hero"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -133,9 +133,9 @@ ClientInfo["Pro"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -147,9 +147,9 @@ ClientInfo["S1"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -161,9 +161,9 @@ ClientInfo["S2"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -175,9 +175,9 @@ ClientInfo["VIPR"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -189,9 +189,9 @@ ClientInfo["ODIN"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -203,9 +203,9 @@ ClientInfo["OSI"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -250,9 +250,9 @@ ClientInfo["WTCG"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_DND)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end

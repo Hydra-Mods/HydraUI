@@ -46,9 +46,9 @@ end
 
 ClientInfo["App"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -57,10 +57,10 @@ ClientInfo["App"] = function(name, info)
 end
 
 ClientInfo["ANBS"] = function(name, id)
-	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
-	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+	if info.gameAccountInfo.isGameAFK then
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
+	elseif info.gameAccountInfo.isGameBusy then
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -70,9 +70,9 @@ end
 
 ClientInfo["BSAp"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -82,9 +82,9 @@ end
 
 ClientInfo["DST2"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -94,9 +94,9 @@ end
 
 ClientInfo["D3"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -106,9 +106,9 @@ end
 
 ClientInfo["Hero"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -118,9 +118,9 @@ end
 
 ClientInfo["Pro"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -130,9 +130,9 @@ end
 
 ClientInfo["S1"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -142,9 +142,9 @@ end
 
 ClientInfo["S2"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -154,9 +154,9 @@ end
 
 ClientInfo["VIPR"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -166,9 +166,9 @@ end
 
 ClientInfo["ODIN"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -176,11 +176,11 @@ ClientInfo["ODIN"] = function(name, info)
 	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
-ClientInfo["OSI"] = function(name, info)
+ClientInfo["OSI"] = function(name, info)	
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
@@ -222,9 +222,9 @@ end
 
 ClientInfo["WTCG"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
