@@ -297,24 +297,13 @@ local OnEnter = function(self)
 		end
 	end
 	
-	for client, info in next, FriendList do
-		GameTooltip:AddLine(client)
-		ClientCount = ClientCount + 1
-		
-		for i = 1, #info do
-			if info[i][2] then
-				GameTooltip:AddDoubleLine(info[i][1], info[i][2], nil, nil, nil, 1, 1, 1)
-			else
-				GameTooltip:AddLine(info[i][1])
-			end
-		end
-		
-		if (ClientCount ~= NumClients) then
-			GameTooltip:AddLine(" ")
-		end
+	-- Regular friends
+	local ID = 2
+	
+	if HydraUI.IsTBC then
+		ID = 5
 	end
 	
-	-- Regular friends
 	for i = 1, NumFriends do
 		FriendInfo = GetFriendInfoByIndex(i)
 		
@@ -342,7 +331,24 @@ local OnEnter = function(self)
 			
 			local NameInfo = format("|cFFFFFFFF|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF|r", LevelColor, FriendInfo.level, ClassColor, Name)
 			
-			GameTooltip:AddDoubleLine(NameInfo, FriendInfo.area)
+			tinsert(FriendList[ProjectIDToName[ID]], {NameInfo, FriendInfo.area})
+		end
+	end
+	
+	for client, info in next, FriendList do
+		GameTooltip:AddLine(client)
+		ClientCount = ClientCount + 1
+		
+		for i = 1, #info do
+			if info[i][2] then
+				GameTooltip:AddDoubleLine(info[i][1], info[i][2], nil, nil, nil, 1, 1, 1)
+			else
+				GameTooltip:AddLine(info[i][1])
+			end
+		end
+		
+		if (ClientCount ~= NumClients) then
+			GameTooltip:AddLine(" ")
 		end
 	end
 	

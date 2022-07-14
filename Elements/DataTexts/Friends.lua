@@ -271,6 +271,17 @@ local OnEnter = function(self)
 		end
 	end
 	
+	-- Regular friends
+	for i = 1, NumFriends do
+		local FriendInfo = GetFriendInfoByIndex(i)
+		
+		if FriendInfo.connected then
+			--GameTooltip:AddDoubleLine(FriendInfo.name, FriendInfo.level)
+			tinsert(FriendList[ProjectIDToName[1]], {NameInfo, FriendInfo.area})
+			--tinsert(FriendList[RealClient], {Left, Right})
+		end
+	end
+	
 	for client, info in next, FriendList do
 		GameTooltip:AddLine(client)
 		ClientCount = ClientCount + 1
@@ -285,15 +296,6 @@ local OnEnter = function(self)
 		
 		if (ClientCount ~= NumClients) then
 			GameTooltip:AddLine(" ")
-		end
-	end
-	
-	-- Regular friends
-	for i = 1, NumFriends do
-		local FriendInfo = GetFriendInfoByIndex(i)
-		
-		if FriendInfo.connected then
-			GameTooltip:AddDoubleLine(FriendInfo.name, FriendInfo.level)
 		end
 	end
 	
