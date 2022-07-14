@@ -276,7 +276,34 @@ local OnEnter = function(self)
 		local FriendInfo = GetFriendInfoByIndex(i)
 		
 		if FriendInfo.connected then
-			--GameTooltip:AddDoubleLine(FriendInfo.name, FriendInfo.level)
+			local Class = GetClass(FriendInfo.className)
+			
+			if (Class == "Unknown") then
+				Class = "PRIEST"
+			end
+			
+			local ClassColor = HydraUI.ClassColors[Class]
+			
+			ClassColor = HydraUI:RGBToHex(ClassColor[1], ClassColor[2], ClassColor[3])
+			
+			local LevelColor = GetQuestDifficultyColor(FriendInfo.level)
+			LevelColor = HydraUI:RGBToHex(LevelColor.r, LevelColor.g, LevelColor.b)
+			
+			if FriendInfo.afk then
+				Name = format("|cFF9E9E9E%s|r", FriendInfo.name)
+			elseif FriendInfo.dnd then
+				Name = format("|cFFF44336%s|r", FriendInfo.name)
+			else
+				Name = FriendInfo.name
+			end
+			
+			local NameInfo = format("|cFFFFFFFF|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF|r", LevelColor, FriendInfo.level, ClassColor, Name)
+			
+			if (not FriendList[ProjectIDToName[1]]) then
+				FriendList[ProjectIDToName[1]] = {}
+				NumClients = NumClients + 1
+			end
+			
 			tinsert(FriendList[ProjectIDToName[1]], {NameInfo, FriendInfo.area})
 			--tinsert(FriendList[RealClient], {Left, Right})
 		end

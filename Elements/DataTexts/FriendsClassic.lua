@@ -331,6 +331,11 @@ local OnEnter = function(self)
 			
 			local NameInfo = format("|cFFFFFFFF|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF|r", LevelColor, FriendInfo.level, ClassColor, Name)
 			
+			if (not FriendList[ProjectIDToName[ID]]) then
+				FriendList[ProjectIDToName[ID]] = {}
+				NumClients = NumClients + 1
+			end
+			
 			tinsert(FriendList[ProjectIDToName[ID]], {NameInfo, FriendInfo.area})
 		end
 	end
