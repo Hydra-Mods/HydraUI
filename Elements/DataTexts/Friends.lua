@@ -203,14 +203,14 @@ ClientInfo["WoW"] = function(name, info)
 	LevelColor = HydraUI:RGBToHex(LevelColor.r, LevelColor.g, LevelColor.b)
 	
 	if info.gameAccountInfo.isGameAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF9E9E9E(%s)|r |cFFFFFF33<%s>|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFFF44336(%s)|r  |cFFFFFF33<%s>|r", name, DEFAULT_DND_MESSAGE)
 	else
-		name = format("|cFF00FFF6%s|r", name)
+		name = format("|cFF00FFF6(%s)|r", name)
 	end
 	
-	local NameInfo = format("%s |cFFFFFFFF(|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF)|r", name, LevelColor, info.gameAccountInfo.characterLevel, ClassColor, info.gameAccountInfo.characterName)
+	local NameInfo = format("|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF|r %s", LevelColor, info.gameAccountInfo.characterLevel, ClassColor, info.gameAccountInfo.characterName, name)
 	local Area = info.gameAccountInfo.areaName
 	
 	if (Area == GetRealZoneText()) then
@@ -305,7 +305,6 @@ local OnEnter = function(self)
 			end
 			
 			tinsert(FriendList[ProjectIDToName[1]], {NameInfo, FriendInfo.area})
-			--tinsert(FriendList[RealClient], {Left, Right})
 		end
 	end
 	

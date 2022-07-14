@@ -230,14 +230,14 @@ ClientInfo["WoW"] = function(name, id)
 	LevelColor = HydraUI:RGBToHex(LevelColor.r, LevelColor.g, LevelColor.b)
 	
 	if IsAFK then
-		name = format("|cFF9E9E9E%s|r", name)
+		name = format("|cFF9E9E9E(%s)|r |cFFFFFF33<%s>|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
-		name = format("|cFFF44336%s|r", name)
+		name = format("|cFFF44336(%s)|r  |cFFFFFF33<%s>|r", name, CHAT_FLAG_DND)
 	else
-		name = format("|cFF00FFF6%s|r", name)
+		name = format("|cFF00FFF6(%s)|r", name)
 	end
 	
-	local NameInfo = format("%s |cFFFFFFFF(|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF)|r", name, LevelColor, Level, ClassColor, CharacterName)
+	local NameInfo = format("|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF|r %s", LevelColor, Level, ClassColor, CharacterName, name)
 	
 	if (Area == GetRealZoneText()) then
 		Area = format("|cFF33FF33%s|r", Area)
