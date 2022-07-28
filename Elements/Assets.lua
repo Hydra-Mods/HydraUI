@@ -1,22 +1,22 @@
 local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 local SharedMedia = LibStub:GetLibrary("LibSharedMedia-3.0")
-local Textures = SharedMedia:HashTable("statusbar")
-local Fonts = SharedMedia:HashTable("font")
+local SMTextures = SharedMedia:HashTable("statusbar")
+local SMFonts = SharedMedia:HashTable("font")
 
-Assets.Fonts = {}
-Assets.Textures = {}
-Assets.Styles = {}
-Assets.Palettes = {}
-Assets.Sounds = {}
+local Fonts = {}
+local Textures = {}
+local Styles = {}
+local Palettes = {}
+--local Sounds = {}
 
-Assets.FontList = {}
-Assets.FontIsPixel = {}
-Assets.TextureList = {}
-Assets.StyleList = {}
-Assets.PaletteList = {}
-Assets.SoundList = {}
+local FontList = {}
+local FontIsPixel = {}
+local TextureList = {}
+local StyleList = {}
+local PaletteList = {}
+--local SoundList = {}
 
-Assets.OutlineList = {
+local OutlineList = {
 	["Outline"] = "OUTLINE",
 	["Thick Outline"] = "THICKOUTLINE",
 	["Monochrome"] = "MONOCHROME",
@@ -25,72 +25,72 @@ Assets.OutlineList = {
 }
 
 function Assets:GetFlagsList()
-	return self.OutlineList
+	return OutlineList
 end
 
 -- Fonts
 function Assets:SetFont(name, path, ispixel)
-	if self.Fonts[name] then
+	if Fonts[name] then
 		return
 	end
 	
-	self.Fonts[name] = path
+	Fonts[name] = path
 	
 	if ispixel then
-		self.FontIsPixel[name] = true
+		FontIsPixel[name] = true
 	end
 	
-	self.FontList[name] = path
+	FontList[name] = path
 	
 	SharedMedia:Register("font", name, path)
 end
 
 function Assets:GetFont(name)
-	if self.Fonts[name] then
-		return self.Fonts[name], self.FontIsPixel[name]
+	if Fonts[name] then
+		return Fonts[name], FontIsPixel[name]
 	else
-		return self.Fonts["PT Sans"]
+		return Fonts["PT Sans"]
 	end
 end
 
 function Assets:GetFontList()
-	return self.FontList
+	return FontList
 end
 
 -- Textures
 function Assets:SetTexture(name, path, silent)
-	if self.Textures[name] then
+	if Textures[name] then
 		return
 	end
 	
-	self.Textures[name] = path
+	Textures[name] = path
 	
 	if (not silent) then
-		self.TextureList[name] = path
+		TextureList[name] = path
 		
 		SharedMedia:Register("statusbar", name, path)
 	end
 end
 
 function Assets:GetTexture(name)
-	if self.Textures[name] then
-		return self.Textures[name]
+	if Textures[name] then
+		return Textures[name]
 	else
-		return self.Textures["Blank"]
+		return Textures["Blank"]
 	end
 end
 
 function Assets:GetTextureList()
-	return self.TextureList
+	return TextureList
 end
 
 -- Style templates
 function Assets:SetStyle(name, info, silent)
-	if self.Styles[name] then
+	if Styles[name] then
 		return
 	end
 	
-	self.Styles[name] = info
+	Styles[name] = info
 	
 	if (not silent) then
 		local Key = name
@@ -100,31 +100,31 @@ function Assets:SetStyle(name, info, silent)
 			Key = format("|cFF%s%s|r", info["ui-widget-color"], name)
 		end
 		
-		self.StyleList[Key] = name
+		StyleList[Key] = name
 	end
 end
 
 function Assets:GetStyle(name)
-	if self.Styles[name] then
-		return self.Styles[name]
+	if Styles[name] then
+		return Styles[name]
 	else
-		return self.Styles["|cFFFFC44DHydraUI|r"]
+		return Styles["|cFFFFC44DHydraUI|r"]
 	end
 end
 
 function Assets:GetStyleList()
-	return self.StyleList
+	return StyleList
 end
 
 function Assets:ApplyStyle(name)
-	if (not self.Styles[name]) then
+	if (not Styles[name]) then
 		return HydraUI:print(format(Language['No style exists with the name "%s"'], name))
 	end
 	
 	local Profile = HydraUI:GetActiveProfile()
 	
 	if Profile then
-		for ID, Value in next, self.Styles[name] do
+		for ID, Value in next, Styles[name] do
 			if (Value ~= Defaults[ID]) then
 				Profile[ID] = Value
 			else
@@ -138,27 +138,27 @@ end
 
 -- Palettes
 function Assets:SetPalette(name, info, silent)
-	if self.Palettes[name] then
+	if Palettes[name] then
 		return
 	end
 	
-	self.Palettes[name] = info
+	Palettes[name] = info
 	
 	if (not silent) then
-		self.PaletteList[name] = info
+		PaletteList[name] = info
 	end
 end
 
 function Assets:GetPalette(name)
-	if self.Palettes[name] then
-		return self.Palettes[name]
+	if Palettes[name] then
+		return Palettes[name]
 	else
-		return self.Palettes["Default"]
+		return Palettes["Default"]
 	end
 end
 
 function Assets:GetPaletteList()
-	return self.PaletteList
+	return PaletteList
 end
 
 -- Some pre-loaded goodness.
@@ -174,11 +174,11 @@ Assets:SetFont("Noto Sans", "Interface\\Addons\\HydraUI\\Elements\\Assets\\Fonts
 Assets:SetFont("Visitor", "Interface\\Addons\\HydraUI\\Elements\\Assets\\Fonts\\Visitor.ttf", true)
 Assets:SetFont("Pixel Arial", "Interface\\Addons\\HydraUI\\Elements\\Assets\\Fonts\\PixelArial.ttf", true)
 
-for Name, Path in next, Fonts do
+for Name, Path in next, SMFonts do
 	Assets:SetFont(Name, Path)
 end
 
--- Textures
+-- Bar Textures
 Assets:SetTexture("Blank", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUIBlank.tga")
 Assets:SetTexture("HydraUI 1", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUI1.tga")
 Assets:SetTexture("HydraUI 2", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUI2.tga")
@@ -196,6 +196,7 @@ Assets:SetTexture("pHishTex11", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\T
 Assets:SetTexture("pHishTex12", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\pHishTex12.tga")
 Assets:SetTexture("Ferous 14", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\fer14.tga")
 
+-- Shapes and highlights
 Assets:SetTexture("noInterrupt", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\noInterrupt.tga", true)
 Assets:SetTexture("RenHorizonUp", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\RenHorizonUp.tga", true)
 Assets:SetTexture("RenHorizonDown", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\RenHorizonDown.tga", true)
@@ -220,7 +221,7 @@ Assets:SetTexture("Skull", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textur
 Assets:SetTexture("Small Star", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUISmallStar.tga", true)
 Assets:SetTexture("Copy", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUICopy.tga", true)
 
-for Name, Path in next, Textures do
+for Name, Path in next, SMTextures do
 	Assets:SetTexture(Name, Path)
 end
 

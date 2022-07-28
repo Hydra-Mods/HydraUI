@@ -63,11 +63,31 @@ local Update = function(self)
 		end
 	end
 	
+	local Percent = floor(Total / Count * 100)
+	
 	if (Count > 0) then
-		self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], floor(Total / Count * 100))
+		self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Percent)
 	else
 		self.Text:SetFormattedText("|cFF%s%s:|r |cFF%sN/A|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"])
 	end
+	
+	if (25 > Percent and not self.Anim:IsPlaying()) then
+		self.Anim:Play()
+	elseif (Percent > 25 and self.Anim:IsPlaying()) then
+		self.Anim:Stop()
+		self.Anim:SetChange(0.5)
+		self.Highlight:SetAlpha(0)
+	end
+end
+
+local OnFinished = function(self)
+	if (self:GetChange() == 0) then
+		self:SetChange(0.5)
+	else
+		self:SetChange(0)
+	end
+	
+	self:Play()
 end
 
 local OnEnable = function(self)
@@ -77,6 +97,14 @@ local OnEnable = function(self)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
 	self:SetScript("OnMouseUp", OnMouseUp)
+	
+	if (not self.Anim) then
+		self.Anim = CreateAnimationGroup(self.Highlight):CreateAnimation("Fade")
+		self.Anim:SetEasing("inout")
+		self.Anim:SetDuration(1.2)
+		self.Anim:SetChange(0.5)
+		self.Anim:SetScript("OnFinished", OnFinished)
+	end
 	
 	self:Update()
 end

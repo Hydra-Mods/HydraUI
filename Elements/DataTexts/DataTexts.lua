@@ -65,11 +65,19 @@ function DT:NewAnchor(name, parent)
 	Anchor.Name = name
 	Anchor.SetTooltip = SetTooltip
 	
-	Anchor.Text = Anchor:CreateFontString(nil, "ARTWORK")
+	Anchor.Text = Anchor:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(Anchor.Text, Settings["data-text-font"], Settings["data-text-font-size"], Settings["data-text-font-flags"])
 	Anchor.Text:SetPoint("CENTER", Anchor, 0, 0)
 	Anchor.Text:SetJustifyH("CENTER")
 	Anchor.Text:SetHeight(Settings["data-text-font-size"])
+	
+	Anchor.Highlight = Anchor:CreateTexture(nil, "ARTWORK")
+	Anchor.Highlight:SetHeight(14)
+	Anchor.Highlight:SetPoint("BOTTOMLEFT", Anchor, "BOTTOMLEFT", 18, 1)
+	Anchor.Highlight:SetPoint("BOTTOMRIGHT", Anchor, "BOTTOMRIGHT", -18, 1)
+	Anchor.Highlight:SetTexture(Assets:GetTexture("RenHorizonUp"))
+	Anchor.Highlight:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-color"]))
+	Anchor.Highlight:SetAlpha(0)
 	
 	self.Anchors[name] = Anchor
 	

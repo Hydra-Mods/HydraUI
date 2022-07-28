@@ -81,13 +81,7 @@ local AcceptNewStyle = function(value)
 end
 
 local UpdateStyle = function(value)
-	local Label = value
-	
-	if Assets.Styles[value]["ui-widget-color"] then
-		Label = format("|cFF%s%s|r", Assets.Styles[value]["ui-widget-color"], value)
-	end
-	
-	HydraUI:DisplayPopup(Language["Attention"], format(Language['Are you sure you would like to change to the current style to "%s"?'], Label), ACCEPT, AcceptNewStyle, CANCEL, nil, value)
+	HydraUI:DisplayPopup(Language["Attention"], format(Language['Are you sure you would like to change to the current style to "%s"?'], value), ACCEPT, AcceptNewStyle, CANCEL, nil, value)
 end
 
 GUI:AddWidgets(Language["General"], Language["Styles"], function(left, right)

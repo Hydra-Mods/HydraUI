@@ -6,15 +6,20 @@ local GetMoney = GetMoney
 local tinsert = table.insert
 local tremove = table.remove
 
-Gold.SessionChange = 0
-Gold.Sorted = {}
-Gold.TablePool = {}
+local SessionChange = 0
+local Sorted = {}
+local TablePool = {}
+local CurrentUser
+
+local Sort = function(a, b)
+	return a[2] > b[2]
+end
 
 function Gold:GetTable()
 	local Table
 	
-	if self.TablePool[1] then
-		Table = tremove(self.TablePool, 1)
+	if TablePool[1] then
+		Table = tremove(TablePool, 1)
 	else
 		Table = {}
 	end
@@ -23,13 +28,13 @@ function Gold:GetTable()
 end
 
 function Gold:GetSessionStats()
-	return self.SessionChange, GetMoney()
+	return SessionChange, GetMoney()
 end
 
 function Gold:GetServerInfo()
-	if self.Sorted[1] then
-		for i = 1, #self.Sorted do
-			tinsert(self.TablePool, tremove(self.Sorted, 1))
+	if Sorted[1] then
+		for i = 1, #Sorted do
+			tinsert(TablePool, tremove(Sorted, 1))
 		end
 	end
 	
@@ -44,22 +49,20 @@ function Gold:GetServerInfo()
 		
 		Total = Total + Value
 		
-		tinsert(self.Sorted, Table)
+		tinsert(Sorted, Table)
 	end
 	
-	table.sort(self.Sorted, function(a, b)
-		return a[2] > b[2]
-	end)
+	table.sort(Sorted, Sort)
 	
-	return self.Sorted, Total
+	return Sorted, Total
 end
 
 function Gold:OnEvent()
 	local CurrentValue = GetMoney()
 	
-	self.SessionChange = self.SessionChange + (CurrentValue - HydraUI.GoldData[HydraUI.UserRealm][self.CurrentUser])
+	SessionChange = SessionChange + (CurrentValue - HydraUI.GoldData[HydraUI.UserRealm][CurrentUser])
 	
-	HydraUI.GoldData[HydraUI.UserRealm][self.CurrentUser] = CurrentValue
+	HydraUI.GoldData[HydraUI.UserRealm][CurrentUser] = CurrentValue
 end
 
 function Gold:Reset()
@@ -76,9 +79,9 @@ function Gold:Load()
 		HydraUI.GoldData[HydraUI.UserRealm] = {}
 	end
 	
-	self.CurrentUser = string.format("|c%s%s|r", RAID_CLASS_COLORS[HydraUI.UserClass].colorStr, HydraUI.UserName)
+	CurrentUser = string.format("|c%s%s|r", RAID_CLASS_COLORS[HydraUI.UserClass].colorStr, HydraUI.UserName)
 	
-	HydraUI.GoldData[HydraUI.UserRealm][self.CurrentUser] = GetMoney()
+	HydraUI.GoldData[HydraUI.UserRealm][CurrentUser] = GetMoney()
 	
 	self:RegisterEvent("PLAYER_MONEY")
 	self:SetScript("OnEvent", self.OnEvent)

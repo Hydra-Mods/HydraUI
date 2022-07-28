@@ -15,27 +15,32 @@ local OnEnter = function(self)
 	GameTooltip:AddLine(" ")
 	
 	if (#ServerInfo > 1) then
-		GameTooltip:AddDoubleLine(Language["Total"], HydraUI:CopperToGold(ServerTotalGold), 1, 0.82, 0, 1, 1, 1)
+		--GameTooltip:AddDoubleLine(Language["Total"], HydraUI:CopperToGold(ServerTotalGold), 1, 0.82, 0, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["Total"], GetCoinTextureString(ServerTotalGold), 1, 0.82, 0, 1, 1, 1)
 		GameTooltip:AddLine(" ")
 	end
 	
 	for i = 1, #ServerInfo do
-		GameTooltip:AddDoubleLine(ServerInfo[i][1], HydraUI:CopperToGold(ServerInfo[i][2]), 1, 1, 1, 1, 1, 1)
+		--GameTooltip:AddDoubleLine(ServerInfo[i][1], HydraUI:CopperToGold(ServerInfo[i][2]), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(ServerInfo[i][1], GetCoinTextureString(ServerInfo[i][2]), 1, 1, 1, 1, 1, 1)
 	end
 	
 	if (Change ~= 0) then
 		GameTooltip:AddLine(" ")
 		
 		if (Change > 0) then
-			GameTooltip:AddDoubleLine(Language["Session:"], HydraUI:CopperToGold(Change), 1, 1, 1, 0.4, 1, 0.4)
+			--GameTooltip:AddDoubleLine(Language["Session:"], HydraUI:CopperToGold(Change), 1, 1, 1, 0.4, 1, 0.4)
+			GameTooltip:AddDoubleLine(Language["Session:"], GetCoinTextureString(Change), 1, 1, 1, 0.4, 1, 0.4)
 		else
-			GameTooltip:AddDoubleLine(Language["Session:"], HydraUI:CopperToGold(Change * -1), 1, 1, 1, 1, 0.4, 0.4)
+			--GameTooltip:AddDoubleLine(Language["Session:"], HydraUI:CopperToGold(Change * -1), 1, 1, 1, 1, 0.4, 0.4)
+			GameTooltip:AddDoubleLine(Language["Session:"], GetCoinTextureString(Change * -1), 1, 1, 1, 1, 0.4, 0.4)
 		end
 	end
 	
 	if (TrashValue > 0) then
 		GameTooltip:AddLine(" ")
-		GameTooltip:AddDoubleLine(Language["|cFF9D9D9D[Poor quality]|r item value:"], HydraUI:CopperToGold(TrashValue), 1, 1, 1, 1, 1, 1)
+		--GameTooltip:AddDoubleLine(Language["|cFF9D9D9D[Poor quality]|r item value:"], HydraUI:CopperToGold(TrashValue), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["|cFF9D9D9D[Poor quality]|r item value:"], GetCoinTextureString(TrashValue), 1, 1, 1, 1, 1, 1)
 	end
 	
 	GameTooltip:Show()

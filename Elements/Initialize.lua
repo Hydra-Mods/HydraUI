@@ -29,6 +29,7 @@ HydraUI.UserProfileKey = format("%s:%s", HydraUI.UserName, HydraUI.UserRealm)
 HydraUI.ClientVersion = select(4, GetBuildInfo())
 HydraUI.IsClassic = HydraUI.ClientVersion > 10000 and HydraUI.ClientVersion < 20000
 HydraUI.IsTBC = HydraUI.ClientVersion > 20000 and HydraUI.ClientVersion < 30000
+HydraUI.IsWOTLK = HydraUI.ClientVersion > 30000 and HydraUI.ClientVersion < 40000
 HydraUI.IsMainline = HydraUI.ClientVersion > 90000 and HydraUI.ClientVersion < 100000
 
 if (HydraUI.UserLocale == "enGB") then
@@ -119,26 +120,20 @@ function HydraUI:LoadPlugins()
 		end
 	end
 	
-	-- Wipe the queue
-	
-	self:CreatePluginWindow()
-end
-
-function HydraUI:CreatePluginWindow()
 	self:GetModule("GUI"):AddWidgets(Language["Info"], Language["Plugins"], function(left, right)
 		local Anchor
 		
-		for i = 1, #Plugins do
+		for i = 1, #PluginQueue do
 			if ((i % 2) == 0) then
 				Anchor = right
 			else
 				Anchor = left
 			end
 			
-			Anchor:CreateHeader(Plugins[i].Title)
-			Anchor:CreateDoubleLine("", Language["Author"], Plugins[i].Author)
-			Anchor:CreateDoubleLine("", Language["Version"], Plugins[i].Version)
-			Anchor:CreateMessage("", Plugins[i].Notes)
+			Anchor:CreateHeader(PluginQueue[i].Title)
+			Anchor:CreateDoubleLine("", Language["Author"], PluginQueue[i].Author)
+			Anchor:CreateDoubleLine("", Language["Version"], PluginQueue[i].Version)
+			Anchor:CreateMessage("", PluginQueue[i].Notes)
 		end
 	end)
 end

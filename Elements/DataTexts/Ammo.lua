@@ -8,6 +8,7 @@ local GetInventoryItemCount = GetInventoryItemCount
 
 local Label = AMMOSLOT
 local ThrownSubType = LE_ITEM_WEAPON_THROWN
+local PreviousCount = 0
 
 local OnEnter = function(self)
 	self:SetTooltip()
@@ -39,6 +40,26 @@ local Update = function(self)
 	end
 	
 	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Count)
+	
+	if (PreviousCount > 0 and Count < 50) then -- Make sure we had ammo
+		self.Anim:Play()
+	elseif (PreviousCount < 50 and Count > 50) then -- We didn't have enough ammo, but now we do.
+		self.Anim:Stop()
+		self.Anim:SetChange(0.5)
+		self.Highlight:SetAlpha(0)
+	end
+	
+	PreviousCount = Count
+end
+
+local OnFinished = function(self)
+	if (self:GetChange() == 0) then
+		self:SetChange(0.5)
+	else
+		self:SetChange(0)
+	end
+	
+	self:Play()
 end
 
 local OnEnable = function(self)
@@ -48,6 +69,14 @@ local OnEnable = function(self)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
 	self:SetScript("OnMouseUp", OnMouseUp)
+	
+	if (not self.Anim) then
+		self.Anim = CreateAnimationGroup(self.Highlight):CreateAnimation("Fade")
+		self.Anim:SetEasing("inout")
+		self.Anim:SetDuration(1.2)
+		self.Anim:SetChange(0.5)
+		self.Anim:SetScript("OnFinished", OnFinished)
+	end
 	
 	self:Update()
 end
@@ -59,6 +88,9 @@ local OnDisable = function(self)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
 	self:SetScript("OnMouseUp", nil)
+	
+	self.Highlight:SetScript("OnFinished", nil)
+	self.Highlight:SetAlpha(0)
 	
 	self.Text:SetText("")
 end

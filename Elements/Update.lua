@@ -120,22 +120,26 @@ function Update:CHAT_MSG_ADDON(prefix, message, channel, sender)
 end
 
 function Update:ZONE_CHANGED_NEW_AREA()
-	local Zone = GetZoneText()
-	
-	if (Zone ~= self.Zone and not Throttle:IsThrottled("vrsn")) then
-		self:QueueChannel("YELL")
-		self.Zone = Zone
-		Throttle:Start("vrsn", 10)
+	if UnitOnTaxi("player") then
+		local Zone = GetZoneText()
+		
+		if (Zone ~= self.Zone and not Throttle:IsThrottled("vrsn")) then
+			self:QueueChannel("YELL")
+			self.Zone = Zone
+			Throttle:Start("vrsn", 10)
+		end
 	end
 end
 
 function Update:ZONE_CHANGED()
-	local Zone = GetZoneText()
-	
-	if (Zone ~= self.Zone and not Throttle:IsThrottled("vrsn")) then
-		self:QueueChannel("YELL")
-		self.Zone = Zone
-		Throttle:Start("vrsn", 10)
+	if UnitOnTaxi("player") then
+		local Zone = GetZoneText()
+		
+		if (Zone ~= self.Zone and not Throttle:IsThrottled("vrsn")) then
+			self:QueueChannel("YELL")
+			self.Zone = Zone
+			Throttle:Start("vrsn", 10)
+		end
 	end
 end
 

@@ -1,6 +1,6 @@
 ## Interface: 90205
 ## Author: Hydra
-## Version: 1.67
+## Version: 1.68
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: An interface replacement for Shadowlands
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
@@ -53,7 +53,9 @@ Elements\UnitFrames\Pet.lua
 Elements\UnitFrames\Focus.lua
 Elements\UnitFrames\Boss.lua
 Elements\UnitFrames\Party.lua
+Elements\UnitFrames\PartyPets.lua
 Elements\UnitFrames\Raid.lua
+Elements\UnitFrames\RaidPets.lua
 Elements\UnitFrames\NamePlates.lua
 Elements\MiniMap.lua
 Elements\MiniMapButtons.lua
