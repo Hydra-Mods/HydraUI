@@ -7,17 +7,17 @@ local Tiers = {"FF8000", "A335EE", "0070DD", "1EFF00", "FFFFFF"}
 local Patrons = {
 	{"Dragonhawk"},
 	{},
-	{"deck", "Quiet"},
+	{"deck"},
 	{"JDoubleU00", "sylvester", "thurin"},
-	{"Oxymorphone"},
+	{},
 }
 
 local Previous = {
 	{"SwoopCrown", "Cheeso_76", "Halven", "Erieeroot", "last"},
 	{"Smelly", "Trix", "wolimazo", "Ari", "MrPoundsign"},
-	{"Euphoria", "Mitooshin", "MisseFar", "FrankPatten", "Dillan"},
+	{"Euphoria", "Mitooshin", "MisseFar", "FrankPatten", "Dillan", "Quiet"},
 	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Aaron B.", "Steve R.", "Angel", "Jeor", "Mcbooze", "stko", "Syn", "Rytok", "Ryex", "Blom", "Innie", "Cyber", "protocol7", "Dellamaik"},
-	{"Akab00m", "OzzFreak", "madmaddy", "Uzify", "Erthelmi", "silence", "momzzze"},
+	{"Akab00m", "OzzFreak", "madmaddy", "Uzify", "Erthelmi", "silence", "momzzze", "Oxymorphone"},
 }
 
 local Donors = [[Innie Brightsides Erthelmi Gene JDoubleU00 Duds Shazlen Shawna W Dillan Bruce N last Wrynn Ryxân Andrei B Anthony M AtticaOnline Hawksworth WingZero

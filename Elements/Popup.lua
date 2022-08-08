@@ -38,6 +38,10 @@ local ButtonOnLeave = function(self)
 	self.Highlight:SetAlpha(0)
 end
 
+local FadeOnFinished = function(self)
+	self.Parent:Hide()
+end
+
 Popup.CreatePopupFrame = function(self)
 	self:SetSize(POPUP_WIDTH, POPUP_HEIGHT)
 	self:SetPoint("CENTER", HydraUI.UIParent, 0, 234)
@@ -52,6 +56,21 @@ Popup.CreatePopupFrame = function(self)
 	self:SetScript("OnDragStart", self.StartMoving)
 	self:SetScript("OnDragStop", self.StopMovingOrSizing)
 	self:SetClampedToScreen(true)
+	self:SetAlpha(0)
+	self:Hide()
+	
+	self.Group = CreateAnimationGroup(self)
+	
+	self.FadeIn = self.Group:CreateAnimation("Fade")
+	self.FadeIn:SetEasing("in")
+	self.FadeIn:SetDuration(0.15)
+	self.FadeIn:SetChange(1)
+	
+	self.FadeOut = self.Group:CreateAnimation("Fade")
+	self.FadeOut:SetEasing("out")
+	self.FadeOut:SetDuration(0.15)
+	self.FadeOut:SetChange(0)
+	self.FadeOut:SetScript("OnFinished", FadeOnFinished)
 	
 	-- Header
 	self.Header = CreateFrame("Frame", nil, self, "BackdropTemplate")
@@ -183,11 +202,15 @@ Popup.Display = function(self, header, body, accept, acceptfunc, cancel, cancelf
 	self.Button2.Arg1 = arg1
 	self.Button2.Arg2 = arg2
 	
-	self:Show()
+	if (not self:IsShown()) then
+		self:SetAlpha(0)
+		self:Show()
+		self.FadeIn:Play()
+	end
 end
 
 function HydraUI:ClearPopup()
-	Popup:Hide()
+	Popup.FadeOut:Play()
 end
 
 function HydraUI:DisplayPopup(...)

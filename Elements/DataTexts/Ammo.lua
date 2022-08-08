@@ -53,12 +53,7 @@ local Update = function(self)
 end
 
 local OnFinished = function(self)
-	if (self:GetChange() == 0) then
-		self:SetChange(0.5)
-	else
-		self:SetChange(0)
-	end
-	
+	self:SetChange(self:GetChange() == 0 and 0.5 or 0)
 	self:Play()
 end
 

@@ -70,7 +70,7 @@ ClientInfo["ANBS"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[Client], name, Area
+	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["BSAp"] = function(name, id)
@@ -84,7 +84,7 @@ ClientInfo["BSAp"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[Client], name, Area
+	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["DST2"] = function(name, id)
@@ -98,7 +98,7 @@ ClientInfo["DST2"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[Client], name, Area
+	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["D3"] = function(name, id)
@@ -112,7 +112,7 @@ ClientInfo["D3"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[Client], name, Area
+	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["Hero"] = function(name, id)
@@ -126,7 +126,7 @@ ClientInfo["Hero"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[Client], name, Area
+	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["Pro"] = function(name, id)
@@ -140,7 +140,7 @@ ClientInfo["Pro"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[Client], name, Area
+	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["S1"] = function(name, id)
@@ -154,7 +154,7 @@ ClientInfo["S1"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[Client], name, Area
+	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["S2"] = function(name, id)
@@ -168,7 +168,7 @@ ClientInfo["S2"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[Client], name, Area
+	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["VIPR"] = function(name, id)
@@ -182,7 +182,7 @@ ClientInfo["VIPR"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[Client], name, Area
+	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["ODIN"] = function(name, id)
@@ -196,7 +196,7 @@ ClientInfo["ODIN"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[Client], name, Area
+	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["OSI"] = function(name, id)
@@ -210,7 +210,7 @@ ClientInfo["OSI"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[Client], name, Area
+	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["WoW"] = function(name, id)
@@ -257,7 +257,7 @@ ClientInfo["WTCG"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[Client], name, Area
+	return ClientToName[Client], name, RichPresence
 end
 
 local GetClientInformation = function(client, name, id)

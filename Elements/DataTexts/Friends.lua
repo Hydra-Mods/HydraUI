@@ -65,7 +65,7 @@ ClientInfo["ANBS"] = function(name, id)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[info.gameAccountInfo.clientProgram], name
+	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
 ClientInfo["BSAp"] = function(name, info)
@@ -77,7 +77,7 @@ ClientInfo["BSAp"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[info.gameAccountInfo.clientProgram], name, Area
+	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
 ClientInfo["DST2"] = function(name, info)
@@ -89,7 +89,7 @@ ClientInfo["DST2"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[info.gameAccountInfo.clientProgram], name
+	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
 ClientInfo["D3"] = function(name, info)
@@ -101,7 +101,7 @@ ClientInfo["D3"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[info.gameAccountInfo.clientProgram], name
+	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
 ClientInfo["Hero"] = function(name, info)
@@ -113,7 +113,7 @@ ClientInfo["Hero"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[info.gameAccountInfo.clientProgram], name
+	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
 ClientInfo["Pro"] = function(name, info)
@@ -125,7 +125,7 @@ ClientInfo["Pro"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[info.gameAccountInfo.clientProgram], name
+	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
 ClientInfo["S1"] = function(name, info)
@@ -137,7 +137,7 @@ ClientInfo["S1"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[info.gameAccountInfo.clientProgram], name
+	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
 ClientInfo["S2"] = function(name, info)
@@ -149,7 +149,7 @@ ClientInfo["S2"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[info.gameAccountInfo.clientProgram], name
+	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
 ClientInfo["VIPR"] = function(name, info)
@@ -161,7 +161,7 @@ ClientInfo["VIPR"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[info.gameAccountInfo.clientProgram], name
+	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
 ClientInfo["ODIN"] = function(name, info)
@@ -173,7 +173,7 @@ ClientInfo["ODIN"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[info.gameAccountInfo.clientProgram], name
+	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
 ClientInfo["OSI"] = function(name, info)	
@@ -185,7 +185,7 @@ ClientInfo["OSI"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[info.gameAccountInfo.clientProgram], name
+	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
 ClientInfo["WoW"] = function(name, info)
@@ -229,7 +229,7 @@ ClientInfo["WTCG"] = function(name, info)
 		name = format("|cFF00FFF6%s|r", name)
 	end
 	
-	return ClientToName[info.gameAccountInfo.clientProgram], name
+	return ClientToName[info.gameAccountInfo.clientProgram], info.gameAccountInfo.richPresence
 end
 
 local GetClientInformation = function(client, name, info)
