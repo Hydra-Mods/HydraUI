@@ -1,7 +1,7 @@
 local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
-local GetPVPLifetimeStats = GetPVPLifetimeStats
-local Label = KILLS
+local GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
+local Label = HONOR
 
 local OnEnter = function(self)
 	self:SetTooltip()
@@ -62,27 +62,29 @@ local OnMouseUp = function()
 end
 
 local Update = function(self)
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], HydraUI:Comma(GetPVPLifetimeStats()))
+	local Info = GetCurrencyInfo(1901)
+	
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s |r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Info.quantity)
 end
 
 local OnEnable = function(self)
-	self:RegisterEvent("PLAYER_PVP_KILLS_CHANGED")
+	self:RegisterEvent("CURRENCY_DISPLAY_UPDATE")
 	self:SetScript("OnEvent", Update)
+	self:SetScript("OnMouseUp", OnMouseUp)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
-	self:SetScript("OnMouseUp", OnMouseUp)
 	
 	self:Update()
 end
 
 local OnDisable = function(self)
-	self:UnregisterEvent("PLAYER_PVP_KILLS_CHANGED")
+	self:UnregisterEvent("CURRENCY_DISPLAY_UPDATE")
 	self:SetScript("OnEvent", nil)
+	self:SetScript("OnMouseUp", nil)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
-	self:SetScript("OnMouseUp", nil)
 	
 	self.Text:SetText("")
 end
 
-HydraUI:AddDataText("PVP", OnEnable, OnDisable, Update)
+HydraUI:AddDataText("Honor", OnEnable, OnDisable, Update)

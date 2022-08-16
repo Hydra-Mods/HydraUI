@@ -1,6 +1,6 @@
-## Interface: 90205
+## Interface: 90207
 ## Author: Hydra
-## Version: 1.69
+## Version: 1.70
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: Interface replacement for Shadowlands
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
@@ -71,6 +71,7 @@ Elements\DataTexts\Coordinates.lua
 Elements\DataTexts\CritRating.lua
 Elements\DataTexts\Durability.lua
 Elements\DataTexts\Empty.lua
+Elements\DataTexts\Experience.lua
 Elements\DataTexts\Friends.lua
 Elements\DataTexts\Gold.lua
 Elements\DataTexts\Guild.lua
@@ -83,6 +84,7 @@ Elements\DataTexts\ManaRegen.lua
 Elements\DataTexts\Mastery.lua
 Elements\DataTexts\PrimaryStat.lua
 Elements\DataTexts\Quests.lua
+Elements\DataTexts\Reputation.lua
 Elements\DataTexts\Speed.lua
 Elements\DataTexts\System.lua
 Elements\DataTexts\TimeLocal.lua

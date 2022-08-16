@@ -86,6 +86,10 @@ local UpdatePercentVisibility = function(value)
 	end
 end
 
+function Experience:OnMouseUp()
+	ToggleCharacter("PaperDollFrame")
+end
+
 function Experience:CreateBar()
 	local Border = Settings["ui-border-thickness"]
 	local Offset = 1 > Border and 1 or (Border + 2)
@@ -428,6 +432,7 @@ function Experience:Load()
 	self:RegisterEvent("ZONE_CHANGED")
 	self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 	self:SetScript("OnEvent", self.OnEvent)
+	self:SetScript("OnMouseUp", self.OnMouseUp)
 	self:SetScript("OnEnter", self.OnEnter)
 	self:SetScript("OnLeave", self.OnLeave)
 	

@@ -1,6 +1,6 @@
 ## Interface: 30400
 ## Author: Hydra
-## Version: 1.69
+## Version: 1.70
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: Interface replacement for Wrath of the Lich King
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
@@ -79,6 +79,7 @@ Elements\DataTexts\BagSlots.lua
 Elements\DataTexts\CombatTime.lua
 Elements\DataTexts\Durability.lua
 Elements\DataTexts\Empty.lua
+Elements\DataTexts\Experience.lua
 Elements\DataTexts\Expertise.lua
 Elements\DataTexts\AttackPower.lua
 Elements\DataTexts\SpellPower.lua
@@ -86,7 +87,9 @@ Elements\DataTexts\Guild.lua
 Elements\DataTexts\FriendsClassic.lua
 Elements\DataTexts\PrimaryStat.lua
 Elements\DataTexts\PVP.lua
+Elements\DataTexts\HonorClassic.lua
 Elements\DataTexts\Quests.lua
+Elements\DataTexts\Reputation.lua
 Elements\DataTexts\Coordinates.lua
 Elements\DataTexts\SoulShards.lua
 Elements\DataTexts\Level.lua

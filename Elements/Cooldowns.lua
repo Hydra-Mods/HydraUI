@@ -206,6 +206,7 @@ function Cooldowns:Load()
 	self:SetSize(Settings["cooldowns-size"], Settings["cooldowns-size"])
 	self:SetPoint("CENTER", self.Anchor, "CENTER", 0, 0)
 	self:SetBackdrop(HydraUI.Backdrop)
+	self:SetFrameStrata("HIGH")
 	self:SetBackdropColor(0, 0, 0)
 	self:SetAlpha(0)
 	
@@ -266,10 +267,23 @@ local UpdateCooldownHold = function(value)
 	Cooldowns.Hold:SetDuration(value + 0.2)
 end
 
+local TestCooldown = function()
+	if Settings["cooldowns-text"] then
+		Cooldowns.Text:SetText(format(Language["|cff%s%s|r is ready!"], Settings["ui-widget-color"], GetItemInfo(6948)))
+	else
+		Cooldowns.Text:SetText("")
+	end
+	
+	Cooldowns.Icon:SetTexture(select(10, GetItemInfo(6948)))
+	Cooldowns.AnimIn:Play()
+	Cooldowns.Hold:Play()
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["General"], function(left, right)
 	right:CreateHeader(Language["Cooldown Alert"])
 	right:CreateSwitch("cooldowns-enable", Settings["cooldowns-enable"], Language["Enable Cooldown Alert"], Language["When an ability comes off cooldown the icon will flash as an alert"], UpdateEnableCooldownFlash)
 	right:CreateSwitch("cooldowns-text", Settings["cooldowns-text"], Language["Enable Cooldown Text"], Language["Display text on the cooldown alert"])
 	right:CreateSlider("cooldowns-size", Settings["cooldowns-size"], 18, 100, 2, Language["Set Size"], Language["Set the size of the cooldown alert"], UpdateCooldownSize)
 	right:CreateSlider("cooldowns-hold", Settings["cooldowns-hold"], 0.2, 3, 0.1, Language["Set Hold Time"], Language["Set how long the alert will display before fading away"], UpdateCooldownHold, nil, "s")
+	right:CreateButton("", Language["Test"], Language["Test Cooldown"], Language["Test the cooldown alert"], TestCooldown)
 end)
