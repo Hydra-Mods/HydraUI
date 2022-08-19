@@ -1,6 +1,6 @@
 ## Interface: 30400
 ## Author: Hydra
-## Version: 1.70
+## Version: 1.71
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: Interface replacement for Wrath of the Lich King
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
@@ -108,7 +108,6 @@ Elements\Merchant.lua
 Elements\Announcements.lua
 Elements\Dismount.lua
 Elements\Cooldowns.lua
-Elements\QuestWatch.lua
 Elements\Scale.lua
 Elements\Commands.lua
 Elements\DeleteCheapest.lua

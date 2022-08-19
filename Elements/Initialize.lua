@@ -29,7 +29,7 @@ HydraUI.UserProfileKey = format("%s:%s", HydraUI.UserName, HydraUI.UserRealm)
 HydraUI.ClientVersion = select(4, GetBuildInfo())
 HydraUI.IsClassic = HydraUI.ClientVersion > 10000 and HydraUI.ClientVersion < 20000
 HydraUI.IsTBC = HydraUI.ClientVersion > 20000 and HydraUI.ClientVersion < 30000
-HydraUI.IsWOTLK = HydraUI.ClientVersion > 30000 and HydraUI.ClientVersion < 40000
+HydraUI.IsWrath = HydraUI.ClientVersion > 30000 and HydraUI.ClientVersion < 40000
 HydraUI.IsMainline = HydraUI.ClientVersion > 90000 and HydraUI.ClientVersion < 100000
 
 if (HydraUI.UserLocale == "enGB") then

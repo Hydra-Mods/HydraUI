@@ -97,7 +97,9 @@ function Map:Style()
 		MiniMapBattlefieldFrame:ClearAllPoints()
 		MiniMapBattlefieldFrame:SetPoint("BOTTOMLEFT", Minimap, 0, -3)
 		
-		MiniMapTrackingBorder:SetTexture(nil)
+		if MiniMapTrackingBorder then
+			MiniMapTrackingBorder:SetTexture(nil)
+		end
 		
 		if MiniMapTrackingShine then
 			MiniMapTrackingShine:SetTexture(nil)
@@ -152,8 +154,10 @@ function Map:Style()
 		MiniMapTrackingIcon:SetPoint("BOTTOMRIGHT", MiniMapTrackingFrame, -1, 1)
 		MiniMapTrackingIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		
-		MiniMapTrackingBorder:Hide()
-		MiniMapTrackingBorder.Show = function() end
+		if MiniMapTrackingBorder then
+			MiniMapTrackingBorder:Hide()
+			MiniMapTrackingBorder.Show = function() end
+		end
 	end
 	
 	self:Disable(MinimapCluster)

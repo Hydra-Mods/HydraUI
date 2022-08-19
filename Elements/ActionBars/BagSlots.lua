@@ -9,8 +9,9 @@ Defaults["bags-frame-opacity"] = 40
 Defaults["bags-frame-max"] = 100
 Defaults["bags-frame-size"] = 32
 
-if HydraUI.IsMainline then
+if KeyRingButton then
 	BagsFrame.Objects = {
+		KeyRingButton,
 		CharacterBag3Slot,
 		CharacterBag2Slot,
 		CharacterBag1Slot,
@@ -19,7 +20,6 @@ if HydraUI.IsMainline then
 	}
 else
 	BagsFrame.Objects = {
-		KeyRingButton,
 		CharacterBag3Slot,
 		CharacterBag2Slot,
 		CharacterBag1Slot,
@@ -79,10 +79,10 @@ function BagsFrame:Load()
 	self.Panel:SetBackdropBorderColor(0, 0, 0)
 	self.Panel:SetFrameStrata("LOW")
 	
-	if HydraUI.IsMainline then
-		self.Panel:SetSize(((Settings["bags-frame-size"] + 4) * #self.Objects) + 4, Settings["bags-frame-size"] + 8)
-	else
+	if KeyRingButton then
 		self.Panel:SetSize(((Settings["bags-frame-size"] + 4) * (#self.Objects - 1)) + 8 + (Settings["bags-frame-size"] / 2), Settings["bags-frame-size"] + 8)
+	else
+		self.Panel:SetSize(((Settings["bags-frame-size"] + 4) * #self.Objects) + 4, Settings["bags-frame-size"] + 8)
 	end
 	
 	HydraUI:CreateMover(self.Panel)
@@ -156,7 +156,7 @@ function BagsFrame:Load()
 		if (i == 1) then
 			Object:SetPoint("LEFT", self.Panel, 4, 0)
 			
-			if (not HydraUI.IsMainline) then
+			if KeyRingButton then
 				Object:SetSize(Settings["bags-frame-size"] / 2, Settings["bags-frame-size"])
 			end
 		else
@@ -181,17 +181,17 @@ local UpdateBagVisibility = function()
 end
 
 local UpdateBagFrameSize = function(value)
-	if HydraUI.IsMainline then
-		BagsFrame.Panel:SetSize(((value + 4) * #BagsFrame.Objects) + 4, value + 8)
-	else
+	if KeyRingButton then
 		BagsFrame.Panel:SetSize(((value + 4) * (#BagsFrame.Objects - 1)) + 8 + (value / 2), value + 8)
+	else
+		BagsFrame.Panel:SetSize(((value + 4) * #BagsFrame.Objects) + 4, value + 8)
 	end
 	
 	for i = 1, #BagsFrame.Objects do
 		BagsFrame.Objects[i]:ClearAllPoints()
 		
 		if (i == 1) then
-			if (not HydraUI.IsMainline) then
+			if KeyRingButton then
 				BagsFrame.Objects[i]:SetSize(Settings["bags-frame-size"] / 2, Settings["bags-frame-size"])
 			else
 				BagsFrame.Objects[i]:SetPoint("LEFT", BagsFrame.Panel, 4, 0)
