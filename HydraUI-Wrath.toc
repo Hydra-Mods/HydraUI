@@ -13,7 +13,7 @@ Elements\Libraries\LibSharedMedia-3.0.lua
 Elements\Libraries\AceSerializer-3.0.lua
 Elements\Libraries\LibDeflate.lua
 Elements\Libraries\LibAnim.lua
-Elements\Libraries\oUF\oUF_TBC.xml
+Elements\Libraries\oUF\oUF_Wrath.xml
 Elements\Libraries\LibQuestXP\LibQuestXPDB.lua
 Elements\Libraries\LibQuestXP\LibQuestXP.lua
 Elements\Assets.lua
