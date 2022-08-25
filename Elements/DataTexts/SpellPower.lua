@@ -37,6 +37,10 @@ local GetSpecInfo = function()
 end
 
 local OnMouseUp = function()
+	if InCombatLockdown() then
+		return
+	end
+
 	ToggleCharacter("PaperDollFrame")
 end
 

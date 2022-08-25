@@ -13,12 +13,6 @@ else
 end
 
 local OnMouseUp = function()
-	--[[if HydraUI.IsMainline then
-		ToggleFrame(QuestMapFrame)
-	else
-		ToggleFrame(QuestLogFrame)
-	end]]
-	
 	ToggleFrame(HydraUI.IsMainline and QuestMapFrame or QuestLogFrame)
 end
 

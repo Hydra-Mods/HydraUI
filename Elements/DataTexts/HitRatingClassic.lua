@@ -5,6 +5,10 @@ local GetSpellHitModifier = GetSpellHitModifier
 local Label = Language["Hit"]
 
 local OnMouseUp = function()
+	if InCombatLockdown() then
+		return print(ERR_NOT_IN_COMBAT)
+	end
+
 	ToggleCharacter("PaperDollFrame")
 end
 

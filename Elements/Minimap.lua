@@ -101,6 +101,10 @@ function Map:Style()
 			MiniMapTrackingBorder:SetTexture(nil)
 		end
 		
+		if MiniMapTrackingButtonBorder then
+			MiniMapTrackingButtonBorder:SetTexture(nil)
+		end
+		
 		if MiniMapTrackingShine then
 			MiniMapTrackingShine:SetTexture(nil)
 		end

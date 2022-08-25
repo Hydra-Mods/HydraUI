@@ -9,7 +9,7 @@ Defaults["bags-frame-opacity"] = 40
 Defaults["bags-frame-max"] = 100
 Defaults["bags-frame-size"] = 32
 
-if KeyRingButton then
+if (KeyRingButton and KeyRingButton:IsShown()) then
 	BagsFrame.Objects = {
 		KeyRingButton,
 		CharacterBag3Slot,
@@ -79,7 +79,7 @@ function BagsFrame:Load()
 	self.Panel:SetBackdropBorderColor(0, 0, 0)
 	self.Panel:SetFrameStrata("LOW")
 	
-	if KeyRingButton then
+	if (KeyRingButton and KeyRingButton:IsShown()) then
 		self.Panel:SetSize(((Settings["bags-frame-size"] + 4) * (#self.Objects - 1)) + 8 + (Settings["bags-frame-size"] / 2), Settings["bags-frame-size"] + 8)
 	else
 		self.Panel:SetSize(((Settings["bags-frame-size"] + 4) * #self.Objects) + 4, Settings["bags-frame-size"] + 8)
@@ -156,7 +156,7 @@ function BagsFrame:Load()
 		if (i == 1) then
 			Object:SetPoint("LEFT", self.Panel, 4, 0)
 			
-			if KeyRingButton then
+			if (KeyRingButton and KeyRingButton:IsShown()) then
 				Object:SetSize(Settings["bags-frame-size"] / 2, Settings["bags-frame-size"])
 			end
 		else
@@ -181,7 +181,7 @@ local UpdateBagVisibility = function()
 end
 
 local UpdateBagFrameSize = function(value)
-	if KeyRingButton then
+	if (KeyRingButton and KeyRingButton:IsShown()) then
 		BagsFrame.Panel:SetSize(((value + 4) * (#BagsFrame.Objects - 1)) + 8 + (value / 2), value + 8)
 	else
 		BagsFrame.Panel:SetSize(((value + 4) * #BagsFrame.Objects) + 4, value + 8)
@@ -191,7 +191,7 @@ local UpdateBagFrameSize = function(value)
 		BagsFrame.Objects[i]:ClearAllPoints()
 		
 		if (i == 1) then
-			if KeyRingButton then
+			if (KeyRingButton and KeyRingButton:IsShown()) then
 				BagsFrame.Objects[i]:SetSize(Settings["bags-frame-size"] / 2, Settings["bags-frame-size"])
 			else
 				BagsFrame.Objects[i]:SetPoint("LEFT", BagsFrame.Panel, 4, 0)

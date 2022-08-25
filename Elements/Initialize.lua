@@ -149,6 +149,10 @@ function HydraUI:OnEvent(event)
 	
 	self:SetScale(Settings["ui-scale"])
 	
+	if C_CVar.GetCVar("useUiScale") then
+		C_CVar.SetCVar("uiScale", Settings["ui-scale"])
+	end
+	
 	self:UpdateColors()
 	self:UpdateoUFColors()
 	

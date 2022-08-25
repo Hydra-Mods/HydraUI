@@ -6,6 +6,10 @@ local CR_MASTERY = CR_MASTERY
 local Label = STAT_MASTERY
 
 local OnMouseUp = function()
+	if InCombatLockdown() then
+		return print(ERR_NOT_IN_COMBAT)
+	end
+
 	ToggleCharacter("PaperDollFrame")
 end
 

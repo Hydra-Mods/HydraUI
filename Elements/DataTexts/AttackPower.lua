@@ -5,6 +5,10 @@ local UnitRangedAttackPower = UnitRangedAttackPower
 local Label = ATTACK_POWER
 
 local OnMouseUp = function()
+	if InCombatLockdown() then
+		return print(ERR_NOT_IN_COMBAT)
+	end
+
 	ToggleCharacter("PaperDollFrame")
 end
 

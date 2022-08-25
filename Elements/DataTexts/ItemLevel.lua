@@ -4,6 +4,10 @@ local GetAverageItemLevel = GetAverageItemLevel
 local Label = STAT_AVERAGE_ITEM_LEVEL
 
 local OnMouseUp = function()
+	if InCombatLockdown() then
+		return print(ERR_NOT_IN_COMBAT)
+	end
+
 	ToggleCharacter("PaperDollFrame")
 end
 

@@ -5,6 +5,10 @@ local GetCombatRating = GetCombatRating
 local Label = STAT_VERSATILITY
 
 local OnMouseUp = function()
+	if InCombatLockdown() then
+		return
+	end
+	
 	ToggleCharacter("PaperDollFrame")
 end
 

@@ -5,6 +5,10 @@ local GetSpeed = GetSpeed
 local Label = STAT_SPEED
 
 local OnMouseUp = function()
+	if InCombatLockdown() then
+		return print(ERR_NOT_IN_COMBAT)
+	end
+	
 	ToggleCharacter("PaperDollFrame")
 end
 
@@ -29,7 +33,7 @@ end
 
 local OnEnable = function(self)
 	self:RegisterUnitEvent("UNIT_STATS", "player")
-	self:SetScript("OnUpdate", Update)
+	self:SetScript("OnEvent", Update)
 	self:SetScript("OnMouseUp", OnMouseUp)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
@@ -38,7 +42,7 @@ local OnEnable = function(self)
 end
 
 local OnDisable = function(self)
-	self:SetScript("OnUpdate", nil)
+	self:SetScript("OnEvent", nil)
 	self:SetScript("OnMouseUp", nil)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
