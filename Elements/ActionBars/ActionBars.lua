@@ -1096,6 +1096,8 @@ function AB:Load()
 	self:CreateMovers()
 	self:UpdateEmptyButtons()
 	
+	MultiCastActionBarFrame:SetParent(UIParent) -- Stylize this bar
+	
 	hooksecurefunc("ActionButton_UpdateRangeIndicator", AB.UpdateButtonStatus)
 	hooksecurefunc("ActionButton_UpdateFlyout", AB.UpdateFlyout)
 	
