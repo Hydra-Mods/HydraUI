@@ -238,7 +238,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		end
 		
 		-- Energy ticks
-		if (Settings["unitframes-show-energy-timer"] and not HydraUI.IsMainline) then
+		if (Settings["unitframes-show-energy-timer"] and (HydraUI.IsClassic or HydraUI.IsTBC)) then
 			local EnergyTick = CreateFrame("StatusBar", nil, Power)
 			EnergyTick:SetAllPoints(Power)
 			EnergyTick:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
@@ -1090,7 +1090,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	left:CreateSwitch("player-enable-portrait", Settings["player-enable-portrait"], Language["Enable Portrait"], Language["Display the player unit portrait"], UpdatePlayerEnablePortrait)
 	left:CreateSwitch("player-enable-pvp", Settings["player-enable-pvp"], Language["Enable PVP Indicator"], Language["Display the pvp indicator"], UpdatePlayerEnablePVPIndicator)
 	
-	if (not HydraUI.IsMainline) then
+	if (HydraUI.IsClassic or HydraUI.IsTBC) then
 		left:CreateSwitch("unitframes-show-mana-timer", Settings["unitframes-show-mana-timer"], Language["Enable Mana Regen Timer"], Language["Display the time until your full mana regeneration is active"], ReloadUI):RequiresReload(true)
 		left:CreateSwitch("unitframes-show-energy-timer", Settings["unitframes-show-energy-timer"], Language["Enable Energy Timer"], Language["Display the time until your next energy tick on the power bar"], ReloadUI):RequiresReload(true)
 	end

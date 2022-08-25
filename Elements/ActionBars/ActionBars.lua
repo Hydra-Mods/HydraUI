@@ -839,6 +839,8 @@ function AB:CreateStanceBar()
 	end
 	
 	StanceBarFrame:SetParent(self.StanceBar)
+	StanceBarLeft:Hide()
+	StanceBarRight:Hide()
 	
 	if (StanceBarFrame and StanceBarFrame.StanceButtons) then
 		for i = 1, NUM_STANCE_SLOTS do
