@@ -1080,6 +1080,46 @@ function AB:UpdateEmptyButtons()
 	end
 end
 
+function AB:StyleTotemBar()
+	MultiCastActionBarFrame:SetParent(UIParent)
+	
+	self:StyleActionButton(MultiCastSummonSpellButton)
+	
+	local Button
+	local Slot
+	
+	for i = 1, 4 do
+		Button = _G["MultiCastActionButton"..i]
+		Slot = _G["MultiCastSlotButton"..i]
+		
+		self:StyleActionButton(Button)
+		
+		Button:ClearAllPoints()
+		Button.overlayTex:SetTexture(nil)
+		
+		--button.Backdrop:SetFrameLevel(button:GetFrameLevel() - 1)
+		Slot.background:ClearAllPoints()
+		Slot.background:SetPoint("TOPLEFT", Button, 1, -1)
+		Slot.background:SetPoint("BOTTOMRIGHT", Button, -1, 1)
+		Button.Backdrop:SetFrameStrata("BACKGROUND")
+		
+		Slot.overlayTex:SetTexture(nil) -- Colored border
+		
+		Slot:ClearAllPoints()
+		Slot:SetPoint("CENTER", Button, 0, 0)
+		
+		if (i == 1) then
+			Button:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", 2, 0)
+		else
+			Button:SetPoint("LEFT", _G["MultiCastActionButton"..i-1], "RIGHT", 2, 0)
+		end
+	end
+	
+	self:StyleActionButton(MultiCastRecallSpellButton)
+	MultiCastRecallSpellButton:ClearAllPoints()
+	MultiCastRecallSpellButton:SetPoint("LEFT", MultiCastActionButton4, "RIGHT", 2, 0)
+end
+
 function AB:Load()
 	if (not Settings["ab-enable"]) then
 		return
@@ -1097,7 +1137,7 @@ function AB:Load()
 	self:UpdateEmptyButtons()
 	
 	if MultiCastActionBarFrame then
-		MultiCastActionBarFrame:SetParent(UIParent) -- Stylize this bar
+		self:StyleTotemBar()
 	end
 	
 	hooksecurefunc("ActionButton_UpdateRangeIndicator", AB.UpdateButtonStatus)
