@@ -382,6 +382,9 @@ end
 
 local OnEnable = function(self)
 	self:RegisterEvent("FRIENDLIST_UPDATE")
+	self:RegisterEvent("BN_FRIEND_ACCOUNT_ONLINE")
+	self:RegisterEvent("BN_FRIEND_ACCOUNT_OFFLINE")
+	self:RegisterEvent("BN_FRIEND_LIST_SIZE_CHANGED")
 	self:SetScript("OnEvent", Update)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
@@ -394,6 +397,9 @@ end
 
 local OnDisable = function(self)
 	self:UnregisterEvent("FRIENDLIST_UPDATE")
+	self:UnregisterEvent("BN_FRIEND_ACCOUNT_ONLINE")
+	self:UnregisterEvent("BN_FRIEND_ACCOUNT_OFFLINE")
+	self:UnregisterEvent("BN_FRIEND_LIST_SIZE_CHANGED")
 	self:SetScript("OnEvent", nil)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)

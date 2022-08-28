@@ -1097,7 +1097,6 @@ function AB:StyleTotemBar()
 		Button:ClearAllPoints()
 		Button.overlayTex:SetTexture(nil)
 		
-		--button.Backdrop:SetFrameLevel(button:GetFrameLevel() - 1)
 		Slot.background:ClearAllPoints()
 		Slot.background:SetPoint("TOPLEFT", Button, 1, -1)
 		Slot.background:SetPoint("BOTTOMRIGHT", Button, -1, 1)
