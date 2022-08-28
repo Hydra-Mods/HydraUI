@@ -151,6 +151,9 @@ end
 
 local OnEnable = function(self)
 	self:RegisterEvent("GUILD_ROSTER_UPDATE")
+	self:RegisterEvent("GUILD_RANKS_UPDATE")
+	self:RegisterEvent("PLAYER_GUILD_UPDATE")
+	self:RegisterEvent("GUILD_MOTD")
 	self:RegisterEvent("PLAYER_GUILD_UPDATE")
 	self:SetScript("OnEvent", Update)
 	self:SetScript("OnEnter", OnEnter)
@@ -162,6 +165,9 @@ end
 
 local OnDisable = function(self)
 	self:UnregisterEvent("GUILD_ROSTER_UPDATE")
+	self:UnregisterEvent("GUILD_RANKS_UPDATE")
+	self:UnregisterEvent("PLAYER_GUILD_UPDATE")
+	self:UnregisterEvent("GUILD_MOTD")
 	self:UnregisterEvent("PLAYER_GUILD_UPDATE")
 	self:SetScript("OnEvent", nil)
 	self:SetScript("OnEnter", nil)
