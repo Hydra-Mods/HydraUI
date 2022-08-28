@@ -1136,7 +1136,7 @@ function AB:Load()
 	self:UpdateEmptyButtons()
 	
 	if MultiCastActionBarFrame then
-		self:StyleTotemBar()
+		--self:StyleTotemBar()
 	end
 	
 	hooksecurefunc("ActionButton_UpdateRangeIndicator", AB.UpdateButtonStatus)
