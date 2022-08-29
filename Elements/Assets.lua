@@ -206,6 +206,7 @@ Assets:SetTexture("Mail 2", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textu
 Assets:SetTexture("Close", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUIClose.tga", true)
 Assets:SetTexture("pHishTex28", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\pHishTex28.tga", true)
 Assets:SetTexture("Warning", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUIWarning.tga", true)
+Assets:SetTexture("WarningInner", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\WarningInner.tga", true)
 Assets:SetTexture("Leader", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUILeader.tga", true)
 Assets:SetTexture("Assist", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUIAssist.tga", true)
 Assets:SetTexture("Heart", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUIHeart.tga", true)

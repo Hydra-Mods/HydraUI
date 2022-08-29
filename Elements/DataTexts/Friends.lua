@@ -34,6 +34,7 @@ local ProjectIDToName = {
 	[1] = EXPANSION_NAME8,
 	[2] = EXPANSION_NAME0,
 	[5] = EXPANSION_NAME1,
+	[11] = EXPANSION_NAME2,
 }
 
 local GetClass = function(class)

@@ -855,6 +855,27 @@ local FadeOnFinished = function(self)
 	self.Parent:Hide()
 end
 
+function GUI:CreateUpdateAlert()
+	self.Alert = self.Header:CreateTexture(nil, "OVERLAY", 1)
+	self.Alert:SetPoint("LEFT", self.Header, 0, 0)
+	self.Alert:SetSize(32, 32)
+	self.Alert:SetTexture(Assets:GetTexture("Warning"))
+	self.Alert:SetVertexColor(1, 0.8, 0.1)
+	
+	self.AlertInside = self.Header:CreateTexture(nil, "OVERLAY", 2)
+	self.AlertInside:SetPoint("LEFT", self.Header, 0, 0)
+	self.AlertInside:SetSize(32, 32)
+	self.AlertInside:SetTexture(Assets:GetTexture("WarningInner"))
+	self.AlertInside:SetVertexColor(0.95, 0.95, 0.95)
+	
+	self.AlertText = self.Header:CreateFontString(nil, "OVERLAY")
+	self.AlertText:SetPoint("LEFT", self.Header, 30, -1)
+	HydraUI:SetFontInfo(self.AlertText, Settings["ui-header-font"], Settings["ui-font-size"])
+	self.AlertText:SetJustifyH("LEFT")
+	self.AlertText:SetTextColor(HydraUI:HexToRGB(Settings["ui-widget-color"]))
+	self.AlertText:SetText("Update available")
+end
+
 function GUI:OnEvent(event, ...)
 	if self[event] then
 		self[event](self, ...)

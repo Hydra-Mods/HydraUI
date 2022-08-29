@@ -1085,8 +1085,7 @@ function AB:StyleTotemBar()
 	
 	self:StyleActionButton(MultiCastSummonSpellButton)
 	
-	local Button
-	local Slot
+	local Button, Slot
 	
 	for i = 1, 4 do
 		Button = _G["MultiCastActionButton"..i]
@@ -1136,7 +1135,7 @@ function AB:Load()
 	self:UpdateEmptyButtons()
 	
 	if MultiCastActionBarFrame then
-		--self:StyleTotemBar()
+		self:StyleTotemBar()
 	end
 	
 	hooksecurefunc("ActionButton_UpdateRangeIndicator", AB.UpdateButtonStatus)
