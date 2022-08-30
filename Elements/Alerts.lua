@@ -212,7 +212,11 @@ function HydraUI:SendAlert(header, line1, line2, func, nofade)
 		AlertFrame.FadeIn:SetScript("OnFinished", FadeInOnFinished)
 	end
 	
-	AlertFrame:SetScript("OnMouseUp", func and type(func) == "function" or nil)
+	if func and type(func) == "function" then
+		AlertFrame:SetScript("OnMouseUp", func)
+	else
+		AlertFrame:SetScript("OnMouseUp", nil)
+	end
 	
 	SortAlerts()
 	

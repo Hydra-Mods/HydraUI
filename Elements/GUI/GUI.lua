@@ -855,25 +855,117 @@ local FadeOnFinished = function(self)
 	self.Parent:Hide()
 end
 
-function GUI:CreateUpdateAlert()
-	self.Alert = self.Header:CreateTexture(nil, "OVERLAY", 1)
-	self.Alert:SetPoint("LEFT", self.Header, 0, 0)
-	self.Alert:SetSize(32, 32)
-	self.Alert:SetTexture(Assets:GetTexture("Warning"))
-	self.Alert:SetVertexColor(1, 0.8, 0.1)
+function GUI:CreateUpdateWindow()
+	if self.UpdateWindow then
+		return
+	end
 	
-	self.AlertInside = self.Header:CreateTexture(nil, "OVERLAY", 2)
-	self.AlertInside:SetPoint("LEFT", self.Header, 0, 0)
+	self.UpdateWindow = CreateFrame("Frame", nil, self, "BackdropTemplate")
+	self.UpdateWindow:SetFrameStrata("HIGH")
+	self.UpdateWindow:SetFrameLevel(10)
+	self.UpdateWindow:SetSize(GUI_WIDTH / 3, GUI_HEIGHT)
+	self.UpdateWindow:SetPoint("CENTER", HydraUI.UIParent, 0, 0)
+	self.UpdateWindow:SetBackdrop(HydraUI.BackdropAndBorder)
+	self.UpdateWindow:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-bg-color"]))
+	self.UpdateWindow:SetBackdropBorderColor(0, 0, 0)
+	self.UpdateWindow:EnableMouse(true)
+	self.UpdateWindow:SetMovable(true)
+	self.UpdateWindow:RegisterForDrag("LeftButton")
+	self.UpdateWindow:SetScript("OnDragStart", self.StartMoving)
+	self.UpdateWindow:SetScript("OnDragStop", self.StopMovingOrSizing)
+	self.UpdateWindow:SetClampedToScreen(true)
+	
+	self.UpdateWindow.Header = CreateFrame("Frame", nil, self.UpdateWindow, "BackdropTemplate")
+	self.UpdateWindow.Header:SetHeight(HEADER_HEIGHT)
+	self.UpdateWindow.Header:SetPoint("TOPLEFT", self.UpdateWindow, SPACING, -SPACING)
+	self.UpdateWindow.Header:SetPoint("TOPRIGHT", self.UpdateWindow, -SPACING, -SPACING)
+	self.UpdateWindow.Header:SetBackdrop(HydraUI.BackdropAndBorder)
+	self.UpdateWindow.Header:SetBackdropColor(0, 0, 0, 0)
+	self.UpdateWindow.Header:SetBackdropBorderColor(0, 0, 0)
+	
+	self.UpdateWindow.Header.Texture = self.UpdateWindow.Header:CreateTexture(nil, "ARTWORK")
+	self.UpdateWindow.Header.Texture:SetPoint("TOPLEFT", self.UpdateWindow.Header, 1, -1)
+	self.UpdateWindow.Header.Texture:SetPoint("BOTTOMRIGHT", self.UpdateWindow.Header, -1, 1)
+	self.UpdateWindow.Header.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+	self.UpdateWindow.Header.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-header-texture-color"]))
+	
+	self.UpdateWindow.CloseButton = CreateFrame("Frame", nil, self.UpdateWindow.Header)
+	self.UpdateWindow.CloseButton:SetSize(HEADER_HEIGHT, HEADER_HEIGHT)
+	self.UpdateWindow.CloseButton:SetPoint("RIGHT", self.UpdateWindow.Header, 0, -1)
+	self.UpdateWindow.CloseButton:SetScript("OnEnter", function(self) self.Cross:SetVertexColor(HydraUI:HexToRGB("C0392B")) end)
+	self.UpdateWindow.CloseButton:SetScript("OnLeave", function(self) self.Cross:SetVertexColor(HydraUI:HexToRGB("EEEEEE")) end)
+	self.UpdateWindow.CloseButton:SetScript("OnMouseUp", function() self.UpdateWindow:Hide() end)
+	
+	self.UpdateWindow.CloseButton.Cross = self.UpdateWindow.CloseButton:CreateTexture(nil, "OVERLAY")
+	self.UpdateWindow.CloseButton.Cross:SetPoint("CENTER", self.UpdateWindow.CloseButton, 0, 0)
+	self.UpdateWindow.CloseButton.Cross:SetSize(16, 16)
+	self.UpdateWindow.CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
+	self.UpdateWindow.CloseButton.Cross:SetVertexColor(HydraUI:HexToRGB("EEEEEE"))
+	
+	self.UpdateWindow.WidgetsBG = CreateFrame("Frame", nil, self.UpdateWindow)
+	self.UpdateWindow.WidgetsBG:SetPoint("TOPLEFT", self.UpdateWindow.Header, "BOTTOMLEFT", 0, -2)
+	self.UpdateWindow.WidgetsBG:SetPoint("BOTTOMRIGHT", self.UpdateWindow, -SPACING, SPACING)
+	
+	self.UpdateWindow.WidgetsBG.Backdrop = CreateFrame("Frame", nil, self.UpdateWindow, "BackdropTemplate")
+	self.UpdateWindow.WidgetsBG.Backdrop:SetAllPoints(self.UpdateWindow.WidgetsBG)
+	self.UpdateWindow.WidgetsBG.Backdrop:SetBackdrop(HydraUI.BackdropAndBorder)
+	self.UpdateWindow.WidgetsBG.Backdrop:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-main-color"]))
+	self.UpdateWindow.WidgetsBG.Backdrop:SetBackdropBorderColor(0, 0, 0)
+end
+
+function GUI:CreateUpdateAlert()
+	if (not self.Header) then
+		self.QueueAlert = true
+		
+		return
+	end
+
+	self.Alert = CreateFrame("Frame", nil, self.Header)
+	self.Alert:SetPoint("LEFT", self.Header, 0, 0)
+	self.Alert:SetHeight(32)
+	
+	self.AlertBG = self.Alert:CreateTexture(nil, "OVERLAY", 1)
+	self.AlertBG:SetPoint("LEFT", self.Alert, 0, 0)
+	self.AlertBG:SetSize(32, 32)
+	self.AlertBG:SetTexture(Assets:GetTexture("Warning"))
+	self.AlertBG:SetVertexColor(1, 0.8, 0.1)
+	
+	self.AlertInside = self.Alert:CreateTexture(nil, "OVERLAY", 2)
+	self.AlertInside:SetPoint("LEFT", self.Alert, 0, 0)
 	self.AlertInside:SetSize(32, 32)
 	self.AlertInside:SetTexture(Assets:GetTexture("WarningInner"))
 	self.AlertInside:SetVertexColor(0.95, 0.95, 0.95)
 	
-	self.AlertText = self.Header:CreateFontString(nil, "OVERLAY")
-	self.AlertText:SetPoint("LEFT", self.Header, 30, -1)
-	HydraUI:SetFontInfo(self.AlertText, Settings["ui-header-font"], Settings["ui-font-size"])
-	self.AlertText:SetJustifyH("LEFT")
-	self.AlertText:SetTextColor(HydraUI:HexToRGB(Settings["ui-widget-color"]))
-	self.AlertText:SetText("Update available")
+	self.Alert.Text = self.Alert:CreateFontString(nil, "OVERLAY")
+	self.Alert.Text:SetPoint("LEFT", self.Alert, 30, -1)
+	HydraUI:SetFontInfo(self.Alert.Text, Settings["ui-header-font"], Settings["ui-font-size"])
+	self.Alert.Text:SetJustifyH("LEFT")
+	self.Alert.Text:SetTextColor(HydraUI:HexToRGB(Settings["ui-widget-color"]))
+	self.Alert.Text:SetText("Update available")
+	
+	self.Alert:SetWidth(self.Alert.Text:GetStringWidth() + 32)
+	
+	self.Alert:SetScript("OnEnter", function(self)
+		self.Text:SetTextColor(1, 1, 1)
+	end)
+	
+	self.Alert:SetScript("OnLeave", function(self)
+		self.Text:SetTextColor(HydraUI:HexToRGB(Settings["ui-widget-color"]))
+	end)
+	
+	self.Alert:SetScript("OnMouseDown", function(self)
+		self.Text:SetPoint("LEFT", self, 31, -2)
+		
+		if GUI.UpdateWindow then
+			GUI.UpdateWindow:Show()
+		else
+			GUI:CreateUpdateWindow()
+		end
+	end)
+	
+	self.Alert:SetScript("OnMouseUp", function(self)
+		self.Text:SetPoint("LEFT", self, 30, -1)
+	end)
 end
 
 function GUI:OnEvent(event, ...)
@@ -1116,6 +1208,11 @@ function GUI:CreateGUI()
 	self:SetScript("OnEvent", self.OnEvent)
 	
 	self:ShowWindow("General", "General")
+	
+	--[[if self.QueueAlert then
+		self.QueueAlert = nil
+		self:CreateUpdateAlert()
+	end]]
 	
 	self.Loaded = true
 end

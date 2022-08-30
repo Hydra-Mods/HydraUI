@@ -101,8 +101,10 @@ GUI:AddWidgets(Language["Info"], Language["Debug"], function(left, right)
 	left:HookScript("OnShow", OnShow)
 	left:HookScript("OnHide", OnHide)
 	
+	local Version, _, _, Build = GetBuildInfo()
+	
 	left:CreateHeader(Language["UI Information"])
-	left:CreateDoubleLine("dgb-game-version", Language["Game Version"], GetBuildInfo())
+	left:CreateDoubleLine("dgb-game-version", Language["Game Version"], format("%s (%s)", Version, Build))
 	left:CreateDoubleLine("dgb-client", Language["Client"], GetClient())
 	left:CreateDoubleLine("dgb-ui-scale", Language["UI Scale"], Settings["ui-scale"])
 	left:CreateDoubleLine("dgb-suggested-scale", Language["Suggested Scale"], HydraUI:GetSuggestedScale())

@@ -1085,6 +1085,8 @@ function AB:StyleTotemBar()
 	
 	self:StyleActionButton(MultiCastSummonSpellButton)
 	
+	MultiCastSummonSpellButtonHighlight:SetTexture(nil)
+	
 	local Button, Slot
 	
 	for i = 1, 4 do
@@ -1116,6 +1118,8 @@ function AB:StyleTotemBar()
 	self:StyleActionButton(MultiCastRecallSpellButton)
 	MultiCastRecallSpellButton:ClearAllPoints()
 	MultiCastRecallSpellButton:SetPoint("LEFT", MultiCastActionButton4, "RIGHT", 2, 0)
+	
+	MultiCastRecallSpellButtonHighlight:SetTexture(nil)
 end
 
 function AB:Load()

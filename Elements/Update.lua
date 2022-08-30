@@ -25,11 +25,6 @@ local Queue = {}
 
 local Throttle = HydraUI:GetModule("Throttle")
 
-function Update:OnMouseUp()
-	HydraUI:print(Language["You can get an updated version of HydraUI at https://www.curseforge.com/wow/addons/hydraui"])
-	print(Language["Join the Discord community for support and feedback https://discord.gg/XefDFa6nJR"])
-end
-
 function Update:QueueChannel(channel, target)
 	local Data
 	
@@ -112,7 +107,10 @@ function Update:CHAT_MSG_ADDON(prefix, message, channel, sender)
 	if (AddOnNum > message) then -- We have a higher version, share it
 		self:QueueChannel(channel)
 	elseif (message > AddOnNum) then -- We're behind!
-		HydraUI:SendAlert(Language["New Version!"], format(Language["Update to version |cFF%s%s|r"], Settings["ui-header-font-color"], message), nil, self.OnMouseUp, true)
+		HydraUI:print(Language["You can get an updated version of HydraUI at https://www.curseforge.com/wow/addons/hydraui"])
+		print(Language["Join the Discord community for support and feedback https://discord.gg/XefDFa6nJR"])
+		
+		--HydraUI:GetModule("GUI"):CreateUpdateAlert()
 		
 		AddOnNum = message
 		AddOnVersion = tostring(message)
