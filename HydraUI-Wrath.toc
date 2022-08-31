@@ -103,7 +103,7 @@ Elements\Loot.lua
 Elements\DruidMana.lua
 Elements\MirrorTimers.lua
 Elements\ToastFrame.lua
-Elements\Taxi.lua
+Elements\Vehicle.lua
 Elements\Merchant.lua
 Elements\Announcements.lua
 Elements\Dismount.lua
