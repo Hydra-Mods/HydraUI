@@ -11,9 +11,9 @@ local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
 local UnitLevel = UnitLevel
 local GetXPExhaustion = GetXPExhaustion
-local MAX_PLAYER_LEVEL = MAX_PLAYER_LEVEL
 local GetQuestInfo = C_QuestLog.GetInfo
 local ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
+local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local GetNumQuests
 local LEVEL = LEVEL
 local Gained = 0
@@ -195,12 +195,8 @@ function Experience:CreateBar()
 	HydraUI:CreateMover(self, 6)
 end
 
-if HydraUI.IsWrath then -- Temp for prepatch
-	MAX_PLAYER_LEVEL = 70
-end
-
 function Experience:OnEvent()
-	if (UnitLevel("player") == MAX_PLAYER_LEVEL) then
+	if IsPlayerAtEffectiveMaxLevel() then
 		self:UnregisterAllEvents()
 		self:SetScript("OnEnter", nil)
 		self:SetScript("OnLeave", nil)
