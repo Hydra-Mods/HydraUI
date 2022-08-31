@@ -195,6 +195,10 @@ function Experience:CreateBar()
 	HydraUI:CreateMover(self, 6)
 end
 
+if HydraUI.IsWrath then -- Temp for prepatch
+	MAX_PLAYER_LEVEL = 70
+end
+
 function Experience:OnEvent()
 	if (UnitLevel("player") == MAX_PLAYER_LEVEL) then
 		self:UnregisterAllEvents()
