@@ -1096,6 +1096,7 @@ function AB:StyleTotemBar()
 		self:StyleActionButton(Button)
 		
 		Button:ClearAllPoints()
+		Button:SetPoint("CENTER", Slot, 0, 0)
 		Button.overlayTex:SetTexture(nil)
 		
 		Slot.background:ClearAllPoints()
@@ -1106,12 +1107,11 @@ function AB:StyleTotemBar()
 		Slot.overlayTex:SetTexture(nil) -- Colored border
 		
 		Slot:ClearAllPoints()
-		Slot:SetPoint("CENTER", Button, 0, 0)
 		
 		if (i == 1) then
-			Button:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", 2, 0)
+			Slot:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", 2, 0)
 		else
-			Button:SetPoint("LEFT", _G["MultiCastActionButton"..i-1], "RIGHT", 2, 0)
+			Slot:SetPoint("LEFT", _G["MultiCastActionButton"..i-1], "RIGHT", 2, 0)
 		end
 	end
 	
