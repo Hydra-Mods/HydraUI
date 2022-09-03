@@ -81,6 +81,14 @@ Defaults["ab-stance-alpha"] = 100
 
 Defaults["ab-extra-button-size"] = 60
 
+local ActionBars = {
+	"ActionButton",
+	"MultiBarBottomLeftButton",
+	"MultiBarBottomRightButton",
+	"MultiBarLeftButton",
+	"MultiBarRightButton",
+}
+
 function AB:Disable(object)
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()
@@ -995,6 +1003,10 @@ function AB:CreateMovers()
 	HydraUI:CreateMover(self.StanceBar)
 	HydraUI:CreateMover(self.PetBar)
 	
+	--[[if MultiCastActionBarFrame and MultiCastActionBarFrame:IsShown() then
+		HydraUI:CreateMover(MultiCastActionBarFrame)
+	end]]
+	
 	if HydraUI.IsMainline then
 		self.ExtraBarMover = HydraUI:CreateMover(self.ExtraBar)
 	end
@@ -1034,14 +1046,6 @@ function AB:UpdateFlyout()
 		end
 	end
 end
-
-local ActionBars = {
-	"ActionButton",
-	"MultiBarBottomLeftButton",
-	"MultiBarBottomRightButton",
-	"MultiBarLeftButton",
-	"MultiBarRightButton",
-}
 
 function AB:UpdateEmptyButtons()
 	if Settings["ab-show-empty"] then

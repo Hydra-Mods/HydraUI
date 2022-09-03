@@ -1,6 +1,6 @@
 ## Interface: 90207
 ## Author: Hydra
-## Version: 1.73
+## Version: 1.75
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: Interface replacement for Shadowlands
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold

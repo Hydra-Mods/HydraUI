@@ -14,13 +14,10 @@ end
 local OnEnter = function(self)
 	self:SetTooltip()
 	
-	local Melee = GetCombatRatingBonus(CR_HIT_MELEE)
-	local Spell = GetCombatRatingBonus(CR_HIT_SPELL)
-	
 	if (HydraUI.UserClass == "HUNTER") then
 		GameTooltip:AddLine(format("%s %s", COMBAT_RATING_NAME6, GetCombatRating(CR_HIT_RANGED)))
 		GameTooltip:AddLine(format(CR_HIT_MELEE_TOOLTIP, UnitLevel("player"), GetCombatRatingBonus(CR_HIT_RANGED), GetArmorPenetration(), GetCombatRatingBonus(CR_ARMOR_PENETRATION)), 1, 1, 1)
-	elseif (Spell > Melee) then
+	elseif (GetCombatRatingBonus(CR_HIT_SPELL) > GetCombatRatingBonus(CR_HIT_MELEE)) then
 		GameTooltip:AddLine(format("%s %s", COMBAT_RATING_NAME6, GetCombatRating(CR_HIT_SPELL)))
 		GameTooltip:AddLine(format(CR_HIT_SPELL_TOOLTIP, UnitLevel("player"), GetCombatRatingBonus(CR_HIT_SPELL), GetSpellPenetration(), GetSpellPenetration()), 1, 1, 1)
 	else
@@ -40,16 +37,14 @@ local Update = function(self, event, unit)
 		return
 	end
 	
-	local Rating = 0
-	local Melee = GetCombatRatingBonus(CR_HIT_MELEE)
-	local Spell = GetCombatRatingBonus(CR_HIT_SPELL)
+	local Rating
 	
 	if (HydraUI.UserClass == "HUNTER") then
 		Rating = GetCombatRatingBonus(CR_HIT_RANGED)
-	elseif (Spell > Melee) then
-		Rating = Spell
+	elseif (GetCombatRatingBonus(CR_HIT_SPELL) > GetCombatRatingBonus(CR_HIT_MELEE)) then
+		Rating = GetCombatRatingBonus(CR_HIT_SPELL)
 	else
-		Rating = Melee
+		Rating = GetCombatRatingBonus(CR_HIT_MELEE)
 	end
 	
 	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.2f%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Rating)

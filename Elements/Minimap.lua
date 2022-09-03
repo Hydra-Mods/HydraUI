@@ -141,7 +141,7 @@ function Map:Style()
 		MiniMapTracking:ClearAllPoints()
 		MiniMapTracking:SetPoint("CENTER", self.Tracking, 0, 0)
 		
-		MiniMapTrackingIcon:SetSize(18, 18)
+		MiniMapTrackingIcon:SetSize(20, 20)
 		MiniMapTrackingIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		MiniMapTrackingIcon:SetPoint("CENTER", self.Tracking)
 	end
