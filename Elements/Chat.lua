@@ -613,7 +613,10 @@ local OnHyperlinkEnter = function(self, link, text, button)
 		return
 	end
 	
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	GameTooltip:SetOwner(self, "ANCHOR_CURSOR")
+	GameTooltip:ClearAllPoints()
+	
+	--GameTooltip_SetDefaultAnchor(GameTooltip, self)
 	GameTooltip:SetHyperlink(link)
 	GameTooltip:Show()
 end

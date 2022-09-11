@@ -15,7 +15,7 @@ Defaults["minimap-top-height"] = 28
 Defaults["minimap-bottom-height"] = 28
 Defaults["minimap-top-fill"] = 100
 Defaults["minimap-bottom-fill"] = 100
-Defaults["minimap-show-calendar"] = false
+Defaults["minimap-show-calendar"] = true
 
 function Map:Disable(object)
 	if object.UnregisterAllEvents then
@@ -311,7 +311,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Minimap"], fu
 	left:CreateSwitch("minimap-show-top", Settings["minimap-show-top"], Language["Enable Top Bar"], Language["Enable the data text bar on top of the mini map"], UpdateShowTopBar)
 	left:CreateSwitch("minimap-show-bottom", Settings["minimap-show-bottom"], Language["Enable Bottom Bar"], Language["Enable the data text bar on the bottom of the mini map"], UpdateShowBottomBar)
 	
-	if HydraUI.IsRetail then
+	if HydraUI.IsMainline then
 		left:CreateSwitch("minimap-show-calendar", Settings["minimap-show-calendar"], Language["Enable Calendar"], Language["Enable the calendar button on the minimap"], UpdateShowCalendar)
 	end
 	
