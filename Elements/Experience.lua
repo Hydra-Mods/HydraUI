@@ -46,6 +46,10 @@ local FadeOnFinished = function(self)
 end
 
 local UpdateDisplayProgress = function(value)
+	if (not Settings["experience-enable"]) then
+		return
+	end
+
 	if (value and Settings["experience-progress-visibility"] ~= "MOUSEOVER") then
 		Experience.Progress:Show()
 	else
@@ -54,6 +58,10 @@ local UpdateDisplayProgress = function(value)
 end
 
 local UpdateDisplayPercent = function(value)
+	if (not Settings["experience-enable"]) then
+		return
+	end
+
 	if (value and Settings["experience-percent-visibility"] ~= "MOUSEOVER") then
 		Experience.Percentage:Show()
 	else
@@ -62,15 +70,27 @@ local UpdateDisplayPercent = function(value)
 end
 
 local UpdateBarWidth = function(value)
+	if (not Settings["experience-enable"]) then
+		return
+	end
+
 	Experience:SetWidth(value)
 end
 
 local UpdateBarHeight = function(value)
+	if (not Settings["experience-enable"]) then
+		return
+	end
+
 	Experience:SetHeight(value)
 	Experience.Bar.Spark:SetHeight(value)
 end
 
 local UpdateProgressVisibility = function(value)
+	if (not Settings["experience-enable"]) then
+		return
+	end
+
 	if (value == "MOUSEOVER") then
 		Experience.Progress:Hide()
 	elseif (value == "ALWAYS" and Settings["experience-display-progress"]) then
@@ -79,6 +99,10 @@ local UpdateProgressVisibility = function(value)
 end
 
 local UpdatePercentVisibility = function(value)
+	if (not Settings["experience-enable"]) then
+		return
+	end
+
 	if (value == "MOUSEOVER") then
 		Experience.Percentage:Hide()
 	elseif (value == "ALWAYS" and Settings["experience-display-percent"]) then
@@ -443,11 +467,19 @@ function Experience:Load()
 end
 
 local UpdateBarColor = function(value)
+	if (not Settings["experience-enable"]) then
+		return
+	end
+
 	Experience.Bar:SetStatusBarColor(HydraUI:HexToRGB(value))
 	Experience.Bar.BG:SetVertexColor(HydraUI:HexToRGB(value))
 end
 
 local UpdateRestedColor = function(value)
+	if (not Settings["experience-enable"]) then
+		return
+	end
+
 	Experience.Bar.Rested:SetStatusBarColor(HydraUI:HexToRGB(value))
 end
 
@@ -456,6 +488,10 @@ local UpdateExperience = function()
 end
 
 local UpdateMouseover = function(value)
+	if (not Settings["experience-enable"]) then
+		return
+	end
+
 	if value then
 		Experience:SetAlpha(Settings["experience-mouseover-opacity"] / 100)
 	else
@@ -464,6 +500,10 @@ local UpdateMouseover = function(value)
 end
 
 local UpdateMouseoverOpacity = function(value)
+	if (not Settings["experience-enable"]) then
+		return
+	end
+
 	if Settings["experience-mouseover"] then
 		Experience:SetAlpha(value / 100)
 	end

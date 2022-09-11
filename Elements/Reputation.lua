@@ -23,6 +23,10 @@ local FadeOnFinished = function(self)
 end
 
 local UpdateProgressVisibility = function(value)
+	if (not Settings["reputation-enable"]) then
+		return
+	end
+
 	if (value == "MOUSEOVER") then
 		Reputation.Progress:Hide()
 	elseif (value == "ALWAYS" and Settings["experience-display-progress"]) then
@@ -31,6 +35,10 @@ local UpdateProgressVisibility = function(value)
 end
 
 local UpdatePercentVisibility = function(value)
+	if (not Settings["reputation-enable"]) then
+		return
+	end
+
 	if (value == "MOUSEOVER") then
 		Reputation.Percentage:Hide()
 	elseif (value == "ALWAYS" and Settings["experience-display-percent"]) then
@@ -46,9 +54,12 @@ function Reputation:CreateBar()
 	self:SetFrameStrata("MEDIUM")
 	
 	if (Settings["experience-enable"] and UnitLevel("player") ~= MAX_PLAYER_LEVEL) then
-		self:SetPoint("TOP", HydraUI:GetModule("Experience"), "BOTTOM", 0, -8) -- self:SetPoint("TOP", HydraUIExperienceBar, "BOTTOM", 0, -8)
+		local A1, P, A2, X, Y = HydraUI:GetModule("Experience"):GetPoint()
+		local Spacing = Offset + (Settings["experience-height"] / 2) + 12
+		
+		self:SetPoint(A1, P, A2, X, Y - Spacing)
 	else
-		self:SetPoint("TOP", HydraUI.UIParent, 0, -13) -- self:SetPoint("TOP", HydraUI.UIParent, 0, -13)
+		self:SetPoint("TOP", HydraUI.UIParent, 0, -13)
 	end
 	
 	if Settings["reputation-mouseover"] then
@@ -273,6 +284,10 @@ function Reputation:Load()
 end
 
 local UpdateDisplayProgress = function(value)
+	if (not Settings["reputation-enable"]) then
+		return
+	end
+
 	if value then
 		Reputation.Progress:Show()
 	else
@@ -281,6 +296,10 @@ local UpdateDisplayProgress = function(value)
 end
 
 local UpdateDisplayPercent = function(value)
+	if (not Settings["reputation-enable"]) then
+		return
+	end
+
 	if value then
 		Reputation.Percentage:Show()
 	else
@@ -289,15 +308,27 @@ local UpdateDisplayPercent = function(value)
 end
 
 local UpdateBarWidth = function(value)
+	if (not Settings["reputation-enable"]) then
+		return
+	end
+
 	Reputation:SetWidth(value)
 end
 
 local UpdateBarHeight = function(value)
+	if (not Settings["reputation-enable"]) then
+		return
+	end
+
 	Reputation:SetHeight(value)
 	Reputation.Bar.Spark:SetHeight(value)
 end
 
 local UpdateMouseover = function(value)
+	if (not Settings["reputation-enable"]) then
+		return
+	end
+
 	if value then
 		Reputation:SetAlpha(Settings["reputation-mouseover-opacity"] / 100)
 	else
@@ -306,6 +337,10 @@ local UpdateMouseover = function(value)
 end
 
 local UpdateMouseoverOpacity = function(value)
+	if (not Settings["reputation-enable"]) then
+		return
+	end
+
 	if Settings["reputation-mouseover"] then
 		Reputation:SetAlpha(value / 100)
 	end
