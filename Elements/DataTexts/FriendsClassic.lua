@@ -361,10 +361,13 @@ local OnEnter = function(self)
 	GameTooltip:Show()
 	
 	wipe(FriendList)
+	
+	self.TooltipShown = true
 end
 
-local OnLeave = function()
+local OnLeave = function(self)
 	GameTooltip:Hide()
+	self.TooltipShown = false
 end
 
 local OnMouseUp = function()
@@ -379,6 +382,11 @@ local Update = function(self)
 	local Online = NumOnline + NumBNOnline
 	
 	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Online)
+	
+	if self.TooltipShown then
+		OnLeave(self)
+		OnEnter(self)
+	end
 end
 
 local OnEnable = function(self)
@@ -387,6 +395,8 @@ local OnEnable = function(self)
 	self:RegisterEvent("BN_FRIEND_ACCOUNT_OFFLINE")
 	self:RegisterEvent("BN_FRIEND_LIST_SIZE_CHANGED")
 	self:RegisterEvent("BN_INFO_CHANGED")
+	self:RegisterEvent("BN_CONNECTED")
+	self:RegisterEvent("BN_DISCONNECTED")
 	self:SetScript("OnEvent", Update)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
@@ -403,6 +413,8 @@ local OnDisable = function(self)
 	self:UnregisterEvent("BN_FRIEND_ACCOUNT_OFFLINE")
 	self:UnregisterEvent("BN_FRIEND_LIST_SIZE_CHANGED")
 	self:UnregisterEvent("BN_INFO_CHANGED")
+	self:UnregisterEvent("BN_CONNECTED")
+	self:UnregisterEvent("BN_DISCONNECTED")
 	self:SetScript("OnEvent", nil)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
