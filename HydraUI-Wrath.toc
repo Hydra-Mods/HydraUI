@@ -108,6 +108,7 @@ Elements\Merchant.lua
 Elements\Announcements.lua
 Elements\Dismount.lua
 Elements\Cooldowns.lua
+Elements\WatchFrame.lua
 Elements\Scale.lua
 Elements\Commands.lua
 Elements\DeleteCheapest.lua
