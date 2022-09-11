@@ -166,6 +166,8 @@ local SetTooltipStyle = function(self)
 		Tooltips:UpdateFonts(self)
 		
 		self.Styled = true
+		
+		self:Show()
 	end
 end
 
