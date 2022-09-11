@@ -133,8 +133,6 @@ end
 ClientInfo["Pro"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
 	
-	print(Area)
-	
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
