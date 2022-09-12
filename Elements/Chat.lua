@@ -604,6 +604,7 @@ end
 local ValidLinkTypes = {
 	["item"] = true,
 	["spell"] = true,
+	["enchant"] = true,
 }
 
 local OnHyperlinkEnter = function(self, link, text, button)
