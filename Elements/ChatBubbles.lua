@@ -38,7 +38,6 @@ function Bubbles:SkinBubble(bubble)
 	HydraUI:SetFontInfo(Child.String, Settings["chat-bubbles-font"], Settings["chat-bubbles-font-size"], Settings["chat-bubbles-font-flags"])
 	
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-window-main-color"])
-	local Scale = HydraUI:GetSuggestedScale()
 	
 	bubble.Backdrop = CreateFrame("Frame", nil, Child, "BackdropTemplate")
 	bubble.Backdrop:SetPoint("TOPLEFT", Child, 4, -4)
@@ -48,7 +47,7 @@ function Bubbles:SkinBubble(bubble)
 	bubble.Backdrop:SetBackdropBorderColor(0, 0, 0)
 	bubble.Backdrop:SetFrameStrata("LOW")
 	
-	bubble:SetScale(Scale)
+	bubble:SetScale(UIParent:GetScale())
 	
 	bubble.Skinned = true
 end

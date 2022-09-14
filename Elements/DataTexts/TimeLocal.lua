@@ -9,7 +9,7 @@ local OnMouseUp = function(self, button)
 		return print(ERR_NOT_IN_COMBAT)
 	end
 	
-	if (HydraUI.IsMainline and button == "LeftButton") then
+	if (ToggleCalendar and button == "LeftButton") then
 		ToggleCalendar()
 	else
 		TimeManager_Toggle()
