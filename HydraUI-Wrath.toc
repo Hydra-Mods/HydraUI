@@ -99,6 +99,7 @@ Elements\DataTexts\Mail.lua
 Elements\Tooltips.lua
 Elements\ActionBars\MicroMenu.lua
 Elements\ActionBars\BagSlots.lua
+Elements\Scale.lua
 Elements\Loot.lua
 Elements\DruidMana.lua
 Elements\MirrorTimers.lua
@@ -109,7 +110,6 @@ Elements\Announcements.lua
 Elements\Dismount.lua
 Elements\Cooldowns.lua
 Elements\WatchFrame.lua
-Elements\Scale.lua
 Elements\Commands.lua
 Elements\DeleteCheapest.lua
 Elements\BagSearch.lua
