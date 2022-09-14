@@ -746,6 +746,16 @@ local UpdateShowSolo = function(value)
 	_G["HydraUI Raid"]:SetAttribute("showSolo", value)
 end
 
---[[HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Raid Pets"], Language["Unit Frames"], function(left, right)
-
-end)]]
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Raid Pets"], Language["Unit Frames"], function(left, right)
+	left:CreateHeader(Language["Enable"])
+	left:CreateSwitch("raid-pets-enable", Settings["raid-pets-enable"], Language["Enable Raid Pet Frames"], Language["Enable the Raid pet frames module"], ReloadUI):RequiresReload(true)
+	
+	--[[Defaults["raid-pets-enable"] = true
+	Defaults["raid-pets-width"] = 78
+	Defaults["raid-pets-health-height"] = 22
+	Defaults["raid-pets-health-reverse"] = false
+	Defaults["raid-pets-health-color"] = "CLASS"
+	Defaults["raid-pets-health-orientation"] = "HORIZONTAL"
+	Defaults["raid-pets-health-smooth"] = true
+	Defaults["raid-pets-power-height"] = 0 -- NYI]]
+end)

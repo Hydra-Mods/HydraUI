@@ -1,4 +1,4 @@
-local AddOn, Namespace = ... -- HydraUI was born on May 22, 2019
+local AddOn, Namespace = ... -- HydraUI was created on May 22, 2019
 
 -- Data storage
 local Assets = {}
@@ -140,18 +140,10 @@ end
 
 -- Events
 function HydraUI:OnEvent(event)
-	Defaults["ui-scale"] = self:GetSuggestedScale()
-	
 	-- Import profile data and load a profile
 	self:CreateProfileData()
 	self:UpdateProfileList()
 	self:ApplyProfile(self:GetActiveProfileName())
-	
-	self:SetScale(Settings["ui-scale"])
-	
-	--[[if (C_CVar.GetCVar("useUiScale") == 1) then
-		C_CVar.SetCVar("uiScale", Settings["ui-scale"])
-	end]]
 	
 	self:UpdateColors()
 	self:UpdateoUFColors()

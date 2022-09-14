@@ -102,13 +102,14 @@ GUI:AddWidgets(Language["Info"], Language["Debug"], function(left, right)
 	left:HookScript("OnHide", OnHide)
 	
 	local Version, _, _, Build = GetBuildInfo()
+	local ScreenWidth, ScreenHeight = GetPhysicalScreenSize()
 	
 	left:CreateHeader(Language["UI Information"])
 	left:CreateDoubleLine("dgb-game-version", Language["Game Version"], format("%s (%s)", Version, Build))
 	left:CreateDoubleLine("dgb-client", Language["Client"], GetClient())
-	left:CreateDoubleLine("dgb-ui-scale", Language["UI Scale"], Settings["ui-scale"])
-	left:CreateDoubleLine("dgb-suggested-scale", Language["Suggested Scale"], HydraUI:GetSuggestedScale())
-	left:CreateDoubleLine("dgb-reso", Language["Resolution"], HydraUI.ScreenResolution)
+	left:CreateDoubleLine("dgb-ui-scale", Language["UI Scale"], C_CVar.GetCVar("uiScale"))
+	left:CreateDoubleLine("dgb-suggested-scale", Language["Suggested Scale"], (768 / ScreenHeight))
+	left:CreateDoubleLine("dgb-reso", Language["Resolution"], format("%sx%s", ScreenWidth, ScreenHeight))
 	left:CreateDoubleLine("dgb-screen-size", Language["Screen Size"], format("%sx%s", GetPhysicalScreenSize()))
 	left:CreateDoubleLine("dgb-fullscreen", Language["Fullscreen"], GetCVar("gxMaximize") == "1" and Language["Enabled"] or Language["Disabled"])
 	left:CreateDoubleLine("dgb-profile", Language["Profile"], HydraUI:GetActiveProfileName())
@@ -134,17 +135,13 @@ GUI:AddWidgets(Language["Info"], Language["Debug"], function(left, right)
 end)
 
 function Debug:DISPLAY_SIZE_CHANGED()
-	HydraUI:UpdateScreenSize()
-	
-	GUI:GetWidget("dgb-suggested-scale").Right:SetText(HydraUI:GetSuggestedScale())
+	GUI:GetWidget("dgb-suggested-scale").Right:SetText((768 / select(2, GetPhysicalScreenSize())))
 	GUI:GetWidget("dgb-reso").Right:SetText(HydraUI.ScreenResolution)
 	GUI:GetWidget("dgb-fullscreen").Right:SetText(GetCVar("gxMaximize") == "1" and Language["Enabled"] or Language["Disabled"])
 end
 
 function Debug:UI_SCALE_CHANGED()
-	HydraUI:UpdateScreenSize()
-	
-	GUI:GetWidget("dgb-suggested-scale").Right:SetText(HydraUI:GetSuggestedScale())
+	GUI:GetWidget("dgb-suggested-scale").Right:SetText((768 / select(2, GetPhysicalScreenSize())))
 end
 
 function Debug:ZONE_CHANGED()

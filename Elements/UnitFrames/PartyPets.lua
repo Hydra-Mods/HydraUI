@@ -25,6 +25,7 @@ Defaults["party-show-solo"] = false
 Defaults["party-font"] = "Roboto"
 Defaults["party-font-size"] = 12
 Defaults["party-font-flags"] = ""
+
 Defaults["party-pets-enable"] = true
 Defaults["party-pets-width"] = 78
 Defaults["party-pets-health-height"] = 22
@@ -761,6 +762,16 @@ local UpdateShowSolo = function(value)
 	_G["HydraUI Party"]:SetAttribute("showSolo", value)
 end
 
---[[HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Party Pets"], Language["Unit Frames"], function(left, right)
-
-end)]]
+HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Party Pets"], Language["Unit Frames"], function(left, right)
+	left:CreateHeader(Language["Enable"])
+	left:CreateSwitch("party-pets-enable", Settings["party-pets-enable"], Language["Enable Party Pet Frames"], Language["Enable the party pet frames module"], ReloadUI):RequiresReload(true)
+	
+	--[[Defaults["party-pets-enable"] = true
+	Defaults["party-pets-width"] = 78
+	Defaults["party-pets-health-height"] = 22
+	Defaults["party-pets-health-reverse"] = false
+	Defaults["party-pets-health-color"] = "CLASS"
+	Defaults["party-pets-health-orientation"] = "HORIZONTAL"
+	Defaults["party-pets-health-smooth"] = true
+	Defaults["party-pets-power-height"] = 0 -- NYI]]
+end)

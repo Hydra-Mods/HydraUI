@@ -1314,21 +1314,21 @@ function Window:CreateSingleWindow()
 	local Border = Settings["ui-border-thickness"]
 	local Width = Settings["right-window-width"]
 	
-	self.Bottom = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
+	self.Bottom = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	self.Bottom:SetSize(Width, Settings["right-window-bottom-height"])
 	self.Bottom:SetPoint("BOTTOMRIGHT", self, 0, 0)
 	HydraUI:AddBackdrop(self.Bottom, Assets:GetTexture(Settings["ui-header-texture"]))
 	self.Bottom.Outside:SetBackdropColor(R, G, B, (Settings["rw-bottom-fill"] / 100))
 	self.Bottom.Outside:SetFrameStrata("BACKGROUND")
 	
-	self.Middle = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
+	self.Middle = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	self.Middle:SetSize(Width, Settings["right-window-height"])
 	self.Middle:SetPoint("BOTTOMLEFT", self.Bottom, "TOPLEFT", 0, 1 > Border and -1 or -(Border + 2))
 	HydraUI:AddBackdrop(self.Middle)
 	self.Middle.Outside:SetBackdropColor(R, G, B, (Settings["right-window-fill"] / 100))
 	self.Middle.Outside:SetFrameStrata("BACKGROUND")
 	
-	self.Top = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
+	self.Top = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	self.Top:SetSize(Width, Settings["right-window-top-height"])
 	self.Top:SetPoint("BOTTOMLEFT", self.Middle, "TOPLEFT", 0, 1 > Border and -1 or -(Border + 2))
 	HydraUI:AddBackdrop(self.Top, Assets:GetTexture(Settings["ui-header-texture"]))

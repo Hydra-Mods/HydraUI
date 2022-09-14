@@ -300,35 +300,3 @@ function HydraUI:SetCVars()
 	C_CVar.SetCVar("NameplatePersonalShowInCombat", 0)
 	C_CVar.SetCVar("NameplatePersonalShowWithTarget", 0)
 end
-
---[[
-	Scale comprehension references:
-	https://wow.gamepedia.com/UI_Scale
-	https://www.reddit.com/r/WowUI/comments/95o7qc/other_how_to_pixel_perfect_ui_xpost_rwow/
-	https://www.wowinterface.com/forums/showthread.php?t=31813
---]]
-
-local ScreenWidth, ScreenHeight
-
-function HydraUI:UpdateScreenSize()
-	ScreenWidth, ScreenHeight = GetPhysicalScreenSize()
-	
-	self.ScreenResolution = format("%sx%s", ScreenWidth, ScreenHeight)
-	
-	self.UIParent:SetSize(tonumber(ScreenWidth), tonumber(ScreenHeight))
-end
-
-HydraUI:UpdateScreenSize()
-
-function HydraUI:SetScale(x)
-	self:UpdateScreenSize()
-	self.UIParent:SetScale((768 / ScreenHeight) / min(1.2, max(0.4, x)))
-end
-
-function HydraUI:SetSuggestedScale()
-	self:SetScale(self:GetSuggestedScale())
-end
-
-function HydraUI:GetSuggestedScale()
-	return (768 / ScreenHeight)
-end

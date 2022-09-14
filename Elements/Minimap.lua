@@ -176,7 +176,8 @@ function Map:Style()
 	
 	if GameTimeFrame then
 		GameTimeFrame:ClearAllPoints()
-		GameTimeFrame:SetPoint("TOPRIGHT", 1, -1)
+		GameTimeFrame:SetParent(Minimap)
+		GameTimeFrame:SetPoint("TOPRIGHT", Minimap, 1, -1)
 		
 		if (not Settings["minimap-show-calendar"]) then
 			GameTimeFrame:Hide()
@@ -311,7 +312,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Minimap"], fu
 	left:CreateSwitch("minimap-show-top", Settings["minimap-show-top"], Language["Enable Top Bar"], Language["Enable the data text bar on top of the mini map"], UpdateShowTopBar)
 	left:CreateSwitch("minimap-show-bottom", Settings["minimap-show-bottom"], Language["Enable Bottom Bar"], Language["Enable the data text bar on the bottom of the mini map"], UpdateShowBottomBar)
 	
-	if HydraUI.IsMainline then
+	if GameTimeFrame then
 		left:CreateSwitch("minimap-show-calendar", Settings["minimap-show-calendar"], Language["Enable Calendar"], Language["Enable the calendar button on the minimap"], UpdateShowCalendar)
 	end
 	
