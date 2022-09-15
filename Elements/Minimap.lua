@@ -38,6 +38,14 @@ local OnMouseWheel = function(self, delta)
 	end
 end
 
+local MailOnEnter = function()
+	MiniMapMailIcon:SetVertexColor(HydraUI:HexToRGB("FFFFFF"))
+end
+
+local MailOnLeave = function()
+	MiniMapMailIcon:SetVertexColor(HydraUI:HexToRGB("EEEEEE"))
+end
+
 function Map:Style()
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-window-main-color"])
 	local Border = Settings["ui-border-thickness"]
@@ -111,11 +119,22 @@ function Map:Style()
 	end
 	
 	MiniMapMailFrame:ClearAllPoints()
-	MiniMapMailFrame:SetPoint("TOPRIGHT", -4, 12)
+	MiniMapMailFrame:HookScript("OnEnter", MailOnEnter)
+	MiniMapMailFrame:HookScript("OnLeave", MailOnLeave)
+	
+	if (MiniMapTracking and MiniMapTracking:IsShown()) then
+		MiniMapMailFrame:SetPoint("TOPLEFT", MiniMapTracking, "BOTTOMLEFT", -7, 16)
+	elseif (MiniMapTrackingFrame and MiniMapTrackingFrame:IsShown()) then
+		MiniMapMailFrame:SetPoint("TOPLEFT", MiniMapTrackingFrame, "BOTTOMLEFT", -7, 16)
+	else
+		MiniMapMailFrame:SetPoint("TOPLEFT", Minimap, 4, 12)
+	end
 	
 	MiniMapMailIcon:SetSize(32, 32)
 	MiniMapMailIcon:SetTexture(Assets:GetTexture("Mail 2"))
 	MiniMapMailIcon:SetVertexColor(HydraUI:HexToRGB("EEEEEE"))
+	MiniMapMailFrame:Show()
+	MiniMapMailFrame.Hide = function() end
 	
 	MinimapNorthTag:SetTexture(nil)
 	
