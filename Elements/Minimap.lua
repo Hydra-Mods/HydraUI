@@ -133,8 +133,6 @@ function Map:Style()
 	MiniMapMailIcon:SetSize(32, 32)
 	MiniMapMailIcon:SetTexture(Assets:GetTexture("Mail 2"))
 	MiniMapMailIcon:SetVertexColor(HydraUI:HexToRGB("EEEEEE"))
-	MiniMapMailFrame:Show()
-	MiniMapMailFrame.Hide = function() end
 	
 	MinimapNorthTag:SetTexture(nil)
 	

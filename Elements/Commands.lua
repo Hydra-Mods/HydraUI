@@ -27,7 +27,9 @@ Commands["texel"] = function()
 		return true
 	end
 	
-	LoadAddOn("Blizzard_DebugTools")
+	if (not IsAddOnLoaded("Blizzard_DebugTools")) then
+		LoadAddOn("Blizzard_DebugTools")
+	end
 	
 	TexelSnappingVisualizer:Show()
 	
