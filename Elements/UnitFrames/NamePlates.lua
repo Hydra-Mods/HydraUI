@@ -36,7 +36,7 @@ local UF = HydraUI:GetModule("Unit Frames")
 local GetNamePlates = C_NamePlate.GetNamePlates
 
 HydraUI.StyleFuncs["nameplate"] = function(self, unit)
-	self:SetScale(Settings["ui-scale"])
+	self:SetScale(UIParent:GetScale())
 	self:SetSize(Settings["nameplates-width"], Settings["nameplates-height"])
 	self:SetPoint("CENTER", 0, 0)
 	
