@@ -2524,6 +2524,10 @@ GUI.Widgets.CreateSlider = function(self, id, value, minvalue, maxvalue, step, l
 	
 	tinsert(self.Widgets, Anchor)
 	
+	if (id ~= "") then
+		GUI.WidgetID[id] = Anchor
+	end
+	
 	return Slider
 end
 
