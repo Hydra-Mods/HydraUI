@@ -5,7 +5,7 @@ local GUI = HydraUI:GetModule("GUI")
 local Tiers = {"FF8000", "A335EE", "0070DD", "1EFF00", "FFFFFF"}
 
 local Patrons = {
-	{"Dragonhawk"},
+	{"Dragonhawk", "Halven"},
 	{},
 	{"deck"},
 	{"JDoubleU00", "sylvester", "thurin"},
@@ -13,7 +13,7 @@ local Patrons = {
 }
 
 local Previous = {
-	{"SwoopCrown", "Cheeso_76", "Halven", "Erieeroot", "last"},
+	{"SwoopCrown", "Cheeso_76", "Erieeroot", "last"},
 	{"Smelly", "Trix", "wolimazo", "Ari", "MrPoundsign"},
 	{"Euphoria", "Mitooshin", "MisseFar", "FrankPatten", "Dillan", "Quiet"},
 	{"Maski", "Raze", "Ingrimmosch", "Chris B.", "Suppabad", "Aaron B.", "Steve R.", "Angel", "Jeor", "Mcbooze", "stko", "Syn", "Rytok", "Ryex", "Blom", "Innie", "Cyber", "protocol7", "Dellamaik"},
