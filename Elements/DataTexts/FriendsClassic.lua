@@ -240,6 +240,10 @@ ClientInfo["WoW"] = function(name, id)
 	
 	local NameInfo = format("|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF|r %s", LevelColor, Level, ClassColor, CharacterName, name)
 	
+	if (not Area or Area == "") then
+		Area = RichPresence:gsub("- (.+)", "")
+	end
+	
 	if (Area == GetRealZoneText()) then
 		Area = format("|cFF33FF33%s|r", Area)
 	end
