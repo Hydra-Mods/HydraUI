@@ -285,7 +285,7 @@ local Disable = function(object)
 		object:UnregisterAllEvents()
 	end
 	
-	if (object.GetScript and object:GetScript("OnUpdate")) then
+	if (object.HasScript and object:HasScript("OnUpdate")) then
 		object:SetScript("OnUpdate", nil)
 	end
 	
@@ -667,18 +667,20 @@ function Chat:StyleChatFrame(frame)
 	Tab:HookScript("OnEnter", TabOnEnter)
 	Tab:HookScript("OnLeave", TabOnLeave)
 	
-	HydraUI:SetFontInfo(TabText, Settings["chat-tab-font"], Settings["chat-tab-font-size"], Settings["chat-tab-font-flags"])
-	TabText._SetFont = TabText.SetFont
-	TabText.SetFont = NoCall
-	
-	TabText:SetTextColor(HydraUI:HexToRGB(Settings["chat-tab-font-color"]))
-	TabText._SetTextColor = TabText.SetTextColor
-	TabText.SetTextColor = NoCall
-	
-	if Tab.glow then
-		Tab.glow:ClearAllPoints()
-		Tab.glow:SetPoint("BOTTOM", Tab, 0, 1 > Settings["ui-border-thickness"] and -1 or -(Settings["ui-border-thickness"] + 2)) -- 1
-		Tab.glow:SetWidth(TabText:GetStringWidth() + 10)
+	if TabText then
+		HydraUI:SetFontInfo(TabText, Settings["chat-tab-font"], Settings["chat-tab-font-size"], Settings["chat-tab-font-flags"])
+		TabText._SetFont = TabText.SetFont
+		TabText.SetFont = NoCall
+		
+		TabText:SetTextColor(HydraUI:HexToRGB(Settings["chat-tab-font-color"]))
+		TabText._SetTextColor = TabText.SetTextColor
+		TabText.SetTextColor = NoCall
+		
+		if Tab.glow then
+			Tab.glow:ClearAllPoints()
+			Tab.glow:SetPoint("BOTTOM", Tab, 0, 1 > Settings["ui-border-thickness"] and -1 or -(Settings["ui-border-thickness"] + 2)) -- 1
+			Tab.glow:SetWidth(TabText:GetStringWidth() + 10)
+		end
 	end
 	
 	frame:SetFrameStrata("MEDIUM")

@@ -2092,11 +2092,12 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	Dropdown.ArrowAnchor:SetSize(WIDGET_HEIGHT, WIDGET_HEIGHT)
 	Dropdown.ArrowAnchor:SetPoint("RIGHT", Dropdown, 0, 0)
 	
-	Dropdown.Button.Arrow = Dropdown.Button:CreateTexture(nil, "OVERLAY", 7)
+	Dropdown.Button.Arrow = Dropdown.Button:CreateTexture(nil, "OVERLAY")
 	Dropdown.Button.Arrow:SetPoint("CENTER", Dropdown.ArrowAnchor, 0, 0)
 	Dropdown.Button.Arrow:SetSize(16, 16)
 	Dropdown.Button.Arrow:SetTexture(Assets:GetTexture("Arrow Down"))
 	Dropdown.Button.Arrow:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-color"]))
+	Dropdown.Button.Arrow:SetDrawLayer("OVERLAY", 7)
 	
 	Dropdown.Menu = CreateFrame("Frame", nil, Dropdown)
 	Dropdown.Menu:SetPoint("TOPLEFT", Dropdown, "BOTTOMLEFT", SPACING, -2)
@@ -2510,11 +2511,12 @@ GUI.Widgets.CreateSlider = function(self, id, value, minvalue, maxvalue, step, l
 	Slider.Progress:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Slider.Progress:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-color"]))
 	
-	Slider.Highlight = Slider:CreateTexture(nil, "OVERLAY", 8)
+	Slider.Highlight = Slider:CreateTexture(nil, "OVERLAY")
 	Slider.Highlight:SetPoint("TOPLEFT", Slider, 1, -1)
 	Slider.Highlight:SetPoint("BOTTOMRIGHT", Slider, -1, 1)
 	Slider.Highlight:SetTexture(Assets:GetTexture("Blank"))
 	Slider.Highlight:SetVertexColor(1, 1, 1, 0.4)
+	Slider.Highlight:SetDrawLayer("OVERLAY", 7)
 	Slider.Highlight:SetAlpha(0)
 	
 	EditBox.Box.Slider = Slider

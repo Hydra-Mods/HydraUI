@@ -222,7 +222,7 @@ function HydraUI:SetFontInfo(object, font, size, flags)
 		object:SetFont(Font, size, "MONOCHROME, OUTLINE")
 		object:SetShadowColor(0, 0, 0, 0)
 	else
-		object:SetFont(Font, size, flags)
+		object:SetFont(Font, size, flags or "")
 		object:SetShadowColor(0, 0, 0)
 		object:SetShadowOffset(1, -1)
 	end

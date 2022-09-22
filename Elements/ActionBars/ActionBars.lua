@@ -235,7 +235,7 @@ function AB:StyleActionButton(button)
 	button.Backdrop:SetBackdropColor(0, 0, 0)
 	button.Backdrop:SetFrameLevel(button:GetFrameLevel() - 1)
 	
-	button.Backdrop.Texture = button.Backdrop:CreateTexture(nil, "BACKDROP")
+	button.Backdrop.Texture = button.Backdrop:CreateTexture(nil, "BACKGROUND")
 	button.Backdrop.Texture:SetPoint("TOPLEFT", button.Backdrop, 1, -1)
 	button.Backdrop.Texture:SetPoint("BOTTOMRIGHT", button.Backdrop, -1, 1)
 	button.Backdrop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
@@ -267,7 +267,7 @@ function AB:StyleActionButton(button)
 		button.Flash:SetPoint("BOTTOMRIGHT", button, -1, 1)
 	end
 	
-	local Range = button:CreateTexture(nil, "ARTWORK", button)
+	local Range = button:CreateTexture(nil, "ARTWORK")
 	Range:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 	Range:SetVertexColor(0.7, 0, 0)
 	Range:SetPoint("TOPLEFT", button, 1, -1)
@@ -965,8 +965,14 @@ function AB:CreateBars()
 	self:CreateBar3()
 	self:CreateBar4()
 	self:CreateBar5()
-	self:CreatePetBar()
-	self:CreateStanceBar()
+	
+	if PetActionBarFrame then
+		self:CreatePetBar()
+	end
+	
+	if StanceBarFrame then
+		self:CreateStanceBar()
+	end
 	
 	if HydraUI.IsMainline then
 		self:CreateExtraBar()
@@ -1000,8 +1006,14 @@ function AB:CreateMovers()
 	HydraUI:CreateMover(self.Bar3)
 	HydraUI:CreateMover(self.Bar4)
 	HydraUI:CreateMover(self.Bar5)
-	HydraUI:CreateMover(self.StanceBar)
-	HydraUI:CreateMover(self.PetBar)
+	
+	if self.StanceBar then
+		HydraUI:CreateMover(self.StanceBar)
+	end
+	
+	if self.PetBar then
+		HydraUI:CreateMover(self.PetBar)
+	end
 	
 	--[[if MultiCastActionBarFrame and MultiCastActionBarFrame:IsShown() then
 		HydraUI:CreateMover(MultiCastActionBarFrame)
@@ -1209,9 +1221,12 @@ function AB:Load()
 	end
 	
 	hooksecurefunc("ActionButton_UpdateRangeIndicator", AB.UpdateButtonStatus)
-	hooksecurefunc("ActionButton_UpdateFlyout", AB.UpdateFlyout)
 	
-	if (not HydraUI.IsMainline) then
+	if ActionButton_UpdateFlyout then
+		hooksecurefunc("ActionButton_UpdateFlyout", AB.UpdateFlyout)
+	end
+	
+	if ActionButton_Update then
 		hooksecurefunc("ActionButton_Update", AB.UpdateButtonStatus)
 	end
 end
