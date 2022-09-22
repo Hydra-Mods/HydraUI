@@ -644,7 +644,7 @@ function Chat:StyleChatFrame(frame)
 	
 	local FrameName = frame:GetName()
 	local Tab = _G[FrameName.."Tab"]
-	local TabText = _G[FrameName.."TabText"]
+	local TabText = Tab.Text or _G[FrameName.."TabText"]
 	local EditBox = _G[FrameName.."EditBox"]
 	
 	if frame.ScrollBar then
@@ -663,6 +663,18 @@ function Chat:StyleChatFrame(frame)
 	Tab:SetAlpha(1)
 	Tab.SetAlpha = UIFrameFadeRemoveFrame
 	Tab.TabText = TabText
+	
+	if Tab.ActiveLeft then
+		Tab.Left:SetTexture(nil)
+		Tab.HighlightLeft:SetTexture(nil)
+		Tab.ActiveLeft:SetTexture(nil)
+		Tab.Middle:SetTexture(nil)
+		Tab.HighlightMiddle:SetTexture(nil)
+		Tab.ActiveMiddle:SetTexture(nil)
+		Tab.Right:SetTexture(nil)
+		Tab.HighlightRight:SetTexture(nil)
+		Tab.ActiveRight:SetTexture(nil)
+	end
 	
 	Tab:HookScript("OnEnter", TabOnEnter)
 	Tab:HookScript("OnLeave", TabOnLeave)
@@ -879,9 +891,15 @@ function Chat:MoveChatFrames()
 	end
 	
 	GeneralDockManager:ClearAllPoints()
-	GeneralDockManager:SetPoint("LEFT", self.Top, 0, 5)
-	GeneralDockManager:SetPoint("RIGHT", self.Top, 0, 5)
 	GeneralDockManager:SetFrameStrata("MEDIUM")
+	
+	if (HydraUI.ClientVersion >= 100000) then
+		GeneralDockManager:SetPoint("LEFT", self.Top, 0, 0)
+		GeneralDockManager:SetPoint("RIGHT", self.Top, 0, 0)
+	else
+		GeneralDockManager:SetPoint("LEFT", self.Top, 0, 5)
+		GeneralDockManager:SetPoint("RIGHT", self.Top, 0, 5)
+	end
 	
 	GeneralDockManagerOverflowButton:ClearAllPoints()
 	GeneralDockManagerOverflowButton:SetPoint("RIGHT", self.Top, -2, 0)
