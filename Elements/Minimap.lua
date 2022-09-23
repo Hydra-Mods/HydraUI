@@ -18,11 +18,15 @@ Defaults["minimap-bottom-fill"] = 100
 Defaults["minimap-show-calendar"] = true
 
 function Map:Disable(object)
+	if (not object) then
+		return
+	end
+
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()
 	end
 	
-	if (object.GetScript and object:GetScript("OnUpdate")) then
+	if (object.HasScript and object:HasScript("OnUpdate")) then
 		object:SetScript("OnUpdate", nil)
 	end
 	
@@ -87,20 +91,19 @@ function Map:Style()
 	    Minimap:SetArchBlobRingScalar(0)
 		Minimap:SetQuestBlobRingScalar(0)
 		
-		QueueStatusMinimapButton:ClearAllPoints()
-		QueueStatusMinimapButton:SetPoint("BOTTOMLEFT", Minimap, 0, -3)
+		if QueueStatusMinimapButton then
+			QueueStatusMinimapButton:ClearAllPoints()
+			QueueStatusMinimapButton:SetPoint("BOTTOMLEFT", Minimap, 0, -3)
+		end
 		
-		GarrisonLandingPageMinimapButton:SetSize(40, 40)
-		GarrisonLandingPageMinimapButton:ClearAllPoints()
-		GarrisonLandingPageMinimapButton:SetPoint("BOTTOMRIGHT", Minimap, 3, -4)
-		GarrisonLandingPageMinimapButton.ClearAllPoints = function() end
-		GarrisonLandingPageMinimapButton.SetPoint = function() end
-		GarrisonLandingPageMinimapButton.SetSize = function() end
-		
-		MiniMapTrackingIconOverlay:SetTexture(nil)
-		MiniMapTrackingButtonBorder:SetTexture(nil)
-		MiniMapTrackingButtonShine:SetTexture(nil)
-		MiniMapTrackingButton:SetHighlightTexture("")
+		if GarrisonLandingPageMinimapButton then
+			GarrisonLandingPageMinimapButton:SetSize(40, 40)
+			GarrisonLandingPageMinimapButton:ClearAllPoints()
+			GarrisonLandingPageMinimapButton:SetPoint("BOTTOMRIGHT", Minimap, 3, -4)
+			GarrisonLandingPageMinimapButton.ClearAllPoints = function() end
+			GarrisonLandingPageMinimapButton.SetPoint = function() end
+			GarrisonLandingPageMinimapButton.SetSize = function() end
+		end
 	else
 		MiniMapBattlefieldFrame:ClearAllPoints()
 		MiniMapBattlefieldFrame:SetPoint("BOTTOMLEFT", Minimap, 0, -3)
@@ -118,23 +121,27 @@ function Map:Style()
 		end
 	end
 	
-	MiniMapMailFrame:ClearAllPoints()
-	MiniMapMailFrame:HookScript("OnEnter", MailOnEnter)
-	MiniMapMailFrame:HookScript("OnLeave", MailOnLeave)
-	
-	if (MiniMapTracking and MiniMapTracking:IsShown()) then
-		MiniMapMailFrame:SetPoint("TOPLEFT", MiniMapTracking, "BOTTOMLEFT", -7, 16)
-	elseif (MiniMapTrackingFrame and MiniMapTrackingFrame:IsShown()) then
-		MiniMapMailFrame:SetPoint("TOPLEFT", MiniMapTrackingFrame, "BOTTOMLEFT", -7, 16)
-	else
-		MiniMapMailFrame:SetPoint("TOPLEFT", Minimap, 4, 12)
+	if MiniMapMailFrame then
+		MiniMapMailFrame:ClearAllPoints()
+		MiniMapMailFrame:HookScript("OnEnter", MailOnEnter)
+		MiniMapMailFrame:HookScript("OnLeave", MailOnLeave)
+		
+		if (MiniMapTracking and MiniMapTracking:IsShown()) then
+			MiniMapMailFrame:SetPoint("TOPLEFT", MiniMapTracking, "BOTTOMLEFT", -7, 16)
+		elseif (MiniMapTrackingFrame and MiniMapTrackingFrame:IsShown()) then
+			MiniMapMailFrame:SetPoint("TOPLEFT", MiniMapTrackingFrame, "BOTTOMLEFT", -7, 16)
+		else
+			MiniMapMailFrame:SetPoint("TOPLEFT", Minimap, 4, 12)
+		end
+		
+		MiniMapMailIcon:SetSize(32, 32)
+		MiniMapMailIcon:SetTexture(Assets:GetTexture("Mail 2"))
+		MiniMapMailIcon:SetVertexColor(HydraUI:HexToRGB("EEEEEE"))
 	end
 	
-	MiniMapMailIcon:SetSize(32, 32)
-	MiniMapMailIcon:SetTexture(Assets:GetTexture("Mail 2"))
-	MiniMapMailIcon:SetVertexColor(HydraUI:HexToRGB("EEEEEE"))
-	
-	MinimapNorthTag:SetTexture(nil)
+	if MinimapNorthTag then
+		MinimapNorthTag:SetTexture(nil)
+	end
 	
 	if MiniMapTrackingBackground then
 		MiniMapTrackingBackground:SetTexture(nil)
