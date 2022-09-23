@@ -50,7 +50,7 @@ local UpdateDisplayProgress = function(value)
 		return
 	end
 
-	if (value and Settings["experience-progress-visibility"] ~= "MOUSEOVER") then
+	if (value and Settings["experience-progress-visibility"] == "ALWAYS") then
 		Experience.Progress:Show()
 	else
 		Experience.Progress:Hide()
@@ -62,7 +62,7 @@ local UpdateDisplayPercent = function(value)
 		return
 	end
 
-	if (value and Settings["experience-percent-visibility"] ~= "MOUSEOVER") then
+	if (value and Settings["experience-percent-visibility"] == "ALWAYS") then
 		Experience.Percentage:Show()
 	else
 		Experience.Percentage:Hide()

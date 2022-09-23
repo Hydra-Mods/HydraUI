@@ -134,7 +134,7 @@ function Reputation:CreateBar()
 	HydraUI:SetFontInfo(self.Progress, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Progress:SetJustifyH("LEFT")
 	
-	if (not Settings["reputation-display-progress"] or Settings["reputation-percent-visibility"] ~= "ALWAYS") then
+	if (not Settings["reputation-display-progress"] or Settings["reputation-progress-visibility"] ~= "ALWAYS") then
 		self.Progress:Hide()
 	end
 	
@@ -143,7 +143,7 @@ function Reputation:CreateBar()
 	HydraUI:SetFontInfo(self.Percentage, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Percentage:SetJustifyH("RIGHT")
 	
-	if (not Settings["reputation-display-percent"]) then
+	if (not Settings["reputation-display-percent"] or Settings["reputation-percent-visibility"] ~= "ALWAYS") then
 		self.Percentage:Hide()
 	end
 	
@@ -278,9 +278,6 @@ function Reputation:Load()
 	self:SetScript("OnEnter", self.OnEnter)
 	self:SetScript("OnLeave", self.OnLeave)
 	self:SetScript("OnMouseUp", self.OnMouseUp)
-	
-	UpdateProgressVisibility(Settings["reputation-progress-visibility"])
-	UpdatePercentVisibility(Settings["reputation-percent-visibility"])
 end
 
 local UpdateDisplayProgress = function(value)
@@ -288,7 +285,7 @@ local UpdateDisplayProgress = function(value)
 		return
 	end
 
-	if value then
+	if (value and Settings["reputation-progress-visibility"] == "ALWAYS") then
 		Reputation.Progress:Show()
 	else
 		Reputation.Progress:Hide()
@@ -300,7 +297,7 @@ local UpdateDisplayPercent = function(value)
 		return
 	end
 
-	if value and Settings["reputation-percent-visibility"] == "ALWAYS" then
+	if (value and Settings["reputation-percent-visibility"] == "ALWAYS") then
 		Reputation.Percentage:Show()
 	else
 		Reputation.Percentage:Hide()
