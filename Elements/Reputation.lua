@@ -16,7 +16,7 @@ Defaults["reputation-display-percent"] = true
 Defaults["reputation-show-tooltip"] = true
 Defaults["reputation-animate"] = true
 Defaults["reputation-progress-visibility"] = "ALWAYS"
-Defaults["reputation-percent-visibility"] = "ALWAYS"
+Defaults["reputation-percent-visibility"] = "NEVER"
 
 local FadeOnFinished = function(self)
 	self.Parent:Hide()
