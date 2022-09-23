@@ -16,7 +16,7 @@ Defaults["reputation-display-percent"] = true
 Defaults["reputation-show-tooltip"] = true
 Defaults["reputation-animate"] = true
 Defaults["reputation-progress-visibility"] = "ALWAYS"
-Defaults["reputation-percent-visibility"] = "NEVER"
+Defaults["reputation-percent-visibility"] = "ALWAYS"
 
 local FadeOnFinished = function(self)
 	self.Parent:Hide()
@@ -134,7 +134,7 @@ function Reputation:CreateBar()
 	HydraUI:SetFontInfo(self.Progress, Settings["ui-widget-font"], Settings["ui-font-size"])
 	self.Progress:SetJustifyH("LEFT")
 	
-	if (not Settings["reputation-display-progress"]) then
+	if (not Settings["reputation-display-progress"] or Settings["reputation-percent-visibility"] ~= "ALWAYS") then
 		self.Progress:Hide()
 	end
 	
@@ -300,7 +300,7 @@ local UpdateDisplayPercent = function(value)
 		return
 	end
 
-	if value then
+	if value and Settings["reputation-percent-visibility"] == "ALWAYS" then
 		Reputation.Percentage:Show()
 	else
 		Reputation.Percentage:Hide()
