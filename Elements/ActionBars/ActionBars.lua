@@ -235,7 +235,7 @@ function AB:StyleActionButton(button)
 	button.Backdrop:SetBackdropColor(0, 0, 0)
 	button.Backdrop:SetFrameLevel(button:GetFrameLevel() - 1)
 	
-	button.Backdrop.Texture = button.Backdrop:CreateTexture(nil, "BACKGROUND")
+	button.Backdrop.Texture = button.Backdrop:CreateTexture(nil, "BACKDROP")
 	button.Backdrop.Texture:SetPoint("TOPLEFT", button.Backdrop, 1, -1)
 	button.Backdrop.Texture:SetPoint("BOTTOMRIGHT", button.Backdrop, -1, 1)
 	button.Backdrop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
