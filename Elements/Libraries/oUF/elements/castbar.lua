@@ -99,7 +99,7 @@ local GetTime = GetTime
 
 local ClientVersion = select(4, GetBuildInfo())
 local IsClassic = ClientVersion > 10000 and ClientVersion < 20000
-local IsMainline = ClientVersion > 90000 and ClientVersion < 100000
+local IsMainline = ClientVersion > 90000
 local LibCC
 
 if IsClassic then
@@ -440,19 +440,19 @@ local function Enable(self, unit)
 		else
 			self:RegisterEvent('UNIT_SPELLCAST_START', CastStart)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', CastStart)
-			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:RegisterEvent('UNIT_SPELLCAST_STOP', CastStop)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
-			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:RegisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
 			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
-			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
 			self:RegisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
 			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 			
 			if IsMainline then
 				self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 				self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
+				self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
+				self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
+				self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
 			end
 		end
 
@@ -461,8 +461,13 @@ local function Enable(self, unit)
 		element:SetScript('OnUpdate', element.OnUpdate or onUpdate)
 
 		if(self.unit == 'player' and not (self.hasChildren or self.isChild or self.isNamePlate)) then
-			PlayerCastingBarFrame:SetUnit(nil)
-			PetCastingBarFrame:SetUnit(nil)
+			if CastingBarFrame_SetUnit then
+				CastingBarFrame_SetUnit(CastingBarFrame, nil)
+				CastingBarFrame_SetUnit(PetCastingBarFrame, nil)
+			else
+				PlayerCastingBarFrame:SetUnit(nil)
+				PetCastingBarFrame:SetUnit(nil)
+			end
 		end
 
 		if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
@@ -507,19 +512,19 @@ local function Disable(self)
 		else
 			self:UnregisterEvent('UNIT_SPELLCAST_START', CastStart)
 			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
-			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:UnregisterEvent('UNIT_SPELLCAST_STOP', CastStop)
 			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', CastStop)
-			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:UnregisterEvent('UNIT_SPELLCAST_DELAYED', CastUpdate)
 			self:UnregisterEvent('UNIT_SPELLCAST_CHANNEL_UPDATE', CastUpdate)
-			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
 			self:UnregisterEvent('UNIT_SPELLCAST_FAILED', CastFail)
 			self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTED', CastFail)
 			
 			if IsMainline then
 				self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 				self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
+				self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
+				self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
+				self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
 			end
 		end
 
