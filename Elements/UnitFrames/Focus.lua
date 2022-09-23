@@ -277,6 +277,17 @@ local UpdateFocusPowerColor = function(value)
 	end
 end
 
+local UpdateShowFocusBuffs = function(value)
+	if HydraUI.UnitFrames["focus"] then
+		if value then
+			HydraUI.UnitFrames["focus"]:EnableElement("Auras")
+			HydraUI.UnitFrames["focus"]:UpdateAllElements("ForceUpdate")
+		else
+			HydraUI.UnitFrames["focus"]:DisableElement("Auras")
+		end
+	end
+end
+
 local UpdateFocusPowerFill = function(value)
 	if HydraUI.UnitFrames["focus"] then
 		HydraUI.UnitFrames["focus"].Power:SetReverseFill(value)
@@ -300,4 +311,8 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Focus"], Lang
 	right:CreateSwitch("unitframes-focus-power-reverse", Settings["unitframes-focus-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateFocusPowerFill)
 	right:CreateSlider("unitframes-focus-power-height", Settings["unitframes-focus-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the focus power bar", UpdateFocusPowerHeight)
 	right:CreateDropdown("unitframes-focus-power-color", Settings["unitframes-focus-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateFocusPowerColor)
+
+
+	right:CreateHeader(Language["Buffs"])
+	right:CreateSwitch("unitframes-show-focus-buffs", Settings["unitframes-show-focus-buffs"], Language["Show Focus Buffs"], Language["Show auras next to the focus unit frame"], UpdateShowFocusBuffs)
 end)
