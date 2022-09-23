@@ -101,6 +101,9 @@ function Map:Style()
 		MiniMapTrackingButtonBorder:SetTexture(nil)
 		MiniMapTrackingButtonShine:SetTexture(nil)
 		MiniMapTrackingButton:SetHighlightTexture("")
+	elseif HydraUI.IsWrath then
+		MiniMapLFGFrame:ClearAllPoints()
+		MiniMapLFGFrame:SetPoint("BOTTOMRIGHT", Minimap, 0, -3)
 	else
 		MiniMapBattlefieldFrame:ClearAllPoints()
 		MiniMapBattlefieldFrame:SetPoint("BOTTOMLEFT", Minimap, 0, -3)

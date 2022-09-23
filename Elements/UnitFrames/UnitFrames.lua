@@ -410,9 +410,9 @@ if HydraUI.IsMainline then
 			{974, "TOPRIGHT", {0.73, 0.61, 0.33}}, -- Earth Shield
 		},
 	}
-elseif HydraUI.IsTBC then
+elseif HydraUI.IsWrath then
 	UF.BuffIDs = {
-		["DRUID"] = {
+		["DRUID"] = { -- needs updating
 			-- Regrowth
 			{8936, "TOPRIGHT", {0.2, 0.8, 0.2}},
 			{8938, "TOPRIGHT", {0.2, 0.8, 0.2}},
@@ -445,15 +445,18 @@ elseif HydraUI.IsTBC then
 		},
 		
 		["PALADIN"] = {
-			-- Blessing of Freedom
+			-- Beacon of Light
+			{53563, "TOPRIGHT", {0.81, 0.85, 0.1}, true},
+			
+			-- Hand of Freedom
 			{1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true},
 			
-			-- Blessing of Protection
+			-- Hand of Protection
 			{1022, "BOTTOMRIGHT", {0.29, 0.45, 0.73}, true},
 			{5599, "BOTTOMRIGHT", {0.29, 0.45, 0.73}, true},
 			{10278, "BOTTOMRIGHT", {0.29, 0.45, 0.73}, true},
 			
-			-- Blessing of Sacrifice
+			-- Hand of Sacrifice
 			{6940, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},
 			{20729, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},
 			{27147, "BOTTOMRIGHT", {0.89, 0.1, 0.1}, true},
@@ -469,6 +472,8 @@ elseif HydraUI.IsTBC then
 			{44583, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
 			{44586, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
 			{46045, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
+			{48112, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
+			{48113, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
 			
 			-- Power Word: Shield
 			{17, "TOPLEFT", {0.81, 0.85, 0.1}, true},
@@ -483,6 +488,8 @@ elseif HydraUI.IsTBC then
 			{10901, "TOPLEFT", {0.81, 0.85, 0.1}, true},
 			{25217, "TOPLEFT", {0.81, 0.85, 0.1}, true},
 			{25218, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+			{48065, "TOPLEFT", {0.81, 0.85, 0.1}, true},
+			{48066, "TOPLEFT", {0.81, 0.85, 0.1}, true},
 			
 			-- Renew
 			{139, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
@@ -497,6 +504,8 @@ elseif HydraUI.IsTBC then
 			{25315, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
 			{25221, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
 			{25222, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+			{48067, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+			{48068, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
 		},
 		
 		["SHAMAN"] = {
@@ -504,6 +513,12 @@ elseif HydraUI.IsTBC then
 			{974, "TOPRIGHT", {0.73, 0.61, 0.33}},
 			{32593, "TOPRIGHT", {0.73, 0.61, 0.33}},
 			{32594, "TOPRIGHT", {0.73, 0.61, 0.33}},
+			
+			-- Riptide (need to revisit color)
+			{61295, "TOPRIGHT", {0, 0.4, 0.6}},
+			{61299, "TOPRIGHT", {0, 0.4, 0.6}},
+			{61300, "TOPRIGHT", {0, 0.4, 0.6}},
+			{61301, "TOPRIGHT", {0, 0.4, 0.6}},
 		},
 	}
 else -- Classic
