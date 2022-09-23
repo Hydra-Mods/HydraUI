@@ -475,7 +475,6 @@ elseif HydraUI.IsWrath then
 			{48112, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
 			{48113, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
 			
-			
 			-- Power Word: Shield
 			{17, "TOPLEFT", {0.81, 0.85, 0.1}, true},
 			{592, "TOPLEFT", {0.81, 0.85, 0.1}, true},
