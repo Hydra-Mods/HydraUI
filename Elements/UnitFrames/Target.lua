@@ -450,11 +450,11 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Target"], Lan
 	
 	left:CreateHeader(Language["Buffs"])
 	left:CreateSwitch("unitframes-show-target-buffs", Settings["unitframes-show-target-buffs"], Language["Show Target Buffs"], Language["Show yauras above the target unit frame"], UpdateShowTargetBuffs)
-	left:CreateSlider("TargetBuffSize", Settings.TargetBuffSize, 26, 40, 2, "Set Size", "Set the size of the auras", UpdateBuffSize)
+	left:CreateSlider("TargetBuffSize", Settings.TargetBuffSize, 26, 50, 2, "Set Size", "Set the size of the auras", UpdateBuffSize)
 	left:CreateSlider("TargetBuffSpacing", Settings.TargetBuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateBuffSpacing)
 	
 	left:CreateHeader(Language["Debuffs"])
-	left:CreateSlider("TargetDebuffSize", Settings.TargetDebuffSize, 26, 40, 2, "Set Size", "Set the size of the auras", UpdateDebuffSize)
+	left:CreateSlider("TargetDebuffSize", Settings.TargetDebuffSize, 26, 50, 2, "Set Size", "Set the size of the auras", UpdateDebuffSize)
 	left:CreateSlider("TargetDebuffSpacing", Settings.TargetDebuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateDebuffSpacing)
 	
 	right:CreateHeader(Language["Power"])

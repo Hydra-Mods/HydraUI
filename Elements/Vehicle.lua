@@ -75,10 +75,11 @@ function Vehicle:Load()
 	self.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	self.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-header-texture-color"]))
 	
-	self.Text = self:CreateFontString(nil, "OVERLAY", 7)
+	self.Text = self:CreateFontString(nil, "OVERLAY")
 	self.Text:SetPoint("CENTER", self, 0, -1)
 	HydraUI:SetFontInfo(self.Text, Settings["ui-header-font"], Settings["ui-font-size"])
 	self.Text:SetSize(self:GetWidth() - 12, 20)
+	self.Text:SetDrawLayer("OVERLAY", 7)
 	
 	self.Fade = CreateAnimationGroup(self)
 	

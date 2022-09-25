@@ -68,6 +68,10 @@ function BagsFrame:UpdateVisibility()
 end
 
 function BagsFrame:Load()
+	if (HydraUI.ClientVersion >= 100000) then -- Revisiting
+		return
+	end
+	
 	if (not Settings["ab-enable"]) then
 		return
 	end

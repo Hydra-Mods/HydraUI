@@ -268,9 +268,11 @@ function Auras:Load()
 	BuffFrame:UnregisterAllEvents()
 	BuffFrame:SetScript("OnUpdate", nil)
 	
-	TemporaryEnchantFrame:Hide()
-	TemporaryEnchantFrame:UnregisterAllEvents()
-	TemporaryEnchantFrame:SetScript("OnUpdate", nil)
+	if TemporaryEnchantFrame then
+		TemporaryEnchantFrame:Hide()
+		TemporaryEnchantFrame:UnregisterAllEvents()
+		TemporaryEnchantFrame:SetScript("OnUpdate", nil)
+	end
 	
 	HydraUI:CreateMover(self.Buffs)
 	HydraUI:CreateMover(self.Debuffs)
