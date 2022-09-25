@@ -728,8 +728,13 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	
 	-- Threat
 	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	Threat:SetPoint("TOPLEFT", self.AuraParent, -1, 1)
-	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+	if (Settings["player-move-resource"]) then
+		Threat:SetPoint("TOPLEFT", -1, 1)
+		Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+	else
+		Threat:SetPoint("TOPLEFT", self.AuraParent, -1, 1)
+		Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+	end
 	Threat:SetBackdrop(HydraUI.Outline)
 	Threat.PostUpdate = UF.ThreatPostUpdate
 	
