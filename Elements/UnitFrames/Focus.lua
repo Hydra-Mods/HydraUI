@@ -312,7 +312,6 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Focus"], Lang
 	right:CreateSlider("unitframes-focus-power-height", Settings["unitframes-focus-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the focus power bar", UpdateFocusPowerHeight)
 	right:CreateDropdown("unitframes-focus-power-color", Settings["unitframes-focus-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateFocusPowerColor)
 
-
 	right:CreateHeader(Language["Buffs"])
 	right:CreateSwitch("unitframes-show-focus-buffs", Settings["unitframes-show-focus-buffs"], Language["Show Focus Buffs"], Language["Show auras next to the focus unit frame"], UpdateShowFocusBuffs)
 end)
