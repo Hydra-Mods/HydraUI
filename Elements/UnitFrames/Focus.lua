@@ -13,6 +13,7 @@ Defaults["unitframes-focus-health-left"] = "[Name(10)]"
 Defaults["unitframes-focus-health-right"] = "[HealthPercent]"
 Defaults["focus-enable"] = true
 Defaults["focus-enable-castbar"] = true
+Settings["focus-enable-buffs"] = true
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -313,5 +314,5 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Focus"], Lang
 	right:CreateDropdown("unitframes-focus-power-color", Settings["unitframes-focus-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateFocusPowerColor)
 
 	right:CreateHeader(Language["Buffs"])
-	right:CreateSwitch("unitframes-show-focus-buffs", Settings["unitframes-show-focus-buffs"], Language["Show Focus Buffs"], Language["Show auras next to the focus unit frame"], UpdateShowFocusBuffs)
+	right:CreateSwitch("focus-enable-buffs", Settings["focus-enable-buffs"], Language["Show Focus Buffs"], Language["Show auras next to the focus unit frame"], UpdateShowFocusBuffs)
 end)

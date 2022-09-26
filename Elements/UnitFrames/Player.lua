@@ -134,8 +134,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		Portrait.BG:SetTexture(Assets:GetTexture(Settings["Blank"]))
 		Portrait.BG:SetVertexColor(0, 0, 0)
 	end
-
-
+	
 	if (Portrait.BG and not Settings["player-enable-portrait"]) then
 		Portrait.BG:Hide()
 	end

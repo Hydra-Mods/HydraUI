@@ -450,9 +450,12 @@ local function Enable(self, unit)
 			if IsMainline then
 				self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 				self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
-				self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
-				self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
-				self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
+				
+				if ClientVersion > 100000 then -- TEMP
+					self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
+					self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
+					self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
+				end
 			end
 		end
 
@@ -522,9 +525,12 @@ local function Disable(self)
 			if IsMainline then
 				self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 				self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
-				self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
-				self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
-				self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
+				
+				if ClientVersion > 100000 then -- TEMP
+					self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
+					self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
+					self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
+				end
 			end
 		end
 
