@@ -21,6 +21,7 @@ elseif (HydraUI.IsTBC or HydraUI.IsWrath) then
 		CharacterMicroButton,
 		SpellbookMicroButton,
 		TalentMicroButton,
+		AchievementMicroButton,
 		QuestLogMicroButton,
 		SocialsMicroButton,
 		LFGMicroButton,

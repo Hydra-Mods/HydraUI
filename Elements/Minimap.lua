@@ -108,10 +108,12 @@ function Map:Style()
 		if MiniMapLFGFrame then
 			MiniMapLFGFrame:ClearAllPoints()
 			MiniMapLFGFrame:SetPoint("BOTTOMRIGHT", Minimap, 0, -3)
+			MiniMapLFGFrame:SetFrameLevel(10)
 		end
 		
 		MiniMapBattlefieldFrame:ClearAllPoints()
 		MiniMapBattlefieldFrame:SetPoint("BOTTOMLEFT", Minimap, 0, -3)
+		MiniMapBattlefieldFrame:SetFrameLevel(10)
 		
 		if MiniMapTrackingBorder then
 			MiniMapTrackingBorder:SetTexture(nil)
@@ -130,6 +132,7 @@ function Map:Style()
 		MiniMapMailFrame:ClearAllPoints()
 		MiniMapMailFrame:HookScript("OnEnter", MailOnEnter)
 		MiniMapMailFrame:HookScript("OnLeave", MailOnLeave)
+		MiniMapMailFrame:SetFrameLevel(10)
 		
 		if (MiniMapTracking and MiniMapTracking:IsShown()) then
 			MiniMapMailFrame:SetPoint("TOPLEFT", MiniMapTracking, "BOTTOMLEFT", -7, 16)
@@ -156,6 +159,7 @@ function Map:Style()
 		self.Tracking = CreateFrame("Frame", nil, Minimap, "BackdropTemplate")
 		self.Tracking:SetSize(24, 24)
 		self.Tracking:SetPoint("TOPLEFT", Minimap, 2, -2)
+		self.Tracking:SetFrameLevel(10)
 		self.Tracking:SetBackdrop(HydraUI.BackdropAndBorder)
 		self.Tracking:SetBackdropColor(0, 0, 0)
 		self.Tracking:SetBackdropBorderColor(0, 0, 0)
@@ -207,6 +211,7 @@ function Map:Style()
 		GameTimeFrame:ClearAllPoints()
 		GameTimeFrame:SetParent(Minimap)
 		GameTimeFrame:SetPoint("TOPRIGHT", Minimap, 1, -1)
+		GameTimeFrame:SetFrameLevel(10)
 		
 		if (not Settings["minimap-show-calendar"]) then
 			GameTimeFrame:Hide()
