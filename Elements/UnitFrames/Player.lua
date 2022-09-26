@@ -112,6 +112,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		Portrait:SetTexCoord(0.12, 0.88, 0.12, 0.88)
 		Portrait:SetSize(55, Settings["unitframes-player-health-height"] + Settings["unitframes-player-power-height"] + 1)
     	Portrait:SetPoint("RIGHT", self, "LEFT", -3, 0)
+		
 		Portrait.BG = self:CreateTexture(nil, "BACKGROUND")
 		Portrait.BG:SetPoint("TOPLEFT", Portrait, -1, 1)
 		Portrait.BG:SetPoint("BOTTOMRIGHT", Portrait, 1, -1)
@@ -902,13 +903,6 @@ local UpdatePlayerHealthHeight = function(value)
 	end
 end
 
-local UpdateOverlayAlpha = function(value)
-	if HydraUI.UnitFrames["player"] then
-		local Alpha = HydraUI.UnitFrames["player"]
-		Alpha.Portrait:SetAlpha(value / 100)
-	end
-end
-
 local UpdatePlayerHealthFill = function(value)
 	if HydraUI.UnitFrames["player"] then
 		local Unit = HydraUI.UnitFrames["player"]
@@ -993,13 +987,25 @@ local UpdatePlayerEnablePortrait = function(value)
 	if HydraUI.UnitFrames["player"] then
 		if value then
 			HydraUI.UnitFrames["player"]:EnableElement("Portrait")
-			HydraUI.UnitFrames["player"].Portrait.BG:Show()
+			
+			if HydraUI.UnitFrames["player"].Portrait.BG then
+				HydraUI.UnitFrames["player"].Portrait.BG:Show()
+			end
 		else
 			HydraUI.UnitFrames["player"]:DisableElement("Portrait")
-			HydraUI.UnitFrames["player"].Portrait.BG:Hide()
+			
+			if HydraUI.UnitFrames["player"].Portrait.BG then
+				HydraUI.UnitFrames["player"].Portrait.BG:Hide()
+			end
 		end
 		
 		HydraUI.UnitFrames["player"].Portrait:ForceUpdate()
+	end
+end
+
+local UpdateOverlayAlpha = function(value)
+	if HydraUI.UnitFrames["player"] and Settings["player-portrait-style"] == "OVERLAY" then
+		HydraUI.UnitFrames["player"].Portrait:SetAlpha(value / 100)
 	end
 end
 
@@ -1112,7 +1118,6 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	left:CreateSwitch("player-enable", Settings["player-enable"], Language["Enable Player"], Language["Enable the player unit frame"], ReloadUI):RequiresReload(true)
 	left:CreateSlider("unitframes-player-width", Settings["unitframes-player-width"], 120, 320, 1, Language["Width"], Language["Set the width of the player unit frame"], UpdatePlayerWidth)
 	left:CreateSwitch("unitframes-player-enable-resource", Settings["unitframes-player-enable-resource"], Language["Enable Resource Bar"], Language["Enable the player resource such as combo points, runes, etc."], ReloadUI):RequiresReload(true)
-	left:CreateSwitch("player-enable-portrait", Settings["player-enable-portrait"], Language["Enable Portrait"], Language["Display the player unit portrait"], UpdatePlayerEnablePortrait)
 	left:CreateSwitch("player-enable-pvp", Settings["player-enable-pvp"], Language["Enable PVP Indicator"], Language["Display the pvp indicator"], UpdatePlayerEnablePVPIndicator)
 	
 	if (HydraUI.IsClassic or HydraUI.IsTBC) then
@@ -1120,11 +1125,9 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 		left:CreateSwitch("unitframes-show-energy-timer", Settings["unitframes-show-energy-timer"], Language["Enable Energy Timer"], Language["Display the time until your next energy tick on the power bar"], ReloadUI):RequiresReload(true)
 	end
 	
+	left:CreateSwitch("player-enable-portrait", Settings["player-enable-portrait"], Language["Enable Portrait"], Language["Display the player unit portrait"], UpdatePlayerEnablePortrait)
 	left:CreateDropdown("player-portrait-style", Settings["player-portrait-style"], {[Language["2D"]] = "2D", [Language["3D"]] = "3D", [Language["Overlay"]] = "OVERLAY"}, Language["Set Portrait Style"], Language["Set the style of the portrait"], ReloadUI):RequiresReload(true)
-	
-	if (Settings["player-portrait-style"] == "OVERLAY") then
-		left:CreateSlider("player-overlay-alpha", Settings["player-overlay-alpha"], 0, 100, 10, Language["Set Overlay Opacity"], Language["Set the opacity of the portrait overlay"], UpdateOverlayAlpha, nil, "%")
-	end
+	left:CreateSlider("player-overlay-alpha", Settings["player-overlay-alpha"], 0, 100, 5, Language["Set Overlay Opacity"], Language["Set the opacity of the portrait overlay"], UpdateOverlayAlpha, nil, "%")
 	
 	left:CreateHeader(Language["Health"])
 	left:CreateSwitch("unitframes-player-health-reverse", Settings["unitframes-player-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePlayerHealthFill)

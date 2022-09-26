@@ -19,6 +19,7 @@ Defaults["unitframes-target-cast-classcolor"] = true
 Defaults["unitframes-target-enable-castbar"] = true
 Defaults["target-enable-portrait"] = false
 Defaults["target-portrait-style"] = "3D"
+Defaults["target-overlay-alpha"] = 30
 Defaults["target-enable"] = true
 Defaults.TargetBuffSize = 28
 Defaults.TargetBuffSpacing = 2
@@ -110,31 +111,27 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 		Portrait:SetTexCoord(0.12, 0.88, 0.12, 0.88)
 		Portrait:SetSize(55, Settings["unitframes-target-health-height"] + Settings["unitframes-target-power-height"] + 1)
 		Portrait:SetPoint("LEFT", self, "RIGHT", 3, 0)
+		
 		Portrait.BG = self:CreateTexture(nil, "BACKGROUND")
 		Portrait.BG:SetPoint("TOPLEFT", Portrait, -1, 1)
 		Portrait.BG:SetPoint("BOTTOMRIGHT", Portrait, 1, -1)
 		Portrait.BG:SetTexture(Assets:GetTexture(Settings["Blank"]))
 		Portrait.BG:SetVertexColor(0, 0, 0)
-		
-	elseif (Settings["target-portrait-style"] == "Over") then
+	elseif (Settings["target-portrait-style"] == "OVERLAY") then
 		Portrait = CreateFrame("PlayerModel", nil, self)
 		Portrait:SetSize(Settings["unitframes-target-width"], Settings["unitframes-target-health-height"] )
 		Portrait:SetPoint("CENTER", Health, 0, 0)
 		Portrait:SetAlpha(0.3)
-	
 	else
 		Portrait = CreateFrame("PlayerModel", nil, self)
 	    Portrait:SetSize(55, Settings["unitframes-target-health-height"] + Settings["unitframes-target-power-height"] + 1)
 		Portrait:SetPoint("LEFT", self, "RIGHT", 3, 0)
+		
 		Portrait.BG = self:CreateTexture(nil, "BACKGROUND")
 		Portrait.BG:SetPoint("TOPLEFT", Portrait, -1, 1)
 		Portrait.BG:SetPoint("BOTTOMRIGHT", Portrait, 1, -1)
 		Portrait.BG:SetTexture(Assets:GetTexture(Settings["Blank"]))
 		Portrait.BG:SetVertexColor(0, 0, 0)
-	end
-	
-	if (not Settings["target-enable-portrait"]) then
-		Portrait.BG:Hide()
 	end
 	
     self.Portrait = Portrait
@@ -394,13 +391,25 @@ local UpdateTargetEnablePortrait = function(value)
 	if HydraUI.UnitFrames["target"] then
 		if value then
 			HydraUI.UnitFrames["target"]:EnableElement("Portrait")
-			HydraUI.UnitFrames["target"].Portrait.BG:Show()
+			
+			if HydraUI.UnitFrames["target"].Portrait.BG then
+				HydraUI.UnitFrames["target"].Portrait.BG:Show()
+			end
 		else
 			HydraUI.UnitFrames["target"]:DisableElement("Portrait")
-			HydraUI.UnitFrames["target"].Portrait.BG:Hide()
+			
+			if HydraUI.UnitFrames["target"].Portrait.BG then
+				HydraUI.UnitFrames["target"].Portrait.BG:Hide()
+			end
 		end
 		
 		HydraUI.UnitFrames["target"].Portrait:ForceUpdate()
+	end
+end
+
+local UpdateOverlayAlpha = function(value)
+	if HydraUI.UnitFrames["target"] and Settings["target-portrait-style"] == "OVERLAY" then
+		HydraUI.UnitFrames["target"].Portrait:SetAlpha(value / 100)
 	end
 end
 
@@ -451,7 +460,8 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Target"], Lan
 	left:CreateSlider("unitframes-target-width", Settings["unitframes-target-width"], 120, 320, 1, "Width", "Set the width of the target unit frame", UpdateTargetWidth)
 	left:CreateSwitch("unitframes-only-player-debuffs", Settings["unitframes-only-player-debuffs"], Language["Only Display Player Debuffs"], Language["If enabled, only your own debuffs will be displayed on the target"], UpdateOnlyPlayerDebuffs)
 	left:CreateSwitch("target-enable-portrait", Settings["target-enable-portrait"], Language["Enable Portrait"], Language["Display the target unit portrait"], UpdateTargetEnablePortrait)
-	left:CreateDropdown("target-portrait-style", Settings["target-portrait-style"], {[Language["2D"]] = "2D", [Language["3D"]] = "3D", [Language["Overlay"]] = "Over"}, Language["Set Portrait Style"], Language["Set the style of the portrait"], ReloadUI):RequiresReload(true)
+	left:CreateDropdown("target-portrait-style", Settings["target-portrait-style"], {[Language["2D"]] = "2D", [Language["3D"]] = "3D", [Language["Overlay"]] = "OVERLAY"}, Language["Set Portrait Style"], Language["Set the style of the portrait"], ReloadUI):RequiresReload(true)
+	left:CreateSlider("target-overlay-alpha", Settings["target-overlay-alpha"], 0, 100, 5, Language["Set Overlay Opacity"], Language["Set the opacity of the portrait overlay"], UpdateOverlayAlpha, nil, "%")
 	
 	left:CreateHeader(Language["Health"])
 	left:CreateSwitch("unitframes-target-health-reverse", Settings["unitframes-target-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateTargetHealthFill)
