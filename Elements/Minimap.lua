@@ -108,10 +108,12 @@ function Map:Style()
 		if MiniMapLFGFrame then
 			MiniMapLFGFrame:ClearAllPoints()
 			MiniMapLFGFrame:SetPoint("BOTTOMRIGHT", Minimap, 0, -3)
+			MiniMapLFGFrame:SetFrameLevel(10)
 		end
 		
 		MiniMapBattlefieldFrame:ClearAllPoints()
 		MiniMapBattlefieldFrame:SetPoint("BOTTOMLEFT", Minimap, 0, -3)
+		MiniMapBattlefieldFrame:SetFrameLevel(10)
 		
 		if MiniMapTrackingBorder then
 			MiniMapTrackingBorder:SetTexture(nil)
