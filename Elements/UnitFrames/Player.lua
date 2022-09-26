@@ -105,23 +105,39 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	
     -- Portrait
 	local Portrait
-	
+
+			
 	if (Settings["player-portrait-style"] == "2D") then
 		Portrait = self:CreateTexture(nil, "OVERLAY")
 		Portrait:SetTexCoord(0.12, 0.88, 0.12, 0.88)
+		Portrait:SetSize(55, Settings["unitframes-player-health-height"] + Settings["unitframes-player-power-height"] + 1)
+    	Portrait:SetPoint("RIGHT", self, "LEFT", -3, 0)
+		Portrait.BG = self:CreateTexture(nil, "BACKGROUND")
+		Portrait.BG:SetPoint("TOPLEFT", Portrait, -1, 1)
+		Portrait.BG:SetPoint("BOTTOMRIGHT", Portrait, 1, -1)
+		Portrait.BG:SetTexture(Assets:GetTexture(Settings["Blank"]))
+		Portrait.BG:SetVertexColor(0, 0, 0)
+	
+	
+	elseif (Settings["player-portrait-style"] == "Over") then
+		Portrait = CreateFrame("PlayerModel", nil, self)
+		Portrait:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-health-height"] )
+			Portrait:SetPoint("CENTER", Health, 0, 0)
+			Portrait:SetAlpha(0.3)
+
+
 	else
 		Portrait = CreateFrame("PlayerModel", nil, self)
+		Portrait:SetSize(55, Settings["unitframes-player-health-height"] + Settings["unitframes-player-power-height"] + 1)
+    	Portrait:SetPoint("RIGHT", self, "LEFT", -3, 0)
+		Portrait.BG = self:CreateTexture(nil, "BACKGROUND")
+		Portrait.BG:SetPoint("TOPLEFT", Portrait, -1, 1)
+		Portrait.BG:SetPoint("BOTTOMRIGHT", Portrait, 1, -1)
+		Portrait.BG:SetTexture(Assets:GetTexture(Settings["Blank"]))
+		Portrait.BG:SetVertexColor(0, 0, 0)
 	end
-	
-    Portrait:SetSize(55, Settings["unitframes-player-health-height"] + Settings["unitframes-player-power-height"] + 1)
-    Portrait:SetPoint("RIGHT", self, "LEFT", -3, 0)
-	
-	Portrait.BG = self:CreateTexture(nil, "BACKGROUND")
-	Portrait.BG:SetPoint("TOPLEFT", Portrait, -1, 1)
-	Portrait.BG:SetPoint("BOTTOMRIGHT", Portrait, 1, -1)
-	Portrait.BG:SetTexture(Assets:GetTexture(Settings["Blank"]))
-	Portrait.BG:SetVertexColor(0, 0, 0)
-	
+
+
 	if (not Settings["player-enable-portrait"]) then
 		Portrait.BG:Hide()
 	end
@@ -728,13 +744,13 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	
 	-- Threat
 	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	if (Settings["player-move-resource"]) then
-		Threat:SetPoint("TOPLEFT", -1, 1)
-		Threat:SetPoint("BOTTOMRIGHT", 1, -1)
-	else
-		Threat:SetPoint("TOPLEFT", self.AuraParent, -1, 1)
-		Threat:SetPoint("BOTTOMRIGHT", 1, -1)
-	end
+		if (Settings["player-move-resource"]) then
+			Threat:SetPoint("TOPLEFT", -1, 1)
+			Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+		else
+			Threat:SetPoint("TOPLEFT", self.AuraParent, -1, 1)
+			Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+		end
 	Threat:SetBackdrop(HydraUI.Outline)
 	Threat.PostUpdate = UF.ThreatPostUpdate
 	
@@ -1100,7 +1116,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 		left:CreateSwitch("unitframes-show-energy-timer", Settings["unitframes-show-energy-timer"], Language["Enable Energy Timer"], Language["Display the time until your next energy tick on the power bar"], ReloadUI):RequiresReload(true)
 	end
 	
-	left:CreateDropdown("player-portrait-style", Settings["player-portrait-style"], {[Language["2D"]] = "2D", [Language["3D"]] = "3D"}, Language["Set Portrait Style"], Language["Set the style of the portrait"], ReloadUI):RequiresReload(true)
+	left:CreateDropdown("player-portrait-style", Settings["player-portrait-style"], {[Language["2D"]] = "2D", [Language["3D"]] = "3D", [Language["Overlay"]] = "Over"}, Language["Set Portrait Style"], Language["Set the style of the portrait"], ReloadUI):RequiresReload(true)
 	
 	left:CreateHeader(Language["Health"])
 	left:CreateSwitch("unitframes-player-health-reverse", Settings["unitframes-player-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePlayerHealthFill)
@@ -1111,11 +1127,11 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	
 	left:CreateHeader(Language["Buffs"])
 	left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
-	left:CreateSlider("PlayerBuffSize", Settings.PlayerBuffSize, 26, 50, 2, "Set Size", "Set the size of the auras", UpdateBuffSize)
+	left:CreateSlider("PlayerBuffSize", Settings.PlayerBuffSize, 26, 40, 2, "Set Size", "Set the size of the auras", UpdateBuffSize)
 	left:CreateSlider("PlayerBuffSpacing", Settings.PlayerBuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateBuffSpacing)
 	
 	left:CreateHeader(Language["Debuffs"])
-	left:CreateSlider("PlayerDebuffSize", Settings.PlayerDebuffSize, 26, 50, 2, "Set Size", "Set the size of the auras", UpdateDebuffSize)
+	left:CreateSlider("PlayerDebuffSize", Settings.PlayerDebuffSize, 26, 40, 2, "Set Size", "Set the size of the auras", UpdateDebuffSize)
 	left:CreateSlider("PlayerDebuffSpacing", Settings.PlayerDebuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateDebuffSpacing)
 	
 	right:CreateHeader(Language["Power"])
