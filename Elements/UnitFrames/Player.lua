@@ -23,12 +23,12 @@ Defaults["unitframes-show-mana-timer"] = true
 Defaults["unitframes-show-energy-timer"] = true
 Defaults["player-enable-portrait"] = false
 Defaults["player-portrait-style"] = "3D"
+Defaults["player-overlay-alpha"] = 30
 Defaults["player-enable-pvp"] = true
 Defaults["player-resource-height"] = 8
 Defaults["player-move-resource"] = false
 Defaults["player-move-power"] = false
 Defaults["player-enable"] = true
-Settings["player-overlay-alpha"] = 0.3
 Defaults.PlayerBuffSize = 28
 Defaults.PlayerBuffSpacing = 2
 Defaults.PlayerDebuffSize = 28
@@ -107,7 +107,6 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
     -- Portrait
 	local Portrait
 
-			
 	if (Settings["player-portrait-style"] == "2D") then
 		Portrait = self:CreateTexture(nil, "OVERLAY")
 		Portrait:SetTexCoord(0.12, 0.88, 0.12, 0.88)
@@ -118,19 +117,16 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		Portrait.BG:SetPoint("BOTTOMRIGHT", Portrait, 1, -1)
 		Portrait.BG:SetTexture(Assets:GetTexture(Settings["Blank"]))
 		Portrait.BG:SetVertexColor(0, 0, 0)
-	
-	
-	elseif (Settings["player-portrait-style"] == "Over") then
+	elseif (Settings["player-portrait-style"] == "OVERLAY") then
 		Portrait = CreateFrame("PlayerModel", nil, self)
 		Portrait:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-health-height"] )
-			Portrait:SetPoint("CENTER", Health, 0, 0)
-			Portrait:SetAlpha(Settings["player-overlay-alpha"] / 100)
-
-
+		Portrait:SetPoint("CENTER", Health, 0, 0)
+		Portrait:SetAlpha(Settings["player-overlay-alpha"] / 100)
 	else
 		Portrait = CreateFrame("PlayerModel", nil, self)
 		Portrait:SetSize(55, Settings["unitframes-player-health-height"] + Settings["unitframes-player-power-height"] + 1)
     	Portrait:SetPoint("RIGHT", self, "LEFT", -3, 0)
+		
 		Portrait.BG = self:CreateTexture(nil, "BACKGROUND")
 		Portrait.BG:SetPoint("TOPLEFT", Portrait, -1, 1)
 		Portrait.BG:SetPoint("BOTTOMRIGHT", Portrait, 1, -1)
@@ -1124,9 +1120,9 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 		left:CreateSwitch("unitframes-show-energy-timer", Settings["unitframes-show-energy-timer"], Language["Enable Energy Timer"], Language["Display the time until your next energy tick on the power bar"], ReloadUI):RequiresReload(true)
 	end
 	
-	left:CreateDropdown("player-portrait-style", Settings["player-portrait-style"], {[Language["2D"]] = "2D", [Language["3D"]] = "3D", [Language["Overlay"]] = "Over"}, Language["Set Portrait Style"], Language["Set the style of the portrait"], ReloadUI):RequiresReload(true)
+	left:CreateDropdown("player-portrait-style", Settings["player-portrait-style"], {[Language["2D"]] = "2D", [Language["3D"]] = "3D", [Language["Overlay"]] = "OVERLAY"}, Language["Set Portrait Style"], Language["Set the style of the portrait"], ReloadUI):RequiresReload(true)
 	
-	if (Settings["player-portrait-style"] == "Over") then
+	if (Settings["player-portrait-style"] == "OVERLAY") then
 		left:CreateSlider("player-overlay-alpha", Settings["player-overlay-alpha"], 0, 100, 10, Language["Set Overlay Opacity"], Language["Set the opacity of the portrait overlay"], UpdateOverlayAlpha, nil, "%")
 	end
 	
