@@ -104,9 +104,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	HealthRight:SetJustifyH("RIGHT")
 	
     -- Portrait
-	local Portrait
-
-			
+	local Portrait	
 	if (Settings["player-portrait-style"] == "2D") then
 		Portrait = self:CreateTexture(nil, "OVERLAY")
 		Portrait:SetTexCoord(0.12, 0.88, 0.12, 0.88)
@@ -118,14 +116,11 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		Portrait.BG:SetTexture(Assets:GetTexture(Settings["Blank"]))
 		Portrait.BG:SetVertexColor(0, 0, 0)
 	
-	
 	elseif (Settings["player-portrait-style"] == "Over") then
 		Portrait = CreateFrame("PlayerModel", nil, self)
 		Portrait:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-health-height"] )
 			Portrait:SetPoint("CENTER", Health, 0, 0)
 			Portrait:SetAlpha(0.3)
-
-
 	else
 		Portrait = CreateFrame("PlayerModel", nil, self)
 		Portrait:SetSize(55, Settings["unitframes-player-health-height"] + Settings["unitframes-player-power-height"] + 1)
@@ -136,7 +131,6 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		Portrait.BG:SetTexture(Assets:GetTexture(Settings["Blank"]))
 		Portrait.BG:SetVertexColor(0, 0, 0)
 	end
-
 
 	if (not Settings["player-enable-portrait"]) then
 		Portrait.BG:Hide()
@@ -1127,11 +1121,11 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	
 	left:CreateHeader(Language["Buffs"])
 	left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
-	left:CreateSlider("PlayerBuffSize", Settings.PlayerBuffSize, 26, 40, 2, "Set Size", "Set the size of the auras", UpdateBuffSize)
+	left:CreateSlider("PlayerBuffSize", Settings.PlayerBuffSize, 26, 50, 2, "Set Size", "Set the size of the auras", UpdateBuffSize)
 	left:CreateSlider("PlayerBuffSpacing", Settings.PlayerBuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateBuffSpacing)
 	
 	left:CreateHeader(Language["Debuffs"])
-	left:CreateSlider("PlayerDebuffSize", Settings.PlayerDebuffSize, 26, 40, 2, "Set Size", "Set the size of the auras", UpdateDebuffSize)
+	left:CreateSlider("PlayerDebuffSize", Settings.PlayerDebuffSize, 26, 50, 2, "Set Size", "Set the size of the auras", UpdateDebuffSize)
 	left:CreateSlider("PlayerDebuffSpacing", Settings.PlayerDebuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateDebuffSpacing)
 	
 	right:CreateHeader(Language["Power"])
