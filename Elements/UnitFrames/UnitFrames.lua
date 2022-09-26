@@ -826,6 +826,12 @@ function UF:Load()
 		Focus:SetPoint("RIGHT", HydraUI.UIParent, "CENTER", -68, 304)
 		Focus:SetParent(HydraUI.UIParent)
 		
+		if Settings["focus-enable-buffs"] then
+			Focus:EnableElement("Auras")
+		else
+			Focus:DisableElement("Auras")
+		end
+		
 		HydraUI.UnitFrames["focus"] = Focus
 		HydraUI:CreateMover(Focus)
 	end
