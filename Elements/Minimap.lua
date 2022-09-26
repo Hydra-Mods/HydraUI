@@ -18,15 +18,11 @@ Defaults["minimap-bottom-fill"] = 100
 Defaults["minimap-show-calendar"] = true
 
 function Map:Disable(object)
-	if (not object) then
-		return
-	end
-
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()
 	end
 	
-	if (object.HasScript and object:HasScript("OnUpdate")) then
+	if (object.GetScript and object:GetScript("OnUpdate")) then
 		object:SetScript("OnUpdate", nil)
 	end
 	
@@ -91,27 +87,25 @@ function Map:Style()
 	    Minimap:SetArchBlobRingScalar(0)
 		Minimap:SetQuestBlobRingScalar(0)
 		
-		if QueueStatusMinimapButton then
-			QueueStatusMinimapButton:ClearAllPoints()
-			QueueStatusMinimapButton:SetPoint("BOTTOMLEFT", Minimap, 0, -3)
-		end
+		QueueStatusMinimapButton:ClearAllPoints()
+		QueueStatusMinimapButton:SetPoint("BOTTOMLEFT", Minimap, 0, -3)
 		
-		if GarrisonLandingPageMinimapButton then
-			GarrisonLandingPageMinimapButton:SetSize(40, 40)
-			GarrisonLandingPageMinimapButton:ClearAllPoints()
-			GarrisonLandingPageMinimapButton:SetPoint("BOTTOMRIGHT", Minimap, 3, -4)
-			GarrisonLandingPageMinimapButton.ClearAllPoints = function() end
-			GarrisonLandingPageMinimapButton.SetPoint = function() end
-			GarrisonLandingPageMinimapButton.SetSize = function() end
-		end
+		GarrisonLandingPageMinimapButton:SetSize(40, 40)
+		GarrisonLandingPageMinimapButton:ClearAllPoints()
+		GarrisonLandingPageMinimapButton:SetPoint("BOTTOMRIGHT", Minimap, 3, -4)
+		GarrisonLandingPageMinimapButton.ClearAllPoints = function() end
+		GarrisonLandingPageMinimapButton.SetPoint = function() end
+		GarrisonLandingPageMinimapButton.SetSize = function() end
+		
+		MiniMapTrackingIconOverlay:SetTexture(nil)
+		MiniMapTrackingButtonBorder:SetTexture(nil)
+		MiniMapTrackingButtonShine:SetTexture(nil)
+		MiniMapTrackingButton:SetHighlightTexture("")
 	else
-		if MiniMapLFGFrame then
-			MiniMapLFGFrame:ClearAllPoints()
-			MiniMapLFGFrame:SetPoint("BOTTOMRIGHT", Minimap, 0, -3)
-		end
-		
 		MiniMapBattlefieldFrame:ClearAllPoints()
 		MiniMapBattlefieldFrame:SetPoint("BOTTOMLEFT", Minimap, 0, -3)
+		MiniMapLFGFrame:ClearAllPoints()
+		MiniMapLFGFrame:SetPoint("BOTTOMRIGHT", Minimap, 0, -3)
 		
 		if MiniMapTrackingBorder then
 			MiniMapTrackingBorder:SetTexture(nil)
@@ -126,27 +120,24 @@ function Map:Style()
 		end
 	end
 	
-	if MiniMapMailFrame then
-		MiniMapMailFrame:ClearAllPoints()
-		MiniMapMailFrame:HookScript("OnEnter", MailOnEnter)
-		MiniMapMailFrame:HookScript("OnLeave", MailOnLeave)
-		
-		if (MiniMapTracking and MiniMapTracking:IsShown()) then
-			MiniMapMailFrame:SetPoint("TOPLEFT", MiniMapTracking, "BOTTOMLEFT", -7, 16)
-		elseif (MiniMapTrackingFrame and MiniMapTrackingFrame:IsShown()) then
-			MiniMapMailFrame:SetPoint("TOPLEFT", MiniMapTrackingFrame, "BOTTOMLEFT", -7, 16)
-		else
-			MiniMapMailFrame:SetPoint("TOPLEFT", Minimap, 4, 12)
-		end
-		
-		MiniMapMailIcon:SetSize(32, 32)
-		MiniMapMailIcon:SetTexture(Assets:GetTexture("Mail 2"))
-		MiniMapMailIcon:SetVertexColor(HydraUI:HexToRGB("EEEEEE"))
+	MiniMapMailFrame:ClearAllPoints()
+	MiniMapMailFrame:HookScript("OnEnter", MailOnEnter)
+	MiniMapMailFrame:HookScript("OnLeave", MailOnLeave)
+	MiniMapMailFrame:SetFrameLevel(10)
+	
+	if (MiniMapTracking and MiniMapTracking:IsShown()) then
+		MiniMapMailFrame:SetPoint("TOPLEFT", MiniMapTracking, "BOTTOMLEFT", -7, 16)
+	elseif (MiniMapTrackingFrame and MiniMapTrackingFrame:IsShown()) then
+		MiniMapMailFrame:SetPoint("TOPLEFT", MiniMapTrackingFrame, "BOTTOMLEFT", -7, 16)
+	else
+		MiniMapMailFrame:SetPoint("TOPLEFT", Minimap, 4, 12)
 	end
 	
-	if MinimapNorthTag then
-		MinimapNorthTag:SetTexture(nil)
-	end
+	MiniMapMailIcon:SetSize(32, 32)
+	MiniMapMailIcon:SetTexture(Assets:GetTexture("Mail 2"))
+	MiniMapMailIcon:SetVertexColor(HydraUI:HexToRGB("EEEEEE"))
+	
+	MinimapNorthTag:SetTexture(nil)
 	
 	if MiniMapTrackingBackground then
 		MiniMapTrackingBackground:SetTexture(nil)
@@ -156,6 +147,7 @@ function Map:Style()
 		self.Tracking = CreateFrame("Frame", nil, Minimap, "BackdropTemplate")
 		self.Tracking:SetSize(24, 24)
 		self.Tracking:SetPoint("TOPLEFT", Minimap, 2, -2)
+		self.Tracking:SetFrameLevel(10)
 		self.Tracking:SetBackdrop(HydraUI.BackdropAndBorder)
 		self.Tracking:SetBackdropColor(0, 0, 0)
 		self.Tracking:SetBackdropBorderColor(0, 0, 0)
@@ -207,6 +199,7 @@ function Map:Style()
 		GameTimeFrame:ClearAllPoints()
 		GameTimeFrame:SetParent(Minimap)
 		GameTimeFrame:SetPoint("TOPRIGHT", Minimap, 1, -1)
+		GameTimeFrame:SetFrameLevel(10)
 		
 		if (not Settings["minimap-show-calendar"]) then
 			GameTimeFrame:Hide()
