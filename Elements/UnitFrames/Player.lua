@@ -136,7 +136,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	end
 
 
-	if (not Settings["player-enable-portrait"]) then
+	if (Portrait.BG and not Settings["player-enable-portrait"]) then
 		Portrait.BG:Hide()
 	end
 	
