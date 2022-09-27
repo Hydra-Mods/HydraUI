@@ -269,10 +269,6 @@ function Experience:OnEvent()
 	end
 	
 	if (QuestLogXP > 0) then
-		if HydraUI.IsTBC then -- Temp, remove me after "Joyous Journeys"
-			QuestLogXP = QuestLogXP * 1.50
-		end
-		
 		self.Bar.Quest:SetValue(min(XP + QuestLogXP, MaxXP))
 		self.Bar.Quest:Show()
 	else
