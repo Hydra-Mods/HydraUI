@@ -977,6 +977,10 @@ function AB:CreateBars()
 	if HydraUI.IsMainline then
 		self:CreateExtraBar()
 	end
+	
+	if MultiCastActionBarFrame and MultiCastActionBarFrame:IsShown() then
+		self:StyleTotemBar()
+	end
 end
 
 -- Black magic, the movers won't budge if a secure frame is positioned on it
@@ -1015,9 +1019,9 @@ function AB:CreateMovers()
 		HydraUI:CreateMover(self.PetBar)
 	end
 	
-	--[[if MultiCastActionBarFrame and MultiCastActionBarFrame:IsShown() then
+	if MultiCastActionBarFrame and MultiCastActionBarFrame:IsShown() then
 		HydraUI:CreateMover(MultiCastActionBarFrame)
-	end]]
+	end
 	
 	if HydraUI.IsMainline then
 		self.ExtraBarMover = HydraUI:CreateMover(self.ExtraBar)
@@ -1097,7 +1101,7 @@ function AB:UpdateEmptyButtons()
 end
 
 function AB:StyleTotemBar()
-	MultiCastActionBarFrame:SetParent(UIParent)
+	MultiCastActionBarFrame:SetParent(HydraUI.UIParent)
 	
 	self:StyleActionButton(MultiCastSummonSpellButton)
 	
@@ -1215,10 +1219,6 @@ function AB:Load()
 	self:CreateBars()
 	self:CreateMovers()
 	self:UpdateEmptyButtons()
-	
-	if MultiCastActionBarFrame then
-		self:StyleTotemBar()
-	end
 	
 	hooksecurefunc("ActionButton_UpdateRangeIndicator", AB.UpdateButtonStatus)
 	
