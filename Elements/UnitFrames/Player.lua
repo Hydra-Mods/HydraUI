@@ -1137,11 +1137,11 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	
 	left:CreateHeader(Language["Buffs"])
 	left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateShowPlayerBuffs)
-	left:CreateSlider("PlayerBuffSize", Settings.PlayerBuffSize, 26, 40, 2, "Set Size", "Set the size of the auras", UpdateBuffSize)
+	left:CreateSlider("PlayerBuffSize", Settings.PlayerBuffSize, 26, 50, 2, "Set Size", "Set the size of the auras", UpdateBuffSize)
 	left:CreateSlider("PlayerBuffSpacing", Settings.PlayerBuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateBuffSpacing)
 	
 	left:CreateHeader(Language["Debuffs"])
-	left:CreateSlider("PlayerDebuffSize", Settings.PlayerDebuffSize, 26, 40, 2, "Set Size", "Set the size of the auras", UpdateDebuffSize)
+	left:CreateSlider("PlayerDebuffSize", Settings.PlayerDebuffSize, 26, 50, 2, "Set Size", "Set the size of the auras", UpdateDebuffSize)
 	left:CreateSlider("PlayerDebuffSpacing", Settings.PlayerDebuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateDebuffSpacing)
 	
 	right:CreateHeader(Language["Power"])
