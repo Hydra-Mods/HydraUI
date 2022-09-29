@@ -424,9 +424,6 @@ function AB:PetActionBar_Update()
 end
 
 function AB:StanceBar_UpdateState()
-	if not Settings["ab-stance-enable"] then
-		 return
-	end
 	if (GetNumShapeshiftForms() > 0) then
 		if (not AB.StanceBar:IsShown()) then
 			AB.StanceBar:Show()
@@ -870,12 +867,12 @@ function AB:CreateStanceBar()
 		self:PositionButtons(self.StanceBar, NUM_STANCE_SLOTS, Settings["ab-stance-per-row"], Settings["ab-stance-button-size"], Settings["ab-stance-button-gap"])
 		
 		hooksecurefunc("StanceBar_UpdateState", self.StanceBar_UpdateState)
-		
-		if Settings["ab-stance-enable"] then
-			self:EnableBar(self.StanceBar)
-		else
-			self:DisableBar(self.StanceBar)
-		end
+	end
+	
+	if Settings["ab-stance-enable"] then
+		self:EnableBar(self.StanceBar)
+	else
+		self:DisableBar(self.StanceBar)
 	end
 end
 
