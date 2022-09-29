@@ -840,16 +840,6 @@ function AB:CreateStanceBar()
 	self.StanceBar.Fader:SetDuration(0.15)
 	self.StanceBar.Fader:SetEasing("inout")
 	
-	if Settings["ab-stance-hover"] then
-		self.StanceBar:SetAlpha(0)
-		self.StanceBar:SetScript("OnEnter", BarOnEnter)
-		self.StanceBar:SetScript("OnLeave", BarOnLeave)
-		
-		for i = 1, #self.StanceBar do
-			self.StanceBar[i].cooldown:SetDrawBling(false)
-		end
-	end
-	
 	StanceBarFrame:SetParent(self.StanceBar)
 	StanceBarLeft:SetAlpha(0)
 	StanceBarRight:SetAlpha(0)
@@ -871,6 +861,16 @@ function AB:CreateStanceBar()
 		self:PositionButtons(self.StanceBar, NUM_STANCE_SLOTS, Settings["ab-stance-per-row"], Settings["ab-stance-button-size"], Settings["ab-stance-button-gap"])
 		
 		hooksecurefunc("StanceBar_UpdateState", self.StanceBar_UpdateState)
+		
+		if Settings["ab-stance-hover"] then
+			self.StanceBar:SetAlpha(0)
+			self.StanceBar:SetScript("OnEnter", BarOnEnter)
+			self.StanceBar:SetScript("OnLeave", BarOnLeave)
+			
+			for i = 1, #self.StanceBar do
+				self.StanceBar[i].cooldown:SetDrawBling(false)
+			end
+		end
 	end
 	
 	if Settings["ab-stance-enable"] then
@@ -1024,7 +1024,7 @@ function AB:CreateMovers()
 	end
 	
 	if MultiCastActionBarFrame and MultiCastActionBarFrame:IsShown() then
-		HydraUI:CreateMover(MultiCastActionBarFrame)
+		HydraUI:CreateMover(self.TotemBar)
 	end
 	
 	if HydraUI.IsMainline then
@@ -1105,7 +1105,13 @@ function AB:UpdateEmptyButtons()
 end
 
 function AB:StyleTotemBar()
-	MultiCastActionBarFrame:SetParent(HydraUI.UIParent)
+	self.TotemBar = CreateFrame("Frame", "HydraUI Totem Bar", HydraUI.UIParent, "SecureHandlerStateTemplate")
+	self.TotemBar:SetPoint("BOTTOMLEFT", HydraUI.UIParent, 408, 12)
+	
+	MultiCastActionBarFrame:SetParent(self.TotemBar)
+	MultiCastSummonSpellButton:SetParent(self.TotemBar)
+	MultiCastSummonSpellButton:ClearAllPoints()
+	MultiCastSummonSpellButton:SetPoint("LEFT", self.TotemBar, 0, 0)
 	
 	self:StyleActionButton(MultiCastSummonSpellButton)
 	
@@ -1119,6 +1125,7 @@ function AB:StyleTotemBar()
 		
 		self:StyleActionButton(Button)
 		
+		Button:SetParent(self.TotemBar)
 		Button:ClearAllPoints()
 		Button:SetPoint("CENTER", Slot, 0, 0)
 		Button.overlayTex:SetTexture(nil)
@@ -1132,6 +1139,8 @@ function AB:StyleTotemBar()
 		
 		Slot:ClearAllPoints()
 		
+		self.TotemBar[i + 1] = Button
+		
 		if (i == 1) then
 			Slot:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", 2, 0)
 		else
@@ -1139,6 +1148,7 @@ function AB:StyleTotemBar()
 		end
 	end
 	
+	MultiCastRecallSpellButton:SetParent(self.TotemBar)
 	self:StyleActionButton(MultiCastRecallSpellButton)
 	MultiCastRecallSpellButton:ClearAllPoints()
 	MultiCastRecallSpellButton:SetPoint("LEFT", MultiCastActionButton4, "RIGHT", 2, 0)
@@ -1147,6 +1157,11 @@ function AB:StyleTotemBar()
 	
 	MultiCastFlyoutFrame.top:SetTexture(nil)
 	MultiCastFlyoutFrame.middle:SetTexture(nil)
+	
+	self.TotemBar[1] = MultiCastSummonSpellButton
+	self.TotemBar[6] = MultiCastRecallSpellButton
+	
+	self:PositionButtons(self.TotemBar, 6, 6, 30, 2) -- Add settings
 	
 	hooksecurefunc("MultiCastFlyoutFrame_LoadSlotSpells", function(parent, slotid)
 		local FlyoutButton
