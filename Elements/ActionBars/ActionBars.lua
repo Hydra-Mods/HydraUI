@@ -424,6 +424,9 @@ function AB:PetActionBar_Update()
 end
 
 function AB:StanceBar_UpdateState()
+	if not Settings["ab-stance-enable"] then
+		 return
+	end
 	if (GetNumShapeshiftForms() > 0) then
 		if (not AB.StanceBar:IsShown()) then
 			AB.StanceBar:Show()
