@@ -314,11 +314,12 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	Dispel.cd:SetHideCountdownNumbers(true)
 	Dispel.cd:SetDrawEdge(false)
 	
-	Dispel.count = Dispel.cd:CreateFontString(nil, "ARTWORK", 7)
+	Dispel.count = Dispel.cd:CreateFontString(nil, "ARTWORK")
 	HydraUI:SetFontInfo(Dispel.count, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
 	Dispel.count:SetPoint("BOTTOMRIGHT", Dispel, "BOTTOMRIGHT", -3, 3)
 	Dispel.count:SetTextColor(1, 1, 1)
 	Dispel.count:SetJustifyH("RIGHT")
+	Dispel.count:SetDrawLayer("ARTWORK", 7)
 	
 	Dispel.bg = Dispel:CreateTexture(nil, "BACKGROUND")
 	Dispel.bg:SetPoint("TOPLEFT", Dispel, -1, 1)
