@@ -1,9 +1,17 @@
 local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
-local GetContainerNumSlots = GetContainerNumSlots
-local GetContainerNumFreeSlots = GetContainerNumFreeSlots
+local GetNumSlots
+local GetNumFreeSlots
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local Label = Language["Bags"]
+
+if C_Container then
+	GetNumSlots = C_Container.GetContainerNumSlots
+	GetNumFreeSlots = C_Container.GetContainerNumFreeSlots
+else
+	GetNumSlots = GetContainerNumSlots
+	GetNumFreeSlots = GetContainerNumFreeSlots
+end
 
 local OnEnter = function(self)
 	self:SetTooltip()
@@ -12,10 +20,10 @@ local OnEnter = function(self)
 	GameTooltip:AddLine(" ")
 	
 	for i = 0, NUM_BAG_SLOTS do
-		local NumSlots = GetContainerNumSlots(i)
+		local NumSlots = GetNumSlots(i)
 		
 		if NumSlots then
-			local FreeSlots = GetContainerNumFreeSlots(i)
+			local FreeSlots = GetNumFreeSlots(i)
 			local Name = "|cFFFFFFFF[" .. BACKPACK_TOOLTIP .. "]|r"
 			
 			if (i > 0) then
@@ -51,10 +59,10 @@ local Update = function(self)
 	local FreeSlots = 0
 	
 	for i = 0, NUM_BAG_SLOTS do
-		local NumSlots = GetContainerNumSlots(i)
+		local NumSlots = GetNumSlots(i)
 		
 		if NumSlots then
-			FreeSlots = FreeSlots + GetContainerNumFreeSlots(i)
+			FreeSlots = FreeSlots + GetNumFreeSlots(i)
 			TotalSlots = TotalSlots + NumSlots
 		end
 	end

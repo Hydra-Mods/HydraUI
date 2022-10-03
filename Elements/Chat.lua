@@ -860,7 +860,8 @@ function Chat:MoveChatFrames()
 				Frame:SetPoint("BOTTOMRIGHT", Window.Middle, -(4 + Settings["ui-border-thickness"]), 4 + Settings["ui-border-thickness"])
 				Frame:Show()
 		else
-			if (Frame.name and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) and not Frame.Tab) then
+			--if (Frame.name and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) and not Frame.Tab) then
+			if (not Frame.isLocked) and (Frame.name and Frame.name ~= VOICE_LABEL) then
 				FCF_DockFrame(Frame)
 			end
 			
