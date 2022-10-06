@@ -448,6 +448,9 @@ elseif HydraUI.IsWrath then
 			-- Beacon of Light
 			{53563, "TOPRIGHT", {0.81, 0.85, 0.1}, true},
 			
+			-- Sacred Shield
+			{53601, "TOPLEFT", {0.80, 0.61, 0.11}, true},
+			
 			-- Hand of Freedom
 			{1044, "BOTTOMRIGHT", {0.89, 0.45, 0}, true},
 			
