@@ -1125,6 +1125,8 @@ function AB:StyleTotemBar()
 		
 		self:StyleActionButton(Button)
 		
+		Slot:SetParent(self.TotemBar)
+		
 		Button:SetParent(self.TotemBar)
 		Button:ClearAllPoints()
 		Button:SetPoint("CENTER", Slot, 0, 0)

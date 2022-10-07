@@ -70,6 +70,9 @@ SLASH_HYDRAUI2 = "/hui"
 SLASH_HYDRAUI3 = "/vui" -- Remove later, I just know people will still type this for now... including myself
 SlashCmdList["HYDRAUI"] = RunCommand
 
+SLASH_RELOAD1 = "/rl"
+SlashCmdList["RELOAD"] = C_UI.Reload
+
 SLASH_GLOBALSTRINGFIND1 = "/gfind"
 SlashCmdList["GLOBALSTRINGFIND"] = function(query)
 	for Key, Value in next, _G do

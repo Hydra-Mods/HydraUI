@@ -54,10 +54,10 @@ local OnLeave = function()
 end
 
 local OnMouseUp = function()
-	if HydraUI.IsWrath then
-	
-	elseif HydraUI.IsClassic then
+	if HydraUI.IsClassic then
 		ToggleCharacter("HonorFrame")
+	elseif HydraUI.IsWrath then
+		TogglePVPFrame()
 	else
 		ToggleCharacter("PVPFrame")
 	end
