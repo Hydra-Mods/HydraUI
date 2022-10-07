@@ -16,6 +16,18 @@ if HydraUI.IsMainline then
 		StoreMicroButton,
 		MainMenuMicroButton,
 	}
+elseif (HydraUI.IsTBC) then
+	MicroButtons.Buttons = {
+		CharacterMicroButton,
+		SpellbookMicroButton,
+		TalentMicroButton,
+		AchievementMicroButton,
+		QuestLogMicroButton,
+		SocialsMicroButton,
+		LFGMicroButton,
+		MainMenuMicroButton,
+		HelpMicroButton,
+	}
 elseif (HydraUI.IsWrath) then
 	MicroButtons.Buttons = {
 		CharacterMicroButton,
