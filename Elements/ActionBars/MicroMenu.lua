@@ -102,9 +102,9 @@ function MicroButtons:PositionButtons()
 	end
 	
 	local Width, Height = MicroButtons.Buttons[1]:GetSize()
-	
+		
 	-- Bar sizing
-	MicroButtons.Panel:SetWidth((Width + Spacing) * PerRow - (Spacing * 2) - #MicroButtons.Buttons)
+	MicroButtons.Panel:SetWidth((((Width - 1.8) + Spacing) * PerRow) + Spacing)
 	MicroButtons.Panel:SetHeight((Height * Columns) + (Spacing * (Columns + 1)))
 	
 	-- Actual moving
@@ -114,7 +114,7 @@ function MicroButtons:PositionButtons()
 		Button:ClearAllPoints()
 		
 		if (i == 1) then
-			Button:SetPoint("LEFT", MicroButtons.Panel, Spacing, 0)
+			Button:SetPoint("TOPLEFT", MicroButtons.Panel, Spacing, -Spacing)
 		elseif ((i - 1) % PerRow == 0) then
 			Button:SetPoint("TOP", MicroButtons.Buttons[i - PerRow], "BOTTOM", 0, -Spacing)
 		else
@@ -212,6 +212,9 @@ function MicroButtons:Load()
 	MicroButtonPortrait:ClearAllPoints()
 	MicroButtonPortrait:SetPoint("TOPLEFT", CharacterMicroButton, 2, -2)
 	MicroButtonPortrait:SetPoint("BOTTOMRIGHT", CharacterMicroButton, -2, 2)
+	
+	PVPMicroButtonTexture:ClearAllPoints()
+	PVPMicroButtonTexture:SetPoint("TOP", PVPMicroButton, 6, -6)
 	
 	MainMenuBarPerformanceBar:Hide()
 	
