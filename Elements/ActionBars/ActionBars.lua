@@ -1023,7 +1023,7 @@ function AB:CreateMovers()
 		HydraUI:CreateMover(self.PetBar)
 	end
 	
-	if MultiCastActionBarFrame and MultiCastActionBarFrame:IsShown() then
+	if self.TotemBar then
 		HydraUI:CreateMover(self.TotemBar)
 	end
 	
