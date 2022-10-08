@@ -6,7 +6,7 @@ local Label = HONOR
 local OnEnter = function(self)
 	self:SetTooltip()
 	
-	local HK, DK = GetPVPSessionStats()
+	local HK = GetPVPSessionStats()
 	local Rank = UnitPVPRank("player")
 	
 	if (Rank > 0) then
@@ -19,15 +19,13 @@ local OnEnter = function(self)
 	if (HK > 0) then
 		GameTooltip:AddLine(HONOR_TODAY)
 		GameTooltip:AddDoubleLine(HONORABLE_KILLS, HydraUI:Comma(HK))
-		GameTooltip:AddDoubleLine(DISHONORABLE_KILLS, HydraUI:Comma(DK))
 	end
 	
-	HK, DK = GetPVPLifetimeStats()
+	HK = GetPVPLifetimeStats()
 	
 	if (HK > 0) then
 		GameTooltip:AddLine(HONOR_LIFETIME)
 		GameTooltip:AddDoubleLine(HONORABLE_KILLS, HydraUI:Comma(HK), 1, 1, 1, 1, 1, 1)
-		GameTooltip:AddDoubleLine(DISHONORABLE_KILLS, HydraUI:Comma(DK), 1, 1, 1, 1, 1, 1)
 	end
 	
 	-- GetCurrentArenaSeason()

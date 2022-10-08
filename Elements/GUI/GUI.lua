@@ -956,11 +956,13 @@ function GUI:CreateUpdateAlert()
 	self.Alert:SetScript("OnMouseDown", function(self)
 		self.Text:SetPoint("LEFT", self, 31, -2)
 		
-		if GUI.UpdateWindow then
+		HydraUI:print(Language["You can get an updated version of HydraUI at https://www.curseforge.com/wow/addons/hydraui"])
+		
+		--[[if GUI.UpdateWindow then
 			GUI.UpdateWindow:Show()
 		else
 			GUI:CreateUpdateWindow()
-		end
+		end]]
 	end)
 	
 	self.Alert:SetScript("OnMouseUp", function(self)
@@ -1209,10 +1211,10 @@ function GUI:CreateGUI()
 	
 	self:ShowWindow("General", "General")
 	
-	--[[if self.QueueAlert then
+	if self.QueueAlert then
 		self.QueueAlert = nil
 		self:CreateUpdateAlert()
-	end]]
+	end
 	
 	self.Loaded = true
 end

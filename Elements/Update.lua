@@ -110,7 +110,7 @@ function Update:CHAT_MSG_ADDON(prefix, message, channel, sender)
 		HydraUI:print(Language["You can get an updated version of HydraUI at https://www.curseforge.com/wow/addons/hydraui"])
 		print(Language["Join the Discord community for support and feedback https://discord.gg/XefDFa6nJR"])
 		
-		--HydraUI:GetModule("GUI"):CreateUpdateAlert()
+		HydraUI:GetModule("GUI"):CreateUpdateAlert()
 		
 		AddOnNum = message
 		AddOnVersion = tostring(message)
