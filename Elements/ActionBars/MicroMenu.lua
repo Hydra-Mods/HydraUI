@@ -225,8 +225,10 @@ function MicroButtons:Load()
 	MicroButtonPortrait:SetPoint("TOPLEFT", CharacterMicroButton, 2, -2)
 	MicroButtonPortrait:SetPoint("BOTTOMRIGHT", CharacterMicroButton, -2, 2)
 	
-	PVPMicroButtonTexture:ClearAllPoints()
-	PVPMicroButtonTexture:SetPoint("TOP", PVPMicroButton, 6, -6)
+	if (HydraUI.IsWrath) then
+		PVPMicroButtonTexture:ClearAllPoints()
+		PVPMicroButtonTexture:SetPoint("TOP", PVPMicroButton, 6, -6)
+	end
 	
 	MainMenuBarPerformanceBar:Hide()
 	
