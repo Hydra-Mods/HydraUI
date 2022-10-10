@@ -750,9 +750,9 @@ function UF:Load()
 		end
 		
 		if Settings["unitframes-show-player-buffs"] then
-			Player:EnableElement("Auras")
+		--	Player:EnableElement("Auras")
 		else
-			Player:DisableElement("Auras")
+		--	Player:DisableElement("Auras")
 		end
 		
 		if Settings["unitframes-player-enable-castbar"] then
