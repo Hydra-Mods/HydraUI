@@ -798,18 +798,6 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		end
 	end
 	
-	if Settings["unitframes-show-player-buffs"] then
-		Buffs:Show()
-	else
-		Buffs:Hide()
-	end
-	
-	if Settings["unitframes-show-player-debuffs"] then
-		Debuffs:Show()
-	else
-		Debuffs:Hide()
-	end
-	
 	-- Resurrect
 	local Resurrect = Health:CreateTexture(nil, "OVERLAY")
 	Resurrect:SetSize(16, 16)

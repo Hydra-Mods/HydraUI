@@ -12,6 +12,7 @@ local Class, Colors, _
 
 Defaults["unitframes-only-player-debuffs"] = false
 Defaults["unitframes-show-player-buffs"] = true
+Defaults["unitframes-show-player-debuffs"] = true
 Defaults["unitframes-show-target-buffs"] = true
 Defaults["unitframes-show-druid-mana"] = true
 Defaults["unitframes-font"] = "Roboto"
@@ -750,9 +751,15 @@ function UF:Load()
 		end
 		
 		if Settings["unitframes-show-player-buffs"] then
-		--	Player:EnableElement("Auras")
+			Player.Buffs:Show()
 		else
-		--	Player:DisableElement("Auras")
+			Player.Buffs:Hide()
+		end
+		
+		if Settings["unitframes-show-player-debuffs"] then
+			Player.Debuffs:Show()
+		else
+			Player.Debuffs:Hide()
 		end
 		
 		if Settings["unitframes-player-enable-castbar"] then
