@@ -201,7 +201,6 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 	
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetSize(Settings["unitframes-player-width"], 28)
-	Debuffs:SetPoint("BOTTOM", Buffs, "TOP", 0, 2)
 	Debuffs.size = Settings.TargetDebuffSize
 	Debuffs.spacing = Settings.TargetDebuffSpacing
 	Debuffs.num = 16
@@ -213,6 +212,12 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
 	Debuffs.onlyShowPlayer = Settings["unitframes-only-player-debuffs"]
 	Debuffs.showStealableBuffs = true
+	
+	if Settings["unitframes-show-player-buffs"] then
+		Debuffs:SetPoint("BOTTOM", Buffs, "TOP", 0, 2)
+	else
+		Debuffs:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, 2)
+	end
 	
     -- Castbar
 	if Settings["unitframes-target-enable-castbar"] then
@@ -417,17 +422,6 @@ local UpdateOverlayAlpha = function(value)
 	end
 end
 
-local UpdateShowTargetBuffs = function(value)
-	if HydraUI.UnitFrames["target"] then
-		if value then
-			HydraUI.UnitFrames["target"]:EnableElement("Auras")
-			HydraUI.UnitFrames["target"]:UpdateAllElements("ForceUpdate")
-		else
-			HydraUI.UnitFrames["target"]:DisableElement("Auras")
-		end
-	end
-end
-
 local UpdateBuffSize = function(value)
 	if HydraUI.UnitFrames["target"] then
 		HydraUI.UnitFrames["target"].Buffs.size = value
@@ -458,6 +452,35 @@ local UpdateDebuffSpacing = function(value)
 	end
 end
 
+local UpdateDisplayedAuras = function()
+	if (not HydraUI.UnitFrames["target"]) then
+		return
+	end
+	
+	local Target = HydraUI.UnitFrames["target"]
+
+	--Target.Buffs:ClearAllPoints()
+	Target.Debuffs:ClearAllPoints()
+
+	if Settings["unitframes-show-target-buffs"] then
+		Target.Debuffs:SetPoint("BOTTOM", Target.Buffs, "TOP", 0, 2)
+	else
+		Target.Debuffs:SetPoint("BOTTOMLEFT", Target, "TOPLEFT", 0, 2)
+	end
+	
+	if Settings["unitframes-show-target-buffs"] then
+		Target.Buffs:Show()
+	else
+		Target.Buffs:Hide()
+	end
+	
+	if Settings["unitframes-show-target-debuffs"] then
+		Target.Debuffs:Show()
+	else
+		Target.Debuffs:Hide()
+	end
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Target"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("target-enable", Settings["target-enable"], Language["Enable Target"], Language["Enable the target unit frame"], ReloadUI):RequiresReload(true)
@@ -475,11 +498,12 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Target"], Lan
 	left:CreateInput("unitframes-target-health-right", Settings["unitframes-target-health-right"], Language["Right Health Text"], Language["Set the text on the right of the target health bar"], ReloadUI):RequiresReload(true)
 	
 	left:CreateHeader(Language["Buffs"])
-	left:CreateSwitch("unitframes-show-target-buffs", Settings["unitframes-show-target-buffs"], Language["Show Target Buffs"], Language["Show yauras above the target unit frame"], UpdateShowTargetBuffs)
+	left:CreateSwitch("unitframes-show-target-buffs", Settings["unitframes-show-target-buffs"], Language["Show Buffs"], Language["Show auras above the target unit frame"], UpdateDisplayedAuras)
 	left:CreateSlider("TargetBuffSize", Settings.TargetBuffSize, 26, 50, 2, "Set Size", "Set the size of the auras", UpdateBuffSize)
 	left:CreateSlider("TargetBuffSpacing", Settings.TargetBuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateBuffSpacing)
 	
 	left:CreateHeader(Language["Debuffs"])
+	left:CreateSwitch("unitframes-show-target-debuffs", Settings["unitframes-show-target-debuffs"], Language["Show Debuffs"], Language["Show your debuff auras above the target unit frame"], UpdateDisplayedAuras)
 	left:CreateSlider("TargetDebuffSize", Settings.TargetDebuffSize, 26, 50, 2, "Set Size", "Set the size of the auras", UpdateDebuffSize)
 	left:CreateSlider("TargetDebuffSpacing", Settings.TargetDebuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateDebuffSpacing)
 	

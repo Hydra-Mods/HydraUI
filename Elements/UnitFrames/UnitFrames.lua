@@ -14,6 +14,7 @@ Defaults["unitframes-only-player-debuffs"] = false
 Defaults["unitframes-show-player-buffs"] = true
 Defaults["unitframes-show-player-debuffs"] = true
 Defaults["unitframes-show-target-buffs"] = true
+Defaults["unitframes-show-target-debuffs"] = true
 Defaults["unitframes-show-druid-mana"] = true
 Defaults["unitframes-font"] = "Roboto"
 Defaults["unitframes-font-size"] = 12
