@@ -982,7 +982,7 @@ function AB:CreateBars()
 		self:CreateExtraBar()
 	end
 	
-	if (MultiCastActionBarFrame.numActiveSlots and MultiCastActionBarFrame.numActiveSlots > 0) then
+	if (MultiCastActionBarFrame and MultiCastActionBarFrame.numActiveSlots and MultiCastActionBarFrame.numActiveSlots > 0) then
 		self:StyleTotemBar()
 	end
 end
