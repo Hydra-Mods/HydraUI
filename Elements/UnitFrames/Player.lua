@@ -741,13 +741,15 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	
 	-- Threat
 	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
-		if (Settings["player-move-resource"]) then
-			Threat:SetPoint("TOPLEFT", -1, 1)
-			Threat:SetPoint("BOTTOMRIGHT", 1, -1)
-		else
-			Threat:SetPoint("TOPLEFT", self.AuraParent, -1, 1)
-			Threat:SetPoint("BOTTOMRIGHT", 1, -1)
-		end
+	
+	if (Settings["player-move-resource"]) then
+		Threat:SetPoint("TOPLEFT", -1, 1)
+		Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+	else
+		Threat:SetPoint("TOPLEFT", self.AuraParent, -1, 1)
+		Threat:SetPoint("BOTTOMRIGHT", 1, -1)
+	end
+	
 	Threat:SetBackdrop(HydraUI.Outline)
 	Threat.PostUpdate = UF.ThreatPostUpdate
 	
@@ -765,11 +767,9 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	Buffs["growth-y"] = "UP"
 	Buffs.PostCreateIcon = UF.PostCreateIcon
 	Buffs.PostUpdateIcon = UF.PostUpdateIcon
-	--Buffs.SetPosition = BuffsSetPosition
 
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 	Debuffs:SetSize(Settings["unitframes-player-width"], 28)
---	Debuffs:SetPoint("BOTTOM", Buffs, "TOP", 0, 2)
 	Debuffs.size = Settings.PlayerDebuffSize
 	Debuffs.spacing = Settings.PlayerDebuffSpacing
 	Debuffs.num = 16
@@ -1112,6 +1112,46 @@ local UpdateDebuffSpacing = function(value)
 	end
 end
 
+local UpdateDisplayedAuras = function()
+	if (not HydraUI.UnitFrames["player"]) then
+		return
+	end
+	
+	local Player = HydraUI.UnitFrames["player"]
+
+	Player.Buffs:ClearAllPoints()
+	Player.Debuffs:ClearAllPoints()
+
+	if Settings["player-move-resource"] then
+		if Settings["unitframes-show-player-buffs"] then
+			Player.Buffs:SetPoint("BOTTOMLEFT", Player, "TOPLEFT", 0, 2)
+			Player.Debuffs:SetPoint("BOTTOM", Player.Buffs, "TOP", 0, 2)
+			
+		else
+			Player.Debuffs:SetPoint("BOTTOMLEFT", Player, "TOPLEFT", 0, 2)
+		end
+	else
+		if Settings["unitframes-show-player-buffs"] then
+			Player.Buffs:SetPoint("BOTTOMLEFT", Player.AuraParent, "TOPLEFT", 0, 2)
+			Player.Debuffs:SetPoint("BOTTOM", Player.Buffs, "TOP", 0, 2)
+		else
+			Player.Debuffs:SetPoint("BOTTOMLEFT", Player.AuraParent, "TOPLEFT", 0, 2)
+		end
+	end
+	
+	if Settings["unitframes-show-player-buffs"] then
+		Player.Buffs:Show()
+	else
+		Player.Buffs:Hide()
+	end
+	
+	if Settings["unitframes-show-player-debuffs"] then
+		Player.Debuffs:Show()
+	else
+		Player.Debuffs:Hide()
+	end
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("player-enable", Settings["player-enable"], Language["Enable Player"], Language["Enable the player unit frame"], ReloadUI):RequiresReload(true)
@@ -1136,12 +1176,12 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	left:CreateInput("unitframes-player-health-right", Settings["unitframes-player-health-right"], Language["Right Health Text"], Language["Set the text on the right of the player health bar"], ReloadUI):RequiresReload(true)
 	
 	left:CreateHeader(Language["Buffs"])
-	left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], ReloadUI):RequiresReload(true)
+	left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateDisplayedAuras)
 	left:CreateSlider("PlayerBuffSize", Settings.PlayerBuffSize, 26, 50, 2, "Set Size", "Set the size of the auras", UpdateBuffSize)
 	left:CreateSlider("PlayerBuffSpacing", Settings.PlayerBuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateBuffSpacing)
 	
 	left:CreateHeader(Language["Debuffs"])
-	left:CreateSwitch("unitframes-show-player-debuffs", Settings["unitframes-show-player-debuffs"], Language["Show Player Debuffs"], Language["Show your debuff auras above the player unit frame"], ReloadUI):RequiresReload(true)
+	left:CreateSwitch("unitframes-show-player-debuffs", Settings["unitframes-show-player-debuffs"], Language["Show Player Debuffs"], Language["Show your debuff auras above the player unit frame"], UpdateDisplayedAuras)
 	left:CreateSlider("PlayerDebuffSize", Settings.PlayerDebuffSize, 26, 50, 2, "Set Size", "Set the size of the auras", UpdateDebuffSize)
 	left:CreateSlider("PlayerDebuffSpacing", Settings.PlayerDebuffSpacing, -1, 4, 1, "Set Spacing", "Set the spacing between the auras", UpdateDebuffSpacing)
 	
