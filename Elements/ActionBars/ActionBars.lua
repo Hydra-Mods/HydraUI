@@ -1104,6 +1104,20 @@ function AB:UpdateEmptyButtons()
 	end
 end
 
+local MultiCastSummonSpellButton_Update = function()
+	for i = 1, 4 do
+		local Slot = _G["MultiCastSlotButton"..i]
+		
+		Slot:ClearAllPoints()
+		
+		if (i == 1) then
+			Slot:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", 2, 0)
+		else
+			Slot:SetPoint("LEFT", _G["MultiCastSlotButton"..i-1], "RIGHT", 2, 0)
+		end
+	end
+end
+
 local MultiCastRecallSpellButton_Update = function()
 	MultiCastRecallSpellButton:ClearAllPoints()
 	MultiCastRecallSpellButton:SetPoint("LEFT", MultiCastActionButton4, "RIGHT", 2, 0)
@@ -1170,7 +1184,8 @@ end
 
 function AB:StyleTotemBar()
 	self.TotemBar = CreateFrame("Frame", "HydraUI Totem Bar", HydraUI.UIParent, "SecureHandlerStateTemplate")
-	self.TotemBar:SetPoint("BOTTOMLEFT", HydraUI.UIParent, 408, 12)
+	self.TotemBar:SetPoint("BOTTOMLEFT", HydraUI.UIParent, 408, 13)
+	self.TotemBar:SetSize((30 * 6) + (2 * 5), 30)
 	
 	MultiCastActionBarFrame:SetParent(self.TotemBar)
 	MultiCastSummonSpellButton:SetParent(self.TotemBar)
@@ -1181,31 +1196,38 @@ function AB:StyleTotemBar()
 	
 	MultiCastSummonSpellButtonHighlight:SetTexture(nil)
 	
-	local Button, Slot
-	
-	for i = 1, 4 do
-		Button = _G["MultiCastActionButton"..i]
-		Slot = _G["MultiCastSlotButton"..i]
+	for i = 1, 12 do
+		local Button = _G["MultiCastActionButton"..i]
 		
 		self:StyleActionButton(Button)
 		
-		Slot:SetParent(self.TotemBar)
-		
-		Button:SetParent(self.TotemBar)
 		Button:ClearAllPoints()
 		Button:SetPoint("CENTER", Slot, 0, 0)
 		Button.overlayTex:SetTexture(nil)
 		
+		Button.Backdrop:SetFrameStrata("BACKGROUND")
+		
+		Button:ClearAllPoints()
+		
+		if (i == 1 or i == 5 or i == 9) then
+			Button:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", 2, 0)
+		else
+			Button:SetPoint("LEFT", _G["MultiCastActionButton"..i-1], "RIGHT", 2, 0)
+		end
+	end
+	
+	for i = 1, 4 do
+		local Slot = _G["MultiCastSlotButton"..i]
+		
+		Slot:SetParent(self.TotemBar)
+		
 		Slot.background:ClearAllPoints()
 		Slot.background:SetPoint("TOPLEFT", Slot, 1, -1)
 		Slot.background:SetPoint("BOTTOMRIGHT", Slot, -1, 1)
-		Button.Backdrop:SetFrameStrata("BACKGROUND")
-		
+		Slot.background:SetDrawLayer("BACKGROUND", -1)
 		Slot.overlayTex:SetTexture(nil) -- Colored border
 		
 		Slot:ClearAllPoints()
-		
-		self.TotemBar[i + 1] = Button
 		
 		if (i == 1) then
 			Slot:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", 2, 0)
@@ -1224,11 +1246,7 @@ function AB:StyleTotemBar()
 	MultiCastFlyoutFrame.top:SetTexture(nil)
 	MultiCastFlyoutFrame.middle:SetTexture(nil)
 	
-	self.TotemBar[1] = MultiCastSummonSpellButton
-	self.TotemBar[6] = MultiCastRecallSpellButton
-	
-	self:PositionButtons(self.TotemBar, 6, 6, 30, 2)
-	
+	hooksecurefunc("MultiCastSummonSpellButton_Update", MultiCastSummonSpellButton_Update)
 	hooksecurefunc("MultiCastRecallSpellButton_Update", MultiCastRecallSpellButton_Update)
 	hooksecurefunc("MultiCastFlyoutFrame_LoadSlotSpells", MultiCastFlyoutFrame_LoadSlotSpells)
 end
