@@ -1197,8 +1197,8 @@ function AB:StyleTotemBar()
 		Button.overlayTex:SetTexture(nil)
 		
 		Slot.background:ClearAllPoints()
-		Slot.background:SetPoint("TOPLEFT", Button, 1, -1)
-		Slot.background:SetPoint("BOTTOMRIGHT", Button, -1, 1)
+		Slot.background:SetPoint("TOPLEFT", Slot, 1, -1)
+		Slot.background:SetPoint("BOTTOMRIGHT", Slot, -1, 1)
 		Button.Backdrop:SetFrameStrata("BACKGROUND")
 		
 		Slot.overlayTex:SetTexture(nil) -- Colored border
