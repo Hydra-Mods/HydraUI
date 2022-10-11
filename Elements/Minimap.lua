@@ -114,18 +114,18 @@ function Map:Style()
 		MiniMapBattlefieldFrame:ClearAllPoints()
 		MiniMapBattlefieldFrame:SetPoint("BOTTOMLEFT", Minimap, 0, -3)
 		MiniMapBattlefieldFrame:SetFrameLevel(10)
-		
-		if MiniMapTrackingBorder then
-			MiniMapTrackingBorder:SetTexture(nil)
-		end
-		
-		if MiniMapTrackingButtonBorder then
-			MiniMapTrackingButtonBorder:SetTexture(nil)
-		end
-		
-		if MiniMapTrackingShine then
-			MiniMapTrackingShine:SetTexture(nil)
-		end
+	end
+	
+	if MiniMapTrackingBorder then
+		MiniMapTrackingBorder:SetTexture(nil)
+	end
+	
+	if MiniMapTrackingButtonBorder then
+		MiniMapTrackingButtonBorder:SetTexture(nil)
+	end
+	
+	if MiniMapTrackingShine then
+		MiniMapTrackingShine:SetTexture(nil)
 	end
 	
 	if MiniMapMailFrame then
