@@ -3,20 +3,20 @@ local HydraUI, Language, Assets, Settings, Defaults = Namespace:get()
 local oUF = Namespace.oUF
 local R, G, B
 
--- Custom colors; The commented colors are 10% darker, I like it better on lighter textures
-Defaults["color-death-knight"] = "C41F3B" -- 7F222D
-Defaults["color-demon-hunter"] = "A330C9" -- 922BB4
-Defaults["color-druid"] = "FF7D0A" -- E56F08
-Defaults["color-evoker"] = "33937F" -- 33937F
-Defaults["color-hunter"] = "ABD473" -- 98BD66
-Defaults["color-mage"] = "40C7EB" -- 38B2D2
-Defaults["color-monk"] = "00FF96" -- 00E586
-Defaults["color-paladin"] = "F58CBA" -- DB7DA7
-Defaults["color-priest"] = "FFFFFF" -- E5E5E5
-Defaults["color-rogue"] = "FFF569" -- E5DB5D
-Defaults["color-shaman"] = "0070DE" -- 0046C6
-Defaults["color-warlock"] = "8787ED" -- 6969B8
-Defaults["color-warrior"] = "C79C6E" -- B28B62
+-- Class Colors
+Defaults["color-death-knight"] = "C41E3A"
+Defaults["color-demon-hunter"] = "A330C9"
+Defaults["color-druid"] = "FF7C0A"
+Defaults["color-evoker"] = "33937F"
+Defaults["color-hunter"] = "AAD372"
+Defaults["color-mage"] = "3FC7EB"
+Defaults["color-monk"] = "00FF98"
+Defaults["color-paladin"] = "F48CBA"
+Defaults["color-priest"] = "FFFFFF"
+Defaults["color-rogue"] = "FFF468"
+Defaults["color-shaman"] = "0070DD"
+Defaults["color-warlock"] = "8788EE"
+Defaults["color-warrior"] = "C69B6D"
 
 -- Power Types
 Defaults["color-mana"] = "477CB2" -- 0000FF for the default mana color
