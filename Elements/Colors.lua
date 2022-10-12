@@ -7,6 +7,7 @@ local R, G, B
 Defaults["color-death-knight"] = "C41F3B" -- 7F222D
 Defaults["color-demon-hunter"] = "A330C9" -- 922BB4
 Defaults["color-druid"] = "FF7D0A" -- E56F08
+Defaults["color-evoker"] = "33937F" -- 33937F
 Defaults["color-hunter"] = "ABD473" -- 98BD66
 Defaults["color-mage"] = "40C7EB" -- 38B2D2
 Defaults["color-monk"] = "00FF96" -- 00E586
@@ -130,6 +131,7 @@ function HydraUI:UpdateClassColors()
 	self:SetColorEntry(self.ClassColors, "DEATHKNIGHT", Settings["color-death-knight"])
 	self:SetColorEntry(self.ClassColors, "DEMONHUNTER", Settings["color-demon-hunter"])
 	self:SetColorEntry(self.ClassColors, "DRUID", Settings["color-druid"])
+	self:SetColorEntry(self.ClassColors, "EVOKER", Settings["color-evoker"])
 	self:SetColorEntry(self.ClassColors, "HUNTER", Settings["color-hunter"])
 	self:SetColorEntry(self.ClassColors, "MAGE", Settings["color-mage"])
 	self:SetColorEntry(self.ClassColors, "MONK", Settings["color-monk"])
@@ -244,6 +246,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Colors"], fun
 	left:CreateColorSelection("color-death-knight", Settings["color-death-knight"], Language["Death Knight"], "")
 	left:CreateColorSelection("color-demon-hunter", Settings["color-demon-hunter"], Language["Demon Hunter"], "")
 	left:CreateColorSelection("color-druid", Settings["color-druid"], Language["Druid"], "")
+	left:CreateColorSelection("color-evoker", Settings["color-evoker"], Language["Evoker"], "")
 	left:CreateColorSelection("color-hunter", Settings["color-hunter"], Language["Hunter"], "")
 	left:CreateColorSelection("color-mage", Settings["color-mage"], Language["Mage"], "")
 	left:CreateColorSelection("color-monk", Settings["color-monk"], Language["Monk"], "")

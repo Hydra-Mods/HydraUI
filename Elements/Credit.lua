@@ -21,7 +21,7 @@ local Previous = {
 }
 
 local Donors = [[Innie Brightsides Erthelmi Gene JDoubleU00 Duds Shazlen Shawna W Dillan Bruce N last Wrynn Ryxân Andrei B Anthony M AtticaOnline Hawksworth WingZero
-Elizabeth T Quadra Brandon W Richard S Andreas M Morgana N]]
+Elizabeth T Quadra Brandon W Richard S Andreas M Morgana N LeeMcMurtry]]
 
 GUI:AddWidgets(Language["Info"], Language["Credits"], function(left, right)
 	left:CreateHeader(Language["Scripting Help & Inspiration"])
