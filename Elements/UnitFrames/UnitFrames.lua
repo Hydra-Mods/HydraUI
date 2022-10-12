@@ -414,7 +414,7 @@ if HydraUI.IsMainline then
 	}
 elseif HydraUI.IsWrath then
 	UF.BuffIDs = {
-		["DRUID"] = { -- needs updating
+		["DRUID"] = { -- Wrath spells added
 			-- Regrowth
 			{8936, "TOPRIGHT", {0.2, 0.8, 0.2}},
 			{8938, "TOPRIGHT", {0.2, 0.8, 0.2}},
