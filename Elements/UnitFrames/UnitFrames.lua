@@ -426,6 +426,8 @@ elseif HydraUI.IsWrath then
 			{9857, "TOPRIGHT", {0.2, 0.8, 0.2}},
 			{9858, "TOPRIGHT", {0.2, 0.8, 0.2}},
 			{26980, "TOPRIGHT", {0.2, 0.8, 0.2}},
+			{48442, "TOPRIGHT", {0.2, 0.8, 0.2}}, -- rank 11		
+			{48443, "TOPRIGHT", {0.2, 0.8, 0.2}}, -- rank 12
 			
 			-- Rejuvenation
 			{774, "TOPLEFT", {0.8, 0.4, 0.8}},
@@ -441,9 +443,13 @@ elseif HydraUI.IsWrath then
 			{25299, "TOPLEFT", {0.8, 0.4, 0.8}},
 			{26981, "TOPLEFT", {0.8, 0.4, 0.8}},
 			{26982, "TOPLEFT", {0.8, 0.4, 0.8}},
+			{48440, "TOPLEFT", {0.8, 0.4, 0.8}}, -- rank 14
+			{48441, "TOPLEFT", {0.8, 0.4, 0.8}}, -- rank 15			
 			
 			-- Lifebloom
 			{33763, "BOTTOMLEFT", {0.4, 0.8, 0.2}},
+			{48450, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- rank 2
+			{48451, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- rank 3
 		},
 		
 		["PALADIN"] = {
