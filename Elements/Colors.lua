@@ -22,6 +22,7 @@ Defaults["color-warrior"] = "C69B6D"
 Defaults["color-mana"] = "477CB2" -- 0000FF for the default mana color
 Defaults["color-rage"] = "E53935" -- FF0000 ^
 Defaults["color-energy"] = "FFEB3B" -- FFFF00 ^
+Defaults["color-essence"] = "64ADCE"
 Defaults["color-focus"] = "FF7F3F"
 Defaults["color-fuel"] = "008C7F"
 Defaults["color-insanity"] = "6600CC"
@@ -261,6 +262,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Colors"], fun
 	right:CreateColorSelection("color-mana", Settings["color-mana"], Language["Mana"], "")
 	right:CreateColorSelection("color-rage", Settings["color-rage"], Language["Rage"], "")
 	right:CreateColorSelection("color-energy", Settings["color-energy"], Language["Energy"], "")
+	right:CreateColorSelection("color-essence", Settings["color-essence"], Language["Essence"], "")
 	right:CreateColorSelection("color-focus", Settings["color-focus"], Language["Focus"], "")
 	--right:CreateColorSelection("color-combo-points", Settings["color-combo-points"], Language["Combo Points"], "")
 	right:CreateColorSelection("color-soul-shards", Settings["color-soul-shards"], Language["Soul Shards"], "")

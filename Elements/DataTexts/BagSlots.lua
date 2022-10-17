@@ -5,7 +5,7 @@ local GetNumFreeSlots
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local Label = Language["Bags"]
 
-if C_Container then
+if C_Container and HydraUI.ClientVersion > 100001 then
 	GetNumSlots = C_Container.GetContainerNumSlots
 	GetNumFreeSlots = C_Container.GetContainerNumFreeSlots
 else

@@ -50,11 +50,11 @@ end
 Commands["help"] = function()
 	print(format(Language["|cFF%sHydraUI|r Commands"], Settings["ui-widget-color"]))
 	print(" ")
-	print(format("|Hcommand:/hydraui|h|cFF%s/hydraui|r|h - Toggle the settings window", Settings["ui-widget-color"]))
-	print(format("|Hcommand:/hydraui move|h|cFF%s/hydraui move|r|h - Drag UI elements around the screen", Settings["ui-widget-color"]))
-	print(format("|Hcommand:/hydraui movereset|h|cFF%s/hydraui movereset|r|h - Reposition all movers to their default locations", Settings["ui-widget-color"]))
-	print(format("|Hcommand:/hydraui keybind|h|cFF%s/hydraui keybind|r|h - Toggle mouseover keybinding", Settings["ui-widget-color"]))
-	print(format("|Hcommand:/hydraui reset|h|cFF%s/hydraui reset|r|h - Reset all stored UI information and settings", Settings["ui-widget-color"]))
+	print(format("|Hcommand:/hui|h|cFF%s/hui|r|h - Toggle the settings window", Settings["ui-widget-color"]))
+	print(format("|Hcommand:/hui move|h|cFF%s/hui move|r|h - Drag UI elements around the screen", Settings["ui-widget-color"]))
+	print(format("|Hcommand:/hui movereset|h|cFF%s/hui movereset|r|h - Reposition all movers to their default locations", Settings["ui-widget-color"]))
+	print(format("|Hcommand:/hui keybind|h|cFF%s/hui keybind|r|h - Toggle mouseover keybinding", Settings["ui-widget-color"]))
+	print(format("|Hcommand:/hui reset|h|cFF%s/hui reset|r|h - Reset all stored UI information and settings", Settings["ui-widget-color"]))
 end
 
 local RunCommand = function(arg)
@@ -65,8 +65,8 @@ local RunCommand = function(arg)
 	end
 end
 
-SLASH_HYDRAUI1 = "/hydraui"
-SLASH_HYDRAUI2 = "/hui"
+SLASH_HYDRAUI1 = "/hui"
+SLASH_HYDRAUI2 = "/hydraui"
 SLASH_HYDRAUI3 = "/vui" -- Remove later, I just know people will still type this for now... including myself
 SlashCmdList["HYDRAUI"] = RunCommand
 
