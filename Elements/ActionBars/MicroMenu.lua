@@ -136,10 +136,6 @@ function MicroButtons:PositionButtons()
 end
 
 function MicroButtons:Load()
-	if (HydraUI.ClientVersion >= 100000) then -- Revisiting
-		return
-	end
-
 	if (not Settings["ab-enable"]) then
 		return
 	end
@@ -198,11 +194,13 @@ function MicroButtons:Load()
 		end
 		
 		if HydraUI.IsMainline then
-			Normal:SetTexCoord(0.22, 0.82, 0.22, 0.82)
-			Pushed:SetTexCoord(0.22, 0.82, 0.22, 0.82)
-			
-			if Disabled then
-				Disabled:SetTexCoord(0.22, 0.82, 0.22, 0.82)
+			if (HydraUI.ClientVersion < 100001) then -- DRAGONFLIGHT; remove after launch
+				Normal:SetTexCoord(0.22, 0.82, 0.22, 0.82)
+				Pushed:SetTexCoord(0.22, 0.82, 0.22, 0.82)
+				
+				if Disabled then
+					Disabled:SetTexCoord(0.22, 0.82, 0.22, 0.82)
+				end
 			end
 		else
 		
@@ -221,16 +219,20 @@ function MicroButtons:Load()
 		Highlight:SetVertexColor(1, 1, 1, 0.2)
 	end
 	
-	MicroButtonPortrait:ClearAllPoints()
-	MicroButtonPortrait:SetPoint("TOPLEFT", CharacterMicroButton, 2, -2)
-	MicroButtonPortrait:SetPoint("BOTTOMRIGHT", CharacterMicroButton, -2, 2)
+	if MicroButtonPortrait then
+		MicroButtonPortrait:ClearAllPoints()
+		MicroButtonPortrait:SetPoint("TOPLEFT", CharacterMicroButton, 2, -2)
+		MicroButtonPortrait:SetPoint("BOTTOMRIGHT", CharacterMicroButton, -2, 2)
+	end
 	
 	if (HydraUI.IsWrath) then
 		PVPMicroButtonTexture:ClearAllPoints()
 		PVPMicroButtonTexture:SetPoint("TOP", PVPMicroButton, 6, -6)
 	end
 	
-	MainMenuBarPerformanceBar:Hide()
+	if MainMenuBarPerformanceBar then
+		MainMenuBarPerformanceBar:Hide()
+	end
 	
 	if (not Settings["micro-buttons-show"]) then
 		self.Panel:Hide()

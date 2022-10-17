@@ -87,6 +87,10 @@ function Map:Style()
 	Minimap:EnableMouseWheel(true)
 	Minimap:SetScript("OnMouseWheel", OnMouseWheel)
 	
+	if MinimapCompassTexture then
+		MinimapCompassTexture:SetTexture(nil)
+	end
+	
 	if HydraUI.IsMainline then
 	    Minimap:SetArchBlobRingScalar(0)
 		Minimap:SetQuestBlobRingScalar(0)
@@ -103,6 +107,15 @@ function Map:Style()
 			GarrisonLandingPageMinimapButton.ClearAllPoints = function() end
 			GarrisonLandingPageMinimapButton.SetPoint = function() end
 			GarrisonLandingPageMinimapButton.SetSize = function() end
+		end
+		
+		if ExpansionLandingPageMinimapButton then
+			ExpansionLandingPageMinimapButton:SetSize(40, 40)
+			ExpansionLandingPageMinimapButton:ClearAllPoints()
+			ExpansionLandingPageMinimapButton:SetPoint("BOTTOMRIGHT", Minimap, 3, -4)
+			ExpansionLandingPageMinimapButton.ClearAllPoints = function() end
+			ExpansionLandingPageMinimapButton.SetPoint = function() end
+			ExpansionLandingPageMinimapButton.SetSize = function() end
 		end
 	else
 		if MiniMapLFGFrame then

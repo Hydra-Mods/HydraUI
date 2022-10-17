@@ -150,7 +150,20 @@ function AB:StyleActionButton(button)
 		return
 	end
 	
-	button:SetNormalTexture("")
+	if button.IconMask then
+		button.IconMask:Hide()
+	end
+	
+	if button.SlotArt then
+		button.SlotArt:Hide()
+	end
+	
+	_G[button:GetName().."NormalTexture"]:SetAlpha(0)
+	_G[button:GetName().."NormalTexture"]:Hide()
+	button:GetNormalTexture():SetAlpha(0)
+	button:GetNormalTexture():Hide()
+	
+	--button:SetNormalTexture("")
 	
 	if button.Border then
 		button.Border:SetTexture(nil)
@@ -604,6 +617,7 @@ function AB:CreateBar2()
 	self.Bar2.Fader:SetEasing("inout")
 	
 	MultiBarBottomLeft:SetParent(self.Bar2)
+	MultiBarBottomLeft:SetAllPoints(self.Bar2)
 	
 	for i = 1, 12 do
 		local Button = _G["MultiBarBottomLeftButton" .. i]
@@ -651,6 +665,7 @@ function AB:CreateBar3()
 	self.Bar3.Fader:SetEasing("inout")
 	
 	MultiBarBottomRight:SetParent(self.Bar3)
+	MultiBarBottomRight:SetAllPoints(self.Bar3)
 	
 	for i = 1, 12 do
 		local Button = _G["MultiBarBottomRightButton" .. i]
@@ -698,6 +713,7 @@ function AB:CreateBar4()
 	self.Bar4.Fader:SetEasing("inout")
 	
 	MultiBarRight:SetParent(self.Bar4)
+	MultiBarRight:SetAllPoints(self.Bar4)
 	
 	for i = 1, 12 do
 		local Button = _G["MultiBarRightButton" .. i]
@@ -745,6 +761,7 @@ function AB:CreateBar5()
 	self.Bar5.Fader:SetEasing("inout")
 	
 	MultiBarLeft:SetParent(self.Bar5)
+	MultiBarLeft:SetAllPoints(self.Bar5)
 	
 	for i = 1, 12 do
 		local Button = _G["MultiBarLeftButton" .. i]
@@ -778,6 +795,151 @@ function AB:CreateBar5()
 	end
 end
 
+
+-- Bar 6
+function AB:CreateBar6()
+	self.Bar6 = CreateFrame("Frame", "HydraUI Action Bar 6", HydraUI.UIParent, "SecureHandlerStateTemplate")
+	self.Bar6:SetPoint("RIGHT", self.Bar5, "LEFT", -Settings["ab-bar5-button-gap"], 0)
+	self.Bar6:SetAlpha(Settings["ab-bar5-alpha"] / 100)
+	self.Bar6.ButtonParent = MultiBar5
+	self.Bar6.ShouldFade = Settings["ab-bar5-hover"]
+	self.Bar6.MaxAlpha = Settings["ab-bar5-alpha"]
+	
+	self.Bar6.Fader = CreateAnimationGroup(self.Bar6):CreateAnimation("Fade")
+	self.Bar6.Fader:SetDuration(0.15)
+	self.Bar6.Fader:SetEasing("inout")
+	
+	MultiBar5:SetParent(self.Bar6)
+	MultiBar5:SetAllPoints(self.Bar6)
+	
+	for i = 1, 12 do
+		local Button = _G["MultiBar5Button" .. i]
+		
+		self:StyleActionButton(Button)
+		
+		Button.ParentBar = self.Bar6
+		
+		Button:HookScript("OnEnter", BarButtonOnEnter)
+		Button:HookScript("OnLeave", BarButtonOnLeave)
+		
+		self.Bar6[i] = Button
+	end
+	
+	if Settings["ab-bar5-hover"] then
+		self.Bar6:SetAlpha(0)
+		self.Bar6:SetScript("OnEnter", BarOnEnter)
+		self.Bar6:SetScript("OnLeave", BarOnLeave)
+		
+		for i = 1, #self.Bar6 do
+			self.Bar6[i].cooldown:SetDrawBling(false)
+		end
+	end
+	
+	self:PositionButtons(self.Bar6, Settings["ab-bar5-button-max"], Settings["ab-bar5-per-row"], Settings["ab-bar5-button-size"], Settings["ab-bar5-button-gap"])
+	
+	if Settings["ab-bar5-enable"] then
+		self:EnableBar(self.Bar6)
+	else
+		self:DisableBar(self.Bar6)
+	end
+end
+
+-- Bar 7
+function AB:CreateBar7()
+	self.Bar7 = CreateFrame("Frame", "HydraUI Action Bar 7", HydraUI.UIParent, "SecureHandlerStateTemplate")
+	self.Bar7:SetPoint("RIGHT", self.Bar6, "LEFT", -Settings["ab-bar5-button-gap"], 0)
+	self.Bar7:SetAlpha(Settings["ab-bar5-alpha"] / 100)
+	self.Bar7.ButtonParent = MultiBar6
+	self.Bar7.ShouldFade = Settings["ab-bar5-hover"]
+	self.Bar7.MaxAlpha = Settings["ab-bar5-alpha"]
+	
+	self.Bar7.Fader = CreateAnimationGroup(self.Bar7):CreateAnimation("Fade")
+	self.Bar7.Fader:SetDuration(0.15)
+	self.Bar7.Fader:SetEasing("inout")
+	
+	MultiBar6:SetParent(self.Bar7)
+	MultiBar6:SetAllPoints(self.Bar7)
+	
+	for i = 1, 12 do
+		local Button = _G["MultiBar6Button" .. i]
+		
+		self:StyleActionButton(Button)
+		
+		Button.ParentBar = self.Bar7
+		
+		Button:HookScript("OnEnter", BarButtonOnEnter)
+		Button:HookScript("OnLeave", BarButtonOnLeave)
+		
+		self.Bar7[i] = Button
+	end
+	
+	if Settings["ab-bar5-hover"] then
+		self.Bar7:SetAlpha(0)
+		self.Bar7:SetScript("OnEnter", BarOnEnter)
+		self.Bar7:SetScript("OnLeave", BarOnLeave)
+		
+		for i = 1, #self.Bar7 do
+			self.Bar7[i].cooldown:SetDrawBling(false)
+		end
+	end
+	
+	self:PositionButtons(self.Bar7, Settings["ab-bar5-button-max"], Settings["ab-bar5-per-row"], Settings["ab-bar5-button-size"], Settings["ab-bar5-button-gap"])
+	
+	if Settings["ab-bar5-enable"] then
+		self:EnableBar(self.Bar7)
+	else
+		self:DisableBar(self.Bar7)
+	end
+end
+
+-- Bar 8
+function AB:CreateBar8()
+	self.Bar8 = CreateFrame("Frame", "HydraUI Action Bar 8", HydraUI.UIParent, "SecureHandlerStateTemplate")
+	self.Bar8:SetPoint("RIGHT", self.Bar7, "LEFT", -Settings["ab-bar5-button-gap"], 0)
+	self.Bar8:SetAlpha(Settings["ab-bar5-alpha"] / 100)
+	self.Bar8.ButtonParent = MultiBar7
+	self.Bar8.ShouldFade = Settings["ab-bar5-hover"]
+	self.Bar8.MaxAlpha = Settings["ab-bar5-alpha"]
+	
+	self.Bar8.Fader = CreateAnimationGroup(self.Bar8):CreateAnimation("Fade")
+	self.Bar8.Fader:SetDuration(0.15)
+	self.Bar8.Fader:SetEasing("inout")
+	
+	MultiBar7:SetParent(self.Bar8)
+	MultiBar7:SetAllPoints(self.Bar8)
+	
+	for i = 1, 12 do
+		local Button = _G["MultiBar7Button" .. i]
+		
+		self:StyleActionButton(Button)
+		
+		Button.ParentBar = self.Bar8
+		
+		Button:HookScript("OnEnter", BarButtonOnEnter)
+		Button:HookScript("OnLeave", BarButtonOnLeave)
+		
+		self.Bar8[i] = Button
+	end
+	
+	if Settings["ab-bar5-hover"] then
+		self.Bar8:SetAlpha(0)
+		self.Bar8:SetScript("OnEnter", BarOnEnter)
+		self.Bar8:SetScript("OnLeave", BarOnLeave)
+		
+		for i = 1, #self.Bar8 do
+			self.Bar8[i].cooldown:SetDrawBling(false)
+		end
+	end
+	
+	self:PositionButtons(self.Bar8, Settings["ab-bar5-button-max"], Settings["ab-bar5-per-row"], Settings["ab-bar5-button-size"], Settings["ab-bar5-button-gap"])
+	
+	if Settings["ab-bar5-enable"] then
+		self:EnableBar(self.Bar8)
+	else
+		self:DisableBar(self.Bar8)
+	end
+end
+
 -- Pet
 function AB:CreatePetBar()
 	self.PetBar = CreateFrame("Frame", "HydraUI Pet Bar", HydraUI.UIParent, "SecureHandlerStateTemplate")
@@ -792,6 +954,7 @@ function AB:CreatePetBar()
 	self.PetBar.Fader:SetEasing("inout")
 	
 	PetActionBarFrame:SetParent(self.PetBar)
+	PetActionBarFrame:SetAllPoints(self.PetBar)
 	
 	for i = 1, NUM_PET_ACTION_SLOTS do
 		local Button = _G["PetActionButton" .. i]
@@ -841,6 +1004,7 @@ function AB:CreateStanceBar()
 	self.StanceBar.Fader:SetEasing("inout")
 	
 	StanceBarFrame:SetParent(self.StanceBar)
+	StanceBarFrame:SetAllPoints(self.StanceBar)
 	StanceBarLeft:SetAlpha(0)
 	StanceBarRight:SetAlpha(0)
 	
@@ -970,6 +1134,12 @@ function AB:CreateBars()
 	self:CreateBar4()
 	self:CreateBar5()
 	
+	if MultiBar5 then
+		self:CreateBar6()
+		self:CreateBar7()
+		self:CreateBar8()
+	end
+	
 	if PetActionBarFrame then
 		self:CreatePetBar()
 	end
@@ -1014,6 +1184,12 @@ function AB:CreateMovers()
 	HydraUI:CreateMover(self.Bar3)
 	HydraUI:CreateMover(self.Bar4)
 	HydraUI:CreateMover(self.Bar5)
+	
+	if self.Bar6 then
+		HydraUI:CreateMover(self.Bar6)
+		HydraUI:CreateMover(self.Bar7)
+		HydraUI:CreateMover(self.Bar8)
+	end
 	
 	if self.StanceBar then
 		HydraUI:CreateMover(self.StanceBar)
