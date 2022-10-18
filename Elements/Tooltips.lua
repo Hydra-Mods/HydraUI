@@ -541,8 +541,16 @@ local OnValueChanged = function(self)
 	local Color = GetUnitColor(Unit)
 	
 	if Settings["tooltips-show-health-text"] then
-		local Current = self:GetValue()
-		local Max = select(2, self:GetMinMaxValues())
+		local Current
+		local Max
+		
+		if (HydraUI.ClientVersion > 100001) then -- DRAGONFLIGHT; change to HydraUI.IsRetail after DF is released
+			Current = UnitHealth(Unit)
+			Max = UnitHealthMax(Unit)
+		else
+			Current = self:GetValue()
+			Max = select(2, self:GetMinMaxValues())
+		end
 		
 		if (Max == 0) then
 			if UnitIsDead(Unit) then
