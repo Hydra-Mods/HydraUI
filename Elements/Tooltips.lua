@@ -540,42 +540,44 @@ local OnValueChanged = function(self)
 	
 	local Color = GetUnitColor(Unit)
 	
-	if Settings["tooltips-show-health-text"] then
-		local Current
-		local Max
-		
-		if (HydraUI.ClientVersion > 100001) then -- DRAGONFLIGHT; change to HydraUI.IsRetail after DF is released
-			Current = UnitHealth(Unit)
-			Max = UnitHealthMax(Unit)
-		else
-			Current = self:GetValue()
-			Max = select(2, self:GetMinMaxValues())
-		end
-		
-		if (Max == 0) then
-			if UnitIsDead(Unit) then
-				self.HealthValue:SetText("|cFFD64545" .. Language["Dead"] .. "|r")
-			elseif UnitIsGhost(Unit) then
-				self.HealthValue:SetText("|cFFEEEEEE" .. Language["Ghost"] .. "|r")
-			else
-				self.HealthValue:SetText(" ")
-				self.HealthPercent:SetText(" ")
-			end
-		else
-			if UnitIsDead(Unit) then
-				self.HealthValue:SetText("|cFFD64545" .. Language["Dead"] .. "|r")
-			elseif UnitIsGhost(Unit) then
-				self.HealthValue:SetText("|cFFEEEEEE" .. Language["Ghost"] .. "|r")
-			else
-				self.HealthValue:SetText(format("%s / %s", HydraUI:ShortValue(Current), HydraUI:ShortValue(Max)))
-			end
-			
-			self.HealthPercent:SetText(format("%s%%", floor((Current / Max * 100 + 0.05) * 10) / 10))
-		end
-	end
-	
 	self:SetStatusBarColor(HydraUI:HexToRGB(Color))
 	self.BG:SetVertexColor(HydraUI:HexToRGB(Color))
+	
+	if (not Settings["tooltips-show-health-text"]) then
+		return
+	end
+	
+	local Current
+	local Max
+	
+	if (HydraUI.ClientVersion > 100001) then -- DRAGONFLIGHT; change to HydraUI.IsRetail after DF is released
+		Current = UnitHealth(Unit)
+		Max = UnitHealthMax(Unit)
+	else
+		Current = self:GetValue()
+		Max = select(2, self:GetMinMaxValues())
+	end
+	
+	if (Max == 0) then
+		if UnitIsDead(Unit) then
+			self.HealthValue:SetText("|cFFD64545" .. Language["Dead"] .. "|r")
+		elseif UnitIsGhost(Unit) then
+			self.HealthValue:SetText("|cFFEEEEEE" .. Language["Ghost"] .. "|r")
+		else
+			self.HealthValue:SetText(" ")
+			self.HealthPercent:SetText(" ")
+		end
+	else
+		if UnitIsDead(Unit) then
+			self.HealthValue:SetText("|cFFD64545" .. Language["Dead"] .. "|r")
+		elseif UnitIsGhost(Unit) then
+			self.HealthValue:SetText("|cFFEEEEEE" .. Language["Ghost"] .. "|r")
+		else
+			self.HealthValue:SetText(format("%s / %s", HydraUI:ShortValue(Current), HydraUI:ShortValue(Max)))
+		end
+		
+		self.HealthPercent:SetText(format("%s%%", floor((Current / Max * 100 + 0.05) * 10) / 10))
+	end
 end
 
 local OnShow = function(self)
