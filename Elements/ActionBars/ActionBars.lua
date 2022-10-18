@@ -1004,7 +1004,7 @@ function AB:CreateStanceBar()
 	self.StanceBar.Fader:SetEasing("inout")
 	
 	StanceBarFrame:SetParent(self.StanceBar)
-	StanceBarFrame:SetAllPoints(self.StanceBar)
+	--StanceBarFrame:SetAllPoints(self.StanceBar)
 	StanceBarLeft:SetAlpha(0)
 	StanceBarRight:SetAlpha(0)
 	
