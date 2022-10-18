@@ -174,6 +174,15 @@ function MicroButtons:Load()
 		self.Buttons[i].BG:SetTexture(Assets:GetTexture("Blank"))
 		self.Buttons[i].BG:SetVertexColor(0, 0, 0)
 		
+		if self.Buttons[i].FlashContent then
+			self.Buttons[i].FlashContent:ClearAllPoints()
+			self.Buttons[i].FlashContent:SetAllPoints(self.Buttons[i])
+			
+			self.Buttons[i].FlashBorder:ClearAllPoints()
+			self.Buttons[i].FlashBorder:SetPoint("TOPLEFT", self.Buttons[i], -3, 3)
+			self.Buttons[i].FlashBorder:SetPoint("BOTTOMRIGHT", self.Buttons[i], 3, -3)
+		end
+		
 		local Normal = self.Buttons[i]:GetNormalTexture()
 		local Pushed = self.Buttons[i]:GetPushedTexture()
 		local Disabled = self.Buttons[i]:GetDisabledTexture()
@@ -203,7 +212,6 @@ function MicroButtons:Load()
 				end
 			end
 		else
-		
 			Normal:SetTexCoord(0.2, 0.85, 0.5, 0.9)
 			Pushed:SetTexCoord(0.2, 0.85, 0.5, 0.9)
 			
