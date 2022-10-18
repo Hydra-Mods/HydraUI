@@ -163,7 +163,7 @@ function AB:StyleActionButton(button)
 	button:GetNormalTexture():SetAlpha(0)
 	button:GetNormalTexture():Hide()
 	
-	--button:SetNormalTexture("")
+	button:SetNormalTexture("")
 	
 	if button.Border then
 		button.Border:SetTexture(nil)
