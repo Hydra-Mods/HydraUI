@@ -15,32 +15,28 @@ local GetItemInfo = GetItemInfo
 local GetTime = GetTime
 local tinsert = table.insert
 local tremove = table.remove
-local pairs = pairs
 
-Cooldowns.Spells = {}
-Cooldowns.ActiveCount = 0
-Cooldowns.MinTreshold = 14
-Cooldowns.Running = false
-Cooldowns.Elapsed = 0
-
-local CurrentTime
+local ActiveCount = 0
+local MinTreshold = 14
+local Running = false
+local Elapsed = 0
+local Delay = 0.33
+local ActiveSpells = {}
+local ActiveItems = {}
+local ItemTables = {}
+local Spells = {}
 local Remaining
 local SpellName
-local Delay = 0.5
-
-Cooldowns.ActiveCDs = {
-	["item"] = {},
-	["player"] = {},
-}
+local Now
 
 Cooldowns.Blacklist = {
-	["item"] = {
+	item = {
 		[6948] = true, -- Hearthstone
 		[140192] = true, -- Dalaran Hearthstone
 		[110560] = true, -- Garrison Hearthstone
 	},
 	
-	["player"] = {
+	player = {
 		[125439] = true, -- Revive Battle Pets
 	},
 }
@@ -64,23 +60,26 @@ function Cooldowns:GetTexture(cd, id)
 end
 
 function Cooldowns:OnUpdate(ela)
-	self.Elapsed = self.Elapsed + ela
+	Elapsed = Elapsed + ela
 	
-	if (self.Elapsed < Delay) then
+	if (Elapsed < Delay) then
 		return
 	end
 	
-	CurrentTime = GetTime()
+	Now = GetTime()
+	local ID
 	
-	for CDType, Data in pairs(self.ActiveCDs) do
-		for Position, ID in pairs(Data) do
-			local Start, Duration = ((CDType == "item") and GetItemCooldown or GetSpellCooldown)(ID)
+	if (#ActiveSpells > 0) then
+		for i = #ActiveSpells, 1, -1 do
+			ID = ActiveSpells[i]
+			
+			local Start, Duration = GetSpellCooldown(ID)
 			
 			if (Start ~= nil) then
-				Remaining = Start + Duration - CurrentTime
+				Remaining = Start + Duration - Now
 				
 				if (Remaining <= 0) then
-					local Texture = self:GetTexture(CDType, ID)
+					local Texture = self:GetTexture("spell", ID)
 					
 					if Texture then
 						self.Icon:SetTexture(Texture)
@@ -89,7 +88,7 @@ function Cooldowns:OnUpdate(ela)
 						
 						if Settings["cooldowns-text"] then
 							SpellName = GetSpellInfo(ID)
-						
+							
 							if SpellName then
 								self.Text:SetText(format(Language["|cff%s%s|r is ready!"], Settings["ui-widget-color"], SpellName))
 								
@@ -100,37 +99,73 @@ function Cooldowns:OnUpdate(ela)
 						end
 					end
 					
-					tremove(Data, Position)
-					self.ActiveCount = self.ActiveCount - 1
+					tremove(ActiveSpells, i)
+					ActiveCount = ActiveCount - 1
 				end
 			end
 		end
 	end
 	
-	if (self.ActiveCount <= 0) then
-		self:SetScript("OnUpdate", nil)
-		self.Running = false
+	if (#ActiveItems > 0) then
+		for i = #ActiveItems, 1, -1 do
+			local Info = ActiveItems[i]
+			local Start, Duration = GetItemCooldown(Info.ID)
+			
+			if (Start ~= nil) then
+				if (Info.Dur == 0 and Duration > MinTreshold) then
+					Info.Dur = Duration
+				elseif (Info.Dur > 0 and Duration == 0) then
+					local Texture = self:GetTexture("item", Info.ID)
+					
+					if Texture then
+						self.Icon:SetTexture(Texture)
+						self.AnimIn:Play()
+						self.Hold:Play()
+						
+						if Settings["cooldowns-text"] then
+							SpellName = GetItemInfo(Info.ID)
+							
+							if SpellName then
+								self.Text:SetText(format(Language["|cff%s%s|r is ready!"], Settings["ui-widget-color"], SpellName))
+								
+								SpellName = nil
+							end
+						else
+							self.Text:SetText("")
+						end
+					end
+					
+					tinsert(ItemTables, tremove(ActiveItems, i))
+					ActiveCount = ActiveCount - 1
+				end
+			end
+		end
 	end
 	
-	self.Elapsed = 0
+	if (ActiveCount <= 0) then
+		self:SetScript("OnUpdate", nil)
+		Running = false
+	end
+	
+	Elapsed = 0
 end
 
 -- UNIT_SPELLCAST_SUCCEEDED fetches casts, and then SPELL_UPDATE_COOLDOWN checks them after the GCD is done (Otherwise GetSpellCooldown detects GCD)
 function Cooldowns:SPELL_UPDATE_COOLDOWN()
-	for i = #self.Spells, 1, -1 do
-		local Start, Duration = GetSpellCooldown(self.Spells[i])
+	for i = #Spells, 1, -1 do
+		local Start, Duration = GetSpellCooldown(Spells[i])
 		
-		if (Duration >= self.MinTreshold) then
-			tinsert(self.ActiveCDs.player, self.Spells[i])
-			self.ActiveCount = self.ActiveCount + 1
+		if (Duration >= MinTreshold) then
+			tinsert(ActiveSpells, Spells[i])
+			ActiveCount = ActiveCount + 1
 			
-			if (self.ActiveCount > 0 and not self.Running) then
+			if (ActiveCount > 0 and not Running) then
 				self:SetScript("OnUpdate", self.OnUpdate)
-				self.Running = true
+				Running = true
 			end
 		end
 		
-		tremove(self.Spells, i)
+		tremove(Spells, i)
 	end
 end
 
@@ -140,7 +175,7 @@ function Cooldowns:UNIT_SPELLCAST_SUCCEEDED(unit, guid, id)
 			return
 		end
 		
-		tinsert(self.Spells, id)
+		tinsert(Spells, id)
 	end
 end
 
@@ -149,16 +184,17 @@ local StartItem = function(id)
 		return
 	end
 	
-	local Start, Duration = GetItemCooldown(id)
+	local Info = ItemTables[1] and tremove(ItemTables, 1) or {}
 	
-	if (Duration and Duration > Cooldowns.MinTreshold) then
-		tinsert(Cooldowns.ActiveCDs.item, id)
-		Cooldowns.ActiveCount = Cooldowns.ActiveCount + 1
-		
-		if (Cooldowns.ActiveCount > 0 and not Cooldowns.Running) then
-			Cooldowns:SetScript("OnUpdate", Cooldowns.OnUpdate)
-			Cooldowns.Running = true
-		end
+	Info.ID = id
+	Info.Dur = 0
+	
+	tinsert(ActiveItems, Info)
+	ActiveCount = ActiveCount + 1
+	
+	if (ActiveCount > 0 and not Running) then
+		Cooldowns:SetScript("OnUpdate", Cooldowns.OnUpdate)
+		Running = true
 	end
 end
 
