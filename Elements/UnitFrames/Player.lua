@@ -1045,7 +1045,7 @@ local UpdateResourceBarHeight = function(value)
 			local Max = UnitPowerMax("player", Enum.PowerType.ComboPoints)
 			
 			for i = 1, Max do
-				Frame.ComboPoints[i]:SetWidth(i == 1 and Width - 1 or Width)
+				Frame.ComboPoints[i]:SetHeight(value)
 			end
 		elseif Frame.SoulShards then
 			Frame.SoulShards:SetHeight(value + 2)
