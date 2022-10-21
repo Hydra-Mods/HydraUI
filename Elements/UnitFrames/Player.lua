@@ -364,12 +364,10 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	end
 	
 	if Settings["unitframes-player-enable-resource"] then
-		--if Settings["player-move-resource"] then
 		local ResourceAnchor = CreateFrame("Frame", "HydraUI Class Resource", HydraUI.UIParent)
 		ResourceAnchor:SetSize(Settings["unitframes-player-width"], Settings["player-resource-height"] + 2)
 		ResourceAnchor:SetPoint("CENTER", HydraUI.UIParent, 0, -120)
 		HydraUI:CreateMover(ResourceAnchor)
-		--end
 		
 		if (HydraUI.UserClass == "ROGUE" or HydraUI.UserClass == "DRUID") then
 			local ComboPoints = CreateFrame("Frame", self:GetName() .. "ComboPoints", self, "BackdropTemplate")
@@ -1035,10 +1033,6 @@ local UpdateResourceBarHeight = function(value)
 	if HydraUI.UnitFrames["player"] then
 		local Frame = HydraUI.UnitFrames["player"]
 		
-		--[[if (not Settings["player-move-resource"]) then
-			return
-		end]]
-		
 		if Frame.ComboPoints then
 			Frame.ComboPoints:SetHeight(value + 2)
 			
@@ -1256,7 +1250,6 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("player-enable", Settings["player-enable"], Language["Enable Player"], Language["Enable the player unit frame"], ReloadUI):RequiresReload(true)
 	left:CreateSlider("unitframes-player-width", Settings["unitframes-player-width"], 120, 320, 1, Language["Width"], Language["Set the width of the player unit frame"], UpdatePlayerWidth)
-	left:CreateSwitch("unitframes-player-enable-resource", Settings["unitframes-player-enable-resource"], Language["Enable Resource Bar"], Language["Enable the player resource such as combo points, runes, etc."], ReloadUI):RequiresReload(true)
 	left:CreateSwitch("player-enable-pvp", Settings["player-enable-pvp"], Language["Enable PVP Indicator"], Language["Display the pvp indicator"], UpdatePlayerEnablePVPIndicator)
 	
 	if (HydraUI.IsClassic or HydraUI.IsTBC) then
@@ -1301,6 +1294,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	right:CreateSlider("unitframes-player-cast-height", Settings["unitframes-player-cast-height"], 8, 50, 1, Language["Cast Bar Height"], Language["Set the height of the player cast bar"], UpdatePlayerCastBarSize)
 	
 	right:CreateHeader(Language["Class Resource"])
+	right:CreateSwitch("unitframes-player-enable-resource", Settings["unitframes-player-enable-resource"], Language["Enable Resource Bar"], Language["Enable the player resource such as combo points, runes, etc."], ReloadUI):RequiresReload(true)
 	right:CreateSwitch("player-move-resource", Settings["player-move-resource"], Language["Detach Class Bar"], Language["Detach the class resource from the unit frame, to be moved by the UI"], UpdateResourcePosition)
 	right:CreateSlider("player-resource-height", Settings["player-resource-height"], 4, 30, 1, Language["Set Height"], Language["Set the height of the player resource bar"], UpdateResourceBarHeight)
 end)
