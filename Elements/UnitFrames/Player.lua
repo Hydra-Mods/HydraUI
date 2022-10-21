@@ -364,14 +364,12 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	end
 	
 	if Settings["unitframes-player-enable-resource"] then
-		local ResourceAnchor
-		
-		if Settings["player-move-resource"] then
-			ResourceAnchor = CreateFrame("Frame", "HydraUI Class Resource", HydraUI.UIParent)
-			ResourceAnchor:SetSize(Settings["unitframes-player-width"], Settings["player-resource-height"] + 2)
-			ResourceAnchor:SetPoint("CENTER", HydraUI.UIParent, 0, -120)
-			HydraUI:CreateMover(ResourceAnchor)
-		end
+		--if Settings["player-move-resource"] then
+		local ResourceAnchor = CreateFrame("Frame", "HydraUI Class Resource", HydraUI.UIParent)
+		ResourceAnchor:SetSize(Settings["unitframes-player-width"], Settings["player-resource-height"] + 2)
+		ResourceAnchor:SetPoint("CENTER", HydraUI.UIParent, 0, -120)
+		HydraUI:CreateMover(ResourceAnchor)
+		--end
 		
 		if (HydraUI.UserClass == "ROGUE" or HydraUI.UserClass == "DRUID") then
 			local ComboPoints = CreateFrame("Frame", self:GetName() .. "ComboPoints", self, "BackdropTemplate")
@@ -380,7 +378,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			ComboPoints:SetBackdropColor(0, 0, 0)
 			ComboPoints:SetBackdropBorderColor(0, 0, 0)
 			
-			if ResourceAnchor then
+			if Settings["player-move-resource"] then
 				ComboPoints:SetPoint("CENTER", ResourceAnchor, 0, 0)
 			else
 				ComboPoints:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
@@ -427,7 +425,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			SoulShards:SetBackdropColor(0, 0, 0)
 			SoulShards:SetBackdropBorderColor(0, 0, 0)
 			
-			if ResourceAnchor then
+			if Settings["player-move-resource"] then
 				SoulShards:SetPoint("CENTER", ResourceAnchor, 0, 0)
 			else
 				SoulShards:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
@@ -465,7 +463,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			ArcaneCharges:SetBackdropColor(0, 0, 0)
 			ArcaneCharges:SetBackdropBorderColor(0, 0, 0)
 			
-			if ResourceAnchor then
+			if Settings["player-move-resource"] then
 				ArcaneCharges:SetPoint("CENTER", ResourceAnchor, 0, 0)
 			else
 				ArcaneCharges:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
@@ -503,7 +501,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			Chi:SetBackdropColor(0, 0, 0)
 			Chi:SetBackdropBorderColor(0, 0, 0)
 			
-			if ResourceAnchor then
+			if Settings["player-move-resource"] then
 				Chi:SetPoint("CENTER", ResourceAnchor, 0, 0)
 			else
 				Chi:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
@@ -536,7 +534,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			Stagger:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 			Stagger:Hide()
 			
-			if ResourceAnchor then
+			if Settings["player-move-resource"] then
 				Stagger:SetPoint("CENTER", ResourceAnchor, 0, 0)
 			else
 				Stagger:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 1, 0)
@@ -564,7 +562,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			Runes:SetBackdropBorderColor(0, 0, 0)
 			Runes.sortOrder = "asc" -- desc
 			
-			if ResourceAnchor then
+			if Settings["player-move-resource"] then
 				Runes:SetPoint("CENTER", ResourceAnchor, 0, 0)
 			else
 				Runes:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
@@ -623,7 +621,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			HolyPower:SetBackdropColor(0, 0, 0)
 			HolyPower:SetBackdropBorderColor(0, 0, 0)
 			
-			if ResourceAnchor then
+			if Settings["player-move-resource"] then
 				HolyPower:SetPoint("CENTER", ResourceAnchor, 0, 0)
 			else
 				HolyPower:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
@@ -662,7 +660,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			Totems:SetBackdropBorderColor(0, 0, 0)
 			Totems.PostUpdate = UF.PostUpdateTotems
 			
-			if ResourceAnchor then
+			if Settings["player-move-resource"] then
 				Totems:SetPoint("CENTER", ResourceAnchor, 0, 0)
 			else
 				Totems:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
@@ -737,12 +735,14 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			self.Totems = Totems
 			self.AuraParent = Totems
 		end
+		
+		self.ResourceAnchor = ResourceAnchor
 	end
 	
 	-- Threat
 	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	
-	if (Settings["player-move-resource"]) then
+	if Settings["player-move-resource"] then
 		Threat:SetPoint("TOPLEFT", -1, 1)
 		Threat:SetPoint("BOTTOMRIGHT", 1, -1)
 	else
@@ -1078,6 +1078,12 @@ local UpdateResourceBarHeight = function(value)
 			for i = 1, 5 do
 				Frame.HolyPower[i]:SetHeight(value)
 			end
+		elseif Frame.Totems then
+			Frame.Totems:SetHeight(value + 2)
+			
+			for i = 1, 4 do
+				Frame.Totems[i]:SetHeight(value)
+			end
 		end
 	end
 end
@@ -1152,6 +1158,100 @@ local UpdateDisplayedAuras = function()
 	end
 end
 
+local UpdateResourcePosition = function(value)
+	if HydraUI.UnitFrames["player"] then
+		local Frame = HydraUI.UnitFrames["player"]
+
+		Frame.Debuffs:ClearAllPoints()
+		Frame.ThreatIndicator:ClearAllPoints()
+
+		if value then
+			if Settings["unitframes-show-player-buffs"] then
+				Frame.Buffs:ClearAllPoints()
+				Frame.Buffs:SetPoint("BOTTOMLEFT", Frame, "TOPLEFT", 0, 2)
+				Frame.Debuffs:SetPoint("BOTTOM", Frame.Buffs, "TOP", 0, 2)
+			else
+				Frame.Debuffs:SetPoint("BOTTOMLEFT", Frame, "TOPLEFT", 0, 2)
+			end
+			
+			Frame.ThreatIndicator:SetPoint("TOPLEFT", Frame, -1, 1)
+			Frame.ThreatIndicator:SetPoint("BOTTOMRIGHT", Frame, 1, -1)
+		else
+			if Settings["unitframes-show-player-buffs"] then
+				Frame.Buffs:ClearAllPoints()
+				Frame.Buffs:SetPoint("BOTTOMLEFT", Frame.AuraParent, "TOPLEFT", 0, 2)
+				Frame.Debuffs:SetPoint("BOTTOM", Frame.Buffs, "TOP", 0, 2)
+			else
+				Frame.Debuffs:SetPoint("BOTTOMLEFT", Frame.AuraParent, "TOPLEFT", 0, 2)
+			end
+			
+			Frame.ThreatIndicator:SetPoint("TOPLEFT", Frame.AuraParent, -1, 1)
+			Frame.ThreatIndicator:SetPoint("BOTTOMRIGHT", 1, -1)
+		end
+
+		if Frame.ComboPoints then
+			Frame.ComboPoints:ClearAllPoints()
+			
+			if value then
+				Frame.ComboPoints:SetPoint("CENTER", Frame.ResourceAnchor, 0, 0)
+			else
+				Frame.ComboPoints:SetPoint("BOTTOMLEFT", Frame, "TOPLEFT", 0, -1)
+			end
+		elseif Frame.SoulShards then
+			Frame.SoulShards:ClearAllPoints()
+			
+			if value then
+				Frame.SoulShards:SetPoint("CENTER", Frame.ResourceAnchor, 0, 0)
+			else
+				Frame.SoulShards:SetPoint("BOTTOMLEFT", Frame, "TOPLEFT", 0, -1)
+			end
+		elseif Frame.ArcanePower then
+			Frame.ArcanePower:ClearAllPoints()
+			
+			if value then
+				Frame.ArcanePower:SetPoint("CENTER", Frame.ResourceAnchor, 0, 0)
+			else
+				Frame.ArcanePower:SetPoint("BOTTOMLEFT", Frame, "TOPLEFT", 0, -1)
+			end
+		elseif Frame.Chi then
+			Frame.Chi:ClearAllPoints()
+			Frame.Stagger:ClearAllPoints()
+			
+			if value then
+				Frame.Chi:SetPoint("CENTER", Frame.ResourceAnchor, 0, 0)
+				Frame.Stagger:SetPoint("CENTER", Frame.ResourceAnchor, 0, 0)
+			else
+				Frame.Chi:SetPoint("BOTTOMLEFT", Frame, "TOPLEFT", 0, -1)
+				Frame.Stagger:SetPoint("BOTTOMLEFT", Frame, "TOPLEFT", 0, -1)
+			end
+		elseif Frame.Runes then
+			Frame.Runes:ClearAllPoints()
+			
+			if value then
+				Frame.Runes:SetPoint("CENTER", Frame.ResourceAnchor, 0, 0)
+			else
+				Frame.Runes:SetPoint("BOTTOMLEFT", Frame, "TOPLEFT", 0, -1)
+			end
+		elseif Frame.HolyPower then
+			Frame.HolyPower:ClearAllPoints()
+			
+			if value then
+				Frame.HolyPower:SetPoint("CENTER", Frame.ResourceAnchor, 0, 0)
+			else
+				Frame.HolyPower:SetPoint("BOTTOMLEFT", Frame, "TOPLEFT", 0, -1)
+			end
+		elseif Frame.Totems then
+			Frame.Totems:ClearAllPoints()
+			
+			if value then
+				Frame.Totems:SetPoint("CENTER", Frame.ResourceAnchor, 0, 0)
+			else
+				Frame.Totems:SetPoint("BOTTOMLEFT", Frame, "TOPLEFT", 0, -1)
+			end
+		end
+	end
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("player-enable", Settings["player-enable"], Language["Enable Player"], Language["Enable the player unit frame"], ReloadUI):RequiresReload(true)
@@ -1201,6 +1301,6 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	right:CreateSlider("unitframes-player-cast-height", Settings["unitframes-player-cast-height"], 8, 50, 1, Language["Cast Bar Height"], Language["Set the height of the player cast bar"], UpdatePlayerCastBarSize)
 	
 	right:CreateHeader(Language["Class Resource"])
-	right:CreateSwitch("player-move-resource", Settings["player-move-resource"], Language["Detach Class Bar"], Language["Detach the class resource from the unit frame, to be moved by the UI"], ReloadUI):RequiresReload(true)
+	right:CreateSwitch("player-move-resource", Settings["player-move-resource"], Language["Detach Class Bar"], Language["Detach the class resource from the unit frame, to be moved by the UI"], UpdateResourcePosition)
 	right:CreateSlider("player-resource-height", Settings["player-resource-height"], 4, 30, 1, Language["Set Height"], Language["Set the height of the player resource bar"], UpdateResourceBarHeight)
 end)
