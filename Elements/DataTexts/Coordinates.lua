@@ -68,7 +68,7 @@ local Update = function(self, elapsed)
 			if Position then
 				local X, Y = GetPlayerMapPosition(MapID, "player"):GetXY()
 				
-				self.Text:SetFormattedText("|cFF%s%.2f|r, |cFF%s%.2f|r", Settings["data-text-value-color"], X * 100, Settings["data-text-value-color"], Y * 100)
+				self.Text:SetFormattedText("|cFF%s%.2f|r, |cFF%s%.2f|r", HydraUI.ValueColor, X * 100, HydraUI.ValueColor, Y * 100)
 				
 				if self.TooltipShown then
 					GameTooltip:ClearLines()

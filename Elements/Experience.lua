@@ -258,8 +258,6 @@ function Experience:OnEvent()
 			
 			if IsHeader then
 				ZoneName = TitleText
-				--if (ZoneName and Zone == ZoneName) and IsComplete then
-				--end
 			else
 				if (ZoneName and Zone == ZoneName and IsComplete) then
 					QuestLogXP = QuestLogXP + GetQuestLogRewardXP(QuestID)

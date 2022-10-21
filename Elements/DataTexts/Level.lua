@@ -12,7 +12,7 @@ local OnMouseUp = function()
 end
 
 local Update = function(self)
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], UnitLevel("player"))
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, UnitLevel("player"))
 end
 
 local OnEnable = function(self)

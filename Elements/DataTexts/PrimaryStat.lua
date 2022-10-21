@@ -38,7 +38,7 @@ local Update = function(self, event, unit)
 		end
 	end
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], ValidStat[Highest], Settings["data-text-value-color"], HighestStat)
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], ValidStat[Highest], HydraUI.ValueColor, HighestStat)
 end
 
 local OnEnable = function(self)

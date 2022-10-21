@@ -64,7 +64,7 @@ end
 local Update = function(self)
 	local Info = GetCurrencyInfo(1901)
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s |r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Info.quantity)
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s |r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, Info.quantity)
 end
 
 local OnEnable = function(self)

@@ -50,7 +50,7 @@ local Update = function(self, event, unit)
 		return
 	end
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], GetExpertisePercent() .. "%")
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, GetExpertisePercent() .. "%")
 end
 
 local OnEnable = function(self)

@@ -66,7 +66,7 @@ local Update = function(self, event, unit)
 		Crit = Melee
 	end
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.2f%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Crit)
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.2f%%|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, Crit)
 end
 
 local OnEnable = function(self)

@@ -459,7 +459,6 @@ local UpdateDisplayedAuras = function()
 	
 	local Target = HydraUI.UnitFrames["target"]
 
-	--Target.Buffs:ClearAllPoints()
 	Target.Debuffs:ClearAllPoints()
 
 	if Settings["unitframes-show-target-buffs"] then

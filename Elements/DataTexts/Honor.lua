@@ -60,7 +60,7 @@ local Update = function(self, event, unit)
 		return
 	end
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s / %s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], UnitHonor("player"), UnitHonorMax("player"))
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s / %s|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, UnitHonor("player"), UnitHonorMax("player"))
 end
 
 local OnEnable = function(self)

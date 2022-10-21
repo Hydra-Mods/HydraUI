@@ -51,7 +51,7 @@ local Update = function(self)
 	
     local XP = UnitXP("player")
     local MaxXP = UnitXPMax("player")
-	local Value = "|cff" .. Settings["data-text-value-color"] .. floor((XP / MaxXP * 100 + 0.05) * 10) / 10 .. "%|r"
+	local Value = "|cff" .. HydraUI.ValueColor .. floor((XP / MaxXP * 100 + 0.05) * 10) / 10 .. "%|r"
 	
 	self.Text:SetFormattedText(Message, Value)
 end

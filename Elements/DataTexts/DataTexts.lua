@@ -19,10 +19,12 @@ Defaults["data-text-extra-right"] = "Guild"
 Defaults["data-text-enable-tooltips"] = true
 Defaults["data-text-hover-tooltips"] = true
 Defaults["data-text-24-hour"] = false
+Defaults["data-text-classcolor"] = false
 
 DT.Anchors = {}
 DT.Types = {}
 DT.List = {}
+HydraUI.ValueColor = "ffffff"
 
 local SetTooltip = function(anchor)
 	if Settings["data-text-hover-tooltips"] then
@@ -130,6 +132,8 @@ function DT:UpdateAllAnchors()
 end
 
 function DT:Load()
+	HydraUI.ValueColor = Settings["data-text-classcolor"] and HydraUI.ClassColors[HydraUI.UserClass].Hex or Settings["data-text-value-color"]
+
 	if Settings["chat-enable"] then
 		local Width = HydraUIChatFrameBottom:GetWidth() / 3
 		local Height = HydraUIChatFrameBottom:GetHeight()
@@ -253,6 +257,12 @@ local DeleteGoldData = function(value)
 	end
 end
 
+local UpdateClassColor = function(value)
+	HydraUI.ValueColor = value and HydraUI.ClassColors[HydraUI.UserClass].Hex or Settings["data-text-value-color"]
+	
+	DT:UpdateAllAnchors()
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Data Texts"], function(left, right)
 	left:CreateHeader(Language["Chat Frame Texts"])
 	left:CreateDropdown("data-text-chat-left", Settings["data-text-chat-left"], DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the left data text anchor"], UpdateChatLeftText)
@@ -276,6 +286,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Data Texts"],
 	right:CreateHeader(Language["Colors"])
 	right:CreateColorSelection("data-text-label-color", Settings["data-text-label-color"], Language["Label Color"], Language["Set the text color of data text labels"], function() DT:UpdateAllAnchors() end)
 	right:CreateColorSelection("data-text-value-color", Settings["data-text-value-color"], Language["Value Color"], Language["Set the text color of data text values"], function() DT:UpdateAllAnchors() end)
+	right:CreateSwitch("data-text-classcolor", Settings["data-text-classcolor"], Language["Use Class Color"], Language["Use class color for Value Color"], UpdateClassColor)
 	
 	right:CreateHeader(Language["Styling"])
 	right:CreateSwitch("data-text-enable-tooltips", Settings["data-text-enable-tooltips"], Language["Enable Tooltips"], Language["Display tooltip information when hovering over data texts"], UpdateEnableTooltips)

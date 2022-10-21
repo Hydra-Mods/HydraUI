@@ -62,7 +62,7 @@ local OnMouseUp = function()
 end
 
 local Update = function(self)
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], HydraUI:Comma(GetPVPLifetimeStats()))
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, HydraUI:Comma(GetPVPLifetimeStats()))
 end
 
 local OnEnable = function(self)

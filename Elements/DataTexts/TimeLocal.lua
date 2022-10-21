@@ -46,7 +46,7 @@ local Update = function(self, elapsed)
 	if (self.Elapsed > 10) then
 		local Time = GameTime_GetLocalTime(true)
 		
-		Time = gsub(Time, "%a+", format("|cFF%s%s|r", Settings["data-text-value-color"], "%1"))
+		Time = gsub(Time, "%a+", format("|cFF%s%s|r", HydraUI.ValueColor, "%1"))
 		
 		self.Text:SetText(Time)
 		

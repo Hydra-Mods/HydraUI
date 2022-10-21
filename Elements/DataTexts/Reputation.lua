@@ -47,7 +47,7 @@ local Update = function(self)
 		Max = Max - Min
 		Value = Value - Min
 		
-		self.Text:SetText(format("|cff%s%s%%|r", Settings["data-text-value-color"], floor((Value / Max * 100 + 0.05) * 10) / 10 ))
+		self.Text:SetText(format("|cff%s%s%%|r", HydraUI.ValueColor, floor((Value / Max * 100 + 0.05) * 10) / 10 ))
 	else
 		self.Text:SetText("")
 	end

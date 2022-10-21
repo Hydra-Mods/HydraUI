@@ -57,7 +57,7 @@ local Update = function(self, event, unit)
 	
 	local Base, EffectiveArmor = UnitArmor("player")
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], HydraUI:Comma(EffectiveArmor))
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, HydraUI:Comma(EffectiveArmor))
 end
 
 local OnEnable = function(self)

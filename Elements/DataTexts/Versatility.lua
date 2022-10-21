@@ -34,7 +34,7 @@ local Update = function(self, event, unit)
 		return
 	end
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.02f%%|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE))
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.02f%%|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE))
 end
 
 local OnEnable = function(self)

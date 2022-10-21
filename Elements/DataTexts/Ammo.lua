@@ -43,7 +43,7 @@ local Update = function(self)
 		Count = GetInventoryItemCount("player", 18)
 	end
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], Count)
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, Count)
 	
 	if (PreviousCount > 0 and Count < 50) then -- Make sure we had ammo
 		self.Anim:Play()

@@ -23,7 +23,7 @@ local Update = function(self)
 		end
 	end
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], ShardCount)
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, ShardCount)
 end
 
 local OnEnable = function(self)

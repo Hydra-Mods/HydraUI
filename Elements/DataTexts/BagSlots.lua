@@ -67,7 +67,7 @@ local Update = function(self)
 		end
 	end
 	
-	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s/%s|r", Settings["data-text-label-color"], Label, Settings["data-text-value-color"], TotalSlots-FreeSlots, TotalSlots)
+	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s/%s|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, TotalSlots-FreeSlots, TotalSlots)
 end
 
 local OnEnable = function(self)
