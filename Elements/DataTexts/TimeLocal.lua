@@ -8,7 +8,7 @@ local OnMouseUp = function(self, button)
 	if InCombatLockdown() then
 		return print(ERR_NOT_IN_COMBAT)
 	end
-	
+
 	if (ToggleCalendar and button == "LeftButton") then
 		ToggleCalendar()
 	else
@@ -18,11 +18,11 @@ end
 
 local OnEnter = function(self)
 	self:SetTooltip()
-	
+
 	local HomeLatency, WorldLatency = select(3, GetNetStats())
 	local Framerate = floor(GetFramerate())
 	local ServerTime = GameTime_GetGameTime(true)
-	
+
 	GameTooltip:AddLine(TIMEMANAGER_TOOLTIP_REALMTIME, 1, 0.7, 0)
 	GameTooltip:AddLine(ServerTime, 1, 1, 1)
 	GameTooltip:AddLine(" ")
@@ -42,14 +42,14 @@ end
 
 local Update = function(self, elapsed)
 	self.Elapsed = self.Elapsed + elapsed
-	
+
 	if (self.Elapsed > 10) then
 		local Time = GameTime_GetLocalTime(true)
-		
+
 		Time = gsub(Time, "%a+", format("|cFF%s%s|r", HydraUI.ValueColor, "%1"))
-		
+
 		self.Text:SetText(Time)
-		
+
 		self.Elapsed = 0
 	end
 end
@@ -60,7 +60,7 @@ local OnEnable = function(self)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
 	self:SetScript("OnMouseUp", OnMouseUp)
-	
+
 	self:Update(11)
 end
 
@@ -70,7 +70,7 @@ local OnDisable = function(self)
 	self:SetScript("OnLeave", nil)
 	self:SetScript("OnMouseUp", nil)
 	self.Elapsed = 0
-	
+
 	self.Text:SetText("")
 end
 

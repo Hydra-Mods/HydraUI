@@ -33,15 +33,15 @@ function Assets:SetFont(name, path, ispixel)
 	if Fonts[name] then
 		return
 	end
-	
+
 	Fonts[name] = path
-	
+
 	if ispixel then
 		FontIsPixel[name] = true
 	end
-	
+
 	FontList[name] = path
-	
+
 	SharedMedia:Register("font", name, path)
 end
 
@@ -62,12 +62,12 @@ function Assets:SetTexture(name, path, silent)
 	if Textures[name] then
 		return
 	end
-	
+
 	Textures[name] = path
-	
+
 	if (not silent) then
 		TextureList[name] = path
-		
+
 		SharedMedia:Register("statusbar", name, path)
 	end
 end
@@ -89,17 +89,17 @@ function Assets:SetStyle(name, info, silent)
 	if Styles[name] then
 		return
 	end
-	
+
 	Styles[name] = info
-	
+
 	if (not silent) then
 		local Key = name
-		
+
 		-- Just sprinkling on some flavor. Really rub it in.
 		if info["ui-widget-color"] then
 			Key = format("|cFF%s%s|r", info["ui-widget-color"], name)
 		end
-		
+
 		StyleList[Key] = name
 	end
 end
@@ -120,9 +120,9 @@ function Assets:ApplyStyle(name)
 	if (not Styles[name]) then
 		return HydraUI:print(format(Language['No style exists with the name "%s"'], name))
 	end
-	
+
 	local Profile = HydraUI:GetActiveProfile()
-	
+
 	if Profile then
 		for ID, Value in next, Styles[name] do
 			if (Value ~= Defaults[ID]) then
@@ -130,7 +130,7 @@ function Assets:ApplyStyle(name)
 			else
 				Profile[ID] = nil
 			end
-			
+
 			Settings[ID] = Value
 		end
 	end
@@ -141,9 +141,9 @@ function Assets:SetPalette(name, info, silent)
 	if Palettes[name] then
 		return
 	end
-	
+
 	Palettes[name] = info
-	
+
 	if (not silent) then
 		PaletteList[name] = info
 	end

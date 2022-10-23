@@ -71,73 +71,73 @@ function BagsFrame:Load()
 	if (HydraUI.ClientVersion >= 100000) then -- Revisiting
 		return
 	end
-	
+
 	if (not Settings["ab-enable"]) then
 		return
 	end
-	
+
 	self.Panel = CreateFrame("Frame", "HydraUI Bags Window", HydraUI.UIParent, "BackdropTemplate")
 	self.Panel:SetPoint("BOTTOMRIGHT", HydraUI:GetModule("Micro Buttons").Panel, "TOPRIGHT", 0, 3)
 	self.Panel:SetBackdrop(HydraUI.BackdropAndBorder)
 	self.Panel:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-bg-color"]))
 	self.Panel:SetBackdropBorderColor(0, 0, 0)
 	self.Panel:SetFrameStrata("LOW")
-	
+
 	if KeyRingButton then
 		self.Panel:SetSize(((Settings["bags-frame-size"] + 4) * (#self.Objects - 1)) + 8 + (Settings["bags-frame-size"] / 2), Settings["bags-frame-size"] + 8)
 	else
 		self.Panel:SetSize(((Settings["bags-frame-size"] + 4) * #self.Objects) + 4, Settings["bags-frame-size"] + 8)
 	end
-	
+
 	HydraUI:CreateMover(self.Panel)
-	
+
 	local Object
-	
+
 	for i = 1, #self.Objects do
 		Object = self.Objects[i]
-		
+
 		Object:SetParent(self.Panel)
 		Object:ClearAllPoints()
 		Object:SetSize(Settings["bags-frame-size"], Settings["bags-frame-size"])
 		Object:HookScript("OnEnter", BagsFrameButtonOnEnter)
 		Object:HookScript("OnLeave", BagsFrameButtonOnLeave)
-		
+
 		local Name = Object:GetName()
 		local Normal = _G[Name .. "NormalTexture"]
 		local Count = _G[Name .. "Count"]
 		local Stock = _G[Name .. "Stock"]
-		
+
 		if Object.IconBorder then
 			Object.IconBorder:SetAlpha(0)
 		end
-		
+
 		if Normal then
 			Normal:SetTexture(nil)
 		end
-		
+
 		if Count then
 			Count:ClearAllPoints()
 			Count:SetPoint("BOTTOMRIGHT", 0, 2)
 			Count:SetJustifyH("RIGHT")
 			HydraUI:SetFontInfo(Count, Settings["ui-widget-font"], Settings["ui-font-size"])
 		end
-		
+
 		if Stock then
 			Stock:ClearAllPoints()
 			Stock:SetPoint("TOPLEFT", 0, -2)
 			Stock:SetJustifyH("LEFT")
 			HydraUI:SetFontInfo(Stock, Settings["ui-widget-font"], Settings["ui-font-size"])
 		end
-		
+
 		if Object.icon then
 			Object.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 		end
-		
+
 		Object.BG = Object:CreateTexture(nil, "BACKGROUND")
 		Object.BG:SetPoint("TOPLEFT", Object, -1, 1)
 		Object.BG:SetPoint("BOTTOMRIGHT", Object, 1, -1)
 		Object.BG:SetColorTexture(0, 0, 0)
-		
+
 		if HydraUI.IsMainline then
 			Object.SlotHighlightTexture:SetTexture(Assets:GetTexture("Blank"))
 			Object.SlotHighlightTexture:SetVertexColor(0.9, 0.9, 0.1, 0.2)
@@ -146,41 +146,41 @@ function BagsFrame:Load()
 			Checked:SetPoint("TOPLEFT", Object, 0, 0)
 			Checked:SetPoint("BOTTOMRIGHT", Object, 0, 0)
 			Checked:SetColorTexture(0.9, 0.9, 0.1, 0.2)
-		
+
 			Object:SetCheckedTexture(Checked)
 		end
-		
+
 		local Highlight = Object:CreateTexture(nil, "ARTWORK")
 		Highlight:SetPoint("TOPLEFT", Object, 0, 0)
 		Highlight:SetPoint("BOTTOMRIGHT", Object, 0, 0)
 		Highlight:SetColorTexture(1, 1, 1, 0.25)
-		
+
 		Object:SetHighlightTexture(Highlight)
-		
+
 		if (i == 1) then
 			Object:SetPoint("LEFT", self.Panel, 4, 0)
-			
+
 			if KeyRingButton then
 				Object:SetSize(Settings["bags-frame-size"] / 2, Settings["bags-frame-size"])
 			end
 		else
 			Object:SetPoint("LEFT", self.Objects[i-1], "RIGHT", 4, 0)
-			
+
 			local Pushed = Object:CreateTexture(nil, "ARTWORK", 7)
 			Pushed:SetPoint("TOPLEFT", Object, 0, 0)
 			Pushed:SetPoint("BOTTOMRIGHT", Object, 0, 0)
 			Pushed:SetColorTexture(0.2, 0.9, 0.2, 0.4)
-			
+
 			Object:SetPushedTexture(Pushed)
 		end
 	end
-	
+
 	SetInsertItemsLeftToRight(Settings["bags-loot-from-left"])
-	
+
 	if KeyRingButton then
 		KeyRingButton:Show()
 	end
-	
+
 	self:UpdateVisibility()
 end
 
@@ -194,10 +194,10 @@ local UpdateBagFrameSize = function(value)
 	else
 		BagsFrame.Panel:SetSize(((value + 4) * #BagsFrame.Objects) + 4, value + 8)
 	end
-	
+
 	for i = 1, #BagsFrame.Objects do
 		BagsFrame.Objects[i]:ClearAllPoints()
-		
+
 		if (i == 1) then
 			if KeyRingButton then
 				BagsFrame.Objects[i]:SetSize(Settings["bags-frame-size"] / 2, Settings["bags-frame-size"])

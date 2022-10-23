@@ -35,7 +35,7 @@ Cooldowns.Blacklist = {
 		[140192] = true, -- Dalaran Hearthstone
 		[110560] = true, -- Garrison Hearthstone
 	},
-	
+
 	player = {
 		[125439] = true, -- Revive Battle Pets
 	},
@@ -47,13 +47,13 @@ Cooldowns.TextureFilter = {
 
 function Cooldowns:GetTexture(cd, id)
 	local Texture
-	
+
 	if (cd == "item") then
 		Texture = select(10, GetItemInfo(id))
 	else
 		Texture = GetSpellTexture(id)
 	end
-	
+
 	if (not self.TextureFilter[Texture]) then
 		return Texture
 	end
@@ -61,92 +61,92 @@ end
 
 function Cooldowns:OnUpdate(ela)
 	Elapsed = Elapsed + ela
-	
+
 	if (Elapsed < Delay) then
 		return
 	end
-	
+
 	Now = GetTime()
 	local ID
-	
+
 	if (#ActiveSpells > 0) then
 		for i = #ActiveSpells, 1, -1 do
 			ID = ActiveSpells[i]
-			
+
 			local Start, Duration = GetSpellCooldown(ID)
-			
+
 			if (Start ~= nil) then
 				Remaining = Start + Duration - Now
-				
+
 				if (Remaining <= 0) then
 					local Texture = self:GetTexture("spell", ID)
-					
+
 					if Texture then
 						self.Icon:SetTexture(Texture)
 						self.AnimIn:Play()
 						self.Hold:Play()
-						
+
 						if Settings["cooldowns-text"] then
 							SpellName = GetSpellInfo(ID)
-							
+
 							if SpellName then
 								self.Text:SetText(format(Language["|cff%s%s|r is ready!"], Settings["ui-widget-color"], SpellName))
-								
+
 								SpellName = nil
 							end
 						else
 							self.Text:SetText("")
 						end
 					end
-					
+
 					tremove(ActiveSpells, i)
 					ActiveCount = ActiveCount - 1
 				end
 			end
 		end
 	end
-	
+
 	if (#ActiveItems > 0) then
 		for i = #ActiveItems, 1, -1 do
 			local Info = ActiveItems[i]
 			local Start, Duration = GetItemCooldown(Info.ID)
-			
+
 			if (Start ~= nil) then
 				if (Info.Dur == 0 and Duration > MinTreshold) then
 					Info.Dur = Duration
 				elseif (Info.Dur > 0 and Duration == 0) then
 					local Texture = self:GetTexture("item", Info.ID)
-					
+
 					if Texture then
 						self.Icon:SetTexture(Texture)
 						self.AnimIn:Play()
 						self.Hold:Play()
-						
+
 						if Settings["cooldowns-text"] then
 							SpellName = GetItemInfo(Info.ID)
-							
+
 							if SpellName then
 								self.Text:SetText(format(Language["|cff%s%s|r is ready!"], Settings["ui-widget-color"], SpellName))
-								
+
 								SpellName = nil
 							end
 						else
 							self.Text:SetText("")
 						end
 					end
-					
+
 					tinsert(ItemTables, tremove(ActiveItems, i))
 					ActiveCount = ActiveCount - 1
 				end
 			end
 		end
 	end
-	
+
 	if (ActiveCount <= 0) then
 		self:SetScript("OnUpdate", nil)
 		Running = false
 	end
-	
+
 	Elapsed = 0
 end
 
@@ -154,17 +154,17 @@ end
 function Cooldowns:SPELL_UPDATE_COOLDOWN()
 	for i = #Spells, 1, -1 do
 		local Start, Duration = GetSpellCooldown(Spells[i])
-		
+
 		if (Duration >= MinTreshold) then
 			tinsert(ActiveSpells, Spells[i])
 			ActiveCount = ActiveCount + 1
-			
+
 			if (ActiveCount > 0 and not Running) then
 				self:SetScript("OnUpdate", self.OnUpdate)
 				Running = true
 			end
 		end
-		
+
 		tremove(Spells, i)
 	end
 end
@@ -174,7 +174,7 @@ function Cooldowns:UNIT_SPELLCAST_SUCCEEDED(unit, guid, id)
 		if self.Blacklist["player"][id] then
 			return
 		end
-		
+
 		tinsert(Spells, id)
 	end
 end
@@ -183,15 +183,15 @@ local StartItem = function(id)
 	if Cooldowns.Blacklist["item"][id] then
 		return
 	end
-	
+
 	local Info = ItemTables[1] and tremove(ItemTables, 1) or {}
-	
+
 	Info.ID = id
 	Info.Dur = 0
-	
+
 	tinsert(ActiveItems, Info)
 	ActiveCount = ActiveCount + 1
-	
+
 	if (ActiveCount > 0 and not Running) then
 		Cooldowns:SetScript("OnUpdate", Cooldowns.OnUpdate)
 		Running = true
@@ -200,7 +200,7 @@ end
 
 local UseAction = function(slot)
 	local ActionType, ItemID = GetActionInfo(slot)
-	
+
 	if (ActionType == "item") then
 		StartItem(ItemID)
 	end
@@ -208,7 +208,7 @@ end
 
 local UseInventoryItem = function(slot)
 	local ItemID = GetInventoryItemID("player", slot)
-	
+
 	if ItemID then
 		StartItem(ItemID)
 	end
@@ -216,7 +216,7 @@ end
 
 local UseContainerItem = function(bag, slot)
 	local ItemID = GetContainerItemID(bag, slot)
-	
+
 	if ItemID then
 		StartItem(ItemID)
 	end
@@ -234,54 +234,54 @@ function Cooldowns:Load()
 	if (not Settings["cooldowns-enable"]) then
 		return
 	end
-	
+
 	self.Anchor = CreateFrame("Frame", "HydraUI Cooldown Flash", HydraUI.UIParent)
 	self.Anchor:SetSize(Settings["cooldowns-size"], Settings["cooldowns-size"])
 	self.Anchor:SetPoint("CENTER", HydraUI.UIParent, "CENTER", 0, 100)
-	
+
 	self:SetSize(Settings["cooldowns-size"], Settings["cooldowns-size"])
 	self:SetPoint("CENTER", self.Anchor, "CENTER", 0, 0)
 	self:SetBackdrop(HydraUI.Backdrop)
 	self:SetFrameStrata("HIGH")
 	self:SetBackdropColor(0, 0, 0)
 	self:SetAlpha(0)
-	
+
 	self.Icon = self:CreateTexture(nil, "OVERLAY")
 	self.Icon:SetPoint("TOPLEFT", self, 1, -1)
 	self.Icon:SetPoint("BOTTOMRIGHT", self, -1, 1)
 	self.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	
+
 	self.Text = self:CreateFontString(nil, "OVERLAY")
 	self.Text:SetPoint("TOP", self, "BOTTOM", 0, -5)
 	HydraUI:SetFontInfo(self.Text, Settings["ui-widget-font"], 16)
 	self.Text:SetWidth(Settings["cooldowns-size"] * 2.5)
 	self.Text:SetJustifyH("CENTER")
-	
+
 	self.Anim = CreateAnimationGroup(self)
-	
+
 	self.AnimIn = self.Anim:CreateAnimation("Fade")
 	self.AnimIn:SetChange(1)
 	self.AnimIn:SetDuration(0.2)
 	self.AnimIn:SetEasing("in")
-	
+
 	self.AnimOut = self.Anim:CreateAnimation("Fade")
 	self.AnimOut:SetChange(0)
 	self.AnimOut:SetDuration(0.6)
 	self.AnimOut:SetEasing("out")
-	
+
 	self.Hold = self.Anim:CreateAnimation("Sleep")
 	self.Hold:SetDuration(Settings["cooldowns-hold"] + 0.2)
 	self.Hold:SetScript("OnFinished", OnFinished)
-	
+
 	HydraUI:CreateMover(self.Anchor)
-	
+
 	self:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED")
 	self:SetScript("OnEvent", self.OnEvent)
-	
+
 	hooksecurefunc("UseAction", UseAction)
 	hooksecurefunc("UseInventoryItem", UseInventoryItem)
-	
+
 	if (HydraUI.ClientVersion < 100000) then
 		hooksecurefunc("UseContainerItem", UseContainerItem)
 	end
@@ -312,7 +312,7 @@ local TestCooldown = function()
 	else
 		Cooldowns.Text:SetText("")
 	end
-	
+
 	Cooldowns.Icon:SetTexture(select(10, GetItemInfo(6948)))
 	Cooldowns.AnimIn:Play()
 	Cooldowns.Hold:Play()

@@ -51,21 +51,21 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	self:RegisterForClicks("AnyUp")
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
-	
+
 	local Backdrop = self:CreateTexture(nil, "BACKGROUND")
 	Backdrop:SetAllPoints()
 	Backdrop:SetTexture(Assets:GetTexture("Blank"))
 	Backdrop:SetVertexColor(0, 0, 0)
-	
+
 	-- Threat
 	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	Threat:SetPoint("TOPLEFT", -1, 1)
 	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
 	Threat:SetBackdrop(HydraUI.Outline)
 	Threat.PostUpdate = UF.ThreatPostUpdate
-	
+
 	self.ThreatIndicator = Threat
-	
+
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
@@ -74,20 +74,20 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Health:SetReverseFill(Settings["raid-health-reverse"])
 	Health:SetOrientation(Settings["raid-health-orientation"])
-	
+
 	local HealBar = CreateFrame("StatusBar", nil, Health)
 	HealBar:SetWidth(Settings["raid-width"])
 	HealBar:SetHeight(Settings["raid-health-height"])
 	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
-	
+
 	if Settings["raid-health-reverse"] then
 		HealBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 	else
 		HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	end
-	
+
 	if HydraUI.IsMainline then
 		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
 		AbsorbsBar:SetWidth(Settings["raid-width"])
@@ -95,76 +95,76 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
-		
+
 		if Settings["raid-health-reverse"] then
 			AbsorbsBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 		else
 			AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 		end
-		
+
 		self.AbsorbsBar = AbsorbsBar
 	end
-	
+
 	local HealthBG = self:CreateTexture(nil, "BORDER")
 	HealthBG:SetAllPoints(Health)
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealthBG.multiplier = 0.2
-	
+
 	local HealthDead = Health:CreateTexture(nil, "OVERLAY")
 	HealthDead:SetAllPoints(Health)
 	HealthDead:SetTexture(Assets:GetTexture("RenHorizonUp"))
 	HealthDead:SetVertexColor(0.8, 0.8, 0.8)
 	HealthDead:SetAlpha(0)
 	HealthDead:SetDrawLayer("OVERLAY", 7)
-	
+
 	Health.DeadAnim = CreateAnimationGroup(HealthDead)
-	
+
 	Health.DeadAnim.In = Health.DeadAnim:CreateAnimation("Fade")
 	Health.DeadAnim.In:SetOrder(1)
 	Health.DeadAnim.In:SetEasing("in")
 	Health.DeadAnim.In:SetDuration(0.15)
 	Health.DeadAnim.In:SetChange(0.6)
-	
+
 	Health.DeadAnim.Out = Health.DeadAnim:CreateAnimation("Fade")
 	Health.DeadAnim.Out:SetOrder(2)
 	Health.DeadAnim.Out:SetEasing("out")
 	Health.DeadAnim.Out:SetDuration(0.3)
 	Health.DeadAnim.Out:SetChange(0)
-	
+
 	local HealthName = Health:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(HealthName, Settings["raid-font"], Settings["raid-font-size"], Settings["raid-font-flags"])
 	HealthName:SetPoint("BOTTOM", Health, "CENTER", 0, 1)
 	HealthName:SetJustifyH("CENTER")
-	
+
 	local HealthBottom = Health:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(HealthBottom, Settings["raid-font"], Settings["raid-font-size"], Settings["raid-font-flags"])
 	HealthBottom:SetPoint("TOP", Health, "CENTER", 0, -1)
 	HealthBottom:SetJustifyH("CENTER")
-	
+
 	-- Attributes
 	Health.colorDisconnected = true
 	Health.Smooth = true
-	
+
 	UF:SetHealthAttributes(Health, Settings["raid-health-color"])
-	
+
 	local Power = CreateFrame("StatusBar", nil, self)
 	Power:SetPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetHeight(Settings["raid-power-height"])
 	Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Power:SetReverseFill(Settings["raid-power-reverse"])
-	
+
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetPoint("TOPLEFT", Power, 0, 0)
 	PowerBG:SetPoint("BOTTOMRIGHT", Power, 0, 0)
 	PowerBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	PowerBG:SetAlpha(0.2)
-	
+
 	-- Attributes
 	Power.frequentUpdates = true
-	
+
 	UF:SetPowerAttributes(Power, Settings["raid-power-color"])
-	
+
 	if UF.BuffIDs[HydraUI.UserClass] then
 		local Auras = CreateFrame("Frame", nil, Health)
 		Auras:SetPoint("TOPLEFT", Health, 2, -2)
@@ -176,7 +176,7 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 		Auras.strictMatching = true
 		Auras.icons = {}
 		Auras.PostCreateIcon = UF.PostCreateAuraWatchIcon
-		
+
 		for key, spell in next, UF.BuffIDs[HydraUI.UserClass] do
 			local Icon = CreateFrame("Frame", nil, Auras)
 			Icon.spellID = spell[1]
@@ -184,34 +184,34 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 			Icon.strictMatching = true
 			Icon:SetSize(8, 8)
 			Icon:SetPoint(spell[2], 0, 0)
-			
+
 			local Texture = Icon:CreateTexture(nil, "OVERLAY")
 			Texture:SetAllPoints(Icon)
 			Texture:SetTexture(Assets:GetTexture("Blank"))
-			
+
 			local BG = Icon:CreateTexture(nil, "BORDER")
 			BG:SetPoint("TOPLEFT", Icon, -1, 1)
 			BG:SetPoint("BOTTOMRIGHT", Icon, 1, -1)
 			BG:SetTexture(Assets:GetTexture("Blank"))
 			BG:SetVertexColor(0, 0, 0)
-			
+
 			if (spell[3]) then
 				Texture:SetVertexColor(unpack(spell[3]))
 			else
 				Texture:SetVertexColor(0.8, 0.8, 0.8)
 			end
-			
+
 			local Count = Icon:CreateFontString(nil, "OVERLAY")
 			HydraUI:SetFontInfo(Count, Settings["raid-font"], 10)
 			Count:SetPoint("CENTER", unpack(UF.AuraOffsets[spell[2]]))
 			Icon.count = Count
-			
+
 			Auras.icons[spell[1]] = Icon
 		end
-		
+
 		self.AuraWatch = Auras
 	end
-	
+
 	-- Debuffs
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", Health)
 	Debuffs:SetSize(24, 24)
@@ -227,7 +227,7 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	Debuffs.PostUpdateIcon = UF.PostUpdateIcon
 	Debuffs.CustomFilter = RaidDebuffFilter
 	self.Debuffs = Debuffs
-	
+
 	-- Leader
     local Leader = Health:CreateTexture(nil, "OVERLAY")
     Leader:SetSize(16, 16)
@@ -235,7 +235,7 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
     Leader:SetTexture(Assets:GetTexture("Leader"))
     Leader:SetVertexColor(HydraUI:HexToRGB("FFEB3B"))
     Leader:Hide()
-	
+
 	-- Assist
     local Assist = Health:CreateTexture(nil, "OVERLAY")
     Assist:SetSize(16, 16)
@@ -243,36 +243,36 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
     Assist:SetTexture(Assets:GetTexture("Assist"))
     Assist:SetVertexColor(HydraUI:HexToRGB("FFEB3B"))
     Assist:Hide()
-	
+
 	-- Ready Check
     local ReadyCheck = Health:CreateTexture(nil, "OVERLAY")
 	ReadyCheck:SetSize(16, 16)
     ReadyCheck:SetPoint("LEFT", Health, 2, 0)
-	
+
     -- Phase
     local PhaseIndicator = CreateFrame("Frame", nil, Health)
     PhaseIndicator:SetSize(16, 16)
     PhaseIndicator:SetPoint("LEFT", Health, 2, 0)
     PhaseIndicator:EnableMouse(true)
-	
+
 	PhaseIndicator.Icon = PhaseIndicator:CreateTexture(nil, "OVERLAY")
 	PhaseIndicator.Icon:SetAllPoints()
-	
+
 	-- Target Icon
 	local RaidTarget = Health:CreateTexture(nil, "OVERLAY")
 	RaidTarget:SetSize(16, 16)
 	RaidTarget:SetPoint("CENTER", Health, "TOP")
-	
+
     -- Resurrect
 	local Resurrect = Health:CreateTexture(nil, "OVERLAY")
 	Resurrect:SetSize(16, 16)
 	Resurrect:SetPoint("LEFT", Health, 2, 0)
-	
+
 	-- Role
 	local RoleIndicator = Health:CreateTexture(nil, "OVERLAY")
 	RoleIndicator:SetSize(16, 16)
 	RoleIndicator:SetPoint("LEFT", Health, 2, 0)
-	
+
 	-- Dispels
 	local Dispel = CreateFrame("Frame", nil, Health, "BackdropTemplate")
 	Dispel:SetSize(20, 20)
@@ -280,39 +280,39 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	Dispel:SetFrameLevel(Health:GetFrameLevel() + 20)
 	Dispel:SetBackdrop(HydraUI.BackdropAndBorder)
 	Dispel:SetBackdropColor(0, 0, 0)
-	
+
 	Dispel.icon = Dispel:CreateTexture(nil, "ARTWORK")
 	Dispel.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	Dispel.icon:SetPoint("TOPLEFT", Dispel, 1, -1)
 	Dispel.icon:SetPoint("BOTTOMRIGHT", Dispel, -1, 1)
-	
+
 	Dispel.cd = CreateFrame("Cooldown", nil, Dispel, "CooldownFrameTemplate")
 	Dispel.cd:SetPoint("TOPLEFT", Dispel, 1, -1)
 	Dispel.cd:SetPoint("BOTTOMRIGHT", Dispel, -1, 1)
 	Dispel.cd:SetHideCountdownNumbers(true)
 	Dispel.cd:SetDrawEdge(false)
-	
+
 	Dispel.count = Dispel.cd:CreateFontString(nil, "ARTWORK")
 	HydraUI:SetFontInfo(Dispel.count, Settings["raid-font"], Settings["raid-font-size"], Settings["raid-font-flags"])
 	Dispel.count:SetPoint("BOTTOMRIGHT", Dispel, "BOTTOMRIGHT", -3, 3)
 	Dispel.count:SetTextColor(1, 1, 1)
 	Dispel.count:SetJustifyH("RIGHT")
 	Dispel.count:SetDrawLayer("ARTWORK", 7)
-	
+
 	Dispel.bg = Dispel:CreateTexture(nil, "BACKGROUND")
 	Dispel.bg:SetPoint("TOPLEFT", Dispel, -1, 1)
 	Dispel.bg:SetPoint("BOTTOMRIGHT", Dispel, 1, -1)
 	Dispel.bg:SetTexture(Assets:GetTexture("Blank"))
 	Dispel.bg:SetVertexColor(0, 0, 0)
-	
+
 	self:Tag(HealthName, Settings["raid-health-top"])
 	self:Tag(HealthBottom, Settings["raid-health-bottom"])
-	
+
 	self.Range = {
 		insideAlpha = Settings["raid-in-range"] / 100,
 		outsideAlpha = Settings["raid-out-of-range"] / 100,
 	}
-	
+
 	self.Health = Health
 	self.Health.bg = HealthBG
 	self.HealBar = HealBar
@@ -335,21 +335,21 @@ HydraUI.StyleFuncs["raidpet"] = function(self, unit)
 	self:RegisterForClicks("AnyUp")
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
-	
+
 	local Backdrop = self:CreateTexture(nil, "BACKGROUND")
 	Backdrop:SetAllPoints()
 	Backdrop:SetTexture(Assets:GetTexture("Blank"))
 	Backdrop:SetVertexColor(0, 0, 0)
-	
+
 	-- Threat
 	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	Threat:SetPoint("TOPLEFT", -1, 1)
 	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
 	Threat:SetBackdrop(HydraUI.Outline)
 	Threat.PostUpdate = UF.ThreatPostUpdate
-	
+
 	self.ThreatIndicator = Threat
-	
+
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
@@ -359,19 +359,19 @@ HydraUI.StyleFuncs["raidpet"] = function(self, unit)
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Health:SetReverseFill(Settings["raid-pets-health-reverse"])
 	Health:SetOrientation(Settings["raid-pets-health-orientation"])
-	
+
 	local HealBar = CreateFrame("StatusBar", nil, self)
 	HealBar:SetAllPoints(Health)
 	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
-	
+
 	if Settings["raid-health-reverse"] then
 		HealBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 	else
 		HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	end
-	
+
 	if HydraUI.IsMainline then
 		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
 		AbsorbsBar:SetWidth(Settings["raid-width"])
@@ -379,46 +379,46 @@ HydraUI.StyleFuncs["raidpet"] = function(self, unit)
 		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
-		
+
 		if Settings["raid-health-reverse"] then
 			AbsorbsBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 		else
 			AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 		end
-		
+
 		self.AbsorbsBar = AbsorbsBar
 	end
-	
+
 	local HealthBG = Health:CreateTexture(nil, "BORDER")
 	HealthBG:SetAllPoints()
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealthBG.multiplier = 0.2
-	
+
 	local HealthMiddle = Health:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(HealthMiddle, Settings["raid-font"], Settings["raid-font-size"], Settings["raid-font-flags"])
 	HealthMiddle:SetPoint("CENTER", Health, 0, 0)
 	HealthMiddle:SetJustifyH("CENTER")
-	
+
 	-- Attributes
 	Health.frequentUpdates = true
 	Health.colorDisconnected = true
 	Health.Smooth = true
-	
+
 	UF:SetHealthAttributes(Health, Settings["raid-pets-health-color"])
-	
+
 	-- Target Icon
 	local RaidTarget = Health:CreateTexture(nil, 'OVERLAY')
 	RaidTarget:SetSize(16, 16)
 	RaidTarget:SetPoint("CENTER", Health, "TOP")
-	
+
 	-- Tags
 	self:Tag(HealthMiddle, "[Name10]")
-	
+
 	self.Range = {
 		insideAlpha = Settings["raid-in-range"] / 100,
 		outsideAlpha = Settings["raid-out-of-range"] / 100,
 	}
-	
+
 	self.Health = Health
 	self.HealBar = HealBar
 	self.Health.bg = HealthBG
@@ -439,15 +439,15 @@ end
 local UpdateRaidWidth = function(value)
 	if HydraUI.UnitFrames["raid"] then
 		local Unit
-		
+
 		for i = 1, HydraUI.UnitFrames["raid"]:GetNumChildren() do
 			Unit = select(i, HydraUI.UnitFrames["raid"]:GetChildren())
-			
+
 			if Unit then
 				Unit:SetWidth(value)
 			end
 		end
-		
+
 		UpdateRaidAnchorSize()
 	end
 end
@@ -455,16 +455,16 @@ end
 local UpdateRaidHealthHeight = function(value)
 	if HydraUI.UnitFrames["raid"] then
 		local Unit
-		
+
 		for i = 1, HydraUI.UnitFrames["raid"]:GetNumChildren() do
 			Unit = select(i, HydraUI.UnitFrames["raid"]:GetChildren())
-			
+
 			if Unit then
 				Unit:SetHeight(value + Settings["raid-power-height"] + 3)
 				Unit.Health:SetHeight(value)
 			end
 		end
-		
+
 		UpdateRaidAnchorSize()
 	end
 end
@@ -472,13 +472,13 @@ end
 local UpdateRaidHealthColor = function(value)
 	if HydraUI.UnitFrames["raid"] then
 		local Unit
-		
+
 		for i = 1, HydraUI.UnitFrames["raid"]:GetNumChildren() do
 			Unit = select(i, HydraUI.UnitFrames["raid"]:GetChildren())
-			
+
 			if Unit then
 				UF:SetHealthAttributes(Unit.Health, value)
-				
+
 				Unit.Health:ForceUpdate()
 			end
 		end
@@ -488,10 +488,10 @@ end
 local UpdateRaidHealthOrientation = function(value)
 	if HydraUI.UnitFrames["raid"] then
 		local Unit
-		
+
 		for i = 1, HydraUI.UnitFrames["raid"]:GetNumChildren() do
 			Unit = select(i, HydraUI.UnitFrames["raid"]:GetChildren())
-			
+
 			if Unit then
 				Unit.Health:SetOrientation(value)
 			end
@@ -502,18 +502,18 @@ end
 local UpdateRaidHealthReverseFill = function(value)
 	if HydraUI.UnitFrames["raid"] then
 		local Unit
-		
+
 		for i = 1, HydraUI.UnitFrames["raid"]:GetNumChildren() do
 			Unit = select(i, HydraUI.UnitFrames["raid"]:GetChildren())
-			
+
 			if Unit then
 				Unit.Health:SetReverseFill(value)
 				Unit.HealBar:SetReverseFill(value)
 				Unit.HealBar:ClearAllPoints()
-				
+
 				if value then
 					Unit.HealBar:SetPoint("RIGHT", Unit.Health:GetStatusBarTexture(), "LEFT", 0, 0)
-					
+
 					if Unit.AbsorbsBar then
 						Unit.AbsorbsBar:SetReverseFill(value)
 						Unit.AbsorbsBar:ClearAllPoints()
@@ -521,7 +521,7 @@ local UpdateRaidHealthReverseFill = function(value)
 					end
 				else
 					Unit.HealBar:SetPoint("LEFT", Unit.Health:GetStatusBarTexture(), "RIGHT", 0, 0)
-					
+
 					if Unit.AbsorbsBar then
 						Unit.AbsorbsBar:SetReverseFill(value)
 						Unit.AbsorbsBar:ClearAllPoints()
@@ -536,10 +536,10 @@ end
 local UpdateEnableRaidPower = function(value)
 	if HydraUI.UnitFrames["raid"] then
 		local Unit
-		
+
 		for i = 1, HydraUI.UnitFrames["raid"]:GetNumChildren() do
 			Unit = select(i, HydraUI.UnitFrames["raid"]:GetChildren())
-			
+
 			if Unit then
 				if value then
 					Unit:EnableElement("Power")
@@ -556,16 +556,16 @@ end
 local UpdateRaidPowerHeight = function(value)
 	if HydraUI.UnitFrames["raid"] then
 		local Unit
-		
+
 		for i = 1, HydraUI.UnitFrames["raid"]:GetNumChildren() do
 			Unit = select(i, HydraUI.UnitFrames["raid"]:GetChildren())
-			
+
 			if Unit then
 				Unit:SetHeight(value + Settings["raid-health-height"] + 3)
 				Unit.Power:SetHeight(value)
 			end
 		end
-		
+
 		UpdateRaidAnchorSize()
 	end
 end
@@ -573,10 +573,10 @@ end
 local UpdateRaidPowerReverseFill = function(value)
 	if HydraUI.UnitFrames["raid"] then
 		local Unit
-		
+
 		for i = 1, HydraUI.UnitFrames["raid"]:GetNumChildren() do
 			Unit = select(i, HydraUI.UnitFrames["raid"]:GetChildren())
-			
+
 			if Unit then
 				Unit.Power:SetReverseFill(value)
 			end
@@ -587,13 +587,13 @@ end
 local UpdateRaidPowerColor = function(value)
 	if HydraUI.UnitFrames["raid"] then
 		local Unit
-		
+
 		for i = 1, HydraUI.UnitFrames["raid"]:GetNumChildren() do
 			Unit = select(i, HydraUI.UnitFrames["raid"]:GetChildren())
-			
+
 			if Unit then
 				UF:SetPowerAttributes(Unit.Power, value)
-				
+
 				Unit.Power:ForceUpdate()
 			end
 		end
@@ -602,43 +602,43 @@ end
 
 local UpdateRaidXOffset = function(value)
 	HydraUI.UnitFrames["raid"]:SetAttribute("xoffset", value)
-	
+
 	UpdateRaidAnchorSize()
 end
 
 local UpdateRaidYOffset = function(value)
 	HydraUI.UnitFrames["raid"]:SetAttribute("yoffset", value)
-	
+
 	UpdateRaidAnchorSize()
 end
 
 local UpdateRaidUnitsPerColumn = function(value)
 	HydraUI.UnitFrames["raid"]:SetAttribute("unitsPerColumn", value)
-	
+
 	UpdateRaidAnchorSize()
 end
 
 local UpdateRaidMaxColumns = function(value)
 	HydraUI.UnitFrames["raid"]:SetAttribute("maxColumns", value)
-	
+
 	UpdateRaidAnchorSize()
 end
 
 local UpdateRaidColumnSpacing = function(value)
 	HydraUI.UnitFrames["raid"]:SetAttribute("columnSpacing", value)
-	
+
 	UpdateRaidAnchorSize()
 end
 
 local UpdateRaidColumnAnchor = function(value)
 	HydraUI.UnitFrames["raid"]:SetAttribute("columnAnchorPoint", value)
-	
+
 	UpdateRaidAnchorSize()
 end
 
 local UpdateRaidPoint = function(value)
 	HydraUI.UnitFrames["raid"]:SetAttribute("point", value)
-	
+
 	UpdateRaidAnchorSize()
 end
 
@@ -671,7 +671,7 @@ local Testing = false
 local TestRaid = function()
 	local Header = _G["HydraUI Raid"]
 	local Pets = _G["HydraUI Raid Pets"]
-	
+
 	if Testing then
 		if Header then
 			Header:SetAttribute("isTesting", false)
@@ -679,30 +679,30 @@ local TestRaid = function()
 			if (Header:GetAttribute("startingIndex") ~= -24) then
 				Header:SetAttribute("startingIndex", -24)
 			end
-			
+
 			for i = 1, select("#", Header:GetChildren()) do
 				local Frame = select(i, Header:GetChildren())
-				
+
 				UnregisterUnitWatch(Frame)
 				Frame:Hide()
 			end
 		end
-		
+
 		if Pets then
 			Pets:SetAttribute("isTesting", false)
 
 			if (Pets:GetAttribute("startingIndex") ~= -24) then
 				Pets:SetAttribute("startingIndex", -24)
 			end
-			
+
 			for i = 1, select("#", Pets:GetChildren()) do
 				local Frame = select(i, Pets:GetChildren())
-				
+
 				UnregisterUnitWatch(Frame)
 				Frame:Hide()
 			end
 		end
-		
+
 		Testing = false
 	else
 		if Header then
@@ -711,34 +711,34 @@ local TestRaid = function()
 			if (Header:GetAttribute("startingIndex") ~= -24) then
 				Header:SetAttribute("startingIndex", -24)
 			end
-			
+
 			for i = 1, select("#", Header:GetChildren()) do
 				local Frame = select(i, Header:GetChildren())
-				
+
 				Frame.unit = "player"
 				UnregisterUnitWatch(Frame)
 				RegisterUnitWatch(Frame, true)
 				Frame:Show()
 			end
 		end
-		
+
 		if Pets then
 			Pets:SetAttribute("isTesting", true)
 
 			if (Pets:GetAttribute("startingIndex") ~= -24) then
 				Pets:SetAttribute("startingIndex", -24)
 			end
-			
+
 			for i = 1, select("#", Pets:GetChildren()) do
 				local Frame = select(i, Pets:GetChildren())
-				
+
 				Frame.unit = UnitExists("pet") and "pet" or "player"
 				UnregisterUnitWatch(Frame)
 				RegisterUnitWatch(Frame, true)
 				Frame:Show()
 			end
 		end
-		
+
 		Testing = true
 	end
 end
@@ -750,7 +750,7 @@ end
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Raid Pets"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("raid-pets-enable", Settings["raid-pets-enable"], Language["Enable Raid Pet Frames"], Language["Enable the Raid pet frames module"], ReloadUI):RequiresReload(true)
-	
+
 	--[[Defaults["raid-pets-enable"] = true
 	Defaults["raid-pets-width"] = 78
 	Defaults["raid-pets-health-height"] = 22

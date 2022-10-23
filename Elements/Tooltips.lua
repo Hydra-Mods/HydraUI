@@ -88,42 +88,42 @@ Tooltips.HappinessLevels = {
 function Tooltips:UpdateFonts(tooltip)
 	for i = 1, tooltip:GetNumRegions() do
 		local Region = select(i, tooltip:GetRegions())
-		
+
 		if (Region:GetObjectType() == "FontString") then
 			HydraUI:SetFontInfo(Region, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 		end
 	end
-	
+
 	for i = 1, tooltip:GetNumChildren() do
 		local Child = select(i, tooltip:GetChildren())
-		
+
 		if (Child and Child.GetName and Child:GetName() ~= nil and find(Child:GetName(), "MoneyFrame")) then
 			local Prefix = _G[Child:GetName() .. "PrefixText"]
 			local Suffix = _G[Child:GetName() .. "SuffixText"]
-			
+
 			if Prefix then
 				HydraUI:SetFontInfo(Prefix, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 			end
-			
+
 			if Suffix then
 				HydraUI:SetFontInfo(Suffix, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 			end
 		end
 	end
-	
+
 	if tooltip.numMoneyFrames then
 		local MoneyFrame
-		
+
 		for i = 1, tooltip.numMoneyFrames do
 			MoneyFrame = _G[tooltip:GetName() .. "MoneyFrame" .. i]
-			
+
 			if MoneyFrame then
 				for j = 1, MoneyFrame:GetNumChildren() do
 					local Region = select(j, MoneyFrame:GetChildren())
-					
+
 					if (Region and Region.GetName and Region:GetName()) then
 						local Text = _G[Region:GetName() .. "Text"]
-						
+
 						if Text then
 							HydraUI:SetFontInfo(Text, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 						end
@@ -132,7 +132,7 @@ function Tooltips:UpdateFonts(tooltip)
 			end
 		end
 	end
-	
+
 	self:UpdateStatusBarFonts()
 end
 
@@ -140,13 +140,13 @@ local SetTooltipStyle = function(self)
 	if self.NineSlice then
 		self.NineSlice:Hide()
 	end
-	
+
 	if self.Styled then
 		Tooltips:UpdateFonts(self)
 	else
 		local R, G, B = HydraUI:HexToRGB(Settings["ui-window-main-color"])
 		local Level = self:GetFrameLevel()
-		
+
 		self.Backdrop = CreateFrame("Frame", nil, self, "BackdropTemplate")
 		self.Backdrop:SetPoint("TOPLEFT", self, 0, 0)
 		self.Backdrop:SetPoint("BOTTOMRIGHT", self, 0, 0)
@@ -154,40 +154,40 @@ local SetTooltipStyle = function(self)
 		self.Backdrop:SetFrameStrata(self:GetFrameStrata())
 		HydraUI:AddBackdrop(self.Backdrop)
 		self.Backdrop.Outside:SetBackdropColor(R, G, B, (Settings["tooltips-opacity"] / 100))
-		
+
 		if (self == AutoCompleteBox) then
 			for i = 1, AUTOCOMPLETE_MAX_BUTTONS do
 				HydraUI:SetFontInfo(_G["AutoCompleteButton" .. i .. "Text"], Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 			end
-			
+
 			HydraUI:SetFontInfo(AutoCompleteInstructions, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 		end
-		
+
 		Tooltips:UpdateFonts(self)
-		
+
 		self.Styled = true
-		
+
 		self:Show()
 	end
 end
 
 local GetUnitColor = function(unit)
 	local Color
-	
+
 	if UnitIsPlayer(unit) then
 		local Class = select(2, UnitClass(unit))
-		
+
 		if Class then
 			Color = HydraUI.ClassColors[Class]
 		end
 	else
 		local Reaction = UnitReaction(unit, "player")
-		
+
 		if Reaction then
 			Color = HydraUI.ReactionColors[Reaction]
 		end
 	end
-	
+
 	if Color then
 		return HydraUI:RGBToHex(Color[1], Color[2], Color[3])
 	else
@@ -197,7 +197,7 @@ end
 
 local FilterUnit = function(unit)
 	local State
-	
+
 	if UnitPlayerControlled(unit) then
 		if UnitCanAttack(unit, "player") then
 			if (not UnitCanAttack("player", unit)) then
@@ -214,7 +214,7 @@ local FilterUnit = function(unit)
 		end
 	else
 		local Reaction = UnitReaction(unit, "player")
-		
+
 		if Reaction then
 			if (Reaction >= 4) then
 				State = 1
@@ -225,7 +225,7 @@ local FilterUnit = function(unit)
 			State = 1
 		end
 	end
-	
+
 	if (Settings["tooltips-hide-on-unit"] == "FRIENDLY" and State == 1) then
 		return true
 	elseif (Settings["tooltips-hide-on-unit"] == "HOSTILE" and State == 2) then
@@ -236,24 +236,24 @@ end
 local OnTooltipSetUnit = function(self)
 	if (Settings["tooltips-hide-on-unit"] == "NO_COMBAT" and InCombatLockdown()) or Settings["tooltips-hide-on-unit"] == "ALWAYS" then
 		self:Hide()
-		
+
 		return
 	end
-	
+
 	local Unit, UnitID = self:GetUnit()
-	
+
 	if UnitID then
 		local Class = UnitClass(UnitID)
-		
+
 		if (not Class) then
 			return
 		end
-		
+
 		if FilterUnit(UnitID) then
 			self:Hide()
 			return
 		end
-		
+
 		local Name, Realm = UnitName(UnitID)
 		local Race = UnitRace(UnitID)
 		local Level = UnitLevel(UnitID)
@@ -264,41 +264,41 @@ local OnTooltipSetUnit = function(self)
 		local Classification = Tooltips.Classifications[UnitClassification(UnitID)]
 		local Flag = ""
 		local Line
-		
+
 		if (Class == Name) then
 			Class = ""
 		end
-		
+
 		GameTooltipStatusBar:SetStatusBarColor(HydraUI:HexToRGB(Color))
 		GameTooltipStatusBar.BG:SetVertexColor(HydraUI:HexToRGB(Color))
-		
+
 		if HydraUI.IsMainline then
 			local EffectiveLevel = UnitEffectiveLevel(UnitID)
-			
+
 			if (EffectiveLevel > 0 and EffectiveLevel ~= Level) then
 				local EffectiveColor = GetQuestDifficultyColor(EffectiveLevel)
 				local EffectiveHex = HydraUI:RGBToHex(EffectiveColor.r, EffectiveColor.g, EffectiveColor.b)
-				
+
 				local Color = GetQuestDifficultyColor(Level)
 				local ColorHex = HydraUI:RGBToHex(Color.r, Color.g, Color.b)
-				
+
 				if (Level == -1) then
 					Level = "??"
 				end
-				
+
 				Level = format("|cFF%s%s|r (|cFF%s%s|r)", EffectiveHex, EffectiveLevel, ColorHex, Level)
 			end
 		else
 			local Color = GetQuestDifficultyColor(Level)
 			local Hex = HydraUI:RGBToHex(Color.r, Color.g, Color.b)
-			
+
 			if (Level == -1) then
 				Level = "??"
 			end
-			
+
 			Level = format("|cFF%s%s|r", Hex, Level)
 		end
-		
+
 		--[[if CanInspect(UnitID) then
 			if self.GUID then
 				if UnitGUID(UnitID) == self.GUID then
@@ -309,22 +309,22 @@ local OnTooltipSetUnit = function(self)
 				NotifyInspect(UnitID)
 			end
 		end]]
-		
+
 		if UnitIsAFK(UnitID) then
 			Flag = "|cFFFDD835" .. CHAT_FLAG_AFK .. "|r "
-		elseif UnitIsDND(UnitID) then 
+		elseif UnitIsDND(UnitID) then
 			Flag = "|cFFF44336" .. CHAT_FLAG_DND .. "|r "
 		end
-		
+
 		if (Realm and Realm ~= "" and Settings["tooltips-display-realm"]) then
 			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s - %s|r", Flag, Color, (Settings["tooltips-display-title"] and Title or Name), Realm))
 		else
 			GameTooltipTextLeft1:SetText(format("%s|cFF%s%s|r", Flag, Color, (Settings["tooltips-display-title"] and Title or Name)))
 		end
-		
+
 		for i = 2, self:NumLines() do
 			Line = _G["GameTooltipTextLeft" .. i]
-			
+
 			if (Line and Line.GetText and Line:GetText() and find(Line:GetText(), "^" .. LEVEL)) then
 				if Race then
 					Line:SetText(format("%s %s|r %s %s", LEVEL, Level, Race, Class))
@@ -353,23 +353,23 @@ local OnTooltipSetUnit = function(self)
 						Guild = format("|cFF66BB6A<%s>|r", Guild)
 					end
 				end
-				
+
 				Line:SetText(Guild)
 			end
 		end
 
 		if (Settings["tooltips-show-target"] and (UnitID ~= "player" and UnitExists(UnitID .. "target"))) then
 			local TargetColor = GetUnitColor(UnitID .. "target")
-			
+
 			self:AddLine(Language["Targeting: |cFF"] .. TargetColor .. UnitName(UnitID .. "target") .. "|r", 1, 1, 1)
 		end
-		
+
 		if ((not HydraUI.IsMainline) and HydraUI.UserClass == "HUNTER" and UnitID == "pet") then
 			local Level = GetHappiness()
-			
+
 			if Level then
 				local Color = HydraUI.HappinessColors[Level]
-				
+
 				if Color then
 					self:AddLine(" ")
 					self:AddDoubleLine(Language["Happiness:"], format("|cFF%s%s|r", HydraUI:RGBToHex(Color[1], Color[2], Color[3]), Tooltips.HappinessLevels[Level]))
@@ -382,23 +382,23 @@ end
 local OnTooltipSetItem = function(self)
 	if (Settings["tooltips-hide-on-item"] == "NO_COMBAT" and InCombatLockdown()) or Settings["tooltips-hide-on-item"] == "ALWAYS" then
 		self:Hide()
-		
+
 		return
 	end
-	
+
 	if (MerchantFrame and MerchantFrame:IsShown()) then
 		return
 	end
-	
+
 	local Link = select(2, self:GetItem())
-	
+
 	if (not Link) then
 		return
 	end
-	
+
 	if (not HydraUI.IsMainline) and Settings["tooltips-show-price"] then
 		local VendorPrice = select(11, GetItemInfo(Link))
-		
+
 		if VendorPrice then
 			local Count = 1
 			local MouseFocus = GetMouseFocus()
@@ -420,10 +420,10 @@ local OnTooltipSetItem = function(self)
 			end
 		end
 	end
-	
+
 	if Settings["tooltips-show-id"] then
 		local id = match(Link, ":(%w+)")
-		
+
 		self:AddLine(" ")
 		self:AddLine(format("%s |cFFFFFFFF%d|r", ID, id))
 	end
@@ -431,14 +431,14 @@ end
 
 local OnItemRefTooltipSetItem = function(self)
 	local Link = select(2, self:GetItem())
-	
+
 	if (not Link) then
 		return
 	end
-	
+
 	if Settings["tooltips-show-id"] then
 		local id = match(Link, ":(%w+)")
-		
+
 		self:AddLine(" ")
 		self:AddLine(format("%s |cFFFFFFFF%d|r", ID, id))
 	end
@@ -447,16 +447,16 @@ end
 local OnTooltipSetSpell = function(self)
 	if (Settings["tooltips-hide-on-action"] == "NO_COMBAT" and InCombatLockdown()) or Settings["tooltips-hide-on-action"] == "ALWAYS" then
 		self:Hide()
-		
+
 		return
 	end
-	
+
 	if (not Settings["tooltips-show-id"]) then
 		return
 	end
-	
+
 	local id = select(2, self:GetSpell())
-	
+
 	self:AddLine(" ")
 	self:AddLine(format("%s |cFFFFFFFF%d|r", ID, id))
 end
@@ -464,14 +464,14 @@ end
 local SetDefaultAnchor = function(self, parent)
 	if Settings["tooltips-on-cursor"] then
 		self:SetOwner(parent, Settings["tooltips-cursor-anchor"], Settings["tooltips-cursor-anchor-x"], Settings["tooltips-cursor-anchor-y"])
-		
+
 		return
 	end
-	
+
 	self:ClearAllPoints()
-	
+
 	local Offset = Settings["ui-border-thickness"]
-	
+
 	if Settings["right-window-enable"] then
 		self:SetPoint("BOTTOMLEFT", Tooltips, 0, 3 + Offset)
 	else
@@ -483,25 +483,25 @@ local OnTooltipSetAura = function(self, unit, index, filter)
 	if (not Settings["tooltips-show-id"]) then
 		return
 	end
-	
+
 	local _, _, _, _, _, _, Caster, _, _, id = UnitAura(unit, index, filter)
-	
+
 	if (not id) then
 		return
 	end
-	
+
 	if Caster then
 		local Name = UnitName(Caster)
 		local _, Class = UnitClass(Caster)
 		local Color = RAID_CLASS_COLORS[Class]
-		
+
 		self:AddLine(" ")
 		self:AddDoubleLine(format("%s |cFFFFFFFF%d|r", ID, id), format("|c%s%s|r", Color.colorStr, Name))
 	else
 		self:AddLine(" ")
 		self:AddLine(format("%s |cFFFFFFFF%d|r", ID, id))
 	end
-	
+
 	self:Show()
 end
 
@@ -513,15 +513,15 @@ function Tooltips:AddHooks()
 	for i = 1, #self.Handled do
 		self.Handled[i]:HookScript("OnShow", SetTooltipStyle)
 	end
-	
+
 	GameTooltip:HookScript("OnTooltipSetUnit", OnTooltipSetUnit)
 	GameTooltip:HookScript("OnTooltipSetItem", OnTooltipSetItem)
 	GameTooltip:HookScript("OnTooltipSetSpell", OnTooltipSetSpell)
 	ItemRefTooltip:HookScript("OnTooltipSetItem", OnItemRefTooltipSetItem)
-	
+
 	hooksecurefunc("GameTooltip_SetDefaultAnchor", SetDefaultAnchor)
 	hooksecurefunc("SharedTooltip_SetBackdropStyle", StripBackdrop)
-	
+
 	hooksecurefunc(GameTooltip, "SetUnitAura", OnTooltipSetAura)
 	hooksecurefunc(GameTooltip, "SetUnitBuff", OnTooltipSetAura)
 	hooksecurefunc(GameTooltip, "SetUnitDebuff", OnTooltipSetAura)
@@ -533,23 +533,23 @@ end
 
 local OnValueChanged = function(self)
 	local Unit = select(2, self:GetParent():GetUnit())
-	
+
 	if (not Unit) then
 		return
 	end
-	
+
 	local Color = GetUnitColor(Unit)
-	
+
 	self:SetStatusBarColor(HydraUI:HexToRGB(Color))
 	self.BG:SetVertexColor(HydraUI:HexToRGB(Color))
-	
+
 	if (not Settings["tooltips-show-health-text"]) then
 		return
 	end
-	
+
 	local Current
 	local Max
-	
+
 	if (HydraUI.ClientVersion > 100001) then -- DRAGONFLIGHT; change to HydraUI.IsRetail after DF is released
 		Current = UnitHealth(Unit)
 		Max = UnitHealthMax(Unit)
@@ -557,7 +557,7 @@ local OnValueChanged = function(self)
 		Current = self:GetValue()
 		Max = select(2, self:GetMinMaxValues())
 	end
-	
+
 	if (Max == 0) then
 		if UnitIsDead(Unit) then
 			self.HealthValue:SetText("|cFFD64545" .. Language["Dead"] .. "|r")
@@ -575,7 +575,7 @@ local OnValueChanged = function(self)
 		else
 			self.HealthValue:SetText(format("%s / %s", HydraUI:ShortValue(Current), HydraUI:ShortValue(Max)))
 		end
-		
+
 		self.HealthPercent:SetText(format("%s%%", floor((Current / Max * 100 + 0.05) * 10) / 10))
 	end
 end
@@ -583,10 +583,10 @@ end
 local OnShow = function(self)
 	if (not Settings["tooltips-show-health"]) then
 		GameTooltipStatusBar:Hide()
-		
+
 		return
 	end
-	
+
 	OnValueChanged(self)
 end
 
@@ -598,41 +598,41 @@ end
 function Tooltips:StyleStatusBar()
 	local Border = Settings["ui-border-thickness"]
 	local Adjust = 1 > Border and 1 or (Border + 2)
-	
+
 	GameTooltipStatusBar:ClearAllPoints()
 	GameTooltipStatusBar:SetHeight(Settings["tooltips-health-bar-height"])
 	GameTooltipStatusBar:SetPoint("BOTTOMLEFT", GameTooltipStatusBar:GetParent(), "TOPLEFT", Adjust, 0)
 	GameTooltipStatusBar:SetPoint("BOTTOMRIGHT", GameTooltipStatusBar:GetParent(), "TOPRIGHT", -Adjust, 0)
 	GameTooltipStatusBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	
+
 	GameTooltipStatusBar.BG = GameTooltipStatusBar:CreateTexture(nil, "ARTWORK")
 	GameTooltipStatusBar.BG:SetPoint("TOPLEFT", GameTooltipStatusBar, 0, 0)
 	GameTooltipStatusBar.BG:SetPoint("BOTTOMRIGHT", GameTooltipStatusBar, 0, 0)
 	GameTooltipStatusBar.BG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	GameTooltipStatusBar.BG:SetAlpha(0.2)
-	
+
 	GameTooltipStatusBar.Backdrop = CreateFrame("Frame", nil, GameTooltipStatusBar, "BackdropTemplate")
 	GameTooltipStatusBar.Backdrop:SetPoint("TOPLEFT", GameTooltipStatusBar, -Adjust, Adjust)
 	GameTooltipStatusBar.Backdrop:SetPoint("BOTTOMRIGHT", GameTooltipStatusBar, Adjust, -Adjust)
-	
+
 	HydraUI:AddBackdrop(GameTooltipStatusBar.Backdrop)
 	GameTooltipStatusBar.Backdrop.Outside:SetFrameLevel(GameTooltip:GetFrameLevel() - 1)
-	
+
 	GameTooltipStatusBar.BG2 = GameTooltipStatusBar:CreateTexture(nil, "BACKGROUND")
 	GameTooltipStatusBar.BG2:SetAllPoints(GameTooltipStatusBar)
 	GameTooltipStatusBar.BG2:SetTexture(Assets:GetTexture("Blank"))
 	GameTooltipStatusBar.BG2:SetVertexColor(0, 0, 0)
-	
+
 	GameTooltipStatusBar.HealthValue = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(GameTooltipStatusBar.HealthValue, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 	GameTooltipStatusBar.HealthValue:SetPoint("LEFT", GameTooltipStatusBar, 3, 0)
 	GameTooltipStatusBar.HealthValue:SetJustifyH("LEFT")
-	
+
 	GameTooltipStatusBar.HealthPercent = GameTooltipStatusBar:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(GameTooltipStatusBar.HealthPercent, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 	GameTooltipStatusBar.HealthPercent:SetPoint("RIGHT", GameTooltipStatusBar, -3, 0)
 	GameTooltipStatusBar.HealthPercent:SetJustifyH("RIGHT")
-	
+
 	GameTooltipStatusBar:HookScript("OnValueChanged", OnValueChanged)
 	GameTooltipStatusBar:HookScript("OnShow", OnShow)
 end
@@ -647,13 +647,13 @@ end
 
 local ItemRefCloseOnMouseUp = function(self)
 	self.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-bright-color"]))
-	
+
 	ItemRefTooltip:Hide()
 end
 
 local ItemRefCloseOnMouseDown = function(self)
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-widget-bright-color"])
-	
+
 	self.Texture:SetVertexColor(R * 0.5, G * 0.5, B * 0.5)
 end
 
@@ -663,7 +663,7 @@ function Tooltips:SkinItemRef()
 	else
 		ItemRefCloseButton:Hide()
 	end
-	
+
 	-- Close button
 	local CloseButton = CreateFrame("Frame", nil, ItemRefTooltip, "BackdropTemplate")
 	CloseButton:SetSize(20, 20)
@@ -675,32 +675,32 @@ function Tooltips:SkinItemRef()
 	CloseButton:SetScript("OnLeave", ItemRefCloseOnLeave)
 	CloseButton:SetScript("OnMouseUp", ItemRefCloseOnMouseUp)
 	CloseButton:SetScript("OnMouseDown", ItemRefCloseOnMouseDown)
-	
+
 	CloseButton.Texture = CloseButton:CreateTexture(nil, "ARTWORK")
 	CloseButton.Texture:SetPoint("TOPLEFT", CloseButton, 1, -1)
 	CloseButton.Texture:SetPoint("BOTTOMRIGHT", CloseButton, -1, 1)
 	CloseButton.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	CloseButton.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-bright-color"]))
-	
+
 	CloseButton.Cross = CloseButton:CreateTexture(nil, "OVERLAY")
 	CloseButton.Cross:SetPoint("CENTER", CloseButton, 0, 0)
 	CloseButton.Cross:SetSize(16, 16)
 	CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
 	CloseButton.Cross:SetVertexColor(HydraUI:HexToRGB("EEEEEE"))
-	
+
 	ItemRefTooltip.NewCloseButton = CloseButton
 end
 
 function Tooltips:OnEvent(event, guid)
 	self.GUID = guid
-	
+
 	if self.Unit and UnitGUID(self.Unit) == guid then
 		--local Level = CalculateAverageItemLevel(self.Unit)
-		
+
 		--print(format("[%s] Item Level: %.2f", UnitName(self.Unit), Level))
-		
+
 		ClearInspectPlayer()
-		
+
 		self.Unit = nil
 	end
 end
@@ -709,29 +709,29 @@ function Tooltips:Load()
 	if (not Settings["tooltips-enable"]) then
 		return
 	end
-	
+
 	self:SetSize(200, 26)
-	
+
 	if Settings["right-window-enable"] then
 		local Mod = HydraUI:GetModule("Right Window")
 		local Offset = Settings["ui-border-thickness"]
-		
+
 		self:SetPoint("BOTTOMLEFT", Mod.TopLeft or Mod.Top, "TOPLEFT", 0, 1 > Offset and -1 or -(Offset + 2))
 	else
 		self:SetPoint("BOTTOMRIGHT", HydraUI.UIParent, -13, 101)
 	end
-	
+
 	self:AddHooks()
 	self:StyleStatusBar()
 	self:SkinItemRef()
 	--self:RegisterEvent("INSPECT_READY")
 	--self:SetScript("OnEvent", self.OnEvent)
-	
+
 	self.Mover = HydraUI:CreateMover(self)
-	
+
 	--self.Mover.PreMove = function() GameTooltip_SetDefaultAnchor(GameTooltip, self) GameTooltip:AddLine("Example tooltip") GameTooltip:Show() end
 	--self.Mover.PostMove = function() GameTooltip:Hide() end
-	
+
 	if IsInGuild() then
 		MyGuild = GetGuildInfo("player")
 	end
@@ -761,12 +761,12 @@ end
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Tooltips"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("tooltips-enable", Settings["tooltips-enable"], Language["Enable Tooltips Module"], Language["Enable the HydraUI tooltips module"], ReloadUI):RequiresReload(true)
-	
+
 	left:CreateHeader(Language["Health Bar"])
 	left:CreateSwitch("tooltips-show-health", Settings["tooltips-show-health"], Language["Display Health Bar"], Language["Display the tooltip health bar"])
 	left:CreateSwitch("tooltips-show-health-text", Settings["tooltips-show-health-text"], Language["Display Health Text"], Language["Display health information on the tooltip health bar"], UpdateShowHealthText)
 	left:CreateSlider("tooltips-health-bar-height", Settings["tooltips-health-bar-height"], 2, 30, 1, Language["Health Bar Height"], Language["Set the height of the tooltip health bar"], UpdateHealthBarHeight)
-	
+
 	left:CreateHeader(Language["Information"])
 	left:CreateSwitch("tooltips-show-target", Settings["tooltips-show-target"], Language["Display Target"], Language["Display the units current target"])
 	left:CreateSwitch("tooltips-show-id", Settings["tooltips-show-id"], Language["Display ID's"], Language["Display item and spell ID's in the tooltip"])
@@ -774,21 +774,21 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Tooltips"], f
 	left:CreateSwitch("tooltips-display-title", Settings["tooltips-display-title"], Language["Display Title"], Language["Display character titles"])
 	left:CreateSwitch("tooltips-display-rank", Settings["tooltips-display-rank"], Language["Display Guild Rank"], Language["Display character guild ranks"])
 	left:CreateSwitch("tooltips-show-price", Settings["tooltips-show-price"], Language["Display Vendor Price"], Language["Display the vendor price of an item"])
-	
+
 	left:CreateHeader(Language["Opacity"])
 	left:CreateSlider("tooltips-opacity", Settings["tooltips-opacity"], 0, 100, 5, Language["Tooltip Opacity"], Language["Set the opacity of the tooltip background"], UpdateTooltipBackdrop)
-	
+
 	right:CreateHeader(Language["Font"])
 	right:CreateDropdown("tooltips-font", Settings["tooltips-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the tooltip text"], nil, "Font")
 	right:CreateSlider("tooltips-font-size", Settings["tooltips-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the tooltip text"])
 	right:CreateDropdown("tooltips-font-flags", Settings["tooltips-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the tooltip text"])
-	
+
 	right:CreateHeader(Language["Cursor Anchor"])
 	right:CreateSwitch("tooltips-on-cursor", Settings["tooltips-on-cursor"], Language["Tooltip On Cursor"], Language["Anchor the tooltip to the mouse cursor"])
 	right:CreateDropdown("tooltips-cursor-anchor", Settings["tooltips-cursor-anchor"], {[Language["Right"]] = "ANCHOR_CURSOR_RIGHT", [Language["Center"]] = "ANCHOR_CURSOR", [Language["Left"]] = "ANCHOR_CURSOR_LEFT"}, Language["Anchor Point"])
 	right:CreateSlider("tooltips-cursor-anchor-x", Settings["tooltips-cursor-anchor-x"], -64, 64, 1, Language["X Offset"], Language["Set the horizontal offset of the tooltip. Only works with Left or Right anchor."])
 	right:CreateSlider("tooltips-cursor-anchor-y", Settings["tooltips-cursor-anchor-y"], -64, 64, 1, Language["Y Offset"], Language["Set the vertical offset of the tooltip. Only works with Left or Right anchor."])
-	
+
 	right:CreateHeader(Language["Disable Tooltips"])
 	right:CreateDropdown("tooltips-hide-on-unit", Settings["tooltips-hide-on-unit"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Friendly"]] = "FRIENDLY", [Language["Hostile"]] = "HOSTILE", [Language["Combat"]] = "NO_COMBAT"}, Language["Disable Units"], Language["Set the tooltip to not display units"])
 	right:CreateDropdown("tooltips-hide-on-item", Settings["tooltips-hide-on-item"], {[Language["Never"]] = "NEVER", [Language["Always"]] = "ALWAYS", [Language["Combat"]] = "NO_COMBAT"}, Language["Disable Items"], Language["Set the tooltip to not display items"])

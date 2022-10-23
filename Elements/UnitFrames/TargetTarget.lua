@@ -1,7 +1,7 @@
 local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 
 Defaults["unitframes-targettarget-width"] = 110
-Defaults["unitframes-targettarget-health-height"] = 26 
+Defaults["unitframes-targettarget-health-height"] = 26
 Defaults["unitframes-targettarget-health-reverse"] = false
 Defaults["unitframes-targettarget-health-color"] = "CLASS"
 Defaults["unitframes-targettarget-health-smooth"] = true
@@ -24,21 +24,21 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 	self:RegisterForClicks("AnyUp")
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
-	
+
 	local Backdrop = self:CreateTexture(nil, "BACKGROUND")
 	Backdrop:SetAllPoints()
 	Backdrop:SetTexture(Assets:GetTexture("Blank"))
 	Backdrop:SetVertexColor(0, 0, 0)
-	
+
 	-- Threat
 	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	Threat:SetPoint("TOPLEFT", -1, 1)
 	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
 	Threat:SetBackdrop(HydraUI.Outline)
 	Threat.PostUpdate = UF.ThreatPostUpdate
-	
+
 	self.ThreatIndicator = Threat
-	
+
 	-- Health Bar
 	local Health = CreateFrame("StatusBar", nil, self)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
@@ -46,20 +46,20 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 	Health:SetHeight(Settings["unitframes-targettarget-health-height"])
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Health:SetReverseFill(Settings["unitframes-targettarget-health-reverse"])
-	
+
 	local HealBar = CreateFrame("StatusBar", nil, Health)
 	HealBar:SetWidth(Settings["unitframes-targettarget-width"])
 	HealBar:SetHeight(Settings["unitframes-targettarget-health-height"])
 	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
-	
+
 	if Settings["unitframes-targettarget-health-reverse"] then
 		HealBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 	else
 		HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 	end
-	
+
 	if HydraUI.IsMainline then
 		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
 		AbsorbsBar:SetWidth(Settings["unitframes-targettarget-width"])
@@ -67,46 +67,46 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
-		
+
 		if Settings["unitframes-targettarget-health-reverse"] then
 			AbsorbsBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
 		else
 			AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
 		end
-		
+
 		self.AbsorbsBar = AbsorbsBar
 	end
-	
+
 	local HealthBG = self:CreateTexture(nil, "BORDER")
 	HealthBG:SetAllPoints(Health)
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealthBG.multiplier = 0.2
-	
+
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(HealthLeft, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthLeft:SetPoint("LEFT", Health, 3, 0)
 	HealthLeft:SetJustifyH("LEFT")
-	
+
 	local HealthRight = Health:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(HealthRight, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
 	HealthRight:SetPoint("RIGHT", Health, -3, 0)
 	HealthRight:SetJustifyH("RIGHT")
-	
+
 	-- Target Icon
 	local RaidTargetIndicator = Health:CreateTexture(nil, 'OVERLAY')
 	RaidTargetIndicator:SetSize(16, 16)
 	RaidTargetIndicator:SetPoint("CENTER", Health, "TOP")
-	
+
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-header-texture-color"])
-	
+
 	-- Attributes
 	Health.colorTapping = true
 	Health.colorDisconnected = true
 	Health.Smooth = true
 	self.colors.health = {R, G, B}
-	
+
 	UF:SetHealthAttributes(Health, Settings["unitframes-targettarget-health-color"])
-	
+
 	-- Power Bar
 	local Power = CreateFrame("StatusBar", nil, self)
 	Power:SetPoint("BOTTOMLEFT", self, 1, 1)
@@ -114,20 +114,20 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 	Power:SetHeight(Settings["unitframes-targettarget-power-height"])
 	Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Power:SetReverseFill(Settings["unitframes-targettarget-power-reverse"])
-	
+
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetPoint("TOPLEFT", Power, 0, 0)
 	PowerBG:SetPoint("BOTTOMRIGHT", Power, 0, 0)
 	PowerBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	PowerBG:SetAlpha(0.2)
-	
+
 	-- Attributes
 	Power.frequentUpdates = true
 	Power.colorReaction = true
 	Power.Smooth = true
-	
+
 	UF:SetPowerAttributes(Power, Settings["unitframes-targettarget-power-color"])
-	
+
 	if Settings["unitframes-targettarget-debuffs"] then
 		local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", self)
 		Debuffs:SetSize(Settings["unitframes-targettarget-width"], Settings["unitframes-targettarget-debuff-size"])
@@ -137,7 +137,7 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 		Debuffs.tooltipAnchor = "ANCHOR_TOP"
 		Debuffs.PostCreateIcon = UF.PostCreateIcon
 		Debuffs.PostUpdateIcon = UF.PostUpdateIcon
-		
+
 		if (Settings["unitframes-targettarget-debuff-pos"] == "TOP") then
 			Debuffs:SetPoint("BOTTOM", self, "TOP", 0, 2)
 			Debuffs.initialAnchor = "TOPRIGHT"
@@ -149,18 +149,18 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 			Debuffs["growth-x"] = "LEFT"
 			Debuffs["growth-y"] = "DOWN"
 		end
-		
+
 		self.Debuffs = Debuffs
 	end
-	
+
 	self:Tag(HealthLeft, Settings["unitframes-targettarget-health-left"])
 	self:Tag(HealthRight, Settings["unitframes-targettarget-health-right"])
-	
+
 	self.Range = {
 		insideAlpha = 1,
 		outsideAlpha = 0.5,
 	}
-	
+
 	self.Health = Health
 	self.HealBar = HealBar
 	self.Health.bg = HealthBG
@@ -187,7 +187,7 @@ end
 local UpdateTargetTargetPowerHeight = function(value)
 	if HydraUI.UnitFrames["targettarget"] then
 		local Frame = HydraUI.UnitFrames["targettarget"]
-		
+
 		Frame.Power:SetHeight(value)
 		Frame:SetHeight(Settings["unitframes-targettarget-health-height"] + value + 3)
 	end
@@ -196,9 +196,9 @@ end
 local UpdateTargetTargetHealthColor = function(value)
 	if HydraUI.UnitFrames["targettarget"] then
 		local Health = HydraUI.UnitFrames["targettarget"].Health
-		
+
 		UF:SetHealthAttributes(Health, value)
-		
+
 		Health:ForceUpdate()
 	end
 end
@@ -206,14 +206,14 @@ end
 local UpdateTargetTargetHealthFill = function(value)
 	if HydraUI.UnitFrames["targettarget"] then
 		local Unit = HydraUI.UnitFrames["targettarget"]
-		
+
 		Unit.Health:SetReverseFill(value)
 		Unit.HealBar:SetReverseFill(value)
 		Unit.HealBar:ClearAllPoints()
-		
+
 		if value then
 			Unit.HealBar:SetPoint("RIGHT", Unit.Health:GetStatusBarTexture(), "LEFT", 0, 0)
-			
+
 			if Unit.AbsorbsBar then
 				Unit.AbsorbsBar:SetReverseFill(value)
 				Unit.AbsorbsBar:ClearAllPoints()
@@ -221,7 +221,7 @@ local UpdateTargetTargetHealthFill = function(value)
 			end
 		else
 			Unit.HealBar:SetPoint("LEFT", Unit.Health:GetStatusBarTexture(), "RIGHT", 0, 0)
-			
+
 			if Unit.AbsorbsBar then
 				Unit.AbsorbsBar:SetReverseFill(value)
 				Unit.AbsorbsBar:ClearAllPoints()
@@ -234,9 +234,9 @@ end
 local UpdateTargetTargetPowerColor = function(value)
 	if HydraUI.UnitFrames["targettarget"] then
 		local Power = HydraUI.UnitFrames["targettarget"].Power
-		
+
 		UF:SetPowerAttributes(Power, value)
-		
+
 		Power:ForceUpdate()
 	end
 end
@@ -287,19 +287,19 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Target of Tar
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("tot-enable", Settings["tot-enable"], Language["Enable Target Target"], Language["Enable the target of target unit frame"], ReloadUI):RequiresReload(true)
 	left:CreateSlider("unitframes-targettarget-width", Settings["unitframes-targettarget-width"], 60, 320, 1, "Width", "Set the width of the target's target unit frame", UpdateTargetTargetWidth)
-	
+
 	left:CreateHeader(Language["Health"])
 	left:CreateSwitch("unitframes-targettarget-health-reverse", Settings["unitframes-targettarget-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateTargetTargetHealthFill)
 	left:CreateSlider("unitframes-targettarget-health-height", Settings["unitframes-targettarget-health-height"], 6, 60, 1, "Health Bar Height", "Set the height of the target of target health bar", UpdateTargetTargetHealthHeight)
 	left:CreateDropdown("unitframes-targettarget-health-color", Settings["unitframes-targettarget-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdateTargetTargetHealthColor)
 	left:CreateInput("unitframes-targettarget-health-left", Settings["unitframes-targettarget-health-left"], Language["Left Health Text"], Language["Set the text on the left of the target of target health bar"], ReloadUI):RequiresReload(true)
 	left:CreateInput("unitframes-targettarget-health-right", Settings["unitframes-targettarget-health-right"], Language["Right Health Text"], Language["Set the text on the right of the target of target health bar"], ReloadUI):RequiresReload(true)
-	
+
 	right:CreateHeader(Language["Power"])
 	right:CreateSwitch("unitframes-targettarget-power-reverse", Settings["unitframes-targettarget-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateTargetTargetPowerFill)
 	right:CreateSlider("unitframes-targettarget-power-height", Settings["unitframes-targettarget-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the target of target power bar", UpdateTargetTargetPowerHeight)
 	right:CreateDropdown("unitframes-targettarget-power-color", Settings["unitframes-targettarget-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateTargetTargetPowerColor)
-	
+
 	right:CreateHeader(Language["Debuffs"])
 	right:CreateSwitch("unitframes-targettarget-debuffs", Settings["unitframes-targettarget-debuffs"], Language["Enable Debuffs"], Language["Enable debuffs on the unit frame"], UpdateEnableDebuffs)
 	right:CreateSlider("unitframes-targettarget-debuff-size", Settings["unitframes-targettarget-debuff-size"], 10, 40, 1, "Debuff Size", "Set the size of the debuff icons", UpdateDebuffSize)

@@ -13,32 +13,32 @@ local ScanTooltip = CreateFrame("GameTooltip", nil, UIParent, "GameTooltipTempla
 
 local OnEnter = function(self)
 	self:SetTooltip()
-	
+
 	GameTooltip:AddLine(Label)
 	GameTooltip:AddLine(" ")
-	
+
 	local TotalCost = 0
 	local Current, Max, HasItem, HasCooldown, RepairCost
-	
+
 	for i = 1, #Slots do
 		Current, Max = GetInventoryItemDurability(Slots[i])
-		
+
 		if Current then
 			GameTooltip:AddDoubleLine(format("|T%s:14:14:0:0:64:64:4:60:4:60|t  %s", GetInventoryItemTexture("player", Slots[i]), GetInventoryItemLink("player", Slots[i])), format("%s%%", floor(Current / Max * 100)), 1, 1, 1, 1, 1, 1)
-			
+
 			HasItem, HasCooldown, RepairCost = ScanTooltip:SetInventoryItem("player", Slots[i], true)
-			
+
 			if (HasItem and RepairCost) then
 				TotalCost = TotalCost + RepairCost
 			end
 		end
 	end
-	
+
 	if (TotalCost > 0) then
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddLine(format("%s %s", REPAIR_COST, GetCoinTextureString(TotalCost)), 1, 1, 1)
 	end
-	
+
 	GameTooltip:Show()
 end
 
@@ -57,24 +57,24 @@ end
 local Update = function(self)
 	local Total, Count = 0, 0
 	local Current, Max
-	
+
 	for i = 1, #Slots do
 		Current, Max = GetInventoryItemDurability(Slots[i])
-		
+
 		if Current then
 			Total = Total + (Current / Max)
 			Count = Count + 1
 		end
 	end
-	
+
 	local Percent = floor(Total / Count * 100)
-	
+
 	if (Count > 0) then
 		self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s%%|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, Percent)
 	else
 		self.Text:SetFormattedText("|cFF%s%s:|r |cFF%sN/A|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor)
 	end
-	
+
 	if (25 > Percent and not self.Anim:IsPlaying()) then
 		self.Anim:Play()
 	elseif (Percent > 25 and self.Anim:IsPlaying()) then
@@ -96,7 +96,7 @@ local OnEnable = function(self)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
 	self:SetScript("OnMouseUp", OnMouseUp)
-	
+
 	if (not self.Anim) then
 		self.Anim = CreateAnimationGroup(self.Highlight):CreateAnimation("Fade")
 		self.Anim:SetEasing("inout")
@@ -104,7 +104,7 @@ local OnEnable = function(self)
 		self.Anim:SetChange(0.5)
 		self.Anim:SetScript("OnFinished", OnFinished)
 	end
-	
+
 	self:Update()
 end
 
@@ -115,7 +115,7 @@ local OnDisable = function(self)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
 	self:SetScript("OnMouseUp", nil)
-	
+
 	self.Text:SetText("")
 end
 

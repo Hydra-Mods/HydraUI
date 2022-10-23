@@ -13,12 +13,12 @@ local OnEnter = function(self)
 	end
 
 	self:SetTooltip()
-	
+
 	local Base, Combat = GetManaRegen()
-	
+
 	GameTooltip:AddLine(format("%s %s", Label, HydraUI:Comma(floor(Combat * 5))), 1, 1, 1)
 	GameTooltip:AddLine(format(MANA_REGEN_TOOLTIP, HydraUI:Comma(floor(Base * 5))))
-	
+
 	GameTooltip:Show()
 end
 
@@ -38,12 +38,12 @@ local Update = function(self, event, unit)
 	if (unit and unit ~= "player") then
 		return
 	end
-	
+
 	local Result
-	
+
 	if UnitHasMana("player") then
 		local Base, Combat = GetManaRegen()
-		
+
 		if InCombatLockdown() then
 			Result = floor(Combat * 5)
 		else
@@ -52,7 +52,7 @@ local Update = function(self, event, unit)
 	else
 		Result = NOT_APPLICABLE
 	end
-	
+
 	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, Result)
 end
 
@@ -64,7 +64,7 @@ local OnEnable = function(self)
 	self:SetScript("OnMouseUp", OnMouseUp)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
-	
+
 	self:Update("player")
 end
 
@@ -76,7 +76,7 @@ local OnDisable = function(self)
 	self:SetScript("OnMouseUp", nil)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
-	
+
 	self.Text:SetText("")
 end
 

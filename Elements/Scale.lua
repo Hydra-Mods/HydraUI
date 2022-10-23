@@ -5,7 +5,7 @@ local ScaleOnAccept = function()
 	local Scale = (768 / select(2, GetPhysicalScreenSize()))
 
 	C_CVar.SetCVar("uiScale", Scale)
-	
+
 	local Widget = HydraUI:GetModule("GUI"):GetWidget("ui-scale")
 	Widget.Slider:SetValue(Scale)
 	Widget.Slider.EditBox:SetText(Scale)

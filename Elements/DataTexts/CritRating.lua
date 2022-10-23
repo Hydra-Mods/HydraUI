@@ -7,11 +7,11 @@ local Label = CRIT_ABBR
 
 local OnEnter = function(self)
 	self:SetTooltip()
-	
+
 	local Crit
 	local Spell = GetSpellCritChance()
 	local Melee = GetCritChance()
-	
+
 	if (HydraUI.UserClass == "HUNTER") then
 		GameTooltip:AddLine(format("%s %.2f%%", RANGED_CRIT_CHANCE, GetRangedCritChance()))
 		GameTooltip:AddLine(format(CR_CRIT_TOOLTIP, GetCombatRating(CR_CRIT_RANGED), GetCombatRatingBonus(CR_CRIT_RANGED)), 1, 1, 1)
@@ -22,7 +22,7 @@ local OnEnter = function(self)
 		GameTooltip:AddLine(format("%s %.2f%%", MELEE_CRIT_CHANCE, Melee))
 		GameTooltip:AddLine(format(CR_CRIT_TOOLTIP, GetCombatRating(CR_CRIT_MELEE), GetCombatRatingBonus(CR_CRIT_MELEE)), 1, 1, 1)
 	end
-	
+
 	GameTooltip:Show()
 end
 
@@ -42,11 +42,11 @@ local Update = function(self, event, unit)
 	if (unit and unit ~= "player") then
 		return
 	end
-	
+
 	local Crit
 	local Spell = GetSpellCritChance()
 	local Melee = GetCritChance()
-	
+
 	if (HydraUI.UserClass == "HUNTER") then
 		Crit = GetRangedCritChance()
 	elseif (Spell > Melee) then
@@ -54,7 +54,7 @@ local Update = function(self, event, unit)
 	else
 		Crit = Melee
 	end
-	
+
 	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.2f%%|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, Crit)
 end
 
@@ -67,7 +67,7 @@ local OnEnable = function(self)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
 	self:SetScript("OnMouseUp", OnMouseUp)
-	
+
 	self:Update(nil, "player")
 end
 
@@ -80,7 +80,7 @@ local OnDisable = function(self)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
 	self:SetScript("OnLeave", OnMouseUp)
-	
+
 	self.Text:SetText("")
 end
 

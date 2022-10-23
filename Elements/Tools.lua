@@ -20,18 +20,18 @@ end
 
 function HydraUI:StartTimer(seconds, callback, arg)
 	local Timer
-	
+
 	if (not self.TimerParent) then
 		self.TimerParent = CreateAnimationGroup(self)
 	end
-	
+
 	if self.TimerPool[1] then
 		Timer = tremove(self.TimerPool, 1)
 	else
 		Timer = self.TimerParent:CreateAnimation("sleep")
 		Timer:SetScript("OnFinished", TimerOnFinished)
 	end
-	
+
 	Timer.Hook = callback
 	Timer.Arg = arg
 	Timer:SetDuration(seconds)
@@ -42,7 +42,7 @@ function HydraUI:HexToRGB(hex)
 	if (not hex) then
 		return
 	end
-	
+
 	return tonumber("0x" .. sub(hex, 1, 2)) / 255, tonumber("0x" .. sub(hex, 3, 4)) / 255, tonumber("0x" .. sub(hex, 5, 6)) / 255
 end
 
@@ -60,7 +60,7 @@ function HydraUI:FormatTime(seconds)
 	elseif (seconds > 5) then
 		return format("%ds", floor(seconds))
 	end
-	
+
 	return format("%.1fs", seconds)
 end
 
@@ -74,7 +74,7 @@ function HydraUI:AuraFormatTime(seconds)
 	elseif (seconds > 5) then
 		return format("%d", floor(seconds))
 	end
-	
+
 	return format("%.1f", seconds)
 end
 
@@ -84,7 +84,7 @@ function HydraUI:ShortValue(num)
 	elseif (num > 999) then
 		return format("%.1fk", num / 1000)
 	end
-	
+
 	return num
 end
 
@@ -92,9 +92,9 @@ function HydraUI:Comma(number)
 	if (not number) then
 		return
 	end
-	
+
    	local Left, Number = match(floor(number + 0.5), "^([^%d]*%d)(%d+)(.-)$")
-	
+
 	return Left and Left .. reverse(gsub(reverse(Number), "(%d%d%d)", "%1,")) or number
 end
 
@@ -104,29 +104,29 @@ function HydraUI:CopperToGold(copper)
 	local Copper = floor(copper % 100)
 	local Separator = ""
 	local String = ""
-	
+
 	if (Gold > 0) then
 		String = self:Comma(Gold) .. "|cffffe02eg|r"
 		Separator = " "
 	end
-	
+
 	if (Silver > 0) then
 		if (Silver < 10) then
 			Silver = "0" .. Silver
 		end
-		
+
 		String = String .. Separator .. Silver .. "|cffd6d6d6s|r"
 		Separator = " "
 	end
-	
+
 	if (Copper > 0 or String == "") then
 		if (Copper < 10) then
 			Copper = "0" .. Copper
 		end
-		
+
 		String = String .. Separator .. Copper .. "|cfffc8d2bc|r"
 	end
-	
+
 	return String
 end
 
@@ -137,15 +137,15 @@ end
 -- If the date given is today, change "2019-07-24 2:06 PM" to "Today 2:06 PM"
 function HydraUI:IsToday(s)
 	local Date, Time = match(s, "(%d+%-%d+%-%d+)%s(.+)")
-	
+
 	if (not Date or not Time) then
 		return s
 	end
-	
+
 	if (Date == date("%Y-%m-%d")) then
 		s = format("%s %s", Language["Today"], Time)
 	end
-	
+
 	return s
 end
 
@@ -153,7 +153,7 @@ function HydraUI:BindSavedVariable(global, key)
 	if (not _G[global]) then
 		_G[global] = {}
 	end
-	
+
 	if (not self[key]) then
 		self[key] = _G[global]
 	end
@@ -164,7 +164,7 @@ local ResetOnAccept = function()
 	HydraUIProfiles = nil
 	HydraUIData = nil
 	HydraUIGold = nil
-	
+
 	ReloadUI()
 end
 
@@ -177,7 +177,7 @@ local DEFAULT_CHAT_FRAME = DEFAULT_CHAT_FRAME
 local NewPrint = function(...)
 	local NumArgs = select("#", ...)
 	local String = ""
-	
+
 	if (NumArgs == 0) then
 		return
 	elseif (NumArgs > 1) then
@@ -188,16 +188,16 @@ local NewPrint = function(...)
 				String = format("%s %s", String, tostring(select(i, ...)))
 			end
 		end
-		
+
 		if HydraUI.FormatLinks then
 			String = HydraUI.FormatLinks(String)
 		end
-		
+
 		DEFAULT_CHAT_FRAME:AddMessage(String)
 	else
 		if HydraUI.FormatLinks then
 			String = HydraUI.FormatLinks(tostring(...))
-			
+
 			DEFAULT_CHAT_FRAME:AddMessage(String)
 		else
 			DEFAULT_CHAT_FRAME:AddMessage(...)
@@ -217,7 +217,7 @@ end
 
 function HydraUI:SetFontInfo(object, font, size, flags)
 	local Font, IsPixel = Assets:GetFont(font)
-	
+
 	if IsPixel then
 		object:SetFont(Font, size, "MONOCHROME, OUTLINE")
 		object:SetShadowColor(0, 0, 0, 0)
@@ -260,28 +260,28 @@ function HydraUI:AddBackdrop(frame, texture)
 	if (frame.Outside or frame.Inside) then
 		return
 	end
-	
+
 	local Border = Settings["ui-border-thickness"]
-	
+
 	Outside.edgeSize = 1 > Border and 1 or (Border + 2)
 	Inside.edgeSize = Border
-	
+
 	if texture then
 		Outside.bgFile = texture
 	else
 		Outside.bgFile = Assets:GetTexture("Blank")
 	end
-	
+
 	frame.Outside = CreateFrame("Frame", nil, frame, "BackdropTemplate")
 	frame.Outside:SetAllPoints()
 	frame.Outside:SetBackdrop(Outside)
 	frame.Outside:SetBackdropBorderColor(0, 0, 0)
 	frame.Outside:SetBackdropColor(0, 0, 0, 0)
-	
+
 	if (Border == 0) then
 		return
 	end
-	
+
 	frame.Inside = CreateFrame("Frame", nil, frame, "BackdropTemplate")
 	frame.Inside:SetPoint("TOPLEFT", 1, -1)
 	frame.Inside:SetPoint("BOTTOMRIGHT", -1, 1)
@@ -294,7 +294,7 @@ end
 -- NYI, Concept list for my preferred CVars, and those important to the UI
 function HydraUI:SetCVars()
 	C_CVar.SetCVar("countdownForCooldowns", 1)
-	
+
 	-- Name plates
 	C_CVar.SetCVar("NameplatePersonalShowAlways", 0)
 	C_CVar.SetCVar("NameplatePersonalShowInCombat", 0)

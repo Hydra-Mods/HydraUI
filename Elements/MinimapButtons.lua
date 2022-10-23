@@ -1,3 +1,5 @@
+-- File written by Smelly, maintained by Hydra
+
 local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
 local MinimapButtons = HydraUI:NewModule("Minimap Buttons")
@@ -72,7 +74,7 @@ local RemoveByID = {
 
 local IsIgnoredAddOn = function(name)
 	name = lower(name)
-	
+
 	for i = 1, #IgnoredAddOns do
 		if find(name, IgnoredAddOns[i]) then
 			return true
@@ -82,28 +84,28 @@ end
 
 function MinimapButtons:PositionButtons(perrow, size, spacing)
 	local Total = #self.Items
-	
+
 	if (Total < perrow) then
 		perrow = Total
 	end
-	
+
 	local Columns = ceil(Total / perrow)
-	
+
 	if (Columns < 1) then
 		Columns = 1
 	end
-	
+
 	-- Panel sizing
 	self.Panel:SetWidth((size * perrow) + (spacing * (perrow - 1)) + 6)
 	self.Panel:SetHeight((size * Columns) + (spacing * (Columns - 1)) + 6)
-	
+
 	-- Positioning
 	for i = 1, Total do
 		local Button = self.Items[i]
-		
+
 		Button:ClearAllPoints()
 		Button:SetSize(size, size)
-		
+
 		if (i == 1) then
 			Button:SetPoint("TOPLEFT", self.Panel, 3, -3)
 		elseif ((i - 1) % perrow == 0) then
@@ -118,45 +120,45 @@ function MinimapButtons:SkinButtons()
 	for _, Child in next, {Minimap:GetChildren()} do
 		local Name = Child:GetName()
 		local Type = Child:GetObjectType()
-		
+
 		if (Child:IsShown() and Type ~= "Frame") then
 			local Valid = (Name and not IgnoredBlizzard[Name] and not IsIgnoredAddOn(Name)) or not Name
-			
+
 			if Valid then
 				Child:SetParent(self.Panel)
-				
+
 				if (Child:HasScript("OnDragStart")) then
 					Child:SetScript("OnDragStart", nil)
 				end
-				
+
 				if (Child:HasScript("OnDragStop")) then
 					Child:SetScript("OnDragStop", nil)
 				end
-				
+
 				for i = 1, Child:GetNumRegions() do
 					local Region = select(i, Child:GetRegions())
-					
+
 					if (Region:GetObjectType() == "Texture") then
 						local ID = Region:GetTextureFileID()
 						local Texture = Region:GetTexture() or ""
 						Texture = lower(Texture)
-						
+
 						if (ID and RemoveByID[ID]) then
 							Region:SetTexture(nil)
 						end
-						
+
 						if (
 							find(Texture, [[interface\characterframe]]) or
 							find(Texture, [[interface\minimap]]) or
-							find(Texture, "border") or 
-							find(Texture, "background") or 
+							find(Texture, "border") or
+							find(Texture, "background") or
 							find(Texture, "alphamask") or
 							find(Texture, "highlight")
 						) then
 							Region:SetTexture(nil)
 							Region:SetAlpha(0)
 						end
-						
+
 						Region:ClearAllPoints()
 						Region:SetPoint("TOPLEFT", Child, 1, -1)
 						Region:SetPoint("BOTTOMRIGHT", Child, -1, 1)
@@ -164,23 +166,23 @@ function MinimapButtons:SkinButtons()
 						Region:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 					end
 				end
-				
+
 				Child.Backdrop = CreateFrame("Frame", nil, Child, "BackdropTemplate")
 				Child.Backdrop:SetPoint("TOPLEFT", Child, 0, 0)
 				Child.Backdrop:SetPoint("BOTTOMRIGHT", Child, 0, 0)
 				Child.Backdrop:SetBackdrop(HydraUI.Backdrop)
 				Child.Backdrop:SetBackdropColor(0, 0, 0)
 				Child.Backdrop:SetFrameLevel(Child:GetFrameLevel() - 1)
-				
+
 				Child.Backdrop.Texture = Child.Backdrop:CreateTexture(nil, "BACKDROP")
 				Child.Backdrop.Texture:SetPoint("TOPLEFT", Child.Backdrop, 1, -1)
 				Child.Backdrop.Texture:SetPoint("BOTTOMRIGHT", Child.Backdrop, -1, 1)
 				Child.Backdrop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 				Child.Backdrop.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-window-main-color"]))
-				
+
 				Child:SetFrameLevel(Minimap:GetFrameLevel() + 10)
 				Child:SetFrameStrata(Minimap:GetFrameStrata())
-				
+
 				if (Type == "Button" or Type == "Frame") then
 					if (Child.SetHighlightTexture) then
 						local Highlight = Child:CreateTexture(nil, "ARTWORK", button)
@@ -188,23 +190,23 @@ function MinimapButtons:SkinButtons()
 						Highlight:SetVertexColor(1, 1, 1, 0.2)
 						Highlight:SetPoint("TOPLEFT", Child, 1, -1)
 						Highlight:SetPoint("BOTTOMRIGHT", Child, -1, 1)
-						
+
 						Child.Highlight = Highlight
 						Child:SetHighlightTexture(Highlight)
 					end
-					
+
 					if (Child.SetPushedTexture) then
 						local Pushed = Child:CreateTexture(nil, "ARTWORK", button)
 						Pushed:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 						Pushed:SetVertexColor(0.9, 0.8, 0.1, 0.3)
 						Pushed:SetPoint("TOPLEFT", Child, 1, -1)
 						Pushed:SetPoint("BOTTOMRIGHT", Child, -1, 1)
-						
+
 						Child.Pushed = Pushed
 						Child:SetPushedTexture(Pushed)
 					end
 				end
-				
+
 				tinsert(self.Items, Child)
 			end
 		end
@@ -218,7 +220,7 @@ function MinimapButtons:CreatePanel()
 	Frame:SetBackdropBorderColor(0, 0, 0)
 	Frame:SetFrameStrata("LOW")
 	Frame:SetPoint("TOPRIGHT", HydraUI:GetModule("Minimap").BottomFrame, "BOTTOMRIGHT", 0, -2)
-	
+
 	self.Panel = Frame
 end
 
@@ -233,15 +235,15 @@ end
 local DelayedLoad = function()
 	MinimapButtons:CreatePanel()
 	MinimapButtons:SkinButtons()
-	
+
 	if (#MinimapButtons.Items == 0) then
 		MinimapButtons:Hide()
-		
+
 		return
 	end
-	
+
 	UpdateBar()
-	
+
 	HydraUI:CreateMover(MinimapButtons.Panel)
 end
 
@@ -249,7 +251,7 @@ function MinimapButtons:Load()
 	if (not Settings["minimap-buttons-enable"]) then
 		return
 	end
-	
+
 	C_Timer.After(2, DelayedLoad)
 end
 

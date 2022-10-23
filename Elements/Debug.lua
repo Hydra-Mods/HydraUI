@@ -10,13 +10,13 @@ local GetMinimapZoneText = GetMinimapZoneText
 
 local GetNumLoadedAddOns = function()
 	local NumLoaded = 0
-	
+
 	for i = 1, GetNumAddOns() do
 		if IsAddOnLoaded(i) then
 			NumLoaded = NumLoaded + 1
 		end
 	end
-	
+
 	return NumLoaded
 end
 
@@ -36,42 +36,42 @@ if HydraUI.IsMainline then
 	GetQuests = function()
 		local NumQuests = select(2, C_QuestLog.GetNumQuestLogEntries())
 		local MaxQuests = C_QuestLog.GetMaxNumQuestsCanAccept()
-		
+
 		return format("%s / %s", NumQuests, MaxQuests)
 	end
-	
+
 	GetSpecInfo = function()
 		local Name = select(2, GetSpecializationInfo(GetSpecialization()))
-		
+
 		return Name
 	end
 else
 	GetQuests = function()
 		local NumQuests = select(2, GetNumQuestLogEntries())
 		local MaxQuests = C_QuestLog.GetMaxNumQuestsCanAccept()
-		
+
 		return format("%s / %s", NumQuests, MaxQuests)
 	end
-	
+
 	GetSpecInfo = function()
 		local MainSpec
 		local PointsTotal = ""
 		local HighestPoints = 0
 		local Name, PointsSpent, _
-		
+
 		for i = 1, 5 do -- Default UI uses 5 here for some reason? Just going to roll with it right now even though it makes no sense to me
 			Name, _, PointsSpent = GetTalentTabInfo(i)
-			
+
 			if Name then
 				if (PointsSpent > HighestPoints) then
 					MainSpec = Name
 					HighestPoints = PointsSpent
 				end
-				
+
 				PointsTotal = PointsTotal == "" and PointsSpent or PointsTotal .. "/" .. PointsSpent
 			end
 		end
-		
+
 		return MainSpec and format("%s (%s)", MainSpec, PointsTotal) or NOT_APPLICABLE
 	end
 end
@@ -85,11 +85,11 @@ local OnShow = function()
 	Debug:RegisterEvent("QUEST_LOG_UPDATE")
 	Debug:RegisterEvent("CVAR_UPDATE")
 	Debug:RegisterEvent("CHARACTER_POINTS_CHANGED")
-	
+
 	if (UnitLevel("player") > 59) then
 		Debug:RegisterEvent("PLAYER_LEVEL_UP")
 	end
-	
+
 	Debug:SetScript("OnEvent", Debug.OnEvent)
 end
 
@@ -100,10 +100,10 @@ end
 GUI:AddWidgets(Language["Info"], Language["Debug"], function(left, right)
 	left:HookScript("OnShow", OnShow)
 	left:HookScript("OnHide", OnHide)
-	
+
 	local Version, _, _, Build = GetBuildInfo()
 	local ScreenWidth, ScreenHeight = GetPhysicalScreenSize()
-	
+
 	left:CreateHeader(Language["UI Information"])
 	left:CreateDoubleLine("dgb-game-version", Language["Game Version"], format("%s (%s)", Version, Build))
 	left:CreateDoubleLine("dgb-client", Language["Client"], GetClient())
@@ -117,7 +117,7 @@ GUI:AddWidgets(Language["Info"], Language["Debug"], function(left, right)
 	left:CreateDoubleLine("dgb-ui-style", Language["UI Style"], Settings["ui-style"])
 	left:CreateDoubleLine("dgb-locale", Language["Locale"], HydraUI.UserLocale)
 	left:CreateDoubleLine("dgb-show-errors", Language["Display Errors"], GetCVar("scriptErrors") == "1" and Language["Enabled"] or Language["Disabled"])
-	
+
 	right:CreateHeader(Language["User Information"])
 	right:CreateDoubleLine("dgb-level", Language["Level"], UnitLevel("player"))
 	right:CreateDoubleLine("dgb-race", Language["Race"], HydraUI.UserRace)
@@ -127,7 +127,7 @@ GUI:AddWidgets(Language["Info"], Language["Debug"], function(left, right)
 	right:CreateDoubleLine("dgb-zone", Language["Zone"], GetZoneText())
 	right:CreateDoubleLine("dgb-subzone", Language["Sub Zone"], GetMinimapZoneText())
 	right:CreateDoubleLine("dgb-quests", Language["Quests"], GetQuests())
-	
+
 	right:CreateHeader(Language["AddOns Information"])
 	right:CreateDoubleLine("dgb-total-addons", Language["Total AddOns"], GetNumAddOns())
 	right:CreateDoubleLine("dgb-loaded-addons", Language["Loaded AddOns"], GetNumLoadedAddOns())

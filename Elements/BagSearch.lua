@@ -4,7 +4,7 @@ local BagSearch = HydraUI:NewModule("Bag Search")
 
 local SearchOnTextChanged = function(self)
 	local Text = self:GetText()
-	
+
 	if Text then
 		SetItemSearch(Text)
 	end

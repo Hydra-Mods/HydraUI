@@ -8,20 +8,20 @@ local OnMouseUp = function()
 	if InCombatLockdown() then
 		return
 	end
-	
+
 	ToggleCharacter("PaperDollFrame")
 end
 
 local OnEnter = function(self)
 	self:SetTooltip()
-	
+
 	local Versatility = GetCombatRating(CR_VERSATILITY_DAMAGE_DONE)
 	local DamageBonus = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE)
 	local DamageReduction = GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_TAKEN) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_TAKEN)
-	
+
 	GameTooltip:AddLine(Label, 1, 1, 1)
 	GameTooltip:AddLine(format(CR_VERSATILITY_TOOLTIP, DamageBonus, DamageReduction, HydraUI:Comma(Versatility), DamageBonus, DamageReduction), nil, nil, nil, true)
-	
+
 	GameTooltip:Show()
 end
 
@@ -33,7 +33,7 @@ local Update = function(self, event, unit)
 	if (unit and unit ~= "player") then
 		return
 	end
-	
+
 	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%.02f%%|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, GetCombatRatingBonus(CR_VERSATILITY_DAMAGE_DONE) + GetVersatilityBonus(CR_VERSATILITY_DAMAGE_DONE))
 end
 
@@ -43,7 +43,7 @@ local OnEnable = function(self)
 	self:SetScript("OnMouseUp", OnMouseUp)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
-	
+
 	self:Update(nil, "player")
 end
 
@@ -53,7 +53,7 @@ local OnDisable = function(self)
 	self:SetScript("OnMouseUp", nil)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
-	
+
 	self.Text:SetText("")
 end
 

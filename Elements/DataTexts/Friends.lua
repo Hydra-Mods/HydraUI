@@ -53,7 +53,7 @@ ClientInfo["App"] = function(name, info)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[info.gameAccountInfo.clientProgram], name
 end
 
@@ -65,7 +65,7 @@ ClientInfo["ANBS"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
@@ -77,7 +77,7 @@ ClientInfo["BSAp"] = function(name, info)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
@@ -89,7 +89,7 @@ ClientInfo["DST2"] = function(name, info)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
@@ -101,7 +101,7 @@ ClientInfo["D3"] = function(name, info)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
@@ -113,7 +113,7 @@ ClientInfo["Hero"] = function(name, info)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
@@ -125,7 +125,7 @@ ClientInfo["Pro"] = function(name, info)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
@@ -137,7 +137,7 @@ ClientInfo["S1"] = function(name, info)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
@@ -149,7 +149,7 @@ ClientInfo["S2"] = function(name, info)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
@@ -161,7 +161,7 @@ ClientInfo["VIPR"] = function(name, info)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
@@ -173,11 +173,11 @@ ClientInfo["ODIN"] = function(name, info)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
-ClientInfo["OSI"] = function(name, info)	
+ClientInfo["OSI"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
@@ -185,24 +185,24 @@ ClientInfo["OSI"] = function(name, info)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[info.gameAccountInfo.clientProgram], name, info.gameAccountInfo.richPresence
 end
 
 ClientInfo["WoW"] = function(name, info)
 	Class = GetClass(info.gameAccountInfo.className)
-	
+
 	local ClassColor = HydraUI.ClassColors[Class]
-	
+
 	if (not ClassColor) then
 		return ProjectIDToName[info.gameAccountInfo.wowProjectID], name
 	end
-	
+
 	ClassColor = HydraUI:RGBToHex(ClassColor[1], ClassColor[2], ClassColor[3])
-	
+
 	local LevelColor = GetQuestDifficultyColor(info.gameAccountInfo.characterLevel)
 	LevelColor = HydraUI:RGBToHex(LevelColor.r, LevelColor.g, LevelColor.b)
-	
+
 	if info.gameAccountInfo.isGameAFK then
 		name = format("|cFF00FFF6(%s)|r |cFFFFFF33<%s>|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then
@@ -210,14 +210,14 @@ ClientInfo["WoW"] = function(name, info)
 	else
 		name = format("|cFF00FFF6(%s)|r", name)
 	end
-	
+
 	local NameInfo = format("|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF|r %s", LevelColor, info.gameAccountInfo.characterLevel, ClassColor, info.gameAccountInfo.characterName, name)
 	local Area = info.gameAccountInfo.areaName
-	
+
 	if (Area == GetRealZoneText()) then
 		Area = format("|cFF33FF33%s|r", Area)
 	end
-	
+
 	return ProjectIDToName[info.gameAccountInfo.wowProjectID], NameInfo, Area
 end
 
@@ -229,67 +229,67 @@ ClientInfo["WTCG"] = function(name, info)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[info.gameAccountInfo.clientProgram], info.gameAccountInfo.richPresence
 end
 
 local GetClientInformation = function(client, name, info)
 	if ClientInfo[client] then
 		local RealClient, Left, Right = ClientInfo[client](name, info)
-		
+
 		return RealClient, Left, Right
 	end
 end
 
 local OnEnter = function(self)
 	self:SetTooltip()
-	
+
 	local NumFriends = GetNumFriends()
 	local NumFriendsOnline = GetNumOnlineFriends()
 	local NumBNFriends, NumBNOnline = BNGetNumFriends()
 	local Name
 	local NumClients = 0
 	local ClientCount = 0
-	
+
 	GameTooltip:AddDoubleLine(Label, format("%s/%s", NumBNOnline + NumFriendsOnline, NumFriends + NumBNFriends))
 	GameTooltip:AddLine(" ")
-	
+
 	-- B.Net friends
 	for i = 1, NumBNFriends do
 		local Info = GetFriendAccountInfo(i)
-		
+
 		if Info then
 			local RealClient, Left, Right = GetClientInformation(Info.gameAccountInfo.clientProgram, Info.accountName, Info)
-			
+
 			if RealClient then
 				if (not FriendList[RealClient]) then
 					FriendList[RealClient] = {}
 					NumClients = NumClients + 1
 				end
-				
+
 				tinsert(FriendList[RealClient], {Left, Right})
 			end
 		end
 	end
-	
+
 	-- Regular friends
 	for i = 1, NumFriends do
 		local FriendInfo = GetFriendInfoByIndex(i)
-		
+
 		if FriendInfo.connected then
 			local Class = GetClass(FriendInfo.className)
-			
+
 			if (Class == "Unknown") then
 				Class = "PRIEST"
 			end
-			
+
 			local ClassColor = HydraUI.ClassColors[Class]
-			
+
 			ClassColor = HydraUI:RGBToHex(ClassColor[1], ClassColor[2], ClassColor[3])
-			
+
 			local LevelColor = GetQuestDifficultyColor(FriendInfo.level)
 			LevelColor = HydraUI:RGBToHex(LevelColor.r, LevelColor.g, LevelColor.b)
-			
+
 			if FriendInfo.afk then
 				Name = format("|cFF9E9E9E%s|r", FriendInfo.name)
 			elseif FriendInfo.dnd then
@@ -297,22 +297,22 @@ local OnEnter = function(self)
 			else
 				Name = FriendInfo.name
 			end
-			
+
 			local NameInfo = format("|cFFFFFFFF|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF|r", LevelColor, FriendInfo.level, ClassColor, Name)
-			
+
 			if (not FriendList[ProjectIDToName[1]]) then
 				FriendList[ProjectIDToName[1]] = {}
 				NumClients = NumClients + 1
 			end
-			
+
 			tinsert(FriendList[ProjectIDToName[1]], {NameInfo, FriendInfo.area})
 		end
 	end
-	
+
 	for client, info in next, FriendList do
 		GameTooltip:AddLine(client)
 		ClientCount = ClientCount + 1
-		
+
 		for i = 1, #info do
 			if info[i][2] then
 				GameTooltip:AddDoubleLine(info[i][1], info[i][2], nil, nil, nil, 1, 1, 1)
@@ -320,16 +320,16 @@ local OnEnter = function(self)
 				GameTooltip:AddLine(info[i][1])
 			end
 		end
-		
+
 		if (ClientCount ~= NumClients) then
 			GameTooltip:AddLine(" ")
 		end
 	end
-	
+
 	GameTooltip:Show()
-	
+
 	wipe(FriendList)
-	
+
 	self.TooltipShown = true
 end
 
@@ -348,9 +348,9 @@ local Update = function(self)
 	local NumOnline = GetNumOnlineFriends()
 	local NumBNFriends, NumBNOnline = BNGetNumFriends()
 	local Online = NumOnline + NumBNOnline
-	
+
 	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, Online)
-	
+
 	if self.TooltipShown then
 		OnLeave(self)
 		OnEnter(self)
@@ -370,9 +370,9 @@ local OnEnable = function(self)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
 	self:SetScript("OnMouseUp", OnMouseUp)
-	
+
 	C_FriendList.ShowFriends()
-	
+
 	self:Update()
 end
 
@@ -389,7 +389,7 @@ local OnDisable = function(self)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
 	self:SetScript("OnMouseUp", nil)
-	
+
 	self.Text:SetText("")
 end
 

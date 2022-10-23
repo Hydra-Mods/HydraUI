@@ -26,13 +26,13 @@ Commands["texel"] = function()
 	IsGMClient = function()
 		return true
 	end
-	
+
 	if (not IsAddOnLoaded("Blizzard_DebugTools")) then
 		LoadAddOn("Blizzard_DebugTools")
 	end
-	
+
 	TexelSnappingVisualizer:Show()
-	
+
 	--[[
 	local PIXEL_SNAPPING_OPTIONS = {
 		{ text = "Default", cvarValue = "-1" },
@@ -41,9 +41,9 @@ Commands["texel"] = function()
 	}
 
 	SetCVar("overrideTexelSnappingBias", "1")
-	
+
 	SetCVar("overridePixelGridSnapping", "-1")
-	
+
 	--]]
 end
 

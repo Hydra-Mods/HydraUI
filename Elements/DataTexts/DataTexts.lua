@@ -30,10 +30,10 @@ local SetTooltip = function(anchor)
 	if Settings["data-text-hover-tooltips"] then
 		local X, Y = anchor:GetCenter()
 		local Position = (Y > HydraUI.UIParent:GetHeight() / 2) and "TOP" or "BOTTOM"
-		
+
 		GameTooltip:SetOwner(anchor, "ANCHOR_NONE")
 		GameTooltip:ClearAllPoints()
-		
+
 		if (Position == "TOP") then
 			GameTooltip:SetPoint("TOP", anchor, "BOTTOM", 0, -8)
 		else
@@ -58,24 +58,24 @@ function DT:NewAnchor(name, parent)
 	if self.Anchors[name] then
 		return
 	end
-	
+
 	if (not parent) then
 		parent = HydraUI.UIParent
 	end
-	
+
 	local Anchor = CreateFrame("Frame", nil, parent)
 	Anchor:SetFrameLevel(parent:GetFrameLevel() + 1)
 	Anchor:SetFrameStrata(parent:GetFrameStrata())
 	Anchor.Name = name
 	Anchor.SetTooltip = SetTooltip
-	
+
 	Anchor.Text = Anchor:CreateFontString(nil, "OVERLAY")
 	HydraUI:SetFontInfo(Anchor.Text, Settings["data-text-font"], Settings["data-text-font-size"], Settings["data-text-font-flags"])
 	Anchor.Text:SetPoint("LEFT", Anchor, 0, 0)
 	Anchor.Text:SetPoint("RIGHT", Anchor, 0, 0)
 	Anchor.Text:SetJustifyH("CENTER")
 	Anchor.Text:SetHeight(Settings["data-text-font-size"])
-	
+
 	Anchor.Highlight = Anchor:CreateTexture(nil, "ARTWORK")
 	Anchor.Highlight:SetHeight(14)
 	Anchor.Highlight:SetPoint("BOTTOMLEFT", Anchor, "BOTTOMLEFT", 18, 1)
@@ -83,9 +83,9 @@ function DT:NewAnchor(name, parent)
 	Anchor.Highlight:SetTexture(Assets:GetTexture("RenHorizonUp"))
 	Anchor.Highlight:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-color"]))
 	Anchor.Highlight:SetAlpha(0)
-	
+
 	self.Anchors[name] = Anchor
-	
+
 	return Anchor
 end
 
@@ -99,20 +99,20 @@ function DT:SetDataText(anchor, name)
 	if ((not self.Anchors[anchor]) or (not self.Types[name])) then
 		return
 	end
-	
+
 	local Anchor = self.Anchors[anchor]
 	local Type = self.Types[name]
-	
+
 	if Anchor.Disable then
 		Anchor:Disable()
 	end
-	
+
 	Anchor.Enable = Type.Enable
 	Anchor.Disable = Type.Disable
 	Anchor.Update = Type.Update
-	
+
 	Anchor:Enable()
-	
+
 	Anchor:HookScript("OnMouseDown", self.OnMouseDown)
 	Anchor:HookScript("OnMouseUp", self.OnMouseUp)
 end
@@ -137,39 +137,39 @@ function DT:Load()
 	if Settings["chat-enable"] then
 		local Width = HydraUIChatFrameBottom:GetWidth() / 3
 		local Height = HydraUIChatFrameBottom:GetHeight()
-		
+
 		local ChatLeft = self:NewAnchor("Chat-Left", HydraUIChatFrameBottom)
 		ChatLeft:SetSize(Width, Height)
 		ChatLeft:SetPoint("LEFT", HydraUIChatFrameBottom, 0, 0)
-		
+
 		local ChatMiddle = self:NewAnchor("Chat-Middle", HydraUIChatFrameBottom)
 		ChatMiddle:SetSize(Width, Height)
 		ChatMiddle:SetPoint("LEFT", ChatLeft, "RIGHT", 0, 0)
-		
+
 		local ChatRight = self:NewAnchor("Chat-Right", HydraUIChatFrameBottom)
 		ChatRight:SetSize(Width, Height)
 		ChatRight:SetPoint("LEFT", ChatMiddle, "RIGHT", 0, 0)
-		
+
 		self:SetDataText("Chat-Left", Settings["data-text-chat-left"])
 		self:SetDataText("Chat-Middle", Settings["data-text-chat-middle"])
 		self:SetDataText("Chat-Right", Settings["data-text-chat-right"])
 	end
-	
+
 	if Settings["minimap-enable"] then
 		local MinimapTop = self:NewAnchor("Minimap-Top", HydraUIMinimapTop)
 		MinimapTop:SetSize(HydraUIMinimapTop:GetSize())
 		MinimapTop:SetPoint("CENTER", HydraUIMinimapTop, 0, 0)
-		
+
 		local MinimapBottom = self:NewAnchor("Minimap-Bottom", HydraUIMinimapBottom)
 		MinimapBottom:SetSize(HydraUIMinimapBottom:GetSize())
 		MinimapBottom:SetPoint("CENTER", HydraUIMinimapBottom, 0, 0)
-		
+
 		self:SetDataText("Minimap-Top", Settings["data-text-minimap-top"])
 		self:SetDataText("Minimap-Bottom", Settings["data-text-minimap-bottom"])
 	end
-	
+
 	self:SetTooltipsEnabled(Settings["data-text-enable-tooltips"])
-	
+
 	SetCVar("timeMgrUseMilitaryTime", Settings["data-text-24-hour"])
 end
 
@@ -177,7 +177,7 @@ function HydraUI:AddDataText(name, enable, disable, update)
 	if DT.Types[name] then
 		return
 	end
-	
+
 	DT.Types[name] = {Enable = enable, Disable = disable, Update = update}
 	DT.List[name] = name
 end
@@ -246,20 +246,20 @@ local DeleteGoldData = function(value)
 		for name, money in next, HydraUI.GoldData[HydraUI.UserRealm] do
 			if (string.match(name, "|cff%x%x%x%x%x%x(.*)|r") == value) then
 				HydraUI.GoldData[HydraUI.UserRealm][name] = nil
-				
+
 				HydraUI:print(format(Language["Deleted stored gold data for %s."], name))
-				
+
 				return
 			end
 		end
-		
+
 		HydraUI:print(format(Language["No character data found for %s."], value))
 	end
 end
 
 local UpdateClassColor = function(value)
 	HydraUI.ValueColor = value and HydraUI.ClassColors[HydraUI.UserClass].Hex or Settings["data-text-value-color"]
-	
+
 	DT:UpdateAllAnchors()
 end
 
@@ -268,35 +268,35 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Data Texts"],
 	left:CreateDropdown("data-text-chat-left", Settings["data-text-chat-left"], DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the left data text anchor"], UpdateChatLeftText)
 	left:CreateDropdown("data-text-chat-middle", Settings["data-text-chat-middle"], DT.List, Language["Set Middle Text"], Language["Set the information to be displayed in the middle data text anchor"], UpdateChatMiddleText)
 	left:CreateDropdown("data-text-chat-right", Settings["data-text-chat-right"], DT.List, Language["Set Right Text"], Language["Set the information to be displayed in the right data text anchor"], UpdateChatRightText)
-	
+
 	left:CreateHeader(Language["Right Window Texts"])
 	left:CreateDropdown("data-text-extra-left", Settings["data-text-extra-left"], DT.List, Language["Set Left Text"], Language["Set the information to be displayed in the left data text anchor"], UpdateWindowLeftText)
 	left:CreateDropdown("data-text-extra-middle", Settings["data-text-extra-middle"], DT.List, Language["Set Middle Text"], Language["Set the information to be displayed in the middle data text anchor"], UpdateWindowMiddleText)
 	left:CreateDropdown("data-text-extra-right", Settings["data-text-extra-right"], DT.List, Language["Set Right Text"], Language["Set the information to be displayed in the right data text anchor"], UpdateWindowRightText)
-	
+
 	left:CreateHeader(Language["Mini Map Texts"])
 	left:CreateDropdown("data-text-minimap-top", Settings["data-text-minimap-top"], DT.List, Language["Set Top Text"], Language["Set the information to be displayed in the top mini map data text anchor"], UpdateMinimapTopText)
 	left:CreateDropdown("data-text-minimap-bottom", Settings["data-text-minimap-bottom"], DT.List, Language["Set Bottom Text"], Language["Set the information to be displayed in the bottom mini map data text anchor"], UpdateMinimapBottomText)
-	
+
 	right:CreateHeader(Language["Font"])
 	right:CreateDropdown("data-text-font", Settings["data-text-font"], Assets:GetFontList(), Language["Font"], Language["Set the font of the data texts"], UpdateFont, "Font")
 	right:CreateSlider("data-text-font-size", Settings["data-text-font-size"], 8, 32, 1, Language["Font Size"], Language["Set the font size of the data texts"], UpdateFont)
 	right:CreateDropdown("data-text-font-flags", Settings["data-text-font-flags"], Assets:GetFlagsList(), Language["Font Flags"], Language["Set the font flags of the data texts"], UpdateFont)
-	
+
 	right:CreateHeader(Language["Colors"])
 	right:CreateColorSelection("data-text-label-color", Settings["data-text-label-color"], Language["Label Color"], Language["Set the text color of data text labels"], function() DT:UpdateAllAnchors() end)
 	right:CreateColorSelection("data-text-value-color", Settings["data-text-value-color"], Language["Value Color"], Language["Set the text color of data text values"], function() DT:UpdateAllAnchors() end)
 	right:CreateSwitch("data-text-classcolor", Settings["data-text-classcolor"], Language["Use Class Color"], Language["Use class color for Value Color"], UpdateClassColor)
-	
+
 	right:CreateHeader(Language["Styling"])
 	right:CreateSwitch("data-text-enable-tooltips", Settings["data-text-enable-tooltips"], Language["Enable Tooltips"], Language["Display tooltip information when hovering over data texts"], UpdateEnableTooltips)
 	right:CreateSwitch("data-text-hover-tooltips", Settings["data-text-hover-tooltips"], Language["Hover Tooltips"], Language["Display tooltip information directly by the data text instead of at the default tooltip location"])
 	right:CreateSwitch("data-text-24-hour", Settings["data-text-24-hour"], Language["Enable 24 Hour Time"], Language["Display time in a 24 hour format"], UpdateTimeFormat)
-	
+
 	right:CreateHeader(Language["Gold"])
 	right:CreateButton("", Language["Reset"], Language["Reset Gold"], Language["Reset stored information for each characters gold"], ResetGold)
 	right:CreateInput("gold-reset", HydraUI.UserName, Language["Delete Character Data"], Language["Remove the stored data for a character. Enter the character name and hit enter."], DeleteGoldData):DisableSaving()
-	
+
 	--left:CreateHeader(Language["Misc."])
 	--left:CreateSlider("data-text-max-lines", Settings["data-text-max-lines"], 5, 50, 1, "Max Lines", "Set the maximum number of players shown in the guild or friends data text tooltips")
 end)

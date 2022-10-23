@@ -6,17 +6,17 @@ local AddToast = function(self)
 	if self.Styled then
 		return
 	end
-	
+
 	HydraUI:SetFontInfo(self.TopLine, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 	HydraUI:SetFontInfo(self.MiddleLine, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 	HydraUI:SetFontInfo(self.BottomLine, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
 	HydraUI:SetFontInfo(self.DoubleLine, Settings["tooltips-font"], Settings["tooltips-font-size"], Settings["tooltips-font-flags"])
-	
+
 	self.TooltipFrame:Hide()
-	
+
 	self:ClearAllPoints()
 	self:SetPoint("BOTTOMLEFT", HydraUI:GetModule("Chat"), "TOPLEFT", 0, 3)
-	
+
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-window-main-color"])
 
 	self:SetBackdrop(HydraUI.BackdropAndBorder)

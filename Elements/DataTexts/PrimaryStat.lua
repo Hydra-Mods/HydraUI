@@ -20,24 +20,24 @@ local Update = function(self, event, unit)
 	if (unit and unit ~= "player") then
 		return
 	end
-	
+
 	local Stat, StatEffective, PositiveBuffs, NegativeBuffs
 	local Highest = 0
 	local HighestStat = 0
-	
+
 	for i = 1, 4 do
 		if ValidStat[i] then
 			Stat, StatEffective, PositiveBuffs, NegativeBuffs = UnitStat("player", i)
-			
+
 			Effective = StatEffective + PositiveBuffs + NegativeBuffs
-			
+
 			if (Effective > HighestStat) then
 				Highest = i
 				HighestStat = Stat
 			end
 		end
 	end
-	
+
 	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], ValidStat[Highest], HydraUI.ValueColor, HighestStat)
 end
 
@@ -46,7 +46,7 @@ local OnEnable = function(self)
 	self:RegisterEvent("UNIT_AURA")
 	self:SetScript("OnEvent", Update)
 	self:SetScript("OnMouseUp", OnMouseUp)
-	
+
 	self:Update(nil, "player")
 end
 
@@ -55,7 +55,7 @@ local OnDisable = function(self)
 	self:UnregisterEvent("UNIT_AURA")
 	self:SetScript("OnEvent", nil)
 	self:SetScript("OnMouseUp", nil)
-	
+
 	self.Text:SetText("")
 end
 

@@ -14,31 +14,31 @@ Defaults["chat-bubbles-font-flags"] = ""
 
 function Bubbles:RefreshBubble(bubble)
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-window-main-color"])
-	
+
 	HydraUI:SetFontInfo(bubble:GetChildren().Text, Settings["chat-bubbles-font"], Settings["chat-bubbles-font-size"], Settings["chat-bubbles-font-flags"])
 	bubble:SetBackdropColor(R, G, B, Settings["chat-bubbles-opacity"] / 100)
-	
-	self.NeedsRefresh = false	
+
+	self.NeedsRefresh = false
 end
 
 function Bubbles:SkinBubble(bubble)
 	local Child = bubble:GetChildren()
-	
+
 	if (Child and Child:IsForbidden()) then
 		return
 	end
-	
+
 	Child.Tail:Hide()
 	Child:DisableDrawLayer("BORDER")
-	
+
 	if Child.SetBackdrop then
 		Child:SetBackdrop(nil)
 	end
-	
+
 	HydraUI:SetFontInfo(Child.String, Settings["chat-bubbles-font"], Settings["chat-bubbles-font-size"], Settings["chat-bubbles-font-flags"])
-	
+
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-window-main-color"])
-	
+
 	bubble.Backdrop = CreateFrame("Frame", nil, Child, "BackdropTemplate")
 	bubble.Backdrop:SetPoint("TOPLEFT", Child, 4, -4)
 	bubble.Backdrop:SetPoint("BOTTOMRIGHT", Child, -4, 4)
@@ -46,15 +46,15 @@ function Bubbles:SkinBubble(bubble)
 	bubble.Backdrop:SetBackdropColor(R, G, B, Settings["chat-bubbles-opacity"] / 100)
 	bubble.Backdrop:SetBackdropBorderColor(0, 0, 0)
 	bubble.Backdrop:SetFrameStrata("LOW")
-	
+
 	bubble:SetScale(UIParent:GetScale())
-	
+
 	bubble.Skinned = true
 end
 
 function Bubbles:OnUpdate(elapsed)
 	self.Elapsed = self.Elapsed + elapsed
-	
+
 	if (self.Elapsed > 0.15) then
 		for Index, Bubble in next, GetAllChatBubbles() do
 			if self.NeedsRefresh then
@@ -63,7 +63,7 @@ function Bubbles:OnUpdate(elapsed)
 				self:SkinBubble(Bubble)
 			end
 		end
-		
+
 		self.Elapsed = 0
 	end
 end
@@ -72,15 +72,15 @@ Bubbles.Players = {}
 
 function Bubbles:ScanPlayers()
 	if UnitExists("raid1") then
-		
+
 	elseif UnitExists("party1") then
-		
+
 	end
 end
 
 function Bubbles:OnEvent(event)
 	local Name, Type = GetInstanceInfo()
-	
+
 	if (Type == "none") then
 		self:SetScript("OnUpdate", self.OnUpdate)
 	else
@@ -92,7 +92,7 @@ function Bubbles:Load()
 	if (not Settings["chat-bubbles-enable"]) then
 		return
 	end
-	
+
 	self.Elapsed = 0
 	self:RegisterEvent("PLAYER_ENTERING_WORLD")
 	self:RegisterEvent("GROUP_ROSTER_UPDATE")

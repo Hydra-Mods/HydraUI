@@ -117,11 +117,11 @@ HydraUI.TotemColors = {}
 
 function HydraUI:SetColorEntry(t, key, hex)
 	R, G, B = self:HexToRGB(hex)
-	
+
 	if (not t[key]) then
 		t[key] = {}
 	end
-	
+
 	t[key][1] = R
 	t[key][2] = G
 	t[key][3] = B
@@ -223,7 +223,7 @@ function HydraUI:UpdateColors()
 	self:UpdatePowerColors()
 	self:UpdateDebuffColors()
 	self:UpdateComboColors()
-	
+
 	if (not self.IsMainline) then
 		self:UpdateHappinessColors()
 		self:UpdateTotemColors()
@@ -232,7 +232,7 @@ end
 
 function HydraUI:UpdateoUFColors()
 	local Colors = Namespace.oUF.colors
-	
+
 	Colors.class = HydraUI.ClassColors
 	Colors.reaction = HydraUI.ReactionColors
 	Colors.power = HydraUI.PowerColors
@@ -257,7 +257,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Colors"], fun
 	left:CreateColorSelection("color-shaman", Settings["color-shaman"], Language["Shaman"], "")
 	left:CreateColorSelection("color-warlock", Settings["color-warlock"], Language["Warlock"], "")
 	left:CreateColorSelection("color-warrior", Settings["color-warrior"], Language["Warrior"], "")
-	
+
 	right:CreateHeader(Language["Power Colors"])
 	right:CreateColorSelection("color-mana", Settings["color-mana"], Language["Mana"], "")
 	right:CreateColorSelection("color-rage", Settings["color-rage"], Language["Rage"], "")
@@ -277,7 +277,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Colors"], fun
 	right:CreateColorSelection("color-runes", Settings["color-runes"], Language["Runes"], "")
 	right:CreateColorSelection("color-fuel", Settings["color-fuel"], Language["Fuel"], "")
 	right:CreateColorSelection("color-ammo-slot", Settings["color-ammo-slot"], Language["Ammo Slot"], "")
-	
+
 	left:CreateHeader(Language["Zone Colors"])
 	left:CreateColorSelection("color-sanctuary", Settings["color-sanctuary"], Language["Sanctuary"], "")
 	left:CreateColorSelection("color-arena", Settings["color-arena"], Language["Arena"], "")
@@ -286,7 +286,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Colors"], fun
 	left:CreateColorSelection("color-contested", Settings["color-contested"], Language["Contested"], "")
 	left:CreateColorSelection("color-friendly", Settings["color-friendly"], Language["Friendly"], "")
 	left:CreateColorSelection("color-other", Settings["color-other"], Language["Other"], "")
-	
+
 	right:CreateHeader(Language["Reaction Colors"])
 	right:CreateColorSelection("color-reaction-8", Settings["color-reaction-8"], Language["Exalted"], "")
 	right:CreateColorSelection("color-reaction-7", Settings["color-reaction-7"], Language["Revered"], "")
@@ -296,27 +296,27 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Colors"], fun
 	right:CreateColorSelection("color-reaction-3", Settings["color-reaction-3"], Language["Unfriendly"], "")
 	right:CreateColorSelection("color-reaction-2", Settings["color-reaction-2"], Language["Hostile"], "")
 	right:CreateColorSelection("color-reaction-1", Settings["color-reaction-1"], Language["Hated"], "")
-	
+
 	right:CreateHeader(Language["Debuff Colors"])
 	right:CreateColorSelection("color-curse", Settings["color-curse"], Language["Curse"], "")
 	right:CreateColorSelection("color-disease", Settings["color-disease"], Language["Disease"], "")
 	right:CreateColorSelection("color-magic", Settings["color-magic"], Language["Magic"], "")
 	right:CreateColorSelection("color-poison", Settings["color-poison"], Language["Poison"], "")
 	right:CreateColorSelection("color-none", Settings["color-none"], Language["None"], "")
-	
+
 	if (not HydraUI.IsMainline) then
 		right:CreateHeader(Language["Pet Happiness Colors"])
 		right:CreateColorSelection("color-happiness-3", Settings["color-happiness-3"], Language["Happy"], "")
 		right:CreateColorSelection("color-happiness-2", Settings["color-happiness-2"], Language["Content"], "")
 		right:CreateColorSelection("color-happiness-1", Settings["color-happiness-1"], Language["Unhappy"], "")
-		
+
 		left:CreateHeader(Language["Totem Colors"])
 		left:CreateColorSelection("color-totem-fire", Settings["color-totem-fire"], Language["Fire"], "")
 		left:CreateColorSelection("color-totem-earth", Settings["color-totem-earth"], Language["Earth"], "")
 		left:CreateColorSelection("color-totem-water", Settings["color-totem-water"], Language["Water"], "")
 		left:CreateColorSelection("color-totem-air", Settings["color-totem-air"], Language["Air"], "")
 	end
-	
+
 	left:CreateHeader(Language["Combo Points Colors"])
 	left:CreateColorSelection("color-combo-1", Settings["color-combo-1"], Language["Combo Point 1"], Language["Set the color of combo point 1"], ReloadUI):RequiresReload(true)
 	left:CreateColorSelection("color-combo-2", Settings["color-combo-2"], Language["Combo Point 2"], Language["Set the color of combo point 2"], ReloadUI):RequiresReload(true)
@@ -325,11 +325,11 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Colors"], fun
 	left:CreateColorSelection("color-combo-5", Settings["color-combo-5"], Language["Combo Point 5"], Language["Set the color of combo point 5"], ReloadUI):RequiresReload(true)
 	left:CreateColorSelection("color-combo-6", Settings["color-combo-6"], Language["Combo Point 6"], Language["Set the color of combo point 6"], ReloadUI):RequiresReload(true)
 	left:CreateColorSelection("color-combo-charged", Settings["color-combo-charged"], Language["Charged Combo Point"], Language["Set the color of the charged combo point provided from the Kyrian Covenant"], ReloadUI):RequiresReload(true)
-	
+
 	right:CreateHeader(Language["Misc Colors"])
 	right:CreateColorSelection("color-tapped", Settings["color-tapped"], Language["Tagged"], "")
 	right:CreateColorSelection("color-disconnected", Settings["color-disconnected"], Language["Disconnected"], "")
-	
+
 	left:CreateHeader(Language["Casting"])
 	left:CreateColorSelection("color-casting-start", Settings["color-casting-start"], Language["Casting"], "")
 	left:CreateColorSelection("color-casting-stopped", Settings["color-casting-stopped"], Language["Stopped"], "")

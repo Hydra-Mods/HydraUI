@@ -10,10 +10,10 @@ end
 local OnUpdate = function(self, elapsed)
 	self.Elapsed = self.Elapsed + elapsed
 	self.Throttle = self.Throttle + elapsed
-	
+
 	if (self.Throttle > 1) then
 		self.Text:SetText(SecondsToTime(self.Elapsed))
-		
+
 		self.Throttle = 0
 	end
 end
@@ -37,7 +37,7 @@ local OnEnable = function(self)
 	self:RegisterEvent("PLAYER_REGEN_ENABLED")
 	self:RegisterEvent("PLAYER_REGEN_DISABLED")
 	self:SetScript("OnEvent", Update)
-	
+
 	self.Text:SetText(SecondsToTime(self.Elapsed))
 end
 
@@ -48,7 +48,7 @@ local OnDisable = function(self)
 	self:SetScript("OnUpdate", nil)
 	self.Elapsed = 0
 	self.Throttle = 0
-	
+
 	self.Text:SetText("")
 end
 

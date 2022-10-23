@@ -14,8 +14,8 @@ function Objectives:Load()
 	self.MinimapAnchor = CreateFrame("Frame", "PVP Objectives", HydraUI.UIParent)
 	self.MinimapAnchor:SetSize(173, 26)
 	self.MinimapAnchor:SetPoint("TOP", HydraUI.UIParent, 0, -70)
-	
+
 	hooksecurefunc(UIWidgetBelowMinimapContainerFrame, "SetPoint", SetBelowMinimapPosition)
-	
+
 	HydraUI:CreateMover(self.MinimapAnchor)
 end

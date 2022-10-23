@@ -27,7 +27,7 @@ local Throttle = HydraUI:GetModule("Throttle")
 
 function Update:QueueChannel(channel, target)
 	local Data
-	
+
 	if (#Tables == 0) then
 		Data = {channel, target}
 	else
@@ -35,9 +35,9 @@ function Update:QueueChannel(channel, target)
 		Data[1] = channel
 		Data[2] = target
 	end
-	
+
 	tinsert(Queue, Data)
-	
+
 	if (not self:GetScript("OnUpdate")) then
 		self:SetScript("OnUpdate", self.OnUpdate)
 	end
@@ -45,16 +45,16 @@ end
 
 function Update:OnUpdate(elapsed)
 	self.Timer = self.Timer - elapsed
-	
+
 	if (self.Timer < 0) then
 		local Data = tremove(Queue, 1)
-		
+
 		SendAddonMessage("HydraUI-Version", AddOnVersion, Data[1], Data[2])
-		
+
 		tinsert(Tables, Data)
-		
+
 		self.Timer = 5
-		
+
 		if (#Queue == 0) then
 			self:SetScript("OnUpdate", nil)
 		end
@@ -66,14 +66,14 @@ function Update:PLAYER_ENTERING_WORLD()
 		self:QueueChannel("YELL")
 		Throttle:Start("vrsn", 10)
 	end
-	
+
 	self:GROUP_ROSTER_UPDATE()
 end
 
 function Update:GUILD_ROSTER_UPDATE()
 	if IsInGuild() then
 		self:QueueChannel("GUILD")
-		
+
 		self:UnregisterEvent("GUILD_ROSTER_UPDATE")
 	end
 end
@@ -81,13 +81,13 @@ end
 function Update:GROUP_ROSTER_UPDATE()
 	local Home = GetNumGroupMembers(LE_PARTY_CATEGORY_HOME)
 	local Instance = GetNumGroupMembers(LE_PARTY_CATEGORY_INSTANCE)
-	
+
 	if (Home == 0 and self.SentHome) then
 		self.SentHome = false
 	elseif (Instance == 0 and self.SentInst) then
 		self.SentInst = false
 	end
-	
+
 	if (Instance > 0 and not self.SentInst) then
 		self:QueueChannel("INSTANCE_CHAT")
 		self.SentInst = true
@@ -101,17 +101,17 @@ function Update:CHAT_MSG_ADDON(prefix, message, channel, sender)
 	if (sender == User or prefix ~= "HydraUI-Version") then
 		return
 	end
-	
+
 	message = tonumber(message)
-	
+
 	if (AddOnNum > message) then -- We have a higher version, share it
 		self:QueueChannel(channel)
 	elseif (message > AddOnNum) then -- We're behind!
 		HydraUI:print(Language["You can get an updated version of HydraUI at https://www.curseforge.com/wow/addons/hydraui"])
 		print(Language["Join the Discord community for support and feedback https://discord.gg/XefDFa6nJR"])
-		
+
 		HydraUI:GetModule("GUI"):CreateUpdateAlert()
-		
+
 		AddOnNum = message
 		AddOnVersion = tostring(message)
 	end
@@ -120,7 +120,7 @@ end
 function Update:ZONE_CHANGED_NEW_AREA()
 	if UnitOnTaxi("player") then
 		local Zone = GetZoneText()
-		
+
 		if (Zone ~= self.Zone and not Throttle:IsThrottled("vrsn")) then
 			self:QueueChannel("YELL")
 			self.Zone = Zone
@@ -132,7 +132,7 @@ end
 function Update:ZONE_CHANGED()
 	if UnitOnTaxi("player") then
 		local Zone = GetZoneText()
-		
+
 		if (Zone ~= self.Zone and not Throttle:IsThrottled("vrsn")) then
 			self:QueueChannel("YELL")
 			self.Zone = Zone

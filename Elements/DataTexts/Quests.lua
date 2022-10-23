@@ -24,7 +24,7 @@ local OnEnable = function(self)
 	self:RegisterEvent("QUEST_LOG_UPDATE")
 	self:SetScript("OnEvent", Update)
 	self:SetScript("OnMouseUp", OnMouseUp)
-	
+
 	self:Update()
 end
 
@@ -32,7 +32,7 @@ local OnDisable = function(self)
 	self:UnregisterEvent("QUEST_LOG_UPDATE")
 	self:SetScript("OnEvent", nil)
 	self:SetScript("OnMouseUp", nil)
-	
+
 	self.Text:SetText("")
 end
 

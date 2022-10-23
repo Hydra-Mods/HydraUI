@@ -48,17 +48,17 @@ setmetatable(Language, {__index = Index})
 -- Modules and plugins
 function HydraUI:NewModule(name)
 	local Module = self:GetModule(name)
-	
+
 	if Module then
 		return Module
 	end
-	
+
 	Module = CreateFrame("Frame", "HydraUI " .. name, self.UIParent, "BackdropTemplate")
 	Module.Name = name
-	
+
 	Modules[name] = Module
 	ModuleQueue[#ModuleQueue + 1] = Module
-	
+
 	return Module
 end
 
@@ -75,31 +75,31 @@ function HydraUI:LoadModules()
 			ModuleQueue[i].Loaded = true
 		end
 	end
-	
+
 	-- Wipe the queue
 end
 
 function HydraUI:NewPlugin(name)
 	local Plugin = self:GetPlugin(name)
-	
+
 	if Plugin then
 		return
 	end
-	
+
 	local Name, Title, Notes = GetAddOnInfo(name)
 	local Author = GetAddOnMetadata(name, "Author")
 	local Version = GetAddOnMetadata(name, "Version")
-	
+
 	Plugin = CreateFrame("Frame", name, self.UIParent, "BackdropTemplate")
 	Plugin.Name = Name
 	Plugin.Title = Title
 	Plugin.Notes = Notes
 	Plugin.Author = Author
 	Plugin.Version = Version
-	
+
 	Plugins[name] = Plugin
 	PluginQueue[#PluginQueue + 1] = Plugin
-	
+
 	return Plugin
 end
 
@@ -113,23 +113,23 @@ function HydraUI:LoadPlugins()
 	if (#PluginQueue == 0) then
 		return
 	end
-	
+
 	for i = 1, #PluginQueue do
 		if PluginQueue[i].Load then
 			PluginQueue[i]:Load()
 		end
 	end
-	
+
 	self:GetModule("GUI"):AddWidgets(Language["Info"], Language["Plugins"], function(left, right)
 		local Anchor
-		
+
 		for i = 1, #PluginQueue do
 			if ((i % 2) == 0) then
 				Anchor = right
 			else
 				Anchor = left
 			end
-			
+
 			Anchor:CreateHeader(PluginQueue[i].Title)
 			Anchor:CreateDoubleLine("", Language["Author"], PluginQueue[i].Author)
 			Anchor:CreateDoubleLine("", Language["Version"], PluginQueue[i].Version)
@@ -144,15 +144,15 @@ function HydraUI:OnEvent(event)
 	self:CreateProfileData()
 	self:UpdateProfileList()
 	self:ApplyProfile(self:GetActiveProfileName())
-	
+
 	self:UpdateColors()
 	self:UpdateoUFColors()
-	
+
 	self:WelcomeMessage()
-	
+
 	self:LoadModules()
 	self:LoadPlugins()
-	
+
 	self:UnregisterEvent(event)
 end
 

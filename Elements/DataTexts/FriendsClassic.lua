@@ -48,7 +48,7 @@ end
 
 ClientInfo["App"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -56,13 +56,13 @@ ClientInfo["App"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[Client], name
 end
 
 ClientInfo["ANBS"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -70,13 +70,13 @@ ClientInfo["ANBS"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["BSAp"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -84,13 +84,13 @@ ClientInfo["BSAp"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["DST2"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -98,13 +98,13 @@ ClientInfo["DST2"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["D3"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -112,13 +112,13 @@ ClientInfo["D3"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["Hero"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -126,13 +126,13 @@ ClientInfo["Hero"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["Pro"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -140,13 +140,13 @@ ClientInfo["Pro"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["S1"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -154,13 +154,13 @@ ClientInfo["S1"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["S2"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -168,13 +168,13 @@ ClientInfo["S2"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["VIPR"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -182,13 +182,13 @@ ClientInfo["VIPR"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["ODIN"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -196,13 +196,13 @@ ClientInfo["ODIN"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["OSI"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -210,26 +210,26 @@ ClientInfo["OSI"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[Client], name, RichPresence
 end
 
 ClientInfo["WoW"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy, GUID, WoWProjectID, IsWoWMobile = BNGetGameAccountInfo(id)
-	
+
 	if (not Class:find("%S")) then
 		Class = "DEMONHUNTER"
 	else
 		Class = GetClass(Class)
 	end
-	
+
 	local ClassColor = HydraUI.ClassColors[Class]
-	
+
 	ClassColor = HydraUI:RGBToHex(ClassColor[1], ClassColor[2], ClassColor[3])
-	
+
 	local LevelColor = GetQuestDifficultyColor(Level)
 	LevelColor = HydraUI:RGBToHex(LevelColor.r, LevelColor.g, LevelColor.b)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6(%s)|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -237,23 +237,23 @@ ClientInfo["WoW"] = function(name, id)
 	else
 		name = format("|cFF00FFF6(%s)|r", name)
 	end
-	
+
 	local NameInfo = format("|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF|r %s", LevelColor, Level, ClassColor, CharacterName, name)
-	
+
 	if (not Area or Area == "") then
 		Area = RichPresence:gsub("- (.+)", "")
 	end
-	
+
 	if (Area == GetRealZoneText()) then
 		Area = format("|cFF33FF33%s|r", Area)
 	end
-	
+
 	return ProjectIDToName[WoWProjectID], NameInfo, Area
 end
 
 ClientInfo["WTCG"] = function(name, id)
 	local HasFocus, CharacterName, Client, RealmName, RealmID, Faction, Race, Class, Blank, Area, Level, RichPresence, CustomMessage, CustomMessageTime, IsOnline, GameAccountID, BNetAccountID, IsAFK, IsBusy = BNGetGameAccountInfo(id)
-	
+
 	if IsAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, CHAT_FLAG_AFK)
 	elseif IsBusy then
@@ -261,21 +261,21 @@ ClientInfo["WTCG"] = function(name, id)
 	else
 		name = format("|cFF00FFF6%s|r", name)
 	end
-	
+
 	return ClientToName[Client], name, RichPresence
 end
 
 local GetClientInformation = function(client, name, id)
 	if ClientInfo[client] then
 		local RealClient, Left, Right = ClientInfo[client](name, id)
-		
+
 		return RealClient, Left, Right
 	end
 end
 
 local OnEnter = function(self)
 	self:SetTooltip()
-	
+
 	local NumFriends = GetNumFriends()
 	local NumFriendsOnline = GetNumOnlineFriends()
 	local NumBNFriends, NumBNOnline = BNGetNumFriends()
@@ -283,49 +283,49 @@ local OnEnter = function(self)
 	local Name
 	local NumClients = 0
 	local ClientCount = 0
-	
+
 	GameTooltip:AddDoubleLine(Label, format("%s/%s", NumBNOnline + NumFriendsOnline, NumFriends + NumBNFriends), nil, nil, nil, 1, 1, 1)
 	GameTooltip:AddLine(" ")
-	
+
 	-- B.Net friends
 	for i = 1, NumBNFriends do
 		local PresenceID, AccountName, BattleTag, IsBattleTagPresence, CharacterName, BNetIDGameAccount, Client, IsOnline, LastOnline, IsAFK, IsDND = BNGetFriendInfo(i)
 		local RealClient, Left, Right = GetClientInformation(Client, AccountName, (BNetIDGameAccount or PresenceID))
-		
+
 		if RealClient then
 			if (not FriendList[RealClient]) then
 				FriendList[RealClient] = {}
 				NumClients = NumClients + 1
 			end
-			
+
 			tinsert(FriendList[RealClient], {Left, Right})
 		end
 	end
-	
+
 	-- Regular friends
 	local ID = 2
-	
+
 	if HydraUI.IsTBC then
 		ID = 5
 	end
-	
+
 	for i = 1, NumFriends do
 		FriendInfo = GetFriendInfoByIndex(i)
-		
+
 		if FriendInfo.connected then
 			local Class = GetClass(FriendInfo.className)
-			
+
 			if (Class == "Unknown") then
 				Class = "PRIEST"
 			end
-			
+
 			local ClassColor = HydraUI.ClassColors[Class]
-			
+
 			ClassColor = HydraUI:RGBToHex(ClassColor[1], ClassColor[2], ClassColor[3])
-			
+
 			local LevelColor = GetQuestDifficultyColor(FriendInfo.level)
 			LevelColor = HydraUI:RGBToHex(LevelColor.r, LevelColor.g, LevelColor.b)
-			
+
 			if FriendInfo.afk then
 				Name = format("|cFF9E9E9E%s|r", FriendInfo.name)
 			elseif FriendInfo.dnd then
@@ -333,22 +333,22 @@ local OnEnter = function(self)
 			else
 				Name = FriendInfo.name
 			end
-			
+
 			local NameInfo = format("|cFFFFFFFF|cFF%s%s|r |cFF%s%s|r|cFFFFFFFF|r", LevelColor, FriendInfo.level, ClassColor, Name)
-			
+
 			if (not FriendList[ProjectIDToName[ID]]) then
 				FriendList[ProjectIDToName[ID]] = {}
 				NumClients = NumClients + 1
 			end
-			
+
 			tinsert(FriendList[ProjectIDToName[ID]], {NameInfo, FriendInfo.area})
 		end
 	end
-	
+
 	for client, info in next, FriendList do
 		GameTooltip:AddLine(client)
 		ClientCount = ClientCount + 1
-		
+
 		for i = 1, #info do
 			if info[i][2] then
 				GameTooltip:AddDoubleLine(info[i][1], info[i][2], nil, nil, nil, 1, 1, 1)
@@ -356,16 +356,16 @@ local OnEnter = function(self)
 				GameTooltip:AddLine(info[i][1])
 			end
 		end
-		
+
 		if (ClientCount ~= NumClients) then
 			GameTooltip:AddLine(" ")
 		end
 	end
-	
+
 	GameTooltip:Show()
-	
+
 	wipe(FriendList)
-	
+
 	self.TooltipShown = true
 end
 
@@ -384,9 +384,9 @@ local Update = function(self)
 	local NumOnline = GetNumOnlineFriends()
 	local NumBNFriends, NumBNOnline = BNGetNumFriends()
 	local Online = NumOnline + NumBNOnline
-	
+
 	self.Text:SetFormattedText("|cFF%s%s:|r |cFF%s%s|r", Settings["data-text-label-color"], Label, HydraUI.ValueColor, Online)
-	
+
 	if self.TooltipShown then
 		OnLeave(self)
 		OnEnter(self)
@@ -406,9 +406,9 @@ local OnEnable = function(self)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
 	self:SetScript("OnMouseUp", OnMouseUp)
-	
+
 	C_FriendList.ShowFriends()
-	
+
 	self:Update()
 end
 
@@ -425,7 +425,7 @@ local OnDisable = function(self)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
 	self:SetScript("OnMouseUp", nil)
-	
+
 	self.Text:SetText("")
 end
 

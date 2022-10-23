@@ -7,9 +7,9 @@ function HydraUI:WelcomeMessage()
 	if (not Settings["ui-display-welcome"]) then
 		return
 	end
-	
+
 	local Color = Settings["ui-widget-color"]
-	
+
 	print(format(Language["Welcome to |cFF%sHydra|r|cFFEFFFFFUI|r version |cFF%s%s|r - https://discord.gg/XefDFa6nJR"], Color, Settings["ui-header-font-color"], HydraUI.UIVersion))
 	print(format(Language["Type |cFF%s/hui|r to access the settings window, or click |cFF%s|Hcommand:/hui|h[here]|h|r."], Color, Color))
 end
@@ -21,7 +21,7 @@ end
 local GetDiscordLink = function()
 	if (not Throttle:IsThrottled("discord-request")) then
 		HydraUI:print(Language["Join the Discord community for support and feedback https://discord.gg/XefDFa6nJR"])
-		
+
 		Throttle:Start("discord-request", 10)
 	end
 end
@@ -29,7 +29,7 @@ end
 local GetYouTubeLink = function()
 	if (not Throttle:IsThrottled("yt-request")) then
 		HydraUI:print(Language["Subscribe to YouTube to see new features https://www.youtube.com/c/HydraMods"])
-		
+
 		Throttle:Start("yt-request", 10)
 	end
 end
@@ -59,16 +59,16 @@ GUI:AddWidgets(Language["General"], Language["General"], function(left, right)
 	--left:CreateSwitch("ui-display-whats-new", Settings["ui-display-whats-new"], Language[ [[Display "What's New" Pop-ups]] ], "")
 	left:CreateButton("", Language["Get Link"], Language["Join Discord"], Language["Get a link to join the HydraUI Discord community"], GetDiscordLink)
 	left:CreateButton("", Language["Get Link"], Language["Watch YouTube"], Language["Get a link for the HydraUI YouTube channel"], GetYouTubeLink)
-	
+
 	left:CreateHeader(Language["Move UI"])
 	left:CreateButton("", Language["Toggle"], Language["Move UI"], Language["While toggled, you can drag some elements of HydraUI around the screen"], ToggleMove)
 	left:CreateButton("", Language["Restore"], Language["Restore To Defaults"], Language["Restore all HydraUI movable frames to their default locations"], ResetMovers)
-	
+
 	right:CreateHeader(Language["Settings Window"])
 	right:CreateSwitch("gui-hide-in-combat", Settings["gui-hide-in-combat"], Language["Hide In Combat"], Language["Hide the settings window when engaging in combat"])
 	right:CreateSwitch("gui-enable-fade", Settings["gui-enable-fade"], Language["Fade While Moving"], Language["Fade out the settings window while moving"], UpdateGUIEnableFade)
 	right:CreateSlider("gui-faded-alpha", Settings["gui-faded-alpha"], 0, 100, 10, Language["Set Faded Opacity"], Language["Set the opacity of the settings window while faded"], nil, nil, "%")
-	
+
 	right:CreateHeader(Language["Border Thickness"])
 	right:CreateSlider('ui-border-thickness', Settings['ui-border-thickness'], 0, 2, 1, Language["Border Thickness"], Language["Set how thick the border on UI elements is"], ReloadUI, nil, "px"):RequiresReload(true)
 end)
@@ -76,7 +76,7 @@ end)
 -- Putting Styles here too
 local AcceptNewStyle = function(value)
 	Assets:ApplyStyle(value)
-	
+
 	ReloadUI()
 end
 
@@ -87,13 +87,13 @@ end
 GUI:AddWidgets(Language["General"], Language["Styles"], function(left, right)
 	left:CreateHeader(Language["Styles"])
 	left:CreateDropdown("ui-style", Settings["ui-style"], Assets:GetStyleList(), Language["Select Style"], Language["Select a style to load"], UpdateStyle)
-	
+
 	left:CreateHeader(Language["Headers"])
 	left:CreateColorSelection("ui-header-font-color", Settings["ui-header-font-color"], Language["Text Color"], "")
 	left:CreateColorSelection("ui-header-texture-color", Settings["ui-header-texture-color"], Language["Texture Color"], "")
 	left:CreateDropdown("ui-header-texture", Settings["ui-header-texture"], Assets:GetTextureList(), Language["Texture"], "", nil, "Texture")
 	left:CreateDropdown("ui-header-font", Settings["ui-header-font"], Assets:GetFontList(), Language["Header Font"], "", nil, "Font")
-	
+
 	left:CreateHeader(Language["Widgets"])
 	left:CreateColorSelection("ui-widget-color", Settings["ui-widget-color"], Language["Color"], "")
 	left:CreateColorSelection("ui-widget-bright-color", Settings["ui-widget-bright-color"], Language["Bright Color"], "")
@@ -101,24 +101,24 @@ GUI:AddWidgets(Language["General"], Language["Styles"], function(left, right)
 	left:CreateColorSelection("ui-widget-font-color", Settings["ui-widget-font-color"], Language["Label Color"], "")
 	left:CreateDropdown("ui-widget-texture", Settings["ui-widget-texture"], Assets:GetTextureList(), Language["Texture"], "", nil, "Texture")
 	left:CreateDropdown("ui-widget-font", Settings["ui-widget-font"], Assets:GetFontList(), Language["Font"], "", nil, "Font")
-	
+
 	right:CreateHeader(Language["What is a style?"])
 	right:CreateMessage("", Language["Styles store visual settings such as fonts, textures, and colors to create an overall theme."])
-	
+
 	right:CreateHeader(Language["Console"])
 	right:CreateButton("", Language["Reload"], Language["Reload UI"], Language["Reload the UI"], ReloadUI)
 	--right:CreateButton("", Language["Delete"], Language["Delete Saved Variables"], Language["Reset all saved variables"], HydraUI.Reset)
-	
+
 	right:CreateHeader(Language["Windows"])
 	right:CreateColorSelection("ui-window-bg-color", Settings["ui-window-bg-color"], Language["Background Color"], "")
 	right:CreateColorSelection("ui-window-main-color", Settings["ui-window-main-color"], Language["Main Color"], "")
-	
+
 	right:CreateHeader(Language["Buttons"])
 	right:CreateColorSelection("ui-button-texture-color", Settings["ui-button-texture-color"], Language["Texture Color"], "")
 	right:CreateColorSelection("ui-button-font-color", Settings["ui-button-font-color"], Language["Font Color"], "")
 	right:CreateDropdown("ui-button-texture", Settings["ui-button-texture"], Assets:GetTextureList(), Language["Texture"], "", nil, "Texture")
 	right:CreateDropdown("ui-button-font", Settings["ui-button-font"], Assets:GetFontList(), Language["Font"], "", nil, "Font")
-	
+
 	left:CreateHeader(Language["Font Sizes"])
 	left:CreateSlider("ui-font-size", Settings["ui-font-size"], 8, 32, 1, Language["General Font Size"], Language["Set the general font size of the UI"])
 	left:CreateSlider("ui-header-font-size", Settings["ui-header-font-size"], 8, 32, 1, Language["Header Font Size"], Language["Set the font size of header elements in the UI"])
@@ -137,10 +137,10 @@ end
 function Durability:Load() -- Maybe a setting to hide the whole frame?
 	self:SetSize(DurabilityFrame:GetSize())
 	self:SetPoint("BOTTOM", HydraUIParent, -360, 10)
-	
+
 	DurabilityFrame:SetScript("OnShow", nil)
 	DurabilityFrame:SetScript("OnHide", nil)
 	hooksecurefunc(DurabilityFrame, "SetPoint", SetDurabilityPosition)
-	
+
 	HydraUI:CreateMover(self)
 end

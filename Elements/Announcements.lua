@@ -27,7 +27,7 @@ Defaults["announcements-enable"] = true
 Defaults["announcements-channel"] = "SELF"
 
 Announcements.Spells = {
-	
+
 }
 
 function Announcements:GetChannelToSend()
@@ -55,25 +55,25 @@ Announcements.Events = {
 		if UnitIsFriend("player", target) then -- Quaking filter
 			return
 		end
-		
+
 		Channel = Announcements:GetChannelToSend()
-		
+
 		if Channel then
 			SendChatMessage(format(InterruptMessage, target, id, spell), Channel)
 		else
 			print(format(InterruptMessage, target, id, spell))
 		end
 	end,
-	
+
 	--[[["SPELL_DISPEL"] = function(target, id, spell)
 		if (not UnitIsFriend("player", target)) then
 			SendChatMessage(format(DispelledMessage, target, id, spell), "EMOTE")
 		end
 	end,]]
-	
+
 	["SPELL_STOLEN"] = function(target, id, spell)
 		Channel = Announcements:GetChannelToSend()
-		
+
 		if Channel then
 			SendChatMessage(format(StolenMessage, target, id, spell), Channel)
 		else
@@ -84,11 +84,11 @@ Announcements.Events = {
 
 function Announcements:COMBAT_LOG_EVENT_UNFILTERED()
 	_, EventType, _, SourceGUID, _, _, _, _, DestName, _, _, _, _, _, SpellID, SpellName = CombatLogGetCurrentEventInfo()
-	
+
 	if (not self.Events[EventType]) then
 		return
 	end
-	
+
 	if (SourceGUID == MyGUID or SourceGUID == PetGUID) then
 		self.Events[EventType](DestName, SpellID, SpellName)
 	end
@@ -109,7 +109,7 @@ function Announcements:UNIT_PET(owner)
 	if (owner ~= "player") then
 		return
 	end
-	
+
 	if (UnitExists("pet") and UnitName("pet") ~= UNKNOWN) then
 		PetGUID = UnitGUID("pet")
 	end
@@ -123,10 +123,10 @@ function Announcements:Load()
 	if (not Settings["announcements-enable"]) then
 		return
 	end
-	
+
 	self:GROUP_ROSTER_UPDATE()
 	self:UNIT_PET("player")
-	
+
 	self:RegisterEvent("UNIT_PET")
 	self:RegisterEvent("GROUP_ROSTER_UPDATE")
 	self:SetScript("OnEvent", self.OnEvent)

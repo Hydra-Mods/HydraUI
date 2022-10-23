@@ -32,14 +32,14 @@ function AutoDismount:UI_ERROR_MESSAGE(id, message)
 		UIErrorsFrame:Clear()
 	elseif (self.Shapeshift[message] and not InCombatLockdown()) then
 		local ID
-		
+
 		for i = 1, 40 do
 			ID = select(10, UnitBuff("player", i))
-			
+
 			if (ID and ID == 2645) then
 				CancelUnitBuff("player", i)
 				UIErrorsFrame:Clear()
-				
+
 				return
 			end
 		end
@@ -62,7 +62,7 @@ function AutoDismount:Load()
 		self:RegisterEvent("UI_ERROR_MESSAGE")
 		self:RegisterEvent("TAXIMAP_OPENED")
 	end
-	
+
 	self:SetScript("OnEvent", self.OnEvent)
 end
 
