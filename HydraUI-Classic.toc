@@ -39,6 +39,7 @@ Elements\Colors.lua
 Elements\Throttle.lua
 Elements\Move.lua
 Elements\General.lua
+Elements\Announcements.lua
 Elements\Fonts.lua
 Elements\Alerts.lua
 Elements\Popup.lua
@@ -106,7 +107,6 @@ Elements\MirrorTimers.lua
 Elements\ToastFrame.lua
 Elements\Taxi.lua
 Elements\Merchant.lua
-Elements\Announcements.lua
 Elements\Dismount.lua
 Elements\Cooldowns.lua
 Elements\QuestWatch.lua

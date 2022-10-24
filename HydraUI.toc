@@ -37,6 +37,7 @@ Elements\General.lua
 Elements\Alerts.lua
 Elements\Popup.lua
 Elements\Gold.lua
+Elements\Announcements.lua
 Elements\Fonts.lua
 Elements\Chat.lua
 Elements\ChatBubbles.lua
@@ -102,7 +103,6 @@ Elements\MirrorTimers.lua
 Elements\ToastFrame.lua
 Elements\Vehicle.lua
 Elements\Merchant.lua
-Elements\Announcements.lua
 Elements\Cooldowns.lua
 Elements\TalkingHead.lua
 Elements\Commands.lua

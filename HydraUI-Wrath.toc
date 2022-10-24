@@ -36,6 +36,7 @@ Elements\Profiles.lua
 Elements\Colors.lua
 Elements\Throttle.lua
 Elements\General.lua
+Elements\Announcements.lua
 Elements\Fonts.lua
 Elements\Move.lua
 Elements\Alerts.lua
@@ -106,7 +107,6 @@ Elements\MirrorTimers.lua
 Elements\ToastFrame.lua
 Elements\Vehicle.lua
 Elements\Merchant.lua
-Elements\Announcements.lua
 Elements\Dismount.lua
 Elements\Cooldowns.lua
 Elements\WatchFrame.lua

@@ -107,6 +107,23 @@ function AB:DisableBar(bar)
 	bar:Hide()
 end
 
+function AB:UpdateHotKeyText()
+	local HotKeyText = self.HotKey:GetText()
+
+	if HotKeyText then
+		HotKeyText = HotKeyText:gsub(NumPad, "N")
+		HotKeyText = HotKeyText:gsub(WheelUp, "MWU")
+		HotKeyText = HotKeyText:gsub(WheelDown, "MWD")
+		HotKeyText = HotKeyText:gsub(MouseButton, "MB")
+		HotKeyText = HotKeyText:gsub(MiddleButton, "MMB")
+		HotKeyText = HotKeyText:gsub(CTRL_KEY_TEXT, "c")
+		HotKeyText = HotKeyText:gsub(SHIFT_KEY_TEXT, "s")
+		HotKeyText = HotKeyText:gsub(ALT_KEY_TEXT, "a")
+		
+		self.HotKey:SetText("|cFFFFFFFF" .. HotKeyText .. "|r")
+	end
+end
+
 function AB:PositionButtons(bar, numbuttons, perrow, size, spacing)
 	if (numbuttons < perrow) then
 		perrow = numbuttons
@@ -189,7 +206,7 @@ function AB:StyleActionButton(button)
 		button.HotKey.SetTextColor = function() end
 
 		local HotKeyText = button.HotKey:GetText()
-
+		
 		if HotKeyText then
 			HotKeyText = HotKeyText:gsub(NumPad, "N")
 			HotKeyText = HotKeyText:gsub(WheelUp, "MWU")
@@ -307,6 +324,12 @@ function AB:StyleActionButton(button)
 
 	button:SetFrameLevel(15)
 	button:SetFrameStrata("MEDIUM")
+
+	if button.Update then
+		hooksecurefunc(button, "Update", AB.UpdateHotKeyText)
+	else
+		hooksecurefunc("ActionButton_UpdateHotkeys", AB.UpdateHotKeyText)
+	end
 
 	button.Styled = true
 end

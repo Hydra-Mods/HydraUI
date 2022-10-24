@@ -82,11 +82,70 @@ function KeyBinding:OnKeyDown(key)
 		end
 
 		local ButtonName = match(Name, "%D+")
+
 		if self.Translate[ButtonName] then
 			if self.ValidBindings[self.Translate[ButtonName]] then
 				self.TargetBindingName = self.Translate[ButtonName] .. match(Name, "(%d+)$")
 			end
 		end
+	end
+end
+
+function KeyBinding:OnMouseWheel(delta)
+	local key
+	
+	if (delta > 0) then
+		key = "MOUSEWHEELUP"
+	else
+		key = "MOUSEWHEELDOWN"
+	end
+	--print(delta, key)
+	local MouseFocus = GetMouseFocus()
+
+	if (MouseFocus and MouseFocus.GetName) then
+		local Name = MouseFocus:GetName()
+
+		if Name then
+			local ButtonName = match(Name, "%D+")
+
+			if self.Translate[ButtonName] then
+				if self.ValidBindings[self.Translate[ButtonName]] then
+					self.TargetBindingName = self.Translate[ButtonName] .. match(Name, "(%d+)$")
+				end
+			end
+		end
+	end
+	
+	if (not self.Filter[key] and self.TargetBindingName) then
+		if (key == "ESCAPE") then
+			local Binding = GetBindingKey(self.TargetBindingName)
+
+			if Binding then
+				SetBinding(Binding)
+			end
+
+			return
+		end
+
+		key = format("%s%s%s%s", IsAltKeyDown() and "ALT-" or "", IsControlKeyDown() and "CTRL-" or "", IsShiftKeyDown() and "SHIFT-" or "", key)
+print(self.TargetBindingName, key)
+		local OldAction = GetBindingAction(key, true)
+
+		if OldAction then
+			local OldName = GetBindingName(OldAction)
+
+			HydraUI:print(format(Language['Unbound "%s" from %s'], key, OldName))
+		end
+
+		SetBinding(key, self.TargetBindingName, 1)
+
+		local NewAction = GetBindingAction(key, true)
+		local NewName = GetBindingName(NewAction)
+
+		HydraUI:print(format(Language['Bound "%s" to %s'], key, NewName))
+
+		GUI:GetWidget("kb-save"):Enable()
+		GUI:GetWidget("kb-discard"):Enable()
 	end
 end
 
@@ -184,21 +243,24 @@ end
 
 function KeyBinding:Enable()
 	self:EnableKeyboard(true)
+	self:EnableMouseWheel(true)
 	self:SetScript("OnUpdate", self.OnUpdate)
 	self:SetScript("OnKeyDown", self.OnKeyDown)
 	self:SetScript("OnKeyUp", self.OnKeyUp)
+	self:SetScript("OnMouseWheel", self.OnMouseWheel)
 	self:SetScript("OnEvent", self.OnEvent)
 	self.Active = true
 
-	--HydraUI:DisplayPopup(Language["Attention"], Language["Key binding mode is currently active. Would you like to exit key binding mode?"], ACCEPT, PopupOnAccept, CANCEL) -- PopupOnCancel
-	HydraUI:DisplayPopup(Language["Attention"], Language["Key binding mode is active. Would you like to save your changes?"], ACCEPT, OnAccept, CANCEL, OnCancel) -- PopupOnCancel
+	HydraUI:DisplayPopup(Language["Attention"], Language["Key binding mode is active. Would you like to save your changes?"], ACCEPT, OnAccept, CANCEL, OnCancel)
 end
 
 function KeyBinding:Disable()
 	self:EnableKeyboard(false)
+	self:EnableMouseWheel(false)
 	self:SetScript("OnUpdate", nil)
 	self:SetScript("OnKeyDown", nil)
 	self:SetScript("OnKeyUp", nil)
+	self:SetScript("OnMouseWheel", nil)
 	self:SetScript("OnEvent", nil)
 	self.Active = false
 	self.TargetBindingName = nil
@@ -216,6 +278,8 @@ end
 
 function KeyBinding:Load()
 	self.Elapsed = 0
+	self:SetFrameStrata("DIALOG")
+	self:SetAllPoints(HydraUI.UIParent)
 
 	self.Hover = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	self.Hover:SetFrameLevel(50)
