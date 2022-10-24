@@ -99,7 +99,7 @@ function KeyBinding:OnMouseWheel(delta)
 	else
 		key = "MOUSEWHEELDOWN"
 	end
-	--print(delta, key)
+	
 	local MouseFocus = GetMouseFocus()
 
 	if (MouseFocus and MouseFocus.GetName) then
@@ -117,18 +117,8 @@ function KeyBinding:OnMouseWheel(delta)
 	end
 	
 	if (not self.Filter[key] and self.TargetBindingName) then
-		if (key == "ESCAPE") then
-			local Binding = GetBindingKey(self.TargetBindingName)
-
-			if Binding then
-				SetBinding(Binding)
-			end
-
-			return
-		end
-
 		key = format("%s%s%s%s", IsAltKeyDown() and "ALT-" or "", IsControlKeyDown() and "CTRL-" or "", IsShiftKeyDown() and "SHIFT-" or "", key)
-print(self.TargetBindingName, key)
+
 		local OldAction = GetBindingAction(key, true)
 
 		if OldAction then
