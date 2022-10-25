@@ -216,6 +216,10 @@ function HydraUI:print(...)
 end
 
 function HydraUI:SetFontInfo(object, font, size, flags)
+	if (not object) then
+		return
+	end
+
 	local Font, IsPixel = Assets:GetFont(font)
 
 	if IsPixel then

@@ -184,6 +184,7 @@ function HydraUI:UpdatePowerColors()
 	self:SetColorEntry(self.PowerColors, "RUNES", Settings["color-runes"])
 	self:SetColorEntry(self.PowerColors, "FUEL", Settings["color-fuel"])
 	self:SetColorEntry(self.PowerColors, "AMMO_SLOT", Settings["color-ammo-slot"])
+	self:SetColorEntry(self.PowerColors, "ESSENCE", Settings["color-essence"])
 end
 
 function HydraUI:UpdateDebuffColors()

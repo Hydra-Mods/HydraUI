@@ -731,6 +731,44 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			self.ClassPower = Totems
 			self.Totems = Totems
 			self.AuraParent = Totems
+		elseif (HydraUI.UserClass == "EVOKER") then
+			local Essence = CreateFrame("Frame", self:GetName() .. "Essence", self, "BackdropTemplate")
+			Essence:SetSize(Settings["unitframes-player-width"], Settings["player-resource-height"] + 2)
+			Essence:SetBackdrop(HydraUI.Backdrop)
+			Essence:SetBackdropColor(0, 0, 0)
+			Essence:SetBackdropBorderColor(0, 0, 0)
+
+			if Settings["player-move-resource"] then
+				Essence:SetPoint("CENTER", ResourceAnchor, 0, 0)
+			else
+				Essence:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
+			end
+
+			local Width = (Settings["unitframes-player-width"] / 6) - 1
+
+			for i = 1, 6 do
+				Essence[i] = CreateFrame("StatusBar", self:GetName() .. "Essence" .. i, Essence)
+				Essence[i]:SetSize(Width, Settings["player-resource-height"])
+				Essence[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Essence[i]:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-essence"]))
+				Essence[i]:SetWidth(i == 1 and Width - 1 or Width)
+
+				Essence[i].bg = Essence:CreateTexture(nil, "BORDER")
+				Essence[i].bg:SetAllPoints(Essence[i])
+				Essence[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Essence[i].bg:SetVertexColor(HydraUI:HexToRGB(Settings["color-essence"]))
+				Essence[i].bg:SetAlpha(0.3)
+
+				if (i == 1) then
+					Essence[i]:SetPoint("LEFT", Essence, 1, 0)
+				else
+					Essence[i]:SetPoint("TOPLEFT", Essence[i-1], "TOPRIGHT", 1, 0)
+				end
+			end
+
+			self.ClassPower = Essence
+			self.Essence = Essence
+			self.AuraParent = Essence
 		end
 
 		self.ResourceAnchor = ResourceAnchor

@@ -21,6 +21,14 @@ AutoVendor.Filter = {
 	[6196] = true,
 }
 
+if C_Container then
+	GetContainerNumSlots = C_Container.GetContainerNumSlots
+	GetContainerItemLink = C_Container.GetContainerItemLink
+	GetContainerItemID = C_Container.GetContainerItemID
+	GetContainerItemInfo = C_Container.GetContainerItemInfo
+	UseContainerItem = C_Container.UseContainerItem
+end
+
 function HydraUI:GetTrashValue()
 	local Profit = 0
 	local TotalCount = 0

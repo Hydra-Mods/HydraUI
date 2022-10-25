@@ -2,15 +2,18 @@ local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
 local GetNumSlots
 local GetNumFreeSlots
+local ContainerToInventoryID
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local Label = Language["Bags"]
 
 if C_Container and HydraUI.ClientVersion > 100001 then
 	GetNumSlots = C_Container.GetContainerNumSlots
 	GetNumFreeSlots = C_Container.GetContainerNumFreeSlots
+	ContainerToInventoryID = C_Container.ContainerIDToInventoryID
 else
 	GetNumSlots = GetContainerNumSlots
 	GetNumFreeSlots = GetContainerNumFreeSlots
+	ContainerToInventoryID = ContainerIDToInventoryID
 end
 
 local OnEnter = function(self)
@@ -27,7 +30,7 @@ local OnEnter = function(self)
 			local Name = "|cFFFFFFFF[" .. BACKPACK_TOOLTIP .. "]|r"
 
 			if (i > 0) then
-				Name = GetInventoryItemLink("player", ContainerIDToInventoryID(i))
+				Name = GetInventoryItemLink("player", ContainerToInventoryID(i))
 
 				if Name then
 					local Texture = select(10, GetItemInfo(Name))

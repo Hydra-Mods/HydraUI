@@ -128,7 +128,7 @@ colors.power[18] = colors.power.PAIN
 
 -- there's no official colour for evoker's essence
 -- use the average colour of the essence texture instead
-colors.power.ESSENCE = oUF:CreateColor(100 / 255, 173 / 255, 206 / 255)
+colors.power.ESSENCE = oUF:CreateColor(100, 173, 206)
 colors.power[19] = colors.power.ESSENCE
 
 -- alternate power, sourced from FrameXML/CompactUnitFrame.lua

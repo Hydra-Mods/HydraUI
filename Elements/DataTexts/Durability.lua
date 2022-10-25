@@ -93,7 +93,7 @@ local OnEnable = function(self)
 	self:RegisterEvent("UPDATE_INVENTORY_DURABILITY")
 	self:RegisterEvent("MERCHANT_SHOW")
 	self:SetScript("OnEvent", Update)
-	self:SetScript("OnEnter", OnEnter)
+	--self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
 	self:SetScript("OnMouseUp", OnMouseUp)
 
