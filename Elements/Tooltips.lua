@@ -514,16 +514,16 @@ function Tooltips:AddHooks()
 		self.Handled[i]:HookScript("OnShow", SetTooltipStyle)
 	end
 
-	if HydraUI.ClientVersion < 100000 then
+	if TooltipDataProcessor then
+		TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, OnTooltipSetUnit)
+		TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, OnTooltipSetItem)
+		TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, OnTooltipSetSpell)
+	else
 		GameTooltip:HookScript("OnTooltipSetUnit", OnTooltipSetUnit)
 		GameTooltip:HookScript("OnTooltipSetItem", OnTooltipSetItem)
 		GameTooltip:HookScript("OnTooltipSetSpell", OnTooltipSetSpell)
 		
 		ItemRefTooltip:HookScript("OnTooltipSetItem", OnItemRefTooltipSetItem)
-	else
-		TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, OnTooltipSetUnit)
-		TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Item, OnTooltipSetItem)
-		TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Spell, OnTooltipSetSpell)
 	end
 
 	hooksecurefunc("GameTooltip_SetDefaultAnchor", SetDefaultAnchor)

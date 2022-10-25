@@ -977,7 +977,7 @@ function AB:CreatePetBar()
 	self.PetBar.Fader:SetEasing("inout")
 
 	PetActionBarFrame:SetParent(self.PetBar)
-	PetActionBarFrame:SetAllPoints(self.PetBar)
+	--PetActionBarFrame:SetAllPoints(self.PetBar)
 
 	for i = 1, NUM_PET_ACTION_SLOTS do
 		local Button = _G["PetActionButton" .. i]
