@@ -168,9 +168,10 @@ function DT:Load()
 		self:SetDataText("Minimap-Bottom", Settings["data-text-minimap-bottom"])
 	end
 
-	self:SetTooltipsEnabled(Settings["data-text-enable-tooltips"])
-
 	SetCVar("timeMgrUseMilitaryTime", Settings["data-text-24-hour"])
+	
+	self:SetTooltipsEnabled(Settings["data-text-enable-tooltips"])
+	self:UpdateAllAnchors()
 end
 
 function HydraUI:AddDataText(name, enable, disable, update)

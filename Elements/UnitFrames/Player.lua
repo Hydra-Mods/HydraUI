@@ -180,22 +180,14 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 
 	if Settings["unitframes-player-enable-power"] then
 		local Power = CreateFrame("StatusBar", nil, self)
-		local PowerAnchor
-
+		local PowerAnchor = CreateFrame("Frame", "HydraUI Player Power", HydraUI.UIParent)
+		PowerAnchor:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-power-height"])
+		PowerAnchor:SetPoint("CENTER", HydraUI.UIParent, 0, -133)
+		HydraUI:CreateMover(PowerAnchor)
+print(PowerAnchor)
 		if Settings["player-move-power"] then
-			PowerAnchor = CreateFrame("Frame", "HydraUI Player Power", HydraUI.UIParent)
-			PowerAnchor:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-power-height"])
-			PowerAnchor:SetPoint("CENTER", HydraUI.UIParent, 0, -133)
-			HydraUI:CreateMover(PowerAnchor)
-
 			Power:SetPoint("BOTTOMLEFT", PowerAnchor, 1, 1)
 			Power:SetPoint("BOTTOMRIGHT", PowerAnchor, -1, 1)
-
-			local Backdrop = Power:CreateTexture(nil, "BACKGROUND")
-			Backdrop:SetPoint("TOPLEFT", -1, 1)
-			Backdrop:SetPoint("BOTTOMRIGHT", 1, -1)
-			Backdrop:SetTexture(Assets:GetTexture("Blank"))
-			Backdrop:SetVertexColor(0, 0, 0)
 		else
 			Power:SetPoint("BOTTOMLEFT", self, 1, 1)
 			Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
@@ -210,6 +202,12 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		PowerBG:SetPoint("BOTTOMRIGHT", Power, 0, 0)
 		PowerBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 		PowerBG:SetAlpha(0.2)
+
+		local Backdrop = Power:CreateTexture(nil, "BACKGROUND")
+		Backdrop:SetPoint("TOPLEFT", -1, 1)
+		Backdrop:SetPoint("BOTTOMRIGHT", 1, -1)
+		Backdrop:SetTexture(Assets:GetTexture("Blank"))
+		Backdrop:SetVertexColor(0, 0, 0)
 
 		local PowerRight = Power:CreateFontString(nil, "OVERLAY")
 		HydraUI:SetFontInfo(PowerRight, Settings["unitframes-font"], Settings["unitframes-font-size"], Settings["unitframes-font-flags"])
@@ -301,6 +299,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		self.Power.bg = PowerBG
 		self.PowerLeft = PowerLeft
 		self.PowerRight = PowerRight
+		self.PowerAnchor = PowerAnchor
 		--self.AdditionalPower = AdditionalPower
 	end
 
@@ -1246,6 +1245,26 @@ local UpdateResourcePosition = function(value)
 	end
 end
 
+local UpdatePowerBarPosition = function(value)
+	if HydraUI.UnitFrames["player"] then
+		local Frame = HydraUI.UnitFrames["player"]
+
+		Frame.Power:ClearAllPoints()
+
+		if value then
+			Frame:SetHeight(Settings["unitframes-player-health-height"] + 2)
+
+			Frame.Power:SetPoint("BOTTOMLEFT", Frame.PowerAnchor, 1, 1)
+			Frame.Power:SetPoint("BOTTOMRIGHT", Frame.PowerAnchor, -1, 1)
+		else
+			Frame:SetHeight(Settings["unitframes-player-health-height"] + Settings["unitframes-player-power-height"] + 3)
+
+			Frame.Power:SetPoint("BOTTOMLEFT", Frame, 1, 1)
+			Frame.Power:SetPoint("BOTTOMRIGHT", Frame, -1, 1)
+		end
+	end
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("player-enable", Settings["player-enable"], Language["Enable Player"], Language["Enable the player unit frame"], ReloadUI):RequiresReload(true)
@@ -1281,7 +1300,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	right:CreateHeader(Language["Power"])
 	right:CreateSwitch("unitframes-player-enable-power", Settings["unitframes-player-enable-power"], Language["Enable Power Bar"], Language["Enable the player power bar"], ReloadUI):RequiresReload(true)
 	right:CreateSwitch("unitframes-player-power-reverse", Settings["unitframes-player-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePlayerPowerFill)
-	right:CreateSwitch("player-move-power", Settings["player-move-power"], Language["Detach Power"], Language["Detach the power bar from the unit frame"], ReloadUI):RequiresReload(true)
+	right:CreateSwitch("player-move-power", Settings["player-move-power"], Language["Detach Power"], Language["Detach the power bar from the unit frame"], UpdatePowerBarPosition)
 	right:CreateSlider("unitframes-player-power-height", Settings["unitframes-player-power-height"], 2, 30, 1, "Power Bar Height", "Set the height of the player power bar", UpdatePlayerPowerHeight)
 	right:CreateDropdown("unitframes-player-power-color", Settings["unitframes-player-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePlayerPowerColor)
 	right:CreateInput("unitframes-player-power-left", Settings["unitframes-player-power-left"], Language["Left Power Text"], Language["Set the text on the left of the player power bar"], ReloadUI):RequiresReload(true)

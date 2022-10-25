@@ -105,6 +105,7 @@ GUI:AddWidgets(Language["Info"], Language["Debug"], function(left, right)
 	local ScreenWidth, ScreenHeight = GetPhysicalScreenSize()
 
 	left:CreateHeader(Language["UI Information"])
+	left:CreateDoubleLine("dgb-ui-version", Language["UI Version"], HydraUI.UIVersion)
 	left:CreateDoubleLine("dgb-game-version", Language["Game Version"], format("%s (%s)", Version, Build))
 	left:CreateDoubleLine("dgb-client", Language["Client"], GetClient())
 	left:CreateDoubleLine("dgb-ui-scale", Language["UI Scale"], C_CVar.GetCVar("uiScale"))
