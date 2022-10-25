@@ -108,19 +108,19 @@ function AB:DisableBar(bar)
 end
 
 function AB:UpdateHotKeyText()
-	local HotKeyText = self.HotKey:GetText()
+	local Text = self.HotKey:GetText()
 
-	if HotKeyText then
-		HotKeyText = HotKeyText:gsub(NumPad, "N")
-		HotKeyText = HotKeyText:gsub(WheelUp, "MWU")
-		HotKeyText = HotKeyText:gsub(WheelDown, "MWD")
-		HotKeyText = HotKeyText:gsub(MouseButton, "MB")
-		HotKeyText = HotKeyText:gsub(MiddleButton, "MMB")
-		HotKeyText = HotKeyText:gsub(CTRL_KEY_TEXT, "c")
-		HotKeyText = HotKeyText:gsub(SHIFT_KEY_TEXT, "s")
-		HotKeyText = HotKeyText:gsub(ALT_KEY_TEXT, "a")
-		
-		self.HotKey:SetText("|cFFFFFFFF" .. HotKeyText .. "|r")
+	if Text then
+		Text = Text:gsub(NumPad, "N")
+		Text = Text:gsub(WheelUp, "MWU")
+		Text = Text:gsub(WheelDown, "MWD")
+		Text = Text:gsub(MouseButton, "MB")
+		Text = Text:gsub(MiddleButton, "MMB")
+		Text = Text:gsub(CTRL_KEY_TEXT, "c")
+		Text = Text:gsub(SHIFT_KEY_TEXT, "s")
+		Text = Text:gsub(ALT_KEY_TEXT, "a")
+
+		self.HotKey:SetText("|cFFFFFFFF" .. Text .. "|r")
 	end
 end
 
@@ -205,19 +205,19 @@ function AB:StyleActionButton(button)
 		button.HotKey:SetTextColor(1, 1, 1)
 		button.HotKey.SetTextColor = function() end
 
-		local HotKeyText = button.HotKey:GetText()
+		local Text = button.HotKey:GetText()
 		
-		if HotKeyText then
-			HotKeyText = HotKeyText:gsub(NumPad, "N")
-			HotKeyText = HotKeyText:gsub(WheelUp, "MWU")
-			HotKeyText = HotKeyText:gsub(WheelDown, "MWD")
-			HotKeyText = HotKeyText:gsub(MouseButton, "MB")
-			HotKeyText = HotKeyText:gsub(MiddleButton, "MMB")
-			HotKeyText = HotKeyText:gsub(CTRL_KEY_TEXT, "c")
-			HotKeyText = HotKeyText:gsub(SHIFT_KEY_TEXT, "s")
-			HotKeyText = HotKeyText:gsub(ALT_KEY_TEXT, "a")
+		if Text then
+			Text = Text:gsub(NumPad, "N")
+			Text = Text:gsub(WheelUp, "MWU")
+			Text = Text:gsub(WheelDown, "MWD")
+			Text = Text:gsub(MouseButton, "MB")
+			Text = Text:gsub(MiddleButton, "MMB")
+			Text = Text:gsub(CTRL_KEY_TEXT, "c")
+			Text = Text:gsub(SHIFT_KEY_TEXT, "s")
+			Text = Text:gsub(ALT_KEY_TEXT, "a")
 
-			button.HotKey:SetText("|cFFFFFFFF" .. HotKeyText .. "|r")
+			button.HotKey:SetText("|cFFFFFFFF" .. Text .. "|r")
 		end
 
 		button.HotKey.OST = button.HotKey.SetText
@@ -368,10 +368,10 @@ function AB:StylePetActionButton(button)
 		button.HotKey:SetTextColor(1, 1, 1)
 		button.HotKey.SetTextColor = function() end
 
-		local HotKeyText = button.HotKey:GetText()
+		local Text = button.HotKey:GetText()
 
-		if HotKeyText then
-			button.HotKey:SetText("|cFFFFFFFF" .. HotKeyText .. "|r")
+		if Text then
+			button.HotKey:SetText("|cFFFFFFFF" .. Text .. "|r")
 		end
 
 		button.HotKey.OST = button.HotKey.SetText
