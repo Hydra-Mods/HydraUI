@@ -184,7 +184,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		PowerAnchor:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-power-height"])
 		PowerAnchor:SetPoint("CENTER", HydraUI.UIParent, 0, -133)
 		HydraUI:CreateMover(PowerAnchor)
-print(PowerAnchor)
+
 		if Settings["player-move-power"] then
 			Power:SetPoint("BOTTOMLEFT", PowerAnchor, 1, 1)
 			Power:SetPoint("BOTTOMRIGHT", PowerAnchor, -1, 1)
