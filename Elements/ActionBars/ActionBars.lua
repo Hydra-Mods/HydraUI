@@ -1061,17 +1061,12 @@ function AB:CreateStanceBar()
 	end
 
 	--StanceBarFrame:SetAllPoints(self.StanceBar)
-	
-	if StanceBarLeft then
-		StanceBarLeft:SetAlpha(0)
-		StanceBarRight:SetAlpha(0)
-	end
-
-	if StanceBar.UpdateGridLayout then
-		hooksecurefunc(StanceBar, "UpdateGridLayout", StanceBarUpdateGridLayout)
-	end
 
 	if StanceBar then
+		if StanceBar.UpdateGridLayout then
+			hooksecurefunc(StanceBar, "UpdateGridLayout", StanceBarUpdateGridLayout)
+		end
+
 		for i, button in next, StanceBar.actionButtons do
 			self:StyleActionButton(button)
 
@@ -1082,7 +1077,7 @@ function AB:CreateStanceBar()
 
 			self.StanceBar[i] = button
 		end
-		
+
 		self:PositionButtons(self.StanceBar, #self.StanceBar, Settings["ab-stance-per-row"], Settings["ab-stance-button-size"], Settings["ab-stance-button-gap"])
 
 		--hooksecurefunc("StanceBar_UpdateState", self.StanceBar_UpdateState)
@@ -1099,6 +1094,9 @@ function AB:CreateStanceBar()
 	end
 
 	if (StanceBarFrame and StanceBarFrame.StanceButtons) then
+		StanceBarLeft:SetAlpha(0)
+		StanceBarRight:SetAlpha(0)
+
 		for i = 1, NUM_STANCE_SLOTS do
 			local Button = StanceBarFrame.StanceButtons[i]
 
