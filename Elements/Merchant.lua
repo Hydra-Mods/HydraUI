@@ -7,12 +7,12 @@ local GetContainerNumSlots = GetContainerNumSlots
 local GetContainerItemLink = GetContainerItemLink
 local GetContainerItemInfo = GetContainerItemInfo
 local GetContainerItemID = GetContainerItemID
-local GetItemInfo = GetItemInfo
 local UseContainerItem = UseContainerItem
 local PickupMerchantItem = PickupMerchantItem
 local GetCoinTextureString = GetCoinTextureString
 local CanGuildBankRepair = CanGuildBankRepair
 local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
+local GetItemInfo = GetItemInfo
 
 Defaults["auto-vendor-enable"] = true
 Defaults["auto-vendor-report"] = true
@@ -21,13 +21,12 @@ AutoVendor.Filter = {
 	[6196] = true,
 }
 
-if C_Container then
-	GetContainerNumSlots = C_Container.GetContainerNumSlots
-	GetContainerItemLink = C_Container.GetContainerItemLink
-	GetContainerItemID = C_Container.GetContainerItemID
-	GetContainerItemInfo = C_Container.GetContainerItemInfo
-	UseContainerItem = C_Container.UseContainerItem
-end
+-- Temporary during DF prepatch
+if C_Container and C_Container.GetContainerNumSlots then GetContainerNumSlots = C_Container.GetContainerNumSlots end
+if C_Container and C_Container.GetContainerItemLink then GetContainerItemLink = C_Container.GetContainerItemLink end
+if C_Container and C_Container.GetContainerItemID then GetContainerItemID = C_Container.GetContainerItemID end
+if C_Container and C_Container.GetContainerItemInfo then GetContainerItemInfo = C_Container.GetContainerItemInfo end
+if C_Container and C_Container.UseContainerItem then UseContainerItem = C_Container.UseContainerItem end
 
 function HydraUI:GetTrashValue()
 	local Profit = 0

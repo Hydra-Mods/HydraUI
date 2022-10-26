@@ -458,6 +458,10 @@ function Experience:Load()
 	UpdateDisplayPercent(Settings["experience-display-percent"])
 	UpdateProgressVisibility(Settings["experience-progress-visibility"])
 	UpdatePercentVisibility(Settings["experience-percent-visibility"])
+	
+	if StatusTrackingBarManager then
+		StatusTrackingBarManager:Hide()
+	end
 end
 
 local UpdateBarColor = function(value)

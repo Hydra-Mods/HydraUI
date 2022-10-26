@@ -76,6 +76,7 @@ Defaults["color-combo-3"] = "FFFF66"
 Defaults["color-combo-4"] = "B2FF66"
 Defaults["color-combo-5"] = "66FF66"
 Defaults["color-combo-6"] = "66FF66"
+Defaults["color-combo-7"] = "33FF33"
 Defaults["color-combo-charged"] = "64B5F6"
 
 -- Stagger
@@ -208,6 +209,7 @@ function HydraUI:UpdateComboColors()
 	self:SetColorEntry(self.ComboPoints, 4, Settings["color-combo-4"])
 	self:SetColorEntry(self.ComboPoints, 5, Settings["color-combo-5"])
 	self:SetColorEntry(self.ComboPoints, 6, Settings["color-combo-6"])
+	self:SetColorEntry(self.ComboPoints, 7, Settings["color-combo-7"])
 end
 
 function HydraUI:UpdateTotemColors()
@@ -325,6 +327,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Colors"], fun
 	left:CreateColorSelection("color-combo-4", Settings["color-combo-4"], Language["Combo Point 4"], Language["Set the color of combo point 4"], ReloadUI):RequiresReload(true)
 	left:CreateColorSelection("color-combo-5", Settings["color-combo-5"], Language["Combo Point 5"], Language["Set the color of combo point 5"], ReloadUI):RequiresReload(true)
 	left:CreateColorSelection("color-combo-6", Settings["color-combo-6"], Language["Combo Point 6"], Language["Set the color of combo point 6"], ReloadUI):RequiresReload(true)
+	left:CreateColorSelection("color-combo-7", Settings["color-combo-7"], Language["Combo Point 7"], Language["Set the color of combo point 7"], ReloadUI):RequiresReload(true)
 	left:CreateColorSelection("color-combo-charged", Settings["color-combo-charged"], Language["Charged Combo Point"], Language["Set the color of the charged combo point provided from the Kyrian Covenant"], ReloadUI):RequiresReload(true)
 
 	right:CreateHeader(Language["Misc Colors"])

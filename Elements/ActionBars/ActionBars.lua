@@ -206,7 +206,7 @@ function AB:StyleActionButton(button)
 		button.HotKey.SetTextColor = function() end
 
 		local Text = button.HotKey:GetText()
-		
+
 		if Text then
 			Text = Text:gsub(NumPad, "N")
 			Text = Text:gsub(WheelUp, "MWU")
@@ -357,6 +357,19 @@ function AB:StylePetActionButton(button)
 	button.icon:SetPoint("TOPLEFT", button, 1, -1)
 	button.icon:SetPoint("BOTTOMRIGHT", button, -1, 1)
 
+	if button.IconMask then
+		button.IconMask:Hide()
+	end
+
+	if button.SlotArt then
+		button.SlotArt:Hide()
+	end
+
+	_G[button:GetName().."NormalTexture"]:SetAlpha(0)
+	_G[button:GetName().."NormalTexture"]:Hide()
+	button:GetNormalTexture():SetAlpha(0)
+	button:GetNormalTexture():Hide()
+
 	button:SetNormalTexture("")
 
 	if button.HotKey then
@@ -444,7 +457,7 @@ function AB:StylePetActionButton(button)
 	button.Backdrop:SetBackdropColor(0, 0, 0)
 	button.Backdrop:SetFrameLevel(button:GetFrameLevel() - 1)
 
-	button.Backdrop.Texture = button.Backdrop:CreateTexture(nil, "BACKDROP")
+	button.Backdrop.Texture = button.Backdrop:CreateTexture(nil, "BORDER")
 	button.Backdrop.Texture:SetPoint("TOPLEFT", button.Backdrop, 1, -1)
 	button.Backdrop.Texture:SetPoint("BOTTOMRIGHT", button.Backdrop, -1, 1)
 	button.Backdrop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
@@ -963,12 +976,16 @@ function AB:CreateBar8()
 	end
 end
 
+local UpdateGridLayout = function()
+	AB:PositionButtons(AB.PetBar, NUM_PET_ACTION_SLOTS, Settings["ab-pet-per-row"], Settings["ab-pet-button-size"], Settings["ab-pet-button-gap"])
+end
+
 -- Pet
 function AB:CreatePetBar()
 	self.PetBar = CreateFrame("Frame", "HydraUI Pet Bar", HydraUI.UIParent, "SecureHandlerStateTemplate")
 	self.PetBar:SetPoint("RIGHT", self.Bar5, "LEFT", -Settings["ab-pet-button-gap"], 0)
 	self.PetBar:SetAlpha(Settings["ab-pet-alpha"] / 100)
-	self.PetBar.ButtonParent = PetActionBarFrame
+	self.PetBar.ButtonParent = PetActionBar or PetActionBarFrame
 	self.PetBar.ShouldFade = Settings["ab-pet-hover"]
 	self.PetBar.MaxAlpha = Settings["ab-pet-alpha"]
 
@@ -976,8 +993,13 @@ function AB:CreatePetBar()
 	self.PetBar.Fader:SetDuration(0.15)
 	self.PetBar.Fader:SetEasing("inout")
 
-	PetActionBarFrame:SetParent(self.PetBar)
-	--PetActionBarFrame:SetAllPoints(self.PetBar)
+	if PetActionBar then
+		PetActionBar:SetParent(self.PetBar)
+
+		hooksecurefunc(PetActionBar, "UpdateGridLayout", UpdateGridLayout)
+	else
+		PetActionBarFrame:SetParent(self.PetBar)
+	end
 
 	for i = 1, NUM_PET_ACTION_SLOTS do
 		local Button = _G["PetActionButton" .. i]
@@ -1004,7 +1026,9 @@ function AB:CreatePetBar()
 
 	self:PositionButtons(self.PetBar, NUM_PET_ACTION_SLOTS, Settings["ab-pet-per-row"], Settings["ab-pet-button-size"], Settings["ab-pet-button-gap"])
 
-	hooksecurefunc("PetActionBar_Update", AB.PetActionBar_Update)
+	if PetActionBar_Update then
+		hooksecurefunc("PetActionBar_Update", AB.PetActionBar_Update)
+	end
 
 	if Settings["ab-pet-enable"] then
 		self:EnableBar(self.PetBar)
@@ -1163,7 +1187,7 @@ function AB:CreateBars()
 		self:CreateBar8()
 	end
 
-	if PetActionBarFrame then
+	if (PetActionBar or PetActionBarFrame) then
 		self:CreatePetBar()
 	end
 
@@ -1458,7 +1482,7 @@ function AB:Load()
 	self.Hide = CreateFrame("Frame", nil, UIParent, "SecureHandlerStateTemplate")
 	self.Hide:Hide()
 
-	SetActionBarToggles(1, 1, 1, 1, 1)
+	SetActionBarToggles(1, 1, 1, 1, 1, 1, 1, 1)
 
 	self:SetCVars()
 	self:Disable(MainMenuBar)

@@ -59,13 +59,13 @@ local UpdateMaxPoints = function(self)
 	local Max = UnitPowerMax("player", Index)
 	local Width = (Settings["unitframes-player-width"] / Max) - 1
 	
-	if (Max == 6) then
-		Points[6]:Show()
-		Points[6]:SetAlpha(0.3)
-		Points[6].BG:Show()
+	if (Max == 7) then
+		Points[7]:Show()
+		Points[7]:SetAlpha(0.3)
+		Points[7].BG:Show()
 	else
-		Points[6]:Hide()
-		Points[6].BG:Hide()
+		Points[7]:Hide()
+		Points[7].BG:Hide()
 		
 	end
 	
@@ -105,7 +105,7 @@ local Enable = function(self)
 			self:RegisterEvent("SPELLS_CHANGED", UpdateMaxPoints, true)
 			self:RegisterEvent("UNIT_POWER_POINT_CHARGE", UpdateChargedPoint)
 		end
-		
+
 		for i = 1, UnitPowerMax("player", Index) do
 			if (element[i]:IsObjectType("Texture") and not element[i]:GetTexture()) then
 				element[i]:SetTexture("Interface\\TargetingFrame\\UI-StatusBar")
