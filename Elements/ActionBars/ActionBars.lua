@@ -327,7 +327,7 @@ function AB:StyleActionButton(button)
 
 	if button.Update then
 		hooksecurefunc(button, "Update", AB.UpdateHotKeyText)
-	else
+	elseif ActionButton_UpdateHotkeys then
 		hooksecurefunc("ActionButton_UpdateHotkeys", AB.UpdateHotKeyText)
 	end
 
@@ -976,7 +976,7 @@ function AB:CreateBar8()
 	end
 end
 
-local UpdateGridLayout = function()
+local PetBarUpdateGridLayout = function()
 	AB:PositionButtons(AB.PetBar, NUM_PET_ACTION_SLOTS, Settings["ab-pet-per-row"], Settings["ab-pet-button-size"], Settings["ab-pet-button-gap"])
 end
 
@@ -996,7 +996,7 @@ function AB:CreatePetBar()
 	if PetActionBar then
 		PetActionBar:SetParent(self.PetBar)
 
-		hooksecurefunc(PetActionBar, "UpdateGridLayout", UpdateGridLayout)
+		hooksecurefunc(PetActionBar, "UpdateGridLayout", PetBarUpdateGridLayout)
 	else
 		PetActionBarFrame:SetParent(self.PetBar)
 	end
@@ -1038,11 +1038,15 @@ function AB:CreatePetBar()
 end
 
 -- Stance
+local StanceBarUpdateGridLayout = function()
+	AB:PositionButtons(AB.StanceBar, #AB.StanceBar, Settings["ab-stance-per-row"], Settings["ab-stance-button-size"], Settings["ab-stance-button-gap"])
+end
+
 function AB:CreateStanceBar()
 	self.StanceBar = CreateFrame("Frame", "HydraUI Stance Bar", HydraUI.UIParent, "SecureHandlerStateTemplate")
 	self.StanceBar:SetPoint("TOPLEFT", HydraUI.UIParent, 10, -10)
 	self.StanceBar:SetAlpha(Settings["ab-stance-alpha"] / 100)
-	self.StanceBar.ButtonParent = StanceBarFrame
+	self.StanceBar.ButtonParent = StanceBar or StanceBarFrame
 	self.StanceBar.ShouldFade = Settings["ab-stance-hover"]
 	self.StanceBar.MaxAlpha = Settings["ab-stance-alpha"]
 
@@ -1050,10 +1054,49 @@ function AB:CreateStanceBar()
 	self.StanceBar.Fader:SetDuration(0.15)
 	self.StanceBar.Fader:SetEasing("inout")
 
-	StanceBarFrame:SetParent(self.StanceBar)
+	if StanceBar then
+		StanceBar:SetParent(self.StanceBar)
+	else
+		StanceBarFrame:SetParent(self.StanceBar)
+	end
+
 	--StanceBarFrame:SetAllPoints(self.StanceBar)
-	StanceBarLeft:SetAlpha(0)
-	StanceBarRight:SetAlpha(0)
+	
+	if StanceBarLeft then
+		StanceBarLeft:SetAlpha(0)
+		StanceBarRight:SetAlpha(0)
+	end
+
+	if StanceBar.UpdateGridLayout then
+		hooksecurefunc(StanceBar, "UpdateGridLayout", StanceBarUpdateGridLayout)
+	end
+
+	if StanceBar then
+		for i, button in next, StanceBar.actionButtons do
+			self:StyleActionButton(button)
+
+			button.ParentBar = self.StanceBar
+
+			button:HookScript("OnEnter", BarButtonOnEnter)
+			button:HookScript("OnLeave", BarButtonOnLeave)
+
+			self.StanceBar[i] = button
+		end
+		
+		self:PositionButtons(self.StanceBar, #self.StanceBar, Settings["ab-stance-per-row"], Settings["ab-stance-button-size"], Settings["ab-stance-button-gap"])
+
+		--hooksecurefunc("StanceBar_UpdateState", self.StanceBar_UpdateState)
+
+		if Settings["ab-stance-hover"] then
+			self.StanceBar:SetAlpha(0)
+			self.StanceBar:SetScript("OnEnter", BarOnEnter)
+			self.StanceBar:SetScript("OnLeave", BarOnLeave)
+
+			for i = 1, #self.StanceBar do
+				self.StanceBar[i].cooldown:SetDrawBling(false)
+			end
+		end
+	end
 
 	if (StanceBarFrame and StanceBarFrame.StanceButtons) then
 		for i = 1, NUM_STANCE_SLOTS do
@@ -1191,7 +1234,7 @@ function AB:CreateBars()
 		self:CreatePetBar()
 	end
 
-	if StanceBarFrame then
+	if (StanceBar or StanceBarFrame) then
 		self:CreateStanceBar()
 	end
 
