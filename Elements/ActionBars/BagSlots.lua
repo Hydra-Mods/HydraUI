@@ -68,11 +68,14 @@ function BagsFrame:UpdateVisibility()
 end
 
 function BagsFrame:Load()
-	if (HydraUI.ClientVersion >= 100000) then -- Revisiting
+	if (not Settings["ab-enable"]) then
 		return
 	end
 
-	if (not Settings["ab-enable"]) then
+	if (HydraUI.ClientVersion >= 100000) then
+		MainMenuBarBackpackButton:ClearAllPoints()
+		MainMenuBarBackpackButton:SetPoint("BOTTOMRIGHT", HydraUI:GetModule("Micro Buttons").Panel, "TOPRIGHT", 0, 5)
+
 		return
 	end
 
@@ -142,10 +145,11 @@ function BagsFrame:Load()
 			Object.SlotHighlightTexture:SetTexture(Assets:GetTexture("Blank"))
 			Object.SlotHighlightTexture:SetVertexColor(0.9, 0.9, 0.1, 0.2)
 		else
-			local Checked = Object:CreateTexture(nil, "ARTWORK", 7)
+			local Checked = Object:CreateTexture(nil, "ARTWORK")
 			Checked:SetPoint("TOPLEFT", Object, 0, 0)
 			Checked:SetPoint("BOTTOMRIGHT", Object, 0, 0)
 			Checked:SetColorTexture(0.9, 0.9, 0.1, 0.2)
+			Checked:SetDrawLayer("ARTWORK", 7)
 
 			Object:SetCheckedTexture(Checked)
 		end
@@ -166,10 +170,11 @@ function BagsFrame:Load()
 		else
 			Object:SetPoint("LEFT", self.Objects[i-1], "RIGHT", 4, 0)
 
-			local Pushed = Object:CreateTexture(nil, "ARTWORK", 7)
+			local Pushed = Object:CreateTexture(nil, "ARTWORK")
 			Pushed:SetPoint("TOPLEFT", Object, 0, 0)
 			Pushed:SetPoint("BOTTOMRIGHT", Object, 0, 0)
 			Pushed:SetColorTexture(0.2, 0.9, 0.2, 0.4)
+			Pushed:SetDrawLayer("ARTWORK", 7)
 
 			Object:SetPushedTexture(Pushed)
 		end
