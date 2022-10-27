@@ -202,16 +202,7 @@ function MicroButtons:Load()
 			Disabled:SetPoint("BOTTOMRIGHT", self.Buttons[i], -2, 2)
 		end
 
-		if HydraUI.IsMainline then
-			if (HydraUI.ClientVersion < 100001) then -- DRAGONFLIGHT; remove after launch
-				Normal:SetTexCoord(0.22, 0.82, 0.22, 0.82)
-				Pushed:SetTexCoord(0.22, 0.82, 0.22, 0.82)
-
-				if Disabled then
-					Disabled:SetTexCoord(0.22, 0.82, 0.22, 0.82)
-				end
-			end
-		else
+		if (not HydraUI.IsMainline) then
 			Normal:SetTexCoord(0.2, 0.85, 0.5, 0.9)
 			Pushed:SetTexCoord(0.2, 0.85, 0.5, 0.9)
 
