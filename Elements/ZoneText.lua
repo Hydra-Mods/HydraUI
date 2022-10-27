@@ -29,77 +29,105 @@ function ZT:OnEvent(event)
 	local PVPType, IsSubZonePVP, Faction = GetZonePVPInfo()
 	local Color = HydraUI.ZoneColors[PVPType or "other"]
 
-	self.ZoneText:SetText("")
-	self.SubZoneText:SetText("")
-	self.PVPText:SetText("")
-
 	self.ZoneText:SetTextColor(Color[1], Color[2], Color[3])
 	self.SubZoneText:SetTextColor(Color[1], Color[2], Color[3])
 	self.PVPText:SetTextColor(Color[1], Color[2], Color[3])
 
 	if (event == "ZONE_CHANGED_NEW_AREA" or Zone ~= self.CurrentZone) and (PVPType and PVPType ~= "") then
 		if PVPText[PVPType] then
+			if self.ZoneFrame[3].Group:IsPlaying() then
+				self.ZoneFrame[3].Group:Stop()
+			end
+
 			self.PVPText:SetText(PVPText[PVPType])
+
+			if (not self.ZoneFrame[3].Group:IsPlaying()) then
+				self.ZoneFrame[3].Group:Play()
+			end
 		elseif (PVPTextFormat[PVPType] and Faction and Faction ~= "") then
+			if self.ZoneFrame[3].Group:IsPlaying() then
+				self.ZoneFrame[3].Group:Stop()
+			end
+
 			self.PVPText:SetFormattedText(FACTION_CONTROLLED_TERRITORY, Faction)
+
+			if (not self.ZoneFrame[3].Group:IsPlaying()) then
+				self.ZoneFrame[3].Group:Play()
+			end
 		end
 	end
 
 	if (Zone and Zone ~= self.CurrentZone or SubZone == "") then
+		if self.ZoneFrame[1].Group:IsPlaying() then
+			self.ZoneFrame[1].Group:Stop()
+		end
+
 		self.ZoneText:SetText(Zone)
 		self.CurrentZone = Zone
+
+		if (not self.ZoneFrame[1].Group:IsPlaying()) then
+			self.ZoneFrame[1].Group:Play()
+		end
 	end
 
 	if (SubZone ~= Zone) then
+		if self.ZoneFrame[2].Group:IsPlaying() then
+			self.ZoneFrame[2].Group:Stop()
+		end
+
 		self.SubZoneText:SetText(SubZone)
-	end
 
-	if self.Group:IsPlaying() then
-		self.Group:Stop()
+		if (not self.ZoneFrame[2].Group:IsPlaying()) then
+			self.ZoneFrame[2].Group:Play()
+		end
 	end
-
-	self.Group:Play()
 end
 
 function ZT:CreateFontObjects()
 	local ZoneFrame = CreateFrame("Frame", nil, HydraUI.UIParent)
 	ZoneFrame:SetSize(32, 32)
 	ZoneFrame:SetPoint("TOP", HydraUI.UIParent, 0, -220)
-	ZoneFrame:SetAlpha(0)
 
-	local ZoneText = ZoneFrame:CreateFontString(nil, "OVERLAY")
+	for i = 1, 3 do
+		ZoneFrame[i] = CreateFrame("Frame", nil, HydraUI.UIParent)
+		ZoneFrame[i]:SetSize(32, 32)
+		ZoneFrame[i]:SetPoint("CENTER", ZoneFrame, 0, 0)
+		ZoneFrame[i]:SetAlpha(0)
+
+		ZoneFrame[i].Group = CreateAnimationGroup(ZoneFrame[i])
+
+		ZoneFrame[i].FadeIn = ZoneFrame[i].Group:CreateAnimation("fade")
+		ZoneFrame[i].FadeIn:SetEasing("in")
+		ZoneFrame[i].FadeIn:SetDuration(0.4)
+		ZoneFrame[i].FadeIn:SetChange(1)
+
+		ZoneFrame[i].Sleep = ZoneFrame[i].Group:CreateAnimation("sleep")
+		ZoneFrame[i].Sleep:SetDuration(2.5)
+		ZoneFrame[i].Sleep:SetOrder(2)
+
+		ZoneFrame[i].FadeOut = ZoneFrame[i].Group:CreateAnimation("fade")
+		ZoneFrame[i].FadeOut:SetEasing("out")
+		ZoneFrame[i].FadeOut:SetDuration(0.75)
+		ZoneFrame[i].FadeOut:SetChange(0)
+		ZoneFrame[i].FadeOut:SetOrder(3)
+	end
+
+	local ZoneText = ZoneFrame[1]:CreateFontString(nil, "OVERLAY")
 	ZoneText:SetFont(Assets:GetFont(Settings["ui-widget-font"]), 32, "OUTLINE")
 	ZoneText:SetPoint("CENTER", ZoneFrame, 0, 0)
 
-	local SubZoneText = ZoneFrame:CreateFontString(nil, "OVERLAY")
+	local SubZoneText = ZoneFrame[2]:CreateFontString(nil, "OVERLAY")
 	SubZoneText:SetFont(Assets:GetFont(Settings["ui-widget-font"]), 26, "OUTLINE")
 	SubZoneText:SetPoint("TOP", ZoneText, "BOTTOM", 0, 0)
 
-	local PVPText = ZoneFrame:CreateFontString(nil, "OVERLAY")
+	local PVPText = ZoneFrame[3]:CreateFontString(nil, "OVERLAY")
 	PVPText:SetFont(Assets:GetFont(Settings["ui-widget-font"]), 26, "OUTLINE")
 	PVPText:SetPoint("TOP", SubZoneText, "BOTTOM", 0, 0)
 
-	local Group = CreateAnimationGroup(ZoneFrame)
-
-	local ZoneFadeIn = Group:CreateAnimation("fade")
-	ZoneFadeIn:SetEasing("in")
-	ZoneFadeIn:SetDuration(0.4)
-	ZoneFadeIn:SetChange(1)
-
-	local ZoneSleep = Group:CreateAnimation("sleep")
-	ZoneSleep:SetDuration(2.5)
-	ZoneSleep:SetOrder(2)
-
-	local ZoneFadeOut = Group:CreateAnimation("fade")
-	ZoneFadeOut:SetEasing("out")
-	ZoneFadeOut:SetDuration(0.75)
-	ZoneFadeOut:SetChange(0)
-	ZoneFadeOut:SetOrder(3)
-
+	self.ZoneFrame = ZoneFrame
 	self.ZoneText = ZoneText
 	self.SubZoneText = SubZoneText
 	self.PVPText = PVPText
-	self.Group = Group
 end
 
 function ZT:Load()
