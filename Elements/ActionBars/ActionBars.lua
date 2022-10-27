@@ -171,6 +171,10 @@ function AB:StyleActionButton(button)
 		button.IconMask:Hide()
 	end
 
+	if button.RightDivider then
+		button.RightDivider:SetAlpha(0)
+	end
+
 	if button.SlotArt then
 		button.SlotArt:Hide()
 	end

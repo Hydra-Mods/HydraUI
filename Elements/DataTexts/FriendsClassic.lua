@@ -28,11 +28,11 @@ local ClientToName = {
 	["ODIN"] = Language["Call of Duty: Modern Warfare"],
 	["WoW"] = CINEMATIC_NAME_1,
 	["WTCG"] = Language["Hearthstone"],
-	["ANBS"] = "Diablo Immortal",
+	["ANBS"] = Language["Diablo Immortal"],
 }
 
 local ProjectIDToName = {
-	[1] = Language["Shadowlands"],
+	[1] = Language["Dragonflight"],
 	[2] = EXPANSION_NAME0,
 	[5] = EXPANSION_NAME1,
 	[11] = EXPANSION_NAME2,
