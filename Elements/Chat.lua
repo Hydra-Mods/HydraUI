@@ -1153,6 +1153,11 @@ function Chat:Load()
 	hooksecurefunc("FCF_OpenTemporaryWindow", OpenTemporaryWindow)
 	hooksecurefunc("FCF_RestorePositionAndDimensions", MoveChatFrames)
 
+	if HydraUI.IsMainline then
+		self:RegisterEvent("PLAYER_ENTERING_WORLD")
+		self:SetScript("OnEvent", self.MoveChatFrames)
+	end
+
 	self:RegisterEvent("UI_SCALE_CHANGED")
 	self:SetScript("OnEvent", self.MoveChatFrames)
 end
