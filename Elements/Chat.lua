@@ -1155,7 +1155,6 @@ function Chat:Load()
 
 	if HydraUI.IsMainline then
 		self:RegisterEvent("PLAYER_ENTERING_WORLD")
-		self:SetScript("OnEvent", self.MoveChatFrames)
 	end
 
 	self:RegisterEvent("UI_SCALE_CHANGED")
