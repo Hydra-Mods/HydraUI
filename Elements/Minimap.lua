@@ -95,9 +95,17 @@ function Map:Style()
 	    Minimap:SetArchBlobRingScalar(0)
 		Minimap:SetQuestBlobRingScalar(0)
 
-		if QueueStatusMinimapButton then
-			QueueStatusMinimapButton:ClearAllPoints()
-			QueueStatusMinimapButton:SetPoint("BOTTOMLEFT", Minimap, 0, -3)
+		if QueueStatusButton then
+			QueueStatusButton:ClearAllPoints()
+			QueueStatusButton:SetPoint("BOTTOMLEFT", HydraUI.UIParent, "BOTTOMRIGHT", -460, 13)
+			
+			if (not QueueStatusButton:IsMovable()) then
+				QueueStatusButton:SetMovable(true)
+				QueueStatusButton:SetClampedToScreen(true)
+				QueueStatusButton:RegisterForDrag("LeftButton")
+				QueueStatusButton:SetScript("OnDragStart", QueueStatusButton.StartMoving)
+				QueueStatusButton:SetScript("OnDragStop", QueueStatusButton.StopMovingOrSizing)
+			end
 		end
 
 		if GarrisonLandingPageMinimapButton then
