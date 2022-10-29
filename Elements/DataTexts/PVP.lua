@@ -13,11 +13,13 @@ local OnEnter = function(self)
 		local Name, Number = GetPVPRankInfo(Rank, "player")
 
 		GameTooltip:AddDoubleLine(Name, format("%s %s", RANK, Number), 1, 1, 1, 1, 1, 1)
-		--GameTooltip:AddLine(" ")
 	end
 
 	if (HK > 0) then
-		GameTooltip:AddLine(" ")
+		if (Rank > 0) then
+			GameTooltip:AddLine(" ")
+		end
+
 		GameTooltip:AddLine(HONOR_TODAY)
 		GameTooltip:AddDoubleLine(HONORABLE_KILLS, HydraUI:Comma(HK), 1, 1, 1, 1, 1, 1)
 	end

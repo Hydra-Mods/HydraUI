@@ -12,18 +12,22 @@ local OnEnter = function(self)
 	if (Rank > 0) then
 		local Name, Number = GetPVPRankInfo(Rank, "player")
 
-		GameTooltip:AddDoubleLine(Name, format("%s %s", RANK, Number))
-		GameTooltip:AddLine(" ")
+		GameTooltip:AddDoubleLine(Name, format("%s %s", RANK, Number), 1, 1, 1, 1, 1, 1)
 	end
 
 	if (HK > 0) then
+		if (Rank > 0) then
+			GameTooltip:AddLine(" ")
+		end
+
 		GameTooltip:AddLine(HONOR_TODAY)
-		GameTooltip:AddDoubleLine(HONORABLE_KILLS, HydraUI:Comma(HK))
+		GameTooltip:AddDoubleLine(HONORABLE_KILLS, HydraUI:Comma(HK), 1, 1, 1, 1, 1, 1)
 	end
 
 	HK = GetPVPLifetimeStats()
 
 	if (HK > 0) then
+		GameTooltip:AddLine(" ")
 		GameTooltip:AddLine(HONOR_LIFETIME)
 		GameTooltip:AddDoubleLine(HONORABLE_KILLS, HydraUI:Comma(HK), 1, 1, 1, 1, 1, 1)
 	end
