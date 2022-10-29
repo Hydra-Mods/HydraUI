@@ -1091,8 +1091,8 @@ function Chat:SetChatTypeInfo()
 	ChatTypeInfo["RAID"].colorNameByClass = true
 	ChatTypeInfo["RAID_LEADER"].colorNameByClass = true
 	ChatTypeInfo["RAID_WARNING"].colorNameByClass = true
-	--ChatTypeInfo["BATTLEGROUND"].colorNameByClass = true
-	--ChatTypeInfo["BATTLEGROUND_LEADER"].colorNameByClass = true
+	ChatTypeInfo["INSTANCE_CHAT"].colorNameByClass = true
+	ChatTypeInfo["INSTANCE_CHAT_LEADER"].colorNameByClass = true
 	ChatTypeInfo["EMOTE"].colorNameByClass = true
 	ChatTypeInfo["CHANNEL1"].colorNameByClass = true
 	ChatTypeInfo["CHANNEL2"].colorNameByClass = true
@@ -1117,7 +1117,7 @@ function Chat:SetChatTypeInfo()
 
 	if (C_CVar.GetCVar("colorChatNamesByClass") ~= 1) then
 		C_CVar.SetCVar("colorChatNamesByClass", 1)
-		C_CVar.SetCVar("chatClassColorOverride", "0")
+		C_CVar.SetCVar("chatClassColorOverride", "1")
 	end
 end
 
