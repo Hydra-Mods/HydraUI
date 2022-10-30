@@ -522,7 +522,7 @@ function Tooltips:AddHooks()
 		GameTooltip:HookScript("OnTooltipSetUnit", OnTooltipSetUnit)
 		GameTooltip:HookScript("OnTooltipSetItem", OnTooltipSetItem)
 		GameTooltip:HookScript("OnTooltipSetSpell", OnTooltipSetSpell)
-		
+
 		ItemRefTooltip:HookScript("OnTooltipSetItem", OnItemRefTooltipSetItem)
 	end
 
@@ -532,10 +532,6 @@ function Tooltips:AddHooks()
 	hooksecurefunc(GameTooltip, "SetUnitAura", OnTooltipSetAura)
 	hooksecurefunc(GameTooltip, "SetUnitBuff", OnTooltipSetAura)
 	hooksecurefunc(GameTooltip, "SetUnitDebuff", OnTooltipSetAura)
-end
-
-local GetColor = function(p, r1, g1, b1, r2, g2, b2)
-	return r1 + (r2 - r1) * p, g1 + (g2 - g1) * p, b1 + (b2 - b1) * p
 end
 
 local OnValueChanged = function(self)
@@ -554,16 +550,8 @@ local OnValueChanged = function(self)
 		return
 	end
 
-	local Current
-	local Max
-
-	if (HydraUI.ClientVersion > 100001) then -- DRAGONFLIGHT; change to HydraUI.IsRetail after DF is released
-		Current = UnitHealth(Unit)
-		Max = UnitHealthMax(Unit)
-	else
-		Current = self:GetValue()
-		Max = select(2, self:GetMinMaxValues())
-	end
+	local Current = UnitHealth(Unit)
+	local Max = UnitHealthMax(Unit)
 
 	if (Max == 0) then
 		if UnitIsDead(Unit) then

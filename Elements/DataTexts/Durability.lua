@@ -26,7 +26,11 @@ local OnEnter = function(self)
 		if Current then
 			GameTooltip:AddDoubleLine(format("|T%s:14:14:0:0:64:64:4:60:4:60|t  %s", GetInventoryItemTexture("player", Slots[i]), GetInventoryItemLink("player", Slots[i])), format("%s%%", floor(Current / Max * 100)), 1, 1, 1, 1, 1, 1)
 
-			HasItem, HasCooldown, RepairCost = ScanTooltip:SetInventoryItem("player", Slots[i], true)
+			if C_TooltipInfo and C_TooltipInfo.GetInventoryItem then
+				HasItem, HasCooldown, RepairCost = C_TooltipInfo.GetInventoryItem("player", Slots[i], true)
+			else
+				HasItem, HasCooldown, RepairCost = ScanTooltip:SetInventoryItem("player", Slots[i], true)
+			end
 
 			if (HasItem and RepairCost) then
 				TotalCost = TotalCost + RepairCost
@@ -93,7 +97,7 @@ local OnEnable = function(self)
 	self:RegisterEvent("UPDATE_INVENTORY_DURABILITY")
 	self:RegisterEvent("MERCHANT_SHOW")
 	self:SetScript("OnEvent", Update)
-	--self:SetScript("OnEnter", OnEnter)
+	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
 	self:SetScript("OnMouseUp", OnMouseUp)
 
