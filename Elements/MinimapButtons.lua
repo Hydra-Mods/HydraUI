@@ -174,7 +174,7 @@ function MinimapButtons:SkinButtons()
 				Child.Backdrop:SetBackdropColor(0, 0, 0)
 				Child.Backdrop:SetFrameLevel(Child:GetFrameLevel() - 1)
 
-				Child.Backdrop.Texture = Child.Backdrop:CreateTexture(nil, "BACKDROP")
+				Child.Backdrop.Texture = Child.Backdrop:CreateTexture(nil, "BORDER")
 				Child.Backdrop.Texture:SetPoint("TOPLEFT", Child.Backdrop, 1, -1)
 				Child.Backdrop.Texture:SetPoint("BOTTOMRIGHT", Child.Backdrop, -1, 1)
 				Child.Backdrop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
