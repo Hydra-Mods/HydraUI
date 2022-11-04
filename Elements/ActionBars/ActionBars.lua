@@ -859,7 +859,6 @@ function AB:CreateBar5()
 	end
 end
 
-
 -- Bar 6
 function AB:CreateBar6()
 	self.Bar6 = CreateFrame("Frame", "HydraUI Action Bar 6", HydraUI.UIParent, "SecureHandlerStateTemplate")
@@ -1005,6 +1004,10 @@ function AB:CreateBar8()
 end
 
 local PetBarUpdateGridLayout = function()
+	if (not AB.PetBar:IsShown()) then
+		return
+	end
+
 	AB:PositionButtons(AB.PetBar, NUM_PET_ACTION_SLOTS, Settings["ab-pet-per-row"], Settings["ab-pet-button-size"], Settings["ab-pet-button-gap"])
 end
 
