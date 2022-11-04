@@ -530,7 +530,6 @@ elseif HydraUI.IsWrath then
 			{32594, "TOPRIGHT", {0.73, 0.61, 0.33}},
 			{49283, "TOPRIGHT", {0.73, 0.61, 0.33}},
 			{49284, "TOPRIGHT", {0.73, 0.61, 0.33}},
-
 			-- Riptide
 			{61295, "TOPLEFT", {0, 0.4, 0.6}},
 			{61299, "TOPLEFT", {0, 0.4, 0.6}},
