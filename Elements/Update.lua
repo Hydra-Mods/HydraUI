@@ -62,7 +62,7 @@ function Update:OnUpdate(elapsed)
 end
 
 function Update:PLAYER_ENTERING_WORLD()
-	if (not HydraUI.IsMainline) or (not IsInInstance()) then
+	if (not HydraUI.IsMainline and not IsInInstance()) then
 		self:QueueChannel("YELL")
 		Throttle:Start("vrsn", 10)
 	end
@@ -147,7 +147,7 @@ function Update:OnEvent(event, ...)
 	end
 end
 
-if not HydraUI.IsMainline then
+if (not HydraUI.IsMainline) then
 	Update:RegisterEvent("ZONE_CHANGED")
 	Update:RegisterEvent("ZONE_CHANGED_NEW_AREA")
 end

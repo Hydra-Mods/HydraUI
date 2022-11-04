@@ -373,8 +373,8 @@ if HydraUI.IsMainline then
 			{33763, "BOTTOMLEFT", {0.4, 0.8, 0.2}}, -- Lifebloom
 			{48438, "BOTTOMRIGHT", {0.8, 0.4, 0}},  -- Wild Growth
 			{102342, "RIGHT", {0.8, 0.2, 0.2}},     -- Ironbark
-			{102351, "BOTTOM", {0.84, 0.92, 0.77}},    -- Cenarion Ward
-			{102352, "BOTTOM", {0.84, 0.92, 0.77}},    -- Cenarion Ward (Heal)
+			{102351, "BOTTOM", {0.84, 0.92, 0.77}}, -- Cenarion Ward
+			{102352, "BOTTOM", {0.84, 0.92, 0.77}}, -- Cenarion Ward (Heal)
 		},
 
 		["MONK"] = {
@@ -403,18 +403,22 @@ if HydraUI.IsMainline then
 			{17, "TOPLEFT", {0.81, 0.85, 0.1}, true}, -- Power Word: Shield
 			{194384, "TOPRIGHT", {1, 0, 0}},          -- Atonement
 
-			{33206, "BOTTOMLEFT", {237/255, 233/255, 221/255}}, -- Pain Suppression
-			{121536, "BOTTOMRIGHT", {251/255, 193/255, 8/255}}, -- Angelic Feather
+			{33206, "BOTTOMLEFT", {0.93, 0.91, 0.87}}, -- Pain Suppression
+			{121536, "BOTTOMRIGHT", {0.98, 0.76, 0.03}}, -- Angelic Feather
 		},
 
 		["SHAMAN"] = {
 			{61295, "TOPLEFT", {0.7, 0.3, 0.7}},   -- Riptide
 			{974, "TOPRIGHT", {0.73, 0.61, 0.33}}, -- Earth Shield
 		},
+		
+		["EVOKER"] = { -- Requires ID's
+
+		}
 	}
 elseif HydraUI.IsWrath then
 	UF.BuffIDs = {
-		["DRUID"] = { -- Wrath spells added
+		["DRUID"] = {
 			-- Regrowth
 			{8936, "TOPRIGHT", {0.2, 0.8, 0.2}},
 			{8938, "TOPRIGHT", {0.2, 0.8, 0.2}},
@@ -476,7 +480,7 @@ elseif HydraUI.IsWrath then
 
 		["PRIEST"] = {
 			-- Prayer of Mending
-			{33076, "BOTTOMRIGHT", {0.2, 0.7, 0.2}}, -- Investigate these ID's
+			{33076, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
 			{351575, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
 			{41635, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
 			{41637, "BOTTOMRIGHT", {0.2, 0.7, 0.2}},
@@ -524,6 +528,8 @@ elseif HydraUI.IsWrath then
 			{974, "TOPRIGHT", {0.73, 0.61, 0.33}},
 			{32593, "TOPRIGHT", {0.73, 0.61, 0.33}},
 			{32594, "TOPRIGHT", {0.73, 0.61, 0.33}},
+			{49283, "TOPRIGHT", {0.73, 0.61, 0.33}},
+			{49284, "TOPRIGHT", {0.73, 0.61, 0.33}},
 
 			-- Riptide
 			{61295, "TOPLEFT", {0, 0.4, 0.6}},
