@@ -203,10 +203,15 @@ function AB:StyleActionButton(button)
 		button.SlotArt:Hide()
 	end
 
-	_G[button:GetName().."NormalTexture"]:SetAlpha(0)
-	_G[button:GetName().."NormalTexture"]:Hide()
-	button:GetNormalTexture():SetAlpha(0)
-	button:GetNormalTexture():Hide()
+	if _G[button:GetName().."NormalTexture"] then
+		_G[button:GetName().."NormalTexture"]:SetAlpha(0)
+		_G[button:GetName().."NormalTexture"]:Hide()
+	end
+
+	if button:GetNormalTexture() then
+		button:GetNormalTexture():SetAlpha(0)
+		button:GetNormalTexture():Hide()
+	end
 
 	button:SetNormalTexture("")
 
@@ -299,11 +304,13 @@ function AB:StyleActionButton(button)
 	button.Backdrop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
 	button.Backdrop.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-window-main-color"]))
 
-	local Checked = button:GetCheckedTexture()
-	Checked:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
-	Checked:SetColorTexture(0.1, 0.9, 0.1, 0.2)
-	Checked:SetPoint("TOPLEFT", button, 1, -1)
-	Checked:SetPoint("BOTTOMRIGHT", button, -1, 1)
+	if button:GetCheckedTexture() then
+		local Checked = button:GetCheckedTexture()
+		Checked:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
+		Checked:SetColorTexture(0.1, 0.9, 0.1, 0.2)
+		Checked:SetPoint("TOPLEFT", button, 1, -1)
+		Checked:SetPoint("BOTTOMRIGHT", button, -1, 1)
+	end
 
 	if button:GetPushedTexture() then
 		local Pushed = button:GetPushedTexture()

@@ -381,7 +381,6 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 				ComboPoints:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 			end
 
-			--local Max = UnitPowerMax("player", Enum.PowerType.ComboPoints)
 			local Max = HydraUI.UserClass == "DRUID" and 5 or (not HydraUI.IsMainline and 5 or 7)
 			local Width = (Settings["unitframes-player-width"] / Max) - 1
 

@@ -12,15 +12,15 @@ local Update = function(self, event, unit, power)
 	if ((unit ~= self.unit) or (unit == "player" and power ~= "COMBO_POINTS")) then
 		return
 	end
-	
+
 	local element = self.ComboPoints
-	
+
 	if element.PreUpdate then
 		element:PreUpdate()
 	end
-	
+
 	local Points = GetComboPoints("player", "target")
-	
+
 	for i = 1, UnitPowerMax("player", Index) do
 		if (i > Points) then
 			if (element[i]:GetAlpha() > 0.3) then
@@ -32,7 +32,7 @@ local Update = function(self, event, unit, power)
 			end
 		end
 	end
-	
+
 	if element.PostUpdate then
 		return element:PostUpdate(Points)
 	end
@@ -58,19 +58,20 @@ local UpdateMaxPoints = function(self)
 	local Points = self.ComboPoints
 	local Max = UnitPowerMax("player", Index)
 	local Width = (Settings["unitframes-player-width"] / Max) - 1
-	
-	if (Max == 7) then
-		Points[7]:Show()
-		Points[7]:SetAlpha(0.3)
-		Points[7].BG:Show()
-	else
-		Points[7]:Hide()
-		Points[7].BG:Hide()
-		
-	end
-	
+
 	for i = 1, Max do
 		Points[i]:SetWidth(i == 1 and Width - 1 or Width)
+	end
+
+	for i = 1, 7 do
+		if (i > Max) then
+			Points[i]:Hide()
+			Points[i].BG:Hide()
+		else
+			Points[i]:Show()
+			Points[i].BG:SetAlpha(0.3)
+			Points[i].BG:Show()
+		end
 	end
 end
 
@@ -78,9 +79,9 @@ local UpdateChargedPoint = function(self) -- Really want a cleaner way to write 
 	for i = 2, UnitPowerMax("player", Index) do -- Reset charges
 		self.ComboPoints[i].Charged:Hide()
 	end
-	
+
 	local Charged = GetUnitChargedPowerPoints("player")
-	
+
 	if Charged then
 		for i = 1, #Charged do
 			self.ComboPoints[Charged[i]].Charged:Show()
@@ -90,11 +91,11 @@ end
 
 local Enable = function(self)
 	local element = self.ComboPoints
-	
+
 	if element then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
-		
+
 		self:RegisterEvent("PLAYER_ENTERING_WORLD", Path, true)
 		self:RegisterEvent("UNIT_POWER_UPDATE", Path, true)
 
@@ -110,23 +111,23 @@ local Enable = function(self)
 			if (element[i]:IsObjectType("Texture") and not element[i]:GetTexture()) then
 				element[i]:SetTexture("Interface\\TargetingFrame\\UI-StatusBar")
 			end
-			
+
 			element[i]:SetAlpha(0.3)
 		end
-		
+
 		return true
 	end
 end
 
 local Disable = function(self)
 	local element = self.ComboPoints
-	
+
 	if element then
 		element:Hide()
-		
+
 		self:UnregisterEvent("PLAYER_ENTERING_WORLD", Path)
 		self:UnregisterEvent("UNIT_POWER_UPDATE", Path)
-		
+
 		if (HydraUI.UserClass == "DRUID") then
 			self:UnregisterEvent("UPDATE_SHAPESHIFT_FORM", UpdateForm)
 			self:UnregisterEvent("PLAYER_ENTERING_WORLD", UpdateForm)
