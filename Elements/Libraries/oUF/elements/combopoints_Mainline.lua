@@ -69,7 +69,7 @@ local UpdateMaxPoints = function(self)
 			Points[i].BG:Hide()
 		else
 			Points[i]:Show()
-			Points[i].BG:SetAlpha(0.3)
+			Points[i]:SetAlpha(0.3)
 			Points[i].BG:Show()
 		end
 	end
