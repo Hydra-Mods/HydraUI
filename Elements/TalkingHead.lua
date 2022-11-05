@@ -15,7 +15,7 @@ end
 local CloseOnMouseUp = function(self)
 	self.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-header-texture-color"]))
 
-	TalkingHeadFrame_CloseImmediately()
+	TalkingHeadFrame:CloseImmediately()
 end
 
 local CloseOnMouseDown = function(self)
@@ -44,23 +44,15 @@ function TH:ApplyStyle()
 
 	local R, G, B = HydraUI:HexToRGB(Settings["ui-window-main-color"])
 
-	TalkingHeadFrame.BG = CreateFrame("Frame", nil, TalkingHeadFrame, "BackdropTemplate")
-	TalkingHeadFrame.BG:SetPoint("TOPLEFT", 16, -16)
-	TalkingHeadFrame.BG:SetPoint("BOTTOMRIGHT", -16, 16)
-	TalkingHeadFrame.BG:SetBackdrop(HydraUI.BackdropAndBorder)
-	TalkingHeadFrame.BG:SetBackdropBorderColor(0, 0, 0)
-	TalkingHeadFrame.BG:SetBackdropColor(R, G, B, 0.7)
-	TalkingHeadFrame.BG:SetFrameStrata("BACKGROUND")
-
-	TalkingHeadFrame.ModelBG = TalkingHeadFrame.MainFrame.Model:CreateTexture(nil, "BACKDROP")
+	TalkingHeadFrame.ModelBG = TalkingHeadFrame.MainFrame.Model:CreateTexture(nil, "BORDER")
 	TalkingHeadFrame.ModelBG:SetPoint("TOPLEFT", TalkingHeadFrame.MainFrame.Model, 0, 0)
-	TalkingHeadFrame.ModelBG:SetPoint("BOTTOMRIGHT", TalkingHeadFrame.MainFrame.Model, 0, 0)
-	TalkingHeadFrame.ModelBG:SetTexture(Assets:GetTexture("Ferous"))
-	TalkingHeadFrame.ModelBG:SetVertexColor(HydraUI:HexToRGB(Settings["ui-main-color"]))
+	TalkingHeadFrame.ModelBG:SetPoint("BOTTOMRIGHT", TalkingHeadFrame.MainFrame.Model, 2, 0)
+	TalkingHeadFrame.ModelBG:SetTexture(Assets:GetTexture("Blank"))
+	TalkingHeadFrame.ModelBG:SetVertexColor(HydraUI:HexToRGB(Settings["ui-window-main-color"]))
 
 	TalkingHeadFrame.Outline = CreateFrame("Frame", nil, TalkingHeadFrame.MainFrame.Model, "BackdropTemplate")
 	TalkingHeadFrame.Outline:SetPoint("TOPLEFT", 0, 0)
-	TalkingHeadFrame.Outline:SetPoint("BOTTOMRIGHT", 0, 0)
+	TalkingHeadFrame.Outline:SetPoint("BOTTOMRIGHT", 2, 0)
 	TalkingHeadFrame.Outline:SetBackdrop(HydraUI.Outline)
 	TalkingHeadFrame.Outline:SetBackdropBorderColor(0, 0, 0)
 
@@ -115,41 +107,48 @@ function TH:ApplyStyle()
 	CloseButton.Cross:SetTexture(Assets:GetTexture("Close"))
 	CloseButton.Cross:SetVertexColor(HydraUI:HexToRGB("EEEEEE"))
 
+	TalkingHeadFrame:SetParent(HydraUI.UIParent)
 	TalkingHeadFrame:SetMovable(true)
 	TalkingHeadFrame:SetClampedToScreen(true)
 	TalkingHeadFrame:ClearAllPoints()
 	TalkingHeadFrame:SetPoint("CENTER", self.Mover, 0, 0)
-end
+	TalkingHeadFrame:SetFrameLevel(10)
+	TalkingHeadFrame:SetFrameStrata("DIALOG")
 
-function TH:OnEvent(event, addon)
-	if (addon == "Blizzard_TalkingHeadUI") then
-		for i = 1, #AlertFrame.alertFrameSubSystems do
-			if (AlertFrame.alertFrameSubSystems[i].anchorFrame == TalkingHeadFrame) then
-				tremove(AlertFrame.alertFrameSubSystems, i)
-			end
-		end
-
-		TalkingHeadFrame.ignoreFramePositionManager = true
-
-		if Settings["hide-th"] then
-			TalkingHeadFrame:SetParent(self.Hide)
-		else
-			self:ApplyStyle()
-		end
-
-		self:UnregisterEvent("ADDON_LOADED")
-	end
+	TalkingHeadFrame.BG = CreateFrame("Frame", nil, TalkingHeadFrame, "BackdropTemplate")
+	TalkingHeadFrame.BG:SetPoint("TOPLEFT", TalkingHeadFrame, 16, -16)
+	TalkingHeadFrame.BG:SetPoint("BOTTOMRIGHT", TalkingHeadFrame, -16, 15)
+	TalkingHeadFrame.BG:SetBackdrop(HydraUI.BackdropAndBorder)
+	TalkingHeadFrame.BG:SetBackdropBorderColor(0, 0, 0)
+	TalkingHeadFrame.BG:SetBackdropColor(R, G, B, 0.5)
+	TalkingHeadFrame.BG:SetFrameLevel(0)
+	TalkingHeadFrame.BG:SetFrameStrata("LOW")
 end
 
 function TH:Load()
-	self:RegisterEvent("ADDON_LOADED")
-	self:SetScript("OnEvent", self.OnEvent)
+	for i = 1, #AlertFrame.alertFrameSubSystems do
+		if (AlertFrame.alertFrameSubSystems[i].anchorFrame == TalkingHeadFrame) then
+			tremove(AlertFrame.alertFrameSubSystems, i)
+		end
+	end
 
-	self.Mover = CreateFrame("Frame", "HydraUI Talking Head", HydraUIParent)
+	if UIPARENT_MANAGED_FRAME_POSITIONS then
+		UIPARENT_MANAGED_FRAME_POSITIONS.TalkingHeadFrame = nil
+	else
+		TalkingHeadFrame.ignoreFramePositionManager = true
+	end
+
+	self.Mover = CreateFrame("Frame", "HydraUI Talking Head", HydraUI.UIParent)
 	self.Mover:SetSize(570, 155)
-	self.Mover:SetPoint("TOP", HydraUIParent, 0, -100)
+	self.Mover:SetPoint("TOP", HydraUI.UIParent, 0, -100)
 
 	HydraUI:CreateMover(self.Mover)
+
+	if Settings["hide-th"] then
+		TalkingHeadFrame:SetParent(self.Hide)
+	else
+		self:ApplyStyle()
+	end
 end
 
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["General"], function(left, right)

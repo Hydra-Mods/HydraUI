@@ -196,7 +196,7 @@ function AB:StyleActionButton(button)
 	end
 
 	if button.RightDivider then
-		button.RightDivider:SetAlpha(0)
+		button.RightDivider:Hide()
 	end
 
 	if button.SlotArt then
