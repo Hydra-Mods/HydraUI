@@ -600,11 +600,12 @@ function AB:CreateBar1()
 	self.Bar1:SetAlpha(Settings["ab-bar1-alpha"] / 100)
 	self.Bar1.ShouldFade = Settings["ab-bar1-hover"]
 	self.Bar1.MaxAlpha = Settings["ab-bar1-alpha"]
+	self.Bar1.GetSpellFlyoutDirection = function() return "UP" end -- Temp
 
 	self.Bar1.Fader = CreateAnimationGroup(self.Bar1):CreateAnimation("Fade")
 	self.Bar1.Fader:SetDuration(0.15)
 	self.Bar1.Fader:SetEasing("inout")
-
+	
 	for i = 1, 12 do
 		local Button = _G["ActionButton" .. i]
 

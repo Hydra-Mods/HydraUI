@@ -1,6 +1,6 @@
 ## Interface: 30400
 ## Author: Hydra
-## Version: 1.89
+## Version: 1.90
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: Interface replacement for Wrath of the Lich King
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
