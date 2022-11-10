@@ -486,7 +486,7 @@ function Experience:Load()
 	end
 
 	self:CreateBar()
-	self:OnEvent()
+	self:Update()
 
 	self:RegisterEvent("QUEST_LOG_UPDATE")
 	self:RegisterEvent("PLAYER_LEVEL_UP")
@@ -580,7 +580,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Experience"],
 	right:CreateHeader(Language["Colors"])
 	right:CreateColorSelection("experience-bar-color", Settings["experience-bar-color"], Language["Experience Color"], Language["Set the color of the experience bar"], UpdateBarColor)
 	right:CreateColorSelection("experience-rested-color", Settings["experience-rested-color"], Language["Rested Color"], Language["Set the color of the rested bar"], UpdateRestedColor)
-	right:CreateColorSelection("XPQuestColor", Settings.XPQuestColor, Language["Quest Color"], Language["Set the color of quest experience"], UpdateRestedColor)
+	right:CreateColorSelection("XPQuestColor", Settings.XPQuestColor, Language["Quest Color"], Language["Set the color of quest experience"], UpdateQuestColor)
 
 	right:CreateHeader(Language["Visibility"])
 	right:CreateDropdown("experience-progress-visibility", Settings["experience-progress-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Progress Text"], Language["Set when to display the progress information"], UpdateProgressVisibility)
