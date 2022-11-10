@@ -38,6 +38,7 @@ Defaults["experience-progress-visibility"] = "ALWAYS"
 Defaults["experience-percent-visibility"] = "ALWAYS"
 Defaults["experience-bar-color"] = "4C9900" -- 1AE045
 Defaults["experience-rested-color"] = "00B4FF"
+Defaults.XPQuestColor = "CCCC19"
 
 local FadeOnFinished = function(self)
 	self.Parent:Hide()
@@ -196,7 +197,7 @@ function Experience:CreateBar()
 
 	self.Bar.Quest = CreateFrame("StatusBar", nil, self.Bar)
 	self.Bar.Quest:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	self.Bar.Quest:SetStatusBarColor(0.8, 0.8, 0.1)
+	self.Bar.Quest:SetStatusBarColor(HydraUI:HexToRGB(Settings.XPQuestColor))
 	self.Bar.Quest:SetFrameLevel(6)
 	self.Bar.Quest:SetAllPoints(self.Bar)
 
@@ -526,8 +527,16 @@ local UpdateRestedColor = function(value)
 	Experience.Bar.Rested:SetStatusBarColor(HydraUI:HexToRGB(value))
 end
 
+local UpdateQuestColor = function(value)
+	if (not Settings["experience-enable"]) then
+		return
+	end
+
+	Experience.Bar.Quest:SetStatusBarColor(HydraUI:HexToRGB(value))
+end
+
 local UpdateExperience = function()
-	Experience:OnEvent()
+	Experience:Update()
 end
 
 local UpdateMouseover = function(value)
@@ -571,6 +580,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Experience"],
 	right:CreateHeader(Language["Colors"])
 	right:CreateColorSelection("experience-bar-color", Settings["experience-bar-color"], Language["Experience Color"], Language["Set the color of the experience bar"], UpdateBarColor)
 	right:CreateColorSelection("experience-rested-color", Settings["experience-rested-color"], Language["Rested Color"], Language["Set the color of the rested bar"], UpdateRestedColor)
+	right:CreateColorSelection("XPQuestColor", Settings.XPQuestColor, Language["Quest Color"], Language["Set the color of quest experience"], UpdateRestedColor)
 
 	right:CreateHeader(Language["Visibility"])
 	right:CreateDropdown("experience-progress-visibility", Settings["experience-progress-visibility"], {[Language["Always Show"]] = "ALWAYS", [Language["Mouseover"]] = "MOUSEOVER"}, Language["Progress Text"], Language["Set when to display the progress information"], UpdateProgressVisibility)
