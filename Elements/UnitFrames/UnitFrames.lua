@@ -411,7 +411,7 @@ if HydraUI.IsMainline then
 			{61295, "TOPLEFT", {0.7, 0.3, 0.7}},   -- Riptide
 			{974, "TOPRIGHT", {0.73, 0.61, 0.33}}, -- Earth Shield
 		},
-		
+
 		["EVOKER"] = { -- Requires ID's
 
 		}

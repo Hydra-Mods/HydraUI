@@ -57,8 +57,6 @@ local Update = function(self)
 end
 
 local OnEnable = function(self)
-	self:RegisterEvent("QUEST_LOG_UPDATE")
-	self:RegisterEvent("PLAYER_LEVEL_UP")
 	self:RegisterEvent("PLAYER_XP_UPDATE")
 	self:RegisterEvent("PLAYER_UPDATE_RESTING")
 	self:RegisterEvent("UPDATE_EXHAUSTION")
@@ -74,8 +72,6 @@ local OnEnable = function(self)
 end
 
 local OnDisable = function(self)
-	self:UnregisterEvent("QUEST_LOG_UPDATE")
-	self:UnregisterEvent("PLAYER_LEVEL_UP")
 	self:UnregisterEvent("PLAYER_XP_UPDATE")
 	self:UnregisterEvent("PLAYER_UPDATE_RESTING")
 	self:UnregisterEvent("UPDATE_EXHAUSTION")

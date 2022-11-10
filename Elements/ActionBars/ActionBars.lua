@@ -605,7 +605,7 @@ function AB:CreateBar1()
 	self.Bar1.Fader = CreateAnimationGroup(self.Bar1):CreateAnimation("Fade")
 	self.Bar1.Fader:SetDuration(0.15)
 	self.Bar1.Fader:SetEasing("inout")
-	
+
 	for i = 1, 12 do
 		local Button = _G["ActionButton" .. i]
 
@@ -690,6 +690,7 @@ function AB:CreateBar2()
 
 	MultiBarBottomLeft:SetParent(self.Bar2)
 	MultiBarBottomLeft:SetAllPoints(self.Bar2)
+	MultiBarBottomLeft:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBarBottomLeftButton" .. i]
@@ -738,6 +739,7 @@ function AB:CreateBar3()
 
 	MultiBarBottomRight:SetParent(self.Bar3)
 	MultiBarBottomRight:SetAllPoints(self.Bar3)
+	MultiBarBottomRight:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBarBottomRightButton" .. i]
@@ -786,6 +788,7 @@ function AB:CreateBar4()
 
 	MultiBarRight:SetParent(self.Bar4)
 	MultiBarRight:SetAllPoints(self.Bar4)
+	MultiBarRight:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBarRightButton" .. i]
@@ -834,6 +837,7 @@ function AB:CreateBar5()
 
 	MultiBarLeft:SetParent(self.Bar5)
 	MultiBarLeft:SetAllPoints(self.Bar5)
+	MultiBarLeft:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBarLeftButton" .. i]
@@ -882,6 +886,7 @@ function AB:CreateBar6()
 
 	MultiBar5:SetParent(self.Bar6)
 	MultiBar5:SetAllPoints(self.Bar6)
+	MultiBar5:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBar5Button" .. i]
@@ -930,6 +935,7 @@ function AB:CreateBar7()
 
 	MultiBar6:SetParent(self.Bar7)
 	MultiBar6:SetAllPoints(self.Bar7)
+	MultiBar6:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBar6Button" .. i]
@@ -978,6 +984,7 @@ function AB:CreateBar8()
 
 	MultiBar7:SetParent(self.Bar8)
 	MultiBar7:SetAllPoints(self.Bar8)
+	MultiBar7:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBar7Button" .. i]
@@ -1554,6 +1561,10 @@ function AB:StyleTotemBar()
 	hooksecurefunc("MultiCastFlyoutFrame_LoadSlotSpells", MultiCastFlyoutFrame_LoadSlotSpells)
 end
 
+local GetBarHeight = function()
+	return 0
+end
+
 function AB:Load()
 	if (not Settings["ab-enable"]) then
 		return
@@ -1569,6 +1580,20 @@ function AB:Load()
 	self:CreateBars()
 	self:CreateMovers()
 	self:UpdateEmptyButtons()
+
+	if HydraUI.IsMainline then
+		MainMenuBar.GetBottomAnchoredHeight = GetBarHeight
+		OverrideActionBar.GetBottomAnchoredHeight = GetBarHeight
+		MultiBarBottomLeft.GetBottomAnchoredHeight = GetBarHeight
+		MultiBarBottomRight.GetBottomAnchoredHeight = GetBarHeight
+		StanceBar.GetBottomAnchoredHeight = GetBarHeight
+		PetActionBar.GetBottomAnchoredHeight = GetBarHeight
+		PossessActionBar.GetBottomAnchoredHeight = GetBarHeight
+		MainMenuBarVehicleLeaveButton.GetBottomAnchoredHeight = GetBarHeight
+
+		MultiBarLeft.IsInDefaultPosition = function() return false end
+		MultiBarRight.IsInDefaultPosition = function() return false end
+	end
 
 	hooksecurefunc("ActionButton_UpdateRangeIndicator", AB.UpdateButtonStatus)
 

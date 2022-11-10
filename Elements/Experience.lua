@@ -16,8 +16,6 @@ local ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local GetNumQuests
 local LEVEL = LEVEL
-local Gained = 0
-local Seconds = 0
 
 if HydraUI.IsMainline then
 	GetNumQuests = C_QuestLog.GetNumQuestLogEntries
@@ -128,6 +126,9 @@ function Experience:CreateBar()
 	end
 
 	self.LastXP = UnitXP("player")
+	self.LastMax = UnitXPMax("player")
+	self.Seconds = 0
+	self.Gained = 0
 
 	self.BarBG = CreateFrame("Frame", nil, self, "BackdropTemplate")
 	self.BarBG:SetPoint("TOPLEFT", self, 0, 0)
@@ -219,17 +220,7 @@ function Experience:CreateBar()
 	HydraUI:CreateMover(self, 6)
 end
 
-function Experience:OnEvent()
-	if IsPlayerAtEffectiveMaxLevel() then
-		self:UnregisterAllEvents()
-		self:SetScript("OnEnter", nil)
-		self:SetScript("OnLeave", nil)
-		self:SetScript("OnEvent", nil)
-		self:Hide()
-
-		return
-	end
-
+function Experience:Update()
 	Rested = GetXPExhaustion()
     XP = UnitXP("player")
     MaxXP = UnitXPMax("player")
@@ -323,9 +314,7 @@ function Experience:OnEvent()
 		self.Bar:SetValue(XP)
 	end
 
-	Gained = (XP - self.LastXP) + Gained
-
-	if (Seconds == 0 and Gained > 0) then -- Start the XP timer
+	if (self.Seconds == 0 and self.Gained > 0) then -- Start the XP timer
 		Experience:SetScript("OnUpdate", Experience.OnUpdate)
 	end
 
@@ -334,14 +323,70 @@ function Experience:OnEvent()
 		self:OnEnter()
 	end
 
+	if (MaxXP ~= self.LastMax) then
+		self.Gained = self.LastMax - self.LastXP + XP + self.Gained
+	else
+		self.Gained = (XP - self.LastXP) + self.Gained
+	end
+
 	self.LastXP = XP
+	self.LastMax = MaxXP
+end
+
+function Experience:PLAYER_LEVEL_UP()
+	if IsPlayerAtEffectiveMaxLevel() then
+		self:Hide()
+		self:UnregisterAllEvents()
+		self:SetScript("OnEnter", nil)
+		self:SetScript("OnLeave", nil)
+		self:SetScript("OnEvent", nil)
+		self:SetScript("OnUpdate", nil)
+	end
+end
+
+function Experience:PLAYER_ENTERING_WORLD()
+	self:PLAYER_LEVEL_UP()
+
+	if self:IsShown() then
+		self:Update()
+	end
+end
+
+function Experience:QUEST_LOG_UPDATE()
+	self:Update()
+end
+
+function Experience:PLAYER_XP_UPDATE()
+	self:Update()
+end
+
+function Experience:PLAYER_UPDATE_RESTING()
+	self:Update()
+end
+
+function Experience:UPDATE_EXHAUSTION()
+	self:Update()
+end
+
+function Experience:ZONE_CHANGED()
+	self:Update()
+end
+
+function Experience:ZONE_CHANGED_NEW_AREA()
+	self:Update()
+end
+
+function Experience:OnEvent(event)
+	if self[event] then
+		self[event](self)
+	end
 end
 
 function Experience:OnUpdate(elapsed)
 	self.Elapsed = self.Elapsed + elapsed
 
 	if (self.Elapsed > 1) then
-		Seconds = Seconds + 1
+		self.Seconds = self.Seconds + 1
 		self.Elapsed = 0
 	end
 end
@@ -395,14 +440,14 @@ function Experience:OnEnter()
 	end
 
 	-- Advanced information
-	if (Gained > 0) then
-		local PerHour = (((Gained / Seconds) * 60) * 60)
+	if (self.Gained > 0) then
+		local PerHour = (((self.Gained / self.Seconds) * 60) * 60)
 
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddLine(Language["Session Stats"])
-		GameTooltip:AddDoubleLine(Language["Experience gained"], HydraUI:Comma(Gained), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["Experience gained"], HydraUI:Comma(self.Gained), 1, 1, 1, 1, 1, 1)
 		GameTooltip:AddDoubleLine(Language["Per hour"], HydraUI:Comma(PerHour), 1, 1, 1, 1, 1, 1)
-		GameTooltip:AddDoubleLine(Language["Duration"], HydraUI:FormatTime(Seconds), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["Duration"], HydraUI:FormatTime(self.Seconds), 1, 1, 1, 1, 1, 1)
 	end
 
 	self.TooltipShown = true
@@ -458,7 +503,7 @@ function Experience:Load()
 	UpdateDisplayPercent(Settings["experience-display-percent"])
 	UpdateProgressVisibility(Settings["experience-progress-visibility"])
 	UpdatePercentVisibility(Settings["experience-percent-visibility"])
-	
+
 	if StatusTrackingBarManager then
 		StatusTrackingBarManager:Hide()
 	end
