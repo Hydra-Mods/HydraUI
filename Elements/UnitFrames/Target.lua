@@ -25,6 +25,8 @@ Defaults.TargetBuffSize = 28
 Defaults.TargetBuffSpacing = 2
 Defaults.TargetDebuffSize = 28
 Defaults.TargetDebuffSpacing = 2
+Defaults.TargetHealthTexture = "HydraUI 4"
+Defaults.TargetPowerTexture = "HydraUI 4"
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -55,13 +57,13 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
 	Health:SetPoint("TOPRIGHT", self, -1, -1)
 	Health:SetHeight(Settings["unitframes-target-health-height"])
-	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetStatusBarTexture(Assets:GetTexture(Settings.TargetHealthTexture))
 	Health:SetReverseFill(Settings["unitframes-target-health-reverse"])
 
 	local HealBar = CreateFrame("StatusBar", nil, Health)
 	HealBar:SetWidth(Settings["unitframes-target-width"])
 	HealBar:SetHeight(Settings["unitframes-target-health-height"])
-	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings.TargetHealthTexture))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 
@@ -75,7 +77,7 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
 		AbsorbsBar:SetWidth(Settings["unitframes-target-width"])
 		AbsorbsBar:SetHeight(Settings["unitframes-target-health-height"])
-		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings.TargetHealthTexture))
 		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
 
@@ -90,7 +92,7 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 
 	local HealthBG = self:CreateTexture(nil, "BORDER")
 	HealthBG:SetAllPoints(Health)
-	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealthBG:SetTexture(Assets:GetTexture(Settings.TargetHealthTexture))
 	HealthBG.multiplier = 0.2
 
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
@@ -159,13 +161,13 @@ HydraUI.StyleFuncs["target"] = function(self, unit)
 	Power:SetPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetHeight(Settings["unitframes-target-power-height"])
-	Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Power:SetStatusBarTexture(Assets:GetTexture(Settings.TargetPowerTexture))
 	Power:SetReverseFill(Settings["unitframes-target-power-reverse"])
 
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetPoint("TOPLEFT", Power, 0, 0)
 	PowerBG:SetPoint("BOTTOMRIGHT", Power, 0, 0)
-	PowerBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	PowerBG:SetTexture(Assets:GetTexture(Settings.TargetPowerTexture))
 	PowerBG:SetAlpha(0.2)
 
 	local PowerLeft = Power:CreateFontString(nil, "OVERLAY")
@@ -480,6 +482,29 @@ local UpdateDisplayedAuras = function()
 	end
 end
 
+local UpdateHealthTexture = function(value)
+	if HydraUI.UnitFrames["target"] then
+		local Frame = HydraUI.UnitFrames["target"]
+
+		Frame.Health:SetStatusBarTexture(Assets:GetTexture(value))
+		Frame.Health.bg:SetTexture(Assets:GetTexture(value))
+		Frame.HealBar:SetStatusBarTexture(Assets:GetTexture(value))
+
+		if Frame.AbsorbsBar then
+			Frame.AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(value))
+		end
+	end
+end
+
+local UpdatePowerTexture = function(value)
+	if HydraUI.UnitFrames["target"] then
+		local Frame = HydraUI.UnitFrames["target"]
+
+		Frame.Power:SetStatusBarTexture(Assets:GetTexture(value))
+		Frame.Power.bg:SetTexture(Assets:GetTexture(value))
+	end
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Target"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("target-enable", Settings["target-enable"], Language["Enable Target"], Language["Enable the target unit frame"], ReloadUI):RequiresReload(true)
@@ -495,6 +520,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Target"], Lan
 	left:CreateDropdown("unitframes-target-health-color", Settings["unitframes-target-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Color"], Language["Set the color of the health bar"], UpdateTargetHealthColor)
 	left:CreateInput("unitframes-target-health-left", Settings["unitframes-target-health-left"], Language["Left Health Text"], Language["Set the text on the left of the target health bar"], ReloadUI):RequiresReload(true)
 	left:CreateInput("unitframes-target-health-right", Settings["unitframes-target-health-right"], Language["Right Health Text"], Language["Set the text on the right of the target health bar"], ReloadUI):RequiresReload(true)
+	left:CreateDropdown("TargetHealthTexture", Settings.TargetHealthTexture, Assets:GetTextureList(), Language["Health Texture"], "", UpdateHealthTexture, "Texture")
 
 	left:CreateHeader(Language["Buffs"])
 	left:CreateSwitch("unitframes-show-target-buffs", Settings["unitframes-show-target-buffs"], Language["Show Buffs"], Language["Show auras above the target unit frame"], UpdateDisplayedAuras)
@@ -512,6 +538,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Target"], Lan
 	right:CreateDropdown("unitframes-target-power-color", Settings["unitframes-target-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateTargetPowerColor)
 	right:CreateInput("unitframes-target-power-left", Settings["unitframes-target-power-left"], Language["Left Power Text"], Language["Set the text on the left of the target power bar"], ReloadUI):RequiresReload(true)
 	right:CreateInput("unitframes-target-power-right", Settings["unitframes-target-power-right"], Language["Right Power Text"], Language["Set the text on the right of the target power bar"], ReloadUI):RequiresReload(true)
+	right:CreateDropdown("TargetPowerTexture", Settings.TargetPowerTexture, Assets:GetTextureList(), Language["Power Texture"], "", UpdatePowerTexture, "Texture")
 
 	right:CreateHeader(Language["Cast Bar"])
 	right:CreateSwitch("unitframes-target-enable-castbar", Settings["unitframes-target-enable-castbar"], Language["Enable Cast Bar"], Language["Enable the target cast bar"], ReloadUI):RequiresReload(true)

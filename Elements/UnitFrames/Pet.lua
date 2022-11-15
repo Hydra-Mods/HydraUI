@@ -17,6 +17,8 @@ Defaults["unitframes-pet-buff-pos"] = "BOTTOM"
 Defaults["unitframes-pet-debuff-size"] = 20
 Defaults["unitframes-pet-debuff-pos"] = "BOTTOM"
 Defaults["pet-enable"] = true
+Defaults.PetHealthTexture = "HydraUI 4"
+Defaults.PetPowerTexture = "HydraUI 4"
 
 if HydraUI.IsMainline then
 	Defaults["unitframes-pet-health-left"] = "[Name(10)]"
@@ -51,13 +53,13 @@ HydraUI.StyleFuncs["pet"] = function(self, unit)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
 	Health:SetPoint("TOPRIGHT", self, -1, -1)
 	Health:SetHeight(Settings["unitframes-pet-health-height"])
-	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetStatusBarTexture(Assets:GetTexture(Settings.PetHealthTexture))
 	Health:SetReverseFill(Settings["unitframes-pet-health-reverse"])
 
 	local HealBar = CreateFrame("StatusBar", nil, Health)
 	HealBar:SetWidth(Settings["unitframes-pet-width"])
 	HealBar:SetHeight(Settings["unitframes-pet-health-height"])
-	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings.PetHealthTexture))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 
@@ -71,7 +73,7 @@ HydraUI.StyleFuncs["pet"] = function(self, unit)
 		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
 		AbsorbsBar:SetWidth(Settings["unitframes-pet-width"])
 		AbsorbsBar:SetHeight(Settings["unitframes-pet-health-height"])
-		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings.PetHealthTexture))
 		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
 
@@ -86,7 +88,7 @@ HydraUI.StyleFuncs["pet"] = function(self, unit)
 
 	local HealthBG = self:CreateTexture(nil, "BORDER")
 	HealthBG:SetAllPoints(Health)
-	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealthBG:SetTexture(Assets:GetTexture(Settings.PetHealthTexture))
 	HealthBG.multiplier = 0.2
 
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
@@ -114,13 +116,13 @@ HydraUI.StyleFuncs["pet"] = function(self, unit)
 	Power:SetPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetHeight(Settings["unitframes-pet-power-height"])
-	Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Power:SetStatusBarTexture(Assets:GetTexture(Settings.PetPowerTexture))
 	Power:SetReverseFill(Settings["unitframes-pet-power-reverse"])
 
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetPoint("TOPLEFT", Power, 0, 0)
 	PowerBG:SetPoint("BOTTOMRIGHT", Power, 0, 0)
-	PowerBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	PowerBG:SetTexture(Assets:GetTexture(Settings.PetPowerTexture))
 	PowerBG:SetAlpha(0.2)
 
 	-- Attributes
@@ -368,6 +370,29 @@ local UpdateDebuffPosition = function(value)
 	end
 end
 
+local UpdateHealthTexture = function(value)
+	if HydraUI.UnitFrames["pet"] then
+		local Frame = HydraUI.UnitFrames["pet"]
+
+		Frame.Health:SetStatusBarTexture(Assets:GetTexture(value))
+		Frame.Health.bg:SetTexture(Assets:GetTexture(value))
+		Frame.HealBar:SetStatusBarTexture(Assets:GetTexture(value))
+
+		if Frame.AbsorbsBar then
+			Frame.AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(value))
+		end
+	end
+end
+
+local UpdatePowerTexture = function(value)
+	if HydraUI.UnitFrames["pet"] then
+		local Frame = HydraUI.UnitFrames["pet"]
+
+		Frame.Power:SetStatusBarTexture(Assets:GetTexture(value))
+		Frame.Power.bg:SetTexture(Assets:GetTexture(value))
+	end
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Pet"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("pet-enable", Settings["pet-enable"], Language["Enable Pet"], Language["Enable the pet unit frame"], ReloadUI):RequiresReload(true)
@@ -380,10 +405,13 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Pet"], Langua
 	left:CreateInput("unitframes-pet-health-left", Settings["unitframes-pet-health-left"], Language["Left Health Text"], Language["Set the text on the left of the pet health bar"], ReloadUI):RequiresReload(true)
 	left:CreateInput("unitframes-pet-health-right", Settings["unitframes-pet-health-right"], Language["Right Health Text"], Language["Set the text on the right of the pet health bar"], ReloadUI):RequiresReload(true)
 
+	left:CreateDropdown("PetHealthTexture", Settings.PetHealthTexture, Assets:GetTextureList(), Language["Health Texture"], "", UpdateHealthTexture, "Texture")
+
 	right:CreateHeader(Language["Power"])
 	right:CreateSwitch("unitframes-pet-power-reverse", Settings["unitframes-pet-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePetPowerFill)
 	right:CreateSlider("unitframes-pet-power-height", Settings["unitframes-pet-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the pet power bar", UpdatePetPowerHeight)
 	right:CreateDropdown("unitframes-pet-power-color", Settings["unitframes-pet-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePetPowerColor)
+	right:CreateDropdown("PetPowerTexture", Settings.PetPowerTexture, Assets:GetTextureList(), Language["Power Texture"], "", UpdatePowerTexture, "Texture")
 
 	right:CreateHeader(Language["Buffs"])
 	right:CreateSwitch("unitframes-pet-buffs", Settings["unitframes-pet-buffs"], Language["Enable buffs"], Language["Enable debuffs on the unit frame"], UpdateEnableBuffs)

@@ -13,7 +13,9 @@ Defaults["unitframes-focus-health-left"] = "[Name(10)]"
 Defaults["unitframes-focus-health-right"] = "[HealthPercent]"
 Defaults["focus-enable"] = true
 Defaults["focus-enable-castbar"] = true
-Settings["focus-enable-buffs"] = true
+Defaults["focus-enable-buffs"] = true
+Defaults.FocusHealthTexture = "HydraUI 4"
+Defaults.FocusPowerTexture = "HydraUI 4"
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -42,13 +44,13 @@ HydraUI.StyleFuncs["focus"] = function(self, unit)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
 	Health:SetPoint("TOPRIGHT", self, -1, -1)
 	Health:SetHeight(Settings["unitframes-focus-health-height"])
-	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetStatusBarTexture(Assets:GetTexture(Settings.FocusHealthTexture))
 	Health:SetReverseFill(Settings["unitframes-focus-health-reverse"])
 
 	local HealBar = CreateFrame("StatusBar", nil, Health)
 	HealBar:SetWidth(Settings["unitframes-focus-width"])
 	HealBar:SetHeight(Settings["unitframes-focus-health-height"])
-	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings.FocusHealthTexture))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 
@@ -56,7 +58,7 @@ HydraUI.StyleFuncs["focus"] = function(self, unit)
 		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
 		AbsorbsBar:SetWidth(Settings["unitframes-focus-width"])
 		AbsorbsBar:SetHeight(Settings["unitframes-focus-health-height"])
-		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings.FocusHealthTexture))
 		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
 
@@ -77,7 +79,7 @@ HydraUI.StyleFuncs["focus"] = function(self, unit)
 
 	local HealthBG = self:CreateTexture(nil, "BORDER")
 	HealthBG:SetAllPoints(Health)
-	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealthBG:SetTexture(Assets:GetTexture(Settings.FocusHealthTexture))
 	HealthBG.multiplier = 0.2
 
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
@@ -102,13 +104,13 @@ HydraUI.StyleFuncs["focus"] = function(self, unit)
 	Power:SetPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetHeight(Settings["unitframes-focus-power-height"])
-	Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Power:SetStatusBarTexture(Assets:GetTexture(Settings.FocusPowerTexture))
 	Power:SetReverseFill(Settings["unitframes-focus-power-reverse"])
 
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetPoint("TOPLEFT", Power, 0, 0)
 	PowerBG:SetPoint("BOTTOMRIGHT", Power, 0, 0)
-	PowerBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	PowerBG:SetTexture(Assets:GetTexture(Settings.FocusPowerTexture))
 	PowerBG:SetAlpha(0.2)
 
 	-- Attributes
@@ -295,6 +297,29 @@ local UpdateFocusPowerFill = function(value)
 	end
 end
 
+local UpdateHealthTexture = function(value)
+	if HydraUI.UnitFrames["focus"] then
+		local Frame = HydraUI.UnitFrames["focus"]
+
+		Frame.Health:SetStatusBarTexture(Assets:GetTexture(value))
+		Frame.Health.bg:SetTexture(Assets:GetTexture(value))
+		Frame.HealBar:SetStatusBarTexture(Assets:GetTexture(value))
+
+		if Frame.AbsorbsBar then
+			Frame.AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(value))
+		end
+	end
+end
+
+local UpdatePowerTexture = function(value)
+	if HydraUI.UnitFrames["focus"] then
+		local Frame = HydraUI.UnitFrames["focus"]
+
+		Frame.Power:SetStatusBarTexture(Assets:GetTexture(value))
+		Frame.Power.bg:SetTexture(Assets:GetTexture(value))
+	end
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Focus"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("focus-enable", Settings["focus-enable"], Language["Enable Focus"], Language["Enable the focus unit frame"], ReloadUI):RequiresReload(true)
@@ -307,11 +332,13 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Focus"], Lang
 	left:CreateDropdown("unitframes-focus-health-color", Settings["unitframes-focus-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdateFocusHealthColor)
 	left:CreateInput("unitframes-focus-health-left", Settings["unitframes-focus-health-left"], Language["Left Health Text"], Language["Set the text on the left of the focus health bar"], ReloadUI):RequiresReload(true)
 	left:CreateInput("unitframes-focus-health-right", Settings["unitframes-focus-health-right"], Language["Right Health Text"], Language["Set the text on the right of the focus health bar"], ReloadUI):RequiresReload(true)
+	left:CreateDropdown("FocusHealthTexture", Settings.FocusHealthTexture, Assets:GetTextureList(), Language["Health Texture"], "", UpdateHealthTexture, "Texture")
 
 	right:CreateHeader(Language["Power"])
 	right:CreateSwitch("unitframes-focus-power-reverse", Settings["unitframes-focus-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateFocusPowerFill)
 	right:CreateSlider("unitframes-focus-power-height", Settings["unitframes-focus-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the focus power bar", UpdateFocusPowerHeight)
 	right:CreateDropdown("unitframes-focus-power-color", Settings["unitframes-focus-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateFocusPowerColor)
+	right:CreateDropdown("FocusPowerTexture", Settings.FocusPowerTexture, Assets:GetTextureList(), Language["Power Texture"], "", UpdatePowerTexture, "Texture")
 
 	right:CreateHeader(Language["Buffs"])
 	right:CreateSwitch("focus-enable-buffs", Settings["focus-enable-buffs"], Language["Show Focus Buffs"], Language["Show auras next to the focus unit frame"], UpdateShowFocusBuffs)

@@ -29,15 +29,6 @@ Defaults["raid-font"] = "Roboto"
 Defaults["raid-font-size"] = 12
 Defaults["raid-font-flags"] = ""
 
-Defaults["raid-pets-enable"] = true
-Defaults["raid-pets-width"] = 78
-Defaults["raid-pets-health-height"] = 22
-Defaults["raid-pets-health-reverse"] = false
-Defaults["raid-pets-health-color"] = "CLASS"
-Defaults["raid-pets-health-orientation"] = "HORIZONTAL"
-Defaults["raid-pets-health-smooth"] = true
-Defaults["raid-pets-power-height"] = 0 -- NYI
-
 local UF = HydraUI:GetModule("Unit Frames")
 
 local RaidDebuffFilter = function(self, unit, icon, name, texture, count, dtype, duration, timeLeft, caster, stealable, nameplateshow, id, canapply, boss, player)

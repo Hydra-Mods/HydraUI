@@ -25,19 +25,10 @@ Defaults["party-show-solo"] = false
 Defaults["party-font"] = "Roboto"
 Defaults["party-font-size"] = 12
 Defaults["party-font-flags"] = ""
-Defaults["party-pets-enable"] = true
-Defaults["party-pets-width"] = 78
-Defaults["party-pets-health-height"] = 22
-Defaults["party-pets-health-reverse"] = false
-Defaults["party-pets-health-color"] = "CLASS"
-Defaults["party-pets-health-orientation"] = "HORIZONTAL"
-Defaults["party-pets-health-smooth"] = true
-Defaults["party-pets-power-height"] = 0 -- NYI
+Defaults.PartyHealthTexture = "HydraUI 4"
+Defaults.PartyPowerTexture = "HydraUI 4"
 
 local UF = HydraUI:GetModule("Unit Frames")
-
-local ShouldDisplayDebuff = CompactUnitFrame_Util_ShouldDisplayDebuff
-local ShouldDisplayBuff = CompactUnitFrame_UtilShouldDisplayBuff
 
 local PartyDebuffFilter = function(self, unit, icon, name, texture, count, dtype, duration, timeLeft, caster, stealable, nameplateshow, id, canapply, boss, player)
 	local hasCustom, alwaysShowMine, showForMySpec = SpellGetVisibilityInfo(id, "RAID_INCOMBAT")
@@ -78,14 +69,14 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
 	Health:SetPoint("TOPRIGHT", self, -1, -1)
 	Health:SetHeight(Settings["party-health-height"])
-	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetStatusBarTexture(Assets:GetTexture(Settings.PartyHealthTexture))
 	Health:SetReverseFill(Settings["party-health-reverse"])
 	Health:SetOrientation(Settings["party-health-orientation"])
 
 	local HealBar = CreateFrame("StatusBar", nil, Health)
 	HealBar:SetWidth(Settings["party-width"])
 	HealBar:SetHeight(Settings["party-health-height"])
-	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings.PartyHealthTexture))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 
@@ -99,7 +90,7 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
 		AbsorbsBar:SetWidth(Settings["party-width"])
 		AbsorbsBar:SetHeight(Settings["party-health-height"])
-		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings.PartyHealthTexture))
 		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
 
@@ -114,7 +105,7 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 
 	local HealthBG = self:CreateTexture(nil, "BORDER")
 	HealthBG:SetAllPoints(Health)
-	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealthBG:SetTexture(Assets:GetTexture(Settings.PartyHealthTexture))
 	HealthBG.multiplier = 0.2
 
 	local HealthDead = Health:CreateTexture(nil, "OVERLAY")
@@ -158,13 +149,13 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	Power:SetPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetHeight(Settings["party-power-height"])
-	Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Power:SetStatusBarTexture(Assets:GetTexture(Settings.PartyPowerTexture))
 	Power:SetReverseFill(Settings["party-power-reverse"])
 
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetPoint("TOPLEFT", Power, 0, 0)
 	PowerBG:SetPoint("BOTTOMRIGHT", Power, 0, 0)
-	PowerBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	PowerBG:SetTexture(Assets:GetTexture(Settings.PartyPowerTexture))
 	PowerBG:SetAlpha(0.2)
 
 	-- Attributes
@@ -350,103 +341,6 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	self.ResurrectIndicator = Resurrect
 	self.RaidTargetIndicator = RaidTarget
 	self.PhaseIndicator = PhaseIndicator
-end
-
-HydraUI.StyleFuncs["partypet"] = function(self, unit)
-	-- General
-	self:RegisterForClicks("AnyUp")
-	self:SetScript("OnEnter", UnitFrame_OnEnter)
-	self:SetScript("OnLeave", UnitFrame_OnLeave)
-
-	local Backdrop = self:CreateTexture(nil, "BACKGROUND")
-	Backdrop:SetAllPoints()
-	Backdrop:SetTexture(Assets:GetTexture("Blank"))
-	Backdrop:SetVertexColor(0, 0, 0)
-
-	-- Threat
-	local Threat = CreateFrame("Frame", nil, self, "BackdropTemplate")
-	Threat:SetPoint("TOPLEFT", -1, 1)
-	Threat:SetPoint("BOTTOMRIGHT", 1, -1)
-	Threat:SetBackdrop(HydraUI.Outline)
-	Threat.PostUpdate = UF.ThreatPostUpdate
-
-	self.ThreatIndicator = Threat
-
-	-- Health Bar
-	local Health = CreateFrame("StatusBar", nil, self)
-	Health:SetPoint("TOPLEFT", self, 1, -1)
-	Health:SetPoint("TOPRIGHT", self, -1, -1)
-	Health:SetHeight(Settings["party-pets-health-height"])
-	Health:SetFrameLevel(5)
-	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	Health:SetReverseFill(Settings["party-pets-health-reverse"])
-	Health:SetOrientation(Settings["party-pets-health-orientation"])
-
-	local HealBar = CreateFrame("StatusBar", nil, Health)
-	HealBar:SetWidth(Settings["party-width"])
-	HealBar:SetHeight(Settings["party-pets-health-height"])
-	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	HealBar:SetStatusBarColor(0, 0.48, 0)
-	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
-
-	if Settings["party-health-reverse"] then
-		HealBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
-	else
-		HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
-	end
-
-	if HydraUI.IsMainline then
-		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
-		AbsorbsBar:SetWidth(Settings["party-width"])
-		AbsorbsBar:SetHeight(Settings["party-health-height"])
-		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
-		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
-
-		if Settings["party-health-reverse"] then
-			AbsorbsBar:SetPoint("RIGHT", Health:GetStatusBarTexture(), "LEFT", 0, 0)
-		else
-			AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
-		end
-
-		self.AbsorbsBar = AbsorbsBar
-	end
-
-	local HealthBG = Health:CreateTexture(nil, "BORDER")
-	HealthBG:SetAllPoints()
-	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
-	HealthBG.multiplier = 0.2
-
-	local HealthMiddle = Health:CreateFontString(nil, "OVERLAY")
-	HydraUI:SetFontInfo(HealthMiddle, Settings["party-font"], Settings["party-font-size"], Settings["party-font-flags"])
-	HealthMiddle:SetPoint("CENTER", Health, 0, 0)
-	HealthMiddle:SetJustifyH("CENTER")
-
-	-- Attributes
-	Health.frequentUpdates = true
-	Health.colorDisconnected = true
-	Health.Smooth = true
-
-	UF:SetHealthAttributes(Health, Settings["party-pets-health-color"])
-
-	-- Target Icon
-	local RaidTarget = Health:CreateTexture(nil, 'OVERLAY')
-	RaidTarget:SetSize(16, 16)
-	RaidTarget:SetPoint("CENTER", Health, "TOP")
-
-	-- Tags
-	self:Tag(HealthMiddle, "[Name10]")
-
-	self.Range = {
-		insideAlpha = Settings["party-in-range"] / 100,
-		outsideAlpha = Settings["party-out-of-range"] / 100,
-	}
-
-	self.Health = Health
-	self.HealBar = HealBar
-	self.Health.bg = HealthBG
-	self.HealthMiddle = HealthMiddle
-	self.RaidTargetIndicator = RaidTarget
 end
 
 local UpdatePartyWidth = function(value)
@@ -805,7 +699,4 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Party"], Lang
 	left:CreateSwitch("party-show-solo", Settings["party-show-solo"], Language["Show Solo"], Language["Display the frames while not in a group"], UpdateShowSolo)
 	left:CreateDropdown("party-point", Settings["party-point"], {[Language["Left"]] = "LEFT", [Language["Right"]] = "RIGHT", [Language["Top"]] = "TOP", [Language["Bottom"]] = "BOTTOM"}, Language["Anchor Point"], Language["Set the anchor point for the party frames"], ReloadUI):RequiresReload(true)
 	left:CreateSlider("party-spacing", Settings["party-spacing"], -10, 10, 1, Language["Set Spacing"], Language["Set the spacing of party units from eachother"], UpdatePartySpacing)
-
-	right:CreateHeader(Language["Party Pets Size"])
-	right:CreateSlider("party-pets-width", Settings["party-pets-width"], 40, 200, 1, Language["Width"], Language["Set the width of party pet unit frames"], ReloadUI, nil):RequiresReload(true)
 end)

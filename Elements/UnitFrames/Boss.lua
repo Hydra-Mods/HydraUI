@@ -18,6 +18,8 @@ Defaults["unitframes-boss-power-right"] = "[PowerValues:Short]"
 Defaults["unitframes-boss-buffs"] = true
 Defaults["unitframes-boss-buff-size"] = 47
 Defaults["unitframes-boss-debuff-size"] = 47
+Defaults.BossHealthTexture = "HydraUI 4"
+Defaults.BossPowerTexture = "HydraUI 4"
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -39,13 +41,13 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	Health:SetHeight(Settings["unitframes-boss-health-height"])
 	Health:SetMinMaxValues(0, 1)
 	Health:SetValue(1)
-	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetStatusBarTexture(Assets:GetTexture(Settings.BossHealthTexture))
 
 	local HealBar = CreateFrame("StatusBar", nil, Health)
 	HealBar:SetWidth(Settings["unitframes-boss-width"])
 	HealBar:SetHeight(Settings["unitframes-boss-health-height"])
 	HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
-	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings.BossHealthTexture))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 
@@ -54,7 +56,7 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 		AbsorbsBar:SetWidth(Settings["unitframes-boss-width"])
 		AbsorbsBar:SetHeight(Settings["unitframes-boss-health-height"])
 		AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
-		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings.BossHealthTexture))
 		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
 
@@ -63,7 +65,7 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 
 	local HealthBG = self:CreateTexture(nil, "BORDER")
 	HealthBG:SetAllPoints(Health)
-	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealthBG:SetTexture(Assets:GetTexture(Settings.BossHealthTexture))
 	HealthBG.multiplier = 0.2
 
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
@@ -95,12 +97,12 @@ HydraUI.StyleFuncs["boss"] = function(self, unit)
 	Power:SetPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetHeight(Settings["unitframes-boss-power-height"])
-	Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Power:SetStatusBarTexture(Assets:GetTexture(Settings.BossPowerTexture))
 
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetPoint("TOPLEFT", Power, 0, 0)
 	PowerBG:SetPoint("BOTTOMRIGHT", Power, 0, 0)
-	PowerBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	PowerBG:SetTexture(Assets:GetTexture(Settings.BossPowerTexture))
 	PowerBG:SetAlpha(0.2)
 
 	local PowerLeft = Power:CreateFontString(nil, "OVERLAY")
@@ -341,6 +343,29 @@ local UpdateDebuffSize = function(value)
 	end
 end
 
+local UpdateHealthTexture = function(value)
+	for i = 1, 8 do
+		if HydraUI.UnitFrames["boss"..i] then
+			HydraUI.UnitFrames["boss"..i].Health:SetStatusBarTexture(Assets:GetTexture(value))
+			HydraUI.UnitFrames["boss"..i].Health.bg:SetTexture(Assets:GetTexture(value))
+			HydraUI.UnitFrames["boss"..i].HealBar:SetStatusBarTexture(Assets:GetTexture(value))
+
+			if HydraUI.UnitFrames["boss"..i].AbsorbsBar then
+				HydraUI.UnitFrames["boss"..i].AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(value))
+			end
+		end
+	end
+end
+
+local UpdatePowerTexture = function(value)
+	for i = 1, 8 do
+		if HydraUI.UnitFrames["boss"..i] then
+			HydraUI.UnitFrames["boss"..i].Power:SetStatusBarTexture(Assets:GetTexture(value))
+			HydraUI.UnitFrames["boss"..i].Power.bg:SetTexture(Assets:GetTexture(value))
+		end
+	end
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Bosses"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("unitframes-boss-enable", Settings["unitframes-boss-enable"], Language["Enable Boss Frames"], Language["Enable the boss unit frames"], ReloadUI):RequiresReload(true)
@@ -352,11 +377,13 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Bosses"], Lan
 	left:CreateDropdown("unitframes-boss-health-color", Settings["unitframes-boss-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdateHealthColor)
 	left:CreateInput("unitframes-boss-health-left", Settings["unitframes-boss-health-left"], Language["Left Health Text"], Language["Set the text on the left of the health bar"], ReloadUI):RequiresReload(true)
 	left:CreateInput("unitframes-boss-health-right", Settings["unitframes-boss-health-right"], Language["Right Health Text"], Language["Set the text on the right of the health bar"], ReloadUI):RequiresReload(true)
+	left:CreateDropdown("BossHealthTexture", Settings.BossHealthTexture, Assets:GetTextureList(), Language["Health Texture"], "", UpdateHealthTexture, "Texture")
 
 	right:CreateHeader(Language["Power"])
 	right:CreateSwitch("unitframes-boss-power-reverse", Settings["unitframes-boss-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePowerFill)
 	right:CreateSlider("unitframes-boss-power-height", Settings["unitframes-boss-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the power bar", UpdatePowerHeight)
 	right:CreateDropdown("unitframes-boss-power-color", Settings["unitframes-boss-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePowerColor)
+	right:CreateDropdown("BossPowerTexture", Settings.BossPowerTexture, Assets:GetTextureList(), Language["Power Texture"], "", UpdatePowerTexture, "Texture")
 
 	right:CreateHeader(Language["Buffs"])
 	right:CreateSwitch("unitframes-boss-buffs", Settings["unitframes-boss-buffs"], Language["Enable buffs"], Language["Enable debuffs on the unit frame"], UpdateEnableBuffs)

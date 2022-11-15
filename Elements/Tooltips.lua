@@ -397,9 +397,9 @@ local OnTooltipSetItem = function(self)
 	end
 
 	if (not HydraUI.IsMainline) and Settings["tooltips-show-price"] then
-		local VendorPrice = select(11, GetItemInfo(Link))
+		local Price = select(11, GetItemInfo(Link))
 
-		if VendorPrice then
+		if Price then
 			local Count = 1
 			local MouseFocus = GetMouseFocus()
 
@@ -408,7 +408,7 @@ local OnTooltipSetItem = function(self)
 			end
 
 			if (Count and type(Count) == "number") then
-				local CopperValue = VendorPrice * Count
+				local CopperValue = Price * Count
 
 				if (CopperValue > 0) then
 					local CoinString = GetCoinTextureString(CopperValue)
@@ -434,6 +434,16 @@ local OnItemRefTooltipSetItem = function(self)
 
 	if (not Link) then
 		return
+	end
+
+	local Price = select(11, GetItemInfo(Link))
+
+	if (Price and Price > 0) then
+		local CoinString = GetCoinTextureString(Price)
+
+		if CoinString then
+			self:AddLine(CoinString, 1, 1, 1)
+		end
 	end
 
 	if Settings["tooltips-show-id"] then

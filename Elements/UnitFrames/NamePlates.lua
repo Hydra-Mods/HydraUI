@@ -29,6 +29,8 @@ Defaults["nameplates-unselected-alpha"] = 40
 Defaults["nameplates-enable-auras"] = true
 Defaults["nameplates-buffs-direction"] = "LTR"
 Defaults["nameplates-debuffs-direction"] = "RTL"
+Defaults.NPHealthTexture = "HydraUI 4"
+Defaults.NPCastTexture = "HydraUI 4"
 
 local oUF = ns.oUF or oUF
 local UF = HydraUI:GetModule("Unit Frames")
@@ -51,14 +53,14 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 	local Health = CreateFrame("StatusBar", nil, self)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
 	Health:SetPoint("BOTTOMRIGHT", self, -1, 1)
-	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetStatusBarTexture(Assets:GetTexture(Settings.NPHealthTexture))
 	Health:EnableMouse(false)
 
 	local HealBar = CreateFrame("StatusBar", nil, Health)
 	HealBar:SetWidth(Settings["nameplates-width"])
 	HealBar:SetHeight(Settings["nameplates-height"])
 	HealBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
-	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings.NPHealthTexture))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 
 	if HydraUI.IsMainline then
@@ -66,7 +68,7 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 		AbsorbsBar:SetWidth(Settings["nameplates-width"])
 		AbsorbsBar:SetHeight(Settings["nameplates-height"])
 		AbsorbsBar:SetPoint("LEFT", Health:GetStatusBarTexture(), "RIGHT", 0, 0)
-		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings.NPHealthTexture))
 		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 
 		self.AbsorbsBar = AbsorbsBar
@@ -74,7 +76,7 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
 
 	local HealthBG = self:CreateTexture(nil, "BORDER")
 	HealthBG:SetAllPoints(Health)
-	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealthBG:SetTexture(Assets:GetTexture(Settings.NPHealthTexture))
 	HealthBG.multiplier = 0.2
 
 	-- Target Icon
@@ -200,12 +202,12 @@ HydraUI.StyleFuncs["nameplate"] = function(self, unit)
     local Castbar = CreateFrame("StatusBar", nil, self)
     Castbar:SetSize(Settings["nameplates-width"] - 2, Settings["nameplates-castbar-height"])
 	Castbar:SetPoint("TOP", Health, "BOTTOM", 0, -4)
-    Castbar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+    Castbar:SetStatusBarTexture(Assets:GetTexture(Settings.NPCastTexture))
 
 	local CastbarBG = Castbar:CreateTexture(nil, "ARTWORK")
 	CastbarBG:SetPoint("TOPLEFT", Castbar, 0, 0)
 	CastbarBG:SetPoint("BOTTOMRIGHT", Castbar, 0, 0)
-    CastbarBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+    CastbarBG:SetTexture(Assets:GetTexture(Settings.NPCastTexture))
 	CastbarBG:SetAlpha(0.2)
 
     local Background = Castbar:CreateTexture(nil, "BACKGROUND")
@@ -379,6 +381,16 @@ UF.NamePlateCallback = function(plate)
 
 	plate:SetSize(Settings["nameplates-width"], Settings["nameplates-height"])
 	plate.Castbar:SetHeight(Settings["nameplates-castbar-height"])
+	plate.Castbar:SetStatusBarTexture(Assets:GetTexture(Settings.NPCastTexture))
+	plate.Castbar.bg:SetTexture(Assets:GetTexture(Settings.NPCastTexture))
+
+	plate.Health:SetStatusBarTexture(Assets:GetTexture(Settings.NPHealthTexture))
+	plate.Health.bg:SetTexture(Assets:GetTexture(Settings.NPHealthTexture))
+	plate.HealBar:SetStatusBarTexture(Assets:GetTexture(Settings.NPHealthTexture))
+
+	if plate.AbsorbsBar then
+		plate.AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings.NPHealthTexture))
+	end
 
 	HydraUI:SetFontInfo(plate.Top, Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
 	HydraUI:SetFontInfo(plate.TopLeft, Settings["nameplates-font"], Settings["nameplates-font-size"], Settings["nameplates-font-flags"])
@@ -553,6 +565,29 @@ local UpdateNamePlatesDebuffDirection = function(value)
 	RunForAllNamePlates(NamePlateSetDebuffDirection, value)
 end
 
+local SetHealthTexture = function(self, value)
+	self.Health:SetStatusBarTexture(Assets:GetTexture(value))
+	self.Health.bg:SetTexture(Assets:GetTexture(value))
+	self.HealBar:SetStatusBarTexture(Assets:GetTexture(value))
+
+	if self.AbsorbsBar then
+		self.AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(value))
+	end
+end
+
+local UpdateHealthTexture = function(value)
+	RunForAllNamePlates(SetHealthTexture, value)
+end
+
+local SetCastTexture = function(self, value)
+	self.Castbar:SetStatusBarTexture(Assets:GetTexture(value))
+	self.Castbar.bg:SetTexture(Assets:GetTexture(value))
+end
+
+local UpdateCastTexture = function(value)
+	RunForAllNamePlates(SetCastTexture, value)
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Name Plates"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("nameplates-enable", Settings["nameplates-enable"], Language["Enable Name Plates"], Language["Enable the HydraUI name plates module"], ReloadUI):RequiresReload(true)
@@ -567,6 +602,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Name Plates"]
 	left:CreateSlider("nameplates-height", Settings["nameplates-height"], 4, 50, 1, "Set Height", "Set the height of name plates", UpdateNamePlatesHeight)
 	left:CreateDropdown("nameplates-health-color", Settings["nameplates-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM", [Language["Blizzard"]] = "BLIZZARD", [Language["Threat"]] = "THREAT"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdateNamePlatesHealthColor)
 	left:CreateSwitch("nameplates-health-smooth", Settings["nameplates-health-smooth"], Language["Enable Smooth Progress"], Language["Set the health bar to animate changes smoothly"], ReloadUI):RequiresReload(true)
+	left:CreateDropdown("NPHealthTexture", Settings.NPHealthTexture, Assets:GetTextureList(), Language["Health Texture"], "", UpdateHealthTexture, "Texture")
 
 	left:CreateHeader(Language["Buffs"])
 	left:CreateSwitch("nameplates-enable-auras", Settings["nameplates-enable-auras"], Language["Enable Buffs"], Language["Display buffs above nameplates"], UpdateNamePlatesEnableAuras)
@@ -588,6 +624,7 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Name Plates"]
 	right:CreateSwitch("nameplates-enable-castbar", Settings["nameplates-enable-castbar"], Language["Enable Casting Bar"], Language["Enable the casting bar the name plates"], UpdateNamePlatesEnableCastBars)
 	right:CreateSwitch("nameplates-cast-classcolor", Settings["nameplates-cast-classcolor"], Language["Enable Class Color"], Language["Use class colors"], ReloadUI):RequiresReload(true)
 	right:CreateSlider("nameplates-castbar-height", Settings["nameplates-castbar-height"], 3, 28, 1, Language["Set Height"], Language["Set the height of name plate casting bars"], UpdateNamePlatesCastBarsHeight)
+	right:CreateDropdown("NPCastTexture", Settings.NPCastTexture, Assets:GetTextureList(), Language["Castbar Texture"], "", UpdateCastTexture, "Texture")
 
 	right:CreateHeader(Language["Target Indicator"])
 	right:CreateSwitch("nameplates-enable-target-indicator", Settings["nameplates-enable-target-indicator"], Language["Enable Target Indicator"], Language["Display an indication on the targetted unit name plate"], UpdateNamePlatesTargetHighlight)

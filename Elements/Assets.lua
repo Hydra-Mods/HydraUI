@@ -35,12 +35,11 @@ function Assets:SetFont(name, path, ispixel)
 	end
 
 	Fonts[name] = path
+	FontList[name] = path
 
 	if ispixel then
 		FontIsPixel[name] = true
 	end
-
-	FontList[name] = path
 
 	SharedMedia:Register("font", name, path)
 end

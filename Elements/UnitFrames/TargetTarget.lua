@@ -16,6 +16,8 @@ Defaults["unitframes-targettarget-debuffs"] = true
 Defaults["unitframes-targettarget-debuff-size"] = 20
 Defaults["unitframes-targettarget-debuff-pos"] = "BOTTOM"
 Defaults["tot-enable"] = true
+Defaults.ToTHealthTexture = "HydraUI 4"
+Defaults.ToTPowerTexture = "HydraUI 4"
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -44,13 +46,13 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
 	Health:SetPoint("TOPRIGHT", self, -1, -1)
 	Health:SetHeight(Settings["unitframes-targettarget-health-height"])
-	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetStatusBarTexture(Assets:GetTexture(Settings.ToTHealthTexture))
 	Health:SetReverseFill(Settings["unitframes-targettarget-health-reverse"])
 
 	local HealBar = CreateFrame("StatusBar", nil, Health)
 	HealBar:SetWidth(Settings["unitframes-targettarget-width"])
 	HealBar:SetHeight(Settings["unitframes-targettarget-health-height"])
-	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings.ToTHealthTexture))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 
@@ -64,7 +66,7 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
 		AbsorbsBar:SetWidth(Settings["unitframes-targettarget-width"])
 		AbsorbsBar:SetHeight(Settings["unitframes-targettarget-health-height"])
-		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings.ToTHealthTexture))
 		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
 
@@ -79,7 +81,7 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 
 	local HealthBG = self:CreateTexture(nil, "BORDER")
 	HealthBG:SetAllPoints(Health)
-	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealthBG:SetTexture(Assets:GetTexture(Settings.ToTHealthTexture))
 	HealthBG.multiplier = 0.2
 
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
@@ -112,13 +114,13 @@ HydraUI.StyleFuncs["targettarget"] = function(self, unit)
 	Power:SetPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetHeight(Settings["unitframes-targettarget-power-height"])
-	Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Power:SetStatusBarTexture(Assets:GetTexture(Settings.ToTPowerTexture))
 	Power:SetReverseFill(Settings["unitframes-targettarget-power-reverse"])
 
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetPoint("TOPLEFT", Power, 0, 0)
 	PowerBG:SetPoint("BOTTOMRIGHT", Power, 0, 0)
-	PowerBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	PowerBG:SetTexture(Assets:GetTexture(Settings.ToTPowerTexture))
 	PowerBG:SetAlpha(0.2)
 
 	-- Attributes
@@ -283,6 +285,29 @@ local UpdateDebuffPosition = function(value)
 	end
 end
 
+local UpdateHealthTexture = function(value)
+	if HydraUI.UnitFrames["targettarget"] then
+		local Frame = HydraUI.UnitFrames["targettarget"]
+
+		Frame.Health:SetStatusBarTexture(Assets:GetTexture(value))
+		Frame.Health.bg:SetTexture(Assets:GetTexture(value))
+		Frame.HealBar:SetStatusBarTexture(Assets:GetTexture(value))
+
+		if Frame.AbsorbsBar then
+			Frame.AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(value))
+		end
+	end
+end
+
+local UpdatePowerTexture = function(value)
+	if HydraUI.UnitFrames["targettarget"] then
+		local Frame = HydraUI.UnitFrames["targettarget"]
+
+		Frame.Power:SetStatusBarTexture(Assets:GetTexture(value))
+		Frame.Power.bg:SetTexture(Assets:GetTexture(value))
+	end
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Target of Target"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("tot-enable", Settings["tot-enable"], Language["Enable Target Target"], Language["Enable the target of target unit frame"], ReloadUI):RequiresReload(true)
@@ -295,10 +320,14 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Target of Tar
 	left:CreateInput("unitframes-targettarget-health-left", Settings["unitframes-targettarget-health-left"], Language["Left Health Text"], Language["Set the text on the left of the target of target health bar"], ReloadUI):RequiresReload(true)
 	left:CreateInput("unitframes-targettarget-health-right", Settings["unitframes-targettarget-health-right"], Language["Right Health Text"], Language["Set the text on the right of the target of target health bar"], ReloadUI):RequiresReload(true)
 
+	left:CreateDropdown("ToTHealthTexture", Settings.ToTHealthTexture, Assets:GetTextureList(), Language["Health Texture"], "", UpdateHealthTexture, "Texture")
+
 	right:CreateHeader(Language["Power"])
 	right:CreateSwitch("unitframes-targettarget-power-reverse", Settings["unitframes-targettarget-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateTargetTargetPowerFill)
 	right:CreateSlider("unitframes-targettarget-power-height", Settings["unitframes-targettarget-power-height"], 1, 30, 1, "Power Bar Height", "Set the height of the target of target power bar", UpdateTargetTargetPowerHeight)
 	right:CreateDropdown("unitframes-targettarget-power-color", Settings["unitframes-targettarget-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateTargetTargetPowerColor)
+
+	right:CreateDropdown("ToTPowerTexture", Settings.ToTPowerTexture, Assets:GetTextureList(), Language["Power Texture"], "", UpdatePowerTexture, "Texture")
 
 	right:CreateHeader(Language["Debuffs"])
 	right:CreateSwitch("unitframes-targettarget-debuffs", Settings["unitframes-targettarget-debuffs"], Language["Enable Debuffs"], Language["Enable debuffs on the unit frame"], UpdateEnableDebuffs)

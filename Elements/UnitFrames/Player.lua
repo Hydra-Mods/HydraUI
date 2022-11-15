@@ -33,6 +33,10 @@ Defaults.PlayerBuffSize = 28
 Defaults.PlayerBuffSpacing = 2
 Defaults.PlayerDebuffSize = 28
 Defaults.PlayerDebuffSpacing = 2
+Defaults.PlayerHealthTexture = "HydraUI 4"
+Defaults.PlayerPowerTexture = "HydraUI 4"
+
+-- Can do textures for health/power/castbar/player resources. That's only 4 settings, and only player needs the resources setting
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -54,13 +58,13 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
 	Health:SetPoint("TOPRIGHT", self, -1, -1)
 	Health:SetHeight(Settings["unitframes-player-health-height"])
-	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerHealthTexture))
 	Health:SetReverseFill(Settings["unitframes-player-health-reverse"])
 
 	local HealBar = CreateFrame("StatusBar", nil, Health)
 	HealBar:SetWidth(Settings["unitframes-player-width"])
 	HealBar:SetHeight(Settings["unitframes-player-health-height"])
-	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerHealthTexture))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 	HealBar:SetReverseFill(Settings["unitframes-player-health-reverse"])
@@ -75,7 +79,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
 		AbsorbsBar:SetWidth(Settings["unitframes-player-width"])
 		AbsorbsBar:SetHeight(Settings["unitframes-player-health-height"])
-		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerHealthTexture))
 		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 		AbsorbsBar:SetReverseFill(Settings["unitframes-player-health-reverse"])
 		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
@@ -91,7 +95,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 
 	local HealthBG = self:CreateTexture(nil, "BORDER")
 	HealthBG:SetAllPoints(Health)
-	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealthBG:SetTexture(Assets:GetTexture(Settings.PlayerHealthTexture))
 	HealthBG.multiplier = 0.2
 
 	local HealthLeft = Health:CreateFontString(nil, "OVERLAY")
@@ -194,13 +198,13 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		end
 
 		Power:SetHeight(Settings["unitframes-player-power-height"])
-		Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		Power:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerPowerTexture))
 		Power:SetReverseFill(Settings["unitframes-player-power-reverse"])
 
 		local PowerBG = Power:CreateTexture(nil, "BORDER")
 		PowerBG:SetPoint("TOPLEFT", Power, 0, 0)
 		PowerBG:SetPoint("BOTTOMRIGHT", Power, 0, 0)
-		PowerBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		PowerBG:SetTexture(Assets:GetTexture(Settings.PlayerPowerTexture))
 		PowerBG:SetAlpha(0.2)
 
 		local Backdrop = Power:CreateTexture(nil, "BACKGROUND")
@@ -229,7 +233,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		if (Settings["unitframes-show-mana-timer"] and not HydraUI.IsMainline) then
 			local ManaTimer = CreateFrame("StatusBar", nil, Power)
 			ManaTimer:SetAllPoints(Power)
-			ManaTimer:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+			ManaTimer:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerPowerTexture))
 			ManaTimer:SetStatusBarColor(0, 0, 0, 0)
 			ManaTimer:Hide()
 
@@ -252,7 +256,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 		if (Settings["unitframes-show-energy-timer"] and (HydraUI.IsClassic or HydraUI.IsTBC)) then
 			local EnergyTick = CreateFrame("StatusBar", nil, Power)
 			EnergyTick:SetAllPoints(Power)
-			EnergyTick:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+			EnergyTick:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerPowerTexture))
 			EnergyTick:SetStatusBarColor(0, 0, 0, 0)
 			EnergyTick:Hide()
 
@@ -277,7 +281,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			MainBar:SetReverseFill(true)
 			MainBar:SetPoint("TOPLEFT")
 			MainBar:SetPoint("BOTTOMRIGHT")
-			MainBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+			MainBar:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerPowerTexture))
 			MainBar:SetStatusBarColor(0.8, 0.1, 0.1)
 			--MainBar:SetReverseFill(Settings["unitframes-player-power-reverse"])
 
@@ -1302,6 +1306,41 @@ local UpdatePowerBarPosition = function(value)
 	end
 end
 
+local UpdateHealthTexture = function(value)
+	if HydraUI.UnitFrames["player"] then
+		local Frame = HydraUI.UnitFrames["player"]
+
+		Frame.Health:SetStatusBarTexture(Assets:GetTexture(value))
+		Frame.Health.bg:SetTexture(Assets:GetTexture(value))
+		Frame.HealBar:SetStatusBarTexture(Assets:GetTexture(value))
+
+		if Frame.AbsorbsBar then
+			Frame.AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(value))
+		end
+	end
+end
+
+local UpdatePowerTexture = function(value)
+	if HydraUI.UnitFrames["player"] then
+		local Frame = HydraUI.UnitFrames["player"]
+
+		Frame.Power:SetStatusBarTexture(Assets:GetTexture(value))
+		Frame.Power.bg:SetTexture(Assets:GetTexture(value))
+
+		if Frame.ManaTimer then
+			Frame.ManaTimer:SetStatusBarTexture(Assets:GetTexture(value))
+		end
+
+		if Frame.EnergyTick then
+			Frame.EnergyTick:SetStatusBarTexture(Assets:GetTexture(value))
+		end
+
+		if Frame.PowerPrediction then
+			Frame.PowerPrediction.mainBar:SetStatusBarTexture(Assets:GetTexture(value))
+		end
+	end
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Styling"])
 	left:CreateSwitch("player-enable", Settings["player-enable"], Language["Enable Player"], Language["Enable the player unit frame"], ReloadUI):RequiresReload(true)
@@ -1324,6 +1363,8 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	left:CreateInput("unitframes-player-health-left", Settings["unitframes-player-health-left"], Language["Left Health Text"], Language["Set the text on the left of the player health bar"], ReloadUI):RequiresReload(true)
 	left:CreateInput("unitframes-player-health-right", Settings["unitframes-player-health-right"], Language["Right Health Text"], Language["Set the text on the right of the player health bar"], ReloadUI):RequiresReload(true)
 
+	left:CreateDropdown("PlayerHealthTexture", Settings.PlayerHealthTexture, Assets:GetTextureList(), Language["Health Texture"], "", UpdateHealthTexture, "Texture")
+
 	left:CreateHeader(Language["Buffs"])
 	left:CreateSwitch("unitframes-show-player-buffs", Settings["unitframes-show-player-buffs"], Language["Show Player Buffs"], Language["Show your auras above the player unit frame"], UpdateDisplayedAuras)
 	left:CreateSlider("PlayerBuffSize", Settings.PlayerBuffSize, 26, 50, 2, "Set Size", "Set the size of the auras", UpdateBuffSize)
@@ -1342,6 +1383,8 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	right:CreateDropdown("unitframes-player-power-color", Settings["unitframes-player-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePlayerPowerColor)
 	right:CreateInput("unitframes-player-power-left", Settings["unitframes-player-power-left"], Language["Left Power Text"], Language["Set the text on the left of the player power bar"], ReloadUI):RequiresReload(true)
 	right:CreateInput("unitframes-player-power-right", Settings["unitframes-player-power-right"], Language["Right Power Text"], Language["Set the text on the right of the player power bar"], ReloadUI):RequiresReload(true)
+
+	right:CreateDropdown("PlayerPowerTexture", Settings.PlayerPowerTexture, Assets:GetTextureList(), Language["Power Texture"], "", UpdatePowerTexture, "Texture")
 
 	right:CreateHeader(Language["Cast Bar"])
 	right:CreateSwitch("unitframes-player-enable-castbar", Settings["unitframes-player-enable-castbar"], Language["Enable Cast Bar"], Language["Enable the player cast bar"], ReloadUI):RequiresReload(true)
