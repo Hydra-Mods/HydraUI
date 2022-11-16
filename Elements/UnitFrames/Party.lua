@@ -656,6 +656,37 @@ local UpdateShowSolo = function(value)
 	_G["HydraUI Party"]:SetAttribute("showSolo", value)
 end
 
+local UpdateHealthTexture = function(value)
+	if HydraUI.UnitFrames["party"] then
+		local Unit
+
+		for i = 1, HydraUI.UnitFrames["party"]:GetNumChildren() do
+			Unit = select(i, HydraUI.UnitFrames["party"]:GetChildren())
+
+			Unit.Health:SetStatusBarTexture(Assets:GetTexture(value))
+			Unit.Health.bg:SetTexture(Assets:GetTexture(value))
+			Unit.HealBar:SetStatusBarTexture(Assets:GetTexture(value))
+
+			if Unit.AbsorbsBar then
+				Unit.AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(value))
+			end
+		end
+	end
+end
+
+local UpdatePowerTexture = function(value)
+	if HydraUI.UnitFrames["party"] then
+		local Unit
+
+		for i = 1, HydraUI.UnitFrames["party"]:GetNumChildren() do
+			Unit = select(i, HydraUI.UnitFrames["party"]:GetChildren())
+
+			Unit.Power:SetStatusBarTexture(Assets:GetTexture(value))
+			Unit.Power.bg:SetTexture(Assets:GetTexture(value))
+		end
+	end
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Party"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("party-enable", Settings["party-enable"], Language["Enable Party Module"], Language["Enable the party frames module"], ReloadUI):RequiresReload(true)
@@ -675,12 +706,14 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Party"], Lang
 	right:CreateSlider("party-health-height", Settings["party-health-height"], 12, 60, 1, Language["Health Height"], Language["Set the height of party health bars"], UpdatePartyHealthHeight)
 	right:CreateDropdown("party-health-color", Settings["party-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdatePartyHealthColor)
 	right:CreateSwitch("party-health-reverse", Settings["party-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdatePartyHealthReverseFill)
+	right:CreateDropdown("PartyHealthTexture", Settings.PartyHealthTexture, Assets:GetTextureList(), Language["Health Texture"], "", UpdateHealthTexture, "Texture")
 
 	right:CreateHeader(Language["Power"])
 	right:CreateSwitch("party-power-enable", Settings["party-power-enable"], Language["Enable Power Bar"], Language["Enable the power bar"], UpdateEnablePartyPower)
 	right:CreateSwitch("party-power-reverse", Settings["party-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdatePartyPowerReverseFill)
 	right:CreateSlider("party-power-height", Settings["party-power-height"], 2, 30, 1, Language["Power Height"], Language["Set the height of party power bars"], UpdatePartyPowerHeight)
 	right:CreateDropdown("party-power-color", Settings["party-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePartyPowerColor)
+	right:CreateDropdown("PartyPowerTexture", Settings.PartyPowerTexture, Assets:GetTextureList(), Language["Power Texture"], "", UpdatePowerTexture, "Texture")
 
 	right:CreateHeader(Language["Text"])
 	right:CreateInput("party-health-top", Settings["party-health-top"], Language["Top Text"], Language["Set the text on the top of the party frame"], ReloadUI):RequiresReload(true)

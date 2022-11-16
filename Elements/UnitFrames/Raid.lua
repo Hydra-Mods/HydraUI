@@ -28,6 +28,8 @@ Defaults["raid-show-solo"] = false
 Defaults["raid-font"] = "Roboto"
 Defaults["raid-font-size"] = 12
 Defaults["raid-font-flags"] = ""
+Defaults.RaidHealthTexture = "HydraUI 4"
+Defaults.RaidPowerTexture = "HydraUI 4"
 
 local UF = HydraUI:GetModule("Unit Frames")
 
@@ -62,14 +64,14 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
 	Health:SetPoint("TOPRIGHT", self, -1, -1)
 	Health:SetHeight(Settings["raid-health-height"])
-	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Health:SetStatusBarTexture(Assets:GetTexture(Settings.RaidHealthTexture))
 	Health:SetReverseFill(Settings["raid-health-reverse"])
 	Health:SetOrientation(Settings["raid-health-orientation"])
 
 	local HealBar = CreateFrame("StatusBar", nil, Health)
 	HealBar:SetWidth(Settings["raid-width"])
 	HealBar:SetHeight(Settings["raid-health-height"])
-	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealBar:SetStatusBarTexture(Assets:GetTexture(Settings.RaidHealthTexture))
 	HealBar:SetStatusBarColor(0, 0.48, 0)
 	HealBar:SetFrameLevel(Health:GetFrameLevel() - 1)
 
@@ -83,7 +85,7 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 		local AbsorbsBar = CreateFrame("StatusBar", nil, Health)
 		AbsorbsBar:SetWidth(Settings["raid-width"])
 		AbsorbsBar:SetHeight(Settings["raid-health-height"])
-		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+		AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(Settings.RaidHealthTexture))
 		AbsorbsBar:SetStatusBarColor(0, 0.66, 1)
 		AbsorbsBar:SetFrameLevel(Health:GetFrameLevel() - 2)
 
@@ -98,7 +100,7 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 
 	local HealthBG = self:CreateTexture(nil, "BORDER")
 	HealthBG:SetAllPoints(Health)
-	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	HealthBG:SetTexture(Assets:GetTexture(Settings.RaidHealthTexture))
 	HealthBG.multiplier = 0.2
 
 	local HealthDead = Health:CreateTexture(nil, "OVERLAY")
@@ -142,13 +144,13 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	Power:SetPoint("BOTTOMLEFT", self, 1, 1)
 	Power:SetPoint("BOTTOMRIGHT", self, -1, 1)
 	Power:SetHeight(Settings["raid-power-height"])
-	Power:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	Power:SetStatusBarTexture(Assets:GetTexture(Settings.RaidPowerTexture))
 	Power:SetReverseFill(Settings["raid-power-reverse"])
 
 	local PowerBG = Power:CreateTexture(nil, "BORDER")
 	PowerBG:SetPoint("TOPLEFT", Power, 0, 0)
 	PowerBG:SetPoint("BOTTOMRIGHT", Power, 0, 0)
-	PowerBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+	PowerBG:SetTexture(Assets:GetTexture(Settings.RaidPowerTexture))
 	PowerBG:SetAlpha(0.2)
 
 	-- Attributes
@@ -738,6 +740,37 @@ local UpdateShowSolo = function(value)
 	_G["HydraUI Raid"]:SetAttribute("showSolo", value)
 end
 
+local UpdateHealthTexture = function(value)
+	if HydraUI.UnitFrames["raid"] then
+		local Unit
+
+		for i = 1, HydraUI.UnitFrames["raid"]:GetNumChildren() do
+			Unit = select(i, HydraUI.UnitFrames["raid"]:GetChildren())
+
+			Unit.Health:SetStatusBarTexture(Assets:GetTexture(value))
+			Unit.Health.bg:SetTexture(Assets:GetTexture(value))
+			Unit.HealBar:SetStatusBarTexture(Assets:GetTexture(value))
+
+			if Unit.AbsorbsBar then
+				Unit.AbsorbsBar:SetStatusBarTexture(Assets:GetTexture(value))
+			end
+		end
+	end
+end
+
+local UpdatePowerTexture = function(value)
+	if HydraUI.UnitFrames["raid"] then
+		local Unit
+
+		for i = 1, HydraUI.UnitFrames["raid"]:GetNumChildren() do
+			Unit = select(i, HydraUI.UnitFrames["raid"]:GetChildren())
+
+			Unit.Power:SetStatusBarTexture(Assets:GetTexture(value))
+			Unit.Power.bg:SetTexture(Assets:GetTexture(value))
+		end
+	end
+end
+
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Raid"], Language["Unit Frames"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("raid-enable", Settings["raid-enable"], Language["Enable Raid Module"], Language["Enable the raid frames module"], ReloadUI):RequiresReload(true)
@@ -758,12 +791,14 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Raid"], Langu
 	right:CreateDropdown("raid-health-color", Settings["raid-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdateRaidHealthColor)
 	right:CreateDropdown("raid-health-orientation", Settings["raid-health-orientation"], {[Language["Horizontal"]] = "HORIZONTAL", [Language["Vertical"]] = "VERTICAL"}, Language["Fill Orientation"], Language["Set the fill orientation of the health bar"], UpdateRaidHealthOrientation)
 	right:CreateSwitch("raid-health-reverse", Settings["raid-health-reverse"], Language["Reverse Health Fill"], Language["Reverse the fill of the health bar"], UpdateRaidHealthReverseFill)
+	right:CreateDropdown("RaidHealthTexture", Settings.RaidHealthTexture, Assets:GetTextureList(), Language["Health Texture"], "", UpdateHealthTexture, "Texture")
 
 	right:CreateHeader(Language["Power"])
 	right:CreateSwitch("raid-power-enable", Settings["raid-power-enable"], Language["Enable Power Bar"], Language["Enable the power bar"], UpdateEnableRaidPower)
 	right:CreateSwitch("raid-power-reverse", Settings["raid-power-reverse"], Language["Reverse Power Fill"], Language["Reverse the fill of the power bar"], UpdateRaidPowerReverseFill)
 	right:CreateSlider("raid-power-height", Settings["raid-power-height"], 2, 30, 1, Language["Power Height"], Language["Set the height of raid power bars"], UpdateRaidPowerHeight)
 	right:CreateDropdown("raid-power-color", Settings["raid-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdateRaidPowerColor)
+	right:CreateDropdown("RaidPowerTexture", Settings.RaidPowerTexture, Assets:GetTextureList(), Language["Power Texture"], "", UpdatePowerTexture, "Texture")
 
 	right:CreateHeader(Language["Text"])
 	right:CreateInput("raid-health-top", Settings["raid-health-top"], Language["Top Text"], Language["Set the text on the top of the raid frame"], ReloadUI):RequiresReload(true)
