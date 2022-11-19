@@ -442,12 +442,13 @@ function Experience:OnEnter()
 
 	-- Advanced information
 	if (self.Gained > 0) then
-		local PerHour = (((self.Gained / self.Seconds) * 60) * 60)
+		local PerSec = self.Gained / self.Seconds
 
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddLine(Language["Session Stats"])
 		GameTooltip:AddDoubleLine(Language["Experience gained"], HydraUI:Comma(self.Gained), 1, 1, 1, 1, 1, 1)
-		GameTooltip:AddDoubleLine(Language["Per hour"], HydraUI:Comma(PerHour), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["Per hour"], HydraUI:Comma(((PerSec * 60) * 60)), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["Time to level:"], HydraUI:FormatTime((Max - XP) / PerSec), 1, 1, 1, 1, 1, 1)
 		GameTooltip:AddDoubleLine(Language["Duration"], HydraUI:FormatTime(self.Seconds), 1, 1, 1, 1, 1, 1)
 	end
 

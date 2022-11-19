@@ -30,6 +30,22 @@ local GetClient = function()
 	end
 end
 
+local CountMovedFrames = function()
+	local Profile = HydraUI:GetActiveProfile()
+
+	if (not Profile.Move) then
+		return 0
+	end
+
+	local Count = 0
+
+	for data in next, Profile.Move do
+		Count = Count + 1
+	end
+
+	return Count
+end
+
 local GetQuests, GetSpecInfo
 
 if HydraUI.IsMainline then
@@ -115,7 +131,7 @@ GUI:AddWidgets(Language["Info"], Language["Debug"], function(left, right)
 	left:CreateDoubleLine("dgb-fullscreen", Language["Fullscreen"], GetCVar("gxMaximize") == "1" and Language["Enabled"] or Language["Disabled"])
 	left:CreateDoubleLine("dgb-profile", Language["Profile"], HydraUI:GetActiveProfileName())
 	left:CreateDoubleLine("dgb-profile-count", Language["Profile Count"], HydraUI:GetProfileCount())
-	left:CreateDoubleLine("dgb-ui-style", Language["UI Style"], Settings["ui-style"])
+	left:CreateDoubleLine("dgb-moved-frames", Language["Moved Frames"], CountMovedFrames())
 	left:CreateDoubleLine("dgb-locale", Language["Locale"], HydraUI.UserLocale)
 	left:CreateDoubleLine("dgb-show-errors", Language["Display Errors"], GetCVar("scriptErrors") == "1" and Language["Enabled"] or Language["Disabled"])
 

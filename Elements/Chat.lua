@@ -1036,7 +1036,7 @@ function Chat:Install()
 	--C_CVar.SetCVar("BnWhisperMode", "inline")
 	C_CVar.SetCVar("removeChatDelay", "1")
 	C_CVar.SetCVar("colorChatNamesByClass", "1")
-	C_CVar.SetCVar("chatClassColorOverride", "0")
+	C_CVar.SetCVar("chatClassColorOverride", "1")
 	C_CVar.SetCVar("speechToText", "0")
 
 	--Chat:MoveChatFrames()
