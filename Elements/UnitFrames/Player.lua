@@ -35,6 +35,7 @@ Defaults.PlayerDebuffSize = 28
 Defaults.PlayerDebuffSpacing = 2
 Defaults.PlayerHealthTexture = "HydraUI 4"
 Defaults.PlayerPowerTexture = "HydraUI 4"
+Defaults.PlayerResourceTexture = "HydraUI 4"
 
 -- Can do textures for health/power/castbar/player resources. That's only 4 settings, and only player needs the resources setting
 
@@ -391,20 +392,20 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			for i = 1, Max do
 				ComboPoints[i] = CreateFrame("StatusBar", self:GetName() .. "ComboPoint" .. i, ComboPoints)
 				ComboPoints[i]:SetSize(Width, Settings["player-resource-height"])
-				ComboPoints[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				ComboPoints[i]:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				ComboPoints[i]:SetStatusBarColor(HydraUI.ComboPoints[i][1], HydraUI.ComboPoints[i][2], HydraUI.ComboPoints[i][3])
 				ComboPoints[i]:SetWidth(i == 1 and Width - 1 or Width)
 
 				ComboPoints[i].BG = ComboPoints:CreateTexture(nil, "BORDER")
 				ComboPoints[i].BG:SetAllPoints(ComboPoints[i])
-				ComboPoints[i].BG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				ComboPoints[i].BG:SetTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				ComboPoints[i].BG:SetVertexColor(HydraUI.ComboPoints[i][1], HydraUI.ComboPoints[i][2], HydraUI.ComboPoints[i][3])
 				ComboPoints[i].BG:SetAlpha(0.3)
 
 				if HydraUI.IsMainline then
 					ComboPoints[i].Charged = ComboPoints[i]:CreateTexture(nil, "ARTWORK")
 					ComboPoints[i].Charged:SetAllPoints()
-					ComboPoints[i].Charged:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+					ComboPoints[i].Charged:SetTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 					ComboPoints[i].Charged:SetVertexColor(HydraUI:HexToRGB(Settings["color-combo-charged"]))
 					ComboPoints[i].Charged:Hide()
 				end
@@ -436,13 +437,13 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			for i = 1, 5 do
 				SoulShards[i] = CreateFrame("StatusBar", self:GetName() .. "SoulShard" .. i, SoulShards)
 				SoulShards[i]:SetSize(Width, Settings["player-resource-height"])
-				SoulShards[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				SoulShards[i]:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				SoulShards[i]:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-soul-shards"]))
 				SoulShards[i]:SetWidth(i == 1 and Width - 1 or Width)
 
 				SoulShards[i].bg = SoulShards:CreateTexture(nil, "BORDER")
 				SoulShards[i].bg:SetAllPoints(SoulShards[i])
-				SoulShards[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				SoulShards[i].bg:SetTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				SoulShards[i].bg:SetVertexColor(HydraUI:HexToRGB(Settings["color-soul-shards"]))
 				SoulShards[i].bg:SetAlpha(0.3)
 
@@ -474,13 +475,13 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			for i = 1, 4 do
 				ArcaneCharges[i] = CreateFrame("StatusBar", self:GetName() .. "ArcaneCharge" .. i, ArcaneCharges)
 				ArcaneCharges[i]:SetSize(Width, Settings["player-resource-height"])
-				ArcaneCharges[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				ArcaneCharges[i]:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				ArcaneCharges[i]:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-arcane-charges"]))
 				ArcaneCharges[i]:SetWidth(i == 1 and Width - 1 or Width)
 
 				ArcaneCharges[i].bg = ArcaneCharges:CreateTexture(nil, "BORDER")
 				ArcaneCharges[i].bg:SetAllPoints(ArcaneCharges[i])
-				ArcaneCharges[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				ArcaneCharges[i].bg:SetTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				ArcaneCharges[i].bg:SetVertexColor(HydraUI:HexToRGB(Settings["color-arcane-charges"]))
 				ArcaneCharges[i].bg:SetAlpha(0.3)
 
@@ -512,13 +513,13 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			for i = 1, 6 do
 				Chi[i] = CreateFrame("StatusBar", self:GetName() .. "Chi" .. i, Chi)
 				Chi[i]:SetSize(Width, Settings["player-resource-height"])
-				Chi[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Chi[i]:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				Chi[i]:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-chi"]))
 				Chi[i]:SetWidth(i == 1 and Width - 1 or Width)
 
 				Chi[i].bg = Chi:CreateTexture(nil, "BORDER")
 				Chi[i].bg:SetAllPoints(Chi[i])
-				Chi[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Chi[i].bg:SetTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				Chi[i].bg:SetVertexColor(HydraUI:HexToRGB(Settings["color-chi"]))
 				Chi[i].bg:SetAlpha(0.3)
 
@@ -531,7 +532,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 
 			local Stagger = CreateFrame("StatusBar", nil, self)
 			Stagger:SetSize(Settings["unitframes-player-width"] - 2, Settings["player-resource-height"])
-			Stagger:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+			Stagger:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 			Stagger:Hide()
 
 			if Settings["player-move-resource"] then
@@ -542,7 +543,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 
 			Stagger.bg = Stagger:CreateTexture(nil, "ARTWORK")
 			Stagger.bg:SetAllPoints()
-			Stagger.bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+			Stagger.bg:SetTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 			Stagger.bg.multiplier = 0.3
 
 			Stagger.Backdrop = Stagger:CreateTexture(nil, "BACKGROUND")
@@ -573,14 +574,14 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			for i = 1, 6 do
 				Runes[i] = CreateFrame("StatusBar", self:GetName() .. "Rune" .. i, Runes)
 				Runes[i]:SetSize(Width, Settings["player-resource-height"])
-				Runes[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Runes[i]:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				Runes[i]:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-runes"]))
 				Runes[i]:SetWidth(i == 1 and Width - 1 or Width)
 				Runes[i].Duration = 0
 
 				Runes[i].bg = Runes[i]:CreateTexture(nil, "BORDER")
 				Runes[i].bg:SetAllPoints(Runes[i])
-				Runes[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Runes[i].bg:SetTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				Runes[i].bg:SetVertexColor(HydraUI:HexToRGB(Settings["color-runes"]))
 				Runes[i].bg:SetAlpha(0.2)
 
@@ -632,13 +633,13 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			for i = 1, 5 do
 				HolyPower[i] = CreateFrame("StatusBar", self:GetName() .. "HolyPower" .. i, HolyPower)
 				HolyPower[i]:SetSize(Width, Settings["player-resource-height"])
-				HolyPower[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				HolyPower[i]:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				HolyPower[i]:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-holy-power"]))
 				HolyPower[i]:SetWidth(i == 1 and Width - 1 or Width)
 
 				HolyPower[i].bg = HolyPower:CreateTexture(nil, "BORDER")
 				HolyPower[i].bg:SetAllPoints(HolyPower[i])
-				HolyPower[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				HolyPower[i].bg:SetTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				HolyPower[i].bg:SetVertexColor(HydraUI:HexToRGB(Settings["color-holy-power"]))
 				HolyPower[i].bg:SetAlpha(0.3)
 
@@ -709,7 +710,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 
 				Totems[i].Bar = CreateFrame("StatusBar", self:GetName() .. "Totems" .. i, Totems)
 				Totems[i].Bar:SetSize(Width, Settings["player-resource-height"])
-				Totems[i].Bar:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Totems[i].Bar:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				Totems[i].Bar:SetStatusBarColor(HydraUI.TotemColors[i][1], HydraUI.TotemColors[i][2], HydraUI.TotemColors[i][3])
 				Totems[i].Bar:SetWidth(i == 1 and Width - 1 or Width)
 				Totems[i].Bar:EnableMouse(true)
@@ -718,7 +719,7 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 
 				Totems[i].bg = Totems:CreateTexture(nil, "BORDER")
 				Totems[i].bg:SetAllPoints(Totems[i].Bar)
-				Totems[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Totems[i].bg:SetTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				Totems[i].bg:SetVertexColor(HydraUI.TotemColors[i][1], HydraUI.TotemColors[i][2], HydraUI.TotemColors[i][3])
 				Totems[i].bg:SetAlpha(0.3)
 
@@ -752,13 +753,13 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			for i = 1, 6 do
 				Essence[i] = CreateFrame("StatusBar", self:GetName() .. "Essence" .. i, Essence)
 				Essence[i]:SetSize(Width, Settings["player-resource-height"])
-				Essence[i]:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Essence[i]:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				Essence[i]:SetStatusBarColor(HydraUI:HexToRGB(Settings["color-essence"]))
 				Essence[i]:SetWidth(i == 1 and Width - 1 or Width)
 
 				Essence[i].bg = Essence:CreateTexture(nil, "BORDER")
 				Essence[i].bg:SetAllPoints(Essence[i])
-				Essence[i].bg:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
+				Essence[i].bg:SetTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
 				Essence[i].bg:SetVertexColor(HydraUI:HexToRGB(Settings["color-essence"]))
 				Essence[i].bg:SetAlpha(0.3)
 
@@ -1122,6 +1123,52 @@ local UpdateResourceBarHeight = function(value)
 	end
 end
 
+local UpdateResourceTexture = function(value)
+	if HydraUI.UnitFrames["player"] then
+		local Frame = HydraUI.UnitFrames["player"]
+
+		if Frame.ComboPoints then
+			for i = 1, #Frame.ComboPoints do
+				Frame.ComboPoints[i]:SetStatusBarTexture(Assets:GetTexture(value))
+				Frame.ComboPoints[i].bg:SetTexture(Assets:GetTexture(value))
+			end
+		elseif Frame.SoulShards then
+			for i = 1, 5 do
+				Frame.SoulShards[i]:SetStatusBarTexture(Assets:GetTexture(value))
+				Frame.SoulShards[i].bg:SetTexture(Assets:GetTexture(value))
+			end
+		elseif Frame.ArcanePower then
+			for i = 1, 4 do
+				Frame.ArcanePower[i]:SetStatusBarTexture(Assets:GetTexture(value))
+				Frame.ArcanePower[i].bg:SetTexture(Assets:GetTexture(value))
+			end
+		elseif Frame.Chi then
+			Frame.Stagger:SetStatusBarTexture(Assets:GetTexture(value))
+			Frame.Stagger.bg:SetTexture(Assets:GetTexture(value))
+
+			for i = 1, 6 do
+				Frame.Chi[i]:SetStatusBarTexture(Assets:GetTexture(value))
+				Frame.Chi[i].bg:SetTexture(Assets:GetTexture(value))
+			end
+		elseif Frame.Runes then
+			for i = 1, 6 do
+				Frame.Runes[i]:SetStatusBarTexture(Assets:GetTexture(value))
+				Frame.Runes[i].bg:SetTexture(Assets:GetTexture(value))
+			end
+		elseif Frame.HolyPower then
+			for i = 1, 5 do
+				Frame.HolyPower[i]:SetStatusBarTexture(Assets:GetTexture(value))
+				Frame.HolyPower[i].bg:SetTexture(Assets:GetTexture(value))
+			end
+		elseif Frame.Totems then
+			for i = 1, 4 do
+				Frame.Totems[i]:SetStatusBarTexture(Assets:GetTexture(value))
+				Frame.Totems[i].bg:SetTexture(Assets:GetTexture(value))
+			end
+		end
+	end
+end
+
 local UpdateBuffSize = function(value)
 	if HydraUI.UnitFrames["player"] then
 		HydraUI.UnitFrames["player"].Buffs.size = value
@@ -1362,7 +1409,6 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	left:CreateDropdown("unitframes-player-health-color", Settings["unitframes-player-health-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Custom"]] = "CUSTOM"}, Language["Health Bar Color"], Language["Set the color of the health bar"], UpdatePlayerHealthColor)
 	left:CreateInput("unitframes-player-health-left", Settings["unitframes-player-health-left"], Language["Left Health Text"], Language["Set the text on the left of the player health bar"], ReloadUI):RequiresReload(true)
 	left:CreateInput("unitframes-player-health-right", Settings["unitframes-player-health-right"], Language["Right Health Text"], Language["Set the text on the right of the player health bar"], ReloadUI):RequiresReload(true)
-
 	left:CreateDropdown("PlayerHealthTexture", Settings.PlayerHealthTexture, Assets:GetTextureList(), Language["Health Texture"], "", UpdateHealthTexture, "Texture")
 
 	left:CreateHeader(Language["Buffs"])
@@ -1383,7 +1429,6 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	right:CreateDropdown("unitframes-player-power-color", Settings["unitframes-player-power-color"], {[Language["Class"]] = "CLASS", [Language["Reaction"]] = "REACTION", [Language["Power Type"]] = "POWER"}, Language["Power Bar Color"], Language["Set the color of the power bar"], UpdatePlayerPowerColor)
 	right:CreateInput("unitframes-player-power-left", Settings["unitframes-player-power-left"], Language["Left Power Text"], Language["Set the text on the left of the player power bar"], ReloadUI):RequiresReload(true)
 	right:CreateInput("unitframes-player-power-right", Settings["unitframes-player-power-right"], Language["Right Power Text"], Language["Set the text on the right of the player power bar"], ReloadUI):RequiresReload(true)
-
 	right:CreateDropdown("PlayerPowerTexture", Settings.PlayerPowerTexture, Assets:GetTextureList(), Language["Power Texture"], "", UpdatePowerTexture, "Texture")
 
 	right:CreateHeader(Language["Cast Bar"])
@@ -1396,4 +1441,5 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Player"], Lan
 	right:CreateSwitch("unitframes-player-enable-resource", Settings["unitframes-player-enable-resource"], Language["Enable Resource Bar"], Language["Enable the player resource such as combo points, runes, etc."], ReloadUI):RequiresReload(true)
 	right:CreateSwitch("player-move-resource", Settings["player-move-resource"], Language["Detach Class Bar"], Language["Detach the class resource from the unit frame, to be moved by the UI"], UpdateResourcePosition)
 	right:CreateSlider("player-resource-height", Settings["player-resource-height"], 4, 30, 1, Language["Set Height"], Language["Set the height of the player resource bar"], UpdateResourceBarHeight)
+	right:CreateDropdown("PlayerResourceTexture", Settings.PlayerResourceTexture, Assets:GetTextureList(), Language["Texture"], "", UpdateResourceTexture, "Texture")
 end)

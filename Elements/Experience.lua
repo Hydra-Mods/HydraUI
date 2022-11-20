@@ -5,6 +5,7 @@ local Experience = HydraUI:NewModule("Experience")
 local format = format
 local floor = floor
 local XP, MaxXP, Rested
+local GetTime = GetTime
 local IsResting = IsResting
 local RestingText
 local UnitXP = UnitXP
@@ -315,10 +316,6 @@ function Experience:Update()
 		self.Bar:SetValue(XP)
 	end
 
-	if (self.Seconds == 0 and self.Gained > 0) then -- Start the XP timer
-		Experience:SetScript("OnUpdate", Experience.OnUpdate)
-	end
-
 	if self.TooltipShown then
 		GameTooltip:ClearLines()
 		self:OnEnter()
@@ -328,6 +325,10 @@ function Experience:Update()
 		self.Gained = self.LastMax - self.LastXP + XP + self.Gained
 	else
 		self.Gained = (XP - self.LastXP) + self.Gained
+	end
+
+	if (not self.StartTime) then
+		self.StartTime = GetTime()
 	end
 
 	self.LastXP = XP
@@ -341,7 +342,6 @@ function Experience:PLAYER_LEVEL_UP()
 		self:SetScript("OnEnter", nil)
 		self:SetScript("OnLeave", nil)
 		self:SetScript("OnEvent", nil)
-		self:SetScript("OnUpdate", nil)
 	end
 end
 
@@ -387,7 +387,9 @@ function Experience:OnUpdate(elapsed)
 	self.Elapsed = self.Elapsed + elapsed
 
 	if (self.Elapsed > 1) then
-		self.Seconds = self.Seconds + 1
+		GameTooltip:ClearLines()
+		self:OnEnter()
+
 		self.Elapsed = 0
 	end
 end
@@ -442,7 +444,7 @@ function Experience:OnEnter()
 
 	-- Advanced information
 	if (self.Gained > 0) then
-		local PerSec = self.Gained / self.Seconds
+		local PerSec = self.Gained / (GetTime() - self.StartTime)
 
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddLine(Language["Session Stats"])
@@ -455,6 +457,8 @@ function Experience:OnEnter()
 	self.TooltipShown = true
 
 	GameTooltip:Show()
+
+	self:SetScript("OnUpdate", self.OnUpdate)
 end
 
 function Experience:OnLeave()
@@ -479,6 +483,8 @@ function Experience:OnLeave()
 			self.Percentage:Hide()
 		end
 	end
+	
+	self:SetScript("OnUpdate", nil)
 end
 
 function Experience:Load()
