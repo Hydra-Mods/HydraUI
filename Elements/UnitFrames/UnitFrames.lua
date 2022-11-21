@@ -739,11 +739,10 @@ end
 oUF:RegisterStyle("HydraUI", Style)
 
 function UF:OnEvent()
-	--[[local PartyCount = GetNumPartyMembers()
-	local RaidCount = max(1, GetNumRaidMembers())
+	local UnitHeight = (Settings["raid-health-height"] + Settings["raid-power-height"]) + 1
 
-	self.RaidAnchor:SetWidth((floor(RaidCount / Settings["raid-max-columns"]) * Settings["raid-width"] + (floor(RaidCount / Settings["raid-max-columns"]) * Settings["raid-x-offset"] - 2)))
-	self.RaidAnchor:SetHeight((Settings["raid-health-height"] + Settings["raid-power-height"]) * (Settings["raid-max-columns"] + (Settings["raid-y-offset"])) - 1)]]
+	self.RaidAnchor:SetWidth((floor(40 / Settings["raid-max-columns"]) * Settings["raid-width"] + (floor(40 / Settings["raid-max-columns"]) * Settings["raid-x-offset"] - 2)))
+	self.RaidAnchor:SetHeight(UnitHeight * (Settings["raid-max-columns"] + 1) + (Settings["raid-y-offset"] * (Settings["raid-max-columns"] - 1)))
 end
 
 function UF:Load()
@@ -1011,10 +1010,12 @@ function UF:Load()
 			]]
 		)
 
+		local UnitHeight = (Settings["raid-health-height"] + Settings["raid-power-height"]) + 1
 		local MaxSize = floor(40 / Settings["raid-max-columns"])
+
 		self.RaidAnchor = CreateFrame("Frame", "HydraUI Raid Anchor", HydraUI.UIParent)
 		self.RaidAnchor:SetWidth((MaxSize * Settings["raid-width"] + (MaxSize * Settings["raid-x-offset"] - 2)))
-		self.RaidAnchor:SetHeight((Settings["raid-health-height"] + Settings["raid-power-height"]) * (8 + (8 * Settings["raid-y-offset"]) - 1))
+		self.RaidAnchor:SetHeight(UnitHeight * (Settings["raid-max-columns"] + 1) + (Settings["raid-y-offset"] * (Settings["raid-max-columns"] - 1)))
 		self.RaidAnchor:SetPoint("BOTTOMLEFT", HydraUIChatFrameTop, "TOPLEFT", -3, 10)
 
 		if CompactRaidFrameContainer then

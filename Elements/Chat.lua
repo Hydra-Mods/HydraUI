@@ -848,17 +848,17 @@ function Chat:MoveChatFrames()
 		end
 
 		if (Settings["right-window-enable"] and (Settings["right-window-size"] == "SINGLE") and (Frame.name and Frame.name == Settings["rw-single-embed"])) then
-				local Window = HydraUI:GetModule("Right Window")
+			local Window = HydraUI:GetModule("Right Window")
 
-				FCF_UnDockFrame(Frame)
-				FCF_SetTabPosition(Frame, 0)
+			FCF_UnDockFrame(Frame)
+			FCF_SetTabPosition(Frame, 0)
 
-				Frame:SetMovable(true)
-				Frame:SetUserPlaced(true)
-				Frame:ClearAllPoints()
-				Frame:SetPoint("TOPLEFT", Window.Middle, 4 + Settings["ui-border-thickness"], -(4 + Settings["ui-border-thickness"]))
-				Frame:SetPoint("BOTTOMRIGHT", Window.Middle, -(4 + Settings["ui-border-thickness"]), 4 + Settings["ui-border-thickness"])
-				Frame:Show()
+			Frame:SetMovable(true)
+			Frame:SetUserPlaced(true)
+			Frame:ClearAllPoints()
+			Frame:SetPoint("TOPLEFT", Window.Middle, 4 + Settings["ui-border-thickness"], -(4 + Settings["ui-border-thickness"]))
+			Frame:SetPoint("BOTTOMRIGHT", Window.Middle, -(4 + Settings["ui-border-thickness"]), 4 + Settings["ui-border-thickness"])
+			Frame:Show()
 		else
 			--if (Frame.name and (not match(Frame.name, CHAT_LABEL .. "%s%d+")) and not Frame.Tab) then
 			if (not Frame.isLocked) and (Frame.name and Frame.name ~= VOICE_LABEL) then
@@ -878,6 +878,7 @@ function Chat:MoveChatFrames()
 		end
 
 		FCF_SetChatWindowFontSize(nil, Frame, Settings["chat-font-size"])
+		FCF_SavePositionAndDimensions(Frame)
 
 		local Font, IsPixel = Assets:GetFont(Settings["chat-font"])
 

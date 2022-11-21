@@ -345,14 +345,6 @@ function Experience:PLAYER_LEVEL_UP()
 	end
 end
 
-function Experience:PLAYER_ENTERING_WORLD()
-	self:PLAYER_LEVEL_UP()
-
-	if self:IsShown() then
-		self:Update()
-	end
-end
-
 function Experience:QUEST_LOG_UPDATE()
 	self:Update()
 end
@@ -495,24 +487,28 @@ function Experience:Load()
 	end
 
 	self:CreateBar()
-	self:Update()
+	self:PLAYER_LEVEL_UP()
 
-	self:RegisterEvent("QUEST_LOG_UPDATE")
-	self:RegisterEvent("PLAYER_LEVEL_UP")
-	self:RegisterEvent("PLAYER_XP_UPDATE")
-	self:RegisterEvent("PLAYER_UPDATE_RESTING")
-	self:RegisterEvent("UPDATE_EXHAUSTION")
-	self:RegisterEvent("ZONE_CHANGED")
-	self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
-	self:SetScript("OnEvent", self.OnEvent)
-	self:SetScript("OnMouseUp", self.OnMouseUp)
-	self:SetScript("OnEnter", self.OnEnter)
-	self:SetScript("OnLeave", self.OnLeave)
+	if self:IsShown() then
+		self:RegisterEvent("QUEST_LOG_UPDATE")
+		self:RegisterEvent("PLAYER_LEVEL_UP")
+		self:RegisterEvent("PLAYER_XP_UPDATE")
+		self:RegisterEvent("PLAYER_UPDATE_RESTING")
+		self:RegisterEvent("UPDATE_EXHAUSTION")
+		self:RegisterEvent("ZONE_CHANGED")
+		self:RegisterEvent("ZONE_CHANGED_NEW_AREA")
+		self:SetScript("OnEvent", self.OnEvent)
+		self:SetScript("OnMouseUp", self.OnMouseUp)
+		self:SetScript("OnEnter", self.OnEnter)
+		self:SetScript("OnLeave", self.OnLeave)
 
-	UpdateDisplayProgress(Settings["experience-display-progress"])
-	UpdateDisplayPercent(Settings["experience-display-percent"])
-	UpdateProgressVisibility(Settings["experience-progress-visibility"])
-	UpdatePercentVisibility(Settings["experience-percent-visibility"])
+		self:Update()
+
+		UpdateDisplayProgress(Settings["experience-display-progress"])
+		UpdateDisplayPercent(Settings["experience-display-percent"])
+		UpdateProgressVisibility(Settings["experience-progress-visibility"])
+		UpdatePercentVisibility(Settings["experience-percent-visibility"])
+	end
 
 	if StatusTrackingBarManager then
 		StatusTrackingBarManager:Hide()
