@@ -444,14 +444,16 @@ function Experience:OnEnter()
 
 	-- Advanced information
 	if (self.Gained > 0) then
-		local PerSec = self.Gained / (GetTime() - self.StartTime)
+		local Now = GetTime()
+		local Duration = (Now - self.StartTime)
+		local PerSec = self.Gained / Duration
 
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddLine(Language["Session Stats"])
 		GameTooltip:AddDoubleLine(Language["Experience gained"], HydraUI:Comma(self.Gained), 1, 1, 1, 1, 1, 1)
 		GameTooltip:AddDoubleLine(Language["Per hour"], HydraUI:Comma(((PerSec * 60) * 60)), 1, 1, 1, 1, 1, 1)
 		GameTooltip:AddDoubleLine(Language["Time to level:"], HydraUI:FormatTime((Max - XP) / PerSec), 1, 1, 1, 1, 1, 1)
-		GameTooltip:AddDoubleLine(Language["Duration"], HydraUI:FormatTime(self.Seconds), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["Duration"], HydraUI:FormatTime(Duration), 1, 1, 1, 1, 1, 1)
 	end
 
 	self.TooltipShown = true
@@ -483,7 +485,7 @@ function Experience:OnLeave()
 			self.Percentage:Hide()
 		end
 	end
-	
+
 	self:SetScript("OnUpdate", nil)
 end
 

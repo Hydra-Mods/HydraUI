@@ -738,7 +738,19 @@ end
 
 oUF:RegisterStyle("HydraUI", Style)
 
+function UF:OnEvent()
+	--[[local PartyCount = GetNumPartyMembers()
+	local RaidCount = max(1, GetNumRaidMembers())
+
+	self.RaidAnchor:SetWidth((floor(RaidCount / Settings["raid-max-columns"]) * Settings["raid-width"] + (floor(RaidCount / Settings["raid-max-columns"]) * Settings["raid-x-offset"] - 2)))
+	self.RaidAnchor:SetHeight((Settings["raid-health-height"] + Settings["raid-power-height"]) * (Settings["raid-max-columns"] + (Settings["raid-y-offset"])) - 1)]]
+end
+
 function UF:Load()
+	self:RegisterEvent("GROUP_ROSTER_UPDATE")
+	self:RegisterEvent("PLAYER_ENTERING_WORLD")
+	self:SetScript("OnEvent", self.OnEvent)
+
 	if Settings["player-enable"] then
 		local Player = oUF:Spawn("player", "HydraUI Player")
 
@@ -999,10 +1011,11 @@ function UF:Load()
 			]]
 		)
 
+		local MaxSize = floor(40 / Settings["raid-max-columns"])
 		self.RaidAnchor = CreateFrame("Frame", "HydraUI Raid Anchor", HydraUI.UIParent)
-		self.RaidAnchor:SetWidth((floor(40 / Settings["raid-max-columns"]) * Settings["raid-width"] + (floor(40 / Settings["raid-max-columns"]) * Settings["raid-x-offset"] - 2)))
-		self.RaidAnchor:SetHeight((Settings["raid-health-height"] + Settings["raid-power-height"]) * (Settings["raid-max-columns"] + (Settings["raid-y-offset"])) - 1)
-		self.RaidAnchor:SetPoint("BOTTOMLEFT", HydraUIChatFrameTop, "TOPLEFT", -3, 5)
+		self.RaidAnchor:SetWidth((MaxSize * Settings["raid-width"] + (MaxSize * Settings["raid-x-offset"] - 2)))
+		self.RaidAnchor:SetHeight((Settings["raid-health-height"] + Settings["raid-power-height"]) * (8 + (8 * Settings["raid-y-offset"]) - 1))
+		self.RaidAnchor:SetPoint("BOTTOMLEFT", HydraUIChatFrameTop, "TOPLEFT", -3, 10)
 
 		if CompactRaidFrameContainer then
 			CompactRaidFrameContainer:UnregisterAllEvents()
@@ -1012,7 +1025,7 @@ function UF:Load()
 			CompactRaidFrameManager:SetParent(Hider)
 		end
 
-		Raid:SetPoint("TOPLEFT", self.RaidAnchor, 0, 0)
+		Raid:SetPoint("BOTTOMLEFT", self.RaidAnchor, 0, 0)
 		Raid:SetParent(HydraUI.UIParent)
 
 		HydraUI:CreateMover(self.RaidAnchor)

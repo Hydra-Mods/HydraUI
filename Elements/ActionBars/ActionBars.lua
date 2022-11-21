@@ -1506,30 +1506,10 @@ function AB:StyleTotemBar()
 
 	MultiCastSummonSpellButtonHighlight:SetTexture(nil)
 
-	for i = 1, 12 do
-		local Button = _G["MultiCastActionButton"..i]
-
-		self:StyleActionButton(Button)
-
-		Button:ClearAllPoints()
-		Button:SetPoint("CENTER", Slot, 0, 0)
-		Button.overlayTex:SetTexture(nil)
-
-		Button.Backdrop:SetFrameStrata("BACKGROUND")
-
-		Button:ClearAllPoints()
-
-		if (i == 1 or i == 5 or i == 9) then
-			Button:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", 2, 0)
-		else
-			Button:SetPoint("LEFT", _G["MultiCastActionButton"..i-1], "RIGHT", 2, 0)
-		end
-	end
-
 	for i = 1, 4 do
 		local Slot = _G["MultiCastSlotButton"..i]
 
-		Slot:SetParent(self.TotemBar)
+		Slot:SetParent(MultiCastActionBarFrame)
 
 		Slot.background:ClearAllPoints()
 		Slot.background:SetPoint("TOPLEFT", Slot, 1, -1)
@@ -1543,6 +1523,28 @@ function AB:StyleTotemBar()
 			Slot:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", 2, 0)
 		else
 			Slot:SetPoint("LEFT", _G["MultiCastSlotButton"..i-1], "RIGHT", 2, 0)
+		end
+	end
+
+print(MultiCastSummonSpellButton, MultiCastSummonSpellButton:IsVisible())
+
+	for i = 1, 12 do
+		local Button = _G["MultiCastActionButton"..i]
+
+		self:StyleActionButton(Button)
+
+		Button:SetParent(MultiCastActionBarFrame)
+		Button:ClearAllPoints()
+		Button.overlayTex:SetTexture(nil)
+
+		Button.Backdrop:SetFrameStrata("BACKGROUND")
+
+		Button:ClearAllPoints()
+
+		if (i == 1 or i == 5 or i == 9) then
+			Button:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", 2, 0)
+		else
+			Button:SetPoint("LEFT", _G["MultiCastActionButton"..i-1], "RIGHT", 2, 0)
 		end
 	end
 

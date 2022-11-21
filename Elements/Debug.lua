@@ -144,6 +144,7 @@ GUI:AddWidgets(Language["Info"], Language["Debug"], function(left, right)
 	right:CreateDoubleLine("dgb-zone", Language["Zone"], GetZoneText())
 	right:CreateDoubleLine("dgb-subzone", Language["Sub Zone"], GetMinimapZoneText())
 	right:CreateDoubleLine("dgb-quests", Language["Quests"], GetQuests())
+	right:CreateDoubleLine("dgb-trial", Language["Trial Account"], IsTrialAccount() and YES or NO)
 
 	right:CreateHeader(Language["AddOns Information"])
 	right:CreateDoubleLine("dgb-total-addons", Language["Total AddOns"], GetNumAddOns())
