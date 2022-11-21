@@ -1526,8 +1526,6 @@ function AB:StyleTotemBar()
 		end
 	end
 
-print(MultiCastSummonSpellButton, MultiCastSummonSpellButton:IsVisible())
-
 	for i = 1, 12 do
 		local Button = _G["MultiCastActionButton"..i]
 
