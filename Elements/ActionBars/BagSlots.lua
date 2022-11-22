@@ -194,6 +194,10 @@ local UpdateBagVisibility = function()
 end
 
 local UpdateBagFrameSize = function(value)
+	if (not BagsFrame.Panel) then
+		return
+	end
+
 	if KeyRingButton then
 		BagsFrame.Panel:SetSize(((value + 4) * (#BagsFrame.Objects - 1)) + 8 + (value / 2), value + 8)
 	else
