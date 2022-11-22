@@ -1118,7 +1118,10 @@ function Chat:SetChatTypeInfo()
 
 	if (C_CVar.GetCVar("colorChatNamesByClass") ~= 1) then
 		C_CVar.SetCVar("colorChatNamesByClass", 1)
-		C_CVar.SetCVar("chatClassColorOverride", "0")
+	end
+	
+	if (C_CVar.GetCVar("chatClassColorOverride") ~= "1") then
+		C_CVar.SetCVar("chatClassColorOverride", "1")
 	end
 end
 

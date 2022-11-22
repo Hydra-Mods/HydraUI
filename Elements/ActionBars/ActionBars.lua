@@ -1156,7 +1156,7 @@ function AB:CreateStanceBar()
 			self.StanceBar[i] = Button
 		end
 
-		self:PositionButtons(self.StanceBar, NUM_STANCE_SLOTS, Settings["ab-stance-per-row"], Settings["ab-stance-button-size"], Settings["ab-stance-button-gap"])
+		self:PositionButtons(self.StanceBar, #self.StanceBar, Settings["ab-stance-per-row"], Settings["ab-stance-button-size"], Settings["ab-stance-button-gap"])
 
 		hooksecurefunc("StanceBar_UpdateState", self.StanceBar_UpdateState)
 
@@ -1651,7 +1651,7 @@ local UpdatePetBar = function()
 end
 
 local UpdateStanceBar = function()
-	AB:PositionButtons(AB.StanceBar, NUM_STANCE_SLOTS, Settings["ab-stance-per-row"], Settings["ab-stance-button-size"], Settings["ab-stance-button-gap"])
+	AB:PositionButtons(AB.StanceBar, #AB.StanceBar, Settings["ab-stance-per-row"], Settings["ab-stance-button-size"], Settings["ab-stance-button-gap"])
 end
 
 local UpdateEnableBar1 = function(value)
