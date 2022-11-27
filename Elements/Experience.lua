@@ -444,8 +444,8 @@ function Experience:OnEnter()
 		GameTooltip:AddLine(Language["Session Stats"])
 		GameTooltip:AddDoubleLine(Language["Experience gained"], HydraUI:Comma(self.Gained), 1, 1, 1, 1, 1, 1)
 		GameTooltip:AddDoubleLine(Language["Per hour"], HydraUI:Comma(((PerSec * 60) * 60)), 1, 1, 1, 1, 1, 1)
-		GameTooltip:AddDoubleLine(Language["Time to level:"], HydraUI:FormatTime((Max - XP) / PerSec), 1, 1, 1, 1, 1, 1)
-		GameTooltip:AddDoubleLine(Language["Duration"], HydraUI:FormatTime(Duration), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["Time to level:"], HydraUI:FormatFullTime((Max - XP) / PerSec), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(Language["Duration"], HydraUI:FormatFullTime(Duration), 1, 1, 1, 1, 1, 1)
 	end
 
 	self.TooltipShown = true

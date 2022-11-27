@@ -64,6 +64,22 @@ function HydraUI:FormatTime(seconds)
 	return format("%.1fs", seconds)
 end
 
+function HydraUI:FormatFullTime(seconds)
+	local Days = floor(seconds / 86400)
+	local Hours = floor((seconds % 86400) / 3600)
+	local Mins = floor((seconds % 3600) / 60)
+
+	if (Days > 0) then
+		return format("%dd", Days)
+	elseif (Hours > 0) then
+		return format("%dh %sm", Hours, Mins)
+	elseif (Mins > 0) then
+		return format("%sm", Mins)
+	else
+		return format("%ss", floor(seconds))
+	end
+end
+
 function HydraUI:AuraFormatTime(seconds)
 	if (seconds > 86399) then
 		return format("%dd", ceil(seconds / 86400))

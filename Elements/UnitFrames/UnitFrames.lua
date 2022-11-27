@@ -738,18 +738,7 @@ end
 
 oUF:RegisterStyle("HydraUI", Style)
 
-function UF:OnEvent()
-	local UnitHeight = (Settings["raid-health-height"] + Settings["raid-power-height"]) + 1
-
-	self.RaidAnchor:SetWidth((floor(40 / Settings["raid-max-columns"]) * Settings["raid-width"] + (floor(40 / Settings["raid-max-columns"]) * Settings["raid-x-offset"] - 2)))
-	self.RaidAnchor:SetHeight(UnitHeight * (Settings["raid-max-columns"] + 1) + (Settings["raid-y-offset"] * (Settings["raid-max-columns"] - 1)))
-end
-
 function UF:Load()
-	self:RegisterEvent("GROUP_ROSTER_UPDATE")
-	self:RegisterEvent("PLAYER_ENTERING_WORLD")
-	self:SetScript("OnEvent", self.OnEvent)
-
 	if Settings["player-enable"] then
 		local Player = oUF:Spawn("player", "HydraUI Player")
 
