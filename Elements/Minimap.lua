@@ -36,9 +36,9 @@ end
 
 local OnMouseWheel = function(self, delta)
 	if (delta > 0) then
-		MinimapZoomIn:Click()
+		Minimap_ZoomIn()
 	elseif (delta < 0) then
-		MinimapZoomOut:Click()
+		Minimap_ZoomOut()
 	end
 end
 
