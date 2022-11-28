@@ -960,6 +960,7 @@ function Chat:Install()
 	ChatFrame_RemoveChannel(ChatFrame1, "LocalDefense")
 	ChatFrame_RemoveChannel(ChatFrame1, "GuildRecruitment")
 	ChatFrame_RemoveChannel(ChatFrame1, "LookingForGroup")
+	ChatFrame_RemoveChannel(ChatFrame1, "Services")
 
 	ChatFrame_AddMessageGroup(ChatFrame1, "SAY")
 	ChatFrame_AddMessageGroup(ChatFrame1, "EMOTE")
@@ -1015,6 +1016,10 @@ function Chat:Install()
 	ChatFrame_AddChannel(Trade, TRADE)
 	ChatFrame_AddChannel(Trade, GENERAL)
 
+	if HydraUI.IsMainline then
+		ChatFrame_AddChannel(Trade, "Services")
+	end
+
 	-- Loot
 	local Loot = FCF_OpenNewWindow(Language["Loot"])
 	FCF_SetLocked(Loot, true)
@@ -1037,7 +1042,7 @@ function Chat:Install()
 	--C_CVar.SetCVar("BnWhisperMode", "inline")
 	C_CVar.SetCVar("removeChatDelay", "1")
 	C_CVar.SetCVar("colorChatNamesByClass", "1")
-	C_CVar.SetCVar("chatClassColorOverride", 1)
+	C_CVar.SetCVar("chatClassColorOverride", "1")
 	C_CVar.SetCVar("speechToText", "0")
 
 	--Chat:MoveChatFrames()
@@ -1087,6 +1092,8 @@ function Chat:SetChatTypeInfo()
 	ChatTypeInfo["OFFICER"].colorNameByClass = true
 	ChatTypeInfo["WHISPER"].colorNameByClass = true
 	ChatTypeInfo["WHISPER_INFORM"].colorNameByClass = true
+	ChatTypeInfo["BN_WHISPER"].colorNameByClass = true
+	ChatTypeInfo["BN_WHISPER_INFORM"].colorNameByClass = true
 	ChatTypeInfo["PARTY"].colorNameByClass = true
 	ChatTypeInfo["PARTY_LEADER"].colorNameByClass = true
 	ChatTypeInfo["RAID"].colorNameByClass = true
@@ -1095,6 +1102,7 @@ function Chat:SetChatTypeInfo()
 	ChatTypeInfo["INSTANCE_CHAT"].colorNameByClass = true
 	ChatTypeInfo["INSTANCE_CHAT_LEADER"].colorNameByClass = true
 	ChatTypeInfo["EMOTE"].colorNameByClass = true
+	ChatTypeInfo["CHANNEL"].colorNameByClass = true
 	ChatTypeInfo["CHANNEL1"].colorNameByClass = true
 	ChatTypeInfo["CHANNEL2"].colorNameByClass = true
 	ChatTypeInfo["CHANNEL3"].colorNameByClass = true
@@ -1116,12 +1124,12 @@ function Chat:SetChatTypeInfo()
 	ChatTypeInfo["CHANNEL19"].colorNameByClass = true
 	ChatTypeInfo["CHANNEL20"].colorNameByClass = true
 
-	if (C_CVar.GetCVar("colorChatNamesByClass") ~= "1") then
-		C_CVar.SetCVar("colorChatNamesByClass", "1")
+	if (C_CVar.GetCVar("colorChatNamesByClass") ~= "0") then
+		C_CVar.SetCVar("colorChatNamesByClass", "0")
 	end
-	
-	if (C_CVar.GetCVar("chatClassColorOverride") ~= 1) then
-		C_CVar.SetCVar("chatClassColorOverride", 1)
+
+	if (C_CVar.GetCVar("chatClassColorOverride") ~= "0") then
+		C_CVar.SetCVar("chatClassColorOverride", "0")
 	end
 end
 

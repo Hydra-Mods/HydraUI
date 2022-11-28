@@ -35,7 +35,7 @@ function Tracker:MoveTrackerFrame()
 	ObjectiveTrackerFrame:SetUserPlaced(true)
 	ObjectiveTrackerFrame:ClearAllPoints()
 	ObjectiveTrackerFrame:SetPoint("TOP", self, 4, -1)
-	ObjectiveTrackerFrame:SetHeight(Settings["tracker-height"])
+	ObjectiveTrackerFrame:SetSize(260, Settings["tracker-height"])
 
 	HydraUI:CreateMover(self)
 end
