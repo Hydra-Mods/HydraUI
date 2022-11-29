@@ -689,8 +689,6 @@ function AB:CreateBar2()
 	self.Bar2.Fader:SetEasing("inout")
 
 	MultiBarBottomLeft:SetParent(self.Bar2)
-	--MultiBarBottomLeft:SetAllPoints(self.Bar2)
-	MultiBarBottomLeft:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBarBottomLeftButton" .. i]
@@ -738,8 +736,6 @@ function AB:CreateBar3()
 	self.Bar3.Fader:SetEasing("inout")
 
 	MultiBarBottomRight:SetParent(self.Bar3)
-	--MultiBarBottomRight:SetAllPoints(self.Bar3)
-	MultiBarBottomRight:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBarBottomRightButton" .. i]
@@ -787,8 +783,6 @@ function AB:CreateBar4()
 	self.Bar4.Fader:SetEasing("inout")
 
 	MultiBarRight:SetParent(self.Bar4)
-	--MultiBarRight:SetAllPoints(self.Bar4)
-	MultiBarRight:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBarRightButton" .. i]
@@ -836,8 +830,6 @@ function AB:CreateBar5()
 	self.Bar5.Fader:SetEasing("inout")
 
 	MultiBarLeft:SetParent(self.Bar5)
-	--MultiBarLeft:SetAllPoints(self.Bar5)
-	MultiBarLeft:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBarLeftButton" .. i]
@@ -885,8 +877,6 @@ function AB:CreateBar6()
 	self.Bar6.Fader:SetEasing("inout")
 
 	MultiBar5:SetParent(self.Bar6)
-	--MultiBar5:SetAllPoints(self.Bar6)
-	MultiBar5:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBar5Button" .. i]
@@ -934,8 +924,6 @@ function AB:CreateBar7()
 	self.Bar7.Fader:SetEasing("inout")
 
 	MultiBar6:SetParent(self.Bar7)
-	--MultiBar6:SetAllPoints(self.Bar7)
-	MultiBar6:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBar6Button" .. i]
@@ -983,8 +971,6 @@ function AB:CreateBar8()
 	self.Bar8.Fader:SetEasing("inout")
 
 	MultiBar7:SetParent(self.Bar8)
-	--MultiBar7:SetAllPoints(self.Bar8)
-	MultiBar7:Hide()
 
 	for i = 1, 12 do
 		local Button = _G["MultiBar7Button" .. i]
@@ -1045,6 +1031,14 @@ function AB:CreatePetBar()
 		hooksecurefunc(PetActionBar, "UpdateGridLayout", PetBarUpdateGridLayout)
 	else
 		PetActionBarFrame:SetParent(self.PetBar)
+
+		for i = 1, PetActionBarFrame:GetNumRegions() do
+			local Region = select(i, PetActionBarFrame:GetRegions())
+
+			if Region.SetTexture then
+				Region:SetTexture(nil)
+			end
+		end
 	end
 
 	for i = 1, NUM_PET_ACTION_SLOTS do
@@ -1109,8 +1103,6 @@ function AB:CreateStanceBar()
 	else
 		StanceBarFrame:SetParent(self.StanceBar)
 	end
-
-	--StanceBarFrame:SetAllPoints(self.StanceBar)
 
 	if StanceBar then
 		if StanceBar.UpdateGridLayout then
