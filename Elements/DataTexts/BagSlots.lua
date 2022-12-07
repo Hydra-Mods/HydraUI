@@ -6,15 +6,10 @@ local ContainerToInventoryID
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local Label = Language["Bags"]
 
-if C_Container and HydraUI.ClientVersion > 100001 then
-	GetNumSlots = C_Container.GetContainerNumSlots
-	GetNumFreeSlots = C_Container.GetContainerNumFreeSlots
-	ContainerToInventoryID = C_Container.ContainerIDToInventoryID
-else
-	GetNumSlots = GetContainerNumSlots
-	GetNumFreeSlots = GetContainerNumFreeSlots
-	ContainerToInventoryID = ContainerIDToInventoryID
-end
+
+GetNumSlots = C_Container.GetContainerNumSlots
+GetNumFreeSlots = C_Container.GetContainerNumFreeSlots
+ContainerToInventoryID = C_Container.ContainerIDToInventoryID
 
 local OnEnter = function(self)
 	self:SetTooltip()
