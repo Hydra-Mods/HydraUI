@@ -180,7 +180,11 @@ function BagsFrame:Load()
 		end
 	end
 
-	C_Container.SetInsertItemsLeftToRight(Settings["bags-loot-from-left"])
+	if (C_Container and C_Container.SetInsertItemsLeftToRight) then
+		C_Container.SetInsertItemsLeftToRight(Settings["bags-loot-from-left"])
+	else
+		SetInsertItemsLeftToRight(Settings["bags-loot-from-left"])
+	end
 
 	if KeyRingButton then
 		KeyRingButton:Show()

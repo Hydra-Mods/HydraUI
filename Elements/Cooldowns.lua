@@ -282,6 +282,11 @@ function Cooldowns:Load()
 	hooksecurefunc("UseAction", UseAction)
 	hooksecurefunc("UseInventoryItem", UseInventoryItem)
 
+	if (C_Container and C_Container.UseContainerItem) then
+		hooksecurefunc(C_Container, "UseContainerItem", UseContainerItem)
+	elseif (UseContainerItem and type(UseContainerItem) == "function") then
+		hooksecurefunc("UseContainerItem", UseContainerItem)
+	end
 end
 
 local UpdateEnableCooldownFlash = function(value)

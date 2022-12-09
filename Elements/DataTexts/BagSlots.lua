@@ -6,10 +6,15 @@ local ContainerToInventoryID
 local NUM_BAG_SLOTS = NUM_BAG_SLOTS
 local Label = Language["Bags"]
 
-
-GetNumSlots = C_Container.GetContainerNumSlots
-GetNumFreeSlots = C_Container.GetContainerNumFreeSlots
-ContainerToInventoryID = C_Container.ContainerIDToInventoryID
+if C_Container then
+	GetNumSlots = C_Container.GetContainerNumSlots
+	GetNumFreeSlots = C_Container.GetContainerNumFreeSlots
+	ContainerToInventoryID = C_Container.ContainerIDToInventoryID
+else
+	GetNumSlots = GetContainerNumSlots
+	GetNumFreeSlots = GetContainerNumFreeSlots
+	ContainerToInventoryID = ContainerIDToInventoryID
+end
 
 local OnEnter = function(self)
 	self:SetTooltip()
