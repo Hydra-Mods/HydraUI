@@ -282,9 +282,6 @@ function Cooldowns:Load()
 	hooksecurefunc("UseAction", UseAction)
 	hooksecurefunc("UseInventoryItem", UseInventoryItem)
 
-	if (HydraUI.ClientVersion < 100000) then
-		hooksecurefunc("UseContainerItem", UseContainerItem)
-	end
 end
 
 local UpdateEnableCooldownFlash = function(value)
