@@ -204,13 +204,11 @@ function AB:StyleActionButton(button)
 	end
 
 	if _G[button:GetName().."NormalTexture"] then
-		_G[button:GetName().."NormalTexture"]:SetAlpha(0)
-		_G[button:GetName().."NormalTexture"]:Hide()
+		_G[button:GetName().."NormalTexture"]:SetTexture(nil)
 	end
 
 	if button:GetNormalTexture() then
-		button:GetNormalTexture():SetAlpha(0)
-		button:GetNormalTexture():Hide()
+		button:GetNormalTexture():SetTexture(nil)
 	end
 
 	button:SetNormalTexture("")
