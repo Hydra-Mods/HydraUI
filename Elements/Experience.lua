@@ -17,6 +17,7 @@ local ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local GetNumQuests
 local LEVEL = LEVEL
+local HasXPBuff = AuraUtil.FindAuraByName(GetSpellInfo(377749), "player", "HELPFUL")
 
 if HydraUI.IsMainline then
 	GetNumQuests = C_QuestLog.GetNumQuestLogEntries
@@ -260,10 +261,16 @@ function Experience:Update()
 	end
 
 	if (QuestLogXP > 0) then
+		if (HydraUI.IsWrath and HasXPBuff) then
+			QuestLogXP = QuestLogXP * 1.5
+		end
+
+		self.Bar.QuestXP = QuestLogXP
 		self.Bar.Quest:SetValue(min(XP + QuestLogXP, MaxXP))
 		self.Bar.Quest:Show()
 	else
 		self.Bar.Quest:Hide()
+		self.Bar.QuestXP = 0
 	end
 
 	self.Bar:SetMinMaxValues(0, MaxXP)
@@ -432,6 +439,12 @@ function Experience:OnEnter()
 		GameTooltip:AddLine(" ")
 		GameTooltip:AddLine(Language["Rested Experience"])
 		GameTooltip:AddDoubleLine(HydraUI:Comma(Rested), format("%s%%", RestedPercent), 1, 1, 1, 1, 1, 1)
+	end
+
+	if (self.Bar.QuestXP and self.Bar.QuestXP > 0) then
+		GameTooltip:AddLine(" ")
+		GameTooltip:AddLine(Language["Quest Experience"])
+		GameTooltip:AddDoubleLine(HydraUI:Comma(self.Bar.QuestXP), format("%s%%", floor((self.Bar.QuestXP / Max * 100 + 0.05) * 10) / 10), 1, 1, 1, 1, 1, 1)
 	end
 
 	-- Advanced information

@@ -640,10 +640,16 @@ function AB:CreateBar1()
 
 	if HydraUI.IsMainline then
 		self.Bar1:SetAttribute("_onstate-page", [[
-			if HasOverrideActionBar() then
+			if HasVehicleActionBar() then
+				newstate = GetVehicleBarIndex() or newstate
+			elseif HasOverrideActionBar() then
 				newstate = GetOverrideBarIndex() or newstate
 			elseif HasTempShapeshiftActionBar() then
 				newstate = GetTempShapeshiftBarIndex() or newstate
+			elseif HasBonusActionBar() and GetActionBarPage() == 1 then
+				newstate = GetBonusBarIndex() or newstate
+			else
+				newstate = GetActionBarPage() or newstate
 			end
 
 			for i = 1, 12 do
