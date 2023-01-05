@@ -694,26 +694,6 @@ local UpdateRaidSortingMethod = function(value)
 	end
 end
 
-local UpdatePartyShowRole = function(value)
-	if HydraUI.UnitFrames["party"] then
-		local Unit
-
-		for i = 1, HydraUI.UnitFrames["party"]:GetNumChildren() do
-			Unit = select(i, HydraUI.UnitFrames["party"]:GetChildren())
-
-			if Unit then
-				if value then
-					Unit:EnableElement("GroupRoleIndicator")
-				else
-					Unit:DisableElement("GroupRoleIndicator")
-				end
-
-				--Unit:UpdateAllElements("ForceUpdate")
-			end
-		end
-	end
-end
-
 local UpdateRaidShowPower = function(value)
 	if HydraUI.UnitFrames["raid"] then
 		local Unit

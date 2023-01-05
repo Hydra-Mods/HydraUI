@@ -404,6 +404,25 @@ HydraUI.StyleFuncs["raidpet"] = function(self, unit)
 	RaidTarget:SetSize(16, 16)
 	RaidTarget:SetPoint("CENTER", Health, "TOP")
 
+	-- Ready Check
+    local ReadyCheck = Health:CreateTexture(nil, "OVERLAY")
+	ReadyCheck:SetSize(16, 16)
+    ReadyCheck:SetPoint("LEFT", Health, 2, 0)
+
+    -- Phase
+    local PhaseIndicator = CreateFrame("Frame", nil, Health)
+    PhaseIndicator:SetSize(16, 16)
+    PhaseIndicator:SetPoint("TOPRIGHT", Health, 0, 0)
+    PhaseIndicator:EnableMouse(true)
+
+	PhaseIndicator.Icon = PhaseIndicator:CreateTexture(nil, "OVERLAY")
+	PhaseIndicator.Icon:SetAllPoints()
+
+    -- Resurrect
+	local Resurrect = Health:CreateTexture(nil, "OVERLAY")
+	Resurrect:SetSize(16, 16)
+	Resurrect:SetPoint("LEFT", Health, 2, 0)
+
 	-- Tags
 	self:Tag(HealthMiddle, "[Name10]")
 
@@ -416,7 +435,10 @@ HydraUI.StyleFuncs["raidpet"] = function(self, unit)
 	self.HealBar = HealBar
 	self.Health.bg = HealthBG
 	self.HealthMiddle = HealthMiddle
+	self.ReadyCheckIndicator = ReadyCheck
+	self.ResurrectIndicator = Resurrect
 	self.RaidTargetIndicator = RaidTarget
+	self.PhaseIndicator = PhaseIndicator
 end
 
 local UpdateRaidAnchorSize = function()

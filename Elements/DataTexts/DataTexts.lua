@@ -127,7 +127,9 @@ end
 
 function DT:UpdateAllAnchors()
 	for Name, Anchor in next, self.Anchors do
-		Anchor:Update(999, "player")
+		if Anchor.Update then
+			Anchor:Update(999, "player")
+		end
 	end
 end
 
@@ -169,7 +171,7 @@ function DT:Load()
 	end
 
 	SetCVar("timeMgrUseMilitaryTime", Settings["data-text-24-hour"])
-	
+
 	self:SetTooltipsEnabled(Settings["data-text-enable-tooltips"])
 	self:UpdateAllAnchors()
 end

@@ -24,12 +24,15 @@ local OnEnter = function(self)
 		GameTooltip:AddDoubleLine(HONORABLE_KILLS, HydraUI:Comma(HK), 1, 1, 1, 1, 1, 1)
 	end
 
-	HK = GetPVPLifetimeStats()
+	local LHK = GetPVPLifetimeStats()
 
-	if (HK > 0) then
-		GameTooltip:AddLine(" ")
+	if (LHK > 0) then
+		if (HK > 0) then
+			GameTooltip:AddLine(" ")
+		end
+
 		GameTooltip:AddLine(HONOR_LIFETIME)
-		GameTooltip:AddDoubleLine(HONORABLE_KILLS, HydraUI:Comma(HK), 1, 1, 1, 1, 1, 1)
+		GameTooltip:AddDoubleLine(HONORABLE_KILLS, HydraUI:Comma(LHK), 1, 1, 1, 1, 1, 1)
 	end
 
 	-- GetCurrentArenaSeason()

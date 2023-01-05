@@ -12,7 +12,7 @@ local OnEnter = function(self)
 	local Color = HydraUI.ZoneColors[PVPType or "other"]
 	local Label
 
-	if (ZoneText ~= SubZoneText) then
+	if (ZoneText and ZoneText ~= SubZoneText) then
 		Label = format("%s - %s", SubZoneText, ZoneText)
 	else
 		Label = ZoneText
