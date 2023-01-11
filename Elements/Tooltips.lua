@@ -386,7 +386,7 @@ local OnTooltipSetItem = function(self)
 		return
 	end
 
-	if (MerchantFrame and MerchantFrame:IsShown()) then
+	if (MerchantFrame and MerchantFrame:IsShown()) or (not self.GetItem) then
 		return
 	end
 
@@ -430,6 +430,10 @@ local OnTooltipSetItem = function(self)
 end
 
 local OnItemRefTooltipSetItem = function(self)
+	if (not self.GetItem) then
+		return
+	end
+
 	local Link = select(2, self:GetItem())
 
 	if (not Link) then

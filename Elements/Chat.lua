@@ -1124,12 +1124,12 @@ function Chat:SetChatTypeInfo()
 	ChatTypeInfo["CHANNEL19"].colorNameByClass = true
 	ChatTypeInfo["CHANNEL20"].colorNameByClass = true
 
-	if (C_CVar.GetCVar("colorChatNamesByClass") ~= "0") then
-		C_CVar.SetCVar("colorChatNamesByClass", "0")
+	if (C_CVar.GetCVar("colorChatNamesByClass") ~= "1") then
+		C_CVar.SetCVar("colorChatNamesByClass", "1")
 	end
 
-	if (C_CVar.GetCVar("chatClassColorOverride") ~= "0") then
-		C_CVar.SetCVar("chatClassColorOverride", "0")
+	if (C_CVar.GetCVar("chatClassColorOverride") ~= "1") then
+		C_CVar.SetCVar("chatClassColorOverride", "1")
 	end
 end
 
