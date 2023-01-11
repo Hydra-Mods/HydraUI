@@ -28,6 +28,13 @@ local Spells = {}
 local Remaining
 local SpellName
 local Now
+local ContainerItemID
+
+if C_Container then
+	ContainerItemID = C_Container.GetContainerItemID
+else
+	ContainerItemID = GetContainerItemID
+end
 
 Cooldowns.Blacklist = {
 	item = {
@@ -215,7 +222,7 @@ local UseInventoryItem = function(slot)
 end
 
 local UseContainerItem = function(bag, slot)
-	local ItemID = GetContainerItemID(bag, slot)
+	local ItemID = ContainerItemID(bag, slot)
 
 	if ItemID then
 		StartItem(ItemID)
