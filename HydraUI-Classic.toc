@@ -1,6 +1,6 @@
 ## Interface: 11403
 ## Author: Hydra
-## Version: 1.976
+## Version: 1.978
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: Interface replacement for Classic and Season of Mastery
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold

@@ -111,7 +111,7 @@ Methods["Resting"] = function(unit)
 	end
 end
 
-Events["Status"] = HealthEvent .. "UNIT_CONNECTION PLAYER_FLAGS_CHANGED"
+Events["Status"] = HealthEvent .. "UNIT_CONNECTION PLAYER_FLAGS_CHANGED PARTY_MEMBER_ENABLE PARTY_MEMBER_DISABLE"
 Methods["Status"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -222,7 +222,7 @@ Methods["HealthValues:Short"] = function(unit)
 	return HydraUI:ShortValue(Current) .. " / " .. HydraUI:ShortValue(Max)
 end
 
-Events["HealthDeficit"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
+Events["HealthDeficit"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_FLAGS_CHANGED UNIT_CONNECTION PARTY_MEMBER_ENABLE PARTY_MEMBER_DISABLE"
 Methods["HealthDeficit"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -243,7 +243,7 @@ Methods["HealthDeficit"] = function(unit)
 	end
 end
 
-Events["HealthDeficit:Short"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_FLAGS_CHANGED UNIT_CONNECTION"
+Events["HealthDeficit:Short"] = HealthEvent .. "UNIT_MAXHEALTH PLAYER_FLAGS_CHANGED UNIT_CONNECTION PARTY_MEMBER_ENABLE PARTY_MEMBER_DISABLE"
 Methods["HealthDeficit:Short"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
@@ -264,7 +264,7 @@ Methods["HealthDeficit:Short"] = function(unit)
 	end
 end
 
-Events["GroupStatus"] = HealthEvent .. "UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED"
+Events["GroupStatus"] = HealthEvent .. "UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED PARTY_MEMBER_ENABLE PARTY_MEMBER_DISABLE"
 Methods["GroupStatus"] = function(unit)
 	if UnitIsDead(unit) then
 		return "|cFFEE4D4D" .. DEAD .. "|r"
