@@ -638,37 +638,25 @@ function AB:CreateBar1()
 		end
 	]])
 
-	if HydraUI.IsMainline then
-		self.Bar1:SetAttribute("_onstate-page", [[
-			if HasVehicleActionBar() then
-				newstate = GetVehicleBarIndex() or newstate
-			elseif HasOverrideActionBar() then
-				newstate = GetOverrideBarIndex() or newstate
-			elseif HasTempShapeshiftActionBar() then
-				newstate = GetTempShapeshiftBarIndex() or newstate
-			elseif HasBonusActionBar() and GetActionBarPage() == 1 then
-				newstate = GetBonusBarIndex() or newstate
-			else
-				newstate = GetActionBarPage() or newstate
-			end
+	self.Bar1:SetAttribute("_onstate-page", [[
+		if HasVehicleActionBar() then
+			newstate = GetVehicleBarIndex() or newstate
+		elseif HasOverrideActionBar() then
+			newstate = GetOverrideBarIndex() or newstate
+		elseif HasTempShapeshiftActionBar() then
+			newstate = GetTempShapeshiftBarIndex() or newstate
+		elseif HasBonusActionBar() and GetActionBarPage() == 1 then
+			newstate = GetBonusBarIndex() or newstate
+		else
+			newstate = GetActionBarPage() or newstate
+		end
 
-			for i = 1, 12 do
-				Buttons[i]:SetAttribute("actionpage", newstate)
-			end
-		]])
-	else
-		self.Bar1:SetAttribute("_onstate-page", [[
-			if HasTempShapeshiftActionBar() then
-				newstate = GetTempShapeshiftBarIndex() or newstate
-			end
+		for i = 1, 12 do
+			Buttons[i]:SetAttribute("actionpage", newstate)
+		end
+	]])
 
-			for i = 1, 12 do
-				Buttons[i]:SetAttribute("actionpage", newstate)
-			end
-		]])
-	end
-
-    RegisterStateDriver(self.Bar1, "page", "[overridebar] 14; [shapeshift] 13; [possessbar] 12; [vehicleui] 12; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10; [bonusbar:5] 11; [form] 1; 1")
+    RegisterStateDriver(self.Bar1, "page", "[overridebar] 14; [shapeshift] 13; [possessbar][vehicleui] 12; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10; [bonusbar:5] 11; [form] 1; 1")
 
 	self:PositionButtons(self.Bar1, Settings["ab-bar1-button-max"], Settings["ab-bar1-per-row"], Settings["ab-bar1-button-size"], Settings["ab-bar1-button-gap"])
 

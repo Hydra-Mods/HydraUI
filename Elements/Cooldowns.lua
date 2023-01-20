@@ -16,10 +16,6 @@ local GetTime = GetTime
 local tinsert = table.insert
 local tremove = table.remove
 
-if C_Container then
-	GetItemCooldown = C_Container.GetItemCooldown
-end
-
 local ActiveCount = 0
 local MinTreshold = 14
 local Running = false
@@ -36,6 +32,7 @@ local ContainerItemID
 
 if C_Container then
 	ContainerItemID = C_Container.GetContainerItemID
+	GetItemCooldown = C_Container.GetItemCooldown
 else
 	ContainerItemID = GetContainerItemID
 end
