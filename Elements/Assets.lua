@@ -1,7 +1,5 @@
 local HydraUI, Language, Assets, Settings, Defaults = select(2, ...):get()
 local SharedMedia = LibStub:GetLibrary("LibSharedMedia-3.0")
-local SMTextures = SharedMedia:HashTable("statusbar")
-local SMFonts = SharedMedia:HashTable("font")
 
 local Fonts = {}
 local Textures = {}
@@ -160,6 +158,16 @@ function Assets:GetPaletteList()
 	return PaletteList
 end
 
+function HydraUI:LoadSharedAssets()
+	for Name, Path in next, SharedMedia:HashTable("font") do
+		Assets:SetFont(Name, Path)
+	end
+
+	for Name, Path in next, SharedMedia:HashTable("statusbar") do
+		Assets:SetTexture(Name, Path)
+	end
+end
+
 -- Some pre-loaded goodness.
 
 -- Fonts
@@ -172,10 +180,6 @@ Assets:SetFont("Expressway", "Interface\\Addons\\HydraUI\\Elements\\Assets\\Font
 Assets:SetFont("Noto Sans", "Interface\\Addons\\HydraUI\\Elements\\Assets\\Fonts\\NotoSansCondensedSemiBold.ttf")
 Assets:SetFont("Visitor", "Interface\\Addons\\HydraUI\\Elements\\Assets\\Fonts\\Visitor.ttf", true)
 Assets:SetFont("Pixel Arial", "Interface\\Addons\\HydraUI\\Elements\\Assets\\Fonts\\PixelArial.ttf", true)
-
-for Name, Path in next, SMFonts do
-	Assets:SetFont(Name, Path)
-end
 
 -- Bar Textures
 Assets:SetTexture("Blank", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUIBlank.tga")
@@ -220,10 +224,6 @@ Assets:SetTexture("Arrow Right Huge", "Interface\\AddOns\\HydraUI\\Elements\\Ass
 Assets:SetTexture("Skull", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUISkull.tga", true)
 Assets:SetTexture("Small Star", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUISmallStar.tga", true)
 Assets:SetTexture("Copy", "Interface\\AddOns\\HydraUI\\Elements\\Assets\\Textures\\HydraUICopy.tga", true)
-
-for Name, Path in next, SMTextures do
-	Assets:SetTexture(Name, Path)
-end
 
 -- Palettes - Yes, doing these did take forever. And yes it was worth it.
 

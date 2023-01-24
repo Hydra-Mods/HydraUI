@@ -150,6 +150,8 @@ function HydraUI:OnEvent(event)
 
 	self:WelcomeMessage()
 
+	self:LoadSharedAssets()
+
 	self:LoadModules()
 	self:LoadPlugins()
 
