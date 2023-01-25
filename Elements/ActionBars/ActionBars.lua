@@ -1455,7 +1455,7 @@ local MultiCastFlyoutFrame_LoadSlotSpells = function(parent, slotid)
 		FlyoutButton.Backdrop:SetBackdropColor(0, 0, 0)
 		FlyoutButton.Backdrop:SetFrameLevel(FlyoutButton:GetFrameLevel() - 1)
 
-		FlyoutButton.Backdrop.Texture = FlyoutButton.Backdrop:CreateTexture(nil, "BACKDROP")
+		FlyoutButton.Backdrop.Texture = FlyoutButton.Backdrop:CreateTexture(nil, "BACKGROUND")
 		FlyoutButton.Backdrop.Texture:SetPoint("TOPLEFT", FlyoutButton.Backdrop, 1, -1)
 		FlyoutButton.Backdrop.Texture:SetPoint("BOTTOMRIGHT", FlyoutButton.Backdrop, -1, 1)
 		FlyoutButton.Backdrop.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
