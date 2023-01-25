@@ -39,11 +39,11 @@ function HydraUI:GetTrashValue()
 			if (Link and ID and not AutoVendor.Filter[ID]) then
 				local TotalPrice = 0
 				local Quality = select(3, GetItemInfo(Link))
-				local AutoVendorPrice = select(11, GetItemInfo(Link))
+				local VendorPrice = select(11, GetItemInfo(Link))
 				local Count = select(2, GetContainerItemInfo(Bag, Slot))
 
-				if ((AutoVendorPrice and (AutoVendorPrice > 0)) and Count) then
-					TotalPrice = AutoVendorPrice * Count
+				if ((VendorPrice and (VendorPrice > 0)) and Count) then
+					TotalPrice = VendorPrice * Count
 				end
 
 				if ((Quality and Quality <= 0) and TotalPrice > 0) then
@@ -69,11 +69,11 @@ function AutoVendor:OnEvent()
 			if (Link and ID and not self.Filter[ID]) then
 				local TotalPrice = 0
 				local Quality = select(3, GetItemInfo(Link))
-				local AutoVendorPrice = select(11, GetItemInfo(Link))
-				local Count = select(2, GetContainerItemInfo(Bag, Slot))
+				local VendorPrice = select(11, GetItemInfo(Link))
+				local Count = select(2, GetContainerItemInfo(Bag, Slot)) or 1
 
-				if ((AutoVendorPrice and (AutoVendorPrice > 0)) and Count) then
-					TotalPrice = AutoVendorPrice * Count
+				if ((VendorPrice and (VendorPrice > 0)) and Count) then
+					TotalPrice = VendorPrice * Count
 				end
 
 				if ((Quality and Quality <= 0) and TotalPrice > 0) then
