@@ -1275,7 +1275,10 @@ function AB:CreateBars()
 	end
 
 	if (MultiCastActionBarFrame and MultiCastActionBarFrame.numActiveSlots and MultiCastActionBarFrame.numActiveSlots > 0) then
-		self:StyleTotemBar()
+		--self:StyleTotemBar()
+		MultiCastActionBarFrame:SetParent(UIParent)
+		--MultiCastActionBarFrame:ClearAllPoints()
+		--MultiCastActionBarFrame:SetPoint("BOTTOMLEFT", UIParent, 300, 20)
 	end
 end
 
@@ -1321,9 +1324,9 @@ function AB:CreateMovers()
 		HydraUI:CreateMover(self.PetBar)
 	end
 
-	if self.TotemBar then
+	--[[if self.TotemBar then
 		HydraUI:CreateMover(self.TotemBar)
-	end
+	end]]
 
 	if HydraUI.IsMainline then
 		self.ExtraBarMover = HydraUI:CreateMover(self.ExtraBar)
