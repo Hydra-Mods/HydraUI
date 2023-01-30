@@ -59,7 +59,7 @@ local function resetIcon(icon, frame, count, duration, remaining)
 			end
 		end
 		if icon.count then
-			icon.count:SetText((count > 1 and count))
+			icon.count:SetText((count > 1 and count) or "")
 		end
 		if icon.overlay then
 			icon.overlay:Hide()
