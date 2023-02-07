@@ -539,10 +539,11 @@ function Chat:CreateCopyWindow()
 	Window.Input:SetScript("OnMouseDown", CopyWindowOnMouseDown)
 
 	-- This just makes the animation look better. That's all. ಠ_ಠ
-	Window.BlackTexture = Window:CreateTexture(nil, "BACKGROUND", -7)
+	Window.BlackTexture = Window:CreateTexture(nil, "BACKGROUND")
 	Window.BlackTexture:SetPoint("TOPLEFT", Window, 0, 0)
 	Window.BlackTexture:SetPoint("BOTTOMRIGHT", Window, 0, 0)
 	Window.BlackTexture:SetTexture(Assets:GetTexture("Blank"))
+	Window.BlackTexture:SetDrawLayer("BACKGROUND", -7)
 	Window.BlackTexture:SetVertexColor(0, 0, 0, 0)
 
 	Window.Fade = CreateAnimationGroup(Window)
@@ -1041,8 +1042,8 @@ function Chat:Install()
 	C_CVar.SetCVar("WhisperMode", "inline")
 	--C_CVar.SetCVar("BnWhisperMode", "inline")
 	C_CVar.SetCVar("removeChatDelay", "1")
-	C_CVar.SetCVar("colorChatNamesByClass", "1")
-	C_CVar.SetCVar("chatClassColorOverride", "1")
+	C_CVar.SetCVar("colorChatNamesByClass", 1)
+	C_CVar.SetCVar("chatClassColorOverride", 1)
 	C_CVar.SetCVar("speechToText", "0")
 
 	--Chat:MoveChatFrames()
@@ -1124,12 +1125,12 @@ function Chat:SetChatTypeInfo()
 	ChatTypeInfo["CHANNEL19"].colorNameByClass = true
 	ChatTypeInfo["CHANNEL20"].colorNameByClass = true
 
-	if (C_CVar.GetCVar("colorChatNamesByClass") ~= "1") then
-		C_CVar.SetCVar("colorChatNamesByClass", "1")
+	if (C_CVar.GetCVar("colorChatNamesByClass") ~= 1) then
+		C_CVar.SetCVar("colorChatNamesByClass", 1)
 	end
 
-	if (C_CVar.GetCVar("chatClassColorOverride") ~= "1") then
-		C_CVar.SetCVar("chatClassColorOverride", "1")
+	if (C_CVar.GetCVar("chatClassColorOverride") ~= 1) then
+		C_CVar.SetCVar("chatClassColorOverride", 1)
 	end
 end
 
