@@ -1,6 +1,6 @@
 ## Interface: 11403
 ## Author: Hydra
-## Version: 1.982
+## Version: 1.99
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: Interface replacement for Classic and Season of Mastery
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
@@ -12,6 +12,7 @@ Elements\Libraries\LibClassicCasterino.lua
 Elements\Libraries\LibHealComm-4.0.lua
 Elements\Libraries\LibSharedMedia-3.0.lua
 Elements\Libraries\AceSerializer-3.0.lua
+Elements\Libraries\ChatThrottleLib.lua
 Elements\Libraries\LibDeflate.lua
 Elements\Libraries\LibAnim.lua
 Elements\Libraries\oUF\oUF_Classic.xml

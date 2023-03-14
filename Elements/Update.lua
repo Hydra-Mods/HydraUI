@@ -11,9 +11,9 @@ local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local AddOnVersion = HydraUI.UIVersion
 local AddOnNum = tonumber(HydraUI.UIVersion)
 local User = HydraUI.UserName .. "-" .. HydraUI.UserRealm
-local SendAddonMessage = C_ChatInfo.SendAddonMessage
 local tinsert = table.insert
 local tremove = table.remove
+local CT = ChatThrottleLib
 
 local Update = HydraUI:NewModule("Update")
 Update.SentHome = false
@@ -49,7 +49,8 @@ function Update:OnUpdate(elapsed)
 	if (self.Timer < 0) then
 		local Data = tremove(Queue, 1)
 
-		SendAddonMessage("HydraUI-Version", AddOnVersion, Data[1], Data[2])
+		--SendAddonMessage("HydraUI-Version", AddOnVersion, Data[1], Data[2])
+		CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, Data[1], Data[2])
 
 		tinsert(Tables, Data)
 

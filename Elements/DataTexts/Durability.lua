@@ -14,9 +14,6 @@ local ScanTooltip = CreateFrame("GameTooltip", nil, UIParent, "GameTooltipTempla
 local OnEnter = function(self)
 	self:SetTooltip()
 
-	GameTooltip:AddLine(Label)
-	GameTooltip:AddLine(" ")
-
 	local TotalCost = 0
 	local Current, Max, HasItem, HasCooldown, RepairCost
 
@@ -24,9 +21,7 @@ local OnEnter = function(self)
 		Current, Max = GetInventoryItemDurability(Slots[i])
 
 		if Current then
-			GameTooltip:AddDoubleLine(format("|T%s:14:14:0:0:64:64:4:60:4:60|t  %s", GetInventoryItemTexture("player", Slots[i]), GetInventoryItemLink("player", Slots[i])), format("%s%%", floor(Current / Max * 100)), 1, 1, 1, 1, 1, 1)
-
-			if C_TooltipInfo and C_TooltipInfo.GetInventoryItem then
+			if (C_TooltipInfo and C_TooltipInfo.GetInventoryItem) then
 				HasItem, HasCooldown, RepairCost = C_TooltipInfo.GetInventoryItem("player", Slots[i], true)
 			else
 				HasItem, HasCooldown, RepairCost = ScanTooltip:SetInventoryItem("player", Slots[i], true)
@@ -35,6 +30,19 @@ local OnEnter = function(self)
 			if (HasItem and RepairCost) then
 				TotalCost = TotalCost + RepairCost
 			end
+		end
+	end
+
+	ScanTooltip:ClearLines()
+
+	GameTooltip:AddLine(Label)
+	GameTooltip:AddLine(" ")
+
+	for i = 1, #Slots do
+		Current, Max = GetInventoryItemDurability(Slots[i])
+
+		if Current then
+			GameTooltip:AddDoubleLine(format("|T%s:14:14:0:0:64:64:4:60:4:60|t  %s", GetInventoryItemTexture("player", Slots[i]), GetInventoryItemLink("player", Slots[i])), format("%s%%", floor(Current / Max * 100)), 1, 1, 1, 1, 1, 1)
 		end
 	end
 

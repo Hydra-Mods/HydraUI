@@ -56,6 +56,14 @@ local OnEnter = function(self)
 
 	local Limit = NumTotal > MaxCharacters and MaxCharacters or NumTotal
 	local Count = 0
+	local MapID = C_Map.GetBestMapForUnit("player")
+	local CurrentZone
+
+	if MapID then
+		CurrentZone = C_Map.GetMapInfo(MapID).name or GetRealZoneText()
+	else
+		CurrentZone = GetRealZoneText()
+	end
 
 	for i = 1, NumTotal do
 		if (Count == Limit) then
@@ -79,7 +87,7 @@ local OnEnter = function(self)
 			if IsModifierKeyDown() then
 				GameTooltip:AddDoubleLine(Name, Rank, nil, nil, nil, 1, 1, 1)
 			else
-				if (Zone == GetRealZoneText()) then
+				if (Zone == CurrentZone) then
 					Zone = format("|cFF33FF33%s|r", Zone)
 				end
 

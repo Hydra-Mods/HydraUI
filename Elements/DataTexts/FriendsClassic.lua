@@ -15,21 +15,21 @@ local ClientInfo = {}
 local FriendList = {}
 
 local ClientToName = {
-	["App"] = Language["B.Net"],
-	["BSAp"] = Language["B.Net"],
-	["DST2"] = Language["Destiny 2"],
-	["D3"] = Language["Diablo 3"],
-	["Hero"] = Language["Heroes of the Storm"],
-	["OSI"] = "Diablo II: Resurrected",
-	["Pro"] = Language["Overwatch 2"],
-	["S1"] = Language["StarCraft: Remastered"],
-	["S2"] = Language["StarCraft 2"],
-	["VIPR"] = Language["Call of Duty: Black Ops 4"],
-	["ODIN"] = Language["Call of Duty: Modern Warfare"],
-	["WoW"] = CINEMATIC_NAME_1,
-	["WTCG"] = Language["Hearthstone"],
-	["ANBS"] = Language["Diablo Immortal"],
-	["AUKS"] = Language["Call of Duty: MWII"],
+	App = Language["B.Net"],
+	BSAp = Language["B.Net"],
+	DST2 = Language["Destiny 2"],
+	D3 = Language["Diablo 3"],
+	Hero = Language["Heroes of the Storm"],
+	OSI = "Diablo II: Resurrected",
+	Pro = Language["Overwatch 2"],
+	S1 = Language["StarCraft: Remastered"],
+	S2 = Language["StarCraft 2"],
+	VIPR = Language["Call of Duty: Black Ops 4"],
+	ODIN = Language["Call of Duty: Modern Warfare"],
+	WoW = CINEMATIC_NAME_1,
+	WTCG = Language["Hearthstone"],
+	ANBS = Language["Diablo Immortal"],
+	AUKS = Language["Call of Duty: MWII"],
 }
 
 local ProjectIDToName = {
@@ -289,6 +289,8 @@ local GetClientInformation = function(client, name, id)
 end
 
 local OnEnter = function(self)
+	C_FriendList.ShowFriends()
+
 	self:SetTooltip()
 
 	local NumFriends = GetNumFriends()
@@ -298,6 +300,19 @@ local OnEnter = function(self)
 	local Name
 	local NumClients = 0
 	local ClientCount = 0
+	local ID = 2
+	local MapID = C_Map.GetBestMapForUnit("player")
+	local CurrentZone
+
+	if MapID then
+		CurrentZone = C_Map.GetMapInfo(MapID).name or GetRealZoneText()
+	else
+		CurrentZone = GetRealZoneText()
+	end
+
+	if HydraUI.IsTBC then
+		ID = 5
+	end
 
 	GameTooltip:AddDoubleLine(Label, format("%s/%s", NumBNOnline + NumFriendsOnline, NumFriends + NumBNFriends), nil, nil, nil, 1, 1, 1)
 	GameTooltip:AddLine(" ")
@@ -318,12 +333,6 @@ local OnEnter = function(self)
 	end
 
 	-- Regular friends
-	local ID = 2
-
-	if HydraUI.IsTBC then
-		ID = 5
-	end
-
 	for i = 1, NumFriends do
 		FriendInfo = GetFriendInfoByIndex(i)
 
@@ -342,9 +351,9 @@ local OnEnter = function(self)
 			LevelColor = HydraUI:RGBToHex(LevelColor.r, LevelColor.g, LevelColor.b)
 
 			if FriendInfo.afk then
-				Name = format("|cFF9E9E9E%s|r", FriendInfo.name)
+				Name = format("%s |cFFFFFF33%s|r", FriendInfo.name, CHAT_FLAG_AFK)
 			elseif FriendInfo.dnd then
-				Name = format("|cFFF44336%s|r", FriendInfo.name)
+				Name = format("%s |cFFFFFF33%s|r", FriendInfo.name, CHAT_FLAG_DND)
 			else
 				Name = FriendInfo.name
 			end
@@ -366,7 +375,11 @@ local OnEnter = function(self)
 
 		for i = 1, #info do
 			if info[i][2] then
-				GameTooltip:AddDoubleLine(info[i][1], info[i][2], nil, nil, nil, 1, 1, 1)
+				if (info[i][2] == CurrentZone) then
+					GameTooltip:AddDoubleLine(info[i][1], info[i][2], nil, nil, nil, 0.2, 1, 0.2)
+				else
+					GameTooltip:AddDoubleLine(info[i][1], info[i][2], nil, nil, nil, 1, 1, 1)
+				end
 			else
 				GameTooltip:AddLine(info[i][1])
 			end
@@ -417,6 +430,10 @@ local OnEnable = function(self)
 	self:RegisterEvent("BN_FRIEND_INFO_CHANGED")
 	self:RegisterEvent("BN_CONNECTED")
 	self:RegisterEvent("BN_DISCONNECTED")
+	self:RegisterEvent("WHO_LIST_UPDATE")
+	self:RegisterEvent("GUILD_ROSTER_UPDATE")
+	self:RegisterEvent("PLAYER_GUILD_UPDATE")
+	self:RegisterEvent("PLAYER_FLAGS_CHANGED")
 	self:SetScript("OnEvent", Update)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
@@ -436,6 +453,10 @@ local OnDisable = function(self)
 	self:UnregisterEvent("BN_FRIEND_INFO_CHANGED")
 	self:UnregisterEvent("BN_CONNECTED")
 	self:UnregisterEvent("BN_DISCONNECTED")
+	self:UnregisterEvent("WHO_LIST_UPDATE")
+	self:UnregisterEvent("GUILD_ROSTER_UPDATE")
+	self:UnregisterEvent("PLAYER_GUILD_UPDATE")
+	self:UnregisterEvent("PLAYER_FLAGS_CHANGED")
 	self:SetScript("OnEvent", nil)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)
