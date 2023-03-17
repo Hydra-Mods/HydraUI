@@ -230,9 +230,16 @@ function Experience:Update()
     RestingText = IsResting() and ("|cFF" .. Settings["experience-rested-color"] .. "zZz|r") or ""
 
 	local QuestLogXP = 0
-	local Zone = GetRealZoneText()
 	local ZoneName
 	local Level = Settings["experience-display-level"] and (format("%s %d - ", LEVEL, UnitLevel("player"))) or ""
+	local MapID = C_Map.GetBestMapForUnit("player")
+	local CurrentZone
+
+	if MapID then
+		CurrentZone = C_Map.GetMapInfo(MapID).name or GetRealZoneText()
+	else
+		CurrentZone = GetRealZoneText()
+	end
 
 	if HydraUI.IsMainline then
 		for i = 1, GetNumQuests() do
@@ -241,7 +248,7 @@ function Experience:Update()
 			if (Info.isHeader and not Info.isHidden) then
 				ZoneName = Info.title
 			else
-				if (ZoneName and Zone == ZoneName and ReadyForTurnIn(Info.questID)) then
+				if (ZoneName and ZoneName == CurrentZone and ReadyForTurnIn(Info.questID)) then
 					QuestLogXP = QuestLogXP + GetQuestLogRewardXP(Info.questID)
 				end
 			end
@@ -253,7 +260,7 @@ function Experience:Update()
 			if IsHeader then
 				ZoneName = TitleText
 			else
-				if (ZoneName and Zone == ZoneName and IsComplete) then
+				if (ZoneName and ZoneName == CurrentZone and IsComplete) then
 					QuestLogXP = QuestLogXP + GetQuestLogRewardXP(QuestID)
 				end
 			end

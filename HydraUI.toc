@@ -1,6 +1,6 @@
 ## Interface: 100005
 ## Author: Hydra
-## Version: 1.982
+## Version: 1.99
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: Interface replacement for Shadowlands
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
@@ -10,6 +10,7 @@ Elements\Libraries\LibStub.lua
 Elements\Libraries\CallbackHandler-1.0.lua
 Elements\Libraries\LibSharedMedia-3.0.lua
 Elements\Libraries\AceSerializer-3.0.lua
+Elements\Libraries\ChatThrottleLib.lua
 Elements\Libraries\LibDeflate.lua
 Elements\Libraries\LibAnim.lua
 Elements\Libraries\oUF\oUF_Mainline.xml
