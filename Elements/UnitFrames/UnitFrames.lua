@@ -778,9 +778,15 @@ function UF:Load()
 		end
 
 		if Settings["unitframes-show-target-buffs"] then
-			Target:EnableElement("Auras")
+			Target.Buffs:Show()
 		else
-			Target:DisableElement("Auras")
+			Target.Buffs:Hide()
+		end
+
+		if Settings["unitframes-show-target-debuffs"] then
+			Target.Debuffs:Show()
+		else
+			Target.Debuffs:Hide()
 		end
 
 		if Settings["unitframes-target-enable-castbar"] then
