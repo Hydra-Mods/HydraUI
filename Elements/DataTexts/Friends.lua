@@ -29,6 +29,7 @@ local ClientToName = {
 	WTCG = Language["Hearthstone"],
 	ANBS = "Diablo Immortal",
 	AUKS = Language["Call of Duty: MWII"],
+	Fen = Language["Diablo IV"],
 }
 
 local ProjectIDToName = {
@@ -235,6 +236,18 @@ ClientInfo["WoW"] = function(name, info)
 end
 
 ClientInfo["WTCG"] = function(name, info)
+	if info.gameAccountInfo.isGameAFK then
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
+	elseif info.gameAccountInfo.isGameBusy then
+		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_DND_MESSAGE)
+	else
+		name = format("|cFF00FFF6%s|r", name)
+	end
+
+	return ClientToName[info.gameAccountInfo.clientProgram], info.gameAccountInfo.richPresence
+end
+
+ClientInfo["Fen"] = function(name, info)
 	if info.gameAccountInfo.isGameAFK then
 		name = format("|cFF00FFF6%s|r |cFFFFFF33%s|r", name, DEFAULT_AFK_MESSAGE)
 	elseif info.gameAccountInfo.isGameBusy then

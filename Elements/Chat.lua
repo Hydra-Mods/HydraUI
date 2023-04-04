@@ -737,45 +737,49 @@ function Chat:StyleChatFrame(frame)
 	HydraUI:SetFontInfo(EditBox.header, Settings["chat-font"], Settings["chat-font-size"], Settings["chat-font-flags"])
 
 	-- Scroll to bottom
-	local JumpButton = CreateFrame("Frame", nil, frame, "BackdropTemplate")
-	JumpButton:SetSize(20, 20)
-	JumpButton:SetPoint("BOTTOMRIGHT", frame, 0, 0)
-	JumpButton:SetBackdrop(HydraUI.BackdropAndBorder)
-	JumpButton:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-main-color"]))
-	JumpButton:SetBackdropBorderColor(0, 0, 0)
-	JumpButton:SetFrameStrata("HIGH")
-	JumpButton:SetScript("OnMouseUp", JumpButtonOnMouseUp)
-	JumpButton:SetScript("OnEnter", JumpButtonOnEnter)
-	JumpButton:SetScript("OnLeave", JumpButtonOnLeave)
-	JumpButton:SetAlpha(0)
-	JumpButton:Hide()
+	--if (not HydraUI.IsMainline) then
+		local JumpButton = CreateFrame("Frame", nil, frame, "BackdropTemplate")
+		JumpButton:SetSize(20, 20)
+		JumpButton:SetPoint("BOTTOMRIGHT", frame, 0, 0)
+		JumpButton:SetBackdrop(HydraUI.BackdropAndBorder)
+		JumpButton:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-main-color"]))
+		JumpButton:SetBackdropBorderColor(0, 0, 0)
+		JumpButton:SetFrameStrata("HIGH")
+		JumpButton:SetScript("OnMouseUp", JumpButtonOnMouseUp)
+		JumpButton:SetScript("OnEnter", JumpButtonOnEnter)
+		JumpButton:SetScript("OnLeave", JumpButtonOnLeave)
+		JumpButton:SetAlpha(0)
+		JumpButton:Hide()
 
-	JumpButton.Texture = JumpButton:CreateTexture(nil, "ARTWORK")
-	JumpButton.Texture:SetPoint("TOPLEFT", JumpButton, 1, -1)
-	JumpButton.Texture:SetPoint("BOTTOMRIGHT", JumpButton, -1, 1)
-	JumpButton.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
-	JumpButton.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-header-texture-color"]))
+		JumpButton.Texture = JumpButton:CreateTexture(nil, "ARTWORK")
+		JumpButton.Texture:SetPoint("TOPLEFT", JumpButton, 1, -1)
+		JumpButton.Texture:SetPoint("BOTTOMRIGHT", JumpButton, -1, 1)
+		JumpButton.Texture:SetTexture(Assets:GetTexture(Settings["ui-header-texture"]))
+		JumpButton.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-header-texture-color"]))
 
-	JumpButton.Arrow = JumpButton:CreateTexture(nil, "OVERLAY")
-	JumpButton.Arrow:SetPoint("CENTER", JumpButton, 0, 0)
-	JumpButton.Arrow:SetSize(16, 16)
-	JumpButton.Arrow:SetTexture(Assets:GetTexture("Arrow Down"))
-	JumpButton.Arrow:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-color"]))
+		JumpButton.Arrow = JumpButton:CreateTexture(nil, "OVERLAY")
+		JumpButton.Arrow:SetPoint("CENTER", JumpButton, 0, 0)
+		JumpButton.Arrow:SetSize(16, 16)
+		JumpButton.Arrow:SetTexture(Assets:GetTexture("Arrow Down"))
+		JumpButton.Arrow:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-color"]))
 
-	JumpButton.Fade = CreateAnimationGroup(JumpButton)
+		JumpButton.Fade = CreateAnimationGroup(JumpButton)
 
-	JumpButton.FadeIn = JumpButton.Fade:CreateAnimation("Fade")
-	JumpButton.FadeIn:SetEasing("in")
-	JumpButton.FadeIn:SetDuration(0.15)
-	JumpButton.FadeIn:SetChange(1)
+		JumpButton.FadeIn = JumpButton.Fade:CreateAnimation("Fade")
+		JumpButton.FadeIn:SetEasing("in")
+		JumpButton.FadeIn:SetDuration(0.15)
+		JumpButton.FadeIn:SetChange(1)
 
-	JumpButton.FadeOut = JumpButton.Fade:CreateAnimation("Fade")
-	JumpButton.FadeOut:SetEasing("out")
-	JumpButton.FadeOut:SetDuration(0.15)
-	JumpButton.FadeOut:SetChange(0)
-	JumpButton.FadeOut:SetScript("OnFinished", JumpButtonOnFinished)
+		JumpButton.FadeOut = JumpButton.Fade:CreateAnimation("Fade")
+		JumpButton.FadeOut:SetEasing("out")
+		JumpButton.FadeOut:SetDuration(0.15)
+		JumpButton.FadeOut:SetChange(0)
+		JumpButton.FadeOut:SetScript("OnFinished", JumpButtonOnFinished)
 
-	frame.JumpButton = JumpButton
+		frame.JumpButton = JumpButton
+
+		hooksecurefunc(frame, "SetScrollOffset", CheckForBottom)
+	--end
 
 	frame.CopyHighlight = frame:CreateTexture(nil, "ARTWORK")
 	frame.CopyHighlight:SetPoint("TOPLEFT", frame, -3, 2)
@@ -812,8 +816,6 @@ function Chat:StyleChatFrame(frame)
 	for i = 1, #self.RemoveTextures do
 		Disable(_G[FrameName..self.RemoveTextures[i]])
 	end
-
-	hooksecurefunc(frame, "SetScrollOffset", CheckForBottom)
 
 	FCFTab_UpdateAlpha(frame)
 
