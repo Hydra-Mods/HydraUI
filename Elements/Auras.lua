@@ -17,6 +17,7 @@ local DebuffColors = HydraUI.DebuffColors
 
 -- Default settings values
 Defaults["auras-enable"] = true
+Defaults["auras-show"] = true
 Defaults["auras-size"] = 30
 Defaults["auras-spacing"] = 2
 Defaults["auras-row-spacing"] = 16
@@ -284,6 +285,18 @@ function Auras:Load()
 	HydraUI:CreateMover(self.Debuffs)
 end
 
+local UpdateAuraDisplay = function(value)
+	if Settings["auras-show"] then
+		for i = 1, 2 do
+			Auras.Headers[i]:Show()
+		end
+	else
+		for i = 1, 2 do
+			Auras.Headers[i]:Hide()
+		end
+	end
+end
+
 local UpdateAuraSpacing = function(value)
 	Auras.Buffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * value), ((Settings["auras-size"] * 3) + (Settings["auras-row-spacing"] * (3 - 1))))
 	Auras.Debuffs:SetSize((Settings["auras-per-row"] * Settings["auras-size"] + Settings["auras-per-row"] * value), ((Settings["auras-size"] * 2) + Settings["auras-row-spacing"]))
@@ -417,6 +430,9 @@ end
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Auras"], function(left, right)
 	left:CreateHeader(Language["Enable"])
 	left:CreateSwitch("auras-enable", Settings["auras-enable"], Language["Enable Auras Module"], Language["Enable the HydraUI auras module"], ReloadUI):RequiresReload(true)
+
+	left:CreateHeader(Language["Display"])
+	left:CreateSwitch("auras-show", Settings["auras-show"], Language["Display Auras"], Language["Display the players buff and debuffs"], UpdateAuraDisplay)
 
 	left:CreateHeader(Language["Styling"])
 	left:CreateSlider("auras-size", Settings["auras-size"], 20, 50, 2, Language["Size"], Language["Set the size of auras"], ReloadUI):RequiresReload(true)

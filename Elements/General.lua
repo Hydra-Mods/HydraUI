@@ -144,3 +144,26 @@ function Durability:Load() -- Maybe a setting to hide the whole frame?
 
 	HydraUI:CreateMover(self)
 end
+
+local SeatIndicator = HydraUI:NewModule("Vehicle Seats")
+
+local SetSeatIndicatorPosition = function(self, anchor, parent)
+	if (parent ~= SeatIndicator) then
+		self:ClearAllPoints()
+		self:SetPoint("CENTER", SeatIndicator, 0, 0)
+	end
+end
+
+function SeatIndicator:Load()
+	local Anchor, Parent, Anchor2, X, Y = VehicleSeatIndicator:GetPoint()
+
+	self:SetSize(VehicleSeatIndicator:GetSize())
+	--self:SetPoint("CENTER", VehicleSeatIndicator, -360, 10)
+	self:SetPoint(Anchor, Parent, Anchor2, X, Y)
+
+	VehicleSeatIndicator:SetScript("OnShow", nil)
+	VehicleSeatIndicator:SetScript("OnHide", nil)
+	hooksecurefunc(VehicleSeatIndicator, "SetPoint", SetSeatIndicatorPosition)
+
+	HydraUI:CreateMover(self)
+end
