@@ -1044,9 +1044,17 @@ function Chat:Install()
 	C_CVar.SetCVar("WhisperMode", "inline")
 	--C_CVar.SetCVar("BnWhisperMode", "inline")
 	C_CVar.SetCVar("removeChatDelay", "1")
-	C_CVar.SetCVar("colorChatNamesByClass", 1)
-	C_CVar.SetCVar("chatClassColorOverride", 1)
+	C_CVar.SetCVar("colorChatNamesByClass", 0)
+	C_CVar.SetCVar("chatClassColorOverride", 0)
 	C_CVar.SetCVar("speechToText", "0")
+
+	if (C_CVar.GetCVar("colorChatNamesByClass") ~= "0") then
+		C_CVar.SetCVar("colorChatNamesByClass", 0)
+	end
+
+	if (C_CVar.GetCVar("chatClassColorOverride") ~= "0") then
+		C_CVar.SetCVar("chatClassColorOverride", 0)
+	end
 
 	--Chat:MoveChatFrames()
 	FCF_SelectDockFrame(ChatFrame1)
@@ -1126,13 +1134,14 @@ function Chat:SetChatTypeInfo()
 	ChatTypeInfo["CHANNEL18"].colorNameByClass = true
 	ChatTypeInfo["CHANNEL19"].colorNameByClass = true
 	ChatTypeInfo["CHANNEL20"].colorNameByClass = true
+	ChatTypeInfo["GUILD_ACHIEVEMENT"].colorNameByClass = true
 
-	if (C_CVar.GetCVar("colorChatNamesByClass") ~= 1) then
-		C_CVar.SetCVar("colorChatNamesByClass", 1)
+	if (C_CVar.GetCVar("colorChatNamesByClass") ~= "0") then
+		C_CVar.SetCVar("colorChatNamesByClass", 0)
 	end
 
-	if (C_CVar.GetCVar("chatClassColorOverride") ~= 1) then
-		C_CVar.SetCVar("chatClassColorOverride", 1)
+	if (C_CVar.GetCVar("chatClassColorOverride") ~= "0") then
+		C_CVar.SetCVar("chatClassColorOverride", 0)
 	end
 end
 

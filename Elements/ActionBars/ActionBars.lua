@@ -122,12 +122,12 @@ function AB:Disable(object)
 end
 
 function AB:EnableBar(bar)
-	RegisterStateDriver(bar, "visibility", "[nopetbattle] show; hide")
+	RegisterAttributeDriver(bar, "state-visibility", "[nopetbattle] show; hide")
 	bar:Show()
 end
 
 function AB:DisableBar(bar)
-	UnregisterStateDriver(bar, "visibility")
+	UnregisterAttributeDriver(bar, "state-visibility")
 	bar:Hide()
 end
 
@@ -639,9 +639,9 @@ function AB:CreateBar1()
 	]])
 
 	self.Bar1:SetAttribute("_onstate-page", [[
-		if HasVehicleActionBar() then
+		if HasVehicleActionBar and HasVehicleActionBar() then
 			newstate = GetVehicleBarIndex() or newstate
-		elseif HasOverrideActionBar() then
+		elseif GetOverrideBarIndex and HasOverrideActionBar() then
 			newstate = GetOverrideBarIndex() or newstate
 		elseif HasTempShapeshiftActionBar() then
 			newstate = GetTempShapeshiftBarIndex() or newstate
@@ -656,7 +656,7 @@ function AB:CreateBar1()
 		end
 	]])
 
-    RegisterStateDriver(self.Bar1, "page", "[overridebar] 14; [shapeshift] 13; [possessbar][vehicleui] 12; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10; [bonusbar:5] 11; [form] 1; 1")
+    RegisterAttributeDriver(self.Bar1, "state-page", "[overridebar] 14; [shapeshift] 13; [possessbar][vehicleui] 12; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9; [bonusbar:4] 10; [bonusbar:5] 11; [form] 1; 1")
 
 	self:PositionButtons(self.Bar1, Settings["ab-bar1-button-max"], Settings["ab-bar1-per-row"], Settings["ab-bar1-button-size"], Settings["ab-bar1-button-gap"])
 
