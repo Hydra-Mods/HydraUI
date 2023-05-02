@@ -1183,6 +1183,14 @@ function Chat:Load()
 
 	self:RegisterEvent("UI_SCALE_CHANGED")
 	self:SetScript("OnEvent", self.MoveChatFrames)
+
+	local Hider = CreateFrame("Frame", nil, HydraUI.UIParent, "SecureHandlerStateTemplate")
+	Hider:Hide()
+
+	-- Needs styling for 10.1.0
+	if ChatFrame1.ScrollBar then
+		ChatFrame1.ScrollBar:SetParent(Hider)
+	end
 end
 
 HydraUI.FormatLinks = FormatLinks

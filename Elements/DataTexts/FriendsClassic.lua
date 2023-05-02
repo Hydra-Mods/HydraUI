@@ -327,6 +327,8 @@ local OnEnter = function(self)
 
 	if HydraUI.IsTBC then
 		ID = 5
+	elseif HydraUI.IsWrath then
+		ID = 11
 	end
 
 	GameTooltip:AddDoubleLine(Label, format("%s/%s", NumBNOnline + NumFriendsOnline, NumFriends + NumBNFriends), nil, nil, nil, 1, 1, 1)

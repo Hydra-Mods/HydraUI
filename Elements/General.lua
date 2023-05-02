@@ -158,8 +158,13 @@ if (not HydraUI.IsClassic) then
 	function SeatIndicator:Load()
 		local Anchor, Parent, Anchor2, X, Y = VehicleSeatIndicator:GetPoint()
 
+		if Anchor then
+			self:SetPoint(Anchor, Parent, Anchor2, X, Y)
+		else
+			self:SetPoint("CENTER", UIParent, 0, 0)
+		end
+
 		self:SetSize(VehicleSeatIndicator:GetSize())
-		self:SetPoint(Anchor, Parent, Anchor2, X, Y)
 
 		VehicleSeatIndicator:SetScript("OnShow", nil)
 		VehicleSeatIndicator:SetScript("OnHide", nil)

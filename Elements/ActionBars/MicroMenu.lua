@@ -164,7 +164,7 @@ function MicroButtons:Load()
 		self.Buttons[i]:SetParent(self.Panel)
 		self.Buttons[i]:ClearAllPoints()
 		self.Buttons[i]:SetHitRectInsets(0, 0, 0, 0)
-		self.Buttons[i]:SetSize(28, 36)
+		--self.Buttons[i]:SetSize(28, 36) -- 10.1.0 Fix required
 		self.Buttons[i]:HookScript("OnEnter", ButtonOnEnter)
 		self.Buttons[i]:HookScript("OnLeave", ButtonOnLeave)
 
