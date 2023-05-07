@@ -19,6 +19,7 @@ HydraUI.UIParent:SetAllPoints(UIParent)
 HydraUI.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
 
 -- Constants
+local GetAddOnMetadata = C_AddOns and C_AddOns.GetAddOnMetadata or GetAddOnMetadata
 HydraUI.UIVersion = GetAddOnMetadata("HydraUI", "Version")
 HydraUI.UserName = UnitName("player")
 HydraUI.UserClass = select(2, UnitClass("player"))
