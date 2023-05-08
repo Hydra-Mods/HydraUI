@@ -39,7 +39,7 @@ local Update = function(self)
 
 	if (GetInventoryItemID("player", 0) > 0) then -- Ammo slot
 		Count = GetInventoryItemCount("player", 0)
-	else
+	elseif (GetInventoryItemCount("player", 18) and GetInventoryItemCount("player", 18) > 1) then -- Ranged slot
 		Count = GetInventoryItemCount("player", 18)
 	end
 
@@ -64,6 +64,7 @@ end
 local OnEnable = function(self)
 	self:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 	self:RegisterEvent("UNIT_INVENTORY_CHANGED")
+	self:RegisterEvent("UPDATE_INVENTORY_DURABILITY")
 	self:SetScript("OnEvent", Update)
 	self:SetScript("OnEnter", OnEnter)
 	self:SetScript("OnLeave", OnLeave)
@@ -83,6 +84,7 @@ end
 local OnDisable = function(self)
 	self:UnregisterEvent("PLAYER_EQUIPMENT_CHANGED")
 	self:UnregisterEvent("UNIT_INVENTORY_CHANGED")
+	self:UnregisterEvent("UPDATE_INVENTORY_DURABILITY")
 	self:SetScript("OnEvent", nil)
 	self:SetScript("OnEnter", nil)
 	self:SetScript("OnLeave", nil)

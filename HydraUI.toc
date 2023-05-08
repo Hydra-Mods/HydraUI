@@ -4,6 +4,7 @@
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: Interface replacement for Shadowlands
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
+## IconTexture: Interface\AddOns\HydraUI\Elements\Assets\Textures\HydraUIBadgeCrisp
 
 Elements\Initialize.lua
 Elements\Libraries\LibStub.lua
