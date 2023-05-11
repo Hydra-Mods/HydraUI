@@ -1134,7 +1134,10 @@ function Chat:SetChatTypeInfo()
 	ChatTypeInfo["CHANNEL18"].colorNameByClass = true
 	ChatTypeInfo["CHANNEL19"].colorNameByClass = true
 	ChatTypeInfo["CHANNEL20"].colorNameByClass = true
-	ChatTypeInfo["GUILD_ACHIEVEMENT"].colorNameByClass = true
+
+	if (not HydraUI.IsClassic) then
+		ChatTypeInfo["GUILD_ACHIEVEMENT"].colorNameByClass = true
+	end
 
 	if (C_CVar.GetCVar("colorChatNamesByClass") ~= "0") then
 		C_CVar.SetCVar("colorChatNamesByClass", 0)

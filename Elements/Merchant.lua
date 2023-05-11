@@ -39,8 +39,14 @@ function HydraUI:GetTrashValue()
 			if (Link and ID and not AutoVendor.Filter[ID]) then
 				local Quality = select(3, GetItemInfo(Link))
 				local VendorPrice = select(11, GetItemInfo(Link))
-				local Count = GetContainerItemInfo(Bag, Slot).stackCount or 1
 				local TotalPrice = VendorPrice
+				local Count
+
+				if HydraUI.IsClassic then
+					Count = select(2, GetContainerItemInfo(Bag, Slot)) or 1
+				else
+					Count = GetContainerItemInfo(Bag, Slot).stackCount or 1
+				end
 
 				if ((VendorPrice and (VendorPrice > 0)) and Count) then
 					TotalPrice = VendorPrice * Count
@@ -70,7 +76,13 @@ function AutoVendor:OnEvent()
 				local TotalPrice = 0
 				local Quality = select(3, GetItemInfo(Link))
 				local VendorPrice = select(11, GetItemInfo(Link))
-				local Count = select(2, GetContainerItemInfo(Bag, Slot)) or 1
+				local Count
+
+				if HydraUI.IsClassic then
+					Count = select(2, GetContainerItemInfo(Bag, Slot)) or 1
+				else
+					Count = GetContainerItemInfo(Bag, Slot).stackCount or 1
+				end
 
 				if ((VendorPrice and (VendorPrice > 0)) and Count) then
 					TotalPrice = VendorPrice * Count

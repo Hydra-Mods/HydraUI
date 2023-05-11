@@ -9,7 +9,7 @@ local Patrons = {
 	{},
 	{"deck"},
 	{"JDoubleU00", "sylvester", "thurin"},
-	{},
+	{"Paul D."},
 }
 
 local Previous = {

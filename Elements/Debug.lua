@@ -57,9 +57,7 @@ if HydraUI.IsMainline then
 	end
 
 	GetSpecInfo = function()
-		local Name = select(2, GetSpecializationInfo(GetSpecialization()))
-
-		return Name
+		return select(2, GetSpecializationInfo(GetSpecialization()))
 	end
 else
 	GetQuests = function()
