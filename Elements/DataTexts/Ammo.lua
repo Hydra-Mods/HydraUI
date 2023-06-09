@@ -90,7 +90,6 @@ local OnDisable = function(self)
 	self:SetScript("OnLeave", nil)
 	self:SetScript("OnMouseUp", nil)
 
-	self.Highlight:SetScript("OnFinished", nil)
 	self.Highlight:SetAlpha(0)
 
 	self.Text:SetText("")

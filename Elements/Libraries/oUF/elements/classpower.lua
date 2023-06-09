@@ -183,7 +183,7 @@ local function Visibility(self, event, unit)
 	local element = self.ClassPower
 	local shouldEnable
 
-	if(UnitHasVehicleUI('player')) then
+	if (UnitHasVehicleUI and UnitHasVehicleUI('player')) then
 		shouldEnable = PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
 	elseif(ClassPowerID) then

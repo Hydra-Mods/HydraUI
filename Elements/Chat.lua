@@ -1182,6 +1182,8 @@ function Chat:Load()
 
 	if HydraUI.IsMainline then
 		self:RegisterEvent("PLAYER_ENTERING_WORLD")
+		self:RegisterEvent("CVAR_UPDATE")
+		self:RegisterEvent("PLAYER_LEVEL_CHANGED")
 	end
 
 	self:RegisterEvent("UI_SCALE_CHANGED")

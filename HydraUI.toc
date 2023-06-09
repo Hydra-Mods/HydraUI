@@ -1,8 +1,8 @@
 ## Interface: 100100
 ## Author: Hydra
-## Version: 2.08
+## Version: 2.09
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
-## Notes: Interface replacement for Dragonflight
+## Notes: Interface replacement for Shadowlands
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
 ## IconTexture: Interface\AddOns\HydraUI\Elements\Assets\Textures\HydraUIBadgeCrisp
 
