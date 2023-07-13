@@ -326,6 +326,10 @@ local TotemOnUpdate = function(self, elapsed)
 end
 
 UF.PostUpdateTotems = function(self, slot, havetotem, name, start, duration, icon)
+	if (not self[slot]) then
+		return
+	end
+
 	if (start and duration > 0) then
 		local Bar = self[slot].Bar
 
