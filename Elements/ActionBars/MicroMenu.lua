@@ -192,13 +192,17 @@ function MicroButtons:Load()
 		local Disabled = self.Buttons[i]:GetDisabledTexture()
 		local Highlight = self.Buttons[i]:GetHighlightTexture()
 
-		Normal:ClearAllPoints()
-		Normal:SetPoint("TOPLEFT", self.Buttons[i], 2, -2)
-		Normal:SetPoint("BOTTOMRIGHT", self.Buttons[i], -2, 2)
+		if Normal then
+			Normal:ClearAllPoints()
+			Normal:SetPoint("TOPLEFT", self.Buttons[i], 2, -2)
+			Normal:SetPoint("BOTTOMRIGHT", self.Buttons[i], -2, 2)
+		end
 
-		Pushed:ClearAllPoints()
-		Pushed:SetPoint("TOPLEFT", self.Buttons[i], 2, -2)
-		Pushed:SetPoint("BOTTOMRIGHT", self.Buttons[i], -2, 2)
+		if Pushed then
+			Pushed:ClearAllPoints()
+			Pushed:SetPoint("TOPLEFT", self.Buttons[i], 2, -2)
+			Pushed:SetPoint("BOTTOMRIGHT", self.Buttons[i], -2, 2)
+		end
 
 		if Disabled then
 			Disabled:ClearAllPoints()
@@ -207,19 +211,26 @@ function MicroButtons:Load()
 		end
 
 		if (not HydraUI.IsMainline) then
-			Normal:SetTexCoord(0.2, 0.85, 0.5, 0.9)
-			Pushed:SetTexCoord(0.2, 0.85, 0.5, 0.9)
+			if Normal then
+				Normal:SetTexCoord(0.2, 0.85, 0.5, 0.9)
+			end
+
+			if Pushed then
+				Pushed:SetTexCoord(0.2, 0.85, 0.5, 0.9)
+			end
 
 			if Disabled then
 				Disabled:SetTexCoord(0.2, 0.85, 0.5, 0.9)
 			end
 		end
 
-		Highlight:ClearAllPoints()
-		Highlight:SetPoint("TOPLEFT", self.Buttons[i], 2, -2)
-		Highlight:SetPoint("BOTTOMRIGHT", self.Buttons[i], -2, 2)
-		Highlight:SetTexture(Assets:GetTexture("Blank"))
-		Highlight:SetVertexColor(1, 1, 1, 0.2)
+		if Highlight then
+			Highlight:ClearAllPoints()
+			Highlight:SetPoint("TOPLEFT", self.Buttons[i], 2, -2)
+			Highlight:SetPoint("BOTTOMRIGHT", self.Buttons[i], -2, 2)
+			Highlight:SetTexture(Assets:GetTexture("Blank"))
+			Highlight:SetVertexColor(1, 1, 1, 0.2)
+		end
 	end
 
 	if MicroButtonPortrait then

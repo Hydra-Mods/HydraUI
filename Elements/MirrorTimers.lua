@@ -61,6 +61,10 @@ MirrorTimers.MirrorTimer_Show = function(timer, value, maxvalue, scale, paused, 
 end
 
 function MirrorTimers:Load()
+	if HydraUI.IsMainline then
+		return -- Patch 10.1.5; Need a rewrite
+	end
+
 	self.Bar = CreateFrame("StatusBar", "HydraUI Timers Bar", HydraUI.UIParent)
 	self.Bar:SetPoint("TOP", HydraUI.UIParent, 0, -120)
 	self.Bar:SetSize(210, 20)
