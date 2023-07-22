@@ -185,7 +185,7 @@ function MinimapButtons:SkinButtons()
 
 				if (Type == "Button" or Type == "Frame") then
 					if (Child.SetHighlightTexture) then
-						local Highlight = Child:CreateTexture(nil, "ARTWORK", button)
+						local Highlight = Child:CreateTexture(nil, "ARTWORK")
 						Highlight:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 						Highlight:SetVertexColor(1, 1, 1, 0.2)
 						Highlight:SetPoint("TOPLEFT", Child, 1, -1)
@@ -196,7 +196,7 @@ function MinimapButtons:SkinButtons()
 					end
 
 					if (Child.SetPushedTexture) then
-						local Pushed = Child:CreateTexture(nil, "ARTWORK", button)
+						local Pushed = Child:CreateTexture(nil, "ARTWORK")
 						Pushed:SetTexture(Assets:GetTexture(Settings["action-bars-button-highlight"]))
 						Pushed:SetVertexColor(0.9, 0.8, 0.1, 0.3)
 						Pushed:SetPoint("TOPLEFT", Child, 1, -1)

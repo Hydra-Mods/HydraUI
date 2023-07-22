@@ -11,33 +11,6 @@ local match = string.match
 local reverse = string.reverse
 
 -- Tools
-HydraUI.TimerPool = {}
-
-local TimerOnFinished = function(self)
-	self.Hook(self.Arg)
-	tinsert(HydraUI.TimerPool, self)
-end
-
-function HydraUI:StartTimer(seconds, callback, arg)
-	local Timer
-
-	if (not self.TimerParent) then
-		self.TimerParent = CreateAnimationGroup(self)
-	end
-
-	if self.TimerPool[1] then
-		Timer = tremove(self.TimerPool, 1)
-	else
-		Timer = self.TimerParent:CreateAnimation("sleep")
-		Timer:SetScript("OnFinished", TimerOnFinished)
-	end
-
-	Timer.Hook = callback
-	Timer.Arg = arg
-	Timer:SetDuration(seconds)
-	Timer:Play()
-end
-
 function HydraUI:HexToRGB(hex)
 	if (not hex) then
 		return

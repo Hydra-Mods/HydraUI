@@ -59,14 +59,13 @@ Popup.CreatePopupFrame = function(self)
 	self:SetAlpha(0)
 	self:Hide()
 
-	self.Group = CreateAnimationGroup(self)
 
-	self.FadeIn = self.Group:CreateAnimation("Fade")
+	self.FadeIn = LibMotion:CreateAnimation(self, "Fade")
 	self.FadeIn:SetEasing("in")
 	self.FadeIn:SetDuration(0.15)
 	self.FadeIn:SetChange(1)
 
-	self.FadeOut = self.Group:CreateAnimation("Fade")
+	self.FadeOut = LibMotion:CreateAnimation(self, "Fade")
 	self.FadeOut:SetEasing("out")
 	self.FadeOut:SetDuration(0.15)
 	self.FadeOut:SetChange(0)

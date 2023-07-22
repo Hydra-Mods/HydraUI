@@ -92,7 +92,6 @@ function Cooldowns:OnUpdate(ela)
 					if Texture then
 						self.Icon:SetTexture(Texture)
 						self.AnimIn:Play()
-						self.Hold:Play()
 
 						if Settings["cooldowns-text"] then
 							SpellName = GetSpellInfo(ID)
@@ -128,7 +127,6 @@ function Cooldowns:OnUpdate(ela)
 					if Texture then
 						self.Icon:SetTexture(Texture)
 						self.AnimIn:Play()
-						self.Hold:Play()
 
 						if Settings["cooldowns-text"] then
 							SpellName = GetItemInfo(Info.ID)
@@ -265,21 +263,17 @@ function Cooldowns:Load()
 	self.Text:SetWidth(Settings["cooldowns-size"] * 2.5)
 	self.Text:SetJustifyH("CENTER")
 
-	self.Anim = CreateAnimationGroup(self)
-
-	self.AnimIn = self.Anim:CreateAnimation("Fade")
+	self.AnimIn = LibMotion:CreateAnimation(self, "Fade")
 	self.AnimIn:SetChange(1)
 	self.AnimIn:SetDuration(0.2)
+	self.AnimIn:SetEndDelay(Settings["cooldowns-hold"] + 0.2)
 	self.AnimIn:SetEasing("in")
+	self.AnimIn:SetScript("OnFinished", OnFinished)
 
-	self.AnimOut = self.Anim:CreateAnimation("Fade")
+	self.AnimOut = LibMotion:CreateAnimation(self, "Fade")
 	self.AnimOut:SetChange(0)
 	self.AnimOut:SetDuration(0.6)
 	self.AnimOut:SetEasing("out")
-
-	self.Hold = self.Anim:CreateAnimation("Sleep")
-	self.Hold:SetDuration(Settings["cooldowns-hold"] + 0.2)
-	self.Hold:SetScript("OnFinished", OnFinished)
 
 	HydraUI:CreateMover(self.Anchor)
 
@@ -313,7 +307,7 @@ local UpdateCooldownSize = function(value)
 end
 
 local UpdateCooldownHold = function(value)
-	Cooldowns.Hold:SetDuration(value + 0.2)
+	Cooldowns.AnimIn:SetEndDelay(value + 0.2)
 end
 
 local TestCooldown = function()
@@ -325,7 +319,6 @@ local TestCooldown = function()
 
 	Cooldowns.Icon:SetTexture(select(10, GetItemInfo(6948)))
 	Cooldowns.AnimIn:Play()
-	Cooldowns.Hold:Play()
 end
 
 HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["General"], function(left, right)

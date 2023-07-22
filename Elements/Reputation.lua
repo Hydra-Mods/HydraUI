@@ -66,14 +66,12 @@ function Reputation:CreateBar()
 		self:SetAlpha(Settings["reputation-mouseover-opacity"] / 100)
 	end
 
-	self.Fade = CreateAnimationGroup(self)
-
-	self.FadeIn = self.Fade:CreateAnimation("Fade")
+	self.FadeIn = LibMotion:CreateAnimation(self, "Fade")
 	self.FadeIn:SetEasing("in")
 	self.FadeIn:SetDuration(0.15)
 	self.FadeIn:SetChange(1)
 
-	self.FadeOut = self.Fade:CreateAnimation("Fade")
+	self.FadeOut = LibMotion:CreateAnimation(self, "Fade")
 	self.FadeOut:SetEasing("out")
 	self.FadeOut:SetDuration(0.15)
 	self.FadeOut:SetChange(0)
@@ -112,22 +110,24 @@ function Reputation:CreateBar()
 	self.Shine:SetAlpha(0)
 	self.Shine:SetDrawLayer("ARTWORK", 7)
 
-	self.Change = CreateAnimationGroup(self.Bar):CreateAnimation("Progress")
+	self.Change = LibMotion:CreateAnimation(self.Bar, "Progress")
 	self.Change:SetEasing("inout")
 	self.Change:SetDuration(0.3)
 
-	self.Flash = CreateAnimationGroup(self.Shine)
+	self.Flash = LibMotion:CreateAnimationGroup()
 
-	self.Flash.In = self.Flash:CreateAnimation("Fade")
+	self.Flash.In = LibMotion:CreateAnimation(self.Shine, "Fade")
 	self.Flash.In:SetEasing("in")
 	self.Flash.In:SetDuration(0.3)
 	self.Flash.In:SetChange(0.3)
+	self.Flash.In:SetGroup(self.Flash)
 
-	self.Flash.Out = self.Flash:CreateAnimation("Fade")
+	self.Flash.Out = LibMotion:CreateAnimation(self.Shine, "Fade")
 	self.Flash.Out:SetOrder(2)
 	self.Flash.Out:SetEasing("out")
 	self.Flash.Out:SetDuration(0.5)
 	self.Flash.Out:SetChange(0)
+	self.Flash.Out:SetGroup(self.Flash)
 
 	self.Progress = self.Bar:CreateFontString(nil, "OVERLAY")
 	self.Progress:SetPoint("LEFT", self.Bar, 5, 0)

@@ -1,6 +1,6 @@
 ## Interface: 30402
 ## Author: Hydra
-## Version: 2.12
+## Version: 2.13
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: Interface replacement for Wrath of the Lich King
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
@@ -13,7 +13,7 @@ Elements\Libraries\LibSharedMedia-3.0.lua
 Elements\Libraries\AceSerializer-3.0.lua
 Elements\Libraries\ChatThrottleLib.lua
 Elements\Libraries\LibDeflate.lua
-Elements\Libraries\LibAnim.lua
+Elements\Libraries\LibMotion.lua
 Elements\Libraries\oUF\oUF_Wrath.xml
 Elements\Libraries\LibQuestXP\LibQuestXPDB.lua
 Elements\Libraries\LibQuestXP\LibQuestXP.lua
