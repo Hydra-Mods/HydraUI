@@ -46,14 +46,14 @@ function DruidMana:CreateBar()
 	self:SetSize(Settings["unitframes-player-width"], Settings["unitframes-player-power-height"] + 2)
 	self:SetPoint("CENTER", HydraUI.UIParent, 0, -180)
 
-	self.Fade = CreateAnimationGroup(self)
+	self.Fade = LibMotion:CreateAnimationGroup()
 
-	self.FadeIn = self.Fade:CreateAnimation("Fade")
+	self.FadeIn = LibMotion:CreateAnimation(self, "Fade")
 	self.FadeIn:SetEasing("in")
 	self.FadeIn:SetDuration(0.15)
 	self.FadeIn:SetChange(1)
 
-	self.FadeOut = self.Fade:CreateAnimation("Fade")
+	self.FadeOut = LibMotion:CreateAnimation(self, "Fade")
 	self.FadeOut:SetEasing("out")
 	self.FadeOut:SetDuration(0.15)
 	self.FadeOut:SetChange(0)
