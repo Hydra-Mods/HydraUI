@@ -3160,7 +3160,7 @@ GUI.Widgets.CreateColorSelection = function(self, id, value, label, tooltip, hoo
 	Button.Texture:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Button.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-bright-color"]))
 
-	Button.Transition = LibMotion:CreateAnimation(Swatch.Texture, "Color")
+	Button.Transition = LibMotion:CreateAnimation(Swatch.Texture, "color")
 	Button.Transition:SetColorType("vertex")
 	Button.Transition:SetEasing("in")
 	Button.Transition:SetDuration(0.3)
