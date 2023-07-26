@@ -167,22 +167,24 @@ function Experience:CreateBar()
 	self.Shine:SetAlpha(0)
 	self.Shine:SetDrawLayer("ARTWORK", 7)
 
-	self.Change = CreateAnimationGroup(self.Bar):CreateAnimation("Progress")
+	self.Change = LibMotion:CreateAnimation(self.Bar, "Progress")
 	self.Change:SetEasing("in")
 	self.Change:SetDuration(0.3)
 
-	self.Flash = CreateAnimationGroup(self.Shine)
+	self.Flash = LibMotion:CreateAnimationGroup()
 
-	self.Flash.In = self.Flash:CreateAnimation("Fade")
+	self.Flash.In = LibMotion:CreateAnimation(self.Shine, "Fade")
 	self.Flash.In:SetEasing("in")
 	self.Flash.In:SetDuration(0.3)
 	self.Flash.In:SetChange(0.3)
+	self.Flash.In:SetGroup(self.Flash)
 
-	self.Flash.Out = self.Flash:CreateAnimation("Fade")
+	self.Flash.Out = LibMotion:CreateAnimation(self.Shine, "Fade")
 	self.Flash.Out:SetOrder(2)
 	self.Flash.Out:SetEasing("out")
 	self.Flash.Out:SetDuration(0.5)
 	self.Flash.Out:SetChange(0)
+	self.Flash.Out:SetGroup(self.Flash)
 
 	self.Bar.Rested = CreateFrame("StatusBar", nil, self.Bar)
 	self.Bar.Rested:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))

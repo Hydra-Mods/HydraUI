@@ -14,6 +14,13 @@ local GetContainerItemLink = GetContainerItemLink
 local GetContainerItemID = GetContainerItemID
 local GetContainerItemInfo = GetContainerItemInfo
 
+if C_Container then
+	GetContainerNumSlots = C_Container.GetContainerNumSlots
+	GetContainerItemLink = C_Container.GetContainerItemLink
+	GetContainerItemID = C_Container.GetContainerItemID
+	GetContainerItemInfo = C_Container.GetContainerItemInfo	
+end
+
 local Delete = HydraUI:NewModule("Delete")
 
 Delete.FilterIDs = {}

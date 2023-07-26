@@ -101,19 +101,16 @@ local CreateAlertFrame = function()
 	AlertFrame:SetScript("OnEnter", OnEnter)
 	AlertFrame:SetScript("OnLeave", OnLeave)
 
-	AlertFrame.Hold = CreateAnimationGroup(AlertFrame):CreateAnimation("Sleep")
-	AlertFrame.Hold:SetDuration(HOLD_TIME)
-	AlertFrame.Hold:SetScript("OnFinished", HoldOnFinished)
+	AlertFrame.Fade = LibMotion:CreateAnimationGroup()
 
-	AlertFrame.Fade = CreateAnimationGroup(AlertFrame)
-
-	AlertFrame.FadeIn = AlertFrame.Fade:CreateAnimation("Fade")
+	AlertFrame.FadeIn = LibMotion:CreateAnimation(AlertFrame, "Fade")
 	AlertFrame.FadeIn:SetEasing("in")
 	AlertFrame.FadeIn:SetDuration(FADE_IN_TIME)
+	AlertFrame.FadeIn:SetEndDelay(HOLD_TIME)
 	AlertFrame.FadeIn:SetChange(1)
 	AlertFrame.FadeIn:SetScript("OnPlay", FadeInOnPlay)
 
-	AlertFrame.FadeOut = AlertFrame.Fade:CreateAnimation("Fade")
+	AlertFrame.FadeOut = LibMotion:CreateAnimation(AlertFrame, "Fade")
 	AlertFrame.FadeOut:SetEasing("out")
 	AlertFrame.FadeOut:SetDuration(FADE_OUT_TIME)
 	AlertFrame.FadeOut:SetChange(0)

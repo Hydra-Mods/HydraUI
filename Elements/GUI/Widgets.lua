@@ -216,30 +216,34 @@ GUI.Widgets.CreateAnimatedLine = function(self, id, left, right, r, g, b)
 	Anchor.Bottom:SetTexture(Assets:GetTexture("RenHorizonDown"))
 	Anchor.Bottom:SetVertexColor(r * 1.7, g * 1.7, b * 1.7)
 
-	Anchor.Parent.Fade = CreateAnimationGroup(Anchor.Parent)
+	Anchor.Parent.Fade = LibMotion:CreateAnimationGroup()
 	Anchor.Parent.Fade:SetLooping(true)
 
-	Anchor.Parent.In = Anchor.Parent.Fade:CreateAnimation("Fade")
+	Anchor.Parent.In = LibMotion:CreateAnimation(Anchor.Parent, "Fade")
 	Anchor.Parent.In:SetEasing("in")
 	Anchor.Parent.In:SetDuration(1)
 	Anchor.Parent.In:SetChange(0.5)
+	Anchor.Parent.In:SetGroup(Anchor.Parent.Fade)
 
-	Anchor.Parent.Out = Anchor.Parent.Fade:CreateAnimation("Fade")
+	Anchor.Parent.Out = LibMotion:CreateAnimation(Anchor.Parent, "Fade")
 	Anchor.Parent.Out:SetEasing("out")
 	Anchor.Parent.Out:SetDuration(1)
 	Anchor.Parent.Out:SetChange(0.2)
 	Anchor.Parent.Out:SetOrder(2)
+	Anchor.Parent.Out:SetGroup(Anchor.Parent.Fade)
 
-	Anchor.Parent.SIn = Anchor.Parent.Fade:CreateAnimation("Scale")
+	Anchor.Parent.SIn = LibMotion:CreateAnimation(Anchor.Parent, "Scale")
 	Anchor.Parent.SIn:SetEasing("in")
 	Anchor.Parent.SIn:SetDuration(0.5)
 	Anchor.Parent.SIn:SetChange(0.8)
+	Anchor.Parent.SIn:SetGroup(Anchor.Parent.Fade)
 
-	Anchor.Parent.SOut = Anchor.Parent.Fade:CreateAnimation("Scale")
+	Anchor.Parent.SOut = LibMotion:CreateAnimation(Anchor.Parent, "Scale")
 	Anchor.Parent.SOut:SetEasing("out")
 	Anchor.Parent.SOut:SetDuration(0.5)
 	Anchor.Parent.SOut:SetChange(1)
 	Anchor.Parent.SOut:SetOrder(2)
+	Anchor.Parent.SOut:SetGroup(Anchor.Parent.Fade)
 
 	Anchor.Right = Anchor:CreateFontString(nil, "OVERLAY")
 	Anchor.Right:SetPoint("RIGHT", Anchor, -HEADER_SPACING, 0)
@@ -288,26 +292,26 @@ GUI.Widgets.CreateAnimatedDoubleLine = function(self, id, left, right, r, g, b)
 	Anchor.BottomLeft:SetTexture(Assets:GetTexture("RenHorizonDown"))
 	Anchor.BottomLeft:SetVertexColor(r * 1.7, g * 1.7, b * 1.7)
 
-	Anchor.LeftParent.Fade = CreateAnimationGroup(Anchor.LeftParent)
+	Anchor.LeftParent.Fade = LibMotion:CreateAnimationGroup()
 	Anchor.LeftParent.Fade:SetLooping(true)
 
-	Anchor.LeftParent.In = Anchor.LeftParent.Fade:CreateAnimation("Fade")
+	Anchor.LeftParent.In = LibMotion:CreateAnimation(Anchor.LeftParent, "Fade")
 	Anchor.LeftParent.In:SetEasing("in")
 	Anchor.LeftParent.In:SetDuration(1)
 	Anchor.LeftParent.In:SetChange(0.5)
 
-	Anchor.LeftParent.Out = Anchor.LeftParent.Fade:CreateAnimation("Fade")
+	Anchor.LeftParent.Out = LibMotion:CreateAnimation(Anchor.LeftParent, "Fade")
 	Anchor.LeftParent.Out:SetEasing("out")
 	Anchor.LeftParent.Out:SetDuration(1)
 	Anchor.LeftParent.Out:SetChange(0.2)
 	Anchor.LeftParent.Out:SetOrder(2)
 
-	Anchor.LeftParent.SIn = Anchor.LeftParent.Fade:CreateAnimation("Scale")
+	Anchor.LeftParent.SIn = LibMotion:CreateAnimation(Anchor.LeftParent, "Scale")
 	Anchor.LeftParent.SIn:SetEasing("in")
 	Anchor.LeftParent.SIn:SetDuration(0.5)
 	Anchor.LeftParent.SIn:SetChange(0.8)
 
-	Anchor.LeftParent.SOut = Anchor.LeftParent.Fade:CreateAnimation("Scale")
+	Anchor.LeftParent.SOut = LibMotion:CreateAnimation(Anchor.LeftParent, "Scale")
 	Anchor.LeftParent.SOut:SetEasing("out")
 	Anchor.LeftParent.SOut:SetDuration(0.5)
 	Anchor.LeftParent.SOut:SetChange(1)
@@ -341,26 +345,26 @@ GUI.Widgets.CreateAnimatedDoubleLine = function(self, id, left, right, r, g, b)
 		Anchor.BottomRight:SetTexture(Assets:GetTexture("RenHorizonDown"))
 		Anchor.BottomRight:SetVertexColor(r * 1.7, g * 1.7, b * 1.7)
 
-		Anchor.RightParent.Fade = CreateAnimationGroup(Anchor.RightParent)
+		Anchor.RightParent.Fade = LibMotion:CreateAnimationGroup()
 		Anchor.RightParent.Fade:SetLooping(true)
 
-		Anchor.RightParent.In = Anchor.RightParent.Fade:CreateAnimation("Fade")
+		Anchor.RightParent.In = LibMotion:CreateAnimation(Anchor.RightParent, "Fade")
 		Anchor.RightParent.In:SetEasing("in")
 		Anchor.RightParent.In:SetDuration(1)
 		Anchor.RightParent.In:SetChange(0.5)
 
-		Anchor.RightParent.Out = Anchor.RightParent.Fade:CreateAnimation("Fade")
+		Anchor.RightParent.Out = LibMotion:CreateAnimation(Anchor.RightParent, "Fade")
 		Anchor.RightParent.Out:SetEasing("out")
 		Anchor.RightParent.Out:SetDuration(1)
 		Anchor.RightParent.Out:SetChange(0.2)
 		Anchor.RightParent.Out:SetOrder(2)
 
-		Anchor.RightParent.SIn = Anchor.RightParent.Fade:CreateAnimation("Scale")
+		Anchor.RightParent.SIn = LibMotion:CreateAnimation(Anchor.RightParent, "Scale")
 		Anchor.RightParent.SIn:SetEasing("in")
 		Anchor.RightParent.SIn:SetDuration(0.5)
 		Anchor.RightParent.SIn:SetChange(0.8)
 
-		Anchor.RightParent.SOut = Anchor.RightParent.Fade:CreateAnimation("Scale")
+		Anchor.RightParent.SOut = LibMotion:CreateAnimation(Anchor.RightParent, "Scale")
 		Anchor.RightParent.SOut:SetEasing("out")
 		Anchor.RightParent.SOut:SetDuration(0.5)
 		Anchor.RightParent.SOut:SetChange(1)
@@ -573,9 +577,9 @@ GUI.Widgets.CreateStatusBar = function(self, id, value, minvalue, maxvalue, labe
 	Bar.Hook = hook
 	Bar.Tooltip = tooltip
 
-	Bar.Anim = CreateAnimationGroup(Bar):CreateAnimation("progress")
+	Bar.Anim = LibMotion:CreateAnimation(Bar, "Progress")
 	Bar.Anim:SetEasing("in")
-	Bar.Anim:SetDuration(0.15)
+	Bar.Anim:SetDuration(0.3)
 
 	Bar.Spark = Bar:CreateTexture(nil, "ARTWORK")
 	Bar.Spark:SetSize(1, WIDGET_HEIGHT - 2)
@@ -703,16 +707,14 @@ GUI.Widgets.CreateCheckbox = function(self, id, value, label, tooltip, hook)
 	Checkbox.Hover:SetTexture(Assets:GetTexture("RenHorizonUp"))
 	Checkbox.Hover:SetAlpha(0)
 
-	Checkbox.Fade = CreateAnimationGroup(Checkbox.Texture)
-
-	Checkbox.FadeIn = Checkbox.Fade:CreateAnimation("Fade")
+	Checkbox.FadeIn = LibMotion:CreateAnimation(Checkbox.Texture, "Fade")
 	Checkbox.FadeIn:SetEasing("in")
-	Checkbox.FadeIn:SetDuration(0.15)
+	Checkbox.FadeIn:SetDuration(0.3)
 	Checkbox.FadeIn:SetChange(1)
 
-	Checkbox.FadeOut = Checkbox.Fade:CreateAnimation("Fade")
+	Checkbox.FadeOut = LibMotion:CreateAnimation(Checkbox.Texture, "Fade")
 	Checkbox.FadeOut:SetEasing("out")
-	Checkbox.FadeOut:SetDuration(0.15)
+	Checkbox.FadeOut:SetDuration(0.3)
 	Checkbox.FadeOut:SetChange(0)
 
 	if Checkbox.Value then
@@ -889,7 +891,7 @@ GUI.Widgets.CreateSwitch = function(self, id, value, label, tooltip, hook)
 	Switch.Highlight:SetVertexColor(1, 1, 1, 0.4)
 	Switch.Highlight:SetAlpha(0)
 
-	Switch.Move = CreateAnimationGroup(Switch.Thumb):CreateAnimation("Move")
+	Switch.Move = LibMotion:CreateAnimation(Switch.Thumb, "Move")
 	Switch.Move:SetEasing("in")
 	Switch.Move:SetDuration(0.1)
 
@@ -1067,16 +1069,14 @@ function GUI:CreateInputWindow()
 	Window.BlackTexture:SetTexture(Assets:GetTexture("Blank"))
 	Window.BlackTexture:SetVertexColor(0, 0, 0, 0)]]
 
-	Window.Fade = CreateAnimationGroup(Window)
-
-	Window.FadeIn = Window.Fade:CreateAnimation("Fade")
+	Window.FadeIn = LibMotion:CreateAnimation(Window, "Fade")
 	Window.FadeIn:SetEasing("in")
-	Window.FadeIn:SetDuration(0.15)
+	Window.FadeIn:SetDuration(0.3)
 	Window.FadeIn:SetChange(1)
 
-	Window.FadeOut = Window.Fade:CreateAnimation("Fade")
+	Window.FadeOut = LibMotion:CreateAnimation(Window, "Fade")
 	Window.FadeOut:SetEasing("out")
-	Window.FadeOut:SetDuration(0.15)
+	Window.FadeOut:SetDuration(0.3)
 	Window.FadeOut:SetChange(0)
 	Window.FadeOut:SetScript("OnFinished", FadeOnFinished)
 
@@ -1176,17 +1176,15 @@ GUI.Widgets.CreateInput = function(self, id, value, label, tooltip, hook)
 	Input.Text:SetJustifyH("LEFT")
 	Input.Text:SetText("|cFF"..Settings["ui-widget-font-color"]..label.."|r")
 
-	Input.Fade = CreateAnimationGroup(Input.Flash)
-
-	Input.FadeIn = Input.Fade:CreateAnimation("Fade")
+	Input.FadeIn = LibMotion:CreateAnimation(Input.Flash, "Fade")
 	Input.FadeIn:SetEasing("in")
-	Input.FadeIn:SetDuration(0.15)
+	Input.FadeIn:SetDuration(0.3)
 	Input.FadeIn:SetChange(SELECTED_HIGHLIGHT_ALPHA)
 
-	Input.FadeOut = Input.Fade:CreateAnimation("Fade")
+	Input.FadeOut = LibMotion:CreateAnimation(Input.Flash, "Fade")
 	Input.FadeOut:SetOrder(2)
 	Input.FadeOut:SetEasing("out")
-	Input.FadeOut:SetDuration(0.15)
+	Input.FadeOut:SetDuration(0.3)
 	Input.FadeOut:SetChange(0)
 
 	tinsert(self.Widgets, Anchor)
@@ -1320,17 +1318,15 @@ GUI.Widgets.CreateInputWithButton = function(self, id, value, button, label, too
 	Input.Box:SetScript("OnEnter", InputOnEnter)
 	Input.Box:SetScript("OnLeave", InputOnLeave)
 
-	Input.Fade = CreateAnimationGroup(Input.Flash)
-
-	Input.FadeIn = Input.Fade:CreateAnimation("Fade")
+	Input.FadeIn = LibMotion:CreateAnimation(Input.Flash, "Fade")
 	Input.FadeIn:SetEasing("in")
-	Input.FadeIn:SetDuration(0.15)
+	Input.FadeIn:SetDuration(0.3)
 	Input.FadeIn:SetChange(SELECTED_HIGHLIGHT_ALPHA)
 
-	Input.FadeOut = Input.Fade:CreateAnimation("Fade")
+	Input.FadeOut = LibMotion:CreateAnimation(Input.Flash, "Fade")
 	Input.FadeOut:SetOrder(2)
 	Input.FadeOut:SetEasing("out")
-	Input.FadeOut:SetDuration(0.15)
+	Input.FadeOut:SetDuration(0.3)
 	Input.FadeOut:SetChange(0)
 
 	tinsert(self.Widgets, Anchor)
@@ -2112,16 +2108,14 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 	Dropdown.Button.Menu = Dropdown.Menu
 	Dropdown.Button.Parent = Dropdown
 
-	Dropdown.Menu.Group = CreateAnimationGroup(Dropdown.Menu)
-
-	Dropdown.Menu.FadeIn = Dropdown.Menu.Group:CreateAnimation("Fade")
+	Dropdown.Menu.FadeIn = LibMotion:CreateAnimation(Dropdown.Menu, "Fade")
 	Dropdown.Menu.FadeIn:SetEasing("in")
-	Dropdown.Menu.FadeIn:SetDuration(0.15)
+	Dropdown.Menu.FadeIn:SetDuration(0.3)
 	Dropdown.Menu.FadeIn:SetChange(1)
 
-	Dropdown.Menu.FadeOut = Dropdown.Menu.Group:CreateAnimation("Fade")
+	Dropdown.Menu.FadeOut = LibMotion:CreateAnimation(Dropdown.Menu, "Fade")
 	Dropdown.Menu.FadeOut:SetEasing("out")
-	Dropdown.Menu.FadeOut:SetDuration(0.15)
+	Dropdown.Menu.FadeOut:SetDuration(0.3)
 	Dropdown.Menu.FadeOut:SetChange(0)
 	Dropdown.Menu.FadeOut:SetScript("OnFinished", FadeOnFinished)
 
@@ -2879,10 +2873,10 @@ local CreateColorPicker = function()
 	ColorPicker.CompareNew:SetPoint("BOTTOMRIGHT", ColorPicker.CompareNewParent, -1, 1)
 	ColorPicker.CompareNew:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 
-	ColorPicker.Transition = CreateAnimationGroup(ColorPicker.CompareNew):CreateAnimation("Color")
+	ColorPicker.Transition = LibMotion:CreateAnimation(ColorPicker.CompareNew, "Color")
 	ColorPicker.Transition:SetColorType("vertex")
 	ColorPicker.Transition:SetEasing("in")
-	ColorPicker.Transition:SetDuration(0.15)
+	ColorPicker.Transition:SetDuration(0.3)
 
 	-- Accept
 	ColorPicker.Accept = CreateFrame("Frame", nil, ColorPicker, "BackdropTemplate")
@@ -2953,16 +2947,14 @@ local CreateColorPicker = function()
 	ColorPicker.BG:SetBackdropColor(HydraUI:HexToRGB(Settings["ui-window-bg-color"]))
 	ColorPicker.BG:SetBackdropBorderColor(0, 0, 0)
 
-	ColorPicker.Fade = CreateAnimationGroup(ColorPicker)
-
-	ColorPicker.FadeIn = ColorPicker.Fade:CreateAnimation("Fade")
+	ColorPicker.FadeIn = LibMotion:CreateAnimation(ColorPicker, "Fade")
 	ColorPicker.FadeIn:SetEasing("in")
-	ColorPicker.FadeIn:SetDuration(0.15)
+	ColorPicker.FadeIn:SetDuration(0.3)
 	ColorPicker.FadeIn:SetChange(1)
 
-	ColorPicker.FadeOut = ColorPicker.Fade:CreateAnimation("Fade")
+	ColorPicker.FadeOut = LibMotion:CreateAnimation(ColorPicker, "Fade")
 	ColorPicker.FadeOut:SetEasing("out")
-	ColorPicker.FadeOut:SetDuration(0.15)
+	ColorPicker.FadeOut:SetDuration(0.3)
 	ColorPicker.FadeOut:SetChange(0)
 	ColorPicker.FadeOut:SetScript("OnFinished", FadeOnFinished)
 
@@ -3168,10 +3160,10 @@ GUI.Widgets.CreateColorSelection = function(self, id, value, label, tooltip, hoo
 	Button.Texture:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Button.Texture:SetVertexColor(HydraUI:HexToRGB(Settings["ui-widget-bright-color"]))
 
-	Button.Transition = CreateAnimationGroup(Swatch.Texture):CreateAnimation("Color")
+	Button.Transition = LibMotion:CreateAnimation(Swatch.Texture, "color")
 	Button.Transition:SetColorType("vertex")
 	Button.Transition:SetEasing("in")
-	Button.Transition:SetDuration(0.15)
+	Button.Transition:SetDuration(0.3)
 
 	Button.MiddleText = Button:CreateFontString(nil, "OVERLAY")
 	Button.MiddleText:SetPoint("CENTER", Button, 0, 0)

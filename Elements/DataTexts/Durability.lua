@@ -110,7 +110,7 @@ local OnEnable = function(self)
 	self:SetScript("OnMouseUp", OnMouseUp)
 
 	if (not self.Anim) then
-		self.Anim = CreateAnimationGroup(self.Highlight):CreateAnimation("Fade")
+		self.Anim = LibMotion:CreateAnimation(self.Highlight, "Fade")
 		self.Anim:SetEasing("inout")
 		self.Anim:SetDuration(1.2)
 		self.Anim:SetChange(0.5)

@@ -622,14 +622,12 @@ function GUI:CreateWindow(category, name, parent)
 	Button.Text:SetSize(MENU_BUTTON_WIDTH - 6, WIDGET_HEIGHT)
 	Button.Text:SetJustifyH("LEFT")
 
-	Button.Fade = CreateAnimationGroup(Button.Selected)
-
-	Button.FadeIn = Button.Fade:CreateAnimation("Fade")
+	Button.FadeIn = LibMotion:CreateAnimation(Button, "Fade")
 	Button.FadeIn:SetEasing("in")
 	Button.FadeIn:SetDuration(0.15)
 	Button.FadeIn:SetChange(SELECTED_HIGHLIGHT_ALPHA)
 
-	Button.FadeOut = Button.Fade:CreateAnimation("Fade")
+	Button.FadeOut = LibMotion:CreateAnimation(Button, "Fade")
 	Button.FadeOut:SetEasing("out")
 	Button.FadeOut:SetDuration(0.15)
 	Button.FadeOut:SetChange(0)
@@ -1094,32 +1092,31 @@ function GUI:CreateGUI()
 	self:SetClampedToScreen(true)
 	self:SetScale(0.2)
 	self:Hide()
+	self:SetAlpha(0)
 
-	self.Group = CreateAnimationGroup(self)
-
-	self.ScaleIn = self.Group:CreateAnimation("Scale")
+	self.ScaleIn = LibMotion:CreateAnimation(self, "Scale")
 	self.ScaleIn:SetEasing("in")
-	self.ScaleIn:SetDuration(0.15)
+	self.ScaleIn:SetDuration(0.2)
 	self.ScaleIn:SetChange(1)
 
-	self.FadeIn = self.Group:CreateAnimation("Fade")
+	self.FadeIn = LibMotion:CreateAnimation(self, "Fade")
 	self.FadeIn:SetEasing("in")
-	self.FadeIn:SetDuration(0.15)
+	self.FadeIn:SetDuration(0.2)
 	self.FadeIn:SetChange(1)
 
-	self.ScaleOut = self.Group:CreateAnimation("Scale")
+	self.ScaleOut = LibMotion:CreateAnimation(self, "Scale")
 	self.ScaleOut:SetEasing("out")
-	self.ScaleOut:SetDuration(0.15)
+	self.ScaleOut:SetDuration(0.2)
 	self.ScaleOut:SetChange(0.2)
 
-	self.FadeOut = self.Group:CreateAnimation("Fade")
+	self.FadeOut = LibMotion:CreateAnimation(self, "Fade")
 	self.FadeOut:SetEasing("out")
-	self.FadeOut:SetDuration(0.15)
+	self.FadeOut:SetDuration(0.2)
 	self.FadeOut:SetChange(0)
 	self.FadeOut:SetScript("OnFinished", FadeOnFinished)
 
-	self.Fader = self.Group:CreateAnimation("Fade")
-	self.Fader:SetDuration(0.15)
+	self.Fader = LibMotion:CreateAnimation(self, "Fade")
+	self.Fader:SetDuration(0.5)
 
 	-- Header
 	self.Header = CreateFrame("Frame", nil, self, "BackdropTemplate")
@@ -1321,9 +1318,8 @@ function GUI:Toggle()
 	end
 
 	if self:IsShown() then
-		self.ScaleOut:Play()
 		self.FadeOut:Play()
-
+		self.ScaleOut:Play()
 		self:UnregisterEvent("MODIFIER_STATE_CHANGED")
 
 		if Settings["gui-enable-fade"] then
@@ -1331,10 +1327,6 @@ function GUI:Toggle()
 			self:UnregisterEvent("PLAYER_STOPPED_MOVING")
 		end
 	else
-		if (not self.Loaded) then
-			self:CreateGUI()
-		end
-
 		if (Settings["gui-hide-in-combat"] and InCombatLockdown()) then
 			HydraUI:print(ERR_NOT_IN_COMBAT)
 
@@ -1346,11 +1338,21 @@ function GUI:Toggle()
 			self:RegisterEvent("PLAYER_STOPPED_MOVING")
 		end
 
+		if (not self.FirstToggle) then
+			C_Timer.After(0.2, function()
+				self:Show()
+				self.FadeIn:Play()
+				self.ScaleIn:Play()
+			end)
+
+			self.FirstToggle = true
+		else
+			self:Show()
+			self.FadeIn:Play()
+			self.ScaleIn:Play()
+		end
+
 		self:RegisterEvent("MODIFIER_STATE_CHANGED")
-		self:SetAlpha(0)
-		self:Show()
-		self.ScaleIn:Play()
-		self.FadeIn:Play()
 	end
 end
 

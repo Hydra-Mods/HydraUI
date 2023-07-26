@@ -600,7 +600,7 @@ function AB:CreateBar1()
 	self.Bar1.MaxAlpha = Settings["ab-bar1-alpha"]
 	self.Bar1.GetSpellFlyoutDirection = function() return "UP" end -- Temp
 
-	self.Bar1.Fader = CreateAnimationGroup(self.Bar1):CreateAnimation("Fade")
+	self.Bar1.Fader = LibMotion:CreateAnimation(self.Bar1, "Fade")
 	self.Bar1.Fader:SetDuration(0.15)
 	self.Bar1.Fader:SetEasing("inout")
 
@@ -698,7 +698,7 @@ function AB:CreateBar2()
 	self.Bar2.ShouldFade = Settings["ab-bar2-hover"]
 	self.Bar2.MaxAlpha = Settings["ab-bar2-alpha"]
 
-	self.Bar2.Fader = CreateAnimationGroup(self.Bar2):CreateAnimation("Fade")
+	self.Bar2.Fader = LibMotion:CreateAnimation(self.Bar2, "Fade")
 	self.Bar2.Fader:SetDuration(0.15)
 	self.Bar2.Fader:SetEasing("inout")
 
@@ -745,7 +745,7 @@ function AB:CreateBar3()
 	self.Bar3.ShouldFade = Settings["ab-bar3-hover"]
 	self.Bar3.MaxAlpha = Settings["ab-bar3-alpha"]
 
-	self.Bar3.Fader = CreateAnimationGroup(self.Bar3):CreateAnimation("Fade")
+	self.Bar3.Fader = LibMotion:CreateAnimation(self.Bar3, "Fade")
 	self.Bar3.Fader:SetDuration(0.15)
 	self.Bar3.Fader:SetEasing("inout")
 
@@ -792,7 +792,7 @@ function AB:CreateBar4()
 	self.Bar4.ShouldFade = Settings["ab-bar4-hover"]
 	self.Bar4.MaxAlpha = Settings["ab-bar4-alpha"]
 
-	self.Bar4.Fader = CreateAnimationGroup(self.Bar4):CreateAnimation("Fade")
+	self.Bar4.Fader = LibMotion:CreateAnimation(self.Bar4, "Fade")
 	self.Bar4.Fader:SetDuration(0.15)
 	self.Bar4.Fader:SetEasing("inout")
 
@@ -839,7 +839,7 @@ function AB:CreateBar5()
 	self.Bar5.ShouldFade = Settings["ab-bar5-hover"]
 	self.Bar5.MaxAlpha = Settings["ab-bar5-alpha"]
 
-	self.Bar5.Fader = CreateAnimationGroup(self.Bar5):CreateAnimation("Fade")
+	self.Bar5.Fader = LibMotion:CreateAnimation(self.Bar5, "Fade")
 	self.Bar5.Fader:SetDuration(0.15)
 	self.Bar5.Fader:SetEasing("inout")
 
@@ -886,7 +886,7 @@ function AB:CreateBar6()
 	self.Bar6.ShouldFade = Settings["ab-bar6-hover"]
 	self.Bar6.MaxAlpha = Settings["ab-bar6-alpha"]
 
-	self.Bar6.Fader = CreateAnimationGroup(self.Bar6):CreateAnimation("Fade")
+	self.Bar6.Fader = LibMotion:CreateAnimation(self.Bar6, "Fade")
 	self.Bar6.Fader:SetDuration(0.15)
 	self.Bar6.Fader:SetEasing("inout")
 
@@ -933,7 +933,7 @@ function AB:CreateBar7()
 	self.Bar7.ShouldFade = Settings["ab-bar7-hover"]
 	self.Bar7.MaxAlpha = Settings["ab-bar7-alpha"]
 
-	self.Bar7.Fader = CreateAnimationGroup(self.Bar7):CreateAnimation("Fade")
+	self.Bar7.Fader = LibMotion:CreateAnimation(self.Bar7, "Fade")
 	self.Bar7.Fader:SetDuration(0.15)
 	self.Bar7.Fader:SetEasing("inout")
 
@@ -980,7 +980,7 @@ function AB:CreateBar8()
 	self.Bar8.ShouldFade = Settings["ab-bar8-hover"]
 	self.Bar8.MaxAlpha = Settings["ab-bar8-alpha"]
 
-	self.Bar8.Fader = CreateAnimationGroup(self.Bar8):CreateAnimation("Fade")
+	self.Bar8.Fader = LibMotion:CreateAnimation(self.Bar8, "Fade")
 	self.Bar8.Fader:SetDuration(0.15)
 	self.Bar8.Fader:SetEasing("inout")
 
@@ -1035,7 +1035,7 @@ function AB:CreatePetBar()
 	self.PetBar.ShouldFade = Settings["ab-pet-hover"]
 	self.PetBar.MaxAlpha = Settings["ab-pet-alpha"]
 
-	self.PetBar.Fader = CreateAnimationGroup(self.PetBar):CreateAnimation("Fade")
+	self.PetBar.Fader = LibMotion:CreateAnimation(self.PetBar, "Fade")
 	self.PetBar.Fader:SetDuration(0.15)
 	self.PetBar.Fader:SetEasing("inout")
 
@@ -1108,7 +1108,7 @@ function AB:CreateStanceBar()
 	self.StanceBar.ShouldFade = Settings["ab-stance-hover"]
 	self.StanceBar.MaxAlpha = Settings["ab-stance-alpha"]
 
-	self.StanceBar.Fader = CreateAnimationGroup(self.StanceBar):CreateAnimation("Fade")
+	self.StanceBar.Fader = LibMotion:CreateAnimation(self.StanceBar, "Fade")
 	self.StanceBar.Fader:SetDuration(0.15)
 	self.StanceBar.Fader:SetEasing("inout")
 

@@ -83,33 +83,46 @@ function ZT:OnEvent(event)
 	end
 end
 
+local OnFinished = function(self)
+	if self:GetChange() == 0 then
+		self:SetChange(1)
+	else
+		self:SetChange(0)
+	end
+	
+	self:Play()
+end
+
 function ZT:CreateFontObjects()
 	local ZoneFrame = CreateFrame("Frame", nil, HydraUI.UIParent)
 	ZoneFrame:SetSize(32, 32)
 	ZoneFrame:SetPoint("TOP", HydraUI.UIParent, 0, -220)
 
+	local SubFrame
+
 	for i = 1, 3 do
-		ZoneFrame[i] = CreateFrame("Frame", nil, HydraUI.UIParent)
-		ZoneFrame[i]:SetSize(32, 32)
-		ZoneFrame[i]:SetPoint("CENTER", ZoneFrame, 0, 0)
-		ZoneFrame[i]:SetAlpha(0)
+		SubFrame = CreateFrame("Frame", nil, HydraUI.UIParent)
+		SubFrame:SetSize(32, 32)
+		SubFrame:SetPoint("CENTER", ZoneFrame, 0, 0)
+		SubFrame:SetAlpha(0)
 
-		ZoneFrame[i].Group = CreateAnimationGroup(ZoneFrame[i])
+		SubFrame.Group = LibMotion:CreateAnimationGroup()
 
-		ZoneFrame[i].FadeIn = ZoneFrame[i].Group:CreateAnimation("fade")
-		ZoneFrame[i].FadeIn:SetEasing("in")
-		ZoneFrame[i].FadeIn:SetDuration(0.4)
-		ZoneFrame[i].FadeIn:SetChange(1)
+		SubFrame.FadeIn = LibMotion:CreateAnimation(SubFrame, "fade")
+		SubFrame.FadeIn:SetEasing("in")
+		SubFrame.FadeIn:SetDuration(0.4)
+		SubFrame.FadeIn:SetEndDelay(2.5)
+		SubFrame.FadeIn:SetChange(1)
+		SubFrame.FadeIn:SetGroup(SubFrame.Group)
 
-		ZoneFrame[i].Sleep = ZoneFrame[i].Group:CreateAnimation("sleep")
-		ZoneFrame[i].Sleep:SetDuration(2.5)
-		ZoneFrame[i].Sleep:SetOrder(2)
-
-		ZoneFrame[i].FadeOut = ZoneFrame[i].Group:CreateAnimation("fade")
-		ZoneFrame[i].FadeOut:SetEasing("out")
-		ZoneFrame[i].FadeOut:SetDuration(0.75)
-		ZoneFrame[i].FadeOut:SetChange(0)
-		ZoneFrame[i].FadeOut:SetOrder(3)
+		SubFrame.FadeOut = LibMotion:CreateAnimation(SubFrame, "fade")
+		SubFrame.FadeOut:SetEasing("out")
+		SubFrame.FadeOut:SetDuration(0.75)
+		SubFrame.FadeOut:SetChange(0)
+		SubFrame.FadeOut:SetGroup(SubFrame.Group)
+		SubFrame.FadeOut:SetOrder(2)
+		
+		ZoneFrame[i] = SubFrame
 	end
 
 	local ZoneText = ZoneFrame[1]:CreateFontString(nil, "OVERLAY")
