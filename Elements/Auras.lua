@@ -245,11 +245,9 @@ function Auras:Load()
 	local Buffs = self.Headers[1]
 	Buffs:SetAttribute("includeWeapons", 1)
 	Buffs:SetPoint("TOPRIGHT", self.Buffs, 0, 0)
-	Buffs:Show()
 
 	local Debuffs = self.Headers[2]
 	Debuffs:SetPoint("TOPRIGHT", self.Debuffs, 0, 0)
-	Debuffs:Show()
 
 	-- Update auras
 	for i = 1, 2 do
@@ -283,6 +281,14 @@ function Auras:Load()
 
 	HydraUI:CreateMover(self.Buffs)
 	HydraUI:CreateMover(self.Debuffs)
+
+	if Settings["auras-show"] then
+		Buffs:Show()
+		Debuffs:Show()
+	else
+		Buffs:Hide()
+		Debuffs:Hide()
+	end
 end
 
 local UpdateAuraDisplay = function(value)
