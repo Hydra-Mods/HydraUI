@@ -44,6 +44,16 @@ local CustomFilter = function(self, unit, icon, name, texture, count, dtype, dur
 	end
 end
 
+function UF:GetRoleTexCoords(role)
+	if (role == "TANK") then
+		return 0, 19/64, 22/64, 41/64
+	elseif (role == "HEALER") then
+		return 20/64, 39/64, 1/64, 20/64
+	elseif (role == "DAMAGER") then
+		return 20/64, 39/64, 22/64, 41/64
+	end
+end
+
 function UF:SetHealthAttributes(health, value)
 	if (value == "CLASS") then
 		health.colorClass = true
