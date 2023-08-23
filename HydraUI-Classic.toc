@@ -1,6 +1,6 @@
 ## Interface: 11404
 ## Author: Hydra
-## Version: 2.15
+## Version: 2.16
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI|r
 ## Notes: Interface replacement for Classic and Season of Mastery
 ## SavedVariables: HydraUIProfileData, HydraUIProfiles, HydraUIData, HydraUIGold
@@ -106,7 +106,6 @@ Elements\Loot.lua
 Elements\DruidMana.lua
 Elements\MirrorTimers.lua
 Elements\ToastFrame.lua
-Elements\Taxi.lua
 Elements\Merchant.lua
 Elements\Dismount.lua
 Elements\Cooldowns.lua
