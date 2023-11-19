@@ -36,6 +36,7 @@ elseif (HydraUI.IsWrath) then
 		AchievementMicroButton,
 		QuestLogMicroButton,
 		SocialsMicroButton,
+		CollectionsMicroButton,
 		PVPMicroButton,
 		LFGMicroButton,
 		MainMenuMicroButton,

@@ -103,6 +103,7 @@ Defaults["ab-stance-button-gap"] = 2
 Defaults["ab-stance-per-row"] = 12
 Defaults["ab-stance-alpha"] = 100
 
+Defaults["ab-totem-enable"] = true
 Defaults["ab-extra-button-size"] = 60
 
 local ActionBars = {
@@ -1297,8 +1298,8 @@ function AB:CreateBars()
 	end
 
 	if (MultiCastActionBarFrame and MultiCastActionBarFrame.numActiveSlots and MultiCastActionBarFrame.numActiveSlots > 0) then
-		--self:StyleTotemBar()
-		MultiCastActionBarFrame:SetParent(UIParent)
+		self:StyleTotemBar()
+		--MultiCastActionBarFrame:SetParent(UIParent)
 		--MultiCastActionBarFrame:ClearAllPoints()
 		--MultiCastActionBarFrame:SetPoint("BOTTOMLEFT", UIParent, 300, 20)
 	end
@@ -1346,9 +1347,9 @@ function AB:CreateMovers()
 		HydraUI:CreateMover(self.PetBar)
 	end
 
-	--[[if self.TotemBar then
+	if self.TotemBar then
 		HydraUI:CreateMover(self.TotemBar)
-	end]]
+	end
 
 	if HydraUI.IsMainline then
 		self.ExtraBarMover = HydraUI:CreateMover(self.ExtraBar)
@@ -1428,19 +1429,19 @@ function AB:UpdateEmptyButtons()
 end
 
 local MultiCastSummonSpellButton_Update = function()
-	for i = 1, 4 do
+	for i = 1, 12 do
 		local Slot = _G["MultiCastSlotButton"..i]
+		local Button = _G["MultiCastActionButton"..i]
+		--self:StyleActionButton(Button)
+		Button:ClearAllPoints()
 
-		Slot:ClearAllPoints()
-
-		if (i == 1) then
-			Slot:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", 2, 0)
+		if (i == 1 or i == 5 or i == 9) then
+			Button:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", 2, 0)
 		else
-			Slot:SetPoint("LEFT", _G["MultiCastSlotButton"..i-1], "RIGHT", 2, 0)
+			Button:SetPoint("LEFT", _G["MultiCastActionButton"..i-1], "RIGHT", 2, 0)
 		end
 	end
 end
-
 local MultiCastRecallSpellButton_Update = function()
 	MultiCastRecallSpellButton:ClearAllPoints()
 	MultiCastRecallSpellButton:SetPoint("LEFT", MultiCastActionButton4, "RIGHT", 2, 0)
@@ -1503,6 +1504,8 @@ local MultiCastFlyoutFrame_LoadSlotSpells = function(parent, slotid)
 		MultiCastFlyoutFrameCloseButton:ClearAllPoints()
 		MultiCastFlyoutFrameCloseButton:SetPoint("BOTTOM", MultiCastFlyoutFrame, "TOP", 0, -8)
 	end
+	hooksecurefunc("MultiCastSummonSpellButton_Update", MultiCastSummonSpellButton_Update)
+	hooksecurefunc("MultiCastFlyoutFrame_LoadSlotSpells", MultiCastFlyoutFrame_LoadSlotSpells)
 end
 
 function AB:StyleTotemBar()
@@ -1544,13 +1547,13 @@ function AB:StyleTotemBar()
 
 		self:StyleActionButton(Button)
 
-		Button:SetParent(MultiCastActionBarFrame)
+		--Button:SetParent(MultiCastActionBarFrame)
 		Button:ClearAllPoints()
 		Button.overlayTex:SetTexture(nil)
 
-		Button.Backdrop:SetFrameStrata("BACKGROUND")
+		--Button.Backdrop:SetFrameStrata("BACKGROUND")
 
-		Button:ClearAllPoints()
+		--Button:ClearAllPoints()
 
 		if (i == 1 or i == 5 or i == 9) then
 			Button:SetPoint("LEFT", MultiCastSummonSpellButton, "RIGHT", 2, 0)
@@ -1562,7 +1565,7 @@ function AB:StyleTotemBar()
 	MultiCastRecallSpellButton:SetParent(self.TotemBar)
 	self:StyleActionButton(MultiCastRecallSpellButton)
 	MultiCastRecallSpellButton:ClearAllPoints()
-	MultiCastRecallSpellButton:SetPoint("LEFT", MultiCastActionButton4, "RIGHT", 2, 0)
+	MultiCastRecallSpellButton:SetPoint("LEFT", MultiCastSlotButton4, "RIGHT", 2, 0)
 
 	MultiCastRecallSpellButtonHighlight:SetTexture(nil)
 
@@ -1572,6 +1575,11 @@ function AB:StyleTotemBar()
 	hooksecurefunc("MultiCastSummonSpellButton_Update", MultiCastSummonSpellButton_Update)
 	hooksecurefunc("MultiCastRecallSpellButton_Update", MultiCastRecallSpellButton_Update)
 	hooksecurefunc("MultiCastFlyoutFrame_LoadSlotSpells", MultiCastFlyoutFrame_LoadSlotSpells)
+	if Settings["ab-totem-enable"] then
+		self:EnableBar(self.TotemBar)
+	else
+		self:DisableBar(self.TotemBar)
+	end
 end
 
 local GetBarHeight = function()
@@ -1749,6 +1757,14 @@ local UpdateEnableStanceBar = function(value)
 		AB:EnableBar(AB.StanceBar)
 	else
 		AB:DisableBar(AB.StanceBar)
+	end
+end
+
+local UpdateEnableTotemBar = function(value)
+	if value then
+		AB:EnableBar(AB.TotemBar)
+	else
+		AB:DisableBar(AB.TotemBar)
 	end
 end
 
@@ -2355,4 +2371,9 @@ GUI:AddWidgets(Language["General"], Language["Stance Bar"], Language["Action Bar
 	right:CreateSlider("ab-stance-per-row", Settings["ab-stance-per-row"], 1, 12, 1, Language["Buttons Per Row"], Language["Set the number of buttons per row"], UpdateStanceBar)
 	right:CreateSlider("ab-stance-button-size", Settings["ab-stance-button-size"], 20, 50, 1, Language["Button Size"], Language["Set the action button size"], UpdateStanceBar)
 	right:CreateSlider("ab-stance-button-gap", Settings["ab-stance-button-gap"], -1, 8, 1, Language["Button Spacing"], Language["Set the spacing between action buttons"], UpdateStanceBar)
+end)
+
+GUI:AddWidgets(Language["General"], Language["Totem Bar"], Language["Action Bars"], function(left, right)
+	left:CreateHeader(Language["Enable"])
+	left:CreateSwitch("ab-totem-enable", Settings["ab-totem-enable"], Language["Enable Bar"], Language["Enable the totem bar"], UpdateEnableTotemBar)
 end)

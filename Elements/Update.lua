@@ -49,7 +49,6 @@ function Update:OnUpdate(elapsed)
 	if (self.Timer < 0) then
 		local Data = tremove(Queue, 1)
 
-		--SendAddonMessage("HydraUI-Version", AddOnVersion, Data[1], Data[2])
 		CT:SendAddonMessage("NORMAL", "HydraUI-Version", AddOnVersion, Data[1], Data[2])
 
 		tinsert(Tables, Data)
@@ -63,8 +62,11 @@ function Update:OnUpdate(elapsed)
 end
 
 function Update:PLAYER_ENTERING_WORLD()
-	if (not HydraUI.IsMainline and not IsInInstance()) then
-		self:QueueChannel("YELL")
+	if (not HydraUI.IsMainline and not IsInInstance()) and (not Throttle:IsThrottled("vrsn")) then
+		C_Timer.After(5, function()
+			self:QueueChannel("YELL")
+		end)
+
 		Throttle:Start("vrsn", 10)
 	end
 
