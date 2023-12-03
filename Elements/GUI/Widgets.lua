@@ -2110,12 +2110,12 @@ GUI.Widgets.CreateDropdown = function(self, id, value, values, label, tooltip, h
 
 	Dropdown.Menu.FadeIn = LibMotion:CreateAnimation(Dropdown.Menu, "Fade")
 	Dropdown.Menu.FadeIn:SetEasing("in")
-	Dropdown.Menu.FadeIn:SetDuration(0.3)
+	Dropdown.Menu.FadeIn:SetDuration(0.2)
 	Dropdown.Menu.FadeIn:SetChange(1)
 
 	Dropdown.Menu.FadeOut = LibMotion:CreateAnimation(Dropdown.Menu, "Fade")
 	Dropdown.Menu.FadeOut:SetEasing("out")
-	Dropdown.Menu.FadeOut:SetDuration(0.3)
+	Dropdown.Menu.FadeOut:SetDuration(0.2)
 	Dropdown.Menu.FadeOut:SetChange(0)
 	Dropdown.Menu.FadeOut:SetScript("OnFinished", FadeOnFinished)
 

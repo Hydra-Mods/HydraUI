@@ -1,9 +1,5 @@
 local HydraUI, Language, Assets, Settings = select(2, ...):get()
 
--- QUESTS_LABEL = "Quests"
--- QUEST_OBJECTIVES = "Quest Objectives"
--- TRACKER_HEADER_QUESTS = "Quests"
-
 local Quest = HydraUI:NewModule("Quest Watch")
 
 function Quest:StyleFrame()

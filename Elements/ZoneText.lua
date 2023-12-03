@@ -83,16 +83,6 @@ function ZT:OnEvent(event)
 	end
 end
 
-local OnFinished = function(self)
-	if self:GetChange() == 0 then
-		self:SetChange(1)
-	else
-		self:SetChange(0)
-	end
-	
-	self:Play()
-end
-
 function ZT:CreateFontObjects()
 	local ZoneFrame = CreateFrame("Frame", nil, HydraUI.UIParent)
 	ZoneFrame:SetSize(32, 32)

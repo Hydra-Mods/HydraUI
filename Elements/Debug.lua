@@ -7,6 +7,7 @@ local format = format
 local select = select
 local GetZoneText = GetZoneText
 local GetMinimapZoneText = GetMinimapZoneText
+local GetQuests, GetSpecInfo
 
 local GetNumLoadedAddOns = function()
 	local NumLoaded = 0
@@ -45,8 +46,6 @@ local CountMovedFrames = function()
 
 	return Count
 end
-
-local GetQuests, GetSpecInfo
 
 if HydraUI.IsMainline then
 	GetQuests = function()
