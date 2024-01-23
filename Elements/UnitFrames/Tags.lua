@@ -433,7 +433,7 @@ Methods["Name30"] = function(unit)
 	end
 end
 
-Events["NameColor"] = "UNIT_NAME_UPDATE UNIT_CLASSIFICATION_CHANGED"
+Events["NameColor"] = "UNIT_NAME_UPDATE UNIT_CLASSIFICATION_CHANGED UNIT_FACTION"
 Methods["NameColor"] = function(unit)
 	if UnitIsPlayer(unit) then
 		local _, Class = UnitClass(unit)
@@ -458,7 +458,7 @@ Methods["NameColor"] = function(unit)
 	end
 end
 
-Events["Reaction"] = "UNIT_NAME_UPDATE UNIT_CLASSIFICATION_CHANGED"
+Events["Reaction"] = "UNIT_NAME_UPDATE UNIT_CLASSIFICATION_CHANGED UNIT_FACTION"
 Methods["Reaction"] = function(unit)
 	local Reaction = UnitReaction(unit, "player")
 
@@ -479,7 +479,7 @@ Methods["LevelColor"] = function(unit)
 	return "|cFF" .. HydraUI:RGBToHex(Color.r, Color.g, Color.b)
 end
 
-Events["PetColor"] = "UNIT_HAPPINESS UNIT_LEVEL PLAYER_LEVEL_UP UNIT_PET"
+Events["PetColor"] = "UNIT_HAPPINESS UNIT_LEVEL PLAYER_LEVEL_UP UNIT_PET UNIT_FACTION"
 Methods["PetColor"] = function(unit)
 	if (HydraUI.UserClass == "HUNTER") then
 		return Methods["HappinessColor"](unit)

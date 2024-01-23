@@ -328,7 +328,10 @@ HydraUI:GetModule("GUI"):AddWidgets(Language["General"], Language["Colors"], fun
 	left:CreateColorSelection("color-combo-5", Settings["color-combo-5"], Language["Combo Point 5"], Language["Set the color of combo point 5"], ReloadUI):RequiresReload(true)
 	left:CreateColorSelection("color-combo-6", Settings["color-combo-6"], Language["Combo Point 6"], Language["Set the color of combo point 6"], ReloadUI):RequiresReload(true)
 	left:CreateColorSelection("color-combo-7", Settings["color-combo-7"], Language["Combo Point 7"], Language["Set the color of combo point 7"], ReloadUI):RequiresReload(true)
-	left:CreateColorSelection("color-combo-charged", Settings["color-combo-charged"], Language["Charged Combo Point"], Language["Set the color of the charged combo point provided from the Kyrian Covenant"], ReloadUI):RequiresReload(true)
+
+	if HydraUI.IsMainline then
+		left:CreateColorSelection("color-combo-charged", Settings["color-combo-charged"], Language["Charged Combo Point"], Language["Set the color of the charged combo point provided from the Kyrian Covenant"], ReloadUI):RequiresReload(true)
+	end
 
 	right:CreateHeader(Language["Misc Colors"])
 	right:CreateColorSelection("color-tapped", Settings["color-tapped"], Language["Tagged"], "")

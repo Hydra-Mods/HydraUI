@@ -90,6 +90,10 @@ function Cooldowns:OnUpdate(ela)
 					local Texture = self:GetTexture("spell", ID)
 
 					if Texture then
+						if self.AnimIn:IsPlaying() then
+							self.AnimIn:Stop()
+						end
+
 						self.Icon:SetTexture(Texture)
 						self.AnimIn:Play()
 
@@ -125,6 +129,10 @@ function Cooldowns:OnUpdate(ela)
 					local Texture = self:GetTexture("item", Info.ID)
 
 					if Texture then
+						if self.AnimIn:IsPlaying() then
+							self.AnimIn:Stop()
+						end
+
 						self.Icon:SetTexture(Texture)
 						self.AnimIn:Play()
 

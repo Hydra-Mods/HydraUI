@@ -11,14 +11,20 @@ local Update = function(self, event, unit)
 	if (self.unit ~= unit) then
 		return
 	end
-	
+
 	local IncomingHeals = UnitGetIncomingHeals(unit) or 0
 	local Health = UnitHealth(unit)
 	local MaxHealth = UnitHealthMax(unit)
-	
+
 	if self.HealBar then
+		if (Health == 0) then
+			self.HealBar:SetValue(0)
+
+			return
+		end
+
 		self.HealBar:SetMinMaxValues(0, MaxHealth)
-		
+
 		if (IncomingHeals == 0) then
 			self.HealBar:SetValue(0)
 		elseif (Health + IncomingHeals >= MaxHealth) then
@@ -27,12 +33,18 @@ local Update = function(self, event, unit)
 			self.HealBar:SetValue(IncomingHeals)
 		end
 	end
-	
+
 	if self.AbsorbsBar then
+		if (Health == 0) then
+			self.AbsorbsBar:SetValue(0)
+
+			return
+		end
+
 		local TotalAbsorbs = UnitGetTotalAbsorbs(unit) or 0
-		
+
 		self.AbsorbsBar:SetMinMaxValues(0, MaxHealth)
-		
+
 		if (TotalAbsorbs == 0) then
 			self.AbsorbsBar:SetValue(0)
 		elseif (Health + TotalAbsorbs >= MaxHealth) then
@@ -54,21 +66,21 @@ local Enable = function(self)
 		self:RegisterEvent("UNIT_HEALTH", Update)
 		self:RegisterEvent("UNIT_ABSORB_AMOUNT_CHANGED", Update)
 		self:RegisterEvent("UNIT_HEAL_ABSORB_AMOUNT_CHANGED", Update)
-		
+
 		self.HealBar.__owner = self
 		self.HealBar.ForceUpdate = ForceUpdate
-		
+
 		self.HealBar:Show()
-		
+
 		if self.AbsorbsBar then
 			self.AbsorbsBar.__owner = self
 			self.AbsorbsBar.ForceUpdate = ForceUpdate
-			
+
 			self.AbsorbsBar:SetMinMaxValues(0, 1)
 			self.AbsorbsBar:SetValue(0)
 			self.AbsorbsBar:Show()
 		end
-		
+
 		return true
 	end
 end
@@ -76,11 +88,11 @@ end
 local Disable = function(self)
 	if self.HealBar then
 		self.HealBar:Hide()
-		
+
 		if self.AbsorbsBar then
 			self.AbsorbsBar:Hide()
 		end
-		
+
 		self:UnregisterEvent("UNIT_HEAL_PREDICTION", Update)
 		self:UnregisterEvent("UNIT_MAXHEALTH", Update)
 		self:UnregisterEvent("UNIT_HEALTH", Update)

@@ -57,6 +57,7 @@ local OnEnter = function(self)
 	local Limit = NumTotal > MaxCharacters and MaxCharacters or NumTotal
 	local Count = 0
 	local MapID = C_Map.GetBestMapForUnit("player")
+	local CurrentText = GetZoneText()
 	local CurrentZone
 
 	if MapID then
@@ -87,7 +88,7 @@ local OnEnter = function(self)
 			if IsModifierKeyDown() then
 				GameTooltip:AddDoubleLine(Name, Rank, nil, nil, nil, 1, 1, 1)
 			else
-				if (Zone == CurrentZone) then
+				if (Zone == CurrentZone or Zone == CurrentText) then
 					Zone = format("|cFF33FF33%s|r", Zone)
 				end
 

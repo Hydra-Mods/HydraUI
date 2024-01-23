@@ -390,7 +390,7 @@ local OnTooltipSetItem = function(self)
 		return
 	end
 
-	local Link = select(2, self:GetItem())
+	local Name, Link = self:GetItem()
 
 	if (not Link) then
 		return

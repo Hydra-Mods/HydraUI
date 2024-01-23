@@ -61,7 +61,7 @@ local RunCommand = function(arg)
 	if Commands[arg] then
 		Commands[arg]()
 	else
-		Commands["settings"]()
+		Commands.settings()
 	end
 end
 
