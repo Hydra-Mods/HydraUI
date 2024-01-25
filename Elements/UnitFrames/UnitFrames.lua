@@ -660,6 +660,8 @@ local Style = function(self, unit)
 		HydraUI.StyleFuncs[unit](self, unit)
 	elseif (find(unit, "raid") and Settings["raid-enable"]) then
 		HydraUI.StyleFuncs["raid"](self, unit)
+	elseif (find(unit, "tank") and Settings["raid-tank-enable"]) then
+		HydraUI.StyleFuncs["tank"](self, unit)
 	elseif (find(unit, "raidpet") and Settings["raid-pets-enable"]) then
 		HydraUI.StyleFuncs["raidpet"](self, unit)
 	elseif (find(unit, "partypet") and Settings["party-enable"] and Settings["party-pets-enable"]) then
@@ -706,6 +708,7 @@ local UpdateRaidSortingMethod = function(value)
 		HydraUI.UnitFrames["raid"]:SetAttribute("sortMethod", "INDEX")
 		HydraUI.UnitFrames["raid"]:SetAttribute("groupBy", "GROUP")
 	end
+	HydraUI.UnitFrames["tank"]:SetAttribute("groupFilter", "MAINTANK")
 end
 
 local UpdateRaidShowPower = function(value)
@@ -1000,7 +1003,29 @@ function UF:Load()
 				self:SetHeight(Header:GetAttribute("initial-height"))
 			]]
 		)
+		local Tank = oUF:SpawnHeader("HydraUI Tanks", nil, "raid,solo",
+			"initial-width", Settings["raid-width"],
+			"initial-height", (Settings["raid-health-height"] + Settings["raid-power-height"] + 3),
+			"isTesting", false,
+			"showSolo", Settings["raid-show-solo"],
+			"showPlayer", true,
+			"showParty", false,
+			"showRaid", true,
+			"point", Settings["raid-point"],
+			"xoffset", Settings["raid-x-offset"],
+			"yOffset", Settings["raid-y-offset"],
+			"maxColumns", Settings["raid-max-columns"],
+			"unitsPerColumn", Settings["raid-units-per-column"],
+			"columnSpacing", Settings["raid-column-spacing"],
+			"columnAnchorPoint", Settings["raid-column-anchor"],
+			"oUF-initialConfigFunction", [[
+				local Header = self:GetParent()
 
+				self:SetWidth(Header:GetAttribute("initial-width"))
+				self:SetHeight(Header:GetAttribute("initial-height"))
+			]]
+			)
+			
 		local UnitHeight = (Settings["raid-health-height"] + Settings["raid-power-height"]) + 1
 		local MaxSize = floor(40 / Settings["raid-max-columns"])
 
@@ -1008,6 +1033,12 @@ function UF:Load()
 		self.RaidAnchor:SetWidth((MaxSize * Settings["raid-width"] + (MaxSize * Settings["raid-x-offset"] - 2)))
 		self.RaidAnchor:SetHeight(UnitHeight * (Settings["raid-max-columns"] + 1) + (Settings["raid-y-offset"] * (Settings["raid-max-columns"] - 1)))
 		self.RaidAnchor:SetPoint("BOTTOMLEFT", HydraUIChatFrameTop, "TOPLEFT", -3, 10)
+		
+		self.TankAnchor = CreateFrame("Frame", "HydraUI Tank Anchor", HydraUI.UIParent)
+		self.TankAnchor:SetWidth((MaxSize * Settings["raid-width"] + (MaxSize * Settings["raid-x-offset"] - 2)))
+		self.TankAnchor:SetHeight(UnitHeight * (Settings["raid-max-columns"] + 1) + (Settings["raid-y-offset"] * (Settings["raid-max-columns"] - 1)))
+		self.TankAnchor:SetPoint("BOTTOMLEFT", self.RaidAnchor, "TOPLEFT", -3, 10)
+
 
 		if CompactRaidFrameContainer then
 			CompactRaidFrameContainer:UnregisterAllEvents()
@@ -1019,11 +1050,16 @@ function UF:Load()
 
 		Raid:SetPoint("BOTTOMLEFT", self.RaidAnchor, 0, 0)
 		Raid:SetParent(HydraUI.UIParent)
-
+		
+		Tank:SetPoint("BOTTOMLEFT", self.TankAnchor, 0, 0)
+		Tank:SetParent(HydraUI.UIParent)
+		
+		HydraUI:CreateMover(self.TankAnchor)
 		HydraUI:CreateMover(self.RaidAnchor)
 
-		HydraUI.UnitFrames["raid"] = Raid
-
+		HydraUI.UnitFrames["raid"] = Raid	
+		HydraUI.UnitFrames["tank"] = Tank
+		
 		UpdateRaidSortingMethod(Settings["raid-sorting-method"])
 
 		if Settings["raid-pets-enable"] then

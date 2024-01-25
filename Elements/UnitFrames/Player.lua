@@ -656,87 +656,91 @@ HydraUI.StyleFuncs["player"] = function(self, unit)
 			self.HolyPower = HolyPower
 			self.AuraParent = HolyPower
 		elseif (HydraUI.UserClass == "SHAMAN") and (not HydraUI.IsMainline) then
-			local Totems = CreateFrame("Frame", self:GetName() .. "Totems", self, "BackdropTemplate")
-			Totems:SetSize(Settings["unitframes-player-width"], Settings["player-resource-height"] + 2)
-			Totems:SetBackdrop(HydraUI.Backdrop)
-			Totems:SetBackdropColor(0, 0, 0)
-			Totems:SetBackdropBorderColor(0, 0, 0)
-			Totems.PostUpdate = UF.PostUpdateTotems
+			local haveTotem, name = GetTotemInfo(1)
+			if haveTotem then
+				local Totems = CreateFrame("Frame", self:GetName() .. "Totems", self, "BackdropTemplate")
+				Totems:SetSize(Settings["unitframes-player-width"], Settings["player-resource-height"] + 2)
+				Totems:SetBackdrop(HydraUI.Backdrop)
+				Totems:SetBackdropColor(0, 0, 0)
+				Totems:SetBackdropBorderColor(0, 0, 0)
+				Totems.PostUpdate = UF.PostUpdateTotems
 
-			if Settings["player-move-resource"] then
-				Totems:SetPoint("CENTER", ResourceAnchor, 0, 0)
-			else
-				Totems:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
-			end
-
-			--[[local TotemBar = CreateFrame("Frame", "HydraUI Totem Bar", HydraUI.UIParent)
-			TotemBar:SetSize(40 * 4 + 5, 40 + 2)
-			TotemBar:SetPoint("CENTER", HydraUI.UIParent, 0, -120)
-			TotemBar:SetMovable("CENTER", HydraUI.UIParent, 0, -120)
-			--HydraUI:CreateMover(TotemBar)
-			TotemBar:EnableMouse(true)
-			TotemBar:RegisterForDrag("LeftButton")
-			TotemBar:SetUserPlaced(true)
-			TotemBar:SetScript("OnDragStart", TotemBar.StartMoving)
-			TotemBar:SetScript("OnDragStop", TotemBar.StopMovingOrSizing)
-
-			TotemBar.bg = TotemBar:CreateTexture(nil, "BACKGROUND")
-			TotemBar.bg:SetAllPoints()
-			TotemBar.bg:SetTexture(Assets:GetTexture("Blank"))
-			TotemBar.bg:SetVertexColor(0, 0, 0)]]
-
-			local Width = (Settings["unitframes-player-width"] / 4) - 1
-
-			for i = 1, 4 do
-				Totems[i] = CreateFrame("Button", nil, self)
-				Totems[i]:SetSize(40, 40)
-
-				--[[Totems[i].bg = Totems:CreateTexture(nil, "BACKGROUND")
-				Totems[i].bg:SetAllPoints(Totems[i])
-				Totems[i].bg:SetTexture(Assets:GetTexture("Blank"))
-				Totems[i].bg:SetVertexColor(HydraUI.TotemColors[i][1], HydraUI.TotemColors[i][2], HydraUI.TotemColors[i][3], 0.3)
-
-				Totems[i].Icon = Totems[i]:CreateTexture(nil, "OVERLAY")
-				Totems[i].Icon:SetPoint("TOPLEFT", 0, 0)
-				Totems[i].Icon:SetPoint("BOTTOMRIGHT", 0, 0)
-				Totems[i].Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-
-				Totems[i].Cooldown = CreateFrame("Cooldown", nil, Totems[i], "CooldownFrameTemplate")
-				Totems[i].Cooldown:SetAllPoints()
-
-				local Cooldown = Totems[i].Cooldown:GetRegions()
-
-				if Cooldown then
-					HydraUI:SetFontInfo(Cooldown, Settings["unitframes-font"], 18, Settings["unitframes-font-flags"])
-				end]]
-
-				Totems[i].Bar = CreateFrame("StatusBar", self:GetName() .. "Totems" .. i, Totems)
-				Totems[i].Bar:SetSize(Width, Settings["player-resource-height"])
-				Totems[i].Bar:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
-				Totems[i].Bar:SetStatusBarColor(HydraUI.TotemColors[i][1], HydraUI.TotemColors[i][2], HydraUI.TotemColors[i][3])
-				Totems[i].Bar:SetWidth(i == 1 and Width - 1 or Width)
-				Totems[i].Bar:EnableMouse(true)
-				Totems[i].Bar:SetID(i)
-				Totems[i].Bar:Hide()
-
-				Totems[i].bg = Totems:CreateTexture(nil, "BORDER")
-				Totems[i].bg:SetAllPoints(Totems[i].Bar)
-				Totems[i].bg:SetTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
-				Totems[i].bg:SetVertexColor(HydraUI.TotemColors[i][1], HydraUI.TotemColors[i][2], HydraUI.TotemColors[i][3])
-				Totems[i].bg:SetAlpha(0.3)
-
-				if (i == 1) then
-					--Totems[i]:SetPoint("LEFT", TotemBar, 1, 0)
-					Totems[i].Bar:SetPoint("LEFT", Totems, 1, 0)
+				if Settings["player-move-resource"] then
+					Totems:SetPoint("CENTER", ResourceAnchor, 0, 0)
 				else
-					--Totems[i]:SetPoint("LEFT", Totems[i-1], "RIGHT", 1, 0)
-					Totems[i].Bar:SetPoint("TOPLEFT", Totems[i-1].Bar, "TOPRIGHT", 1, 0)
+					Totems:SetPoint("BOTTOMLEFT", self, "TOPLEFT", 0, -1)
 				end
-			end
 
-			self.ClassPower = Totems
-			self.Totems = Totems
-			self.AuraParent = Totems
+				--[[local TotemBar = CreateFrame("Frame", "HydraUI Totem Bar", HydraUI.UIParent)
+				TotemBar:SetSize(40 * 4 + 5, 40 + 2)
+				TotemBar:SetPoint("CENTER", HydraUI.UIParent, 0, -120)
+				TotemBar:SetMovable("CENTER", HydraUI.UIParent, 0, -120)
+				--HydraUI:CreateMover(TotemBar)
+				TotemBar:EnableMouse(true)
+				TotemBar:RegisterForDrag("LeftButton")
+				TotemBar:SetUserPlaced(true)
+				TotemBar:SetScript("OnDragStart", TotemBar.StartMoving)
+				TotemBar:SetScript("OnDragStop", TotemBar.StopMovingOrSizing)
+
+				TotemBar.bg = TotemBar:CreateTexture(nil, "BACKGROUND")
+				TotemBar.bg:SetAllPoints()
+				TotemBar.bg:SetTexture(Assets:GetTexture("Blank"))
+				TotemBar.bg:SetVertexColor(0, 0, 0)]]
+
+				local Width = (Settings["unitframes-player-width"] / 4) - 1
+
+				for i = 1, 4 do
+					Totems[i] = CreateFrame("Button", nil, self)
+					Totems[i]:SetSize(40, 40)
+
+					--[[Totems[i].bg = Totems:CreateTexture(nil, "BACKGROUND")
+					Totems[i].bg:SetAllPoints(Totems[i])
+					Totems[i].bg:SetTexture(Assets:GetTexture("Blank"))
+					Totems[i].bg:SetVertexColor(HydraUI.TotemColors[i][1], HydraUI.TotemColors[i][2], HydraUI.TotemColors[i][3], 0.3)
+
+					Totems[i].Icon = Totems[i]:CreateTexture(nil, "OVERLAY")
+					Totems[i].Icon:SetPoint("TOPLEFT", 0, 0)
+					Totems[i].Icon:SetPoint("BOTTOMRIGHT", 0, 0)
+					Totems[i].Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+
+					Totems[i].Cooldown = CreateFrame("Cooldown", nil, Totems[i], "CooldownFrameTemplate")
+					Totems[i].Cooldown:SetAllPoints()
+
+					local Cooldown = Totems[i].Cooldown:GetRegions()
+
+					if Cooldown then
+						HydraUI:SetFontInfo(Cooldown, Settings["unitframes-font"], 18, Settings["unitframes-font-flags"])
+					end]]
+
+					Totems[i].Bar = CreateFrame("StatusBar", self:GetName() .. "Totems" .. i, Totems)
+					Totems[i].Bar:SetSize(Width, Settings["player-resource-height"])
+					Totems[i].Bar:SetStatusBarTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
+					Totems[i].Bar:SetStatusBarColor(HydraUI.TotemColors[i][1], HydraUI.TotemColors[i][2], HydraUI.TotemColors[i][3])
+					Totems[i].Bar:SetWidth(i == 1 and Width - 1 or Width)
+					Totems[i].Bar:EnableMouse(true)
+					Totems[i].Bar:SetID(i)
+					Totems[i].Bar:Hide()
+
+					Totems[i].bg = Totems:CreateTexture(nil, "BORDER")
+					Totems[i].bg:SetAllPoints(Totems[i].Bar)
+					Totems[i].bg:SetTexture(Assets:GetTexture(Settings.PlayerResourceTexture))
+					Totems[i].bg:SetVertexColor(HydraUI.TotemColors[i][1], HydraUI.TotemColors[i][2], HydraUI.TotemColors[i][3])
+					Totems[i].bg:SetAlpha(0.3)
+
+					if (i == 1) then
+						--Totems[i]:SetPoint("LEFT", TotemBar, 1, 0)
+						Totems[i].Bar:SetPoint("LEFT", Totems, 1, 0)
+					else
+						--Totems[i]:SetPoint("LEFT", Totems[i-1], "RIGHT", 1, 0)
+						Totems[i].Bar:SetPoint("TOPLEFT", Totems[i-1].Bar, "TOPRIGHT", 1, 0)
+					end
+				end
+
+				self.ClassPower = Totems
+				self.Totems = Totems
+				self.AuraParent = Totems
+			end
+			
 		elseif (HydraUI.UserClass == "EVOKER") then
 			local Essence = CreateFrame("Frame", self:GetName() .. "Essence", self, "BackdropTemplate")
 			Essence:SetSize(Settings["unitframes-player-width"], Settings["player-resource-height"] + 2)
