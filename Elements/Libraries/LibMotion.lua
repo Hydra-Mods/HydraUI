@@ -1,7 +1,7 @@
 -- LibMotion by Hydra
 local Version = 1.00
 
-if LibMotion and LibMotion.Version >= Version then -- An equal or higher version is already running
+if LibMotion and LibMotion.Version >= Version then
 	return
 end
 

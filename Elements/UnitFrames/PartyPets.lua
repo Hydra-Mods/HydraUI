@@ -17,7 +17,7 @@ HydraUI.StyleFuncs["partypet"] = function(self, unit)
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
 
-	local Backdrop = self:CreateTexture(nil, "BACKGROUND")
+	local Backdrop = self:CreateTexture(nil, "BORDER")
 	Backdrop:SetAllPoints()
 	Backdrop:SetTexture(Assets:GetTexture("Blank"))
 	Backdrop:SetVertexColor(0, 0, 0)
@@ -36,7 +36,6 @@ HydraUI.StyleFuncs["partypet"] = function(self, unit)
 	Health:SetPoint("TOPLEFT", self, 1, -1)
 	Health:SetPoint("TOPRIGHT", self, -1, -1)
 	Health:SetHeight(Settings["party-pets-health-height"])
-	Health:SetFrameLevel(5)
 	Health:SetStatusBarTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	Health:SetReverseFill(Settings["party-pets-health-reverse"])
 	Health:SetOrientation(Settings["party-pets-health-orientation"])
@@ -71,8 +70,8 @@ HydraUI.StyleFuncs["partypet"] = function(self, unit)
 		self.AbsorbsBar = AbsorbsBar
 	end
 
-	local HealthBG = Health:CreateTexture(nil, "BORDER")
-	HealthBG:SetAllPoints()
+	local HealthBG = self:CreateTexture(nil, "BACKGROUND")
+	HealthBG:SetAllPoints(Health)
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealthBG.multiplier = 0.2
 

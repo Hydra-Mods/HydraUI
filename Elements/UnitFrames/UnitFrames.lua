@@ -29,21 +29,6 @@ HydraUI.StyleFuncs = {}
 local Hider = CreateFrame("Frame", nil, HydraUI.UIParent, "SecureHandlerStateTemplate")
 Hider:Hide()
 
-local Ignore = {}
-
-if HydraUI.IsMainline then
-	Ignore[GetSpellInfo(57724)] = true -- Sated
-	Ignore[GetSpellInfo(288293)] = true -- Temporal Displacement
-	Ignore[GetSpellInfo(206150)] = true -- Challenger's Might
-	Ignore[GetSpellInfo(206151)] = true -- Challenger's Burden
-end
-
-local CustomFilter = function(self, unit, icon, name, texture, count, dtype, duration, timeLeft, caster)
-	if ((self.onlyShowPlayer and icon.isPlayer) or (not self.onlyShowPlayer and name)) and (not Ignore[name]) then
-		return true
-	end
-end
-
 function UF:GetRoleTexCoords(role)
 	if (role == "TANK") then
 		return 0, 19/64, 22/64, 41/64
@@ -535,6 +520,9 @@ elseif HydraUI.IsWrath then
 			{25222, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
 			{48067, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
 			{48068, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+
+			-- Weakened Soul
+			{6788, "TOPRIGHT", {0.9, 0.1, 0.1}, true},
 		},
 
 		["SHAMAN"] = {
@@ -544,6 +532,7 @@ elseif HydraUI.IsWrath then
 			{32594, "TOPRIGHT", {0.73, 0.61, 0.33}},
 			{49283, "TOPRIGHT", {0.73, 0.61, 0.33}},
 			{49284, "TOPRIGHT", {0.73, 0.61, 0.33}},
+
 			-- Riptide
 			{61295, "TOPLEFT", {0, 0.4, 0.6}},
 			{61299, "TOPLEFT", {0, 0.4, 0.6}},
@@ -617,6 +606,9 @@ else -- Classic
 			{10928, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
 			{10929, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
 			{25315, "BOTTOMLEFT", {0.4, 0.7, 0.2}},
+
+			-- Weakened Soul
+			{6788, "TOPRIGHT", {0.9, 0.1, 0.1}, true},
 		},
 	}
 end

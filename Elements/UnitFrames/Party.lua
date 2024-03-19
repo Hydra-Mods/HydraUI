@@ -295,6 +295,7 @@ HydraUI.StyleFuncs["party"] = function(self, unit)
 	Dispel:SetFrameLevel(Health:GetFrameLevel() + 20)
 	Dispel:SetBackdrop(HydraUI.BackdropAndBorder)
 	Dispel:SetBackdropColor(0, 0, 0)
+	Dispel:SetFrameLevel(Debuffs:GetFrameLevel() + 1)
 
 	Dispel.icon = Dispel:CreateTexture(nil, "ARTWORK")
 	Dispel.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)

@@ -33,7 +33,17 @@ Defaults.RaidPowerTexture = "HydraUI 4"
 
 local UF = HydraUI:GetModule("Unit Frames")
 
-local RaidDebuffFilter = function(self, unit, icon, name, texture, count, dtype, duration, timeLeft, caster, stealable, nameplateshow, id, canapply, boss, player)
+local Ignore = {}
+
+if HydraUI.IsWrath then
+	Ignore[GetSpellInfo(69127)] = true -- Chill of the Throne
+end
+
+local RaidDebuffFilter = function(self, unit, icon, name, texture, count, dtype, duration, timeLeft, caster, stealable, nameplateshow, id, canapply, boss, player, showall)
+	if Ignore[name] then
+		return false
+	end
+
 	if boss or (count and count > 0) or (duration > 0 and timeLeft and not player and not canapply) then
 		return true
 	end
@@ -210,7 +220,8 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 	-- Debuffs
 	local Debuffs = CreateFrame("Frame", self:GetName() .. "Debuffs", Health)
 	Debuffs:SetSize(24, 24)
-	Debuffs:SetPoint("BOTTOM", self, 0, 2)
+	--Debuffs:SetPoint("BOTTOM", self, 0, 2)
+	Debuffs:SetPoint("CENTER", Health, 0, 0)
 	Debuffs.size = 24
 	Debuffs.num = 1
 	Debuffs.spacing = 0
@@ -270,11 +281,12 @@ HydraUI.StyleFuncs["raid"] = function(self, unit)
 
 	-- Dispels
 	local Dispel = CreateFrame("Frame", nil, Health, "BackdropTemplate")
-	Dispel:SetSize(20, 20)
+	Dispel:SetSize(22, 22)
 	Dispel:SetPoint("CENTER", Health, 0, 0)
 	Dispel:SetFrameLevel(Health:GetFrameLevel() + 20)
 	Dispel:SetBackdrop(HydraUI.BackdropAndBorder)
 	Dispel:SetBackdropColor(0, 0, 0)
+	Dispel:SetFrameLevel(Debuffs:GetFrameLevel() + 1)
 
 	Dispel.icon = Dispel:CreateTexture(nil, "ARTWORK")
 	Dispel.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)

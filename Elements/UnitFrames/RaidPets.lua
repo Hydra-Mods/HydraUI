@@ -17,7 +17,7 @@ HydraUI.StyleFuncs["raidpet"] = function(self, unit)
 	self:SetScript("OnEnter", UnitFrame_OnEnter)
 	self:SetScript("OnLeave", UnitFrame_OnLeave)
 
-	local Backdrop = self:CreateTexture(nil, "BACKGROUND")
+	local Backdrop = self:CreateTexture(nil, "BORDER")
 	Backdrop:SetAllPoints()
 	Backdrop:SetTexture(Assets:GetTexture("Blank"))
 	Backdrop:SetVertexColor(0, 0, 0)
@@ -69,8 +69,8 @@ HydraUI.StyleFuncs["raidpet"] = function(self, unit)
 		self.AbsorbsBar = AbsorbsBar
 	end
 
-	local HealthBG = Health:CreateTexture(nil, "BORDER")
-	HealthBG:SetAllPoints()
+	local HealthBG = self:CreateTexture(nil, "BACKGROUND")
+	HealthBG:SetAllPoints(Health)
 	HealthBG:SetTexture(Assets:GetTexture(Settings["ui-widget-texture"]))
 	HealthBG.multiplier = 0.2
 
