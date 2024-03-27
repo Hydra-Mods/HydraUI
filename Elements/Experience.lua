@@ -17,7 +17,6 @@ local ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
 local GetNumQuests
 local LEVEL = LEVEL
-local HasXPBuff = AuraUtil.FindAuraByName(GetSpellInfo(377749), "player", "HELPFUL")
 
 if HydraUI.IsMainline then
 	GetNumQuests = C_QuestLog.GetNumQuestLogEntries
@@ -270,7 +269,7 @@ function Experience:Update()
 	end
 
 	if (QuestLogXP > 0) then
-		if (HydraUI.IsWrath and HasXPBuff) then
+		if (HydraUI.IsWrath and AuraUtil.FindAuraByName(GetSpellInfo(377749), "player", "HELPFUL")) then
 			QuestLogXP = QuestLogXP * 1.5
 		end
 
